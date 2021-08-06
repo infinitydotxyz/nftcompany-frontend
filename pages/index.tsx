@@ -221,17 +221,17 @@ export default function Home() {
 						<div className="col-sm-12 col-md-6">
 							<h3 className="tg-title">Investors</h3>
 							<p className="tg-paragraph">
-								We are backed by investors that believe in the long term potential of crypto.
+								We are backed by investors that believe in the long term potential of crypto. And won prizes at hackathons.
 							</p>
 
 							<div className="grid">
-								<div className="col-sm-6 col-md-3 col-lg-12">
-									<Image alt="NFT Company" src="/img/binanceLabs3.jpeg" width={1500} height={500} />
+								<div className="col-sm-6 col-md-3 col-lg-6">
+									<Image alt="Binance" src="/img/binanceLabs.png" width={500} height={300} />
 								</div>
-								{/* <div className="col-sm-6 col-md-3">
-									<Image alt="NFT Company" src="/logo-investor.png" width={100} height={100} />
+								<div className="col-sm-6 col-md-3 col-lg-6">
+									<Image alt="ETH Global HackMoney" src="/img/ethGlobal.svg" width={500} height={300} />
 								</div>
-								<div className="col-sm-6 col-md-3">
+								{/*<div className="col-sm-6 col-md-3">
 									<Image alt="NFT Company" src="/logo-investor.png" width={100} height={100} />
 								</div>
 								<div className="col-sm-6 col-md-3">
