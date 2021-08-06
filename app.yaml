@@ -12,3 +12,5 @@ resources:
     disk_size_gb: 10
 readiness_check:
   app_start_timeout_sec: 1800
+includes:
+  - env_variables.yaml

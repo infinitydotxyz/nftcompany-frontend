@@ -5,6 +5,10 @@ import "../src/components/nft/components.scss";
 import { ChakraProvider, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import * as gtag from "../lib/ga/gtag";
+const isProduction = process.env.NODE_ENV === "production";
 
 const colors = {
 	fonts: {
@@ -24,6 +28,19 @@ const config: ThemeConfig = {
 const theme = extendTheme({ config, colors });
 
 function MyApp({ Component, pageProps }: AppProps) {
+	const router = useRouter();
+
+	useEffect(() => {
+		const handleRouteChange = (url: URL) => {
+			/* invoke analytics function only for production */
+			if (isProduction) gtag.pageview(url);
+		};
+		router.events.on("routeChangeComplete", handleRouteChange);
+		return () => {
+			router.events.off("routeChangeComplete", handleRouteChange);
+		};
+	}, [router.events]);
+
 	const getLayout = (Component as any).getLayout || ((page: NextPage) => page);
 	return getLayout(
 		<ChakraProvider theme={theme}>
@@ -31,4 +48,5 @@ function MyApp({ Component, pageProps }: AppProps) {
 		</ChakraProvider>
 	);
 }
+
 export default MyApp;
