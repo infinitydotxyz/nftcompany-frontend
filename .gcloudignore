@@ -11,20 +11,12 @@
 # from your .gitignore file, remove the corresponding line
 # below:
 
-.git
-.gitignore
-
 # Node.js dependencies:
 node_modules/
 .vscode/
-next.config.js
 .editorconfig
 .prettierrc
-deploy.sh
 yarn-error.log
 *.hot-update.js*
 
-# Other config and Files
-README.md
-.eslintignore
-.eslintrc
+# Build folder if building on target
