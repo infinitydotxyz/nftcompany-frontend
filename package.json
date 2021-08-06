@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 80",
+    "deploy": "next build && gcloud app deploy -q --project nftcompany-frontend",
     "lint": "next lint"
   },
   "dependencies": {
