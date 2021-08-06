@@ -19,4 +19,13 @@ node_modules/
 yarn-error.log
 *.hot-update.js*
 
-# Build folder if building on target
+.git
+.gitignore
+
+# Next.js source code
+/pages/
+/src/
+/styles/
+
+# Next.js default build
+.next
