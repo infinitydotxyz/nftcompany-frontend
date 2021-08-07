@@ -13,5 +13,5 @@ export async function initEthers() {
   const network = Number(
     window.ethereum.send({ method: "net_version" }).result
   );
-  console.log("Account:", await signer.getAddress());
+  return signer;
 }

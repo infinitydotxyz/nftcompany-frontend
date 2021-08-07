@@ -5,19 +5,28 @@ import Link from "next/link";
 import Image from "next/image";
 import Layout from "containers/layout";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 
 import { initEthers } from "../src/utils/ethersUtil";
 import styles from "../styles/Connect.module.scss";
 
 export default function ConnectWallet() {
+  const router = useRouter();
   // const [ethersRes, setEthersRes] = useState<any>(null);
+
   useEffect(() => {
-    initEthers().then(async (response) => {
-      // setEthersRes(response);
-      // console.log('ethersRes:', ethersRes);
-      // console.log('window', window.ethereum);
-    });
+    // TBD
   }, []);
+
+  const connectMetaMask = async () => {
+    const res = await initEthers();
+    if (res && res.getAddress) {
+      router.push("/dashboard");
+    } else {
+      alert("Failed to connect.");
+    }
+    console.log("Address: ", await res.getAddress());
+  };
   return (
     <>
       <Head>
@@ -72,7 +81,7 @@ export default function ConnectWallet() {
               </svg>
               <h1 className="tg-desc text-center mb-3">Connect Wallet</h1>
 
-              <div className={styles.item}>
+              <div className={styles.item} onClick={connectMetaMask}>
                 <div className="logo-metamask d-flex align-self-center">
                   <Image
                     alt="NFT Company"
