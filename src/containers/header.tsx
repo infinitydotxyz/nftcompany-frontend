@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { getAccount } from "../../src/utils/ethersUtil";
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { getAccount } from '../../src/utils/ethersUtil';
 
 const Header = () => {
   const [user, setUser] = useState<any>(null);
-  
+
   useEffect(() => {
     const connect = async () => {
       const account = await getAccount();
@@ -21,23 +21,12 @@ const Header = () => {
             <div className="col-sm-12 col-md-6 d-flex">
               <Link href="/dashboard">
                 <a>
-                  <Image
-                    alt="Mavrik logo"
-                    src="/img/nftcompanyWhiteBgSvg.svg"
-                    width={120}
-                    height={28}
-                  />
+                  <Image alt="Mavrik logo" src="/img/nftcompanyWhiteBgSvg.svg" width={120} height={28} />
                 </a>
               </Link>
               <div className="hd-db">
                 <div className="hd-db-l">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path
                       d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
                       stroke="currentColor"
@@ -54,11 +43,7 @@ const Header = () => {
                     ></path>
                   </svg>
                 </div>
-                <input
-                  className="hd-db-input"
-                  placeholder="Search items, collections, packages, ..."
-                  type="text"
-                />
+                <input className="hd-db-input" placeholder="Search items, collections, packages, ..." type="text" />
               </div>
             </div>
             <div className="col-sm-12 col-md-6">
@@ -77,21 +62,13 @@ const Header = () => {
 
                 {user?.account ? (
                   <li>
-                    <a className="connect-wallet">{`${user?.account.slice(
-                      0,
-                      6
-                    )}...${user?.account.slice(-4)}`}</a>
+                    <a className="connect-wallet">{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</a>
                   </li>
                 ) : (
                   <li>
                     <Link href="/connect">
                       <a className="connect-wallet">
-                        <svg
-                          width={20}
-                          height={20}
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width={20} height={20} fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             fillRule="evenodd"
                             clipRule="evenodd"

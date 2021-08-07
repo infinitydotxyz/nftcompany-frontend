@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
-import React, { useState, useEffect } from "react";
-import Head from "next/head";
-import Link from "next/link";
-import Image from "next/image";
-import Layout from "containers/layout";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
+import Link from 'next/link';
+import Image from 'next/image';
+import Layout from 'containers/layout';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 
-import { initEthers } from "../src/utils/ethersUtil";
-import styles from "../styles/Connect.module.scss";
+import { initEthers } from '../src/utils/ethersUtil';
+import styles from '../styles/Connect.module.scss';
 
 export default function ConnectWallet() {
   const router = useRouter();
@@ -21,9 +21,9 @@ export default function ConnectWallet() {
   const connectMetaMask = async () => {
     const res = await initEthers();
     if (res && res.getAddress) {
-      router.push("/dashboard");
+      router.push('/dashboard');
     } else {
-      alert("Failed to connect.");
+      alert('Failed to connect.');
     }
     // console.log("Address: ", await res.getAddress());
   };
@@ -37,23 +37,12 @@ export default function ConnectWallet() {
           <div className={styles.center}>
             <Link href="/">
               <a>
-                <Image
-                  alt="NFT Company"
-                  src="/img/nftcompanyWhiteBgSvg.svg"
-                  width={120}
-                  height={40}
-                />
+                <Image alt="NFT Company" src="/img/nftcompanyWhiteBgSvg.svg" width={120} height={40} />
               </a>
             </Link>
 
             <div className={styles.box}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="64"
-                height="64"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none">
                 <path
                   opacity="0.8"
                   d="M12.8992 2.52009L12.8692 2.59009L9.96922 9.32009H7.11922C6.43922 9.32009 5.79922 9.45009 5.19922 9.71009L6.94922 5.53009L6.98922 5.44009L7.04922 5.28009C7.07922 5.21009 7.09922 5.15009 7.12922 5.10009C8.43922 2.07009 9.91922 1.38009 12.8992 2.52009Z"
@@ -95,13 +84,7 @@ export default function ConnectWallet() {
                   <p className="tg-desc">Metamask</p>
                   <p className="text-gray">Connect using browser wallet</p>
                 </div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path
                     d="M8.91016 19.9201L15.4302 13.4001C16.2002 12.6301 16.2002 11.3701 15.4302 10.6001L8.91016 4.08008"
                     stroke="#292D32"
@@ -126,13 +109,7 @@ export default function ConnectWallet() {
                   <p className="tg-desc">WalletConnect</p>
                   <p className="text-gray">Connect using mobile wallet</p>
                 </div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path
                     d="M8.91016 19.9201L15.4302 13.4001C16.2002 12.6301 16.2002 11.3701 15.4302 10.6001L8.91016 4.08008"
                     stroke="#292D32"
@@ -157,13 +134,7 @@ export default function ConnectWallet() {
                   <p className="tg-desc">Coinbase</p>
                   <p className="text-gray">Connect using Coinbase wallet</p>
                 </div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path
                     d="M8.91016 19.9201L15.4302 13.4001C16.2002 12.6301 16.2002 11.3701 15.4302 10.6001L8.91016 4.08008"
                     stroke="#292D32"
