@@ -25,7 +25,7 @@ export default function ConnectWallet() {
     } else {
       alert("Failed to connect.");
     }
-    console.log("Address: ", await res.getAddress());
+    // console.log("Address: ", await res.getAddress());
   };
   return (
     <>

@@ -1,9 +1,10 @@
+const ethers = require("ethers");
+
 declare global {
   interface Window {
     ethereum: any;
   }
 }
-const ethers = require("ethers");
 // const hstABI = require("human-standard-token-abi");
 
 export async function initEthers() {
@@ -15,3 +16,16 @@ export async function initEthers() {
   );
   return signer;
 }
+
+export const getAccount = async () => {
+  try {
+    const accounts = await window.ethereum.request({ method: "eth_accounts" });
+    // console.log('accounts', accounts);
+    if (Array.isArray(accounts) && accounts.length > 0) {
+      return accounts[0];
+    }
+  } catch (err) {
+    console.error("ERROR:", err);
+  }
+  return null;
+};
