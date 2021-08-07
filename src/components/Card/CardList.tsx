@@ -1,8 +1,8 @@
 import styles from './CardList.module.scss';
-import Card from './Card'
+import Card, { CardData } from './Card'
 
 type Props = {
-  data: []
+  data: CardData[]
 }
 
 export default function CardList({ data }: Props) {

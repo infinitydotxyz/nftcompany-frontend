@@ -135,7 +135,14 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <CardList data={[0, 1, 2, 3]} />
+          <CardList
+            data={[
+              { id: '1', title: 'Card 1' },
+              { id: '2', title: 'Card 2' },
+              { id: '3', title: 'Card 3' },
+              { id: '4', title: 'Card 4' }
+            ]}
+          />
 
           {/* <div className="section-bar">
             <div className="right">

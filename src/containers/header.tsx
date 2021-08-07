@@ -58,6 +58,11 @@ const Header = () => {
                     <a>My items</a>
                   </Link>
                 </li>
+                <li>
+                  <Link href="/preview">
+                    <a>Preview</a>
+                  </Link>
+                </li>
                 {/* <li>FAQs</li> */}
 
                 {user?.account ? (

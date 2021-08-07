@@ -1,5 +1,10 @@
 import styles from './CardList.module.scss';
 
+export type CardData = {
+  id: string;
+  title: string;
+}
+
 export default function Card() {
   return (
     <div className={styles.card}>
