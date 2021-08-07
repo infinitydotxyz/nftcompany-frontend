@@ -1,10 +1,10 @@
 .dashboard {
-	.nftsGrid {
+  .nftsGrid {
 		display: grid;
 		list-style: none;
 		grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
 		grid-gap: 36px;
-	}
+  }
 
 	@media (min-width: 1600px) {
 		.nftsGrid {
@@ -48,3 +48,4 @@
 		}
 	}
 }
+
