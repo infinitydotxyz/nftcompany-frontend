@@ -2,9 +2,10 @@ import React from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import styles from '../../styles/Dashboard.module.scss';
 import NFT from 'components/nft/nft';
 import { Select } from '@chakra-ui/react';
+import CardList from 'components/Card/CardList';
+import styles from '../../styles/Dashboard.module.scss';
 
 export default function Dashboard() {
   const [tabIndex, setTabIndex] = React.useState(1);
@@ -134,52 +135,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className={styles.cardList}>
-            {/* <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" />
-            <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" />
-            <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" />
-            <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" />
-            <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" /> */}
-
-            {[0, 1, 2].map((item) => {
-              return (
-                <div className={styles.card}>
-                  <div className={styles.cardPreview}>
-                    <img
-                      src="https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-3.jpg"
-                      alt="Card preview"
-                    />
-
-                    <div className={styles.cardControls}>
-                      <div className="status-green card__category">purchasing !</div>
-                      <button className="card__favorite">
-                        <svg className="icon icon-heart">{/* <use xlink:href="#icon-heart"></use> */}</svg>
-                      </button>
-                      <a
-                        className="button-small card__button js-popup-open"
-                        href="#popup-bid"
-                        data-effect="mfp-zoom-in"
-                      >
-                        <span>Place a bid</span>
-                        <svg className="icon icon-scatter-up">{/* <use xlink:href="#icon-scatter-up"></use> */}</svg>
-                      </a>
-                    </div>
-                  </div>
-                  <a className="card__link" href="item.html">
-                    <div className="card__body">
-                      <div className={styles.cardLine}>
-                        <div className={styles.cardTitle}>Amazing digital art</div>
-                        <div className={styles.cardPrice}>2.45 ETH</div>
-                      </div>
-                      <div className="card__line">
-                        <div className="card__counter">3 in stock</div>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              );
-            })}
-          </div>
+          <CardList data={[0, 1, 2, 3]} />
 
           {/* <div className="section-bar">
             <div className="right">
