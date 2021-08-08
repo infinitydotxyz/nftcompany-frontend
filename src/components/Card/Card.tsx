@@ -1,4 +1,6 @@
+import React, { useState } from 'react';
 import Link from 'next/link';
+import NFTModal from 'components/nft/NFTModal';
 import styles from './CardList.module.scss';
 import Image from "next/image";
 
@@ -8,6 +10,8 @@ export type CardData = {
 };
 
 export default function Card({ data }: { data: CardData }) {
+  const [modalShowed, setModalShowed] = useState(false);
+
   return (
     <div className={styles.card}>
       <Link href={`/preview?id=${data.id}`}>
@@ -27,15 +31,29 @@ export default function Card({ data }: { data: CardData }) {
         </div>
       </Link>
 
-      <div className="card__body">
+      <div className={styles.cardBody}>
         <div className={styles.cardLine}>
           <div className={styles.cardTitle}>Amazing digital art</div>
-          <div className={styles.cardPrice}>2.45 ETH</div>
+          <div className={styles.cardPrice} onClick={() => setModalShowed(true)}>
+            2.45 ETH
+          </div>
         </div>
-        <div className="card__line">
+        <div className={styles.cardLine}>
+          <div>&nbsp;</div>
           <div className="card__counter">3 in stock</div>
         </div>
       </div>
+
+      {modalShowed && (
+        <NFTModal
+          title="AAVE"
+          address="0xc812...AeFg"
+          id="2456123"
+          brandColor="#24DB83"
+          bgColor="#E6FBF0"
+          onClose={() => setModalShowed(false)}
+        />
+      )}
     </div>
   );
 }

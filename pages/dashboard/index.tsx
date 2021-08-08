@@ -2,7 +2,6 @@ import React from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import NFT from 'components/nft/nft';
 import { Select } from '@chakra-ui/react';
 import CardList from 'components/Card/CardList';
 import styles from '../../styles/Dashboard.module.scss';
@@ -157,6 +156,7 @@ export default function Dashboard() {
             <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" />
           </div> */}
         </div>
+
       </div>
     </>
   );
