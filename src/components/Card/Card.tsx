@@ -19,13 +19,17 @@ export default function Card({ data }: { data: CardData }) {
           <Image src="https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-3.jpg" alt="Card preview" layout="fill" />
 
           <div className={styles.cardControls}>
-            <div className="status-green card__category">purchasing !</div>
+            {/* <div className="status-green card__category">purchasing !</div> */}
             <button className="card__favorite">
               <svg className="icon icon-heart">{/* <use xlink:href="#icon-heart"></use> */}</svg>
             </button>
-            <a className="button-small card__button js-popup-open" href="#popup-bid" data-effect="mfp-zoom-in">
+            <a
+              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
+              href="#popup-bid"
+              data-effect="mfp-zoom-in"
+              onClick={() => setModalShowed(true)}
+            >
               <span>Place a bid</span>
-              <svg className="icon icon-scatter-up">{/* <use xlink:href="#icon-scatter-up"></use> */}</svg>
             </a>
           </div>
         </div>
@@ -34,9 +38,7 @@ export default function Card({ data }: { data: CardData }) {
       <div className={styles.cardBody}>
         <div className={styles.cardLine}>
           <div className={styles.cardTitle}>Amazing digital art</div>
-          <div className={styles.cardPrice} onClick={() => setModalShowed(true)}>
-            2.45 ETH
-          </div>
+          <div className={styles.cardPrice}>2.45 ETH</div>
         </div>
         <div className={styles.cardLine}>
           <div>&nbsp;</div>
