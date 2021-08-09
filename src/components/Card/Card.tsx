@@ -1,4 +1,5 @@
 import styles from './CardList.module.scss';
+import Image from "next/image";
 
 export type CardData = {
   id: string;
@@ -9,7 +10,7 @@ export default function Card() {
   return (
     <div className={styles.card}>
       <div className={styles.cardPreview}>
-        <img src="https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-3.jpg" alt="Card preview" />
+        <Image src="https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-3.jpg" alt="Card preview" layout="fill" />
 
         <div className={styles.cardControls}>
           <div className="status-green card__category">purchasing !</div>
