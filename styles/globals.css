@@ -15,6 +15,12 @@ a {
 	box-sizing: border-box;
 }
 
+@media (max-width: 500px) {
+	main {
+		width: 120%;
+	}
+}
+
 .d-flex {
 	display: flex;
 }
@@ -92,6 +98,12 @@ svg {
 	background-color: #2429ad;
 }
 
+@media (max-width: 767px) {
+	.header-links-wrapper {
+		display: none;
+	}
+}
+
 .header-l {
 	padding: 1.5rem 0;
 }
@@ -102,6 +114,14 @@ svg {
 	justify-content: center;
 	list-style-type: none;
 	font-weight: 500;
+}
+
+.header-links-mobile-wrapper {
+	width: 120%;
+}
+
+.header-links-mobile {
+	flex-direction: column;
 }
 
 .header-links li a {
@@ -165,6 +185,12 @@ svg {
 .footer {
 	background-color: #e4e9ee;
 	padding: 4rem 0;
+}
+
+@media (max-width: 500px) {
+	.footer {
+		width: 120%;
+	}
 }
 
 .footer-links {

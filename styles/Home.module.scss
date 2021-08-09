@@ -35,6 +35,12 @@
 		font-weight: 500;
 		font-size: 1.5rem;
 	}
+
+	@media (max-width: 500px) {
+		.tg-paragraph {
+			margin: 0rem auto 1rem;
+		}
+	}
 }
 
 .about {
@@ -44,6 +50,15 @@
 		position: relative;
 		top: -5px;
 		display: inline-block;
+	}
+
+	@media (max-width: 500px) {
+
+		margin-top: 7rem;
+
+		.image {
+			display: none !important;
+		}
 	}
 
 	ul {
@@ -98,6 +113,10 @@
 .artists {
 	margin-top: 10rem;
 
+	@media (max-width: 500px) {
+		margin-top: 7rem;
+	}
+
 	.tick svg {
 		position: relative;
 		top: -5px;
@@ -126,6 +145,15 @@
 
 .world {
 	margin-top: 10rem;
+
+	@media (max-width: 500px) {
+		margin-top: 7rem;
+
+		.para {
+			grid-column: span 10;
+		}
+	}
+
 	position: relative;
 	&:before {
 		content: "";
@@ -155,7 +183,6 @@
 		span {
 			font-size: 1.2em;
 		}
-		margin-bottom: 2rem;
 	}
 
 	p {
@@ -180,6 +207,13 @@
 	p {
 		color: rgba(#071013, 0.6);
 		margin-bottom: 1em;
+	}
+
+	@media (max-width: 500px) {
+		margin-top: 7rem;
+		.image {
+			display: none !important;
+		}
 	}
 }
 
