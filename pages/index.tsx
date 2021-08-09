@@ -85,7 +85,7 @@ export default function Home() {
 								<li>Assets from the NFT can be withdrawn anytime.</li>
 							</ul>
 						</div>
-						<div className="col-sm-12 col-md-6">
+						<div className={`${styles.image} col-sm-12 col-md-6`}>
 							<Image alt="NFT Company" src="/img/artwork-2.png" width={488} height={488} />
 						</div>
 					</div>
@@ -198,8 +198,8 @@ export default function Home() {
 								</h2>
 							</div>
 
-							<div className="col-sm-8 col-md-7">
-								<p className="tg-paragraph">
+							<div className={`col-sm-8 col-md-7 ${styles.para}`}>
+								<p className={`${styles["tg-paragraph"]}`}>
 									The Crypto world can be accessed in many ways: using exchanges like Coinbase and wallets
 									like Metamask. We believe NFTs will become a new major way the Crypto world is accessed. We are building
 									this new "UI" to Crypto, starting with NFTs that interface with DeFi protocols.
@@ -214,13 +214,13 @@ export default function Home() {
 			<section id="investors" className={`${styles.investors} section`}>
 				<div className="container container-avg">
 					<div className="grid">
-						<div className="col-sm-12 col-md-6">
+						<div className={`${styles.image} col-sm-12 col-md-6`}>
 							<Image alt="NFT Company" src="/img/artwork-4.png" width={488} height={400} />
 						</div>
 
 						<div className="col-sm-12 col-md-6">
 							<h3 className="tg-title">Investors</h3>
-							<p className="tg-paragraph">
+							<p>
 								We are backed by investors that believe in the long term potential of crypto. And won prizes at hackathons.
 							</p>
 

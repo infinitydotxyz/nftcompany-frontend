@@ -71,7 +71,7 @@ const LandingHeader = () => {
 				</div>
 			</div>
 			{ mobileMenuOpen && (
-				<div>
+				<div className="header-links-mobile-wrapper">
 					<ul className="header-links header-links-mobile">
 						<li>
 							<a href="https://docs.nftcompany.com" target="_blank">Docs</a>
