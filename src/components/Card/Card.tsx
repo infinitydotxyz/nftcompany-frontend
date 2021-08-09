@@ -7,6 +7,7 @@ import Image from "next/image";
 export type CardData = {
   id: string;
   title: string;
+  img: string;
 };
 
 export default function Card({ data }: { data: CardData }) {
@@ -16,7 +17,7 @@ export default function Card({ data }: { data: CardData }) {
     <div className={styles.card}>
       <Link href={`/preview?id=${data.id}`}>
         <div className={styles.cardPreview}>
-          <Image src="https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-3.jpg" alt="Card preview" layout="fill" />
+          <Image src={data.img} alt="Card preview" layout="fill" />
 
           <div className={styles.cardControls}>
             {/* <div className="status-green card__category">purchasing !</div> */}

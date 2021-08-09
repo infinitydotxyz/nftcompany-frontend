@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Select } from '@chakra-ui/react';
 import CardList from 'components/Card/CardList';
+import { sampleData } from '../../src/utils/apiUtil'
 import styles from '../../styles/Dashboard.module.scss';
 
 export default function Dashboard() {
@@ -135,12 +136,7 @@ export default function Dashboard() {
           </div>
 
           <CardList
-            data={[
-              { id: '1', title: 'Card 1' },
-              { id: '2', title: 'Card 2' },
-              { id: '3', title: 'Card 3' },
-              { id: '4', title: 'Card 4' }
-            ]}
+            data={sampleData}
           />
 
           {/* <div className="section-bar">

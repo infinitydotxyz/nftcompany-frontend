@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Select } from '@chakra-ui/react';
 import CardList from 'components/Card/CardList';
+import { sampleData } from '../../src/utils/apiUtil'
 import styles from '../../styles/Dashboard.module.scss';
 
 export default function Preview() {
@@ -51,9 +52,7 @@ export default function Preview() {
           </div>
 
           <CardList
-            data={[
-              { id: '1', title: 'Card 1' }
-            ]}
+            data={[sampleData[0]]}
           />
 
         </div>
