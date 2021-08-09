@@ -27,6 +27,7 @@
   user-select: none;
   white-space: nowrap;
   width: auto;
+  font-weight: 500;
 }
 .nice-select:hover {
   /* border-color: #dbdbdb; */
@@ -153,7 +154,8 @@
   background-color: #f6f6f6;
 }
 .nice-select .option.selected {
-  font-weight: bold;
+  /* font-weight: bold; */
+  color: blue;
 }
 .nice-select .option.disabled {
   background-color: transparent;
