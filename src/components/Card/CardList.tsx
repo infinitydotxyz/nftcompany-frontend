@@ -10,7 +10,7 @@ export default function CardList({ data }: Props) {
     <div className={styles.cardList}>
       {(data || []).map((item) => {
         return (
-          <Card key={item.id}/>
+          <Card key={item.id} data={item} />
         );
       })}
     </div>

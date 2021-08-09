@@ -1,4 +1,7 @@
 module.exports = {
   reactStrictMode: true,
-  distDir: 'build'
+  distDir: 'build',
+  images: {
+    domains: ['ui8-crypter-nft-html.herokuapp.com'],
+  }
 }
