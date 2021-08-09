@@ -1,34 +1,36 @@
+// @ts-nocheck
+
 // utility functions
-function triggerClick(el) {
+function triggerClick(el: HTMLElement) {
   var event = document.createEvent('MouseEvents');
   event.initEvent('click', true, false);
   el.dispatchEvent(event);
 }
 
-function triggerChange(el) {
+function triggerChange(el: HTMLElement) {
   var event = document.createEvent('HTMLEvents');
   event.initEvent('change', true, false);
   el.dispatchEvent(event);
 }
 
-function attr(el, key) {
+function attr(el: HTMLElement, key: string) {
   return el.getAttribute(key);
 }
 
-function data(el, key) {
+function data(el: HTMLElement, key: string) {
   return el.getAttribute('data-' + key);
 }
 
-function hasClass(el, className) {
+function hasClass(el: HTMLElement, className: string) {
   if (el) return el.classList.contains(className);
   else return false;
 }
 
-function addClass(el, className) {
+function addClass(el: HTMLElement, className: string) {
   if (el) return el.classList.add(className);
 }
 
-function removeClass(el, className) {
+function removeClass(el: HTMLElement, className: string) {
   if (el) return el.classList.remove(className);
 }
 
@@ -36,7 +38,7 @@ var defaultOptions = {
   data: null,
   searchable: false
 };
-function NiceSelect(element, options) {
+function NiceSelect(element: HTMLElement, options: any) {
   this.el = element;
   this.config = Object.assign({}, defaultOptions, options || {});
 

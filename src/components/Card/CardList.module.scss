@@ -105,3 +105,14 @@
     
   }
 }
+
+@media (max-width: 768px) {
+  .cardList {
+    grid-gap: 16px;
+
+    .card {
+      flex: 0 0 calc(48% - 32px);
+      max-width: calc(48% - 32px);
+    }
+  }
+}

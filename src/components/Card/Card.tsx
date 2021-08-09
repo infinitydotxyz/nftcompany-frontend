@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import NFTModal from 'components/nft/NFTModal';
 import styles from './CardList.module.scss';
-import Image from "next/image";
 
 export type CardData = {
   id: string;
@@ -17,7 +16,8 @@ export default function Card({ data }: { data: CardData }) {
     <div className={styles.card}>
       <Link href={`/preview?id=${data.id}`}>
         <div className={styles.cardPreview}>
-          <Image src={data.img} alt="Card preview" layout="fill" />
+          {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
+          <img src={data.img} alt="Card preview" />
 
           <div className={styles.cardControls}>
             {/* <div className="status-green card__category">purchasing !</div> */}
@@ -28,10 +28,7 @@ export default function Card({ data }: { data: CardData }) {
               className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
               href="#popup-bid"
               data-effect="mfp-zoom-in"
-              onClick={(ev) => {
-                ev.preventDefault();
-                setModalShowed(true);
-              }}
+              onClick={() => setModalShowed(true)}
             >
               <span>Place a bid</span>
             </a>
