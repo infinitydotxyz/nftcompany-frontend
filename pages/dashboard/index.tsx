@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Select } from '@chakra-ui/react';
+import NiceSelect from 'components/NiceSelect/NiceSelect'
 import CardList from 'components/Card/CardList';
 import { sampleData } from '../../src/utils/apiUtil'
 import styles from '../../styles/Dashboard.module.scss';
@@ -122,7 +123,7 @@ export default function Dashboard() {
             </div>
 
             <div className="left">
-              <Select
+              {/* <Select
                 placeholder="Filter..."
                 fontWeight={500}
                 lineHeight={'40px'}
@@ -131,7 +132,11 @@ export default function Dashboard() {
               >
                 <option value="option1">New items</option>
                 <option value="option2">Great Items</option>
-              </Select>
+              </Select> */}
+              <NiceSelect placeholder="Filter..." id="filter">
+                <option key="OP1" value="option1">New items</option>
+                <option key="OP2" value="option2">Great Items</option>
+              </NiceSelect>
             </div>
           </div>
 
