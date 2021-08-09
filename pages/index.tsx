@@ -192,13 +192,13 @@ export default function Home() {
 				<div className="container container-avg">
 					<div className={`${styles.box}`}>
 						<div className="grid">
-							<div className="col-sm-12 col-md-5">
+							<div className="col-sm-8 col-md-5">
 								<h2 className="tg-hero-title">
 									The world of <span className="brand-color">Crypto</span>
 								</h2>
 							</div>
 
-							<div className="col-sm-12 col-md-7">
+							<div className="col-sm-8 col-md-7">
 								<p className="tg-paragraph">
 									The Crypto world can be accessed in many ways: using exchanges like Coinbase and wallets
 									like Metamask. We believe NFTs will become a new major way the Crypto world is accessed. We are building
