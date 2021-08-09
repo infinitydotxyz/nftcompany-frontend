@@ -92,6 +92,12 @@ svg {
 	background-color: #2429ad;
 }
 
+@media (max-width: 767px) {
+	.header-links-wrapper {
+		display: none;
+	}
+}
+
 .header-l {
 	padding: 1.5rem 0;
 }
@@ -102,6 +108,10 @@ svg {
 	justify-content: center;
 	list-style-type: none;
 	font-weight: 500;
+}
+
+.header-links-mobile {
+	flex-direction: column;
 }
 
 .header-links li a {
