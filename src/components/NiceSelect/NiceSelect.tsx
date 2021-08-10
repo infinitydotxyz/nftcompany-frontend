@@ -5,9 +5,9 @@ import { bindNiceSelect } from './NiceSelectUtil';
 type Props = {
   id: string;
   children?: ReactElement | ReactElement[] | undefined;
-  onChange: React.ChangeEventHandler<HTMLSelectElement> | undefined;
+  onChange?: React.ChangeEventHandler<HTMLSelectElement> | undefined;
   [key: string]: any;
-}
+};
 
 export default function NiceSelect({ id, children, onChange, ...otherProps }: Props) {
   React.useEffect(() => {

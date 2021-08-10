@@ -6,6 +6,7 @@ import Layout from 'containers/layout';
 import NiceSelect from 'components/NiceSelect/NiceSelect';
 import CardList from 'components/Card/CardList';
 import FilterPanel from 'components/FilterPanel/FilterPanel';
+import { FilterIcon } from 'components/Icons/Icons';
 import { sampleData } from '../../src/utils/apiUtil';
 import styles from '../../styles/Dashboard.module.scss';
 
@@ -43,7 +44,6 @@ export default function Dashboard() {
       </Head>
       <div className={styles.dashboard}>
         <div className="container container-fluid">
-
           <div className="section-bar">
             <div className="right">
               <div className="tg-title">{title}</div>
@@ -126,27 +126,15 @@ export default function Dashboard() {
             </div>
 
             <div className="left">
-              {/* <Select
-                placeholder="Filter..."
-                fontWeight={500}
-                lineHeight={'40px'}
-                borderRadius={40}
-                colorScheme="blackAlpha"
-              >
-                <option value="option1">New items</option>
-                <option value="option2">Great Items</option>
-              </Select> */}
-              <NiceSelect placeholder="Filter..." id="filter" onChange={() => {
-                  console.log('clicked');
-                  setFilterShowed(!filterShowed)
-                }}>
-                <option key="OP1" value="option1" >
-                  New items
-                </option>
-                <option key="OP2" value="option2">
-                  Great Items
-                </option>
-              </NiceSelect>
+              <div className="center" style={{ flex: 1, marginRight: 30 }}>
+                <ul className="links">
+                  <li>
+                    <a className="active" onClick={() => setFilterShowed(!filterShowed)}>
+                      Filter <FilterIcon />
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 

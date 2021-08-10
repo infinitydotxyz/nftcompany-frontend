@@ -148,11 +148,11 @@ svg {
 }
 
 .tg-title {
+  font-family: 'Poppins', sans-serif;
 	font-size: clamp(1.75rem, 1.5vw + 1.1rem, 2.25rem);
 	line-height: 1.25;
-	font-weight: 800;
 	margin: 0;
-	letter-spacing: -0.03em;
+	letter-spacing: -0.01em;
 }
 
 .tg-desc {

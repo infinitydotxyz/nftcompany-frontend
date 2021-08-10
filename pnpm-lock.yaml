@@ -15,6 +15,7 @@ specifiers:
   node-sass: ^5.0.0
   react: 17.0.2
   react-dom: 17.0.2
+  react-range: ^1.8.9
   recharts: ^2.0.10
   typescript: 4.3.5
 
@@ -28,6 +29,7 @@ dependencies:
   node-sass: 5.0.0
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
+  react-range: 1.8.9_react-dom@17.0.2+react@17.0.2
   recharts: 2.0.10_react-dom@17.0.2+react@17.0.2
 
 devDependencies:
@@ -4616,6 +4618,16 @@ packages:
 
   /react-lifecycles-compat/3.0.4:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
+    dev: false
+
+  /react-range/1.8.9_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-rDR9NEmIYBsMYJY+bCTnY17I1NT9jlI0m2wM2yiddkRN6GygTGjylTnNGlpAh8chohABwb58XCtyOIvRGcTosw==}
+    peerDependencies:
+      react: ^16.8.0-0 || ^17.0.0-0
+      react-dom: ^16.8.0-0 || ^17.0.0-0
+    dependencies:
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /react-refresh/0.8.3:
