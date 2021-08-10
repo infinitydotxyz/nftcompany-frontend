@@ -38,8 +38,8 @@ export default ({ isExpanded, setExpanded }: Props) => {
             }}
             transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
           >
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: 35 }}>
-              <span style={{ marginTop: 20 }}>
+            <div className={styles.container}>
+              <span className={styles.item}>
                 <NiceSelect placeholder="Most liked" id="filter">
                   <option key="OP1" value="option1">
                     Most liked
@@ -50,7 +50,7 @@ export default ({ isExpanded, setExpanded }: Props) => {
                 </NiceSelect>
               </span>
 
-              <span style={{ marginTop: 20, marginLeft: 20 }}>
+              <span className={styles.item}>
                 <NiceSelect placeholder="Highest price" id="filter2">
                   <option key="OP1" value="option1">
                     Highest price
@@ -61,7 +61,7 @@ export default ({ isExpanded, setExpanded }: Props) => {
                 </NiceSelect>
               </span>
 
-              <PriceRange values={values} setValues={setValues} style={{ width: 200, marginLeft: 20, marginTop: 10 }} />
+              <PriceRange values={values} setValues={setValues} className={styles.item} style={{ width: 200 }} />
             </div>
           </motion.section>
         )}

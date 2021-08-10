@@ -28,7 +28,10 @@ export default function Card({ data }: { data: CardData }) {
               className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
               href="#popup-bid"
               data-effect="mfp-zoom-in"
-              onClick={() => setModalShowed(true)}
+              onClick={(ev) => {
+                ev.preventDefault();
+                setModalShowed(true);
+              }}
             >
               <span>Place a bid</span>
             </a>

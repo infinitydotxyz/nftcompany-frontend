@@ -8,12 +8,13 @@ const MAX = 10;
 type Props = {
   values: number[];
   setValues: any;
+  className?: string;
   style?: React.CSSProperties;
 };
 
-export default function ({ values, setValues, style }: Props) {
+export default function ({ values, setValues, className, style }: Props) {
   return (
-    <span style={style}>
+    <span className={className} style={style}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>0.01 ETH</div>
         <div>10 ETH</div>

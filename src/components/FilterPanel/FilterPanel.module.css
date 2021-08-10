@@ -5,3 +5,14 @@
 .main header {
   /* color: orange; */
 }
+
+.container {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 35px;  
+}
+
+.item {
+  margin-top: 10px;
+  margin-left: 20px;
+}
