@@ -7,6 +7,8 @@ export type CardData = {
   id: string;
   title: string;
   img: string;
+  price?: number;
+  inStock?: number;
 };
 
 export default function Card({ data }: { data: CardData }) {
@@ -41,12 +43,12 @@ export default function Card({ data }: { data: CardData }) {
 
       <div className={styles.cardBody}>
         <div className={styles.cardLine}>
-          <div className={styles.cardTitle}>Amazing digital art</div>
-          <div className={styles.cardPrice}>2.45 ETH</div>
+          <div className={styles.cardTitle}>{data.title}</div>
+          <div className={styles.cardPrice}>{data.price} ETH</div>
         </div>
         <div className={styles.cardLine}>
           <div>&nbsp;</div>
-          <div className="card__counter">3 in stock</div>
+          <div className="card__counter">{data.inStock} in stock</div>
         </div>
       </div>
 
