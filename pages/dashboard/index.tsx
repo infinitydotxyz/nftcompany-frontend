@@ -2,14 +2,16 @@ import React from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Select } from '@chakra-ui/react';
-import NiceSelect from 'components/NiceSelect/NiceSelect'
+// import { Select } from '@chakra-ui/react';
+import NiceSelect from 'components/NiceSelect/NiceSelect';
 import CardList from 'components/Card/CardList';
-import { sampleData } from '../../src/utils/apiUtil'
+import FilterPanel from 'components/FilterPanel/FilterPanel';
+import { sampleData } from '../../src/utils/apiUtil';
 import styles from '../../styles/Dashboard.module.scss';
 
 export default function Dashboard() {
   const [tabIndex, setTabIndex] = React.useState(1);
+  const [filterShowed, setFilterShowed] = React.useState(false);
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -41,6 +43,7 @@ export default function Dashboard() {
       </Head>
       <div className={styles.dashboard}>
         <div className="container container-fluid">
+
           <div className="section-bar">
             <div className="right">
               <div className="tg-title">{title}</div>
@@ -133,16 +136,23 @@ export default function Dashboard() {
                 <option value="option1">New items</option>
                 <option value="option2">Great Items</option>
               </Select> */}
-              <NiceSelect placeholder="Filter..." id="filter">
-                <option key="OP1" value="option1">New items</option>
-                <option key="OP2" value="option2">Great Items</option>
+              <NiceSelect placeholder="Filter..." id="filter" onChange={() => {
+                  console.log('clicked');
+                  setFilterShowed(!filterShowed)
+                }}>
+                <option key="OP1" value="option1" >
+                  New items
+                </option>
+                <option key="OP2" value="option2">
+                  Great Items
+                </option>
               </NiceSelect>
             </div>
           </div>
 
-          <CardList
-            data={sampleData}
-          />
+          <FilterPanel isExpanded={filterShowed} setExpanded={() => {}} />
+
+          <CardList data={sampleData} />
 
           {/* <div className="section-bar">
             <div className="right">
@@ -157,7 +167,6 @@ export default function Dashboard() {
             <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" />
           </div> */}
         </div>
-
       </div>
     </>
   );
