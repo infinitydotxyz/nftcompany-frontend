@@ -15,7 +15,7 @@ type Props = {
   setExpanded?: any;
   onChange?: (filter: Filter) => void;
 };
-export default ({ isExpanded, setExpanded, onChange }: Props) => {
+function FilterPanel({ isExpanded, setExpanded, onChange }: Props) {
   const [filter, setFilter] = useState<Filter | null>(null);
   const [values, setValues] = useState([5]);
 
@@ -99,4 +99,6 @@ export default ({ isExpanded, setExpanded, onChange }: Props) => {
       </AnimatePresence>
     </section>
   );
-};
+}
+
+export default FilterPanel;
