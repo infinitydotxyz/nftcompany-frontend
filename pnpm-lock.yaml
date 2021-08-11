@@ -4,9 +4,11 @@ specifiers:
   '@chakra-ui/react': ^1.6.5
   '@emotion/react': ^11
   '@emotion/styled': ^11
+  '@types/axios': ^0.14.0
   '@types/gtag.js': ^0.0.7
   '@types/react': 17.0.15
   '@types/react-dom': ^17.0.9
+  axios: ^0.21.1
   eslint: 7.31.0
   eslint-config-next: 11.0.1
   ethers: ^5.4.4
@@ -15,6 +17,7 @@ specifiers:
   node-sass: ^5.0.0
   react: 17.0.2
   react-dom: 17.0.2
+  react-range: ^1.8.9
   recharts: ^2.0.10
   typescript: 4.3.5
 
@@ -22,15 +25,18 @@ dependencies:
   '@chakra-ui/react': 1.6.5_95a30b17d23bad9bb6adfab2ef70ffe7
   '@emotion/react': 11.4.0_5801e6465414ef85acbf5710ce4c0dcf
   '@emotion/styled': 11.3.0_eba624a87a3af7c0cbc57827caf9724e
+  axios: 0.21.1
   ethers: 5.4.4
   framer-motion: 4.1.17_react-dom@17.0.2+react@17.0.2
   next: 11.0.1_356f9603e19128c62410edc7920d2e00
   node-sass: 5.0.0
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
+  react-range: 1.8.9_react-dom@17.0.2+react@17.0.2
   recharts: 2.0.10_react-dom@17.0.2+react@17.0.2
 
 devDependencies:
+  '@types/axios': 0.14.0
   '@types/gtag.js': 0.0.7
   '@types/react': 17.0.15
   '@types/react-dom': 17.0.9
@@ -1472,6 +1478,15 @@ packages:
     resolution: {integrity: sha512-Myxw//kzromB9yWgS8qYGuGVf91oBUUJpNvy5eM50sqvmKLbKjwLxohJnkWGTeeI9v9IBMtPLxz5Gc60FIfvCA==}
     dev: true
 
+  /@types/axios/0.14.0:
+    resolution: {integrity: sha1-7CMA++fX3d1+udOr+HmZlkyvzkY=}
+    deprecated: This is a stub types definition for axios (https://github.com/mzabriskie/axios). axios provides its own type definitions, so you don't need @types/axios installed!
+    dependencies:
+      axios: 0.21.1
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
   /@types/d3-path/2.0.1:
     resolution: {integrity: sha512-6K8LaFlztlhZO7mwsZg7ClRsdLg3FJRzIIi6SZXDWmmSJc2x8dd2VkESbLXdk3p8cuvz71f36S0y8Zv2AxqvQw==}
     dev: false
@@ -1849,6 +1864,13 @@ packages:
     resolution: {integrity: sha512-5LMaDRWm8ZFPAEdzTYmgjjEdj1YnQcpfrVajO/sn/LhbpGp0Y0H64c2hLZI1gRMxfA+w1S71Uc/nHaOXgcCvGg==}
     engines: {node: '>=4'}
     dev: true
+
+  /axios/0.21.1:
+    resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
+    dependencies:
+      follow-redirects: 1.14.1
+    transitivePeerDependencies:
+      - debug
 
   /axobject-query/2.2.0:
     resolution: {integrity: sha512-Td525n+iPOOyUQIeBfcASuG6uJsDOITl7Mds5gFyerkWiX7qhUTdYUBlSgNMyVqtSJqwpt1kXGLdUt6SykLMRA==}
@@ -3026,6 +3048,15 @@ packages:
     dependencies:
       tslib: 1.14.1
     dev: false
+
+  /follow-redirects/1.14.1:
+    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
 
   /foreach/2.0.5:
     resolution: {integrity: sha1-C+4AUBiusmDQo6865ljdATbsG5k=}
@@ -4616,6 +4647,16 @@ packages:
 
   /react-lifecycles-compat/3.0.4:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
+    dev: false
+
+  /react-range/1.8.9_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-rDR9NEmIYBsMYJY+bCTnY17I1NT9jlI0m2wM2yiddkRN6GygTGjylTnNGlpAh8chohABwb58XCtyOIvRGcTosw==}
+    peerDependencies:
+      react: ^16.8.0-0 || ^17.0.0-0
+      react-dom: ^16.8.0-0 || ^17.0.0-0
+    dependencies:
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /react-refresh/0.8.3:

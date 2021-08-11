@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Select } from '@chakra-ui/react';
-import NiceSelect from 'components/NiceSelect/NiceSelect'
+import { Spinner } from '@chakra-ui/react';
+// import { Select } from '@chakra-ui/react';
+import NiceSelect from 'components/NiceSelect/NiceSelect';
 import CardList from 'components/Card/CardList';
-import { sampleData } from '../../src/utils/apiUtil'
+import FilterPanel from 'components/FilterPanel/FilterPanel';
+import { FilterIcon } from 'components/Icons/Icons';
+import { sampleData, dummyFetch } from '../../src/utils/apiUtil';
 import styles from '../../styles/Dashboard.module.scss';
 
 export default function Dashboard() {
-  const [tabIndex, setTabIndex] = React.useState(1);
+  const [tabIndex, setTabIndex] = useState(1);
+  const [filterShowed, setFilterShowed] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -123,26 +128,28 @@ export default function Dashboard() {
             </div>
 
             <div className="left">
-              {/* <Select
-                placeholder="Filter..."
-                fontWeight={500}
-                lineHeight={'40px'}
-                borderRadius={40}
-                colorScheme="blackAlpha"
-              >
-                <option value="option1">New items</option>
-                <option value="option2">Great Items</option>
-              </Select> */}
-              <NiceSelect placeholder="Filter..." id="filter">
-                <option key="OP1" value="option1">New items</option>
-                <option key="OP2" value="option2">Great Items</option>
-              </NiceSelect>
+              <div className="center" style={{ flex: 1, marginRight: 30 }}>
+                <ul className="links">
+                  <li>
+                    <a className="active" onClick={() => setFilterShowed(!filterShowed)}>
+                      Filter <FilterIcon />
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 
-          <CardList
-            data={sampleData}
+          <FilterPanel
+            isExpanded={filterShowed}
+            onChange={async (filter) => {
+              await setIsFetching(true);
+              await dummyFetch();
+              await setIsFetching(false);
+            }}
           />
+
+          {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={sampleData} />}
 
           {/* <div className="section-bar">
             <div className="right">
@@ -157,7 +164,6 @@ export default function Dashboard() {
             <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" />
           </div> */}
         </div>
-
       </div>
     </>
   );

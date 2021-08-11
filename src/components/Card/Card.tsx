@@ -7,9 +7,11 @@ export type CardData = {
   id: string;
   title: string;
   img: string;
+  price?: number;
+  inStock?: number;
 };
 
-export default function Card({ data }: { data: CardData }) {
+function Card({ data }: { data: CardData }) {
   const [modalShowed, setModalShowed] = useState(false);
 
   return (
@@ -28,7 +30,10 @@ export default function Card({ data }: { data: CardData }) {
               className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
               href="#popup-bid"
               data-effect="mfp-zoom-in"
-              onClick={() => setModalShowed(true)}
+              onClick={(ev) => {
+                ev.preventDefault();
+                setModalShowed(true);
+              }}
             >
               <span>Place a bid</span>
             </a>
@@ -38,12 +43,12 @@ export default function Card({ data }: { data: CardData }) {
 
       <div className={styles.cardBody}>
         <div className={styles.cardLine}>
-          <div className={styles.cardTitle}>Amazing digital art</div>
-          <div className={styles.cardPrice}>2.45 ETH</div>
+          <div className={styles.cardTitle}>{data.title}</div>
+          <div className={styles.cardPrice}>{data.price} ETH</div>
         </div>
         <div className={styles.cardLine}>
           <div>&nbsp;</div>
-          <div className="card__counter">3 in stock</div>
+          <div className="card__counter">{data.inStock} in stock</div>
         </div>
       </div>
 
@@ -60,3 +65,5 @@ export default function Card({ data }: { data: CardData }) {
     </div>
   );
 }
+
+export default Card;

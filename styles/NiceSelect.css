@@ -11,7 +11,7 @@
   float: left;
   font-family: inherit;
   font-size: 14px;
-  font-weight: normal;
+  font-weight: 500;
   height: 38px;
   line-height: 36px;
   outline: none;
@@ -27,7 +27,6 @@
   user-select: none;
   white-space: nowrap;
   width: auto;
-  font-weight: 500;
 }
 .nice-select:hover {
   /* border-color: #dbdbdb; */
@@ -45,9 +44,9 @@
   border-right: 2px solid #999;
   content: '';
   display: block;
-  height: 8px;
-  width: 8px;
-  margin-top: -6px;
+  height: 7px;
+  width: 7px;
+  margin-top: -5px;
   pointer-events: none;
   position: absolute;
   right: 12px;

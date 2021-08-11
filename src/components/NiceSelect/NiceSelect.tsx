@@ -5,17 +5,24 @@ import { bindNiceSelect } from './NiceSelectUtil';
 type Props = {
   id: string;
   children?: ReactElement | ReactElement[] | undefined;
+  value: any;
+  onChange?: React.ChangeEventHandler<HTMLSelectElement> | undefined;
   [key: string]: any;
-}
+};
 
-export default function NiceSelect({ id, children, ...otherProps }: Props) {
+export default function NiceSelect({ id, children, value, onChange, ...otherProps }: Props) {
   React.useEffect(() => {
     const el = document.getElementById(id);
+    // on value changed, remove the existing .nice-select (if any) to rebuild it:
+    const el2: any = el?.parentElement?.querySelector('.nice-select');
+    if (el2) {
+      el2.remove();
+    }
     bindNiceSelect(el, {});
-  }, []);
+  }, [value]);
 
   return (
-    <select id={id} {...otherProps}>
+    <select id={id} onChange={onChange} {...otherProps}>
       {children}
     </select>
   );
