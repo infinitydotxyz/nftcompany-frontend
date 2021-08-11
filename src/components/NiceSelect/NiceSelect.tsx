@@ -19,7 +19,7 @@ export default function NiceSelect({ id, children, value, onChange, ...otherProp
       el2.remove();
     }
     bindNiceSelect(el, {});
-  }, [value]);
+  }, [id, value]);
 
   return (
     <select id={id} onChange={onChange} {...otherProps}>

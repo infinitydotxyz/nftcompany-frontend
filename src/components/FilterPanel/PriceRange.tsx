@@ -12,7 +12,7 @@ type Props = {
   style?: React.CSSProperties;
 };
 
-export default function ({ values, setValues, className, style }: Props) {
+function PriceRange({ values, setValues, className, style }: Props) {
   return (
     <span className={className} style={style}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -92,3 +92,5 @@ export default function ({ values, setValues, className, style }: Props) {
     </span>
   );
 }
+
+export default PriceRange;

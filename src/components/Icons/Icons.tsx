@@ -2,7 +2,7 @@ export function FilterIcon() {
   return (
     <svg
       fill="#fff"
-      enable-background="new 0 0 512 512"
+      enableBackground="new 0 0 512 512"
       height="16"
       width="16"
       viewBox="0 0 512 512"
