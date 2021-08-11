@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
+import { Spinner } from '@chakra-ui/react';
 // import { Select } from '@chakra-ui/react';
 import NiceSelect from 'components/NiceSelect/NiceSelect';
 import CardList from 'components/Card/CardList';
 import FilterPanel from 'components/FilterPanel/FilterPanel';
 import { FilterIcon } from 'components/Icons/Icons';
-import { sampleData } from '../../src/utils/apiUtil';
+import { sampleData, dummyFetch } from '../../src/utils/apiUtil';
 import styles from '../../styles/Dashboard.module.scss';
 
 export default function Dashboard() {
-  const [tabIndex, setTabIndex] = React.useState(1);
-  const [filterShowed, setFilterShowed] = React.useState(false);
+  const [tabIndex, setTabIndex] = useState(1);
+  const [filterShowed, setFilterShowed] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -138,9 +140,16 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <FilterPanel isExpanded={filterShowed} setExpanded={() => {}} />
+          <FilterPanel
+            isExpanded={filterShowed}
+            onChange={async (filter) => {
+              await setIsFetching(true);
+              await dummyFetch();
+              await setIsFetching(false);
+            }}
+          />
 
-          <CardList data={sampleData} />
+          {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={sampleData} />}
 
           {/* <div className="section-bar">
             <div className="right">

@@ -1,3 +1,5 @@
+// import axios from 'axios'
+
 export const sampleData = [
   {
     id: '1',
@@ -28,3 +30,12 @@ export const sampleData = [
     img: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-4.jpg'
   }
 ];
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export async function dummyFetch() {
+  await sleep(1000);
+  return sampleData;
+}

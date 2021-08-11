@@ -11,7 +11,7 @@ export type CardData = {
   inStock?: number;
 };
 
-export default function Card({ data }: { data: CardData }) {
+function Card({ data }: { data: CardData }) {
   const [modalShowed, setModalShowed] = useState(false);
 
   return (
@@ -65,3 +65,5 @@ export default function Card({ data }: { data: CardData }) {
     </div>
   );
 }
+
+export default Card;

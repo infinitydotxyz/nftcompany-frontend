@@ -5,16 +5,32 @@ import NiceSelect from 'components/NiceSelect/NiceSelect';
 import PriceRange from './PriceRange';
 import styles from './FilterPanel.module.css';
 
+type Filter = {
+  sortByLikes?: string;
+  sortByPrice?: string;
+};
+
 type Props = {
   isExpanded: boolean;
-  setExpanded: any;
+  setExpanded?: any;
+  onChange?: (filter: Filter) => void;
 };
-export default ({ isExpanded, setExpanded }: Props) => {
+export default ({ isExpanded, setExpanded, onChange }: Props) => {
+  const [filter, setFilter] = useState<Filter | null>(null);
   const [values, setValues] = useState([5]);
 
   React.useEffect(() => {
     // console.log('isExpanded', isExpanded);
   }, [isExpanded]);
+
+  const handleChanges = async (changes: Filter) => {
+    const updatedFilter = { ...changes };
+    console.log('updatedFilter', updatedFilter);
+    setFilter(updatedFilter);
+    if (onChange) {
+      onChange(updatedFilter);
+    }
+  };
 
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
   // them in and out while also only rendering the contents of open accordions
@@ -40,22 +56,37 @@ export default ({ isExpanded, setExpanded }: Props) => {
           >
             <div className={styles.container}>
               <span className={styles.item}>
-                <NiceSelect placeholder="Most liked" id="filter">
-                  <option key="OP1" value="option1">
+                <NiceSelect
+                  placeholder="Sort by likes"
+                  id="filter"
+                  value={filter?.sortByLikes}
+                  onChange={(ev) => handleChanges({ sortByLikes: ev.target.value })}
+                >
+                  <option
+                    key={'DESC'}
+                    value={'DESC'}
+                    data-value={'DESC'}
+                    data-selected={filter?.sortByLikes === 'DESC'}
+                  >
                     Most liked
                   </option>
-                  <option key="OP2" value="option2">
+                  <option key={'ASC'} value={'ASC'} data-value={'ASC'} data-selected={filter?.sortByLikes === 'ASC'}>
                     Least liked
                   </option>
                 </NiceSelect>
               </span>
 
               <span className={styles.item}>
-                <NiceSelect placeholder="Highest price" id="filter2">
-                  <option key="OP1" value="option1">
+                <NiceSelect
+                  placeholder="Sort by price"
+                  id="filter2"
+                  value={filter?.sortByPrice}
+                  onChange={(ev) => handleChanges({ sortByPrice: ev.target.value })}
+                >
+                  <option key="DESC" value="DESC" data-value={'DESC'} data-selected={filter?.sortByPrice === 'DESC'}>
                     Highest price
                   </option>
-                  <option key="OP2" value="option2">
+                  <option key="ASC" value="ASC" data-value={'ASC'} data-selected={filter?.sortByPrice === 'ASC'}>
                     Lowest price
                   </option>
                 </NiceSelect>
