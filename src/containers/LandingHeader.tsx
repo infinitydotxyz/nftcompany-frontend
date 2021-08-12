@@ -17,14 +17,14 @@ const LandingHeader = () => {
     <header className="header header-l">
       <div className="container">
         <div className="grid align-items-center">
-          <div className="col-sm-10 col-md-3">
+          <div className="col-sm-8 col-md-3">
             <Link href="/">
               <a>
                 <Image alt="NFT Company" src="/img/nftcompanyTransparentBgSvg.svg" width={270} height={90} />
               </a>
             </Link>
           </div>
-          <div className="col-sm-2 d-md-none">
+          <div className="d-md-none">
             <MenuToggler isActive={mobileMenuOpen} onClick={toggleMenu} />
           </div>
           <div className="col-sm-12 col-md-6 header-links-wrapper">
