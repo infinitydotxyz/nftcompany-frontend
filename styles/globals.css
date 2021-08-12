@@ -1,4 +1,5 @@
 @import './NiceSelect.css';
+@import './MenuToggler.css';
 
 html,
 body {
@@ -119,7 +120,7 @@ svg {
 }
 
 .header-links-mobile-wrapper {
-	width: 120%;
+	width: 100%;
 }
 
 .header-links-mobile {
