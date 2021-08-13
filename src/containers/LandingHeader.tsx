@@ -1,59 +1,66 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import React, { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import MenuToggler from 'components/MenuToggler/MenuToggler';
 
-import { scrollTo } from "utils/scroll";
+import { scrollTo } from 'utils/scroll';
 
 const LandingHeader = () => {
-	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-	const toggleMenu = () => {
-		setMobileMenuOpen(state => ! state);
-	};
+  const toggleMenu = () => {
+    setMobileMenuOpen((state) => !state);
+  };
 
-	return (
-		// <Box as="header" background="#E4E9EE" paddingY={8}>
-		<header className="header header-l">
-			<div className="container">
-				<div className="grid align-items-center">
-					<div className="col-sm-10 col-md-3">
-						<Link href="/">
-							<a>
-								<Image alt="NFT Company" src="/img/nftcompanyTransparentBgSvg.svg" width={270} height={90} />
-							</a>
-						</Link>
-					</div>
-					<div className="col-sm-2 d-md-none">
-						<svg viewBox="0 0 100 80" width="40" height="40" onClick={toggleMenu}>
-							<rect fill="#858585" width="80" height="15"></rect>
-							<rect fill="#858585" y="25" width="80" height="15"></rect>
-							<rect fill="#858585" y="50" width="80" height="15"></rect>
-						</svg>
-					</div>
-					<div className="col-sm-12 col-md-6 header-links-wrapper">
-						<ul className="header-links">
-							<li>
-							<a href="https://docs.nftcompany.com" target="_blank">Docs</a>
-							</li>
-							<li>
-								<a href="https://github.com/mavriklabs" target="_blank">Github</a>
-							</li>
-							<li>
-								<a href="https://medium.com/@mavriklabs" target="_blank">Medium</a>
-							</li>
-							<li>
-								<a href="https://discord.gg/SefzVZU72S" target="_blank">Discord</a>
-							</li>
-							<li>
-								<a href="https://twitter.com/mavriklabs" target="_blank">Twitter</a>
-							</li>
-							<li>
-								<a onClick={() => scrollTo({ id: "faq" })}>FAQ</a>
-							</li>
-						</ul>
-					</div>
+  return (
+    // <Box as="header" background="#E4E9EE" paddingY={8}>
+    <header className="header header-l">
+      <div className="container">
+        <div className="grid align-items-center">
+          <div className="col-sm-8 col-md-3">
+            <Link href="/">
+              <a>
+                <Image alt="NFT Company" src="/img/nftcompanyTransparentBgSvg.svg" width={270} height={90} />
+              </a>
+            </Link>
+          </div>
+          <div className="d-md-none">
+            <MenuToggler isActive={mobileMenuOpen} onClick={toggleMenu} />
+          </div>
+          <div className="col-sm-12 col-md-9 header-links-wrapper">
+            <ul className="header-links">
+              <li>
+                <a href="https://docs.nftcompany.com" target="_blank">
+                  Docs
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/mavriklabs" target="_blank">
+                  Github
+                </a>
+              </li>
+              <li>
+                <a href="https://medium.com/@mavriklabs" target="_blank">
+                  Medium
+                </a>
+              </li>
+              <li>
+                <a href="https://discord.gg/SefzVZU72S" target="_blank">
+                  Discord
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/mavriklabs" target="_blank">
+                  Twitter
+                </a>
+              </li>
+              <li>
+                <a onClick={() => scrollTo({ id: 'faq' })}>FAQ</a>
+              </li>
+            </ul>
+          </div>
 
-					{/* <div className="col-sm-12 col-md-3 justify-self-end">
+          {/* <div className="col-sm-12 col-md-3 justify-self-end">
 						<Link href="/connect">
 							<a className="connect-wallet">
 								<svg width={20} height={20} fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -68,34 +75,44 @@ const LandingHeader = () => {
 							</a>
 						</Link>
 					</div> */}
-				</div>
-			</div>
-			{ mobileMenuOpen && (
-				<div className="header-links-mobile-wrapper">
-					<ul className="header-links header-links-mobile">
-						<li>
-							<a href="https://docs.nftcompany.com" target="_blank">Docs</a>
-						</li>
-						<li>
-							<a href="https://github.com/mavriklabs" target="_blank">Github</a>
-						</li>
-						<li>
-							<a href="https://medium.com/@mavriklabs" target="_blank">Medium</a>
-						</li>
-						<li>
-							<a href="https://discord.gg/PQgNkhdV" target="_blank">Discord</a>
-						</li>
-						<li>
-							<a href="https://twitter.com/mavriklabs" target="_blank">Twitter</a>
-						</li>
-						<li>
-							<a onClick={() => scrollTo({ id: "faq" })}>FAQ</a>
-						</li>
-					</ul>
-				</div>
-			)}
-		</header>
-	);
+        </div>
+      </div>
+      {mobileMenuOpen && (
+        <div className="header-links-mobile-wrapper">
+          <ul className="header-links header-links-mobile">
+            <li>
+              <a href="https://docs.nftcompany.com" target="_blank">
+                Docs
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/mavriklabs" target="_blank">
+                Github
+              </a>
+            </li>
+            <li>
+              <a href="https://medium.com/@mavriklabs" target="_blank">
+                Medium
+              </a>
+            </li>
+            <li>
+              <a href="https://discord.gg/PQgNkhdV" target="_blank">
+                Discord
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/mavriklabs" target="_blank">
+                Twitter
+              </a>
+            </li>
+            <li>
+              <a onClick={() => scrollTo({ id: 'faq' })}>FAQ</a>
+            </li>
+          </ul>
+        </div>
+      )}
+    </header>
+  );
 };
 
 export default LandingHeader;
