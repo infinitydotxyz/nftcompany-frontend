@@ -263,7 +263,7 @@ export default function Home() {
               {
                 question: 'Is this a DAO?',
                 answer:
-                  'We plan to build this as a DAO and are currently looking for memebers that will become part of the genesis squad. If you are developer, desinger, marketer, memer or possess any valuable skill, reach out to us.'
+                  'We plan to build this as a DAO and are currently looking for members that will become part of the genesis squad. If you are developer, designer, marketer, memer or possess any valuable skill, reach out to us.'
               }
             ]}
           />
