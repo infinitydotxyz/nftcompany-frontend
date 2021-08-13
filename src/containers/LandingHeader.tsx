@@ -96,7 +96,7 @@ const LandingHeader = () => {
               </a>
             </li>
             <li>
-              <a href="https://discord.gg/PQgNkhdV" target="_blank">
+              <a href="https://discord.gg/SefzVZU72S" target="_blank">
                 Discord
               </a>
             </li>
