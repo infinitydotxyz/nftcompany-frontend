@@ -55,7 +55,7 @@ const LandingFooter = () => {
 						<a href="https://medium.com/@mavriklabs">
 							<Image alt="NFT Company" src="/img/medium.svg" width={30} height={30} />
 						</a>
-						<a href="https://discord.gg/PQgNkhdV">
+						<a href="https://discord.gg/SefzVZU72S">
 							<Image alt="NFT Company" src="/img/discord.svg" width={30} height={30} />
 						</a>
 						<a href="https://twitter.com/mavriklabs">

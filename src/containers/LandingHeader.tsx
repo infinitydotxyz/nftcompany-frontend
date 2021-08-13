@@ -42,7 +42,7 @@ const LandingHeader = () => {
 								<a href="https://medium.com/@mavriklabs" target="_blank">Medium</a>
 							</li>
 							<li>
-								<a href="https://discord.gg/PQgNkhdV" target="_blank">Discord</a>
+								<a href="https://discord.gg/SefzVZU72S" target="_blank">Discord</a>
 							</li>
 							<li>
 								<a href="https://twitter.com/mavriklabs" target="_blank">Twitter</a>
