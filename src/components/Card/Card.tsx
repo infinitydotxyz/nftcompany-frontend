@@ -16,7 +16,7 @@ function Card({ data }: { data: CardData }) {
 
   return (
     <div className={styles.card}>
-      <Link href={`/preview?id=${data.id}`}>
+      <Link href={`/preview?id=${data.id}`} passHref>
         <div className={styles.cardPreview}>
           {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
           <img src={data.img} alt="Card preview" />
