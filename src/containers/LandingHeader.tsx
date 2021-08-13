@@ -27,7 +27,7 @@ const LandingHeader = () => {
           <div className="d-md-none">
             <MenuToggler isActive={mobileMenuOpen} onClick={toggleMenu} />
           </div>
-          <div className="col-sm-12 col-md-6 header-links-wrapper">
+          <div className="col-sm-12 col-md-9 header-links-wrapper">
             <ul className="header-links">
               <li>
                 <a href="https://docs.nftcompany.com" target="_blank">
