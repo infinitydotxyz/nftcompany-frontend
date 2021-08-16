@@ -30,27 +30,27 @@ const LandingHeader = () => {
           <div className="col-sm-12 col-md-9 header-links-wrapper">
             <ul className="header-links">
               <li>
-                <a href="https://docs.nftcompany.com" target="_blank">
+                <a href="https://docs.nftcompany.com" target="_blank" rel="noopener">
                   Docs
                 </a>
               </li>
               <li>
-                <a href="https://github.com/mavriklabs" target="_blank">
+                <a href="https://github.com/mavriklabs" target="_blank" rel="noopener">
                   Github
                 </a>
               </li>
               <li>
-                <a href="https://medium.com/@mavriklabs" target="_blank">
+                <a href="https://medium.com/@mavriklabs" target="_blank" rel="noopener">
                   Medium
                 </a>
               </li>
               <li>
-                <a href="https://discord.gg/SefzVZU72S" target="_blank">
+                <a href="https://discord.gg/SefzVZU72S" target="_blank" rel="noopener">
                   Discord
                 </a>
               </li>
               <li>
-                <a href="https://twitter.com/mavriklabs" target="_blank">
+                <a href="https://twitter.com/mavriklabs" target="_blank" rel="noopener">
                   Twitter
                 </a>
               </li>
@@ -81,27 +81,27 @@ const LandingHeader = () => {
         <div className="header-links-mobile-wrapper">
           <ul className="header-links header-links-mobile">
             <li>
-              <a href="https://docs.nftcompany.com" target="_blank">
+              <a href="https://docs.nftcompany.com" target="_blank" rel="noopener">
                 Docs
               </a>
             </li>
             <li>
-              <a href="https://github.com/mavriklabs" target="_blank">
+              <a href="https://github.com/mavriklabs" target="_blank" rel="noopener">
                 Github
               </a>
             </li>
             <li>
-              <a href="https://medium.com/@mavriklabs" target="_blank">
+              <a href="https://medium.com/@mavriklabs" target="_blank" rel="noopener">
                 Medium
               </a>
             </li>
             <li>
-              <a href="https://discord.gg/SefzVZU72S" target="_blank">
+              <a href="https://discord.gg/SefzVZU72S" target="_blank" rel="noopener">
                 Discord
               </a>
             </li>
             <li>
-              <a href="https://twitter.com/mavriklabs" target="_blank">
+              <a href="https://twitter.com/mavriklabs" target="_blank" rel="noopener">
                 Twitter
               </a>
             </li>

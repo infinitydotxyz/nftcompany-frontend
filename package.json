@@ -16,7 +16,7 @@
     "axios": "^0.21.1",
     "ethers": "^5.4.4",
     "framer-motion": "^4",
-    "next": "11.0.1",
+    "next": "v11.1.1-canary.8",
     "node-sass": "^5.0.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
