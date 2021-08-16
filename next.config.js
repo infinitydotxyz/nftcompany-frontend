@@ -7,11 +7,11 @@ module.exports = {
   async headers() {
     return [
       {
-        source: '/(.*).jpg',
+        source: '/:all*(svg|jpg|jpeg|png|webp)',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=180, s-maxage=180, stale-while-revalidate=180'
+            value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=180'
           }
         ]
       },
@@ -20,7 +20,7 @@ module.exports = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=180, s-maxage=180, stale-while-revalidate=180'
+            value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=180'
           }
         ]
       }
