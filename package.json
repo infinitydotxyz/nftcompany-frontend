@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf ./build && NODE_ENV=production next build",
+    "build": "npm install && rm -rf ./build && NODE_ENV=production next build",
     "start": "next start -p 8080",
     "deploy": "gcloud app deploy -q --project nftc-web",
     "lint": "next lint"
