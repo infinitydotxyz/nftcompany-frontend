@@ -1,0 +1,47 @@
+.main {
+  display: flex;
+  margin: 40px;
+
+  img {
+    width: 100%;
+    border-radius: 16px;
+  }
+
+  .info {
+    margin-left: 60px;
+
+    h3 {
+      font-size: 38px;
+      font-weight: bold;
+      margin-bottom: 0px;
+    }
+
+    .price {
+      border: 2px solid rgb(69, 178, 107);
+      border-radius: 4px;
+      color: rgb(69, 178, 107);
+      padding: 5px;
+      font-weight: 500;
+    }
+
+    .counter {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+      color: #777e90;
+      margin-left: 10px;
+    }
+
+    .description {
+      width: 400px;
+      margin: 40px 0;
+      color: #777e90;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    flex-wrap: wrap;
+  }
+}
