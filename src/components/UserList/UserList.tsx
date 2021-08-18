@@ -17,7 +17,7 @@ const UserList = ({ data }: Props) => {
     <ul className={styles.list}>
       {data.map((user) => {
         return (
-          <li>
+          <li key={user.id}>
             <div className={styles.avatar}>
               <img src={user.avatar} />
             </div>
