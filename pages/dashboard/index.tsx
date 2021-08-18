@@ -4,7 +4,6 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/react';
 // import { Select } from '@chakra-ui/react';
-import NiceSelect from 'components/NiceSelect/NiceSelect';
 import CardList from 'components/Card/CardList';
 import FilterPanel from 'components/FilterPanel/FilterPanel';
 import { FilterIcon } from 'components/Icons/Icons';

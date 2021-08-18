@@ -11,11 +11,14 @@ export type CardData = {
   inStock?: number;
 };
 
-function Card({ data }: { data: CardData }) {
+function Card({ data, ...rest }: { data: CardData; [key: string]: any }) {
   const [modalShowed, setModalShowed] = useState(false);
 
+  if (!data) {
+    return null;
+  }
   return (
-    <div className={styles.card}>
+    <div className={styles.card} {...rest}>
       <Link href={`/preview?id=${data.id}`} passHref>
         <div className={styles.cardPreview}>
           {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
