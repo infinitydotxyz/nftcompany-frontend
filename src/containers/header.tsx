@@ -19,9 +19,9 @@ const Header = () => {
         <div className="container container-fluid">
           <div className="grid align-items-center">
             <div className="col-sm-12 col-md-6 d-flex">
-              <Link href="/dashboard">
+              <Link href="/">
                 <a>
-                  <Image alt="Mavrik logo" src="/img/nftcompanyWhiteBgSvg.svg" width={120} height={28} />
+                  <Image alt="logo" src="/img/nftcompanyWhiteBgSvg.svg" width={160} height={48} />
                 </a>
               </Link>
               <div className="hd-db">
