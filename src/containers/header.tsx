@@ -19,9 +19,11 @@ const Header = () => {
         <div className="container container-fluid">
           <div className="grid align-items-center">
             <div className="col-sm-12 col-md-6 d-flex">
+              <div style={{ width: 480, height: 0 }}></div>
               <Link href="/">
-                <a>
-                  <Image alt="logo" src="/img/nftcompanyWhiteBgSvg.svg" width={160} height={48} />
+                <a style={{ position: 'absolute', top: 13, left: 40 }}>
+                  {/* TODO: use logo image without padding and align center for this */}
+                  <Image alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={60} />
                 </a>
               </Link>
               <div className="hd-db">
