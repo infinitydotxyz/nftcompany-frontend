@@ -8,11 +8,11 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [15.x]
     
     steps:
     - uses: actions/checkout@v2
@@ -32,5 +32,5 @@ jobs:
     
     - name: Build
       run: |
-        yarn
-        yarn run build
+        npm
+        npm run build
