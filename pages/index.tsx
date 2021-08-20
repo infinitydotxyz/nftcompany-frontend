@@ -24,8 +24,12 @@ export default function Home() {
 
           <p className={`tg-paragraph text-center ${styles['tg-paragraph']}`}>
             We are excited to bring you a brand new crypto primitive - a programmable NFT. Programmable NFTs can
-            represent far more than digital art. They let you invest in DeFi, play games, perform tasks on behalf of you
-            and more.
+            represent far more than just digital art. They let you invest in DeFi, play games, perform tasks on behalf
+            of you and{' '}
+            <a href="https://docs.nftcompany.com/all/" className={styles.link}>
+              more
+            </a>
+            .
           </p>
 
           <Link href="/connect">
@@ -123,6 +127,11 @@ export default function Home() {
                 <li>Extend our base contracts to create new NFTs.</li>
                 <li>Get design, UI, smart contract and backend help from us.</li>
                 <li>Publish them on our marketplace and earn revenue.</li>
+                <li>
+                  <a href="https://docs.nftcompany.com/all/architecture/overview" className={styles.link}>
+                    And more.
+                  </a>
+                </li>
               </ul>
             </div>
           </div>

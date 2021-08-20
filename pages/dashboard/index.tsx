@@ -130,7 +130,7 @@ export default function Dashboard() {
               <div className="center" style={{ flex: 1, marginRight: 30 }}>
                 <ul className="links">
                   <li>
-                    <a className="active" onClick={() => setFilterShowed(!filterShowed)}>
+                    <a className="active cpointer" onClick={() => setFilterShowed(!filterShowed)}>
                       Filter <FilterIcon />
                     </a>
                   </li>
