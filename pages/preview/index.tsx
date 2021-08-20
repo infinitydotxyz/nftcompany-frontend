@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -11,6 +11,8 @@ import styles from './Preview.module.scss';
 import TabBar from 'components/TabBar/TabBar';
 import UserList from 'components/UserList/UserList';
 import BidBox from 'components/BidBox/BidBox';
+import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
+import PurchaseModal from 'components/PurchaseModal/PurchaseModal';
 
 const Tabs = [
   {
@@ -32,15 +34,16 @@ const Tabs = [
 ];
 
 export default function Preview() {
-  const [activeTab, setActiveTab] = React.useState(Tabs[3].id);
-  const [userList, setUserList] = React.useState(sampleUserLists[parseInt(activeTab)]);
+  const [activeTab, setActiveTab] = useState(Tabs[3].id);
+  const [placeBidShowed, setPlaceBidShowed] = useState(false);
+  const [purchaseShowed, setPurchaseShowed] = useState(false);
   const router = useRouter();
   const {
     query: { id }
   } = router;
   const idNum = parseInt(`${id}` ?? '0');
   const data = sampleData[idNum];
-  const [tabIndex, setTabIndex] = React.useState(1);
+  const [tabIndex, setTabIndex] = useState(1);
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -96,7 +99,17 @@ export default function Preview() {
 
               <UserList data={sampleUserLists[parseInt(activeTab)]} />
 
-              <BidBox user={sampleUserLists[0][0]} />
+              <BidBox user={sampleUserLists[0][0]}>
+                <a className="action-btn" onClick={() => setPurchaseShowed(true)}>
+                  Purchase now
+                </a>
+                <a className="action-btn action-2nd" onClick={() => setPlaceBidShowed(true)}>
+                  Place a bid
+                </a>
+              </BidBox>
+
+              {placeBidShowed && <PlaceBidModal onClose={() => setPlaceBidShowed(false)} />}
+              {purchaseShowed && <PurchaseModal onClose={() => setPurchaseShowed(false)} />}
             </section>
           </div>
         </div>

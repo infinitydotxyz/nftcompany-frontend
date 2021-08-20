@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import styles from './BidBox.module.scss';
 
 export type UserData = {
@@ -10,9 +10,10 @@ export type UserData = {
 
 type Props = {
   user: UserData;
+  children?: ReactElement | ReactElement[];
 };
 
-const BidBox = ({ user }: Props) => {
+const BidBox = ({ user, children }: Props) => {
   return (
     <div className={styles.main}>
       <div className={styles.head}>
@@ -28,10 +29,7 @@ const BidBox = ({ user }: Props) => {
           </div>
         </div>
       </div>
-      <div className={styles.actions}>
-        <a className="action-btn">Purchase now</a>
-        <a className="action-btn action-2nd">Place a bid</a>
-      </div>
+      <div className={styles.actions}>{children}</div>
     </div>
   );
 };
