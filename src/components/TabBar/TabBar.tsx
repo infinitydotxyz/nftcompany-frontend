@@ -13,9 +13,10 @@ const TabBar = ({ tabs, activeTab, setActiveTab }: Props) => {
       <div className={styles.container}>
         <ul>
           {Object.keys(tabs).map((tabKey: any) => {
+            const tab = tabs[tabKey];
             return (
-              <li onClick={() => setActiveTab && setActiveTab(tabKey)}>
-                <a className={activeTab === tabKey ? styles.active : ''}>{tabs[tabKey].label}</a>
+              <li key={tab.id} onClick={() => setActiveTab && setActiveTab(tabKey)}>
+                <a className={activeTab === tabKey ? styles.active : ''}>{tab.label}</a>
               </li>
             );
           })}
