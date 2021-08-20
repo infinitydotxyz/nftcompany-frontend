@@ -5,34 +5,35 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Box, Select } from '@chakra-ui/react';
 import Card from 'components/Card/Card';
-import { sampleData, sampleUserList } from '../../src/utils/apiUtil';
+import { sampleData, sampleUserLists } from '../../src/utils/apiUtil';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Preview.module.scss';
 import TabBar from 'components/TabBar/TabBar';
 import UserList from 'components/UserList/UserList';
 import BidBox from 'components/BidBox/BidBox';
 
-const Tabs = {
-  Info: {
-    id: 'Info',
+const Tabs = [
+  {
+    id: '0',
     label: 'Info'
   },
-  Owners: {
-    id: 'Owners',
+  {
+    id: '1',
     label: 'Owners'
   },
-  History: {
-    id: 'History',
+  {
+    id: '2',
     label: 'History'
   },
-  Bids: {
-    id: 'Bids',
+  {
+    id: '3',
     label: 'Bids'
   }
-};
+];
 
 export default function Preview() {
-  const [activeTab, setActiveTab] = React.useState(Tabs.Info.id);
+  const [activeTab, setActiveTab] = React.useState(Tabs[3].id);
+  const [userList, setUserList] = React.useState(sampleUserLists[parseInt(activeTab)]);
   const router = useRouter();
   const {
     query: { id }
@@ -93,9 +94,9 @@ export default function Preview() {
 
               <p>&nbsp;</p>
 
-              <UserList data={sampleUserList} />
+              <UserList data={sampleUserLists[parseInt(activeTab)]} />
 
-              <BidBox user={sampleUserList[0]} />
+              <BidBox user={sampleUserLists[0][0]} />
             </section>
           </div>
         </div>

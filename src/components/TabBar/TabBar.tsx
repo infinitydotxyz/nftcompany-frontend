@@ -12,11 +12,11 @@ const TabBar = ({ tabs, activeTab, setActiveTab }: Props) => {
     <div className={styles.main}>
       <div className={styles.container}>
         <ul>
-          {Object.keys(tabs).map((tabKey: any) => {
-            const tab = tabs[tabKey];
+          {tabs.map((tab: any) => {
+            // const tab = tabs[tabKey];
             return (
-              <li key={tab.id} onClick={() => setActiveTab && setActiveTab(tabKey)}>
-                <a className={activeTab === tabKey ? styles.active : ''}>{tab.label}</a>
+              <li key={tab.id} onClick={() => setActiveTab && setActiveTab(tab.id)}>
+                <a className={activeTab === tab.id ? styles.active : ''}>{tab.label}</a>
               </li>
             );
           })}

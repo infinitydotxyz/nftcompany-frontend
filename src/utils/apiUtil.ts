@@ -33,25 +33,87 @@ export const sampleData = [
   }
 ];
 
-export const sampleUserList = [
-  {
-    id: '1',
-    name: 'Kohaku Tora',
-    avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-1.jpg',
-    bid: 1.46
-  },
-  {
-    id: '2',
-    name: 'Raquel Will',
-    avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-2.jpg',
-    bid: 1.3
-  },
-  {
-    id: '7',
-    name: 'Adah Mitchell',
-    avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-7.jpg',
-    bid: 1.15
-  }
+export const sampleUserLists = [
+  [
+    {
+      id: '7',
+      name: 'Kohaku Tora',
+      avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-7.jpg',
+      bid: 1.46
+    },
+    {
+      id: '2',
+      name: 'Raquel Will',
+      avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-2.jpg',
+      bid: 1.3
+    },
+    {
+      id: '1',
+      name: 'Adah Mitchell',
+      avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-1.jpg',
+      bid: 1.15
+    }
+  ],
+  [
+    {
+      id: '1',
+      name: 'Kohaku Tora',
+      avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-1.jpg',
+      bid: 1.46
+    },
+    {
+      id: '2',
+      name: 'Raquel Will',
+      avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-2.jpg',
+      bid: 1.3
+    },
+    {
+      id: '7',
+      name: 'Adah Mitchell',
+      avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-7.jpg',
+      bid: 1.15
+    }
+  ],
+  [
+    {
+      id: '7',
+      name: 'Kohaku Tora',
+      avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-7.jpg',
+      bid: 1.46
+    },
+    {
+      id: '2',
+      name: 'Raquel Will',
+      avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-2.jpg',
+      bid: 1.3
+    },
+    {
+      id: '1',
+      name: 'Adah Mitchell',
+      avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-1.jpg',
+      bid: 1.15
+    }
+  ],
+  [
+    {
+      id: '1',
+      name: 'Kohaku Tora',
+      avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-1.jpg',
+      bid: 1.46
+    },
+    {
+      id: '2',
+      name: 'Raquel Will',
+      avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-2.jpg',
+      bid: 1.3
+    },
+    {
+      id: '7',
+      name: 'Adah Mitchell',
+      avatar: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/avatar-7.jpg',
+      bid: 1.15
+    }
+  ]
 ];
 
 function sleep(ms: number) {

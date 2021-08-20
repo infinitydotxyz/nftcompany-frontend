@@ -28,6 +28,10 @@ const BidBox = ({ user }: Props) => {
           </div>
         </div>
       </div>
+      <div className={styles.actions}>
+        <a className="action-btn">Purchase now</a>
+        <a className="action-btn action-2nd">Place a bid</a>
+      </div>
     </div>
   );
 };
