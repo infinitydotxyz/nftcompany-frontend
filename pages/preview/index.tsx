@@ -12,7 +12,27 @@ import TabBar from 'components/TabBar/TabBar';
 import UserList from 'components/UserList/UserList';
 import BidBox from 'components/BidBox/BidBox';
 
+const Tabs = {
+  Info: {
+    id: 'Info',
+    label: 'Info'
+  },
+  Owners: {
+    id: 'Owners',
+    label: 'Owners'
+  },
+  History: {
+    id: 'History',
+    label: 'History'
+  },
+  Bids: {
+    id: 'Bids',
+    label: 'Bids'
+  }
+};
+
 export default function Preview() {
+  const [activeTab, setActiveTab] = React.useState(Tabs.Info.id);
   const router = useRouter();
   const {
     query: { id }
@@ -69,7 +89,7 @@ export default function Preview() {
 
               <div className={styles.description}>{data?.description}</div>
 
-              <TabBar />
+              <TabBar tabs={Tabs} activeTab={activeTab} setActiveTab={(tab) => setActiveTab(tab)} />
 
               <p>&nbsp;</p>
 

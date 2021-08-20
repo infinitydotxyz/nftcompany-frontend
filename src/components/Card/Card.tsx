@@ -26,9 +26,9 @@ function Card({ data, ...rest }: { data: CardData; [key: string]: any }) {
 
           <div className={styles.cardControls}>
             {/* <div className="status-green card__category">purchasing !</div> */}
-            <button className="card__favorite">
-              <svg className="icon icon-heart">{/* <use xlink:href="#icon-heart"></use> */}</svg>
-            </button>
+            {/* <button className="card__favorite">
+              <svg className="icon icon-heart"></svg>
+            </button> */}
             <a
               className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
               href="#popup-bid"

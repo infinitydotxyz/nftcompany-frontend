@@ -26,7 +26,9 @@ const Header = () => {
                   <Image alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={60} />
                 </a>
               </Link>
-              <div className="hd-db">
+
+              {/* TODO: add Search once we have data store */}
+              {/* <div className="hd-db">
                 <div className="hd-db-l">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path
@@ -46,8 +48,9 @@ const Header = () => {
                   </svg>
                 </div>
                 <input className="hd-db-input" placeholder="Search items, collections, packages, ..." type="text" />
-              </div>
+              </div> */}
             </div>
+
             <div className="col-sm-12 col-md-6">
               <ul className="links">
                 <li>
