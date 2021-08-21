@@ -24,9 +24,9 @@ const Header = () => {
             <div className="col-sm-12 col-md-6 d-flex">
               <div style={{ width: 480, height: 0 }}></div>
               <Link href="/">
-                <a style={{ position: 'absolute', top: 13, left: 40 }}>
+                <a style={{ position: 'absolute', top: 2, left: 67 }}>
                   {/* TODO: use logo image without padding and align center for this */}
-                  <Image alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={60} />
+                  <Image alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={80} />
                 </a>
               </Link>
 

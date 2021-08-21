@@ -20,7 +20,7 @@ export default function MyItems() {
             </div>
 
             <div className="left">
-              <Select
+              {/* <Select
                 placeholder="Filter..."
                 fontWeight={500}
                 lineHeight={'40px'}
@@ -29,7 +29,7 @@ export default function MyItems() {
               >
                 <option value="option1">New items</option>
                 <option value="option2">Great Items</option>
-              </Select>
+              </Select> */}
             </div>
           </div>
 

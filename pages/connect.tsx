@@ -37,7 +37,7 @@ export default function ConnectWallet() {
           <div className={styles.center}>
             <Link href="/">
               <a>
-                <Image alt="NFT Company" src="/img/nftcompanyWhiteBgSvg.svg" width={120} height={40} />
+                <Image alt="NFT Company" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={80} />
               </a>
             </Link>
 
