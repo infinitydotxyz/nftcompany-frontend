@@ -36,7 +36,9 @@ const PurchaseModal: React.FC<IProps> = ({ onClose }: IProps) => {
               <div className={styles.footer}>
                 <a className="action-btn">Approve</a>
                 <a className="action-btn">Purchase</a>
-                <a className="action-btn action-2nd">Cancel</a>
+                <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
+                  Cancel
+                </a>
               </div>
             </div>
           </div>
