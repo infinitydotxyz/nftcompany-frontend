@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { getAccount } from '../../src/utils/ethersUtil';
 
 const Header = () => {
+  const router = useRouter();
+  const { route } = router;
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -53,13 +56,13 @@ const Header = () => {
 
             <div className="col-sm-12 col-md-6">
               <ul className="links">
-                <li>
-                  <Link href="/dashboard">
+                <li className={route === '/explore' ? 'active-link' : ''}>
+                  <Link href="/explore">
                     <a>Explore</a>
                   </Link>
                 </li>
-                <li>
-                  <Link href="/dashboard/items">
+                <li className={route === '/explore/items' ? 'active-link' : ''}>
+                  <Link href="/explore/items">
                     <a>My items</a>
                   </Link>
                 </li>

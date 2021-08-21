@@ -3,8 +3,6 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Box, Select } from '@chakra-ui/react';
-import Card from 'components/Card/Card';
 import { sampleData, sampleUserLists } from '../../src/utils/apiUtil';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Preview.module.scss';
