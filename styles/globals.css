@@ -140,8 +140,24 @@ svg {
 }
 
 @media (max-width: 767px) {
+  .logo-link {
+    width: 100%;
+    left: 0 !important;
+    text-align: center;
+  }
+  .logo-link img {
+    height: 24px;
+    width: 100%;
+    margin-top: 10px !important;
+  }
   .header-links-wrapper {
     display: none;
+  }
+  .section-bar {
+    margin-top: 50px;
+  }
+  .links {
+    justify-content: center !important;
   }
 }
 
