@@ -1,23 +1,25 @@
 import * as React from 'react';
 import styles from './TabBar.module.scss';
 
-const TabBar = () => {
+type Props = {
+  tabs: any;
+  activeTab: string;
+  setActiveTab?: (activeTab: string) => void;
+};
+
+const TabBar = ({ tabs, activeTab, setActiveTab }: Props) => {
   return (
     <div className={styles.main}>
       <div className={styles.container}>
         <ul>
-          <li>
-            <a>Info</a>
-          </li>
-          <li>
-            <a>Owner</a>
-          </li>
-          <li>
-            <a className={styles.active}>History</a>
-          </li>
-          <li>
-            <a>Bids</a>
-          </li>
+          {tabs.map((tab: any) => {
+            // const tab = tabs[tabKey];
+            return (
+              <li key={tab.id} onClick={() => setActiveTab && setActiveTab(tab.id)}>
+                <a className={activeTab === tab.id ? styles.active : ''}>{tab.label}</a>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

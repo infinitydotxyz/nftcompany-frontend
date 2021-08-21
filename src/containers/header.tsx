@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { getAccount } from '../../src/utils/ethersUtil';
 
 const Header = () => {
+  const router = useRouter();
+  const { route } = router;
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -19,12 +22,16 @@ const Header = () => {
         <div className="container container-fluid">
           <div className="grid align-items-center">
             <div className="col-sm-12 col-md-6 d-flex">
-              <Link href="/dashboard">
-                <a>
-                  <Image alt="Mavrik logo" src="/img/nftcompanyWhiteBgSvg.svg" width={120} height={28} />
+              <div style={{ width: 480, height: 0 }}></div>
+              <Link href="/">
+                <a className="logo-link" style={{ position: 'absolute', top: 2, left: 67 }}>
+                  {/* TODO: use logo image without padding and align center for this */}
+                  <Image alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={80} />
                 </a>
               </Link>
-              <div className="hd-db">
+
+              {/* TODO: add Search once we have data store */}
+              {/* <div className="hd-db">
                 <div className="hd-db-l">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path
@@ -44,17 +51,18 @@ const Header = () => {
                   </svg>
                 </div>
                 <input className="hd-db-input" placeholder="Search items, collections, packages, ..." type="text" />
-              </div>
+              </div> */}
             </div>
+
             <div className="col-sm-12 col-md-6">
               <ul className="links">
-                <li>
-                  <Link href="/dashboard">
+                <li className={route === '/explore' ? 'active-link' : ''}>
+                  <Link href="/explore">
                     <a>Explore</a>
                   </Link>
                 </li>
-                <li>
-                  <Link href="/dashboard/items">
+                <li className={route === '/explore/items' ? 'active-link' : ''}>
+                  <Link href="/explore/items">
                     <a>My items</a>
                   </Link>
                 </li>
@@ -76,7 +84,7 @@ const Header = () => {
                             fill="#fff"
                           />
                         </svg>
-                        Connect Wallet
+                        Connect
                       </a>
                     </Link>
                   </li>

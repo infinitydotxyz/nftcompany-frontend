@@ -59,4 +59,12 @@
       color: #777e90;
     }
   }
+  .actions {
+    display: flex;
+
+    a {
+      width: 40%;
+      margin-right: 20px;
+    }
+  }
 }

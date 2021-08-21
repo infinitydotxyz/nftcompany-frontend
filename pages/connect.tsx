@@ -21,9 +21,9 @@ export default function ConnectWallet() {
   const connectMetaMask = async () => {
     const res = await initEthers();
     if (res && res.getAddress) {
-      router.push('/dashboard');
+      router.push('/explore');
     } else {
-      alert('Failed to connect.');
+      alert('Failed to connect.'); // TODO: use a toaster
     }
     // console.log("Address: ", await res.getAddress());
   };
@@ -37,7 +37,7 @@ export default function ConnectWallet() {
           <div className={styles.center}>
             <Link href="/">
               <a>
-                <Image alt="NFT Company" src="/img/nftcompanyWhiteBgSvg.svg" width={120} height={40} />
+                <Image alt="NFT Company" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={80} />
               </a>
             </Link>
 
@@ -95,7 +95,7 @@ export default function ConnectWallet() {
                   ></path>
                 </svg>
               </div>
-              <div className={styles.item}>
+              {/* <div className={styles.item}>
                 <div className="logo-metamask d-flex align-self-center">
                   <Image
                     alt="NFT Company"
@@ -144,7 +144,7 @@ export default function ConnectWallet() {
                     strokeLinejoin="round"
                   ></path>
                 </svg>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

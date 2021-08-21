@@ -1,25 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Box, Select } from '@chakra-ui/react';
-import Card from 'components/Card/Card';
-import { sampleData, sampleUserList } from '../../src/utils/apiUtil';
+import { sampleData, sampleUserLists } from '../../src/utils/apiUtil';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Preview.module.scss';
 import TabBar from 'components/TabBar/TabBar';
 import UserList from 'components/UserList/UserList';
 import BidBox from 'components/BidBox/BidBox';
+import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
+import PurchaseModal from 'components/PurchaseModal/PurchaseModal';
+
+const Tabs = [
+  {
+    id: '0',
+    label: 'Info'
+  },
+  {
+    id: '1',
+    label: 'Owners'
+  },
+  {
+    id: '2',
+    label: 'History'
+  },
+  {
+    id: '3',
+    label: 'Bids'
+  }
+];
 
 export default function Preview() {
+  const [activeTab, setActiveTab] = useState(Tabs[3].id);
+  const [placeBidShowed, setPlaceBidShowed] = useState(false);
+  const [purchaseShowed, setPurchaseShowed] = useState(false);
   const router = useRouter();
   const {
-    query: { id }
+    query: { id, view = '' }
   } = router;
   const idNum = parseInt(`${id}` ?? '0');
   const data = sampleData[idNum];
-  const [tabIndex, setTabIndex] = React.useState(1);
+  const [tabIndex, setTabIndex] = useState(1);
+  console.log('view', view);
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -69,13 +92,27 @@ export default function Preview() {
 
               <div className={styles.description}>{data?.description}</div>
 
-              <TabBar />
+              {view === 'info' ? null : (
+                <>
+                  <TabBar tabs={Tabs} activeTab={activeTab} setActiveTab={(tab) => setActiveTab(tab)} />
 
-              <p>&nbsp;</p>
+                  <p>&nbsp;</p>
 
-              <UserList data={sampleUserList} />
+                  <UserList data={sampleUserLists[parseInt(activeTab)]} />
 
-              <BidBox user={sampleUserList[0]} />
+                  <BidBox user={sampleUserLists[0][0]}>
+                    <a className="action-btn" onClick={() => setPurchaseShowed(true)}>
+                      Purchase now
+                    </a>
+                    <a className="action-btn action-2nd" onClick={() => setPlaceBidShowed(true)}>
+                      Place a bid
+                    </a>
+                  </BidBox>
+                </>
+              )}
+
+              {placeBidShowed && <PlaceBidModal onClose={() => setPlaceBidShowed(false)} />}
+              {purchaseShowed && <PurchaseModal onClose={() => setPurchaseShowed(false)} />}
             </section>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import NFTModal from 'components/nft/NFTModal';
+import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './CardList.module.scss';
 
 export type CardData = {
@@ -11,7 +12,13 @@ export type CardData = {
   inStock?: number;
 };
 
-function Card({ data, ...rest }: { data: CardData; [key: string]: any }) {
+type Props = {
+  data: CardData;
+  onClickPlaceBid?: () => void;
+  [key: string]: any;
+};
+
+function Card({ data, onClickPlaceBid, ...rest }: Props) {
   const [modalShowed, setModalShowed] = useState(false);
 
   if (!data) {
@@ -26,15 +33,18 @@ function Card({ data, ...rest }: { data: CardData; [key: string]: any }) {
 
           <div className={styles.cardControls}>
             {/* <div className="status-green card__category">purchasing !</div> */}
-            <button className="card__favorite">
-              <svg className="icon icon-heart">{/* <use xlink:href="#icon-heart"></use> */}</svg>
-            </button>
+            {/* <button className="card__favorite">
+              <svg className="icon icon-heart"></svg>
+            </button> */}
             <a
               className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
               href="#popup-bid"
               data-effect="mfp-zoom-in"
               onClick={(ev) => {
                 ev.preventDefault();
+                if (onClickPlaceBid) {
+                  onClickPlaceBid();
+                }
                 setModalShowed(true);
               }}
             >
@@ -55,7 +65,7 @@ function Card({ data, ...rest }: { data: CardData; [key: string]: any }) {
         </div>
       </div>
 
-      {modalShowed && (
+      {/* {modalShowed && (
         <NFTModal
           title="AAVE"
           address="0xc812...AeFg"
@@ -64,7 +74,8 @@ function Card({ data, ...rest }: { data: CardData; [key: string]: any }) {
           bgColor="#E6FBF0"
           onClose={() => setModalShowed(false)}
         />
-      )}
+      )} */}
+      {modalShowed && <PlaceBidModal onClose={() => setModalShowed(false)} />}
     </div>
   );
 }

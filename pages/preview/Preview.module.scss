@@ -3,7 +3,7 @@
   margin: 40px;
 
   img {
-    width: 100%;
+    width: 50%;
     border-radius: 16px;
   }
 
@@ -43,5 +43,10 @@
 @media (max-width: 768px) {
   .main {
     flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    img {
+      width: 100%;
+    }
   }
 }

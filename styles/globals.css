@@ -9,6 +9,10 @@ body {
     Droid Sans, Helvetica Neue, sans-serif !important;
 }
 
+.cpointer {
+  cursor: pointer;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -60,6 +64,40 @@ svg {
   margin-bottom: 1rem;
 }
 
+.action-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+
+  background: #4047ff;
+  border-radius: 60px;
+
+  cursor: pointer;
+
+  color: #ffffff;
+
+  font-weight: bold;
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0;
+
+  transition: 0.2s ease-in-out;
+}
+.action-btn:hover {
+  background-color: #2429ad;
+  color: #ffffff;
+}
+
+.action-2nd {
+  background: #fff;
+  color: #333;
+  border: 2px solid #eee;
+}
+
 .connect-wallet {
   display: flex;
   flex-direction: row;
@@ -102,8 +140,24 @@ svg {
 }
 
 @media (max-width: 767px) {
+  .logo-link {
+    width: 100%;
+    left: 0 !important;
+    text-align: center;
+  }
+  .logo-link img {
+    height: 24px;
+    width: 100%;
+    margin-top: 10px !important;
+  }
   .header-links-wrapper {
     display: none;
+  }
+  .section-bar {
+    margin-top: 50px;
+  }
+  .links {
+    justify-content: center !important;
   }
 }
 

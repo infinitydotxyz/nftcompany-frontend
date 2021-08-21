@@ -51,7 +51,7 @@ export default function Dashboard() {
             </div>
 
             <div className="center">
-              <ul className="links">
+              {/* <ul className="links">
                 <li>
                   <a onClick={() => setTabIndex(1)} className={tabIndex === 1 ? 'active' : ''} href="#">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -123,14 +123,14 @@ export default function Dashboard() {
                     Music
                   </a>
                 </li>
-              </ul>
+              </ul> */}
             </div>
 
             <div className="left">
               <div className="center" style={{ flex: 1, marginRight: 30 }}>
                 <ul className="links">
                   <li>
-                    <a className="active" onClick={() => setFilterShowed(!filterShowed)}>
+                    <a className="active cpointer" onClick={() => setFilterShowed(!filterShowed)}>
                       Filter <FilterIcon />
                     </a>
                   </li>
