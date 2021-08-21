@@ -25,13 +25,44 @@ const PurchaseModal: React.FC<IProps> = ({ onClose }: IProps) => {
         >
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'blue' }}>
             <div className="modal-body">
-              <div className={styles.title}>Purchase Now</div>
+              <div className={styles.title}>Purchase now</div>
 
               <div className={styles.row}>You are about to purchase this NFT.</div>
 
               <div className={styles.title}>Your price</div>
 
-              <div className={styles.row}>Purchase Form</div>
+              <div className={styles.row}>
+                <ul>
+                  <li>
+                    <div>Your price</div>
+                    <div>
+                      <input type="number" />
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                  <li>
+                    <div>Your balance</div>
+                    <div>
+                      <span>5.2</span>
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                  <li>
+                    <div>Service fee</div>
+                    <div>
+                      <span>0</span>
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                  <li>
+                    <div>Total bid amount</div>
+                    <div>
+                      <span>0</span>
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                </ul>
+              </div>
 
               <div className={styles.footer}>
                 <a className="action-btn">Approve</a>

@@ -31,7 +31,38 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose }: IProps) => {
 
               <div className={styles.title}>Your bid</div>
 
-              <div className={styles.row}>Bid Form</div>
+              <div className={styles.row}>
+                <ul>
+                  <li>
+                    <div>Enter bid</div>
+                    <div>
+                      <input type="number" />
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                  <li>
+                    <div>Your balance</div>
+                    <div>
+                      <span>5.2</span>
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                  <li>
+                    <div>Service fee</div>
+                    <div>
+                      <span>0</span>
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                  <li>
+                    <div>Total bid amount</div>
+                    <div>
+                      <span>0</span>
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                </ul>
+              </div>
 
               <div className={styles.footer}>
                 <a className="action-btn">Approve</a>
