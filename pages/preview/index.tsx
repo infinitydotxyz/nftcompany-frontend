@@ -37,11 +37,12 @@ export default function Preview() {
   const [purchaseShowed, setPurchaseShowed] = useState(false);
   const router = useRouter();
   const {
-    query: { id }
+    query: { id, view = '' }
   } = router;
   const idNum = parseInt(`${id}` ?? '0');
   const data = sampleData[idNum];
   const [tabIndex, setTabIndex] = useState(1);
+  console.log('view', view);
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -91,20 +92,24 @@ export default function Preview() {
 
               <div className={styles.description}>{data?.description}</div>
 
-              <TabBar tabs={Tabs} activeTab={activeTab} setActiveTab={(tab) => setActiveTab(tab)} />
+              {view === 'info' ? null : (
+                <>
+                  <TabBar tabs={Tabs} activeTab={activeTab} setActiveTab={(tab) => setActiveTab(tab)} />
 
-              <p>&nbsp;</p>
+                  <p>&nbsp;</p>
 
-              <UserList data={sampleUserLists[parseInt(activeTab)]} />
+                  <UserList data={sampleUserLists[parseInt(activeTab)]} />
 
-              <BidBox user={sampleUserLists[0][0]}>
-                <a className="action-btn" onClick={() => setPurchaseShowed(true)}>
-                  Purchase now
-                </a>
-                <a className="action-btn action-2nd" onClick={() => setPlaceBidShowed(true)}>
-                  Place a bid
-                </a>
-              </BidBox>
+                  <BidBox user={sampleUserLists[0][0]}>
+                    <a className="action-btn" onClick={() => setPurchaseShowed(true)}>
+                      Purchase now
+                    </a>
+                    <a className="action-btn action-2nd" onClick={() => setPlaceBidShowed(true)}>
+                      Place a bid
+                    </a>
+                  </BidBox>
+                </>
+              )}
 
               {placeBidShowed && <PlaceBidModal onClose={() => setPlaceBidShowed(false)} />}
               {purchaseShowed && <PurchaseModal onClose={() => setPurchaseShowed(false)} />}
