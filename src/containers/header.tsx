@@ -66,6 +66,11 @@ const Header = () => {
                     <a>My items</a>
                   </Link>
                 </li>
+                <li className={route === '/explore/designs' ? 'active-link' : ''}>
+                  <Link href="/explore/designs">
+                    <a>Designs</a>
+                  </Link>
+                </li>
                 {/* <li>FAQs</li> */}
 
                 {user?.account ? (

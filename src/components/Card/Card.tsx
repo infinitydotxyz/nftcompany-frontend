@@ -10,6 +10,7 @@ export type CardData = {
   img: string;
   price?: number;
   inStock?: number;
+  viewInfo?: boolean;
 };
 
 type Props = {
@@ -18,7 +19,7 @@ type Props = {
   [key: string]: any;
 };
 
-function Card({ data, onClickPlaceBid, ...rest }: Props) {
+function Card({ data, onClickPlaceBid, viewInfo, ...rest }: Props) {
   const [modalShowed, setModalShowed] = useState(false);
 
   if (!data) {
@@ -26,7 +27,7 @@ function Card({ data, onClickPlaceBid, ...rest }: Props) {
   }
   return (
     <div className={styles.card} {...rest}>
-      <Link href={`/preview?id=${data.id}`} passHref>
+      <Link href={`/preview?id=${data.id}${viewInfo ? '&view=info' : ''}`} passHref>
         <div className={styles.cardPreview}>
           {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
           <img src={data.img} alt="Card preview" />
