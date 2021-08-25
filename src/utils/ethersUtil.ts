@@ -20,6 +20,9 @@ export async function initEthers() {
 }
 
 export const getAccount = async () => {
+  if (!window || !window.ethereum) {
+    return null;
+  }
   try {
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     // console.log('accounts', accounts);

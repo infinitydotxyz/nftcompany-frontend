@@ -36,7 +36,7 @@ const PurchaseModal: React.FC<IProps> = ({ onClose }: IProps) => {
                   <li>
                     <div>Your price</div>
                     <div>
-                      <input type="number" />
+                      <input type="number" autoFocus />
                     </div>
                     <div>ETH</div>
                   </li>
