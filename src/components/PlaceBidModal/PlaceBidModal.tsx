@@ -36,7 +36,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose }: IProps) => {
                   <li>
                     <div>Enter bid</div>
                     <div>
-                      <input type="number" />
+                      <input type="number" autoFocus />
                     </div>
                     <div>ETH</div>
                   </li>

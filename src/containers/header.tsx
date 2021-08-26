@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
 import { getAccount } from '../../src/utils/ethersUtil';
 
@@ -8,6 +9,8 @@ const Header = () => {
   const router = useRouter();
   const { route } = router;
   const [user, setUser] = useState<any>(null);
+  const { filter, setFilter } = useContext<any>(FilterContext);
+  console.log('filter', filter);
 
   useEffect(() => {
     const connect = async () => {
@@ -31,7 +34,7 @@ const Header = () => {
               </Link>
 
               {/* TODO: add Search once we have data store */}
-              {/* <div className="hd-db">
+              <div className="hd-db">
                 <div className="hd-db-l">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path
@@ -50,8 +53,13 @@ const Header = () => {
                     ></path>
                   </svg>
                 </div>
-                <input className="hd-db-input" placeholder="Search items, collections, packages, ..." type="text" />
-              </div> */}
+                <input
+                  className="hd-db-input"
+                  placeholder="Search items..."
+                  type="text"
+                  onChange={(ev) => setFilter({ search: ev.target.value })}
+                />
+              </div>
             </div>
 
             <div className="col-sm-12 col-md-6">
@@ -64,6 +72,11 @@ const Header = () => {
                 <li className={route === '/explore/items' ? 'active-link' : ''}>
                   <Link href="/explore/items">
                     <a>My items</a>
+                  </Link>
+                </li>
+                <li className={route === '/explore/designs' ? 'active-link' : ''}>
+                  <Link href="/explore/designs">
+                    <a>Designs</a>
                   </Link>
                 </li>
                 {/* <li>FAQs</li> */}

@@ -24,7 +24,6 @@ interface IProps {
 
 const NFT: React.FC<IProps> = ({ title, id, address, brandColor, bgColor, active }: IProps) => {
   const router = useRouter();
-  console.log('router', router);
   return (
     <>
       {!isServer && (

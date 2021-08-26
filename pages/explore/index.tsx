@@ -41,7 +41,7 @@ export default function Dashboard() {
   return (
     <>
       <Head>
-        <title>Dashboard page</title>
+        <title>Explore</title>
       </Head>
       <div className={styles.dashboard}>
         <div className="container container-fluid">
@@ -149,19 +149,6 @@ export default function Dashboard() {
           />
 
           {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={sampleData} />}
-
-          {/* <div className="section-bar">
-            <div className="right">
-              <div className="tg-title">New</div>
-            </div>
-          </div>
-          <div className={styles.nftsGrid}>
-            <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" />
-            <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" />
-            <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" />
-            <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" />
-            <NFT title="AAVE" address="0xc812...AeFg" id="2456123" brandColor="#24DB83" bgColor="#E6FBF0" />
-          </div> */}
         </div>
       </div>
     </>
