@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
 import { getAccount } from '../../src/utils/ethersUtil';
+import CopyInstructionModal from 'components/CopyInstructionModal/CopyInstructionModal';
 
 const Header = () => {
   const router = useRouter();
   const { route } = router;
   const [user, setUser] = useState<any>(null);
   const { filter, setFilter } = useContext<any>(FilterContext);
+  const [copyModalShowed, setCopyModalShowed] = useState(false);
   console.log('filter', filter);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const Header = () => {
               </Link>
 
               {/* TODO: add Search once we have data store */}
-              <div className="hd-db">
+              {/* <div className="hd-db">
                 <div className="hd-db-l">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path
@@ -59,12 +61,24 @@ const Header = () => {
                   type="text"
                   onChange={(ev) => setFilter({ search: ev.target.value })}
                 />
-              </div>
+              </div> */}
             </div>
 
             <div className="col-sm-12 col-md-6">
               <ul className="links">
-                <li className={route === '/explore' ? 'active-link' : ''}>
+                <li>
+                  <a className="connect-wallet" onClick={() => setCopyModalShowed(true)}>
+                    Bid or Purchase
+                  </a>
+                </li>
+
+                <li className={route === '/explore/nfts' ? 'active-link' : ''}>
+                  <Link href="/explore/nfts">
+                    <a>Explore NFTs</a>
+                  </Link>
+                </li>
+
+                {/* <li className={route === '/explore' ? 'active-link' : ''}>
                   <Link href="/explore">
                     <a>Explore</a>
                   </Link>
@@ -78,7 +92,7 @@ const Header = () => {
                   <Link href="/explore/designs">
                     <a>Designs</a>
                   </Link>
-                </li>
+                </li> */}
                 {/* <li>FAQs</li> */}
 
                 {user?.account ? (
@@ -107,6 +121,8 @@ const Header = () => {
           </div>
         </div>
       </div>
+
+      {copyModalShowed && <CopyInstructionModal onClose={() => setCopyModalShowed(false)} />}
     </header>
   );
 };

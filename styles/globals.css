@@ -98,6 +98,15 @@ svg {
   border: 2px solid #eee;
 }
 
+.input-box {
+  width: 100%;
+  box-shadow: 3px 3px 3px #ccc;
+  margin: 0;
+  padding: 5px 10px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
 .connect-wallet {
   display: flex;
   flex-direction: row;

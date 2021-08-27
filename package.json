@@ -24,7 +24,6 @@
     "recharts": "^2.0.10"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0",
     "@types/gtag.js": "^0.0.7",
     "@types/react": "17.0.15",
     "@types/react-dom": "^17.0.9",
