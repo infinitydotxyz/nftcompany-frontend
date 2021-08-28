@@ -100,7 +100,6 @@ svg {
 
 .input-box {
   width: 100%;
-  box-shadow: 3px 3px 3px #ccc;
   margin: 0;
   padding: 5px 10px;
   border: 1px solid #aaa;
@@ -322,7 +321,7 @@ svg {
 .modal {
   width: 30rem;
   background-color: #fff;
-  padding: 1rem;
+  padding: 1rem 2rem;
   max-width: 100%;
   box-shadow: 0 2px 90px rgba(0, 0, 0, 0.3);
 

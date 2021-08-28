@@ -7,17 +7,21 @@ declare global {
 }
 // const hstABI = require("human-standard-token-abi");
 
+let provider: any;
+
 export async function initEthers() {
   if (!window?.ethereum) {
     alert('Please install the MetaMask extension first.');
     return;
   }
   await window.ethereum.enable();
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   const network = Number(window.ethereum.send({ method: 'net_version' }).result);
   return signer;
 }
+
+export const getProvider = () => provider;
 
 export const getAccount = async () => {
   if (!window || !window.ethereum) {

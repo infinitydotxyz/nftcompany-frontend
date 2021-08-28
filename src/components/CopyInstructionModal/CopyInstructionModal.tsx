@@ -26,12 +26,12 @@ const CopyInstructionModal: React.FC<IProps> = ({ onClose }: IProps) => {
         >
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'blue' }}>
             <div className="modal-body">
-              <div className={styles.title}>Bid or Purchase</div>
+              <div className={styles.title}>Make Offer</div>
 
               <div className={styles.row}>
                 <div>
-                  First, select an NFT, get the NFT link by clicking on the "Share" button and{' '}
-                  <strong>"Copy Link" button</strong> like this:
+                  First, select an NFT, then get the NFT link by clicking on the "Share" button and{' '}
+                  <strong>"Copy Link" button</strong> like this screenshot:
                 </div>
                 <p>&nbsp;</p>
                 <div style={{ padding: 10, borderRadius: 6, border: '1px solid #eee' }}>
@@ -53,13 +53,18 @@ const CopyInstructionModal: React.FC<IProps> = ({ onClose }: IProps) => {
                 </ul>
               </div> */}
 
+              <div style={{ marginBottom: 10 }}>
+                <div>Paste the NFT link here:</div>
+                <input className="input-box" placeholder="https://... (NFT Link)" />
+              </div>
               <div style={{ marginBottom: 20 }}>
-                <input className="input-box" placeholder="https://... (paste NFT Link here...)" />
+                <div>Price: (ETH)</div>
+                <input className="input-box" type="number" />
               </div>
 
               <div className={styles.footer}>
-                <a className="action-btn">&nbsp;&nbsp;&nbsp; Bid &nbsp;&nbsp;&nbsp;</a>
-                <a className="action-btn">Purchase</a>
+                <a className="action-btn">&nbsp;&nbsp;&nbsp; Make Offer &nbsp;&nbsp;&nbsp;</a>
+                {/* <a className="action-btn">Buy Now</a> */}
                 <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
                   Cancel
                 </a>
