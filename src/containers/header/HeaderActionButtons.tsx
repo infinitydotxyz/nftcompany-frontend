@@ -4,12 +4,12 @@ import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
 import { getAccount, getProvider } from 'utils/ethersUtil';
 import CopyInstructionModal from 'components/CopyInstructionModal/CopyInstructionModal';
-import { OpenSeaPort, Network } from '../../../src-os/src';
 
-const Web3 = require('web3');
-// const OpenSeaPort = require('../../../src-os/src').OpenSeaPort;
-// const Network = require('../../../src-os/src').Network;
-const Sell = require('../../../src-os/src').Sell;
+// import { OpenSeaPort, Network } from '../../../src-os/src';
+// const Web3 = require('web3');
+// // const OpenSeaPort = require('../../../src-os/src').OpenSeaPort;
+// // const Network = require('../../../src-os/src').Network;
+// const Sell = require('../../../src-os/src').Sell;
 
 const HeaderActionButtons = ({ user }: { user: any }) => {
   const router = useRouter();
@@ -64,56 +64,49 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
         {user?.account ? (
           <li
             onClick={() => {
-              let web3 = new Web3();
-              if (window.ethereum) {
-                web3 = new Web3(window.ethereum);
-                // try {
-                //   window.ethereum.enable().then(() => {
-                //     // User has allowed account access to DApp...
-                //   })
-                // } catch (e) {
-                //   // User has denied account access to DApp...
-                // }
-              } else if ((window as any).web3) {
-                web3 = new Web3(web3.currentProvider);
-              } else {
-                alert('You have to install MetaMask !');
-              }
-              const provider = web3.currentProvider;
-
-              // const provider = new Web3.providers.HttpProvider('https://mainnet.infura.io');
-              const seaport = new OpenSeaPort(provider, {
-                networkName: Network.Main
-              });
-
-              // asset_contract_address: '0x495f947276749ce646f68ac8c248420045cb7b5e',
-              // token_id: '93541831110195558149617722636526811076207680274132077301105327944255259279361',
-
-              // asset_contract_address: '0x4a453df93535f6baa8dc3cb1b0c032289da3bd16',
-              //     token_id: '9824',
-
-              // 0x719e22985111302110942ad3503e3fa104922a7b/823   0.001   purchased
-
-              // 0x719e22985111302110942ad3503e3fa104922a7b/825   0.001   done
-
-              //
-              seaport.api
-                .getOrder({
-                  asset_contract_address: '0x719e22985111302110942ad3503e3fa104922a7b',
-                  token_id: '826',
-                  side: Sell
-                })
-                .then(function (order: any) {
-                  console.log('order', order);
-                  // Important to check if the order is still available as it can have already been fulfilled by
-                  // another user or cancelled by the creator
-                  if (order) {
-                    // This will bring the wallet confirmation popup for the user to confirm the purchase
-                    seaport.fulfillOrder({ order: order, accountAddress: user?.account });
-                  } else {
-                    // Handle when the order does not exist anymore
-                  }
-                });
+              // let web3 = new Web3();
+              // if (window.ethereum) {
+              //   web3 = new Web3(window.ethereum);
+              //   // try {
+              //   //   window.ethereum.enable().then(() => {
+              //   //     // User has allowed account access to DApp...
+              //   //   })
+              //   // } catch (e) {
+              //   //   // User has denied account access to DApp...
+              //   // }
+              // } else if ((window as any).web3) {
+              //   web3 = new Web3(web3.currentProvider);
+              // } else {
+              //   alert('You have to install MetaMask !');
+              // }
+              // const provider = web3.currentProvider;
+              // // const provider = new Web3.providers.HttpProvider('https://mainnet.infura.io');
+              // const seaport = new OpenSeaPort(provider, {
+              //   networkName: Network.Main
+              // });
+              // // asset_contract_address: '0x495f947276749ce646f68ac8c248420045cb7b5e',
+              // // token_id: '93541831110195558149617722636526811076207680274132077301105327944255259279361',
+              // // asset_contract_address: '0x4a453df93535f6baa8dc3cb1b0c032289da3bd16',
+              // //     token_id: '9824',
+              // // 0x719e22985111302110942ad3503e3fa104922a7b/823   0.001   purchased
+              // // 0x719e22985111302110942ad3503e3fa104922a7b/825   0.001   done
+              // seaport.api
+              //   .getOrder({
+              //     asset_contract_address: '0x719e22985111302110942ad3503e3fa104922a7b',
+              //     token_id: '826',
+              //     side: Sell
+              //   })
+              //   .then(function (order: any) {
+              //     console.log('order', order);
+              //     // Important to check if the order is still available as it can have already been fulfilled by
+              //     // another user or cancelled by the creator
+              //     if (order) {
+              //       // This will bring the wallet confirmation popup for the user to confirm the purchase
+              //       seaport.fulfillOrder({ order: order, accountAddress: user?.account });
+              //     } else {
+              //       // Handle when the order does not exist anymore
+              //     }
+              //   });
             }}
           >
             <a className="connect-wallet">{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</a>

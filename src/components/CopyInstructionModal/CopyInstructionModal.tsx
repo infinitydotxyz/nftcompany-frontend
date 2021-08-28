@@ -30,8 +30,8 @@ const CopyInstructionModal: React.FC<IProps> = ({ onClose }: IProps) => {
 
               <div className={styles.row}>
                 <div>
-                  First, select an NFT, then get the NFT link by clicking on the "Share" button and{' '}
-                  <strong>"Copy Link" button</strong> like this screenshot:
+                  First, select an NFT, then get the NFT link by clicking on the &quot;Share&quot; button and{' '}
+                  <strong>&quot;Copy Link&quot; button</strong> like this screenshot:
                 </div>
                 <p>&nbsp;</p>
                 <div style={{ padding: 10, borderRadius: 6, border: '1px solid #eee' }}>
