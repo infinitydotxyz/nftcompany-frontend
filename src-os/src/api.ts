@@ -405,10 +405,10 @@ export class OpenSeaAPI {
         errorMessage = `Not found. Full message was '${JSON.stringify(result)}'`
         break
       case 500:
-        errorMessage = `Internal server error. OpenSea has been alerted, but if the problem persists please contact us via Discord: https://discord.gg/ga8EJbv - full message was ${JSON.stringify(result)}`
+        errorMessage = `Internal server error. Please contact us via Discord: https://discord.gg/SefzVZU72S - full message was ${JSON.stringify(result)}`
         break
       case 503:
-        errorMessage = `Service unavailable. Please try again in a few minutes. If the problem persists please contact us via Discord: https://discord.gg/ga8EJbv - full message was ${JSON.stringify(result)}`
+        errorMessage = `Service unavailable. Please try again in a few minutes. If the problem persists please contact us via Discord: https://discord.gg/SefzVZU72S - full message was ${JSON.stringify(result)}`
         break
       default:
         errorMessage = `Message: ${JSON.stringify(result)}`
