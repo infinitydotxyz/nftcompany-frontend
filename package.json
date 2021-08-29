@@ -24,7 +24,15 @@
     "recharts": "^2.0.10",
     "web3": "0.20.7",
     "wyvern-js": "git+https://github.com/ProjectOpenSea/wyvern-js.git#v3.2.1",
-    "wyvern-schemas": "git+https://github.com/ProjectOpenSea/wyvern-schemas.git#v0.11.1"
+    "wyvern-schemas": "git+https://github.com/ProjectOpenSea/wyvern-schemas.git#v0.11.1",
+    "bignumber.js": "^4.1.0",
+    "ethereumjs-abi": "git+https://github.com/ProjectWyvern/ethereumjs-abi.git",
+    "ethereumjs-util": "^5.2.0",
+    "fbemitter": "^2.1.1",
+    "isomorphic-unfetch": "^2.1.1",
+    "json-loader": "^0.5.7",
+    "lodash": "^4.17.4",
+    "query-string": "^6.11.1",
   },
   "devDependencies": {
     "@types/ethereumjs-util": "^6.1.0",
