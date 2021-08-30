@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
-import { FilterContext } from 'hooks/useFilter';
+// import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
-import { getAccount, getProvider, web3GetSeaport } from 'utils/ethersUtil';
+import { web3GetSeaport } from 'utils/ethersUtil';
 import CopyInstructionModal from 'components/CopyInstructionModal/CopyInstructionModal';
 
-// import { OpenSeaPort, Network } from '../../../src-os/src';
-// import Web3 from 'web3';
-const Web3 = require('web3');
-const OpenSeaPort = require('../../../src-os/src').OpenSeaPort;
-const Network = require('../../../src-os/src').Network;
-const Sell = require('../../../src-os/src').Sell;
+const parseNftUrl = (nftUrl: string) => {
+  const arr = nftUrl.split('0x')[1].split('/');
+  return { tokenAddress: '0x' + arr[0], tokenId: arr[1] };
+};
 
 const HeaderActionButtons = ({ user }: { user: any }) => {
   const router = useRouter();
@@ -63,36 +61,7 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
         {/* <li>FAQs</li> */}
 
         {user?.account ? (
-          <li
-            onClick={() => {
-              const seaport = web3GetSeaport();
-
-              // asset_contract_address: '0x495f947276749ce646f68ac8c248420045cb7b5e',
-              // token_id: '93541831110195558149617722636526811076207680274132077301105327944255259279361',
-              // asset_contract_address: '0x4a453df93535f6baa8dc3cb1b0c032289da3bd16',
-              //     token_id: '9824',
-              // 0x719e22985111302110942ad3503e3fa104922a7b/823   0.001   purchased
-              // 0x719e22985111302110942ad3503e3fa104922a7b/825   0.001   done
-              console.log('side: Sell', Sell);
-              seaport.api
-                .getOrder({
-                  asset_contract_address: '0x495f947276749ce646f68ac8c248420045cb7b5e',
-                  token_id: '61260615647643977170434038292545257526710893187549349159756266105589288927233',
-                  side: 1
-                })
-                .then(function (order: any) {
-                  console.log('order', order);
-                  // Important to check if the order is still available as it can have already been fulfilled by
-                  // another user or cancelled by the creator
-                  if (order) {
-                    // This will bring the wallet confirmation popup for the user to confirm the purchase
-                    seaport.fulfillOrder({ order: order, accountAddress: user?.account });
-                  } else {
-                    // Handle when the order does not exist anymore
-                  }
-                });
-            }}
-          >
+          <li>
             <a className="connect-wallet">{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</a>
           </li>
         ) : (
@@ -117,26 +86,71 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
       {copyModalShowed && (
         <CopyInstructionModal
           onClose={() => setCopyModalShowed(false)}
-          onClickListNFT={async () => {
-            console.log('createBuyOrder');
+          onClickListNFT={async (nftUrl: string, price: number) => {
+            const { tokenAddress, tokenId } = parseNftUrl(nftUrl);
+            console.log('- onClickListNFT: nftLink, price', tokenAddress, tokenId, price);
+            // https://opensea.io/assets/0x719e22985111302110942ad3503e3fa104922a7b/826
+            // https://opensea.io/assets/0x495f947276749ce646f68ac8c248420045cb7b5e/61260615647643977170434038292545257526710893187549349159756266105589288927233/sell
+
             const seaport = web3GetSeaport();
-            // const expirationTime = Math.round(Date.now() / 1000 + 60 * 60 * 24)
-
-            // seaport.fulfillOrder({ order: order, accountAddress: user?.account });
-
-            // 0x495f947276749ce646f68ac8c248420045cb7b5e/61260615647643977170434038292545257526710893187549349159756266105589288927233/sell
-            const listing = await seaport.createBuyOrder({
+            const listing = await seaport.createSellOrder({
               asset: {
-                tokenAddress: '0x719e22985111302110942ad3503e3fa104922a7b',
-                tokenId: '826'
+                tokenAddress,
+                tokenId
               },
               accountAddress: user?.account,
-              startAmount: 0.0001,
+              startAmount: price,
+              // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
+              endAmount: price,
+              expirationTime: 0
+            });
+            console.log('listing', listing);
+          }}
+          onClickMakeOffer={async (nftUrl: string, price: number) => {
+            const { tokenAddress, tokenId } = parseNftUrl(nftUrl);
+            console.log('- onClickMakeOffer: tokenAddress, tokenId, price', tokenAddress, tokenId, price);
+            const seaport = web3GetSeaport();
+            const listing = await seaport.createBuyOrder({
+              asset: {
+                tokenAddress,
+                tokenId
+              },
+              accountAddress: user?.account,
+              startAmount: price,
               // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
               // endAmount: 100,
               expirationTime: 0
             });
-            console.log('listing', listing)
+            console.log('listing', listing);
+          }}
+          onClickBuyNow={(nftUrl: string, price: number) => {
+            const { tokenAddress, tokenId } = parseNftUrl(nftUrl);
+            console.log('- onClickBuyNow: tokenAddress, tokenId, price', tokenAddress, tokenId, price);
+            const seaport = web3GetSeaport();
+            // asset_contract_address: '0x495f947276749ce646f68ac8c248420045cb7b5e',
+            // token_id: '93541831110195558149617722636526811076207680274132077301105327944255259279361',
+            // asset_contract_address: '0x4a453df93535f6baa8dc3cb1b0c032289da3bd16',
+            //     token_id: '9824',
+            // 0x719e22985111302110942ad3503e3fa104922a7b/823   0.001   purchased
+            // 0x719e22985111302110942ad3503e3fa104922a7b/825   0.001   done
+            // console.log('side: Sell', Sell);
+            seaport.api
+              .getOrder({
+                asset_contract_address: tokenAddress,
+                token_id: tokenId,
+                side: 1
+              })
+              .then(function (order: any) {
+                console.log('order', order);
+                // Important to check if the order is still available as it can have already been fulfilled by
+                // another user or cancelled by the creator
+                if (order) {
+                  // This will bring the wallet confirmation popup for the user to confirm the purchase
+                  seaport.fulfillOrder({ order: order, accountAddress: user?.account });
+                } else {
+                  // Handle when the order does not exist anymore
+                }
+              });
           }}
         />
       )}
