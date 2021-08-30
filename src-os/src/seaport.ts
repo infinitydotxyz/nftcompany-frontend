@@ -1859,7 +1859,8 @@ export class OpenSeaPort {
     const quantityBN = WyvernProtocol.toBaseUnitAmount(makeBigNumber(quantity), asset.decimals || 0)
     const wyAsset = getWyvernAsset(schema, asset, quantityBN)
 
-    const openSeaAsset: OpenSeaAsset = await this.api.getAsset(asset)
+    //const openSeaAsset: OpenSeaAsset = await this.api.getAsset(asset)
+    const openSeaAsset = undefined
 
     const taker = sellOrder
       ? sellOrder.maker
@@ -1885,7 +1886,9 @@ export class OpenSeaPort {
     const { basePrice, extra, paymentToken } = await this._getPriceParameters(OrderSide.Buy, paymentTokenAddress, expirationTime, startAmount)
     const times = this._getTimeParameters(expirationTime)
 
-    const { staticTarget, staticExtradata } = await this._getStaticCallTargetAndExtraData({ asset: openSeaAsset, useTxnOriginStaticCall: false })
+    //const { staticTarget, staticExtradata } = await this._getStaticCallTargetAndExtraData({ asset: openSeaAsset, useTxnOriginStaticCall: false })
+    const staticTarget = ''
+    const staticExtradata = ''
 
     return {
       exchange: WyvernProtocol.getExchangeContractAddress(this._networkName),
@@ -1944,7 +1947,8 @@ export class OpenSeaPort {
     const wyAsset = getWyvernAsset(schema, asset, quantityBN)
     const isPrivate = buyerAddress != NULL_ADDRESS
 
-    const openSeaAsset = await this.api.getAsset(asset)
+    //const openSeaAsset = await this.api.getAsset(asset)
+    const openSeaAsset = undefined
 
     const { totalSellerFeeBasisPoints,
             totalBuyerFeeBasisPoints,
@@ -1969,7 +1973,9 @@ export class OpenSeaPort {
       feeMethod
     } = this._getSellFeeParameters(totalBuyerFeeBasisPoints, totalSellerFeeBasisPoints, waitForHighestBid, sellerBountyBasisPoints)
 
-    const { staticTarget, staticExtradata } = await this._getStaticCallTargetAndExtraData({ asset: openSeaAsset, useTxnOriginStaticCall: waitForHighestBid })
+    //const { staticTarget, staticExtradata } = await this._getStaticCallTargetAndExtraData({ asset: openSeaAsset, useTxnOriginStaticCall: waitForHighestBid })
+    const staticTarget = ''
+    const staticExtradata = ''
 
     return {
       exchange: WyvernProtocol.getExchangeContractAddress(this._networkName),
@@ -2106,9 +2112,10 @@ export class OpenSeaPort {
       : NULL_ADDRESS
 
     // If all assets are for the same collection, use its fees
-    const asset = collection
-      ? await this.api.getAsset(assets[0])
-      : undefined
+    // const asset = collection
+    //   ? await this.api.getAsset(assets[0])
+    //   : undefined
+    const asset = undefined
     const { totalBuyerFeeBasisPoints,
             totalSellerFeeBasisPoints } = await this.computeFees({ asset, extraBountyBasisPoints, side: OrderSide.Buy })
 
@@ -2192,9 +2199,10 @@ export class OpenSeaPort {
     const isPrivate = buyerAddress != NULL_ADDRESS
 
     // If all assets are for the same collection, use its fees
-    const asset = collection
-      ? await this.api.getAsset(assets[0])
-      : undefined
+    // const asset = collection
+    //   ? await this.api.getAsset(assets[0])
+    //   : undefined
+    const asset = undefined
     const {
       totalSellerFeeBasisPoints,
       totalBuyerFeeBasisPoints,
