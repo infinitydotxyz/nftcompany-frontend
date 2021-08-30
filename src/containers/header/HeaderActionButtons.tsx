@@ -127,18 +127,11 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
             const { tokenAddress, tokenId } = parseNftUrl(nftUrl);
             console.log('- onClickBuyNow: tokenAddress, tokenId, price', tokenAddress, tokenId, price);
             const seaport = web3GetSeaport();
-            // asset_contract_address: '0x495f947276749ce646f68ac8c248420045cb7b5e',
-            // token_id: '93541831110195558149617722636526811076207680274132077301105327944255259279361',
-            // asset_contract_address: '0x4a453df93535f6baa8dc3cb1b0c032289da3bd16',
-            //     token_id: '9824',
-            // 0x719e22985111302110942ad3503e3fa104922a7b/823   0.001   purchased
-            // 0x719e22985111302110942ad3503e3fa104922a7b/825   0.001   done
-            // console.log('side: Sell', Sell);
             seaport.api
               .getOrder({
                 asset_contract_address: tokenAddress,
                 token_id: tokenId,
-                side: 1
+                side: 0
               })
               .then(function (order: any) {
                 console.log('order', order);
