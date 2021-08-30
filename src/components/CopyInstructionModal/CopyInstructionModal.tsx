@@ -7,12 +7,15 @@ const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
 
 interface IProps {
-  onClickListNFT?: () => void;
+  onClickMakeOffer?: (nftLink: string, price: number) => void;
+  onClickBuyNow?: (nftLink: string, price: number) => void;
+  onClickListNFT?: (nftLink: string, price: number) => void;
   onClose?: () => void;
 }
 
-const CopyInstructionModal: React.FC<IProps> = ({ onClickListNFT, onClose }: IProps) => {
-
+const CopyInstructionModal: React.FC<IProps> = ({ onClickListNFT, onClickMakeOffer, onClickBuyNow, onClose }: IProps) => {
+  const [nftLink, setNftLink] = React.useState('');
+  const [price, setPrice] = React.useState(0);
   return (
     <>
       {!isServer && (
@@ -57,15 +60,24 @@ const CopyInstructionModal: React.FC<IProps> = ({ onClickListNFT, onClose }: IPr
 
               <div style={{ marginBottom: 10 }}>
                 <div>Paste the NFT link here:</div>
-                <input className="input-box" placeholder="https://... (NFT Link)" />
+                <input className="input-box" onChange={(ev) => setNftLink(ev.target.value)} placeholder="https://... (NFT Link)" />
               </div>
               <div style={{ marginBottom: 20 }}>
                 <div>Price: (ETH)</div>
-                <input className="input-box" type="number" />
+                <input className="input-box" type="number" onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
               </div>
 
               <div className={styles.footer}>
-                <a className="action-btn" onClick={onClickListNFT}>&nbsp;&nbsp;&nbsp; List NFT &nbsp;&nbsp;&nbsp;</a>
+                <a className="action-btn" onClick={() => onClickListNFT && onClickListNFT(nftLink, price)}>
+                  &nbsp;&nbsp;&nbsp; List NFT &nbsp;&nbsp;&nbsp;
+                </a>
+                <a className="action-btn" onClick={() => onClickMakeOffer && onClickMakeOffer(nftLink, price)}>
+                  &nbsp;&nbsp;&nbsp; Make Offer &nbsp;&nbsp;&nbsp;
+                </a>
+                <a className="action-btn" onClick={() => onClickBuyNow && onClickBuyNow(nftLink, price)}>
+                  &nbsp;&nbsp;&nbsp; Buy Now &nbsp;&nbsp;&nbsp;
+                </a>
+
                 {/* <a className="action-btn">Buy Now</a> */}
                 <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
                   Cancel
