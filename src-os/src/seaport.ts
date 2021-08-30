@@ -2827,17 +2827,18 @@ export class OpenSeaPort {
       ? startAmount - endAmount
       : 0
     const paymentToken = tokenAddress.toLowerCase()
-    const isEther = tokenAddress == NULL_ADDRESS
-    const { tokens } = await this.api.getPaymentTokens({ address: paymentToken })
-    const token = tokens[0]
+    //const isEther = tokenAddress == NULL_ADDRESS
+    const isEther = true
+    // const { tokens } = await this.api.getPaymentTokens({ address: paymentToken })
+    // const token = tokens[0]
 
     // Validation
     if (isNaN(startAmount) || startAmount == null || startAmount < 0) {
       throw new Error(`Starting price must be a number >= 0`)
     }
-    if (!isEther && !token) {
-      throw new Error(`No ERC-20 token found for '${paymentToken}'`)
-    }
+    // if (!isEther && !token) {
+    //   throw new Error(`No ERC-20 token found for '${paymentToken}'`)
+    // }
     if (isEther && waitingForBestCounterOrder) {
       throw new Error(`English auctions must use wrapped ETH or an ERC-20 token.`)
     }
@@ -2859,18 +2860,18 @@ export class OpenSeaPort {
 
     // Note: WyvernProtocol.toBaseUnitAmount(makeBigNumber(startAmount), token.decimals)
     // will fail if too many decimal places, so special-case ether
-    const basePrice = isEther
-      ? makeBigNumber(this.web3.toWei(startAmount, 'ether')).round()
-      : WyvernProtocol.toBaseUnitAmount(makeBigNumber(startAmount), token.decimals)
+    // const basePrice = isEther
+    //   ? makeBigNumber(this.web3.toWei(startAmount, 'ether')).round()
+    //   : WyvernProtocol.toBaseUnitAmount(makeBigNumber(startAmount), token.decimals)
+    const basePrice = makeBigNumber(this.web3.toWei(startAmount, 'ether')).round()
 
-    const extra = isEther
-      ? makeBigNumber(this.web3.toWei(priceDiff, 'ether')).round()
-      : WyvernProtocol.toBaseUnitAmount(makeBigNumber(priceDiff), token.decimals)
+    // const extra = isEther
+    //   ? makeBigNumber(this.web3.toWei(priceDiff, 'ether')).round()
+    //   : WyvernProtocol.toBaseUnitAmount(makeBigNumber(priceDiff), token.decimals)
+    const extra = makeBigNumber(this.web3.toWei(priceDiff, 'ether')).round()
 
     const reservePrice = englishAuctionReservePrice
-      ? isEther
-        ? makeBigNumber(this.web3.toWei(englishAuctionReservePrice, 'ether')).round()
-        : WyvernProtocol.toBaseUnitAmount(makeBigNumber(englishAuctionReservePrice), token.decimals)
+      ? makeBigNumber(this.web3.toWei(englishAuctionReservePrice, 'ether')).round()
       : undefined
 
     return { basePrice, extra, paymentToken, reservePrice }
