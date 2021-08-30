@@ -7,10 +7,12 @@ const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
 
 interface IProps {
+  onClickListNFT?: () => void;
   onClose?: () => void;
 }
 
-const CopyInstructionModal: React.FC<IProps> = ({ onClose }: IProps) => {
+const CopyInstructionModal: React.FC<IProps> = ({ onClickListNFT, onClose }: IProps) => {
+
   return (
     <>
       {!isServer && (
@@ -63,7 +65,7 @@ const CopyInstructionModal: React.FC<IProps> = ({ onClose }: IProps) => {
               </div>
 
               <div className={styles.footer}>
-                <a className="action-btn">&nbsp;&nbsp;&nbsp; Make Offer &nbsp;&nbsp;&nbsp;</a>
+                <a className="action-btn" onClick={onClickListNFT}>&nbsp;&nbsp;&nbsp; List NFT &nbsp;&nbsp;&nbsp;</a>
                 {/* <a className="action-btn">Buy Now</a> */}
                 <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
                   Cancel

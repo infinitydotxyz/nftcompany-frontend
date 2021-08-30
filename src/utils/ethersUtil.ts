@@ -1,5 +1,10 @@
 const ethers = require('ethers');
 
+const Web3 = require('web3');
+const OpenSeaPort = require('../../src-os/src').OpenSeaPort;
+const Network = require('../../src-os/src').Network;
+const Sell = require('../../src-os/src').Sell;
+
 declare global {
   interface Window {
     ethereum: any;
@@ -38,3 +43,32 @@ export const getAccount = async () => {
   }
   return null;
 };
+
+/* ------------ web3 utils ------------ */
+
+export const web3GetCurrentProvider = () => {
+  let web3 = new Web3();
+  if (window.ethereum) {
+    web3 = new Web3(window.ethereum);
+    // try {
+    //   window.ethereum.enable().then(() => {
+    //     // User has allowed account access to DApp...
+    //   })
+    // } catch (e) {
+    //   // User has denied account access to DApp...
+    // }
+  } else if ((window as any).web3) {
+    web3 = new Web3(web3.currentProvider);
+  } else {
+    alert('You have to install MetaMask !');
+  }
+  const currentProvider = web3.currentProvider;
+  return currentProvider;
+};
+
+export const web3GetSeaport = () => {
+  const seaport = new OpenSeaPort(web3GetCurrentProvider(), {
+    networkName: Network.Main
+  });
+  return seaport;
+}

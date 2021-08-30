@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
-import { getAccount, getProvider } from 'utils/ethersUtil';
+import { getAccount, getProvider, web3GetSeaport } from 'utils/ethersUtil';
 import CopyInstructionModal from 'components/CopyInstructionModal/CopyInstructionModal';
 
 // import { OpenSeaPort, Network } from '../../../src-os/src';
@@ -65,37 +65,20 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
         {user?.account ? (
           <li
             onClick={() => {
-              let web3 = new Web3();
-              if (window.ethereum) {
-                web3 = new Web3(window.ethereum);
-                // try {
-                //   window.ethereum.enable().then(() => {
-                //     // User has allowed account access to DApp...
-                //   })
-                // } catch (e) {
-                //   // User has denied account access to DApp...
-                // }
-              } else if ((window as any).web3) {
-                web3 = new Web3(web3.currentProvider);
-              } else {
-                alert('You have to install MetaMask !');
-              }
-              const provider = web3.currentProvider;
-              // const provider = new Web3.providers.HttpProvider('https://mainnet.infura.io');
-              const seaport = new OpenSeaPort(provider, {
-                networkName: Network.Main
-              });
+              const seaport = web3GetSeaport();
+
               // asset_contract_address: '0x495f947276749ce646f68ac8c248420045cb7b5e',
               // token_id: '93541831110195558149617722636526811076207680274132077301105327944255259279361',
               // asset_contract_address: '0x4a453df93535f6baa8dc3cb1b0c032289da3bd16',
               //     token_id: '9824',
               // 0x719e22985111302110942ad3503e3fa104922a7b/823   0.001   purchased
               // 0x719e22985111302110942ad3503e3fa104922a7b/825   0.001   done
+              console.log('side: Sell', Sell);
               seaport.api
                 .getOrder({
-                  asset_contract_address: '0x719e22985111302110942ad3503e3fa104922a7b',
-                  token_id: '826',
-                  side: Sell
+                  asset_contract_address: '0x495f947276749ce646f68ac8c248420045cb7b5e',
+                  token_id: '61260615647643977170434038292545257526710893187549349159756266105589288927233',
+                  side: 1
                 })
                 .then(function (order: any) {
                   console.log('order', order);
@@ -131,7 +114,32 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
         )}
       </ul>
 
-      {copyModalShowed && <CopyInstructionModal onClose={() => setCopyModalShowed(false)} />}
+      {copyModalShowed && (
+        <CopyInstructionModal
+          onClose={() => setCopyModalShowed(false)}
+          onClickListNFT={async () => {
+            console.log('createBuyOrder');
+            const seaport = web3GetSeaport();
+            // const expirationTime = Math.round(Date.now() / 1000 + 60 * 60 * 24)
+
+            // seaport.fulfillOrder({ order: order, accountAddress: user?.account });
+
+            // 0x495f947276749ce646f68ac8c248420045cb7b5e/61260615647643977170434038292545257526710893187549349159756266105589288927233/sell
+            const listing = await seaport.createBuyOrder({
+              asset: {
+                tokenAddress: '0x719e22985111302110942ad3503e3fa104922a7b',
+                tokenId: '826'
+              },
+              accountAddress: user?.account,
+              startAmount: 0.0001,
+              // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
+              // endAmount: 100,
+              expirationTime: 0
+            });
+            console.log('listing', listing)
+          }}
+        />
+      )}
     </>
   );
 };
