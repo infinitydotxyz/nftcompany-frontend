@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 // import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
-import { web3GetSeaport } from 'utils/ethersUtil';
+import { getSchemaName, web3GetSeaport } from 'utils/ethersUtil';
 import CopyInstructionModal from 'components/CopyInstructionModal/CopyInstructionModal';
 
 const parseNftUrl = (nftUrl: string) => {
@@ -86,9 +86,10 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
       {copyModalShowed && (
         <CopyInstructionModal
           onClose={() => setCopyModalShowed(false)}
+
           onClickListNFT={async (nftUrl: string, price: number) => {
             const { tokenAddress, tokenId } = parseNftUrl(nftUrl);
-            console.log('- onClickListNFT: nftLink, price', tokenAddress, tokenId, price);
+            console.log('- onClickListNFT: nftLink, price', tokenAddress, tokenId, price, getSchemaName(tokenAddress));
             // https://opensea.io/assets/0x719e22985111302110942ad3503e3fa104922a7b/826
             // https://opensea.io/assets/0x495f947276749ce646f68ac8c248420045cb7b5e/61260615647643977170434038292545257526710893187549349159756266105589288927233/sell
 
@@ -96,7 +97,8 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
             const listing = await seaport.createSellOrder({
               asset: {
                 tokenAddress,
-                tokenId
+                tokenId,
+                schemaName: getSchemaName(tokenAddress)
               },
               accountAddress: user?.account,
               startAmount: price,
@@ -106,6 +108,7 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
             });
             console.log('listing', listing);
           }}
+
           onClickMakeOffer={async (nftUrl: string, price: number) => {
             const { tokenAddress, tokenId } = parseNftUrl(nftUrl);
             console.log('- onClickMakeOffer: tokenAddress, tokenId, price', tokenAddress, tokenId, price);
@@ -113,7 +116,8 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
             const listing = await seaport.createBuyOrder({
               asset: {
                 tokenAddress,
-                tokenId
+                tokenId,
+                schemaName: getSchemaName(tokenAddress)
               },
               accountAddress: user?.account,
               startAmount: price,
@@ -123,6 +127,7 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
             });
             console.log('listing', listing);
           }}
+          
           onClickBuyNow={(nftUrl: string, price: number) => {
             const { tokenAddress, tokenId } = parseNftUrl(nftUrl);
             console.log('- onClickBuyNow: tokenAddress, tokenId, price', tokenAddress, tokenId, price);
@@ -131,7 +136,7 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
               .getOrder({
                 asset_contract_address: tokenAddress,
                 token_id: tokenId,
-                side: 0
+                side: 1 // sell side order
               })
               .then(function (order: any) {
                 console.log('order', order);

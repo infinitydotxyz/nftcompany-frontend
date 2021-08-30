@@ -1,9 +1,11 @@
+import { add } from "lodash";
+
 const ethers = require('ethers');
 
 const Web3 = require('web3');
 const OpenSeaPort = require('../../src-os/src').OpenSeaPort;
 const Network = require('../../src-os/src').Network;
-const Sell = require('../../src-os/src').Sell;
+const WyvernSchemaName = require('../../src-os/src').WyvernSchemaName;
 
 declare global {
   interface Window {
@@ -71,4 +73,13 @@ export const web3GetSeaport = () => {
     networkName: Network.Main
   });
   return seaport;
+}
+
+export const getSchemaName = (address: string) => {
+  // opensea shared store front
+  if (address.toLowerCase() == '0x495f947276749ce646f68ac8c248420045cb7b5e') {
+    return WyvernSchemaName.ERC1155
+  } else {
+    return WyvernSchemaName.ERC721
+  }
 }

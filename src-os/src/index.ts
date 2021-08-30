@@ -1,6 +1,6 @@
 import { OpenSeaPort } from './seaport'
 import { OpenSeaAPI } from './api'
-import { Network, EventData, EventType } from './types'
+import { Network, EventData, EventType, WyvernSchemaName } from './types'
 export { orderToJSON, orderFromJSON, WyvernProtocol } from './utils/utils'
 export {
   encodeCall,
@@ -29,5 +29,5 @@ export {
   // Types to help initialize SDK and listen to events.
   // Can also be imported using e.g.
   //   import { EventType } from 'opensea-js/lib/types'
-  EventData, EventType, Network
+  EventData, EventType, Network, WyvernSchemaName
 }
