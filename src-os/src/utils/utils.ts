@@ -378,55 +378,55 @@ export const tokenFromJSON = (token: any): OpenSeaFungibleToken => {
 
 export const orderFromJSON = (order: any): Order => {
 
-  const createdDate = new Date(`${order.created_date}Z`)
+  const createdDate = new Date(`${order.createdDate}Z`)
 
   const fromJSON: Order = {
-    hash: order.order_hash || order.hash,
+    hash: order.hash,
     cancelledOrFinalized: order.cancelled || order.finalized,
-    markedInvalid: order.marked_invalid,
+    markedInvalid: order.markedInvalid,
     metadata: order.metadata,
     quantity: new BigNumber(order.quantity || 1),
     exchange: order.exchange,
     makerAccount: order.maker,
     takerAccount: order.taker,
     // Use string address to conform to Wyvern Order schema
-    maker: order.maker.address,
-    taker: order.taker.address,
-    makerRelayerFee: new BigNumber(order.maker_relayer_fee),
-    takerRelayerFee: new BigNumber(order.taker_relayer_fee),
-    makerProtocolFee: new BigNumber(order.maker_protocol_fee),
-    takerProtocolFee: new BigNumber(order.taker_protocol_fee),
-    makerReferrerFee: new BigNumber(order.maker_referrer_fee || 0),
-    waitingForBestCounterOrder: order.fee_recipient.address == NULL_ADDRESS,
-    feeMethod: order.fee_method,
-    feeRecipientAccount: order.fee_recipient,
-    feeRecipient: order.fee_recipient.address,
+    maker: order.maker,
+    taker: order.taker,
+    makerRelayerFee: new BigNumber(order.makerRelayerFee),
+    takerRelayerFee: new BigNumber(order.takerRelayerFee),
+    makerProtocolFee: new BigNumber(order.makerProtocolFee),
+    takerProtocolFee: new BigNumber(order.takerProtocolFee),
+    makerReferrerFee: new BigNumber(order.makerReferrerFee || 0),
+    waitingForBestCounterOrder: order.feeRecipient == NULL_ADDRESS,
+    feeMethod: order.feeMethod,
+    feeRecipientAccount: order.feeRecipient,
+    feeRecipient: order.feeRecipient,
     side: order.side,
-    saleKind: order.sale_kind,
+    saleKind: order.saleKind,
     target: order.target,
-    howToCall: order.how_to_call,
+    howToCall: order.howToCall,
     calldata: order.calldata,
-    replacementPattern: order.replacement_pattern,
-    staticTarget: order.static_target,
-    staticExtradata: order.static_extradata,
-    paymentToken: order.payment_token,
-    basePrice: new BigNumber(order.base_price),
+    replacementPattern: order.replacementPattern,
+    staticTarget: order.staticTarget,
+    staticExtradata: order.staticExtradata,
+    paymentToken: order.paymentToken,
+    basePrice: new BigNumber(order.basePrice),
     extra: new BigNumber(order.extra),
-    currentBounty: new BigNumber(order.current_bounty || 0),
-    currentPrice: new BigNumber(order.current_price || 0),
+    currentBounty: new BigNumber(order.currentBounty || 0),
+    currentPrice: new BigNumber(order.currentPrice || 0),
 
     createdTime: new BigNumber(Math.round(createdDate.getTime() / 1000)),
-    listingTime: new BigNumber(order.listing_time),
-    expirationTime: new BigNumber(order.expiration_time),
+    listingTime: new BigNumber(order.listingTime),
+    expirationTime: new BigNumber(order.expirationTime),
 
     salt: new BigNumber(order.salt),
     v: parseInt(order.v),
     r: order.r,
     s: order.s,
 
-    paymentTokenContract: order.payment_token_contract ? tokenFromJSON(order.payment_token_contract) : undefined,
+    paymentTokenContract: order.paymentTokenContract ? tokenFromJSON(order.paymentTokenContract) : undefined,
     asset: order.asset ? assetFromJSON(order.asset) : undefined,
-    assetBundle: order.asset_bundle ? assetBundleFromJSON(order.asset_bundle) : undefined,
+    assetBundle: order.assetBundle ? assetBundleFromJSON(order.assetBundle) : undefined,
   }
 
   // Use client-side price calc, to account for buyer fee (not added by server) and latency
@@ -434,6 +434,65 @@ export const orderFromJSON = (order: any): Order => {
 
   return fromJSON
 }
+
+// export const orderFromJSON = (order: any): Order => {
+
+//   const createdDate = new Date(`${order.created_date}Z`)
+
+//   const fromJSON: Order = {
+//     hash: order.order_hash || order.hash,
+//     cancelledOrFinalized: order.cancelled || order.finalized,
+//     markedInvalid: order.marked_invalid,
+//     metadata: order.metadata,
+//     quantity: new BigNumber(order.quantity || 1),
+//     exchange: order.exchange,
+//     makerAccount: order.maker,
+//     takerAccount: order.taker,
+//     // Use string address to conform to Wyvern Order schema
+//     maker: order.maker.address,
+//     taker: order.taker.address,
+//     makerRelayerFee: new BigNumber(order.maker_relayer_fee),
+//     takerRelayerFee: new BigNumber(order.taker_relayer_fee),
+//     makerProtocolFee: new BigNumber(order.maker_protocol_fee),
+//     takerProtocolFee: new BigNumber(order.taker_protocol_fee),
+//     makerReferrerFee: new BigNumber(order.maker_referrer_fee || 0),
+//     waitingForBestCounterOrder: order.fee_recipient.address == NULL_ADDRESS,
+//     feeMethod: order.fee_method,
+//     feeRecipientAccount: order.fee_recipient,
+//     feeRecipient: order.fee_recipient.address,
+//     side: order.side,
+//     saleKind: order.sale_kind,
+//     target: order.target,
+//     howToCall: order.how_to_call,
+//     calldata: order.calldata,
+//     replacementPattern: order.replacement_pattern,
+//     staticTarget: order.static_target,
+//     staticExtradata: order.static_extradata,
+//     paymentToken: order.payment_token,
+//     basePrice: new BigNumber(order.base_price),
+//     extra: new BigNumber(order.extra),
+//     currentBounty: new BigNumber(order.current_bounty || 0),
+//     currentPrice: new BigNumber(order.current_price || 0),
+
+//     createdTime: new BigNumber(Math.round(createdDate.getTime() / 1000)),
+//     listingTime: new BigNumber(order.listing_time),
+//     expirationTime: new BigNumber(order.expiration_time),
+
+//     salt: new BigNumber(order.salt),
+//     v: parseInt(order.v),
+//     r: order.r,
+//     s: order.s,
+
+//     paymentTokenContract: order.payment_token_contract ? tokenFromJSON(order.payment_token_contract) : undefined,
+//     asset: order.asset ? assetFromJSON(order.asset) : undefined,
+//     assetBundle: order.asset_bundle ? assetBundleFromJSON(order.asset_bundle) : undefined,
+//   }
+
+//   // Use client-side price calc, to account for buyer fee (not added by server) and latency
+//   fromJSON.currentPrice = estimateCurrentPrice(fromJSON)
+
+//   return fromJSON
+// }
 
 /**
  * Convert an order to JSON, hashing it as well if necessary

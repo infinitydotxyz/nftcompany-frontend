@@ -46,6 +46,7 @@ export const ORDERBOOK_VERSION: number = 1;
 export const API_VERSION: number = 1;
 //export const API_BASE_MAINNET = 'https://api.opensea.io';
 export const API_BASE_MAINNET = 'https://server.nftcompany.com';
+//export const API_BASE_MAINNET = 'http://localhost:9090';
 export const API_BASE_RINKEBY = 'https://testnets-api.opensea.io';
 //export const SITE_HOST_MAINNET = 'https://opensea.io';
 export const SITE_HOST_MAINNET = 'https://nftcompany.com'

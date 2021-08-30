@@ -1587,7 +1587,7 @@ export class OpenSeaPort {
     if (sellerBountyBasisPoints > 0 && bountyTooLarge) {
       let errorMessage = `Total bounty exceeds the maximum for this asset type (${maxTotalBountyBPS / 100}%).`
       if (maxTotalBountyBPS >= OPENSEA_SELLER_BOUNTY_BASIS_POINTS) {
-        errorMessage += ` Remember that OpenSea will add ${OPENSEA_SELLER_BOUNTY_BASIS_POINTS / 100}% for referrers with OpenSea accounts!`
+        errorMessage += ` Remember that we will add ${OPENSEA_SELLER_BOUNTY_BASIS_POINTS / 100}% for referrers with our accounts!`
       }
       throw new Error(errorMessage)
     }
@@ -2951,7 +2951,7 @@ export class OpenSeaPort {
 
     } catch (error) {
       console.error(`Failed atomic match with args: `, args, error)
-      throw new Error(`Oops, the Ethereum network rejected this transaction :( The OpenSea devs have been alerted, but this problem is typically due an item being locked or untransferrable. The exact error was "${error.message.substr(0, MAX_ERROR_LENGTH)}..."`)
+      throw new Error(`Oops, the Ethereum network rejected this transaction :( The devs have been alerted, but this problem is typically due an item being locked or untransferrable. The exact error was "${error.message.substr(0, MAX_ERROR_LENGTH)}..."`)
     }
 
     // Then do the transaction
