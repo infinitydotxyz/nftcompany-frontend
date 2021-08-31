@@ -22,8 +22,8 @@ export default function Preview() {
           </div>
 
           <div className={styles.main}>
-            <section className={styles.info} style={{ display: 'flex' }}>
-              <div style={{ width: '100%' }}>
+            <section className="container container-fluid grid">
+              <div className="col-md-6 col-sm-12">
                 <h3 className="tg-title">My Offers</h3>
 
                 <ul style={{ marginTop: 10 }}>
@@ -32,7 +32,7 @@ export default function Preview() {
                 </ul>
               </div>
 
-              <div style={{ width: '100%' }}>
+              <div className="col-md-6 col-sm-12">
                 <h3 className="tg-title">Offers from Others:</h3>
 
                 <ul style={{ marginTop: 10 }}>
