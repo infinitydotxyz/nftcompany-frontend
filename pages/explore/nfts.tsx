@@ -49,7 +49,7 @@ export default function Nfts() {
             </div>
             <p>&nbsp;</p>
             <div style={{ padding: 10, borderRadius: 6, border: '1px solid #eee' }}>
-              <Image alt="Instruction" src="/img/more/copy-instruction.png" width={500} height={320} />
+              <Image alt="Instruction" src="/img/more/copy-instruction.png" width={660} height={366} />
             </div>
           </div>
 

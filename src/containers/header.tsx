@@ -75,7 +75,7 @@ const Header = () => {
 
                 <li className={route === '/explore/nfts' ? 'active-link' : ''}>
                   <Link href="/explore/nfts">
-                    <a>Explore NFTs</a>
+                    <a>NFT</a>
                   </Link>
                 </li>
 
