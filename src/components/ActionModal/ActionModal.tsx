@@ -2,6 +2,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import styles from './ActionModal.module.scss';
 import Image from 'next/image';
+import { getAddressBalance } from 'utils/ethersUtil';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -13,6 +14,7 @@ export const ActionModalType = {
 };
 
 interface IProps {
+  user: any;
   type: string;
   onClickMakeOffer?: (nftLink: string, price: number) => void;
   onClickBuyNow?: (nftLink: string, price: number) => void;
@@ -20,9 +22,18 @@ interface IProps {
   onClose?: () => void;
 }
 
-const ActionModal: React.FC<IProps> = ({ type, onClickListNFT, onClickMakeOffer, onClickBuyNow, onClose }: IProps) => {
+const ActionModal: React.FC<IProps> = ({ user, type, onClickListNFT, onClickMakeOffer, onClickBuyNow, onClose }: IProps) => {
   const [nftLink, setNftLink] = React.useState('');
   const [price, setPrice] = React.useState(0);
+  const [balance, setBalance] = React.useState('');
+
+  React.useEffect(() => {
+    const getInfo = async () => {
+      const bal = await getAddressBalance(user.account);
+      setBalance(parseFloat(`${bal}`).toFixed(4));
+    }
+    getInfo();
+  }, [])
   return (
     <>
       {!isServer && (
@@ -55,13 +66,43 @@ const ActionModal: React.FC<IProps> = ({ type, onClickListNFT, onClickMakeOffer,
                 <div>Paste the NFT link here:</div>
                 <input
                   className="input-box"
+                  autoFocus
                   onChange={(ev) => setNftLink(ev.target.value)}
                   placeholder="https://... (NFT Link)"
                 />
               </div>
-              <div style={{ marginBottom: 20 }}>
-                <div>Price: (ETH)</div>
-                <input className="input-box" type="number" onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
+
+              <div className={styles.row}>
+                <ul>
+                  <li>
+                    <div>Enter price</div>
+                    <div>
+                      <input type="number" onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                  <li>
+                    <div>Your balance</div>
+                    <div>
+                      <span>{balance}</span>
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                  {/* <li>
+                    <div>Service fee</div>
+                    <div>
+                      <span>0</span>
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                  <li>
+                    <div>Total bid amount</div>
+                    <div>
+                      <span>0</span>
+                    </div>
+                    <div>ETH</div>
+                  </li> */}
+                </ul>
               </div>
 
               <div className={styles.footer}>

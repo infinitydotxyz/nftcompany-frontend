@@ -1,7 +1,8 @@
-import { add } from "lodash";
+import { add } from 'lodash';
 
 const ethers = require('ethers');
 
+// OpenSea's dependencies:
 const Web3 = require('web3');
 const OpenSeaPort = require('../../src-os/src').OpenSeaPort;
 const Network = require('../../src-os/src').Network;
@@ -34,12 +35,30 @@ export const getAccount = async () => {
   if (!window || !window.ethereum) {
     return null;
   }
+  let account = null;
   try {
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     // console.log('accounts', accounts);
     if (Array.isArray(accounts) && accounts.length > 0) {
-      return accounts[0];
+      account = accounts[0];
+
+      if (!provider) {
+        provider = new ethers.providers.Web3Provider(window.ethereum);      }
     }
+  } catch (err) {
+    console.error('ERROR:', err);
+  }
+  return account;
+};
+
+export const getAddressBalance = async (address: string) => {
+  if (!window || !window.ethereum) {
+    return null;
+  }
+  try {
+    const balance = await provider.getBalance(address);
+    const ret = ethers.utils.formatEther(balance);
+    return ret;
   } catch (err) {
     console.error('ERROR:', err);
   }
@@ -62,7 +81,7 @@ export const web3GetCurrentProvider = () => {
   } else if ((window as any).web3) {
     web3 = new Web3(web3.currentProvider);
   } else {
-    alert('You have to install MetaMask !');
+    alert('Please install the MetaMask extension first.');
   }
   const currentProvider = web3.currentProvider;
   return currentProvider;
@@ -73,13 +92,13 @@ export const web3GetSeaport = () => {
     networkName: Network.Main
   });
   return seaport;
-}
+};
 
 export const getSchemaName = (address: string) => {
   // opensea shared store front
-  if (address.toLowerCase() == '0x495f947276749ce646f68ac8c248420045cb7b5e') {
-    return WyvernSchemaName.ERC1155
+  if (address.toLowerCase() === '0x495f947276749ce646f68ac8c248420045cb7b5e') {
+    return WyvernSchemaName.ERC1155;
   } else {
-    return WyvernSchemaName.ERC721
+    return WyvernSchemaName.ERC721;
   }
-}
+};

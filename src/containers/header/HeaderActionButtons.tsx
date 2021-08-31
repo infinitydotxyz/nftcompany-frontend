@@ -76,6 +76,7 @@ const HeaderActionButtons = () => {
 
       {actionModalType && (
         <ActionModal
+          user={user}
           type={actionModalType}
           onClose={() => setActionModalType('')}
           onClickListNFT={async (nftUrl: string, price: number) => {
