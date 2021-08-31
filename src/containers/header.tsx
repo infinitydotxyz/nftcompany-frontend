@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
 import { getAccount, getProvider } from '../../src/utils/ethersUtil';
-import CopyInstructionModal from 'components/CopyInstructionModal/CopyInstructionModal';
+import ActionModal from 'components/ActionModal/ActionModal';
 
 import HeaderActionButtons from './header/HeaderActionButtons';
 import NFT from 'components/nft/nft';
@@ -17,7 +17,6 @@ const Header = () => {
   const { route } = router;
   const [user, setUser] = useState<any>(null);
   const { filter, setFilter } = useContext<any>(FilterContext);
-  const [copyModalShowed, setCopyModalShowed] = useState(false);
   console.log('filter', filter);
 
   useEffect(() => {

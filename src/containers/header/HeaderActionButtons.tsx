@@ -3,7 +3,7 @@ import Link from 'next/link';
 // import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
 import { getSchemaName, web3GetSeaport } from 'utils/ethersUtil';
-import CopyInstructionModal from 'components/CopyInstructionModal/CopyInstructionModal';
+import ActionModal, { ActionModalType } from 'components/ActionModal/ActionModal';
 
 const parseNftUrl = (nftUrl: string) => {
   const arr = nftUrl.split('0x')[1].split('/');
@@ -13,26 +13,26 @@ const parseNftUrl = (nftUrl: string) => {
 const HeaderActionButtons = ({ user }: { user: any }) => {
   const router = useRouter();
   const { route } = router;
-  const [copyModalShowed, setCopyModalShowed] = useState(false);
+  const [actionModalType, setActionModalType] = useState('');
 
   useEffect(() => {}, []);
   return (
     <>
       <ul className="links">
         <li>
-          <a className="connect-wallet" onClick={() => setCopyModalShowed(true)}>
+          <a className="connect-wallet" onClick={() => setActionModalType(ActionModalType.MakeOffer)}>
             Make Offer
           </a>
         </li>
 
         <li>
-          <a className="connect-wallet" onClick={() => setCopyModalShowed(true)}>
+          <a className="connect-wallet" onClick={() => setActionModalType(ActionModalType.BuyNow)}>
             Buy Now
           </a>
         </li>
 
         <li>
-          <a className="connect-wallet" onClick={() => setCopyModalShowed(true)}>
+          <a className="connect-wallet" onClick={() => setActionModalType(ActionModalType.ListNFT)}>
             List NFT
           </a>
         </li>
@@ -83,9 +83,10 @@ const HeaderActionButtons = ({ user }: { user: any }) => {
         )}
       </ul>
 
-      {copyModalShowed && (
-        <CopyInstructionModal
-          onClose={() => setCopyModalShowed(false)}
+      {actionModalType && (
+        <ActionModal
+          type={actionModalType}
+          onClose={() => setActionModalType('')}
 
           onClickListNFT={async (nftUrl: string, price: number) => {
             const { tokenAddress, tokenId } = parseNftUrl(nftUrl);
