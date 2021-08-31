@@ -40,7 +40,7 @@ const ActionModal: React.FC<IProps> = ({ type, onClickListNFT, onClickMakeOffer,
             <div className="modal-body">
               <div className={styles.title}>{type}</div>
 
-              <div className={styles.row}>
+              {/* <div className={styles.row}>
                 <div>
                   First, select an NFT, then get the NFT link by clicking on the &quot;Share&quot; button and{' '}
                   <strong>&quot;Copy Link&quot; button</strong> like this screenshot:
@@ -49,7 +49,7 @@ const ActionModal: React.FC<IProps> = ({ type, onClickListNFT, onClickMakeOffer,
                 <div style={{ padding: 10, borderRadius: 6, border: '1px solid #eee' }}>
                   <Image alt="Instruction" src="/img/more/copy-instruction.png" width={500} height={320} />
                 </div>
-              </div>
+              </div> */}
 
               <div style={{ marginBottom: 10 }}>
                 <div>Paste the NFT link here:</div>

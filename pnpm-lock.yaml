@@ -9,12 +9,20 @@ specifiers:
   '@types/react-dom': ^17.0.9
   '@types/web3': ^1.2.2
   axios: ^0.21.1
+  bignumber.js: ^4.1.0
   eslint: 7.31.0
   eslint-config-next: 11.1.0
+  ethereumjs-abi: git+https://github.com/ProjectWyvern/ethereumjs-abi.git
+  ethereumjs-util: ^5.2.0
   ethers: ^5.4.4
+  fbemitter: ^2.1.1
   framer-motion: ^4
+  isomorphic-unfetch: ^2.1.1
+  json-loader: ^0.5.7
+  lodash: ^4.17.4
   next: 11.1.0
   node-sass: ^5.0.0
+  query-string: ^6.11.1
   react: 17.0.2
   react-dom: 17.0.2
   react-range: ^1.8.9
@@ -30,10 +38,18 @@ dependencies:
   '@emotion/react': 11.4.0_5801e6465414ef85acbf5710ce4c0dcf
   '@emotion/styled': 11.3.0_eba624a87a3af7c0cbc57827caf9724e
   axios: 0.21.1
+  bignumber.js: 4.1.0
+  ethereumjs-abi: github.com/ProjectWyvern/ethereumjs-abi/3d2d89641a6ad5984929b6ca4b646452ec74f73d
+  ethereumjs-util: 5.2.1
   ethers: 5.4.4
+  fbemitter: 2.1.1
   framer-motion: 4.1.17_react-dom@17.0.2+react@17.0.2
+  isomorphic-unfetch: 2.1.1
+  json-loader: 0.5.7
+  lodash: 4.17.21
   next: 11.1.0_356f9603e19128c62410edc7920d2e00
   node-sass: 5.0.0
+  query-string: 6.14.1
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-range: 1.8.9_react-dom@17.0.2+react@17.0.2
@@ -65,7 +81,7 @@ packages:
       bintrees: 1.0.2
       bn.js: 4.12.0
       compare-versions: 3.6.0
-      ethereumjs-abi: 0.6.6
+      ethereumjs-abi: 0.6.8
       ethereumjs-blockstream: 2.0.7
       ethereumjs-util: 5.2.1
       find-versions: 2.0.0
@@ -2041,6 +2057,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
+  /asap/2.0.6:
+    resolution: {integrity: sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=}
+    dev: false
+
   /asn1.js/5.4.1:
     resolution: {integrity: sha512-+I//4cYPccV8LdmBLiX8CYvf9Sp3vQsrqu2QNXRcrbiWvcx/UdlFiqUJJzxRQxgsZmvhXhn4cSKeSmoFjVdupA==}
     dependencies:
@@ -3218,6 +3238,11 @@ packages:
     requiresBuild: true
     dev: true
 
+  /core-js/1.2.7:
+    resolution: {integrity: sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=}
+    deprecated: core-js@<3.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Please, upgrade your dependencies to the actual version of core-js.
+    dev: false
+
   /core-js/2.6.12:
     resolution: {integrity: sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==}
     deprecated: core-js@<3.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Please, upgrade your dependencies to the actual version of core-js.
@@ -4132,11 +4157,11 @@ packages:
       secp256k1: 4.0.2
       setimmediate: 1.0.5
 
-  /ethereumjs-abi/0.6.6:
-    resolution: {integrity: sha512-w8KubDsA/+OAuqtIR9RGsMcoZ5nhM8vxwjJAJvEIY+clhxA3BHoLG3+ClYQaQhD0n3mlDt3U5rBrmSVJvI3c8A==}
+  /ethereumjs-abi/0.6.8:
+    resolution: {integrity: sha512-Tx0r/iXI6r+lRsdvkFDlut0N08jWMnKRZ6Gkq+Nmw75lZe4e6o3EkSnkaBP5NF6+m5PTGAr9JP43N3LyeoglsA==}
     dependencies:
       bn.js: 4.12.0
-      ethereumjs-util: 5.2.1
+      ethereumjs-util: 6.2.1
     dev: false
 
   /ethereumjs-account/2.0.5:
@@ -4435,6 +4460,24 @@ packages:
       reusify: 1.0.4
     dev: true
 
+  /fbemitter/2.1.1:
+    resolution: {integrity: sha1-Uj4U/a9SSIBbsC9i78M75wP1GGU=}
+    dependencies:
+      fbjs: 0.8.17
+    dev: false
+
+  /fbjs/0.8.17:
+    resolution: {integrity: sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=}
+    dependencies:
+      core-js: 1.2.7
+      isomorphic-fetch: 2.2.1
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      promise: 7.3.1
+      setimmediate: 1.0.5
+      ua-parser-js: 0.7.28
+    dev: false
+
   /fetch-ponyfill/4.1.0:
     resolution: {integrity: sha1-rjzl9zLGReq4fkroeTQUcJsjmJM=}
     dependencies:
@@ -4468,6 +4511,11 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       to-regex-range: 5.0.1
+
+  /filter-obj/1.1.0:
+    resolution: {integrity: sha1-mzERErxsYSehbgFsbF1/GeCAXFs=}
+    engines: {node: '>=0.10.0'}
+    dev: false
 
   /find-cache-dir/3.3.1:
     resolution: {integrity: sha512-t2GDMt3oGC/v+BMwzmllWDuJF/xcDtE5j/fCGbqDD7OLuJkj0cfh1YSA5VKPvwMeLFLNDBkwOKZ2X85jGLVftQ==}
@@ -5349,6 +5397,20 @@ packages:
   /isobject/3.0.1:
     resolution: {integrity: sha1-TkMekrEalzFjaqH5yNHMvP2reN8=}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /isomorphic-fetch/2.2.1:
+    resolution: {integrity: sha1-YRrhrPFPXoH3KVB0coGf6XM1WKk=}
+    dependencies:
+      node-fetch: 1.7.3
+      whatwg-fetch: 3.6.2
+    dev: false
+
+  /isomorphic-unfetch/2.1.1:
+    resolution: {integrity: sha512-nd8AULy4i2rA8dv0nOBT9xieIegd3xi7NDxTQ9+iNXDTyaG6VbUYW3F+TdMRqxqXhDFWM2k7fttKx9W2Wd8JpQ==}
+    dependencies:
+      node-fetch: 2.6.1
+      unfetch: 3.1.2
     dev: false
 
   /isstream/0.1.2:
@@ -6715,6 +6777,12 @@ packages:
       set-immediate-shim: 1.0.1
     dev: false
 
+  /promise/7.3.1:
+    resolution: {integrity: sha512-nolQXZ/4L+bP/UGlkfaIujX9BKxGwmQ9OT4mOt5yvy8iK1h3wqTEJCijzGANTCCl9nWjY41juyAn2K3Q1hLLTg==}
+    dependencies:
+      asap: 2.0.6
+    dev: false
+
   /prop-types/15.7.2:
     resolution: {integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==}
     dependencies:
@@ -6760,6 +6828,16 @@ packages:
   /qs/6.5.2:
     resolution: {integrity: sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==}
     engines: {node: '>=0.6'}
+    dev: false
+
+  /query-string/6.14.1:
+    resolution: {integrity: sha512-XDxAeVmpfu1/6IjyT/gXHOl+S0vQ9owggJ30hhWKdHAsNPOcasn5o9BW0eejZqL2e4vMjhAxoW3jVHcD6mbcYw==}
+    engines: {node: '>=6'}
+    dependencies:
+      decode-uri-component: 0.2.0
+      filter-obj: 1.1.0
+      split-on-first: 1.1.0
+      strict-uri-encode: 2.0.0
     dev: false
 
   /querystring-es3/0.2.1:
@@ -7656,6 +7734,11 @@ packages:
   /spdx-license-ids/3.0.9:
     resolution: {integrity: sha512-Ki212dKK4ogX+xDo4CtOZBVIwhsKBEfsEEcwmJfLQzirgc2jIWdzg40Unxz/HzEUqM1WFzVlQSMF9kZZ2HboLQ==}
 
+  /split-on-first/1.1.0:
+    resolution: {integrity: sha512-43ZssAJaMusuKWL8sKUBQXHWOpq8d6CfN/u1p4gUzfJkM05C8rxTmYrkIPTXapZpORA6LkkzcUulJ8FqA7Uudw==}
+    engines: {node: '>=6'}
+    dev: false
+
   /split-string/3.1.0:
     resolution: {integrity: sha512-NzNVhJDYpwceVVii8/Hu6DKfD2G+NrQHlS/V/qgv763EYudVwEcMQNxd2lh+0VrUByXN/oJkl5grOhYWvQUYiw==}
     engines: {node: '>=0.10.0'}
@@ -7745,6 +7828,11 @@ packages:
     resolution: {integrity: sha1-FhhUhpRCACGhGC/wrxkRwSl2F3M=}
     dependencies:
       debug: 2.6.9
+    dev: false
+
+  /strict-uri-encode/2.0.0:
+    resolution: {integrity: sha1-ucczDHBChi9rFC3CdLvMWGbONUY=}
+    engines: {node: '>=4'}
     dev: false
 
   /string-hash/1.1.3:
@@ -8331,6 +8419,10 @@ packages:
     hasBin: true
     dev: true
 
+  /ua-parser-js/0.7.28:
+    resolution: {integrity: sha512-6Gurc1n//gjp9eQNXjD9O3M/sMwVtN5S8Lv9bvOYBfKfDNiIIhqiyi01vMBO45u4zkDE420w/e0se7Vs+sIg+g==}
+    dev: false
+
   /uglify-js/2.8.29:
     resolution: {integrity: sha1-KcVzMUgFe7Th913zW3qcty5qWd0=}
     engines: {node: '>=0.8.0'}
@@ -8374,6 +8466,10 @@ packages:
       has-bigints: 1.0.1
       has-symbols: 1.0.2
       which-boxed-primitive: 1.0.2
+
+  /unfetch/3.1.2:
+    resolution: {integrity: sha512-L0qrK7ZeAudGiKYw6nzFjnJ2D5WHblUBwmHIqtPS6oKUd+Hcpk7/hKsSmcHsTlpd1TbTNsiRBUKRq3bHLNIqIw==}
+    dev: false
 
   /union-value/1.0.1:
     resolution: {integrity: sha512-tJfXmxMeWYnczCVs7XAEvIV7ieppALdyepWMkHkwciRpZraG/xwT+s2JN8+pr1+8jCRf80FFzvr+MpQeeoF4Xg==}
@@ -8647,6 +8743,10 @@ packages:
       watchpack: 1.7.5
       webpack-sources: 1.4.3
       yargs: 8.0.2
+    dev: false
+
+  /whatwg-fetch/3.6.2:
+    resolution: {integrity: sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==}
     dev: false
 
   /whatwg-url/7.1.0:
