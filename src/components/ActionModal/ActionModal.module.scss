@@ -28,8 +28,9 @@
           font-weight: bold;
         }
         input {
-          background-color: rgb(245, 245, 245);
-          box-shadow: 3px 3px 3px #eee;
+          bpadding: 5px 10px;
+          border: 1px solid #aaa;
+          border-radius: 4px;
         }
       }
     }

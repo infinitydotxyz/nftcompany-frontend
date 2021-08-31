@@ -49,3 +49,12 @@
 	}
 }
 
+.actions {
+  display: flex;
+  list-style-type: none;
+  margin-top: 20px;
+
+  li {
+    margin-right: 20px;
+  }
+}

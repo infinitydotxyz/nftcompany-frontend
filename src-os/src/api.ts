@@ -360,7 +360,13 @@ export class OpenSeaAPI {
 
     const apiBase = this.apiBaseUrl
     const apiKey = this.apiKey
-    const finalUrl = apiBase + apiPath
+    let finalUrl = ''
+    if (apiPath.indexOf('/assets/') > 0 || apiPath.indexOf('/asset/') > 0 || apiPath.indexOf('/tokens/') > 0) {
+      finalUrl = 'https://api.opensea.io' + apiPath
+    } else {
+      finalUrl = apiBase + apiPath
+    }
+    // const finalUrl = apiBase + apiPath
     const finalOpts = {
       ...opts,
       headers: {

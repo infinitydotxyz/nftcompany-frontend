@@ -115,7 +115,8 @@ export class OpenSeaPort {
     this._emitter = new EventEmitter()
 
     // Debugging: default to nothing
-    this.logger = logger || ((arg: string) => arg)
+    this.logger = console.log
+    //this.logger = logger || ((arg: string) => arg)
   }
 
   /**
@@ -1452,29 +1453,34 @@ export class OpenSeaPort {
     ): Promise<BigNumber> {
     const schema = this._getSchema(asset.schemaName)
     const wyAsset = getWyvernAsset(schema, asset)
-
+    console.log('Getting asset balance for', accountAddress)
     if (schema.functions.countOf) {
       // ERC20 or ERC1155 (non-Enjin)
-
+      console.log('ERC 20 or ERC 1155')
       const abi = schema.functions.countOf(wyAsset)
       const contract = this._getClientsForRead(retries).web3.eth.contract([abi as Web3.FunctionAbi]).at(abi.target)
       const inputValues = abi.inputs.filter(x => x.value !== undefined).map(x => x.value)
-      const count = await promisifyCall<BigNumber>(c => contract[abi.name].call(accountAddress, ...inputValues, c))
+      console.log('abi, contract, inputValues, abiName, abiTarget', abi, contract, inputValues, abi.name, abi.target)
 
+      const count = await promisifyCall<BigNumber>(c => contract[abi.name].call(accountAddress, ...inputValues, c))
+      console.log('Balance is', count)
       if (count !== undefined) {
         return count
       }
 
     } else if (schema.functions.ownerOf) {
       // ERC721 asset
-
+      console.log('ERC 721')
       const abi = schema.functions.ownerOf(wyAsset)
       const contract = this._getClientsForRead(retries).web3.eth.contract([abi as Web3.FunctionAbi]).at(abi.target)
       if (abi.inputs.filter(x => x.value === undefined)[0]) {
         throw new Error("Missing an argument for finding the owner of this asset")
       }
       const inputValues = abi.inputs.map(i => i.value.toString())
+      console.log('abi, contract, inputValues, abiName, abiTarget', abi, contract, inputValues, abi.name, abi.target)
+
       const owner = await promisifyCall<string>(c => contract[abi.name].call(...inputValues, c))
+      console.log('Owner is', owner)
       if (owner) {
         return owner.toLowerCase() == accountAddress.toLowerCase()
           ? new BigNumber(1)
@@ -1587,7 +1593,7 @@ export class OpenSeaPort {
     if (sellerBountyBasisPoints > 0 && bountyTooLarge) {
       let errorMessage = `Total bounty exceeds the maximum for this asset type (${maxTotalBountyBPS / 100}%).`
       if (maxTotalBountyBPS >= OPENSEA_SELLER_BOUNTY_BASIS_POINTS) {
-        errorMessage += ` Remember that OpenSea will add ${OPENSEA_SELLER_BOUNTY_BASIS_POINTS / 100}% for referrers with OpenSea accounts!`
+        errorMessage += ` Remember that we will add ${OPENSEA_SELLER_BOUNTY_BASIS_POINTS / 100}% for referrers with our accounts!`
       }
       throw new Error(errorMessage)
     }
@@ -1859,7 +1865,8 @@ export class OpenSeaPort {
     const quantityBN = WyvernProtocol.toBaseUnitAmount(makeBigNumber(quantity), asset.decimals || 0)
     const wyAsset = getWyvernAsset(schema, asset, quantityBN)
 
-    const openSeaAsset: OpenSeaAsset = await this.api.getAsset(asset)
+    //const openSeaAsset: OpenSeaAsset = await this.api.getAsset(asset)
+    const openSeaAsset = undefined
 
     const taker = sellOrder
       ? sellOrder.maker
@@ -1885,7 +1892,9 @@ export class OpenSeaPort {
     const { basePrice, extra, paymentToken } = await this._getPriceParameters(OrderSide.Buy, paymentTokenAddress, expirationTime, startAmount)
     const times = this._getTimeParameters(expirationTime)
 
-    const { staticTarget, staticExtradata } = await this._getStaticCallTargetAndExtraData({ asset: openSeaAsset, useTxnOriginStaticCall: false })
+    //const { staticTarget, staticExtradata } = await this._getStaticCallTargetAndExtraData({ asset: openSeaAsset, useTxnOriginStaticCall: false })
+    const staticTarget = NULL_ADDRESS
+    const staticExtradata = '0x'
 
     return {
       exchange: WyvernProtocol.getExchangeContractAddress(this._networkName),
@@ -1944,7 +1953,8 @@ export class OpenSeaPort {
     const wyAsset = getWyvernAsset(schema, asset, quantityBN)
     const isPrivate = buyerAddress != NULL_ADDRESS
 
-    const openSeaAsset = await this.api.getAsset(asset)
+    //const openSeaAsset = await this.api.getAsset(asset)
+    const openSeaAsset = undefined
 
     const { totalSellerFeeBasisPoints,
             totalBuyerFeeBasisPoints,
@@ -1969,7 +1979,9 @@ export class OpenSeaPort {
       feeMethod
     } = this._getSellFeeParameters(totalBuyerFeeBasisPoints, totalSellerFeeBasisPoints, waitForHighestBid, sellerBountyBasisPoints)
 
-    const { staticTarget, staticExtradata } = await this._getStaticCallTargetAndExtraData({ asset: openSeaAsset, useTxnOriginStaticCall: waitForHighestBid })
+    //const { staticTarget, staticExtradata } = await this._getStaticCallTargetAndExtraData({ asset: openSeaAsset, useTxnOriginStaticCall: waitForHighestBid })
+    const staticTarget = NULL_ADDRESS
+    const staticExtradata = '0x'
 
     return {
       exchange: WyvernProtocol.getExchangeContractAddress(this._networkName),
@@ -2106,9 +2118,10 @@ export class OpenSeaPort {
       : NULL_ADDRESS
 
     // If all assets are for the same collection, use its fees
-    const asset = collection
-      ? await this.api.getAsset(assets[0])
-      : undefined
+    // const asset = collection
+    //   ? await this.api.getAsset(assets[0])
+    //   : undefined
+    const asset = undefined
     const { totalBuyerFeeBasisPoints,
             totalSellerFeeBasisPoints } = await this.computeFees({ asset, extraBountyBasisPoints, side: OrderSide.Buy })
 
@@ -2192,9 +2205,10 @@ export class OpenSeaPort {
     const isPrivate = buyerAddress != NULL_ADDRESS
 
     // If all assets are for the same collection, use its fees
-    const asset = collection
-      ? await this.api.getAsset(assets[0])
-      : undefined
+    // const asset = collection
+    //   ? await this.api.getAsset(assets[0])
+    //   : undefined
+    const asset = undefined
     const {
       totalSellerFeeBasisPoints,
       totalBuyerFeeBasisPoints,
@@ -2656,8 +2670,9 @@ export class OpenSeaPort {
     const minAmount = new BigNumber('quantity' in wyAsset
       ? wyAsset.quantity
       : 1)
-
+    
     const accountBalance = await this.getAssetBalance({ accountAddress, asset })
+    console.log('Account balance', accountBalance)
     if (accountBalance.greaterThanOrEqualTo(minAmount)) {
       return true
     }
@@ -2665,6 +2680,7 @@ export class OpenSeaPort {
     proxyAddress = proxyAddress || await this._getProxy(accountAddress)
     if (proxyAddress) {
       const proxyBalance = await this.getAssetBalance({ accountAddress: proxyAddress, asset })
+      console.log('Proxy balance', proxyBalance)
       if (proxyBalance.greaterThanOrEqualTo(minAmount)) {
         return true
       }
@@ -2828,8 +2844,12 @@ export class OpenSeaPort {
       : 0
     const paymentToken = tokenAddress.toLowerCase()
     const isEther = tokenAddress == NULL_ADDRESS
-    const { tokens } = await this.api.getPaymentTokens({ address: paymentToken })
-    const token = tokens[0]
+    // const { tokens } = await this.api.getPaymentTokens({ address: paymentToken })
+    // const token = tokens[0]
+    const token = {
+      address: tokenAddress,
+      decimals: 18
+    }
 
     // Validation
     if (isNaN(startAmount) || startAmount == null || startAmount < 0) {
@@ -2868,9 +2888,7 @@ export class OpenSeaPort {
       : WyvernProtocol.toBaseUnitAmount(makeBigNumber(priceDiff), token.decimals)
 
     const reservePrice = englishAuctionReservePrice
-      ? isEther
-        ? makeBigNumber(this.web3.toWei(englishAuctionReservePrice, 'ether')).round()
-        : WyvernProtocol.toBaseUnitAmount(makeBigNumber(englishAuctionReservePrice), token.decimals)
+      ? makeBigNumber(this.web3.toWei(englishAuctionReservePrice, 'ether')).round()
       : undefined
 
     return { basePrice, extra, paymentToken, reservePrice }
@@ -2888,7 +2906,7 @@ export class OpenSeaPort {
       { buy, sell, accountAddress, metadata = NULL_BLOCK_HASH }:
       { buy: Order; sell: Order; accountAddress: string; metadata?: string }
     ) {
-      console.log('_atomicMatch', buy, sell);
+    console.log('_atomicMatch', buy, sell);
     let value
     let shouldValidateBuy = true
     let shouldValidateSell = true
@@ -2917,7 +2935,6 @@ export class OpenSeaPort {
 
     let txHash
     const txnData: any = { from: accountAddress, value }
-    console.log('buy', buy.feeRecipient, ' ', sell.feeRecipient);
     const args: WyvernAtomicMatchParameters = [
       [buy.exchange, buy.maker, buy.taker, buy.feeRecipient, buy.target,
       buy.staticTarget, buy.paymentToken, sell.exchange, sell.maker, sell.taker, sell.feeRecipient, sell.target, sell.staticTarget, sell.paymentToken],
@@ -2942,16 +2959,17 @@ export class OpenSeaPort {
       ]
     ]
 
+    console.log('Txn data', txnData)
     // Estimate gas first
     try {
       // Typescript splat doesn't typecheck
       const gasEstimate = await this._wyvernProtocolReadOnly.wyvernExchange.atomicMatch_.estimateGasAsync(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], txnData)
-
+      console.log('Gas estimate', gasEstimate)
       txnData.gas = this._correctGasAmount(gasEstimate)
 
     } catch (error) {
       console.error(`Failed atomic match with args: `, args, error)
-      throw new Error(`Oops, the Ethereum network rejected this transaction :( The OpenSea devs have been alerted, but this problem is typically due an item being locked or untransferrable. The exact error was "${error.message.substr(0, MAX_ERROR_LENGTH)}..."`)
+      throw new Error(`Oops, the Ethereum network rejected this transaction :( The devs have been alerted, but this problem is typically due an item being locked or untransferrable. The exact error was "${error.message.substr(0, MAX_ERROR_LENGTH)}..."`)
     }
 
     // Then do the transaction
@@ -2975,9 +2993,8 @@ export class OpenSeaPort {
   private async _getRequiredAmountForTakingSellOrder(sell: Order) {
     const currentPrice = await this.getCurrentPrice(sell)
     const estimatedPrice = estimateCurrentPrice(sell)
-
     const maxPrice = BigNumber.max(currentPrice, estimatedPrice)
-
+    console.log('Current price ' + currentPrice + ' estimated price ' + estimatedPrice + ' max price ' + maxPrice)
     // TODO Why is this not always a big number?
     sell.takerRelayerFee = makeBigNumber(sell.takerRelayerFee)
     const feePercentage = sell.takerRelayerFee.div(INVERSE_BASIS_POINT)
@@ -3017,6 +3034,7 @@ export class OpenSeaPort {
     if (!schema) {
       throw new Error(`Trading for this asset (${schemaName_}) is not yet supported. Please contact us or check back later!`)
     }
+    console.log('Schema', schema)
     return schema
   }
 
