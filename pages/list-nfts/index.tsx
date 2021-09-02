@@ -7,13 +7,27 @@ import CardList from 'components/Card/CardList';
 import { sampleData, dummyFetch } from 'utils/apiUtil';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
+import apiData from './data.json'
 
 const tabTitles = ['Owned NFTs 🎨', 'Listed NFTs 🔥'];
+
+const nftData = apiData.data.items.find(item => item.nft_data)?.nft_data || [];
+const nftList = nftData.map(item => {
+  return {
+    id: item.token_id,
+    title: item.external_data.name,
+    description: item.external_data.description,
+    price: 0.1,
+    inStock: 1,
+    img: item.external_data.image_512
+  }
+})
 
 export default function ListNFTs() {
   const [tabIndex, setTabIndex] = useState(1);
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  console.log('- nftData', nftData);
 
   const title = React.useMemo(() => {
     return tabTitles[tabIndex];
@@ -74,7 +88,7 @@ export default function ListNFTs() {
           </div>
 
           <div className={styles.main}>
-            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={sampleData} />}
+            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={nftList} />}
           </div>
         </div>
       </div>
