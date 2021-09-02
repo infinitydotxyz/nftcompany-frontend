@@ -85,6 +85,12 @@ const Header = () => {
                   </Link>
                 </li>
 
+                <li className={route === '/offers' ? 'active-link' : ''}>
+                  <Link href="/list-nfts">
+                    <a>List NFTs</a>
+                  </Link>
+                </li>
+
                 {user?.account ? (
                   <li>
                     <a className="connect-wallet">{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</a>
