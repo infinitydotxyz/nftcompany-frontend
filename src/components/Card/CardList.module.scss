@@ -105,17 +105,29 @@
       font-weight: 700;
       text-transform: uppercase;
       color: #45b26b;
+      height: 100%;
     }
   }
 }
 
-@media (max-width: 768px) {
+@media only screen and (max-width: 767px) {
   .cardList {
     grid-gap: 16px;
 
     .card {
-      flex: 0 0 calc(98% - 32px);
+      flex: 0 0 calc(98% - 32px); /* 1-card layout */
       max-width: calc(98% - 32px);
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .cardList {
+    grid-gap: 16px;
+
+    .card {
+      flex: 0 0 calc(48% - 32px); /* 2-card layout */
+      max-width: calc(48% - 32px);
     }
   }
 }
