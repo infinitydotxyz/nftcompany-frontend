@@ -5,14 +5,15 @@ import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import { sampleData, dummyFetch } from 'utils/apiUtil';
+import { web3GetSeaport } from 'utils/ethersUtil';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
-import apiData from './data.json'
+import apiData from './data.json';
 
 const tabTitles = ['Owned NFTs 🎨', 'Listed NFTs 🔥'];
 
-const nftData = apiData.data.items.find(item => item.nft_data)?.nft_data || [];
-const nftList = nftData.map(item => {
+const nftData = apiData.data.items.find((item) => item.nft_data)?.nft_data || [];
+const nftList = nftData.map((item) => {
   return {
     id: item.token_id,
     title: item.external_data.name,
@@ -20,11 +21,11 @@ const nftList = nftData.map(item => {
     price: 0.1,
     inStock: 1,
     img: item.external_data.image_512
-  }
-})
+  };
+});
 
 export default function ListNFTs() {
-  const [tabIndex, setTabIndex] = useState(1);
+  const [tabIndex, setTabIndex] = useState(0);
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   console.log('- nftData', nftData);
@@ -39,8 +40,23 @@ export default function ListNFTs() {
       await dummyFetch();
       await setIsFetching(false);
     };
+    const web3GetListedNFTs = async () => {
+      try {
+        const seaport = web3GetSeaport();
+        const res = await seaport.api.getAssets({
+          asset_contract_address: '0x495f947276749ce646f68ac8c248420045cb7b5e'
+        });
+        console.log('res', res);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
     fetchData();
-  }, []);
+    console.log('fetchData');
+
+    web3GetListedNFTs();
+  }, [tabIndex]);
   return (
     <>
       <Head>
@@ -88,7 +104,17 @@ export default function ListNFTs() {
           </div>
 
           <div className={styles.main}>
-            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={nftList} />}
+            {tabIndex == 0 ? (
+              isFetching ? (
+                <Spinner size="md" color="gray.800" />
+              ) : (
+                <CardList data={nftList} />
+              )
+            ) : isFetching ? (
+              <Spinner size="md" color="gray.800" />
+            ) : (
+              <CardList data={nftList} />
+            )}
           </div>
         </div>
       </div>
