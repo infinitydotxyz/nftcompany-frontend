@@ -8,7 +8,8 @@ import { sampleData, dummyFetch } from 'utils/apiUtil';
 import { web3GetSeaport } from 'utils/ethersUtil';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
-import apiData from './data.json';
+import assetsData from './mock-os-assets.json';
+import apiData from './mock-cov-data.json';
 
 const tabTitles = ['Owned NFTs 🎨', 'Listed NFTs 🔥'];
 
@@ -28,6 +29,7 @@ export default function ListNFTs() {
   const [tabIndex, setTabIndex] = useState(0);
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const [data, setData] = useState<any>([]);
   console.log('- nftData', nftData);
 
   const title = React.useMemo(() => {
@@ -39,8 +41,10 @@ export default function ListNFTs() {
       await setIsFetching(true);
       await dummyFetch();
       await setIsFetching(false);
+      setData(nftList);
     };
     const web3GetListedNFTs = async () => {
+      console.log('web3GetListedNFTs');
       try {
         const seaport = web3GetSeaport();
         const res = await seaport.api.getAssets({
@@ -50,12 +54,25 @@ export default function ListNFTs() {
       } catch (e) {
         console.error(e);
       }
+      // TODO: remove mock data
+      const data = (assetsData?.assets || []).map((item: any) => {
+        return {
+          name: item.name,
+          description: item.description,
+          img: item.image_preview_url,
+          inStock: 1,
+          price: 0.1
+        };
+      });
+      setData(data);
     };
 
-    fetchData();
-    console.log('fetchData');
-
-    web3GetListedNFTs();
+    if (tabIndex === 0) {
+      fetchData();
+      console.log('fetchData');
+    } else if (tabIndex === 1) {
+      web3GetListedNFTs();
+    }
   }, [tabIndex]);
   return (
     <>
@@ -108,12 +125,12 @@ export default function ListNFTs() {
               isFetching ? (
                 <Spinner size="md" color="gray.800" />
               ) : (
-                <CardList data={nftList} />
+                <CardList data={data} />
               )
             ) : isFetching ? (
               <Spinner size="md" color="gray.800" />
             ) : (
-              <CardList data={nftList} />
+              <CardList data={data} />
             )}
           </div>
         </div>
