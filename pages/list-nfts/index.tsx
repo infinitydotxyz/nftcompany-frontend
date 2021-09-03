@@ -10,6 +10,7 @@ import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import assetsData from './mock-os-assets.json';
 import apiData from './mock-cov-data.json';
+import unmarshalData from './mock-um-assets.json'
 
 const tabTitles = ['Owned NFTs 🎨', 'Listed NFTs 🔥'];
 
@@ -24,13 +25,30 @@ const nftList = nftData.map((item) => {
     img: item.external_data.image_512
   };
 });
+const assetList = unmarshalData.map((item) => {
+  try {
+    const details = JSON.parse(item.issuer_specific_data.entire_response).result.data;
+    const obj = {
+      id: item.token_id,
+      title: details.name,
+      description: details.description,
+      price: 0.1,
+      inStock: 1,
+      img: details['small_image'],
+      data: { ...item, details }
+    };
+    console.log('obj', obj);
+    return obj;
+  } catch(e) {
+    return null;
+  }
+});
 
 export default function ListNFTs() {
   const [tabIndex, setTabIndex] = useState(0);
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
-  console.log('- nftData', nftData);
 
   const title = React.useMemo(() => {
     return tabTitles[tabIndex];
@@ -41,7 +59,7 @@ export default function ListNFTs() {
       await setIsFetching(true);
       await dummyFetch();
       await setIsFetching(false);
-      setData(nftList);
+      setData(assetList);
     };
     const web3GetListedNFTs = async () => {
       console.log('web3GetListedNFTs');

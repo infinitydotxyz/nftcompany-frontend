@@ -10,6 +10,9 @@ export default function CardList({ data, viewInfo }: Props) {
   return (
     <div className={styles.cardList}>
       {(data || []).map((item) => {
+        if (!item) {
+          return null;
+        }
         return <Card key={item?.id} data={item} viewInfo={viewInfo} />;
       })}
     </div>

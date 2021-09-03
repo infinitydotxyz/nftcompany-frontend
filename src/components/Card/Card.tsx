@@ -11,6 +11,7 @@ export type CardData = {
   price?: number;
   inStock?: number;
   viewInfo?: boolean;
+  data?: any;
 };
 
 type Props = {
