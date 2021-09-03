@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
 import { getAccount, getProvider } from '../../src/utils/ethersUtil';
+import NavBar from 'components/NavBar/NavBar';
 import ActionModal from 'components/ActionModal/ActionModal';
 
 import HeaderActionButtons from './header/HeaderActionButtons';
@@ -73,7 +74,21 @@ const Header = () => {
               <ul className="links">
                 {/* <HeaderActionButtons user={user} /> */}
 
-                <li className={route === '/explore/nfts' ? 'active-link' : ''}>
+                <NavBar
+                  items={[
+                    { title: 'NFT', link: '/explore/nfts' },
+                    { title: 'Bids & Offers', link: '/offers' },
+                    { title: 'Owned NFTs', link: '/list-nfts' },
+                    { title: 'List NFTs', link: '/list-nfts' }
+                  ]}
+                  active={['/explore/nfts', '/offers', '/list-nfts'].indexOf(route)}
+                  onClickItem={(item, idx) => {
+                    router.push(item.link || '');
+                  }}
+                />
+
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                {/* <li className={route === '/explore/nfts' ? 'active-link' : ''}>
                   <Link href="/explore/nfts">
                     <a>NFT</a>
                   </Link>
@@ -85,11 +100,11 @@ const Header = () => {
                   </Link>
                 </li>
 
-                <li className={route === '/offers' ? 'active-link' : ''}>
+                <li className={route === '/list-nfts' ? 'active-link' : ''}>
                   <Link href="/list-nfts">
                     <a>List NFTs</a>
                   </Link>
-                </li>
+                </li> */}
 
                 {user?.account ? (
                   <li>

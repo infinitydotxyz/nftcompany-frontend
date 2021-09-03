@@ -87,7 +87,7 @@ export default function ListNFTs() {
             </div>
 
             <div className="center">
-              <ul className="links">
+              {/* <ul className="links">
                 <li>
                   <a onClick={() => setTabIndex(0)} className={tabIndex === 0 ? 'active' : ''} href="#">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -114,7 +114,7 @@ export default function ListNFTs() {
                     {tabTitles[1].slice(0, -2)}
                   </a>
                 </li>
-              </ul>
+              </ul> */}
             </div>
 
             <div className="left">{/* TBD */}</div>

@@ -113,13 +113,14 @@ svg {
   align-items: center;
   padding: 8px 16px;
 
-  background: #4047ff;
+  /* background: #4047ff; */
+  /* color: #ffffff; */
+  color: #333;
+
   box-shadow: 0px 18px 20px rgba(64, 71, 255, 0.15);
   border-radius: 60px;
 
   cursor: pointer;
-
-  color: #ffffff;
 
   font-weight: bold;
 
@@ -127,6 +128,7 @@ svg {
   order: 1;
   flex-grow: 0;
   margin: 0;
+  margin-left: 20px;
 
   transition: 0.2s ease-in-out;
 }
@@ -144,7 +146,8 @@ svg {
 }
 
 .connect-wallet:hover {
-  background-color: #2429ad;
+  /* background-color: #2429ad; */
+  background-color: #eee;
 }
 
 @media (max-width: 767px) {
