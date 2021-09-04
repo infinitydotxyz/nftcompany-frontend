@@ -56,6 +56,7 @@ export default function ListNFTs() {
     };
     const web3GetListedNFTs = async () => {
       console.log('web3GetListedNFTs');
+      await setIsFetching(true);
       try {
         const seaport = web3GetSeaport();
         const res = await seaport.api.getAssets({
@@ -75,6 +76,7 @@ export default function ListNFTs() {
           price: 0.1
         };
       });
+      await setIsFetching(false);
       setData(data);
     };
     web3GetListedNFTs();
