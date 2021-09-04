@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import NFTModal from 'components/nft/NFTModal';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
+import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import styles from './CardList.module.scss';
 
 export type CardData = {
@@ -17,10 +18,11 @@ export type CardData = {
 type Props = {
   data: CardData;
   onClickPlaceBid?: () => void;
+  onClickAction?: (item: any, action: string) => any;
   [key: string]: any;
 };
 
-function Card({ data, onClickPlaceBid, viewInfo, ...rest }: Props) {
+function Card({ data, onClickPlaceBid, onClickAction, viewInfo, ...rest }: Props) {
   const [modalShowed, setModalShowed] = useState(false);
 
   if (!data) {
@@ -44,13 +46,16 @@ function Card({ data, onClickPlaceBid, viewInfo, ...rest }: Props) {
               data-effect="mfp-zoom-in"
               onClick={(ev) => {
                 ev.preventDefault();
-                if (onClickPlaceBid) {
-                  onClickPlaceBid();
+                // if (onClickPlaceBid) {
+                //   onClickPlaceBid();
+                // }
+                if (onClickAction) {
+                  onClickAction(data, 'LIST_NFT')
                 }
                 setModalShowed(true);
               }}
             >
-              <span>Place a bid</span>
+              <span>List NFT</span>
             </a>
           </div>
         </div>
@@ -77,7 +82,10 @@ function Card({ data, onClickPlaceBid, viewInfo, ...rest }: Props) {
           onClose={() => setModalShowed(false)}
         />
       )} */}
-      {modalShowed && <PlaceBidModal onClose={() => setModalShowed(false)} />}
+
+      {/* {modalShowed && <PlaceBidModal onClose={() => setModalShowed(false)} />} */}
+
+      {modalShowed && <ListNFTModal onClose={() => setModalShowed(false)} />}
     </div>
   );
 }

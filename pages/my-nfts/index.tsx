@@ -99,7 +99,9 @@ export default function MyNFTs() {
           </div>
 
           <div className={styles.main}>
-            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} />}
+            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} onClickAction={(item, action) => {
+              console.log('item, action', item, action);
+            }} />}
           </div>
         </div>
       </div>
