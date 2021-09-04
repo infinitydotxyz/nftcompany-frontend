@@ -1,5 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
+import { Switch } from "@chakra-ui/react";
 import styles from './ListNFTModal.module.scss';
 import { getAddressBalance } from 'utils/ethersUtil';
 import { getAccount } from 'utils/ethersUtil';
@@ -18,9 +19,10 @@ const ListNFTModal: React.FC<IProps> = ({
   onClickListNFT,
   onClose
 }: IProps) => {
-  const [nftLink, setNftLink] = React.useState('');
   const [price, setPrice] = React.useState(0);
   const [balance, setBalance] = React.useState('');
+  const [endPriceShowed, setEndPriceShowed] = React.useState(false);
+  const [endPrice, setEndPrice] = React.useState(0);
 
   const [user, setUser] = React.useState<any>(null);
   React.useEffect(() => {
@@ -55,24 +57,30 @@ const ListNFTModal: React.FC<IProps> = ({
             <div className="modal-body">
               <div className={styles.title}>List NFT</div>
 
-              {/* <div style={{ marginBottom: 10 }}>
-                <div>Paste the NFT link here:</div>
-                <input
-                  className="input-box"
-                  autoFocus
-                  onChange={(ev) => setNftLink(ev.target.value)}
-                  placeholder="https://... (NFT Link)"
-                />
-              </div> */}
-
               <div className={styles.row}>
                 <ul>
                   <li>
-                    <div>Enter price</div>
+                    <div>{endPriceShowed ? 'Start price' : 'Enter price'}</div>
                     <div>
                       <input type="number" onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
                     </div>
                     <div>ETH</div>
+                  </li>
+                  {endPriceShowed && (
+                    <li>
+                      <div>End price</div>
+                      <div>
+                        <input type="number" onChange={(ev) => setEndPrice(parseFloat(ev.target.value))} />
+                      </div>
+                      <div>ETH</div>
+                    </li>
+                  )}
+                  <li>
+                    <div>Set start &amp; end price</div>
+                    <div>
+                      &nbsp;
+                    </div>
+                    <div><Switch size="lg" onChange={(ev) => setEndPriceShowed(ev.target.checked)} /></div>
                   </li>
                   <li>
                     <div>Your balance</div>
