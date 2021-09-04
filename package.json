@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx pnpm install && rm -rf ./build && NODE_ENV=production next build",
+    "build": "npx pnpm install && rm -rf ./build && cross-env NODE_ENV=production next build",
     "start": "next start -p 8080",
     "deploy": "gcloud app deploy -q --project nftc-web",
     "lint": "next lint"
@@ -16,6 +16,7 @@
     "@emotion/styled": "^11",
     "axios": "^0.21.1",
     "bignumber.js": "^4.1.0",
+    "cross-env": "^7.0.3",
     "ethereumjs-abi": "git+https://github.com/ProjectWyvern/ethereumjs-abi.git",
     "ethereumjs-util": "^5.2.0",
     "ethers": "^5.4.4",
