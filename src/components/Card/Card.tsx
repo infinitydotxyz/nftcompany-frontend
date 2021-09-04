@@ -8,7 +8,8 @@ import styles from './CardList.module.scss';
 export type CardData = {
   id: string;
   title: string;
-  img: string;
+  image: string;
+  imagePreview?: string;
   price?: number;
   inStock?: number;
   viewInfo?: boolean;
@@ -33,7 +34,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, ...rest }: Props
       <Link href={`/preview?id=${data.id}${viewInfo ? '&view=info' : ''}`} passHref>
         <div className={styles.cardPreview}>
           {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
-          <img src={data.img} alt="Card preview" />
+          <img src={data.image} alt="Card preview" />
 
           <div className={styles.cardControls}>
             {/* <div className="status-green card__category">purchasing !</div> */}
@@ -85,7 +86,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, ...rest }: Props
 
       {/* {modalShowed && <PlaceBidModal onClose={() => setModalShowed(false)} />} */}
 
-      {modalShowed && <ListNFTModal onClose={() => setModalShowed(false)} />}
+      {/* {modalShowed && <ListNFTModal onClose={() => setModalShowed(false)} />} */}
     </div>
   );
 }

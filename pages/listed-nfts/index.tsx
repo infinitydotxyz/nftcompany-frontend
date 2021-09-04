@@ -39,7 +39,7 @@ export default function ListNFTs() {
         return {
           name: item.name,
           description: item.description,
-          img: item.image_preview_url,
+          image: item.image_preview_url,
           inStock: 1,
           price: 0.1
         };
