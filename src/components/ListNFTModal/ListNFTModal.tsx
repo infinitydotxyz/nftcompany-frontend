@@ -15,7 +15,6 @@ interface IProps {
 }
 
 const ListNFTModal: React.FC<IProps> = ({
-  type,
   onClickListNFT,
   onClose
 }: IProps) => {
