@@ -124,3 +124,7 @@ export async function dummyFetch() {
   await sleep(1000);
   return sampleData;
 }
+
+export async function apiGet(path: string, query: any) {
+  // TBD
+}
