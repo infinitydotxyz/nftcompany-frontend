@@ -184,10 +184,12 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                       };
                       if (activeTab !== 'SET_PRICE') {
                         // for English Auction (Highest Bid):
+                        obj['paymentTokenAddress'] = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
                         obj['waitForHighestBid'] = true;
                         if (reservePrice) {
                           obj['englishAuctionReservePrice'] = reservePrice;
                         }
+                        obj['expirationTime'] = expiryTimeMs;
                       }
                       const listing = await seaport.createSellOrder(obj);
                       console.log('listing', listing);
