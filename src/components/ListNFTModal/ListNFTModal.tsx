@@ -24,8 +24,11 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
   const [price, setPrice] = React.useState(0);
   const [balance, setBalance] = React.useState('');
   const [endPriceShowed, setEndPriceShowed] = React.useState(false);
+  const [reservePrice, setReservePrice] = React.useState(0);
   const [endPrice, setEndPrice] = React.useState(0);
   const [expiryTimeMs, setExpiryTimeMs] = React.useState(0);
+  const [activeTab, setActiveTab] = React.useState('SET_PRICE');
+
   const toast = useToast();
   const showMessage = (type: 'error' | 'info', message: string) =>
     toast({
@@ -69,50 +72,87 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
 
               <div className={styles.row}>
                 {/* <NavBar items={[{ title: 'Set Price' }, { title: 'Highest Bid' }]} active={0} /> */}
-                <TabBar tabs={[{ id: 'SET_PRICE', label: 'Set Price' }, { id: 'HIGHEST_BID', label: 'Highest Bid' }]} activeTab="SET_PRICE" />
+                <TabBar
+                  tabs={[
+                    { id: 'SET_PRICE', label: 'Set Price' },
+                    { id: 'HIGHEST_BID', label: 'Highest Bid' }
+                  ]}
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
+                />
               </div>
-              
-              <div className={styles.row}>
-                <ul className={styles.fields}>
-                  <li>
-                    <div>{endPriceShowed ? 'Starting price' : 'Price'}</div>
-                    <div>
-                      <input type="number" autoFocus onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
-                    </div>
-                    <div>ETH</div>
-                  </li>
-                  {endPriceShowed && (
+
+              {activeTab === 'SET_PRICE' ? (
+                <div className={styles.row}>
+                  <ul className={styles.fields}>
                     <li>
-                      <div>Ending price</div>
+                      <div>{endPriceShowed ? 'Starting price' : 'Price'}</div>
                       <div>
-                        <input type="number" onChange={(ev) => setEndPrice(parseFloat(ev.target.value))} />
+                        <input type="number" autoFocus onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
                       </div>
                       <div>ETH</div>
                     </li>
-                  )}
-                  <li>
-                    <div>Include ending price</div>
-                    <div>&nbsp;</div>
-                    <div>
-                      <Switch size="lg" onChange={(ev) => setEndPriceShowed(ev.target.checked)} />
-                    </div>
-                  </li>
-                  {endPriceShowed && (
+                    {endPriceShowed && (
+                      <li>
+                        <div>Ending price</div>
+                        <div>
+                          <input type="number" onChange={(ev) => setEndPrice(parseFloat(ev.target.value))} />
+                        </div>
+                        <div>ETH</div>
+                      </li>
+                    )}
+                    <li>
+                      <div>Include ending price</div>
+                      <div>&nbsp;</div>
+                      <div>
+                        <Switch size="lg" onChange={(ev) => setEndPriceShowed(ev.target.checked)} />
+                      </div>
+                    </li>
+                    {endPriceShowed && (
+                      <li>
+                        <div>Expiration time</div>
+                        <div>&nbsp;</div>
+                        <div>
+                          <Datetime onChange={(dt: any) => setExpiryTimeMs(dt.valueOf())} />
+                        </div>
+                      </li>
+                    )}
+                    {/* <li>
+                      <div>Your balance</div>
+                      <div>
+                        <span>{balance}</span>
+                      </div>
+                      <div>ETH</div>
+                    </li> */}
+                  </ul>
+                </div>
+              ) : (
+                <div className={styles.row}>
+                  <ul className={styles.fields}>
+                    <li>
+                      <div>Minimum bid</div>
+                      <div>
+                        <input type="number" autoFocus onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
+                      </div>
+                      <div>ETH</div>
+                    </li>
+                    <li>
+                      <div>Reserve price</div>
+                      <div>
+                        <input type="number" onChange={(ev) => setReservePrice(parseFloat(ev.target.value))} />
+                      </div>
+                      <div>ETH</div>
+                    </li>
                     <li>
                       <div>Expiration time</div>
                       <div>&nbsp;</div>
-                      <div><Datetime onChange={(dt: any) => setExpiryTimeMs(dt.valueOf())} /></div>
+                      <div>
+                        <Datetime onChange={(dt: any) => setExpiryTimeMs(dt.valueOf())} />
+                      </div>
                     </li>
-                  )}
-                  <li>
-                    <div>Your balance</div>
-                    <div>
-                      <span>{balance}</span>
-                    </div>
-                    <div>ETH</div>
-                  </li>
-                </ul>
-              </div>
+                  </ul>
+                </div>
+              )}
 
               <div className={styles.footer}>
                 <a
@@ -129,7 +169,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                     let err = null;
                     try {
                       const seaport = web3GetSeaport();
-                      const listing = await seaport.createSellOrder({
+                      let obj: any = {
                         asset: {
                           tokenAddress,
                           tokenId,
@@ -141,11 +181,19 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                         endAmount: endPriceShowed ? endPrice : price,
                         expirationTime,
                         assetDetails: { ...data } // custom data to pass in details.
-                      });
+                      };
+                      if (activeTab !== 'SET_PRICE') {
+                        // for English Auction (Highest Bid):
+                        obj['waitForHighestBid'] = true;
+                        if (reservePrice) {
+                          obj['englishAuctionReservePrice'] = reservePrice;
+                        }
+                      }
+                      const listing = await seaport.createSellOrder(obj);
                       console.log('listing', listing);
                     } catch (e: any) {
                       err = e;
-                      console.error(e, '   ', expirationTime)
+                      console.error(e, '   ', expirationTime);
                       showMessage('error', e.message);
                     }
                     if (!err) {
