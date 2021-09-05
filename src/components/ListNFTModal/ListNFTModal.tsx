@@ -4,6 +4,7 @@ import { useToast } from '@chakra-ui/react';
 import { Switch } from '@chakra-ui/react';
 import Datetime from 'react-datetime';
 import NavBar from 'components/NavBar/NavBar';
+import TabBar from 'components/TabBar/TabBar';
 import styles from './ListNFTModal.module.scss';
 import { getAddressBalance, getSchemaName, web3GetSeaport } from 'utils/ethersUtil';
 import { getAccount } from 'utils/ethersUtil';
@@ -67,7 +68,8 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
               <div className={styles.title}>List NFT</div>
 
               <div className={styles.row}>
-                <NavBar items={[{ title: 'Set Price' }, { title: 'Highest Bid' }]} active={0} />
+                {/* <NavBar items={[{ title: 'Set Price' }, { title: 'Highest Bid' }]} active={0} /> */}
+                <TabBar tabs={[{ id: 'SET_PRICE', label: 'Set Price' }, { id: 'HIGHEST_BID', label: 'Highest Bid' }]} activeTab="SET_PRICE" />
               </div>
               
               <div className={styles.row}>
