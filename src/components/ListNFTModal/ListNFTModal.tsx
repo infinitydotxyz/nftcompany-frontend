@@ -115,9 +115,9 @@ const ListNFTModal: React.FC<IProps> = ({
                       accountAddress: user?.account,
                       startAmount: price,
                       // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
-                      endAmount: price,
+                      endAmount: endPriceShowed ? endPrice : price,
                       expirationTime: 0,
-                      assetDetails: { ...data }
+                      assetDetails: { ...data } // custom data to pass in details.
                     });
                     console.log('listing', listing);
                   } catch (e) {
