@@ -22,10 +22,12 @@ specifiers:
   isomorphic-unfetch: ^2.1.1
   json-loader: ^0.5.7
   lodash: ^4.17.4
+  moment: ^2.29.1
   next: 11.1.0
   node-sass: ^5.0.0
   query-string: ^6.11.1
   react: 17.0.2
+  react-datetime: ^3.1.0
   react-dom: 17.0.2
   react-range: ^1.8.9
   recharts: ^2.0.10
@@ -51,10 +53,12 @@ dependencies:
   isomorphic-unfetch: 2.1.1
   json-loader: 0.5.7
   lodash: 4.17.21
+  moment: 2.29.1
   next: 11.1.0_356f9603e19128c62410edc7920d2e00
   node-sass: 5.0.0
   query-string: 6.14.1
   react: 17.0.2
+  react-datetime: 3.1.0_moment@2.29.1+react@17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-range: 1.8.9_react-dom@17.0.2+react@17.0.2
   recharts: 2.0.10_react-dom@17.0.2+react@17.0.2
@@ -6161,6 +6165,10 @@ packages:
     hasBin: true
     dev: false
 
+  /moment/2.29.1:
+    resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
+    dev: false
+
   /ms/2.0.0:
     resolution: {integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=}
 
@@ -7013,6 +7021,17 @@ packages:
       react: ^15.3.0 || ^16.0.0 || ^17.0.0
     dependencies:
       '@babel/runtime': 7.14.8
+      react: 17.0.2
+    dev: false
+
+  /react-datetime/3.1.0_moment@2.29.1+react@17.0.2:
+    resolution: {integrity: sha512-Vx6/wr03r9+mDtXv6rHTwjqZ/Hbq889jgc8/pD2Y7Hx+pf+Kr7KcTWIEDNMWGE4ZGi2BiXn+fjqVMnwIjxWguA==}
+    peerDependencies:
+      moment: ^2.16.0
+      react: ^16.5.0 || ^17.0.0
+    dependencies:
+      moment: 2.29.1
+      prop-types: 15.7.2
       react: 17.0.2
     dev: false
 

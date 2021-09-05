@@ -1,6 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { Switch } from '@chakra-ui/react';
+import Datetime from 'react-datetime';
 import NavBar from 'components/NavBar/NavBar';
 import styles from './ListNFTModal.module.scss';
 import { getAddressBalance, getSchemaName, web3GetSeaport } from 'utils/ethersUtil';
@@ -22,6 +23,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
   const [balance, setBalance] = React.useState('');
   const [endPriceShowed, setEndPriceShowed] = React.useState(false);
   const [endPrice, setEndPrice] = React.useState(0);
+  const [expiryTimeMs, setExpiryTimeMs] = React.useState(0);
 
   const [user, setUser] = React.useState<any>(null);
   React.useEffect(() => {
@@ -87,7 +89,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                     <li>
                       <div>Expiration time</div>
                       <div>&nbsp;</div>
-                      <div>in 5 days</div>
+                      <div><Datetime onChange={(dt: any) => setExpiryTimeMs(dt.valueOf())} /></div>
                     </li>
                   )}
                   <li>
@@ -124,7 +126,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                         startAmount: price,
                         // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
                         endAmount: endPriceShowed ? endPrice : price,
-                        expirationTime: 0,
+                        expirationTime: endPriceShowed ? (expiryTimeMs - +new Date()) / 1000 : 0,
                         assetDetails: { ...data } // custom data to pass in details.
                       });
                       console.log('listing', listing);
