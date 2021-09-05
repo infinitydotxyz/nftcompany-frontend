@@ -1,6 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { Switch } from "@chakra-ui/react";
+import { Switch } from '@chakra-ui/react';
+import NavBar from 'components/NavBar/NavBar';
 import styles from './ListNFTModal.module.scss';
 import { getAddressBalance, getSchemaName, web3GetSeaport } from 'utils/ethersUtil';
 import { getAccount } from 'utils/ethersUtil';
@@ -16,11 +17,7 @@ interface IProps {
   onClose?: () => void;
 }
 
-const ListNFTModal: React.FC<IProps> = ({
-  data,
-  onClickListNFT,
-  onClose
-}: IProps) => {
+const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProps) => {
   const [price, setPrice] = React.useState(0);
   const [balance, setBalance] = React.useState('');
   const [endPriceShowed, setEndPriceShowed] = React.useState(false);
@@ -39,8 +36,6 @@ const ListNFTModal: React.FC<IProps> = ({
       getInfo();
     };
     connect();
-
-    
   }, []);
   return (
     <>
@@ -60,9 +55,13 @@ const ListNFTModal: React.FC<IProps> = ({
               <div className={styles.title}>List NFT</div>
 
               <div className={styles.row}>
-                <ul>
+                <NavBar items={[{ title: 'Set Price' }, { title: 'Highest Bid' }]} active={0} />
+              </div>
+              
+              <div className={styles.row}>
+                <ul className={styles.fields}>
                   <li>
-                    <div>{endPriceShowed ? 'Start price' : 'Price'}</div>
+                    <div>{endPriceShowed ? 'Starting price' : 'Price'}</div>
                     <div>
                       <input type="number" autoFocus onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
                     </div>
@@ -70,7 +69,7 @@ const ListNFTModal: React.FC<IProps> = ({
                   </li>
                   {endPriceShowed && (
                     <li>
-                      <div>End price</div>
+                      <div>Ending price</div>
                       <div>
                         <input type="number" onChange={(ev) => setEndPrice(parseFloat(ev.target.value))} />
                       </div>
@@ -78,12 +77,19 @@ const ListNFTModal: React.FC<IProps> = ({
                     </li>
                   )}
                   <li>
-                    <div>Set start &amp; end price</div>
+                    <div>Include ending price</div>
+                    <div>&nbsp;</div>
                     <div>
-                      &nbsp;
+                      <Switch size="lg" onChange={(ev) => setEndPriceShowed(ev.target.checked)} />
                     </div>
-                    <div><Switch size="lg" onChange={(ev) => setEndPriceShowed(ev.target.checked)} /></div>
                   </li>
+                  {endPriceShowed && (
+                    <li>
+                      <div>Expiration time</div>
+                      <div>&nbsp;</div>
+                      <div>in 5 days</div>
+                    </li>
+                  )}
                   <li>
                     <div>Your balance</div>
                     <div>
@@ -95,40 +101,43 @@ const ListNFTModal: React.FC<IProps> = ({
               </div>
 
               <div className={styles.footer}>
-                <a className="action-btn" onClick={async () => {
-                  if (!price) {
-                    alert('Please enter price.')
-                  }
-                  console.log('List NFT', data);
+                <a
+                  className="action-btn"
+                  onClick={async () => {
+                    if (!price) {
+                      alert('Please enter price.');
+                    }
+                    console.log('List NFT', data);
 
-                  const tokenAddress = data.data.asset_contract;
-                  const tokenId = data.data.token_id;
-                  let err = null;
-                  try {
-                    const seaport = web3GetSeaport();
-                    const listing = await seaport.createSellOrder({
-                      asset: {
-                        tokenAddress,
-                        tokenId,
-                        schemaName: getSchemaName(tokenAddress)
-                      },
-                      accountAddress: user?.account,
-                      startAmount: price,
-                      // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
-                      endAmount: endPriceShowed ? endPrice : price,
-                      expirationTime: 0,
-                      assetDetails: { ...data } // custom data to pass in details.
-                    });
-                    console.log('listing', listing);
-                  } catch (e) {
-                    err = e;
-                    // showMessage('error', e.message);
-                  }
-                  if (!err) {
-                    // showMessage('info', 'NFT listed successfully!');
-                    // setActionModalType('');
-                  }
-                }}>
+                    const tokenAddress = data.data.asset_contract;
+                    const tokenId = data.data.token_id;
+                    let err = null;
+                    try {
+                      const seaport = web3GetSeaport();
+                      const listing = await seaport.createSellOrder({
+                        asset: {
+                          tokenAddress,
+                          tokenId,
+                          schemaName: getSchemaName(tokenAddress)
+                        },
+                        accountAddress: user?.account,
+                        startAmount: price,
+                        // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
+                        endAmount: endPriceShowed ? endPrice : price,
+                        expirationTime: 0,
+                        assetDetails: { ...data } // custom data to pass in details.
+                      });
+                      console.log('listing', listing);
+                    } catch (e) {
+                      err = e;
+                      // showMessage('error', e.message);
+                    }
+                    if (!err) {
+                      // showMessage('info', 'NFT listed successfully!');
+                      // setActionModalType('');
+                    }
+                  }}
+                >
                   &nbsp;&nbsp;&nbsp; List NFT &nbsp;&nbsp;&nbsp;
                 </a>
 
