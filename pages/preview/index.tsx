@@ -83,7 +83,7 @@ export default function Preview() {
 
           <div className={styles.main}>
             {/* <Card data={sampleData[idNum]} /> */}
-            {data && data.img && <img src={data.img} />}
+            {data && data.image && <img src={data.image} />}
 
             <section className={styles.info}>
               <h3>{data?.title}</h3>
