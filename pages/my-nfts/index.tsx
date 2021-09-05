@@ -67,7 +67,7 @@ export default function MyNFTs() {
         await setIsFetching(true);
         const tokenAddress = account.toLowerCase(); // '0xa7e1551ced00a5e3036c227c3e8ded7ebb688e6a'; // account;
         const res = await fetch(
-          `https://stg-api.unmarshal.io/v1/ethereum/address/${tokenAddress}/nft-assets?auth_key=bgJCvMZpaI4iE4393gDOd8FbiYwO4tjz7dd7lhRf`
+          `https://server.nftcompany.com/u/${account}/assets`
         );
         const data = (await res.json()) || [];
         const assetList = getAssetList(data);
