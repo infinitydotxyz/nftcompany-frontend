@@ -1,5 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
+import { useToast } from '@chakra-ui/react';
 import { Switch } from '@chakra-ui/react';
 import Datetime from 'react-datetime';
 import NavBar from 'components/NavBar/NavBar';
@@ -24,6 +25,15 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
   const [endPriceShowed, setEndPriceShowed] = React.useState(false);
   const [endPrice, setEndPrice] = React.useState(0);
   const [expiryTimeMs, setExpiryTimeMs] = React.useState(0);
+  const toast = useToast();
+  const showMessage = (type: 'error' | 'info', message: string) =>
+    toast({
+      title: type === 'error' ? 'Error' : 'Info',
+      description: message,
+      status: type === 'error' ? 'error' : 'success',
+      duration: 9000,
+      isClosable: true
+    });
 
   const [user, setUser] = React.useState<any>(null);
   React.useEffect(() => {
@@ -113,6 +123,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
 
                     const tokenAddress = data.data.asset_contract;
                     const tokenId = data.data.token_id;
+                    const expirationTime = endPriceShowed ? expiryTimeMs : 0;
                     let err = null;
                     try {
                       const seaport = web3GetSeaport();
@@ -126,17 +137,18 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                         startAmount: price,
                         // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
                         endAmount: endPriceShowed ? endPrice : price,
-                        expirationTime: endPriceShowed ? (expiryTimeMs - +new Date()) / 1000 : 0,
+                        expirationTime,
                         assetDetails: { ...data } // custom data to pass in details.
                       });
                       console.log('listing', listing);
-                    } catch (e) {
+                    } catch (e: any) {
                       err = e;
-                      // showMessage('error', e.message);
+                      console.error(e, '   ', expirationTime)
+                      showMessage('error', e.message);
                     }
                     if (!err) {
-                      // showMessage('info', 'NFT listed successfully!');
-                      // setActionModalType('');
+                      showMessage('info', 'NFT listed successfully!');
+                      onClose && onClose();
                     }
                   }}
                 >
