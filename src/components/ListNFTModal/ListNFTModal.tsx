@@ -8,6 +8,7 @@ import TabBar from 'components/TabBar/TabBar';
 import styles from './ListNFTModal.module.scss';
 import { getAddressBalance, getSchemaName, web3GetSeaport } from 'utils/ethersUtil';
 import { getAccount } from 'utils/ethersUtil';
+import { WETH_ADDRESS } from '../../../src-os/src/constants'
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -184,7 +185,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                       };
                       if (activeTab !== 'SET_PRICE') {
                         // for English Auction (Highest Bid):
-                        obj['paymentTokenAddress'] = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
+                        obj['paymentTokenAddress'] = WETH_ADDRESS;
                         obj['waitForHighestBid'] = true;
                         if (reservePrice) {
                           obj['englishAuctionReservePrice'] = reservePrice;

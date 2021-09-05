@@ -60,3 +60,5 @@ export const SITE_HOST_RINKEBY = 'https://rinkeby.opensea.io';
 
 export const ORDERBOOK_PATH = `/wyvern/v${ORDERBOOK_VERSION}`;
 export const API_PATH = `/api/v${ORDERBOOK_VERSION}`;
+
+export const WETH_ADDRESS = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';

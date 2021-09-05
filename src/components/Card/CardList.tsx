@@ -14,7 +14,7 @@ export default function CardList({ data, viewInfo, onClickAction }: Props) {
         if (!item) {
           return null;
         }
-        return <Card key={item?.id} data={item} viewInfo={viewInfo} onClickAction={onClickAction} />;
+        return <Card key={item?.id || item?.title} data={item} viewInfo={viewInfo} onClickAction={onClickAction} />;
       })}
     </div>
   );
