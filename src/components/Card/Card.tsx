@@ -14,6 +14,8 @@ export type CardData = {
   inStock?: number;
   viewInfo?: boolean;
   data?: any;
+  tokenAddress?: string;
+  tokenId?: string;
 };
 
 type Props = {

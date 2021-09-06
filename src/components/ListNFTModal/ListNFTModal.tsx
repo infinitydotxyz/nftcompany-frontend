@@ -8,7 +8,7 @@ import TabBar from 'components/TabBar/TabBar';
 import styles from './ListNFTModal.module.scss';
 import { getAddressBalance, getSchemaName, web3GetSeaport } from 'utils/ethersUtil';
 import { getAccount } from 'utils/ethersUtil';
-import { WETH_ADDRESS } from '../../../src-os/src/constants'
+import { WETH_ADDRESS } from '../../../src-os/src/constants';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -164,8 +164,9 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                     }
                     console.log('List NFT', data);
 
-                    const tokenAddress = data.data.asset_contract;
-                    const tokenId = data.data.token_id;
+                    // const tokenAddress = data.data.asset_contract;
+                    // const tokenId = data.data.token_id;
+                    const { tokenAddress, tokenId } = data;
                     const expirationTime = endPriceShowed ? expiryTimeMs : 0;
                     let err = null;
                     try {

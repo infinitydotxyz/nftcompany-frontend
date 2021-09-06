@@ -66,21 +66,29 @@ export default function MyNFTs() {
 
       const fetchData = async () => {
         await setIsFetching(true);
-        const tokenAddress = account.toLowerCase(); // '0xa7e1551ced00a5e3036c227c3e8ded7ebb688e6a'; // account;
-        const res = await fetch(`${API_BASE_MAINNET}/u/${account}/assets?offset=0&limit=50&source=1`);
+        // const tokenAddress = account.toLowerCase(); // '0xa7e1551ced00a5e3036c227c3e8ded7ebb688e6a'; // account;
+        const res = await fetch(`${API_BASE_MAINNET}/u/${account}/assets?offset=0&limit=50&source=1&ts=${Date.now()}`);
         const resJson = (await res.json()) || [];
         console.log('fetchData data:', resJson);
 
         // const assetList = getAssetList(data);
         // console.log('assetList', data, assetList);
 
+        // TODO:
+        // const transformOpenSeaRes = () => { 
+        // }
+        // const transformUnmarshallRes = () => { 
+        // }
+
         const data = (resJson?.assets || []).map((item: any) => {
           return {
-            id: item.tokenId,
+            id: `${item.asset_contract.address}_${item.token_id}`,
             name: item.name,
             description: item.description,
-            image: item.imageUrl,
-            imagePreview: item.imagePreviewUrl,
+            image: item.image_url,
+            imagePreview: item.image_preview_url,
+            tokenAddress: item.asset_contract.address,
+            tokenId: item.token_id,
             inStock: 1,
             price: 0.1
           };
@@ -91,35 +99,35 @@ export default function MyNFTs() {
         // await setIsFetching(false);
         // setData(getAssetList(data));
       };
-      // fetchData();
+      fetchData();
 
-      const web3GetListedNFTs = async () => {
-        console.log('web3GetListedNFTs', account);
-        try {
-          const seaport = web3GetSeaport();
-          const res = await seaport.api.getAssets({
-            owner: account // '0x495f947276749ce646f68ac8c248420045cb7b5e'
-          });
-          console.log('res', res);
+      // const web3GetListedNFTs = async () => {
+      //   console.log('web3GetListedNFTs', account);
+      //   try {
+      //     const seaport = web3GetSeaport();
+      //     const res = await seaport.api.getAssets({
+      //       owner: account // '0x495f947276749ce646f68ac8c248420045cb7b5e'
+      //     });
+      //     console.log('res', res);
 
-          // TODO: remove mock data
-          const data = (res?.assets || []).map((item: any) => {
-            return {
-              id: item.tokenId,
-              name: item.name,
-              description: item.description,
-              image: item.imageUrl,
-              imagePreview: item.imagePreviewUrl,
-              inStock: 1,
-              price: 0.1
-            };
-          });
-          setData(data);
-        } catch (e) {
-          console.error(e);
-        }
-      };
-      web3GetListedNFTs();
+      //     // TODO: remove mock data
+      //     const data = (res?.assets || []).map((item: any) => {
+      //       return {
+      //         id: item.tokenId,
+      //         name: item.name,
+      //         description: item.description,
+      //         image: item.imageUrl,
+      //         imagePreview: item.imagePreviewUrl,
+      //         inStock: 1,
+      //         price: 0.1
+      //       };
+      //     });
+      //     setData(data);
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // };
+      // web3GetListedNFTs();
     };
     connect();
   }, []);
