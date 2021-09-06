@@ -21,7 +21,7 @@ export default function ConnectWallet() {
   const connectMetaMask = async () => {
     const res = await initEthers();
     if (res && res.getAddress) {
-      router.push('/explore/nfts');
+      router.push('/my-nfts');
     } else {
       alert('Failed to connect.'); // TODO: use a toaster
     }
