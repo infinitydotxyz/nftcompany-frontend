@@ -16,17 +16,19 @@ export type CardData = {
   data?: any;
   tokenAddress?: string;
   tokenId?: string;
+  collectionName?: string;
 };
 
 type Props = {
   data: CardData;
   onClickPlaceBid?: () => void;
   onClickAction?: (item: any, action: string) => any;
+  showItems?: string[];
   actions?: string[];
   [key: string]: any;
 };
 
-function Card({ data, onClickPlaceBid, onClickAction, viewInfo, actions = [], ...rest }: Props) {
+function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems=['PRICE'], actions = [], ...rest }: Props) {
   const [modalShowed, setModalShowed] = useState(false);
 
   if (!data) {
@@ -89,12 +91,17 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, actions = [], ..
 
       <div className={styles.cardBody}>
         <div className={styles.cardLine}>
-          <div className={styles.cardTitle}>{data.title}</div>
-          <div className={styles.cardPrice}>{data.price} ETH</div>
+          <div className={styles.cardTitle}>
+            {data.collectionName && <div style={{ color: '#999', fontSize: '0.8em' }}>{data.collectionName}</div>}
+            <div>{data.title}</div>
+          </div>
+          <div className={styles.cardPrice}>
+            {showItems.indexOf('PRICE') >= 0 ? `${data.price} ETH` : ``}
+          </div>
         </div>
         <div className={styles.cardLine}>
           <div>&nbsp;</div>
-          <div className="card__counter">{data.inStock} in stock</div>
+          {/* <div className="card__counter">{data.inStock} in stock</div> */}
         </div>
       </div>
 

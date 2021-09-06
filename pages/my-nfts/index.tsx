@@ -15,6 +15,7 @@ import apiData from './mock-cov-data.json';
 import unmarshalData from './mock-um-assets.json';
 import { getAccount } from 'utils/ethersUtil';
 
+// transform unmarshall data
 const getAssetList = (data: any[]) =>
   data.map((item) => {
     try {
@@ -52,6 +53,24 @@ const getAssetList = (data: any[]) =>
     }
   });
 
+const transformOpenSea = (item: any) => {
+  if (!item) {
+    return null;
+  }
+  return {
+    id: `${item?.asset_contract?.address}_${item?.token_id}`,
+    title: item.name,
+    description: item.description,
+    image: item.image_url,
+    imagePreview: item.image_preview_url,
+    tokenAddress: item.asset_contract.address,
+    tokenId: item.token_id,
+    collectionName: item.asset_contract.name,
+    inStock: 1,
+    price: 0.1
+  };
+}
+
 export default function MyNFTs() {
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
@@ -74,24 +93,9 @@ export default function MyNFTs() {
         // const assetList = getAssetList(data);
         // console.log('assetList', data, assetList);
 
-        // TODO:
-        // const transformOpenSeaRes = () => { 
-        // }
-        // const transformUnmarshallRes = () => { 
-        // }
-
         const data = (resJson?.assets || []).map((item: any) => {
-          return {
-            id: `${item.asset_contract.address}_${item.token_id}`,
-            name: item.name,
-            description: item.description,
-            image: item.image_url,
-            imagePreview: item.image_preview_url,
-            tokenAddress: item.asset_contract.address,
-            tokenId: item.token_id,
-            inStock: 1,
-            price: 0.1
-          };
+          const newItem = transformOpenSea(item);
+          return newItem;
         });
         await setIsFetching(false);
         setData(data);
@@ -100,34 +104,6 @@ export default function MyNFTs() {
         // setData(getAssetList(data));
       };
       fetchData();
-
-      // const web3GetListedNFTs = async () => {
-      //   console.log('web3GetListedNFTs', account);
-      //   try {
-      //     const seaport = web3GetSeaport();
-      //     const res = await seaport.api.getAssets({
-      //       owner: account // '0x495f947276749ce646f68ac8c248420045cb7b5e'
-      //     });
-      //     console.log('res', res);
-
-      //     // TODO: remove mock data
-      //     const data = (res?.assets || []).map((item: any) => {
-      //       return {
-      //         id: item.tokenId,
-      //         name: item.name,
-      //         description: item.description,
-      //         image: item.imageUrl,
-      //         imagePreview: item.imagePreviewUrl,
-      //         inStock: 1,
-      //         price: 0.1
-      //       };
-      //     });
-      //     setData(data);
-      //   } catch (e) {
-      //     console.error(e);
-      //   }
-      // };
-      // web3GetListedNFTs();
     };
     connect();
   }, []);
@@ -154,6 +130,7 @@ export default function MyNFTs() {
             ) : (
               <CardList
                 data={data}
+                showItems={[]}
                 actions={['LIST_NFT']}
                 onClickAction={(item, action) => {
                   // console.log('item, action', item, action);
