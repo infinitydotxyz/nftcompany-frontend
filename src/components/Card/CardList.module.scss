@@ -48,6 +48,7 @@
     border-radius: 16px;
     cursor: pointer;
     overflow: hidden;
+    max-height: 25vh; /* limit height for tall NFTs */
 
     img {
       width: 100%;
@@ -122,6 +123,10 @@
     .card {
       flex: 0 0 calc(98% - 32px); /* 1-card layout */
       max-width: calc(98% - 32px);
+
+      .cardPreview {
+        max-height: inherit;
+      }
     }
   }
 }
@@ -133,6 +138,10 @@
     .card {
       flex: 0 0 calc(48% - 32px); /* 2-card layout */
       max-width: calc(48% - 32px);
+
+      .cardPreview {
+        max-height: inherit;
+      }
     }
   }
 }
