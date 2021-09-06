@@ -93,6 +93,14 @@ svg {
   color: #ffffff;
 }
 
+.homepage-connect {
+  width: 20%;
+  margin: 0 auto;
+}
+.homepage-connect svg {
+  margin-right: 5px;
+}
+
 .action-2nd {
   background: #fff;
   color: #333;
