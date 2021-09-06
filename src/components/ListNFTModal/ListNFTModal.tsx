@@ -144,14 +144,14 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                       <div>
                         <input type="number" className={styles.priceInput} autoFocus onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
                       </div>
-                      <div>ETH</div>
+                      <div>WETH</div>
                     </li>
                     <li>
                       <div>Reserve price</div>
                       <div>
                         <input type="number" className={styles.priceInput} onChange={(ev) => setReservePrice(parseFloat(ev.target.value))} />
                       </div>
-                      <div>ETH</div>
+                      <div>WETH</div>
                     </li>
                     <li>
                       <div>Expiration time</div>
