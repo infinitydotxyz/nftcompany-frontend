@@ -76,12 +76,13 @@ const Header = () => {
 
                 <NavBar
                   items={[
-                    { title: 'NFT', link: '/explore/nfts' },
+                    // { title: 'NFT', link: '/explore/nfts' },
                     // { title: 'Bids & Offers', link: '/offers' },
                     { title: 'My NFTs', link: '/my-nfts' },
-                    { title: 'Listed NFTs', link: '/listed-nfts' }
+                    { title: 'Listed NFTs', link: '/listed-nfts' },
+                    { title: 'Rewards', link: '/rewards' }
                   ]}
-                  active={['/explore/nfts', '/my-nfts', '/listed-nfts'].indexOf(route)}
+                  active={['/my-nfts', '/listed-nfts', '/rewards'].indexOf(route)}
                   onClickItem={(item, _) => {
                     router.push(item.link || '');
                   }}
