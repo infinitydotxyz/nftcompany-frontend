@@ -84,10 +84,11 @@ export default function MyNFTs() {
             price: 0.1
           };
         });
+        await setIsFetching(false);
         setData(data);
 
-        await setIsFetching(false);
-        setData(getAssetList(data));
+        // await setIsFetching(false);
+        // setData(getAssetList(data));
       };
       fetchData();
 
