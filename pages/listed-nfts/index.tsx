@@ -5,6 +5,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
+import { API_BASE_MAINNET } from '../../src-os/src/constants'
 import { sampleData, dummyFetch } from 'utils/apiUtil';
 import { web3GetSeaport } from 'utils/ethersUtil';
 import pageStyles from '../../styles/Dashboard.module.scss';
@@ -37,7 +38,7 @@ export default function ListNFTs() {
         //   side: 1
         // });
         // console.log('- getOrders res:', res);
-        const res = await fetch(`https://server.nftcompany.com/u/${account}/listings`);
+        const res = await fetch(`${API_BASE_MAINNET}/u/${account}/listings`);
         const { listings } = (await res.json()) || [];
         listingData = listings;
         console.log('listingData', listingData);
