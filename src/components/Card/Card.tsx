@@ -36,7 +36,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems=['PRIC
   }
   return (
     <div className={styles.card} {...rest}>
-      <Link href={`/preview?id=${data.id}${viewInfo ? '&view=info' : ''}`} passHref>
+      {/* <Link href={`/preview?id=${data.id}${viewInfo ? '&view=info' : ''}`} passHref> */}
         <div className={styles.cardPreview}>
           {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
           <img src={data.image} alt="Card preview" />
@@ -87,7 +87,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems=['PRIC
             )}
           </div>
         </div>
-      </Link>
+      {/* </Link> */}
 
       <div className={styles.cardBody}>
         <div className={styles.cardLine}>
