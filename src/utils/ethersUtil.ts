@@ -96,8 +96,10 @@ export const web3GetSeaport = () => {
 
 export const getSchemaName = (address: string) => {
   // opensea shared store front
-  if (address.toLowerCase() === '0x495f947276749ce646f68ac8c248420045cb7b5e') {
+  if (address.trim().toLowerCase() === '0x495f947276749ce646f68ac8c248420045cb7b5e') {
     return WyvernSchemaName.ERC1155;
+  } else if (address.trim().toLowerCase() === '0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb') {
+    return WyvernSchemaName.CryptoPunks;
   } else {
     return WyvernSchemaName.ERC721;
   }
