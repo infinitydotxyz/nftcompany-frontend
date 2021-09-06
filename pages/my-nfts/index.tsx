@@ -7,6 +7,7 @@ import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import { sampleData, dummyFetch } from 'utils/apiUtil';
 import { web3GetSeaport } from 'utils/ethersUtil';
+import { API_BASE_MAINNET } from '../../src-os/src/constants'
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import assetsData from './mock-os-assets.json';
@@ -66,7 +67,7 @@ export default function MyNFTs() {
       const fetchData = async () => {
         await setIsFetching(true);
         const tokenAddress = account.toLowerCase(); // '0xa7e1551ced00a5e3036c227c3e8ded7ebb688e6a'; // account;
-        const res = await fetch(`https://server.nftcompany.com/u/${account}/assets?offset=0&limit=100&source=1`);
+        const res = await fetch(`${API_BASE_MAINNET}/u/${account}/assets?offset=0&limit=100&source=1`);
         const resJson = (await res.json()) || [];
         console.log('fetchData data:', resJson);
 
