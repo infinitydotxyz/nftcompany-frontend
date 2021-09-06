@@ -82,8 +82,6 @@ const HeaderActionButtons = () => {
           onClickListNFT={async (nftUrl: string, price: number) => {
             const { tokenAddress, tokenId } = parseNftUrl(nftUrl);
             console.log('- onClickListNFT: nftLink, price', tokenAddress, tokenId, price, getSchemaName(tokenAddress));
-            // https://opensea.io/assets/0x719e22985111302110942ad3503e3fa104922a7b/826
-            // https://opensea.io/assets/0x495f947276749ce646f68ac8c248420045cb7b5e/61260615647643977170434038292545257526710893187549349159756266105589288927233/sell
 
             let err = null;
             try {

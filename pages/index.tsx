@@ -33,7 +33,7 @@ export default function Home() {
           </p>
 
           <Link href="/connect">
-            <a className="connect-wallet min">
+            <a className="action-btn homepage-connect">
               <svg width={20} height={20} fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"

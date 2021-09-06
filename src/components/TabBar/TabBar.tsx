@@ -1,8 +1,13 @@
 import * as React from 'react';
 import styles from './TabBar.module.scss';
 
+export type TabItem = {
+  id: string;
+  label?: any;
+}
+
 type Props = {
-  tabs: any;
+  tabs: TabItem[];
   activeTab: string;
   setActiveTab?: (activeTab: string) => void;
 };
@@ -12,7 +17,7 @@ const TabBar = ({ tabs, activeTab, setActiveTab }: Props) => {
     <div className={styles.main}>
       <div className={styles.container}>
         <ul>
-          {tabs.map((tab: any) => {
+          {tabs.map((tab: TabItem) => {
             // const tab = tabs[tabKey];
             return (
               <li key={tab.id} onClick={() => setActiveTab && setActiveTab(tab.id)}>

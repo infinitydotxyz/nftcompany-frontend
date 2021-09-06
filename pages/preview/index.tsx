@@ -83,7 +83,7 @@ export default function Preview() {
 
           <div className={styles.main}>
             {/* <Card data={sampleData[idNum]} /> */}
-            {data && data.img && <img src={data.img} />}
+            {data && data.image && <img src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'} />}
 
             <section className={styles.info}>
               <h3>{data?.title}</h3>

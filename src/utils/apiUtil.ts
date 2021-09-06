@@ -8,28 +8,28 @@ export const sampleData = [
       'This NFT Card will give you Access to Special Airdrops. To learn more about UI8 please visit https://ui8.net',
     price: 0.1,
     inStock: 1,
-    img: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-1.jpg'
+    image: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-1.jpg'
   },
   {
     id: '1',
     title: 'Ribbon Hunter',
     price: 0.2,
     inStock: 2,
-    img: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-2.jpg'
+    image: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-2.jpg'
   },
   {
     id: '2',
     title: 'Gems',
     price: 0.3,
     inStock: 3,
-    img: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-3.jpg'
+    image: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-3.jpg'
   },
   {
     id: '3',
     title: 'Art',
     price: 0.4,
     inStock: 4,
-    img: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-4.jpg'
+    image: 'https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-4.jpg'
   }
 ];
 
@@ -123,4 +123,8 @@ function sleep(ms: number) {
 export async function dummyFetch() {
   await sleep(1000);
   return sampleData;
+}
+
+export async function apiGet(path: string, query: any) {
+  // TBD
 }
