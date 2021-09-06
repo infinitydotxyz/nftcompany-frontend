@@ -89,7 +89,7 @@ export default function MyNFTs() {
         await setIsFetching(false);
         setData(getAssetList(data));
       };
-      // fetchData();
+      fetchData();
 
       // const web3GetListedNFTs = async () => {
       //   console.log('web3GetListedNFTs', account);
