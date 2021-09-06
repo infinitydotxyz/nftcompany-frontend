@@ -66,14 +66,58 @@ export default function MyNFTs() {
       const fetchData = async () => {
         await setIsFetching(true);
         const tokenAddress = account.toLowerCase(); // '0xa7e1551ced00a5e3036c227c3e8ded7ebb688e6a'; // account;
-        const res = await fetch(`https://server.nftcompany.com/u/${account}/assets`);
-        const data = (await res.json()) || [];
-        const assetList = getAssetList(data);
-        console.log('assetList', data, assetList);
+        const res = await fetch(`https://server.nftcompany.com/u/${account}/assets?offset=0&limit=100&source=1`);
+        const resJson = (await res.json()) || [];
+        console.log('fetchData data:', resJson);
+
+        // const assetList = getAssetList(data);
+        // console.log('assetList', data, assetList);
+
+        const data = (resJson?.assets || []).map((item: any) => {
+          return {
+            id: item.tokenId,
+            name: item.name,
+            description: item.description,
+            image: item.imageUrl,
+            imagePreview: item.imagePreviewUrl,
+            inStock: 1,
+            price: 0.1
+          };
+        });
+        setData(data);
+
         await setIsFetching(false);
         setData(getAssetList(data));
       };
-      fetchData();
+      // fetchData();
+
+      // const web3GetListedNFTs = async () => {
+      //   console.log('web3GetListedNFTs', account);
+      //   try {
+      //     const seaport = web3GetSeaport();
+      //     const res = await seaport.api.getAssets({
+      //       owner: account // '0x495f947276749ce646f68ac8c248420045cb7b5e'
+      //     });
+      //     console.log('res', res);
+
+      //     // TODO: remove mock data
+      //     const data = (res?.assets || []).map((item: any) => {
+      //       return {
+      //         id: item.tokenId,
+      //         name: item.name,
+      //         description: item.description,
+      //         image: item.imageUrl,
+      //         imagePreview: item.imagePreviewUrl,
+      //         inStock: 1,
+      //         price: 0.1
+      //       };
+      //     });
+      //     setData(data);
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // };
+      // web3GetListedNFTs();
     };
     connect();
   }, []);
