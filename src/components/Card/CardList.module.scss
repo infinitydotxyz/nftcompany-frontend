@@ -70,13 +70,16 @@
     border-radius: 16px;
     opacity: 0;
     transition: all 0.3s;
+    display: flex;
+    flex-flow: column-reverse;
 
     .cardButton {
-      position: absolute;
-      left: 50%;
-      bottom: 16px;
+      // position: absolute;
+      // left: 50%;
+      // bottom: 16px;
       min-width: 140px;
-      transform: translateX(-50%);
+      margin-top: 10px;
+      // transform: translateX(-50%);
     }
   }
 

@@ -66,9 +66,7 @@ export default function MyNFTs() {
       const fetchData = async () => {
         await setIsFetching(true);
         const tokenAddress = account.toLowerCase(); // '0xa7e1551ced00a5e3036c227c3e8ded7ebb688e6a'; // account;
-        const res = await fetch(
-          `https://server.nftcompany.com/u/${account}/assets`
-        );
+        const res = await fetch(`https://server.nftcompany.com/u/${account}/assets`);
         const data = (await res.json()) || [];
         const assetList = getAssetList(data);
         console.log('assetList', data, assetList);
@@ -97,16 +95,22 @@ export default function MyNFTs() {
           </div>
 
           <div className={styles.main}>
-            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} onClickAction={(item, action) => {
-              // console.log('item, action', item, action);
-              setListModalItem(item)
-            }} />}
+            {isFetching ? (
+              <Spinner size="md" color="gray.800" />
+            ) : (
+              <CardList
+                data={data}
+                actions={['LIST_NFT']}
+                onClickAction={(item, action) => {
+                  // console.log('item, action', item, action);
+                  setListModalItem(item);
+                }}
+              />
+            )}
           </div>
         </div>
 
-        {listModalItem && (
-          <ListNFTModal data={listModalItem} onClose={() => setListModalItem(null)} />
-        )}
+        {listModalItem && <ListNFTModal data={listModalItem} onClose={() => setListModalItem(null)} />}
       </div>
     </>
   );

@@ -37,12 +37,10 @@ export default function ListNFTs() {
         //   side: 1
         // });
         // console.log('- getOrders res:', res);
-        const res = await fetch(
-          `https://server.nftcompany.com/u/${account}/listings`
-        );
+        const res = await fetch(`https://server.nftcompany.com/u/${account}/listings`);
         const { listings } = (await res.json()) || [];
         listingData = listings;
-        console.log('listingData', listingData)
+        console.log('listingData', listingData);
       } catch (e) {
         console.error(e);
       }
@@ -58,7 +56,7 @@ export default function ListNFTs() {
       // });
       const data = (listingData || []).map((item: any) => {
         const details = item.metadata.asset;
-        console.log('details', details)
+        console.log('details', details);
         return {
           title: details.title,
           description: '',
@@ -91,7 +89,18 @@ export default function ListNFTs() {
           </div>
 
           <div className={styles.main}>
-            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} />}
+            {isFetching ? (
+              <Spinner size="md" color="gray.800" />
+            ) : (
+              <CardList
+                data={data}
+                actions={['CANCEL_LISTING']}
+                onClickAction={(item, action) => {
+                  // console.log('item, action', item, action);
+                  alert('Cancel')
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
