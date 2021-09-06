@@ -89,7 +89,12 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                     <li>
                       <div>{endPriceShowed ? 'Starting price' : 'Price'}</div>
                       <div>
-                        <input type="number" autoFocus onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
+                        <input
+                          className={styles.priceInput}
+                          type="number"
+                          autoFocus
+                          onChange={(ev) => setPrice(parseFloat(ev.target.value))}
+                        />
                       </div>
                       <div>ETH</div>
                     </li>
@@ -97,25 +102,29 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                       <li>
                         <div>Ending price</div>
                         <div>
-                          <input type="number" onChange={(ev) => setEndPrice(parseFloat(ev.target.value))} />
+                          <input
+                            className={styles.priceInput}
+                            type="number"
+                            onChange={(ev) => setEndPrice(parseFloat(ev.target.value))}
+                          />
                         </div>
                         <div>ETH</div>
                       </li>
                     )}
                     <li>
                       <div>Include ending price</div>
-                      <div>&nbsp;</div>
-                      <div>
+                      <div style={{ marginRight: 10 }}>
                         <Switch size="lg" onChange={(ev) => setEndPriceShowed(ev.target.checked)} />
                       </div>
+                      <div></div>
                     </li>
                     {endPriceShowed && (
                       <li>
                         <div>Expiration time</div>
-                        <div>&nbsp;</div>
                         <div>
                           <Datetime onChange={(dt: any) => setExpiryTimeMs(dt.valueOf())} />
                         </div>
+                        <div></div>
                       </li>
                     )}
                     {/* <li>
@@ -133,23 +142,23 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                     <li>
                       <div>Minimum bid</div>
                       <div>
-                        <input type="number" autoFocus onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
+                        <input type="number" className={styles.priceInput} autoFocus onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
                       </div>
                       <div>ETH</div>
                     </li>
                     <li>
                       <div>Reserve price</div>
                       <div>
-                        <input type="number" onChange={(ev) => setReservePrice(parseFloat(ev.target.value))} />
+                        <input type="number" className={styles.priceInput} onChange={(ev) => setReservePrice(parseFloat(ev.target.value))} />
                       </div>
                       <div>ETH</div>
                     </li>
                     <li>
                       <div>Expiration time</div>
-                      <div>&nbsp;</div>
                       <div>
                         <Datetime onChange={(dt: any) => setExpiryTimeMs(dt.valueOf())} />
                       </div>
+                      <div></div>
                     </li>
                   </ul>
                 </div>
