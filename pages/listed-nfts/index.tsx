@@ -32,17 +32,20 @@ export default function ListNFTs() {
     }
     const data = (listingData || []).map((item: any) => {
       const details = item.metadata.asset;
-      console.log('details', details);
+      // console.log('details', details);
       return {
         id: item.id,
         title: details.title,
         description: '',
         image: details.image,
         imagePreview: details.imagePreview,
+        tokenAddress: details.address,
+        tokenId: details.id,
         inStock: 1,
         price: 0.1
       };
     });
+    console.log('data', data);
     await setIsFetching(false);
     setData(data);
   };
@@ -77,7 +80,7 @@ export default function ListNFTs() {
                 onClickAction={async (item, action) => {
                   console.log('item, action', item, action);
                   // alert('Cancel')
-                  await fetch(`${API_BASE_MAINNET}/u/${user.account}/listings/${item.id}`, {
+                  await fetch(`${API_BASE_MAINNET}/u/${user.account}/listings/${item.id}?tokenAddress=${item?.tokenAddress}`, {
                     method: 'DELETE'
                   });
                   fetchData();
