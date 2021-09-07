@@ -601,6 +601,7 @@ export class OpenSeaPort {
     (order.metadata as any).asset.image = assetDetails?.image;
     (order.metadata as any).asset.imagePreview = assetDetails?.imagePreview;
     (order.metadata as any).asset.title = assetDetails?.title;
+    (order as any).hasBonusReward = false; // TODO: make api call & set this.
     console.log('---- OpenSea order:', order, '*********', assetDetails)
     // order.metadata.asset.name, desc, image...
 

@@ -6,6 +6,7 @@ import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import { API_BASE_MAINNET } from '../../src-os/src/constants';
+import { weiToEther } from '../../src/utils/ethersUtil';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 
@@ -19,7 +20,6 @@ export default function ListNFTs() {
     const account = await getAccount();
     setUser({ account });
 
-    console.log('fetchData');
     await setIsFetching(true);
     let listingData = [];
     try {
@@ -42,7 +42,7 @@ export default function ListNFTs() {
         tokenAddress: details.address,
         tokenId: details.id,
         inStock: 1,
-        price: 0.1
+        price: weiToEther(item.basePrice)
       };
     });
     console.log('data', data);
@@ -80,9 +80,12 @@ export default function ListNFTs() {
                 onClickAction={async (item, action) => {
                   console.log('item, action', item, action);
                   // alert('Cancel')
-                  await fetch(`${API_BASE_MAINNET}/u/${user.account}/listings/${item.id}?tokenAddress=${item?.tokenAddress}`, {
-                    method: 'DELETE'
-                  });
+                  await fetch(
+                    `${API_BASE_MAINNET}/u/${user.account}/listings/${item.id}?tokenAddress=${item?.tokenAddress}&hasBonusReward=false`,
+                    {
+                      method: 'DELETE'
+                    }
+                  );
                   fetchData();
                 }}
               />
