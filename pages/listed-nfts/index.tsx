@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
-import { API_BASE_MAINNET } from '../../src-os/src/constants';
+import { apiGet, apiDelete } from 'utils/apiUtil';
 import { weiToEther } from '../../src/utils/ethersUtil';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
@@ -23,8 +23,7 @@ export default function ListNFTs() {
     await setIsFetching(true);
     let listingData = [];
     try {
-      const res = await fetch(`${API_BASE_MAINNET}/u/${account}/listings`);
-      const { listings } = (await res.json()) || [];
+      const { listings } = await apiGet(`/u/${account}/listings`);
       listingData = listings;
       console.log('listingData', listingData);
     } catch (e) {
@@ -80,11 +79,8 @@ export default function ListNFTs() {
                 onClickAction={async (item, action) => {
                   console.log('item, action', item, action);
                   // alert('Cancel')
-                  await fetch(
-                    `${API_BASE_MAINNET}/u/${user.account}/listings/${item.id}?tokenAddress=${item?.tokenAddress}&hasBonusReward=false`,
-                    {
-                      method: 'DELETE'
-                    }
+                  await apiDelete(
+                    `/u/${user.account}/listings/${item.id}?tokenAddress=${item?.tokenAddress}&hasBonusReward=false`
                   );
                   fetchData();
                 }}

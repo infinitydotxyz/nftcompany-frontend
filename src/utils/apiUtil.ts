@@ -1,4 +1,5 @@
-// import axios from 'axios'
+import axios from 'axios'
+import { API_BASE } from './constants';
 
 export const sampleData = [
   {
@@ -125,6 +126,18 @@ export async function dummyFetch() {
   return sampleData;
 }
 
-export async function apiGet(path: string, query: any) {
-  // TBD
+let axiosApi = axios.create({
+  headers: {
+    // header1: value,
+  }
+})
+
+export const apiGet = async (path: string) => {
+  const { data } = await axiosApi({ url: `${API_BASE}/${path}`, method: 'GET' });
+  return data;
+}
+
+export const apiDelete = async (path: string) => {
+  const { data } = await axiosApi({ url: `${API_BASE}/${path}`, method: 'DELETE' });
+  return data;
 }
