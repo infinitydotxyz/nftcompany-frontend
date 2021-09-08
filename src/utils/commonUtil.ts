@@ -4,6 +4,6 @@ export const showMessage = (toast: any, type: 'error' | 'info', message: string)
     title: type === 'error' ? 'Error' : 'Info',
     description: message,
     status: type === 'error' ? 'error' : 'success',
-    duration: 9000,
+    duration: type === 'error' ? 9000 : 3000,
     isClosable: true
   });

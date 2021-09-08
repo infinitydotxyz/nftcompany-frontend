@@ -9,6 +9,8 @@ import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import { apiGet, apiDelete } from 'utils/apiUtil';
 import { weiToEther } from '../../src/utils/ethersUtil';
+import DeleteListingModal from './DeleteListingModal';
+
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 
@@ -18,6 +20,7 @@ export default function ListNFTs() {
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
   const [user, setUser] = useState<any>(null);
+  const [deleteModalItem, setDeleteModalItem] = useState(null);
 
   const fetchData = async () => {
     const account = await getAccount();
@@ -48,7 +51,9 @@ export default function ListNFTs() {
         tokenAddress: details.address,
         tokenId: details.id,
         inStock: 1,
-        price: weiToEther(item.basePrice)
+        price: weiToEther(item.basePrice),
+        maker: item.maker,
+        metadata: item.metadata
       };
     });
     console.log('data', data);
@@ -85,18 +90,26 @@ export default function ListNFTs() {
                 actions={['CANCEL_LISTING']}
                 onClickAction={async (item, action) => {
                   console.log('item, action', item, action);
-                  // alert('Cancel')
-                  await apiDelete(`/u/${user.account}/listings/${item.id}`, {
-                    tokenAddress: item?.tokenAddress,
-                    hasBonusReward: false
-                  });
-                  fetchData();
+                  setDeleteModalItem(item);
                 }}
               />
             )}
           </div>
         </div>
       </div>
+
+      {deleteModalItem && (
+        <DeleteListingModal
+          user={user}
+          data={deleteModalItem}
+          onClose={() => setDeleteModalItem(null)}
+          onSubmit={() => {
+            setDeleteModalItem(null);
+            fetchData();
+            showMessage(toast, 'info', `Listing deleted successfully.`);
+          }}
+        />
+      )}
     </>
   );
 }
