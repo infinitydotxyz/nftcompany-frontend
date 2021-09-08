@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { useToast } from '@chakra-ui/react';
+import { showMessage } from 'utils/commonUtil';
 import { getAccount } from 'utils/ethersUtil';
 // import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
@@ -15,20 +16,11 @@ const parseNftUrl = (nftUrl: string) => {
 };
 
 const HeaderActionButtons = () => {
+  const toast = useToast();
   const router = useRouter();
   const { route } = router;
   const [actionModalType, setActionModalType] = useState('');
   const [user, setUser] = useState<any>(null);
-
-  const toast = useToast();
-  const showMessage = (type: 'error' | 'info', message: string) =>
-    toast({
-      title: type === 'error' ? 'Error' : 'Info',
-      description: message,
-      status: type === 'error' ? 'error' : 'success',
-      duration: 9000,
-      isClosable: true
-    });
 
   useEffect(() => {
     const connect = async () => {
@@ -101,10 +93,10 @@ const HeaderActionButtons = () => {
               console.log('listing', listing);
             } catch (e) {
               err = e;
-              showMessage('error', e.message);
+              showMessage(toast, 'error', e.message);
             }
             if (!err) {
-              showMessage('info', 'NFT listed successfully!');
+              showMessage(toast, 'info', 'NFT listed successfully!');
               setActionModalType('');
             }
           }}
@@ -129,10 +121,10 @@ const HeaderActionButtons = () => {
               console.log('listing', listing);
             } catch (e) {
               err = e;
-              showMessage('error', e.message);
+              showMessage(toast, 'error', e.message);
             }
             if (!err) {
-              showMessage('info', 'Offer sent successfully!');
+              showMessage(toast, 'info', 'Offer sent successfully!');
               setActionModalType('');
             }
           }}
@@ -158,12 +150,12 @@ const HeaderActionButtons = () => {
                     setActionModalType('');
                   } else {
                     // Handle when the order does not exist anymore
-                    showMessage('error', 'Error when purchasing.');
+                    showMessage(toast, 'error', 'Error when purchasing.');
                   }
                 })
             } catch (e) {
               err = e;
-              showMessage('error', e.message);
+              showMessage(toast, 'error', e.message);
             }
           }}
         />

@@ -133,11 +133,11 @@ let axiosApi = axios.create({
 })
 
 export const apiGet = async (path: string) => {
-  const { data } = await axiosApi({ url: `${API_BASE}/${path}`, method: 'GET' });
+  const { data } = await axiosApi({ url: `${API_BASE}${path}`, method: 'GET' });
   return data;
 }
 
 export const apiDelete = async (path: string) => {
-  const { data } = await axiosApi({ url: `${API_BASE}/${path}`, method: 'DELETE' });
+  const { data } = await axiosApi({ url: `${API_BASE}${path}`, method: 'DELETE' });
   return data;
 }
