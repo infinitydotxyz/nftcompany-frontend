@@ -1,4 +1,5 @@
-import { add } from 'lodash';
+import { API_BASE } from "./constants";
+import axios from "axios";
 
 const ethers = require('ethers');
 
@@ -43,7 +44,8 @@ export const getAccount = async () => {
       account = accounts[0];
 
       if (!provider) {
-        provider = new ethers.providers.Web3Provider(window.ethereum);      }
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+      }
     }
   } catch (err) {
     console.error('ERROR:', err);
@@ -104,3 +106,5 @@ export const getSchemaName = (address: string) => {
     return WyvernSchemaName.ERC721;
   }
 };
+
+export const weiToEther = (wei: number) => ethers.utils.formatEther(wei);

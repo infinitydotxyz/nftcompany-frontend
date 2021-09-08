@@ -2,10 +2,34 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
+import { API_BASE_MAINNET } from '../../src-os/src/constants';
+import { getAccount } from 'utils/ethersUtil';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Rewards.module.scss';
 
-export default function Preview() {
+export default function Rewards() {
+  const [user, setUser] = useState<any>(null);
+  const [isFetching, setIsFetching] = useState(false);
+  const [data, setData] = useState<any>(null);
+
+  const fetchData = async () => {
+    const account = await getAccount();
+    setUser({ account });
+
+    await setIsFetching(true);
+    try {
+      const res = await fetch(`${API_BASE_MAINNET}/u/${account}/reward`);
+      const data = (await res.json()) || [];
+      console.log('data', data);
+      setData(data);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <Head>
@@ -24,22 +48,44 @@ export default function Preview() {
           <div className={styles.main}>
             <section className="container container-fluid grid">
               <div className="col-md-6 col-sm-12">
-                <h3 className="tg-title">List Rewards</h3>
+                <h3 className="tg-title">Rewards</h3>
 
-                <ul style={{ marginTop: 10 }}>
-                  <li>Reward 1</li>
-                  <li>Reward 2</li>
+                <ul className={styles.list}>
+                  <li>
+                    <span>Orders Reward</span>
+                    <span>{data?.ordersReward}</span>
+                  </li>
+                  <li>
+                    <span>Bonus Reward</span>
+                    <span>{data?.bonusReward}</span>
+                  </li>
+                  <li>
+                    <span>Fee Reward</span>
+                    <span>{data?.feeReward}</span>
+                  </li>
+                  <li>
+                    <span>Gross Reward</span>
+                    <span>{data?.grossReward}</span>
+                  </li>
+                  <li>
+                    <span>Penalty</span>
+                    <span>{data?.penalty}</span>
+                  </li>
+                  <li>
+                    <span>NetReward</span>
+                    <span>{data?.netReward}</span>
+                  </li>
                 </ul>
               </div>
 
-              <div className="col-md-6 col-sm-12">
+              {/* <div className="col-md-6 col-sm-12">
                 <h3 className="tg-title">Sale Rewards:</h3>
 
                 <ul style={{ marginTop: 10 }}>
-                  <li>Reward 1</li>
+                  <li>ordersReward</li>
                   <li>Reward 2</li>
                 </ul>
-              </div>
+              </div> */}
             </section>
           </div>
         </div>
@@ -49,4 +95,4 @@ export default function Preview() {
 }
 
 // eslint-disable-next-line react/display-name
-Preview.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
+Rewards.getLayout = (page: NextPage) => <Layout>{page}</Layout>;

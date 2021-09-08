@@ -1,5 +1,6 @@
 import { WyvernProtocol } from 'wyvern-js';
 import { BigNumber } from 'bignumber.js'; // Typescript import issue
+import { API_BASE } from '../../src/utils/constants' // constants from NFTCompany
 
 export const DEFAULT_GAS_INCREASE_FACTOR = 1.01;
 export const NULL_ADDRESS = WyvernProtocol.NULL_ADDRESS;
@@ -51,7 +52,8 @@ export const API_VERSION: number = 1;
 
 //todo: check these before push
 //export const API_BASE_MAINNET = 'https://api.opensea.io';
-export const API_BASE_MAINNET = 'https://server.nftcompany.com';
+// export const API_BASE_MAINNET = 'https://server.nftcompany.com';
+export const API_BASE_MAINNET = API_BASE;
 //export const API_BASE_MAINNET = 'http://localhost:9090';
 export const API_BASE_RINKEBY = 'https://testnets-api.opensea.io';
 //export const SITE_HOST_MAINNET = 'https://opensea.io';
@@ -60,5 +62,3 @@ export const SITE_HOST_RINKEBY = 'https://rinkeby.opensea.io';
 
 export const ORDERBOOK_PATH = `/wyvern/v${ORDERBOOK_VERSION}`;
 export const API_PATH = `/api/v${ORDERBOOK_VERSION}`;
-
-export const WETH_ADDRESS = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';

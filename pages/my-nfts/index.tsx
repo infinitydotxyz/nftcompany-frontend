@@ -2,17 +2,14 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
+import { useToast } from '@chakra-ui/toast';
+import { showMessage } from 'utils/commonUtil';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
-import { sampleData, dummyFetch } from 'utils/apiUtil';
-import { web3GetSeaport } from 'utils/ethersUtil';
-import { API_BASE_MAINNET } from '../../src-os/src/constants'
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
-import assetsData from './mock-os-assets.json';
-import apiData from './mock-cov-data.json';
-import unmarshalData from './mock-um-assets.json';
+import { apiGet } from 'utils/apiUtil';
 import { getAccount } from 'utils/ethersUtil';
 
 // transform unmarshall data
@@ -69,9 +66,10 @@ const transformOpenSea = (item: any) => {
     inStock: 1,
     price: 0.1
   };
-}
+};
 
 export default function MyNFTs() {
+  const toast = useToast();
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
@@ -85,18 +83,16 @@ export default function MyNFTs() {
 
       const fetchData = async () => {
         await setIsFetching(true);
-        // const tokenAddress = account.toLowerCase(); // '0xa7e1551ced00a5e3036c227c3e8ded7ebb688e6a'; // account;
-        const res = await fetch(`${API_BASE_MAINNET}/u/${account}/assets?offset=0&limit=50&source=1&ts=${Date.now()}`);
-        const resJson = (await res.json()) || [];
-        console.log('fetchData data:', resJson);
-
-        // const assetList = getAssetList(data);
-        // console.log('assetList', data, assetList);
-
-        const data = (resJson?.assets || []).map((item: any) => {
+        const { result, error } = await apiGet(`/u/${account}/assets?offset=0&limit=50&source=1`);
+        if (error) {
+          showMessage(toast, 'error', `${error}`);
+          return;
+        }
+        const data = (result?.assets || []).map((item: any) => {
           const newItem = transformOpenSea(item);
           return newItem;
         });
+        console.log('error', error);
         await setIsFetching(false);
         setData(data);
 

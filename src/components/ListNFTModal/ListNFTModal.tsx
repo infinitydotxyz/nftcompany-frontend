@@ -1,14 +1,15 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { useToast } from '@chakra-ui/react';
+import { showMessage } from 'utils/commonUtil';
 import { Switch } from '@chakra-ui/react';
 import Datetime from 'react-datetime';
-import NavBar from 'components/NavBar/NavBar';
 import TabBar from 'components/TabBar/TabBar';
-import styles from './ListNFTModal.module.scss';
 import { getAddressBalance, getSchemaName, web3GetSeaport } from 'utils/ethersUtil';
 import { getAccount } from 'utils/ethersUtil';
-import { WETH_ADDRESS } from '../../../src-os/src/constants';
+import { apiGet } from 'utils/apiUtil';
+import { WETH_ADDRESS } from 'utils/constants';
+import styles from './ListNFTModal.module.scss';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -17,11 +18,11 @@ interface IProps {
   data?: any;
   onClickMakeOffer?: (nftLink: string, price: number) => void;
   onClickBuyNow?: (nftLink: string, price: number) => void;
-  onClickListNFT?: (nftLink: string, price: number) => void;
   onClose?: () => void;
 }
 
-const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProps) => {
+const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
+  const toast = useToast();
   const [price, setPrice] = React.useState(0);
   const [balance, setBalance] = React.useState('');
   const [endPriceShowed, setEndPriceShowed] = React.useState(false);
@@ -29,16 +30,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
   const [endPrice, setEndPrice] = React.useState(0);
   const [expiryTimeMs, setExpiryTimeMs] = React.useState(0);
   const [activeTab, setActiveTab] = React.useState('SET_PRICE');
-
-  const toast = useToast();
-  const showMessage = (type: 'error' | 'info', message: string) =>
-    toast({
-      title: type === 'error' ? 'Error' : 'Info',
-      description: message,
-      status: type === 'error' ? 'error' : 'success',
-      duration: 9000,
-      isClosable: true
-    });
+  const [backendChecks, setBackendChecks] = React.useState({});
 
   const [user, setUser] = React.useState<any>(null);
   React.useEffect(() => {
@@ -46,14 +38,20 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
       const account = await getAccount();
       setUser({ account });
 
+      const getBackendChecks = async () => {
+        const { result } = await apiGet(`/token/${data.tokenAddress}/verfiedBonusReward`);
+        setBackendChecks({ hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified });
+      };
       const getInfo = async () => {
         const bal = await getAddressBalance(account);
         setBalance(parseFloat(`${bal}`).toFixed(4));
       };
+      getBackendChecks();
       getInfo();
     };
     connect();
   }, []);
+
   return (
     <>
       {!isServer && (
@@ -79,7 +77,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                     { id: 'HIGHEST_BID', label: 'Highest Bid' }
                   ]}
                   activeTab={activeTab}
-                  setActiveTab={setActiveTab}
+                  setActiveTab={(id: string) => {
+                    setActiveTab(id);
+                    setEndPriceShowed(false);
+                  }}
                 />
               </div>
 
@@ -142,14 +143,23 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                     <li>
                       <div>Minimum bid</div>
                       <div>
-                        <input type="number" className={styles.priceInput} autoFocus onChange={(ev) => setPrice(parseFloat(ev.target.value))} />
+                        <input
+                          type="number"
+                          className={styles.priceInput}
+                          autoFocus
+                          onChange={(ev) => setPrice(parseFloat(ev.target.value))}
+                        />
                       </div>
                       <div>WETH</div>
                     </li>
                     <li>
                       <div>Reserve price</div>
                       <div>
-                        <input type="number" className={styles.priceInput} onChange={(ev) => setReservePrice(parseFloat(ev.target.value))} />
+                        <input
+                          type="number"
+                          className={styles.priceInput}
+                          onChange={(ev) => setReservePrice(parseFloat(ev.target.value))}
+                        />
                       </div>
                       <div>WETH</div>
                     </li>
@@ -191,7 +201,8 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                         // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
                         endAmount: endPriceShowed ? endPrice : price,
                         expirationTime,
-                        assetDetails: { ...data } // custom data to pass in details.
+                        assetDetails: { ...data }, // custom data to pass in details.
+                        ...backendChecks
                       };
                       if (activeTab !== 'SET_PRICE') {
                         // for English Auction (Highest Bid):
@@ -207,10 +218,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                     } catch (e: any) {
                       err = e;
                       console.error(e, '   ', expirationTime);
-                      showMessage('error', e.message);
+                      showMessage(toast, 'error', e.message);
                     }
                     if (!err) {
-                      showMessage('info', 'NFT listed successfully!');
+                      showMessage(toast, 'info', 'NFT listed successfully!');
                       onClose && onClose();
                     }
                   }}

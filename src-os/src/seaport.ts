@@ -568,8 +568,10 @@ export class OpenSeaPort {
    * @param buyerEmail Optional email of the user that's allowed to purchase this item. If specified, a user will have to verify this email before being able to take the order.
    */
   public async createSellOrder(
-      { assetDetails, asset, accountAddress, startAmount, endAmount, quantity = 1, listingTime, expirationTime = 0, waitForHighestBid = false, englishAuctionReservePrice, paymentTokenAddress, extraBountyBasisPoints = 0, buyerAddress, buyerEmail }:
-      { assetDetails?: any; asset: Asset;
+      { hasBonusReward, hasBlueCheck, assetDetails,
+        asset, accountAddress, startAmount, endAmount, quantity = 1, listingTime, expirationTime = 0, waitForHighestBid = false, englishAuctionReservePrice, paymentTokenAddress, extraBountyBasisPoints = 0, buyerAddress, buyerEmail }:
+      { hasBonusReward?: boolean, hasBlueCheck?: boolean, assetDetails?: any;
+        asset: Asset;
         accountAddress: string;
         startAmount: number;
         endAmount?: number;
@@ -601,7 +603,15 @@ export class OpenSeaPort {
     (order.metadata as any).asset.image = assetDetails?.image;
     (order.metadata as any).asset.imagePreview = assetDetails?.imagePreview;
     (order.metadata as any).asset.title = assetDetails?.title;
-    console.log('---- OpenSea order:', order, '*********', assetDetails)
+    (order as any).metadata.hasBonusReward = hasBonusReward;
+    if (typeof hasBonusReward === 'undefined') {
+      (order as any).metadata.checkBonusReward = true;
+    }
+    (order as any).metadata.hasBlueCheck = hasBlueCheck;
+    if (typeof hasBlueCheck === 'undefined') {
+      (order as any).metadata.checkBlueCheck = true;
+    }
+    console.log('****** OpenSea order:', order, '--- ', assetDetails)
     // order.metadata.asset.name, desc, image...
 
     await this._sellOrderValidationAndApprovals({ order, accountAddress })

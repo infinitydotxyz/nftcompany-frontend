@@ -1,4 +1,12 @@
-// import axios from 'axios'
+import axios, { AxiosInstance } from 'axios';
+import qs from 'query-string';
+import { API_BASE } from './constants';
+
+const axiosApi: AxiosInstance = axios.create({
+  headers: {
+    // header1: value, // TODO: set header like auth key, etc.
+  }
+});
 
 export const sampleData = [
   {
@@ -125,6 +133,35 @@ export async function dummyFetch() {
   return sampleData;
 }
 
-export async function apiGet(path: string, query: any) {
-  // TBD
-}
+export const apiGet = async (path: string, query?: any) => {
+  let queryStr = '';
+  queryStr = query ? '?' + qs.stringify(query) : '';
+  try {
+    const { data } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'GET' });
+    return { result: data };
+  } catch (error) {
+    return { error };
+  }
+};
+
+export const apiPost = async (path: string, query?: any, payload?: any) => {
+  let queryStr = '';
+  queryStr = query ? '?' + qs.stringify(query) : '';
+  try {
+    const { data } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'POST', data: payload });
+    return { result: data };
+  } catch (error) {
+    return { error };
+  }
+};
+
+export const apiDelete = async (path: string, query?: any) => {
+  let queryStr = '';
+  queryStr = query ? '?' + qs.stringify(query) : '';
+  try {
+    const { data } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'DELETE' });
+    return { result: data };
+  } catch (error) {
+    return { error };
+  }
+};

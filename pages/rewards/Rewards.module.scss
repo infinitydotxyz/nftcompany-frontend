@@ -1,0 +1,15 @@
+.list {
+  margin-top: 10px;
+  list-style: none;
+  margin-bottom: 20px;
+
+  li {
+    padding: 10px 0;
+  }
+  li > span {
+    display: inline-block;
+    width: 200px;
+    font-weight: bold;
+    color: #777;
+  }
+}
