@@ -5,9 +5,10 @@ import NiceSelect from 'components/NiceSelect/NiceSelect';
 import PriceRange from './PriceRange';
 import styles from './FilterPanel.module.css';
 
-type Filter = {
+export type Filter = {
   sortByLikes?: string;
   sortByPrice?: string;
+  price?: number;
 };
 
 type Props = {
@@ -30,6 +31,10 @@ function FilterPanel({ isExpanded, setExpanded, onChange }: Props) {
     if (onChange) {
       onChange(updatedFilter);
     }
+  };
+  const updateFilter = (price: number[]) => {
+    setValues(price);
+    handleChanges({ ...filter, price: price[0] });
   };
 
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
@@ -92,7 +97,13 @@ function FilterPanel({ isExpanded, setExpanded, onChange }: Props) {
                 </NiceSelect>
               </span>
 
-              <PriceRange values={values} setValues={setValues} className={styles.item} style={{ width: 200 }} />
+              <PriceRange
+                values={values}
+                setValues={setValues}
+                onFinalSetValue={updateFilter}
+                className={styles.item}
+                style={{ width: 200 }}
+              />
             </div>
           </motion.section>
         )}

@@ -5,15 +5,18 @@ import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/react';
 // import { Select } from '@chakra-ui/react';
 import CardList from 'components/Card/CardList';
-import FilterPanel from 'components/FilterPanel/FilterPanel';
+import FilterPanel, { Filter } from 'components/FilterPanel/FilterPanel';
 import { FilterIcon } from 'components/Icons/Icons';
 import { sampleData, dummyFetch } from '../../src/utils/apiUtil';
 import styles from '../../styles/Dashboard.module.scss';
+import { getListings } from 'services/Listings.service';
+import { CardData } from 'components/Card/Card';
 
 export default function Dashboard() {
   const [tabIndex, setTabIndex] = useState(1);
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const [listedNfts, setListedNfts] = useState<CardData[]>([]);
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -37,6 +40,16 @@ export default function Dashboard() {
         break;
     }
   }, [tabIndex]);
+  React.useEffect(() => {
+    getNftListings();
+  }, []);
+
+  const getNftListings = async (filter?: Filter) => {
+    await setIsFetching(true);
+    const response = await getListings(filter);
+    setListedNfts(response);
+    await setIsFetching(false);
+  };
 
   return (
     <>
@@ -142,13 +155,11 @@ export default function Dashboard() {
           <FilterPanel
             isExpanded={filterShowed}
             onChange={async (filter) => {
-              await setIsFetching(true);
-              await dummyFetch();
-              await setIsFetching(false);
+              getNftListings(filter);
             }}
           />
 
-          {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={sampleData} />}
+          {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={listedNfts} />}
         </div>
       </div>
     </>
