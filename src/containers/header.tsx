@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Button
-} from '@chakra-ui/react';
+import { Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FilterContext } from 'hooks/useFilter';
@@ -103,7 +97,15 @@ const Header = () => {
                       <MenuButton as={Button} rightIcon={null}>
                         <a className="connect-wallet">{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</a>
                       </MenuButton>
-                      <MenuList bg="#fff" textColor="#333" minWidth="160px" p="8" border="1px solid #ccc" borderRadius="6">
+                      <MenuList
+                        bg="#fff"
+                        textColor="#333"
+                        minWidth="160px"
+                        p="8"
+                        border="1px solid #ccc"
+                        borderRadius="6"
+                        _hover={{ backgroundColor: 'blue', color: 'white' }}
+                      >
                         <MenuItem onClick={() => setUser(null)}>Sign out</MenuItem>
                       </MenuList>
                     </Menu>
