@@ -39,8 +39,8 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
       setUser({ account });
 
       const getBackendChecks = async () => {
-        const { bonusReward, verified } = await apiGet(`/token/${data.tokenAddress}/verfiedBonusReward`);
-        setBackendChecks({ hasBonusReward: bonusReward, hasBlueCheck: verified });
+        const { result } = await apiGet(`/token/${data.tokenAddress}/verfiedBonusReward`);
+        setBackendChecks({ hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified });
       };
       const getInfo = async () => {
         const bal = await getAddressBalance(account);

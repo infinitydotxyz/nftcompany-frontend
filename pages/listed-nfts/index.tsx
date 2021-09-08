@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
 import { getAccount } from 'utils/ethersUtil';
+import { useToast } from '@chakra-ui/toast';
+import { showMessage } from 'utils/commonUtil';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/spinner';
@@ -11,6 +13,7 @@ import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 
 export default function ListNFTs() {
+  const toast = useToast();
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
@@ -23,8 +26,12 @@ export default function ListNFTs() {
     await setIsFetching(true);
     let listingData = [];
     try {
-      const { listings } = await apiGet(`/u/${account}/listings`);
-      listingData = listings;
+      const { result, error } = await apiGet(`/u/${account}/listings`);
+      if (error) {
+        showMessage(toast, 'error', `${error}`);
+        return;
+      }
+      listingData = result?.listings || [];
       console.log('listingData', listingData);
     } catch (e) {
       console.error(e);
@@ -79,9 +86,10 @@ export default function ListNFTs() {
                 onClickAction={async (item, action) => {
                   console.log('item, action', item, action);
                   // alert('Cancel')
-                  await apiDelete(
-                    `/u/${user.account}/listings/${item.id}?tokenAddress=${item?.tokenAddress}&hasBonusReward=false`
-                  );
+                  await apiDelete(`/u/${user.account}/listings/${item.id}`, {
+                    tokenAddress: item?.tokenAddress,
+                    hasBonusReward: false
+                  });
                   fetchData();
                 }}
               />

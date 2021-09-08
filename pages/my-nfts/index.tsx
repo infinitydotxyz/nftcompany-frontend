@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
+import { useToast } from '@chakra-ui/toast';
+import { showMessage } from 'utils/commonUtil';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
@@ -64,9 +66,10 @@ const transformOpenSea = (item: any) => {
     inStock: 1,
     price: 0.1
   };
-}
+};
 
 export default function MyNFTs() {
+  const toast = useToast();
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
@@ -80,12 +83,16 @@ export default function MyNFTs() {
 
       const fetchData = async () => {
         await setIsFetching(true);
-        const { assets } = await apiGet(`/u/${account}/assets?offset=0&limit=50&source=1`);
-
-        const data = (assets || []).map((item: any) => {
+        const { result, error } = await apiGet(`/u/${account}/assets?offset=0&limit=50&source=1`);
+        if (error) {
+          showMessage(toast, 'error', `${error}`);
+          return;
+        }
+        const data = (result?.assets || []).map((item: any) => {
           const newItem = transformOpenSea(item);
           return newItem;
         });
+        console.log('error', error);
         await setIsFetching(false);
         setData(data);
 
