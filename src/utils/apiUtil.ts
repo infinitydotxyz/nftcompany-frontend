@@ -133,35 +133,40 @@ export async function dummyFetch() {
   return sampleData;
 }
 
+const catchError = (err: any) => {
+  console.error(err, err?.response);
+  return { error: { message: err }, status: err?.response?.status };
+};
+
 export const apiGet = async (path: string, query?: any) => {
-  let queryStr = '';
-  queryStr = query ? '?' + qs.stringify(query) : '';
+  const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
-    const { data } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'GET' });
-    return { result: data };
-  } catch (error) {
-    return { error };
+    const { data, status } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'GET' });
+    return { result: data, status };
+  } catch (err: any) {
+    const { error, status } = catchError(err);
+    return { error, status };
   }
 };
 
 export const apiPost = async (path: string, query?: any, payload?: any) => {
-  let queryStr = '';
-  queryStr = query ? '?' + qs.stringify(query) : '';
+  const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
-    const { data } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'POST', data: payload });
-    return { result: data };
-  } catch (error) {
-    return { error };
+    const { data, status } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'POST', data: payload });
+    return { result: data, status };
+  } catch (err: any) {
+    const { error, status } = catchError(err);
+    return { error, status };
   }
 };
 
 export const apiDelete = async (path: string, query?: any) => {
-  let queryStr = '';
-  queryStr = query ? '?' + qs.stringify(query) : '';
+  const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
-    const { data } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'DELETE' });
-    return { result: data };
-  } catch (error) {
-    return { error };
+    const { data, status } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'DELETE' });
+    return { result: data, status };
+  } catch (err: any) {
+    const { error, status } = catchError(err);
+    return { error, status };
   }
 };
