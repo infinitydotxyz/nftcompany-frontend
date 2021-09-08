@@ -79,7 +79,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClickListNFT, onClose }: IProp
                     { id: 'HIGHEST_BID', label: 'Highest Bid' }
                   ]}
                   activeTab={activeTab}
-                  setActiveTab={setActiveTab}
+                  setActiveTab={(id: string) => {
+                    setActiveTab(id);
+                    setEndPriceShowed(false);
+                  }}
                 />
               </div>
 
