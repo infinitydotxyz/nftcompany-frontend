@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { API_BASE_MAINNET } from '../../src-os/src/constants';
 import { getAccount } from 'utils/ethersUtil';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Rewards.module.scss';
 
@@ -25,10 +26,14 @@ export default function Rewards() {
     } catch (e) {
       console.error(e);
     }
-  }
+  };
   React.useEffect(() => {
     fetchData();
   }, []);
+
+  const numListingsPct = data?.totalListings > 0 ? data?.numListings / data?.totalListings : 0;
+  const numBonusListingsPct = data?.totalBonusListings > 0 ? data?.numBonusListings / data?.totalBonusListings : 0;
+  const feesPaidPct = data?.totalFees > 0 ? data?.feesPaid / data?.totalFees : 0;
 
   return (
     <>
@@ -47,10 +52,91 @@ export default function Rewards() {
 
           <div className={styles.main}>
             <section className="container container-fluid grid">
+
+              {/* Second Column */}
               <div className="col-md-6 col-sm-12">
-                <h3 className="tg-title">Rewards</h3>
+                <h3 className="tg-title">Listings:</h3>
 
                 <ul className={styles.list}>
+                  <li>
+                    <span>Total Listings</span>
+                    <span className={styles.bar}>{data?.totalListings}</span>
+                  </li>
+                  <li>
+                    <span>Your Listings</span>
+                    <span className={styles.bar} style={{ width: `${20 * numListingsPct}vw` }}>
+                      {data?.numListings}
+                    </span>
+                  </li>
+                </ul>
+
+                <h3 className="tg-title">Bonus Listings:</h3>
+
+                <ul className={styles.list}>
+                  <li>
+                    <span>Total Bonus Listings</span>
+                    <span className={styles.bar}>{data?.totalListings}</span>
+                  </li>
+                  <li>
+                    <span>Your Bonus Listings</span>
+                    <span className={styles.bar} style={{ width: `${20 * numBonusListingsPct}vw` }}>
+                      {data?.numBonusListings > 0 ? data?.numBonusListings : 0}
+                    </span>
+                  </li>
+                </ul>
+
+                <h3 className="tg-title">Fees:</h3>
+
+                <ul className={styles.list}>
+                  <li>
+                    <span>Total Fees</span>
+                    <span className={styles.bar}>{data?.totalListings}</span>
+                  </li>
+                  <li>
+                    <span>Your Paid Fees</span>
+                    <span className={styles.bar} style={{ width: `${20 * feesPaidPct}vw` }}>
+                      {data?.feesPaid > 0 ? data?.feesPaid : 0}
+                    </span>
+                  </li>
+                </ul>
+
+                <h3 className="tg-title">Leaderboard 🏆</h3>
+                <Table mt={4} width={'100%'}>
+                  <Thead>
+                    <Tr>
+                      <Th>Rank</Th>
+                      <Th>Name</Th>
+                      <Th isNumeric>Rewards</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    <Tr>
+                      <Td>#1</Td>
+                      <Td>John Doe</Td>
+                      <Td isNumeric>1100</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>#2</Td>
+                      <Td>Jane Doe</Td>
+                      <Td isNumeric>1000</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>#3</Td>
+                      <Td>Marry</Td>
+                      <Td isNumeric>850</Td>
+                    </Tr>
+                  </Tbody>
+                </Table>
+              </div>
+
+              <div className="col-md-6 col-sm-12">
+                <h3 className="tg-title">Rewards 💰</h3>
+
+                <ul className={styles.list}>
+                  <li>
+                    <span>Current Block</span>
+                    <span>{data?.currentBlock}</span>
+                  </li>
                   <li>
                     <span>Orders Reward</span>
                     <span>{data?.ordersReward}</span>
@@ -76,16 +162,11 @@ export default function Rewards() {
                     <span>{data?.netReward}</span>
                   </li>
                 </ul>
+
+                
               </div>
 
-              {/* <div className="col-md-6 col-sm-12">
-                <h3 className="tg-title">Sale Rewards:</h3>
-
-                <ul style={{ marginTop: 10 }}>
-                  <li>ordersReward</li>
-                  <li>Reward 2</li>
-                </ul>
-              </div> */}
+              
             </section>
           </div>
         </div>

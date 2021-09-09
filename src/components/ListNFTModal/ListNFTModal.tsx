@@ -65,7 +65,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
             </div>
           )}
         >
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'blue' }}>
+          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.title}>List NFT</div>
 

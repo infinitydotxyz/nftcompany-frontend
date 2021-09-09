@@ -1,15 +1,23 @@
 .list {
+  margin-left: 25px;
   margin-top: 10px;
-  list-style: none;
   margin-bottom: 20px;
+  list-style: none;
 
   li {
     padding: 10px 0;
   }
   li > span {
     display: inline-block;
-    width: 200px;
+    width: 170px;
     font-weight: bold;
     color: #777;
+  }
+  .bar {
+    width: 20vw;
+    padding-left: 10px;
+    // background-color: blue;
+    // color: #fff;
+    border-radius: 12px;
   }
 }

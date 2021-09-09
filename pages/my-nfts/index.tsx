@@ -83,21 +83,21 @@ export default function MyNFTs() {
 
       const fetchData = async () => {
         await setIsFetching(true);
-        const { result, error } = await apiGet(`/u/${account}/assets?offset=0&limit=50&source=1`);
+        const { result, error } = await apiGet(`/u/${account}/assets`, {
+          offset: 0,
+          limit: 50,
+          source: 1
+        });
         if (error) {
-          showMessage(toast, 'error', `${error}`);
+          showMessage(toast, 'error', `${error.message}`);
           return;
         }
         const data = (result?.assets || []).map((item: any) => {
           const newItem = transformOpenSea(item);
           return newItem;
         });
-        console.log('error', error);
         await setIsFetching(false);
         setData(data);
-
-        // await setIsFetching(false);
-        // setData(getAssetList(data));
       };
       fetchData();
     };

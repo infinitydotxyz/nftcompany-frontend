@@ -3,12 +3,6 @@ import dynamic from 'next/dynamic';
 import { useToast } from '@chakra-ui/react';
 import { apiDelete } from 'utils/apiUtil';
 import { showMessage } from 'utils/commonUtil';
-import { Switch } from '@chakra-ui/react';
-import TabBar from 'components/TabBar/TabBar';
-import { getAddressBalance, getSchemaName, web3GetSeaport } from 'utils/ethersUtil';
-import { getAccount } from 'utils/ethersUtil';
-import { apiGet } from 'utils/apiUtil';
-import { WETH_ADDRESS } from 'utils/constants';
 import styles from './DeleteListingModal.module.scss';
 
 const Modal = dynamic(() => import('hooks/useModal'));
@@ -23,8 +17,6 @@ interface IProps {
 
 const DeleteListingModal: React.FC<IProps> = ({ user, data, onSubmit, onClose }: IProps) => {
   const toast = useToast();
-  const [price, setPrice] = React.useState(0);
-  const [balance, setBalance] = React.useState('');
 
   React.useEffect(() => {
     // TBD
@@ -43,7 +35,7 @@ const DeleteListingModal: React.FC<IProps> = ({ user, data, onSubmit, onClose }:
             </div>
           )}
         >
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'blue' }}>
+          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.title}>&nbsp;</div>
 

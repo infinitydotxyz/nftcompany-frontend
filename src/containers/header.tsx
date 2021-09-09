@@ -105,6 +105,7 @@ const Header = () => {
                         p="8"
                         border="1px solid #ccc"
                         borderRadius="6"
+                        _hover={{ backgroundColor: 'blue', color: 'white' }}
                       >
                         <MenuItem onClick={() => setUser(null)}>Sign out</MenuItem>
                       </MenuList>
