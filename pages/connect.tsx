@@ -21,8 +21,8 @@ export default function ConnectWallet() {
   }, []);
 
   const connectMetaMask = async () => {
-    const res = await initEthers();
-    if (res && res.getAddress) {
+    const res = await initEthers(); // returns provider
+    if (res && res.getSigner) {
       await setAuthHeaders();
       router.push('/my-nfts');
     } else {

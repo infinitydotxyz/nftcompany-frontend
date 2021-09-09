@@ -23,11 +23,8 @@ export async function initEthers() {
     alert('Please install the MetaMask extension first.');
     return;
   }
-  await window.ethereum.enable();
   ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = ethersProvider.getSigner();
-  const network = Number(window.ethereum.send({ method: 'net_version' }).result);
-  return signer;
+  return ethersProvider;
 }
 
 export const getEthersProvider = () => ethersProvider;
@@ -73,13 +70,6 @@ export const getWeb3 = () => {
   let web3 = new Web3();
   if (window.ethereum) {
     web3 = new Web3(window.ethereum);
-    // try {
-    //   window.ethereum.enable().then(() => {
-    //     // User has allowed account access to DApp...
-    //   })
-    // } catch (e) {
-    //   // User has denied account access to DApp...
-    // }
   } else if ((window as any).web3) {
     web3 = new Web3(web3.currentProvider);
   } else {
@@ -108,7 +98,7 @@ export const getSchemaName = (address: string) => {
 };
 // we only support main and rinkeby for now so lets only allow those chainIds
 export const getChainName = (): string | null => {
-  const chainId = Number(window.ethereum.send({ method: 'net_version' }).result);
+  const chainId = Number(window.ethereum.request({ method: 'net_version' }).result);
   if (chainId === 1) {
     return 'main';
   } else if (chainId === 4) {
