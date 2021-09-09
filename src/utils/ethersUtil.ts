@@ -30,6 +30,7 @@ export async function initEthers() {
   return signer;
 }
 
+// todo: adi - change to ethersProvider
 export const getProvider = () => provider;
 
 export const getAccount = async () => {
@@ -69,7 +70,8 @@ export const getAddressBalance = async (address: string) => {
 
 /* ------------ web3 utils ------------ */
 
-export const web3GetCurrentProvider = () => {
+//todo: adi - should these below 2 functions instantiate objects on every call?
+export const getWeb3 = () => {
   let web3 = new Web3();
   if (window.ethereum) {
     web3 = new Web3(window.ethereum);
@@ -85,13 +87,12 @@ export const web3GetCurrentProvider = () => {
   } else {
     alert('Please install the MetaMask extension first.');
   }
-  const currentProvider = web3.currentProvider;
-  return currentProvider;
+  return web3;
 };
 
 export const web3GetSeaport = () => {
   const network = getChainName();
-  const seaport = new OpenSeaPort(web3GetCurrentProvider(), {
+  const seaport = new OpenSeaPort(getWeb3().currentProvider(), {
     networkName: network
   });
   return seaport;

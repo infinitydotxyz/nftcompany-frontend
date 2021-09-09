@@ -56,8 +56,6 @@ const DeleteListingModal: React.FC<IProps> = ({ user, data, onSubmit, onClose }:
                   className="action-btn"
                   onClick={async () => {
                     await apiDelete(`/u/${user.account}/listings/${data.id}`, {
-                      maker: data?.maker,
-                      tokenAddress: data?.tokenAddress,
                       hasBonusReward: data?.metadata?.hasBonusReward
                     });
                     onSubmit && onSubmit();
