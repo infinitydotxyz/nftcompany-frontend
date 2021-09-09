@@ -1,4 +1,4 @@
-export interface Nft {
+export interface NftListing {
   blueCheck: boolean;
   howToCall: number;
   salt: string;

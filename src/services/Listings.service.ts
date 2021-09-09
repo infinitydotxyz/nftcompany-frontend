@@ -1,12 +1,12 @@
 import { CardData } from 'components/Card/Card';
-import { Nft } from 'types/Nft.interface';
+import { NftListing } from 'types/Nft.interface';
 import { weiToEther } from 'utils/ethersUtil';
 import { Filter } from 'components/FilterPanel/FilterPanel';
 import { apiGet } from 'utils/apiUtil';
 
 export const getListings = async (listingFilter?: Filter): Promise<CardData[]> => {
   const path = `/listings/`;
-  const { result, error }: { result: Nft[]; error: any } = (await apiGet(path, listingFilter)) as any;
+  const { result, error }: { result: NftListing[]; error: any } = (await apiGet(path, listingFilter)) as any;
   if (error !== undefined) {
     return [];
   }
