@@ -28,7 +28,7 @@ type Props = {
   [key: string]: any;
 };
 
-function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems=['PRICE'], actions = [], ...rest }: Props) {
+function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PRICE'], actions = [], ...rest }: Props) {
   const [modalShowed, setModalShowed] = useState(false);
 
   if (!data) {
@@ -37,56 +37,56 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems=['PRIC
   return (
     <div className={styles.card} {...rest}>
       {/* <Link href={`/preview?id=${data.id}${viewInfo ? '&view=info' : ''}`} passHref> */}
-        <div className={styles.cardPreview}>
-          {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
-          <img src={data.image} alt="Card preview" />
+      <div className={styles.cardPreview}>
+        {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
+        <img src={data.image} alt="Card preview" />
 
-          <div className={styles.cardControls}>
-            {/* <div className="status-green card__category">purchasing !</div> */}
-            {/* <button className="card__favorite">
+        <div className={styles.cardControls}>
+          {/* <div className="status-green card__category">purchasing !</div> */}
+          {/* <button className="card__favorite">
               <svg className="icon icon-heart"></svg>
             </button> */}
-            {actions?.indexOf('LIST_NFT') >= 0 && (
-              <a
-                className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-                href="#popup-bid"
-                data-effect="mfp-zoom-in"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                  // if (onClickPlaceBid) {
-                  //   onClickPlaceBid();
-                  // }
-                  if (onClickAction) {
-                    onClickAction(data, 'LIST_NFT');
-                  }
-                  setModalShowed(true);
-                }}
-              >
-                <span>List NFT</span>
-              </a>
-            )}
+          {actions?.indexOf('LIST_NFT') >= 0 && (
+            <a
+              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
+              href="#popup-bid"
+              data-effect="mfp-zoom-in"
+              onClick={(ev) => {
+                ev.preventDefault();
+                // if (onClickPlaceBid) {
+                //   onClickPlaceBid();
+                // }
+                if (onClickAction) {
+                  onClickAction(data, 'LIST_NFT');
+                }
+                setModalShowed(true);
+              }}
+            >
+              <span>List NFT</span>
+            </a>
+          )}
 
-            {actions?.indexOf('CANCEL_LISTING') >= 0 && (
-              <a
-                className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-                href="#popup-bid"
-                data-effect="mfp-zoom-in"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                  // if (onClickPlaceBid) {
-                  //   onClickPlaceBid();
-                  // }
-                  if (onClickAction) {
-                    onClickAction(data, 'CANCEL_LISTING');
-                  }
-                  setModalShowed(true);
-                }}
-              >
-                <span>Cancel Listing</span>
-              </a>
-            )}
-          </div>
+          {actions?.indexOf('CANCEL_LISTING') >= 0 && (
+            <a
+              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
+              href="#popup-bid"
+              data-effect="mfp-zoom-in"
+              onClick={(ev) => {
+                ev.preventDefault();
+                // if (onClickPlaceBid) {
+                //   onClickPlaceBid();
+                // }
+                if (onClickAction) {
+                  onClickAction(data, 'CANCEL_LISTING');
+                }
+                setModalShowed(true);
+              }}
+            >
+              <span>Cancel Listing</span>
+            </a>
+          )}
         </div>
+      </div>
       {/* </Link> */}
 
       <div className={styles.cardBody}>
@@ -95,9 +95,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems=['PRIC
             {data.collectionName && <div style={{ color: '#999', fontSize: '0.8em' }}>{data.collectionName}</div>}
             <div>{data.title}</div>
           </div>
-          <div className={styles.cardPrice}>
-            {showItems.indexOf('PRICE') >= 0 ? `${data.price} ETH` : ``}
-          </div>
+          <div className={styles.cardPrice}>{showItems.indexOf('PRICE') >= 0 ? `${data.price} ETH` : ``}</div>
         </div>
         <div className={styles.cardLine}>
           <div>&nbsp;</div>

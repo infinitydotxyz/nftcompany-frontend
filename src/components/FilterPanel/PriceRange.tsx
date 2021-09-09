@@ -8,11 +8,12 @@ const MAX = 10;
 type Props = {
   values: number[];
   setValues: any;
+  onFinalSetValue: any;
   className?: string;
   style?: React.CSSProperties;
 };
 
-function PriceRange({ values, setValues, className, style }: Props) {
+function PriceRange({ values, setValues, className, style, onFinalSetValue }: Props) {
   return (
     <span className={className} style={style}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -24,7 +25,10 @@ function PriceRange({ values, setValues, className, style }: Props) {
         step={STEP}
         min={MIN}
         max={MAX}
-        onChange={(values) => setValues(values)}
+        onFinalChange={(values) => onFinalSetValue(values)}
+        onChange={(values) => {
+          setValues(values);
+        }}
         renderTrack={({ props, children }) => (
           <div
             onMouseDown={props.onMouseDown}
