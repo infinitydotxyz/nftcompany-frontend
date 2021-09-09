@@ -16,7 +16,7 @@ declare global {
 }
 // const hstABI = require("human-standard-token-abi");
 
-let provider: any;
+let ethersProvider: any;
 
 export async function initEthers() {
   if (!window?.ethereum) {
@@ -24,14 +24,13 @@ export async function initEthers() {
     return;
   }
   await window.ethereum.enable();
-  provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
+  ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = ethersProvider.getSigner();
   const network = Number(window.ethereum.send({ method: 'net_version' }).result);
   return signer;
 }
 
-// todo: adi - change to ethersProvider
-export const getProvider = () => provider;
+export const getEthersProvider = () => ethersProvider;
 
 export const getAccount = async () => {
   if (!window || !window.ethereum) {
@@ -44,8 +43,8 @@ export const getAccount = async () => {
     if (Array.isArray(accounts) && accounts.length > 0) {
       account = accounts[0];
 
-      if (!provider) {
-        provider = new ethers.providers.Web3Provider(window.ethereum);
+      if (!ethersProvider) {
+        ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
       }
     }
   } catch (err) {
@@ -59,7 +58,7 @@ export const getAddressBalance = async (address: string) => {
     return null;
   }
   try {
-    const balance = await provider.getBalance(address);
+    const balance = await ethersProvider.getBalance(address);
     const ret = ethers.utils.formatEther(balance);
     return ret;
   } catch (err) {

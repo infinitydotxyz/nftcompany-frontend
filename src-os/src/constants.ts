@@ -1,16 +1,13 @@
 import { WyvernProtocol } from 'wyvern-js';
 import { BigNumber } from 'bignumber.js'; // Typescript import issue
-import { API_BASE } from '../../src/utils/constants' // constants from NFTCompany
+import { API_BASE, RINKEBY_API_BASE, RINKEBY_SITE_HOST, SITE_HOST, PROVIDER_URL_ETH_MAINNET, NFTC_FEE_RECIPIENT } from '../../src/utils/constants'; // constants from NFTCompany
 
 export const DEFAULT_GAS_INCREASE_FACTOR = 1.01;
 export const NULL_ADDRESS = WyvernProtocol.NULL_ADDRESS;
 export const NULL_BLOCK_HASH = '0x0000000000000000000000000000000000000000000000000000000000000000';
-//todo: check these before push
-export const OPENSEA_FEE_RECIPIENT = '0xAAdd54c429a6eEBD4514135EaD53d98D0Cc57d57';
-//export const OPENSEA_FEE_RECIPIENT = '0x5b3256965e7c3cf26e11fcaf296dfc8807c01073';
+export const OPENSEA_FEE_RECIPIENT = NFTC_FEE_RECIPIENT;
 export const DEP_INFURA_KEY = 'e8695bce67944848aa95459fac052f8e';
-//export const MAINNET_PROVIDER_URL = 'https://api.opensea.io/jsonrpc/v1/';
-export const MAINNET_PROVIDER_URL = 'https://eth-mainnet.alchemyapi.io/v2/umiR3YUjFlvlrDNOQQltWppf2M-p07Q3'
+export const MAINNET_PROVIDER_URL = PROVIDER_URL_ETH_MAINNET;
 export const RINKEBY_PROVIDER_URL = 'https://testnets-api.opensea.io/jsonrpc/v1/';
 
 export const INVERSE_BASIS_POINT = 10000;
@@ -50,15 +47,10 @@ export const SELL_ORDER_BATCH_SIZE = 3;
 export const ORDERBOOK_VERSION: number = 1;
 export const API_VERSION: number = 1;
 
-//todo: check these before push
-//export const API_BASE_MAINNET = 'https://api.opensea.io';
-// export const API_BASE_MAINNET = 'https://server.nftcompany.com';
 export const API_BASE_MAINNET = API_BASE;
-//export const API_BASE_MAINNET = 'http://localhost:9090';
-export const API_BASE_RINKEBY = 'https://testnets-api.opensea.io';
-//export const SITE_HOST_MAINNET = 'https://opensea.io';
-export const SITE_HOST_MAINNET = 'https://nftcompany.com'
-export const SITE_HOST_RINKEBY = 'https://rinkeby.opensea.io';
+export const API_BASE_RINKEBY = RINKEBY_API_BASE;
+export const SITE_HOST_MAINNET = SITE_HOST;
+export const SITE_HOST_RINKEBY = RINKEBY_SITE_HOST;
 
 export const ORDERBOOK_PATH = `/wyvern/v${ORDERBOOK_VERSION}`;
 export const API_PATH = `/api/v${ORDERBOOK_VERSION}`;

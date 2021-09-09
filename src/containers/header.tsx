@@ -4,15 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
-import { getAccount, getProvider } from '../../src/utils/ethersUtil';
+import { getAccount } from '../../src/utils/ethersUtil';
 import NavBar from 'components/NavBar/NavBar';
-import ActionModal from 'components/ActionModal/ActionModal';
-
-import HeaderActionButtons from './header/HeaderActionButtons';
-import NFT from 'components/nft/nft';
-import CardList from 'components/Card/CardList';
-import { sampleData } from '../../src/utils/apiUtil';
-import { Select } from '@chakra-ui/react';
 
 const Header = () => {
   const router = useRouter();

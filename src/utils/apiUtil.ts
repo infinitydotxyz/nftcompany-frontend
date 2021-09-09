@@ -8,9 +8,7 @@ import {
 const personalSignAsync = require('../../src-os/src/utils/utils').personalSignAsync;
 
 const axiosApi: AxiosInstance = axios.create({
-  headers: {
-    // header1: value, // TODO: set header like auth key, etc.
-  }
+  headers: {}
 });
 
 export const sampleData = [
