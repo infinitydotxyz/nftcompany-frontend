@@ -81,7 +81,8 @@ const Header = () => {
                     // { title: 'Bids & Offers', link: '/offers' },
                     { title: 'My NFTs', link: '/my-nfts' },
                     { title: 'Listed NFTs', link: '/listed-nfts' },
-                    { title: 'Rewards', link: '/rewards' }
+                    { title: 'Rewards', link: '/rewards' },
+                    { title: 'Explore', link: '/explore' }
                   ]}
                   active={['/my-nfts', '/listed-nfts', '/rewards'].indexOf(route)}
                   onClickItem={(item, _) => {

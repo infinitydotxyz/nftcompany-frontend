@@ -1,5 +1,5 @@
-import { API_BASE } from "./constants";
-import axios from "axios";
+import { API_BASE } from './constants';
+import axios from 'axios';
 
 const ethers = require('ethers');
 
@@ -30,6 +30,7 @@ export async function initEthers() {
   return signer;
 }
 
+// todo: adi - change to ethersProvider
 export const getProvider = () => provider;
 
 export const getAccount = async () => {
@@ -69,7 +70,7 @@ export const getAddressBalance = async (address: string) => {
 
 /* ------------ web3 utils ------------ */
 
-export const web3GetCurrentProvider = () => {
+export const getWeb3 = () => {
   let web3 = new Web3();
   if (window.ethereum) {
     web3 = new Web3(window.ethereum);
@@ -85,13 +86,13 @@ export const web3GetCurrentProvider = () => {
   } else {
     alert('Please install the MetaMask extension first.');
   }
-  const currentProvider = web3.currentProvider;
-  return currentProvider;
+  return web3;
 };
 
 export const web3GetSeaport = () => {
-  const seaport = new OpenSeaPort(web3GetCurrentProvider(), {
-    networkName: Network.Main
+  const network = getChainName();
+  const seaport = new OpenSeaPort(getWeb3().currentProvider, {
+    networkName: network
   });
   return seaport;
 };
@@ -105,6 +106,16 @@ export const getSchemaName = (address: string) => {
   } else {
     return WyvernSchemaName.ERC721;
   }
+};
+// we only support main and rinkeby for now so lets only allow those chainIds
+export const getChainName = (): string | null => {
+  const chainId = Number(window.ethereum.send({ method: 'net_version' }).result);
+  if (chainId === 1) {
+    return 'main';
+  } else if (chainId === 4) {
+    return 'rinkeby';
+  }
+  return null;
 };
 
 export const weiToEther = (wei: number) => ethers.utils.formatEther(wei);

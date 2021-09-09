@@ -600,6 +600,7 @@ export class OpenSeaPort {
       extraBountyBasisPoints,
       buyerAddress: buyerAddress || NULL_ADDRESS
     });
+    (order as any).basePriceInEth = startAmount;
     (order.metadata as any).asset.image = assetDetails?.image;
     (order.metadata as any).asset.imagePreview = assetDetails?.imagePreview;
     (order.metadata as any).asset.title = assetDetails?.title;

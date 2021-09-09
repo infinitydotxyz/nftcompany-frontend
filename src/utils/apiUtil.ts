@@ -1,6 +1,11 @@
 import axios, { AxiosInstance } from 'axios';
 import qs from 'query-string';
 import { API_BASE } from './constants';
+import {
+  getAccount,
+  getWeb3
+} from './ethersUtil'
+const personalSignAsync = require('../../src-os/src/utils/utils').personalSignAsync;
 
 const axiosApi: AxiosInstance = axios.create({
   headers: {
@@ -128,6 +133,25 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+export async function getAuthHeaders() {
+  // fetch auth signature and message from local storage
+  const localStorage = window.localStorage
+  let sig = localStorage.getItem('X-AUTH-SIGNATURE') || ''
+  let msg = localStorage.getItem('X-AUTH-MESSAGE') || 'LOGIN'
+  // if they are empty, resign and store
+  if (!sig) {
+    console.log('No auth found, re logging in')
+    const sign = await personalSignAsync(getWeb3(), msg, await getAccount())
+    sig = JSON.stringify(sign)
+    localStorage.setItem('X-AUTH-SIGNATURE', sig)
+    localStorage.setItem('X-AUTH-MESSAGE', msg)
+  }
+  return {
+    'X-AUTH-SIGNATURE': sig,
+    'X-AUTH-MESSAGE': msg
+  }
+}
+
 export async function dummyFetch() {
   await sleep(1000);
   return sampleData;
@@ -141,7 +165,7 @@ const catchError = (err: any) => {
 export const apiGet = async (path: string, query?: any) => {
   const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
-    const { data, status } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'GET' });
+    const { data, status } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'GET', headers: await getAuthHeaders() });
     return { result: data, status };
   } catch (err: any) {
     const { error, status } = catchError(err);
@@ -152,7 +176,7 @@ export const apiGet = async (path: string, query?: any) => {
 export const apiPost = async (path: string, query?: any, payload?: any) => {
   const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
-    const { data, status } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'POST', data: payload });
+    const { data, status } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'POST', headers: await getAuthHeaders(), data: payload });
     return { result: data, status };
   } catch (err: any) {
     const { error, status } = catchError(err);
@@ -163,7 +187,7 @@ export const apiPost = async (path: string, query?: any, payload?: any) => {
 export const apiDelete = async (path: string, query?: any) => {
   const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
-    const { data, status } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'DELETE' });
+    const { data, status } = await axiosApi({ url: `${API_BASE}${path}${queryStr}`, method: 'DELETE', headers: await getAuthHeaders()  });
     return { result: data, status };
   } catch (err: any) {
     const { error, status } = catchError(err);
