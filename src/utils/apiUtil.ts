@@ -5,7 +5,7 @@ import {
   getAccount,
   getWeb3
 } from './ethersUtil'
-import { personalSignAsync } from '../../src-os/src/utils/utils' 
+const personalSignAsync = require('../../src-os/src/utils/utils').personalSignAsync;
 
 const axiosApi: AxiosInstance = axios.create({
   headers: {
@@ -137,13 +137,12 @@ export async function getAuthHeaders() {
   // fetch auth signature and message from local storage
   const localStorage = window.localStorage
   let sig = localStorage.getItem('X-AUTH-SIGNATURE') || ''
-  let msg = localStorage.getItem('X-AUTH-MESSAGE') || 'AUTH'
+  let msg = localStorage.getItem('X-AUTH-MESSAGE') || 'LOGIN'
   // if they are empty, resign and store
   if (!sig) {
     console.log('No auth found, re logging in')
     const sign = await personalSignAsync(getWeb3(), msg, await getAccount())
     sig = JSON.stringify(sign)
-    console.log(sig)
     localStorage.setItem('X-AUTH-SIGNATURE', sig)
     localStorage.setItem('X-AUTH-MESSAGE', msg)
   }

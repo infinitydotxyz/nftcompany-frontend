@@ -70,7 +70,6 @@ export const getAddressBalance = async (address: string) => {
 
 /* ------------ web3 utils ------------ */
 
-//todo: adi - should these below 2 functions instantiate objects on every call?
 export const getWeb3 = () => {
   let web3 = new Web3();
   if (window.ethereum) {
@@ -92,7 +91,7 @@ export const getWeb3 = () => {
 
 export const web3GetSeaport = () => {
   const network = getChainName();
-  const seaport = new OpenSeaPort(getWeb3().currentProvider(), {
+  const seaport = new OpenSeaPort(getWeb3().currentProvider, {
     networkName: network
   });
   return seaport;
