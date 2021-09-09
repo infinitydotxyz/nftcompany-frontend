@@ -1,9 +1,9 @@
 //todo: adi check these before push
 
-export const API_BASE = 'https://server.nftcompany.com';
-export const RINKEBY_API_BASE = 'https://server.nftcompany.com';
-//export const API_BASE = 'http://localhost:9090';
-//export const RINKEBY_API_BASE = 'http://localhost:9090';
+// export const API_BASE = 'https://server.nftcompany.com';
+// export const RINKEBY_API_BASE = 'https://server.nftcompany.com';
+export const API_BASE = 'http://localhost:9090';
+export const RINKEBY_API_BASE = 'http://localhost:9090';
 export const SITE_HOST = 'https://nftcompany.com'
 export const RINKEBY_SITE_HOST = 'https://nftcompany.com';
 export const PROVIDER_URL_ETH_MAINNET = 'https://eth-mainnet.alchemyapi.io/v2/umiR3YUjFlvlrDNOQQltWppf2M-p07Q3';
