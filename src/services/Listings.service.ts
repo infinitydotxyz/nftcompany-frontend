@@ -1,21 +1,16 @@
 import { CardData } from 'components/Card/Card';
-import { API_BASE } from 'utils/constants';
-import axios, { AxiosInstance } from 'axios';
 import { Nft } from 'types/Nft.interface';
 import { weiToEther } from 'utils/ethersUtil';
 import { Filter } from 'components/FilterPanel/FilterPanel';
+import { apiGet } from 'utils/apiUtil';
 
-const axiosApi: AxiosInstance = axios.create({
-  headers: {}
-});
 export const getListings = async (listingFilter?: Filter): Promise<CardData[]> => {
-  let url = `${API_BASE}/listings/`;
-  if (listingFilter) {
-    url = `${url}${getFilterString(listingFilter)}`;
+  const path = `/listings/`;
+  const { result, error }: { result: Nft[]; error: any } = (await apiGet(path, listingFilter)) as any;
+  if (error !== undefined) {
+    return [];
   }
-  const response: Nft[] = await (await axiosApi({ url, method: 'GET' })).data;
-
-  const cards = response.map((nft, index) => {
+  const cards = result.map((nft, index) => {
     const cardData: CardData = {
       id: nft.metadata.asset.id,
       image: nft.metadata.asset.image,
@@ -26,12 +21,4 @@ export const getListings = async (listingFilter?: Filter): Promise<CardData[]> =
     return cardData;
   });
   return cards;
-};
-
-export const getFilterString = (listingFilters: Filter): string => {
-  let filter = '?';
-  if (listingFilters.price) {
-    filter = filter + `price=${listingFilters.price}`;
-  }
-  return filter;
 };
