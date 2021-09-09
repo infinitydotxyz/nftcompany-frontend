@@ -148,6 +148,7 @@ const HeaderActionButtons = () => {
                   if (order) {
                     // This will bring the wallet confirmation popup for the user to confirm the purchase
                     seaport.fulfillOrder({ order: order, accountAddress: user?.account });
+                    // todo: adi this should listen txn confirmed event and call orderFulfilledApi
                     setActionModalType('');
                   } else {
                     // Handle when the order does not exist anymore
