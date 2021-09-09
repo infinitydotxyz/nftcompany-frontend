@@ -136,7 +136,7 @@ const HeaderActionButtons = () => {
               const seaport = web3GetSeaport();
               seaport.api
                 .getOrder({
-                  maker: '', //todo: adi this needs to be fetched
+                  maker: '0xC844c8e1207B9d3C54878C849A431301bA9c23E0', //todo: adi this needs to be fetched
                   assetContractAddress: tokenAddress,
                   tokenId: tokenId,
                   side: 1 // sell side order
@@ -153,7 +153,7 @@ const HeaderActionButtons = () => {
                     // Handle when the order does not exist anymore
                     showMessage(toast, 'error', 'Error when purchasing.');
                   }
-                })
+                });
             } catch (e) {
               err = e;
               showMessage(toast, 'error', e.message);

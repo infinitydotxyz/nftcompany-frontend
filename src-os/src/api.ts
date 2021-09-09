@@ -129,8 +129,7 @@ export class OpenSeaAPI {
    *  on the `OrderJSON` type is supported
    */
   public async getOrder(query: OrderQuery): Promise<Order> {
-    let user = query.maker?.trim().toLowerCase()
-    let path = '/u/' + user + `${ORDERBOOK_PATH}/orders`
+    let path = `${ORDERBOOK_PATH}/orders`
     const result = await this.get(
       path, {
         limit: 1,
@@ -165,8 +164,7 @@ export class OpenSeaAPI {
       page = 1
     ): Promise<{orders: Order[]; count: number}> {
 
-    let user = query.maker?.trim().toLowerCase()
-    let path = '/u/' + user + `${ORDERBOOK_PATH}/orders`
+    let path = `${ORDERBOOK_PATH}/orders`
     const result = await this.get(
       path,
       {
