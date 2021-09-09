@@ -99,10 +99,38 @@ export default function Rewards() {
                     </span>
                   </li>
                 </ul>
+
+                <h3 className="tg-title">Leaderboard 🏆</h3>
+                <Table mt={4} width={'100%'}>
+                  <Thead>
+                    <Tr>
+                      <Th>Rank</Th>
+                      <Th>Name</Th>
+                      <Th isNumeric>Rewards</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    <Tr>
+                      <Td>#1</Td>
+                      <Td>John Doe</Td>
+                      <Td isNumeric>1100</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>#2</Td>
+                      <Td>Jane Doe</Td>
+                      <Td isNumeric>1000</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>#3</Td>
+                      <Td>Marry</Td>
+                      <Td isNumeric>850</Td>
+                    </Tr>
+                  </Tbody>
+                </Table>
               </div>
 
               <div className="col-md-6 col-sm-12">
-                <h3 className="tg-title">Rewards</h3>
+                <h3 className="tg-title">Rewards 💰</h3>
 
                 <ul className={styles.list}>
                   <li>
@@ -135,33 +163,7 @@ export default function Rewards() {
                   </li>
                 </ul>
 
-                <h3 className="tg-title">Leaderboard</h3>
-                <Table mt={4} width={'100%'}>
-                  <Thead>
-                    <Tr>
-                      <Th>Rank</Th>
-                      <Th>Name</Th>
-                      <Th isNumeric>Rewards</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    <Tr>
-                      <Td>#1</Td>
-                      <Td>John Doe</Td>
-                      <Td isNumeric>1100</Td>
-                    </Tr>
-                    <Tr>
-                      <Td>#2</Td>
-                      <Td>Jane Doe</Td>
-                      <Td isNumeric>1000</Td>
-                    </Tr>
-                    <Tr>
-                      <Td>#3</Td>
-                      <Td>Marry</Td>
-                      <Td isNumeric>850</Td>
-                    </Tr>
-                  </Tbody>
-                </Table>
+                
               </div>
 
               
