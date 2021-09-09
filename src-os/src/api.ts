@@ -19,7 +19,8 @@ import {
   assetFromJSON,
   delay,
   orderFromJSON,
-  tokenFromJSON
+  tokenFromJSON,
+  personalSignAsync
 } from './utils/utils'
 import {
   API_BASE_MAINNET,
@@ -30,6 +31,9 @@ import {
   SITE_HOST_MAINNET,
   SITE_HOST_RINKEBY
 } from './constants'
+import {
+  getAuthHeaders
+} from '../../src/utils/apiUtil'
 
 export class OpenSeaAPI {
 
@@ -85,8 +89,10 @@ export class OpenSeaAPI {
    */
   public async postOrder(order: OrderJSON, retries = 2): Promise<Order> {
     let json
+    let user = order.maker.trim().toLowerCase()
+    let path = '/u/' + user + `${ORDERBOOK_PATH}/orders`
     try {
-      json = await this.post(`${ORDERBOOK_PATH}/orders/post/`, order) as OrderJSON
+      json = await this.post(path, order) as OrderJSON
     } catch (error) {
       _throwOrContinue(error, retries)
       await delay(3000)
@@ -123,9 +129,10 @@ export class OpenSeaAPI {
    *  on the `OrderJSON` type is supported
    */
   public async getOrder(query: OrderQuery): Promise<Order> {
-
+    let user = query.maker?.trim().toLowerCase()
+    let path = '/u/' + user + `${ORDERBOOK_PATH}/orders`
     const result = await this.get(
-      `${ORDERBOOK_PATH}/orders/`, {
+      path, {
         limit: 1,
         ...query
       }
@@ -158,8 +165,10 @@ export class OpenSeaAPI {
       page = 1
     ): Promise<{orders: Order[]; count: number}> {
 
+    let user = query.maker?.trim().toLowerCase()
+    let path = '/u/' + user + `${ORDERBOOK_PATH}/orders`
     const result = await this.get(
-      `${ORDERBOOK_PATH}/orders/`,
+      path,
       {
         limit: this.pageSize,
         offset: (page - 1) * this.pageSize,
@@ -357,21 +366,25 @@ export class OpenSeaAPI {
    * @param opts RequestInit opts, similar to Fetch API
    */
   private async _fetch(apiPath: string, opts: RequestInit = {}) {
-
     const apiBase = this.apiBaseUrl
     const apiKey = this.apiKey
     let finalUrl = ''
+    // todo: adi - is this still relevant
     if (apiPath.indexOf('/assets/') > 0 || apiPath.indexOf('/asset/') > 0 || apiPath.indexOf('/tokens/') > 0) {
       finalUrl = 'https://api.opensea.io' + apiPath
     } else {
       finalUrl = apiBase + apiPath
     }
     // const finalUrl = apiBase + apiPath
+
+    const authHeaders = await getAuthHeaders()
+
     const finalOpts = {
       ...opts,
       headers: {
         ...(apiKey ? { 'X-API-KEY': apiKey } : {}),
         ...(opts.headers || {}),
+        ...authHeaders
       }
     }
 

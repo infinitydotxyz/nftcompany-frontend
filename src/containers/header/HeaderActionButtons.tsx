@@ -136,8 +136,9 @@ const HeaderActionButtons = () => {
               const seaport = web3GetSeaport();
               seaport.api
                 .getOrder({
-                  asset_contract_address: tokenAddress,
-                  token_id: tokenId,
+                  maker: '', //todo-adi: this needs to be fetched
+                  assetContractAddress: tokenAddress,
+                  tokenId: tokenId,
                   side: 1 // sell side order
                 })
                 .then(function (order: any) {
