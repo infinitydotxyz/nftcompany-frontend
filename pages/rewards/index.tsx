@@ -52,21 +52,20 @@ export default function Rewards() {
 
           <div className={styles.main}>
             <section className="container container-fluid grid">
-
-              {/* Second Column */}
+              {/* First Column */}
               <div className="col-md-6 col-sm-12">
                 <h3 className="tg-title">Listings:</h3>
 
                 <ul className={styles.list}>
                   <li>
-                    <span>Total Listings</span>
-                    <span className={styles.bar}>{data?.totalListings}</span>
-                  </li>
-                  <li>
                     <span>Your Listings</span>
                     <span className={styles.bar} style={{ width: `${20 * numListingsPct}vw` }}>
                       {data?.numListings}
                     </span>
+                  </li>
+                  <li>
+                    <span>Total Listings</span>
+                    <span className={styles.bar}>{data?.totalListings}</span>
                   </li>
                 </ul>
 
@@ -74,14 +73,14 @@ export default function Rewards() {
 
                 <ul className={styles.list}>
                   <li>
-                    <span>Total Bonus Listings</span>
-                    <span className={styles.bar}>{data?.totalListings}</span>
-                  </li>
-                  <li>
                     <span>Your Bonus Listings</span>
                     <span className={styles.bar} style={{ width: `${20 * numBonusListingsPct}vw` }}>
                       {data?.numBonusListings > 0 ? data?.numBonusListings : 0}
                     </span>
+                  </li>
+                  <li>
+                    <span>Total Bonus Listings</span>
+                    <span className={styles.bar}>{data?.totalListings}</span>
                   </li>
                 </ul>
 
@@ -89,46 +88,18 @@ export default function Rewards() {
 
                 <ul className={styles.list}>
                   <li>
-                    <span>Total Fees</span>
-                    <span className={styles.bar}>{data?.totalListings}</span>
-                  </li>
-                  <li>
                     <span>Your Paid Fees</span>
                     <span className={styles.bar} style={{ width: `${20 * feesPaidPct}vw` }}>
                       {data?.feesPaid > 0 ? data?.feesPaid : 0}
                     </span>
                   </li>
+                  <li>
+                    <span>Total Fees</span>
+                    <span className={styles.bar}>{data?.totalListings}</span>
+                  </li>
                 </ul>
-
-                <h3 className="tg-title">Leaderboard 🏆</h3>
-                <Table mt={4} width={'100%'}>
-                  <Thead>
-                    <Tr>
-                      <Th>Rank</Th>
-                      <Th>Name</Th>
-                      <Th isNumeric>Rewards</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    <Tr>
-                      <Td>#1</Td>
-                      <Td>John Doe</Td>
-                      <Td isNumeric>1100</Td>
-                    </Tr>
-                    <Tr>
-                      <Td>#2</Td>
-                      <Td>Jane Doe</Td>
-                      <Td isNumeric>1000</Td>
-                    </Tr>
-                    <Tr>
-                      <Td>#3</Td>
-                      <Td>Marry</Td>
-                      <Td isNumeric>850</Td>
-                    </Tr>
-                  </Tbody>
-                </Table>
               </div>
-
+              {/* Second Column */}
               <div className="col-md-6 col-sm-12">
                 <h3 className="tg-title">Rewards 💰</h3>
 
@@ -162,11 +133,43 @@ export default function Rewards() {
                     <span>{data?.netReward}</span>
                   </li>
                 </ul>
-
-                
               </div>
 
-              
+              <div className={`col-md-12 d-flex align-items-center ${styles.leaderBox}`}>
+                <h3 className="tg-title">Leaderboard 🏆</h3>
+                <div className={styles.leaderBody}>
+                  <Table mt={4} width={'100%'}>
+                    <Thead>
+                      <Tr>
+                        <Th>Rank</Th>
+                        <Th>Address</Th>
+                        <Th isNumeric>Listings</Th>
+                        <Th isNumeric>Rewards</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td>#1</Td>
+                        <Td>0xksjup...qu38e</Td>
+                        <Td isNumeric>150</Td>
+                        <Td isNumeric>1100</Td>
+                      </Tr>
+                      <Tr>
+                        <Td>#2</Td>
+                        <Td>0xak8y5...ke7uy</Td>
+                        <Td isNumeric>90</Td>
+                        <Td isNumeric>1000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td>#3</Td>
+                        <Td>0xaal9r...33jfy</Td>
+                        <Td isNumeric>82</Td>
+                        <Td isNumeric>850</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </div>
+              </div>
             </section>
           </div>
         </div>
