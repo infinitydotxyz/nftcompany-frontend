@@ -30,29 +30,15 @@ export async function initEthers() {
 export const getEthersProvider = () => ethersProvider;
 
 export const getAccount = async () => {
-  if (!window || !window.ethereum) {
-    return null;
+  if (!ethersProvider) {
+    ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
   }
-  let account = null;
-  try {
-    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-    // console.log('accounts', accounts);
-    if (Array.isArray(accounts) && accounts.length > 0) {
-      account = accounts[0];
-
-      if (!ethersProvider) {
-        ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
-      }
-    }
-  } catch (err) {
-    console.error('ERROR:', err);
-  }
-  return account;
+  return await ethersProvider.getSigner().getAddress();
 };
 
 export const getAddressBalance = async (address: string) => {
-  if (!window || !window.ethereum) {
-    return null;
+  if (!ethersProvider) {
+    ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
   }
   try {
     const balance = await ethersProvider.getBalance(address);

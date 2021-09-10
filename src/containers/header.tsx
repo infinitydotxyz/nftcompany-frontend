@@ -5,7 +5,10 @@ import Link from 'next/link';
 import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
 import { getAccount } from '../../src/utils/ethersUtil';
+import { setAuthHeaders } from '../../src/utils/apiUtil';
 import NavBar from 'components/NavBar/NavBar';
+
+let isChangingAccount = false;
 
 const Header = () => {
   const router = useRouter();
@@ -15,11 +18,30 @@ const Header = () => {
   console.log('filter', filter);
 
   useEffect(() => {
-    const connect = async () => {
-      const account = await getAccount();
-      setUser({ account });
+    const handleAccountChange = async (accounts: string[]) => {
+      isChangingAccount = true;
+
+      window.onfocus = async () => {
+        if (isChangingAccount) {
+          isChangingAccount = false;
+          await setAuthHeaders(accounts[0]);
+          setUser({ account: await getAccount() });
+          window.location.reload();
+        }
+      };
     };
+
+    const connect = async () => {
+      (window as any).ethereum.on('accountsChanged', handleAccountChange);
+      setUser({ account: await getAccount() });
+    };
+
     connect();
+
+    return () => {
+      // on unmounting
+      (window as any).ethereum.removeListener('accountsChanged', handleAccountChange);
+    };
   }, []);
   return (
     <header className="hd-d">

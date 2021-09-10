@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { initEthers } from '../src/utils/ethersUtil';
 import styles from '../styles/Connect.module.scss';
 import { getAccount, getWeb3 } from '../src/utils/ethersUtil';
+import { setAuthHeaders } from '../src/utils/apiUtil';
 const personalSignAsync = require('../src-os/src/utils/utils').personalSignAsync;
 
 export default function ConnectWallet() {
@@ -23,21 +24,12 @@ export default function ConnectWallet() {
   const connectMetaMask = async () => {
     const res = await initEthers(); // returns provider
     if (res && res.getSigner) {
-      await setAuthHeaders();
+      await setAuthHeaders(await res.getSigner().getAddress());
       router.push('/my-nfts');
     } else {
       alert('Failed to connect.'); // TODO: use a toaster
     }
     // console.log("Address: ", await res.getAddress());
-  };
-
-  const setAuthHeaders = async () => {
-    const localStorage = window.localStorage;
-    const msg = 'LOGIN';
-    const sign = await personalSignAsync(getWeb3(), msg, await getAccount());
-    const sig = JSON.stringify(sign);
-    localStorage.setItem('X-AUTH-SIGNATURE', sig);
-    localStorage.setItem('X-AUTH-MESSAGE', msg);
   };
 
   return (
