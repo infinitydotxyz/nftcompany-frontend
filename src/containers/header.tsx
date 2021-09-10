@@ -40,10 +40,12 @@ const Header = () => {
 
       window.onfocus = async () => {
         if (isChangingAccount) {
-          isChangingAccount = false;
-          await setAuthHeaders(accounts[0]);
-          setUser({ account: await getAccount() });
-          window.location.reload();
+          setTimeout(async () => {
+            isChangingAccount = false;
+            await setAuthHeaders(accounts[0]);
+            setUser({ account: await getAccount() });
+            // window.location.reload(); // no need anymore as other comps can auto refresh.
+          }, 500)
         }
       };
     };
