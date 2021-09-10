@@ -5,8 +5,71 @@ import Layout from 'containers/layout';
 import { API_BASE_MAINNET } from '../../src-os/src/constants';
 import { getAccount } from 'utils/ethersUtil';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { Bar } from 'react-chartjs-2';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Rewards.module.scss';
+
+function float2dollar(value: number) {
+  return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+}
+
+function formatXAxesLabelText(label: string) {
+  if (/\s/.test(label)) {
+    return label.split(' ');
+  }
+
+  return label;
+}
+
+const chartData = {
+  labels: ['Orders', 'Bonus', 'Fee', 'Gross', 'Penalty', 'Net'],
+  datasets: [
+    {
+      label: 'Rewards', // legend
+      data: [1, 2, 4, 8, 2, 15],
+      backgroundColor: 'blue'
+    }
+  ]
+};
+
+const options = {
+  responsive: false,
+  scales: {
+    xAxes: [
+      {
+        display: true,
+        gridLines: {
+          display: false,
+          color: 'blue'
+        },
+        ticks: {
+          beginAtZero: true,
+          fontFamily: 'Verdana',
+          fontColor: '#777',
+          callback: (label: string) => formatXAxesLabelText(label)
+        }
+      }
+    ],
+    yAxes: [
+      {
+        display: true,
+        gridLines: {
+          display: false,
+          color: 'blue'
+        },
+        ticks: {
+          beginAtZero: false,
+          fontColor: '#777',
+          callback: (value: string) => value
+        },
+        pointLabels: {
+          fontFamily: 'Verdana',
+          fontSize: 34
+        }
+      }
+    ]
+  }
+};
 
 export default function Rewards() {
   const [user, setUser] = useState<any>(null);
@@ -109,10 +172,13 @@ export default function Rewards() {
                     <span>{data?.currentBlock}</span>
                   </li>
                   <li>
-                    <span>Orders Reward</span>
-                    <span>{data?.ordersReward}</span>
+                    <span>Your Rewards:</span>
+                    <span>&nbsp;</span>
                   </li>
                   <li>
+                    <Bar width={500} height={200} data={chartData} options={options} legend={false} />
+                  </li>
+                  {/* <li>
                     <span>Bonus Reward</span>
                     <span>{data?.bonusReward}</span>
                   </li>
@@ -131,7 +197,7 @@ export default function Rewards() {
                   <li>
                     <span>NetReward</span>
                     <span>{data?.netReward}</span>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
 

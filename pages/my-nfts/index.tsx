@@ -82,6 +82,10 @@ export default function MyNFTs() {
       setUser({ account });
 
       const fetchData = async () => {
+        if (!account) {
+          setData([])
+          return
+        }
         await setIsFetching(true);
         const { result, error } = await apiGet(`/u/${account}/assets`, {
           offset: 0,

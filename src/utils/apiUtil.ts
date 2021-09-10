@@ -168,8 +168,8 @@ export async function dummyFetch() {
 }
 
 const catchError = (err: any) => {
-  console.error(err, err?.response);
-  return { error: { message: err }, status: err?.response?.status };
+  console.error('catchError', err, err?.response);
+  return { error: { message: typeof err === 'object' ? err?.message : err }, status: err?.response?.status };
 };
 
 export const apiGet = async (path: string, query?: any) => {

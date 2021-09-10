@@ -26,6 +26,10 @@ export default function ListNFTs() {
     const account = await getAccount();
     setUser({ account });
 
+    if (!account) {
+      setData([])
+      return
+    }
     await setIsFetching(true);
     let listingData = [];
     try {
