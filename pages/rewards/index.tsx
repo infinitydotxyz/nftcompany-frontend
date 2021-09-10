@@ -116,7 +116,7 @@ export default function Rewards() {
           <div className={styles.main}>
             <section className="container container-fluid grid">
               {/* First Column */}
-              <div className="col-md-6 col-sm-12">
+              <div className={`col-md-6 col-sm-12 ${styles.rewardBox}`}>
                 <h3 className="tg-title">Listings:</h3>
 
                 <ul className={styles.list}>
@@ -163,7 +163,7 @@ export default function Rewards() {
                 </ul>
               </div>
               {/* Second Column */}
-              <div className="col-md-6 col-sm-12">
+              <div className={`col-md-6 col-sm-12 ${styles.rewardBox}`}>
                 <h3 className="tg-title">Rewards 💰</h3>
 
                 <ul className={styles.list}>
@@ -201,7 +201,7 @@ export default function Rewards() {
                 </ul>
               </div>
 
-              <div className={`col-md-12 d-flex align-items-center ${styles.leaderBox}`}>
+              <div className={`col-md-12 col-sm-12 d-flex align-items-center ${styles.leaderBox}`}>
                 <h3 className="tg-title">Leaderboard 🏆</h3>
                 <div className={styles.leaderBody}>
                   <Table mt={4} width={'100%'}>

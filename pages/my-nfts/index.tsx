@@ -10,7 +10,7 @@ import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import { apiGet } from 'utils/apiUtil';
-import { getAccount } from 'utils/ethersUtil';
+import { useAppContext } from 'utils/context/AppContext';
 
 // transform unmarshall data
 const getAssetList = (data: any[]) =>
@@ -70,43 +70,38 @@ const transformOpenSea = (item: any) => {
 
 export default function MyNFTs() {
   const toast = useToast();
-  const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
   const [listModalItem, setListModalItem] = useState(null);
 
-  const [user, setUser] = useState<any>(null);
+  const { user } = useAppContext();
   React.useEffect(() => {
-    const connect = async () => {
-      const account = await getAccount();
-      setUser({ account });
+    console.log('- My NFTs - user:', user);
 
-      const fetchData = async () => {
-        if (!account) {
-          setData([])
-          return
-        }
-        await setIsFetching(true);
-        const { result, error } = await apiGet(`/u/${account}/assets`, {
-          offset: 0,
-          limit: 50,
-          source: 1
-        });
-        if (error) {
-          showMessage(toast, 'error', `${error.message}`);
-          return;
-        }
-        const data = (result?.assets || []).map((item: any) => {
-          const newItem = transformOpenSea(item);
-          return newItem;
-        });
-        await setIsFetching(false);
-        setData(data);
-      };
-      fetchData();
+    const fetchData = async () => {
+      if (!user?.account) {
+        setData([]);
+        return;
+      }
+      await setIsFetching(true);
+      const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
+        offset: 0,
+        limit: 50,
+        source: 1
+      });
+      if (error) {
+        showMessage(toast, 'error', `${error.message}`);
+        return;
+      }
+      const data = (result?.assets || []).map((item: any) => {
+        const newItem = transformOpenSea(item);
+        return newItem;
+      });
+      await setIsFetching(false);
+      setData(data);
     };
-    connect();
-  }, []);
+    fetchData();
+  }, [user]);
   return (
     <>
       <Head>

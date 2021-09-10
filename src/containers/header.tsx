@@ -7,15 +7,32 @@ import { useRouter } from 'next/router';
 import { getAccount } from '../../src/utils/ethersUtil';
 import { setAuthHeaders } from '../../src/utils/apiUtil';
 import NavBar from 'components/NavBar/NavBar';
+import { useAppContext } from 'utils/context/AppContext';
 
 let isChangingAccount = false;
+
+interface ITodo {
+  id: number;
+  title: string;
+  description: string;
+  status: boolean;
+}
+
+type ContextType = {
+  todos: ITodo[];
+  saveTodo: (todo: ITodo) => void;
+  updateTodo: (id: number) => void;
+};
 
 const Header = () => {
   const router = useRouter();
   const { route } = router;
-  const [user, setUser] = useState<any>(null);
+  // const [user, setUser] = useState<any>(null);
   const { filter, setFilter } = useContext<any>(FilterContext);
   console.log('filter', filter);
+
+  const { user, setUser } = useAppContext();
+  console.log('- Header - user:', user)
 
   useEffect(() => {
     const handleAccountChange = async (accounts: string[]) => {
@@ -44,7 +61,7 @@ const Header = () => {
     };
   }, []);
   return (
-    <header className="hd-d">
+    <header className="hd-d" onClick={() => {}}>
       <div className="hd-f">
         <div className="container container-fluid">
           <div className="grid align-items-center">
