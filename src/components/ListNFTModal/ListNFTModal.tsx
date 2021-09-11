@@ -28,7 +28,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
   const [endPriceShowed, setEndPriceShowed] = React.useState(false);
   const [reservePrice, setReservePrice] = React.useState(0);
   const [endPrice, setEndPrice] = React.useState(0);
-  const [expiryTimeMs, setExpiryTimeMs] = React.useState(0);
+  const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
   const [activeTab, setActiveTab] = React.useState('SET_PRICE');
   const [backendChecks, setBackendChecks] = React.useState({});
 
@@ -123,7 +123,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       <li>
                         <div>Expiration time</div>
                         <div>
-                          <Datetime onChange={(dt: any) => setExpiryTimeMs(dt.valueOf())} />
+                          <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf()/1000)} />
                         </div>
                         <div></div>
                       </li>
@@ -166,7 +166,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     <li>
                       <div>Expiration time</div>
                       <div>
-                        <Datetime onChange={(dt: any) => setExpiryTimeMs(dt.valueOf())} />
+                        <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf()/1000)} />
                       </div>
                       <div></div>
                     </li>
@@ -186,7 +186,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     // const tokenAddress = data.data.asset_contract;
                     // const tokenId = data.data.token_id;
                     const { tokenAddress, tokenId, collectionName } = data;
-                    const expirationTime = endPriceShowed ? expiryTimeMs : 0;
+                    const expirationTime = endPriceShowed ? expiryTimeSeconds : 0;
                     let err = null;
                     try {
                       const seaport = web3GetSeaport();
@@ -211,7 +211,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                         if (reservePrice) {
                           obj['englishAuctionReservePrice'] = reservePrice;
                         }
-                        obj['expirationTime'] = expiryTimeMs;
+                        obj['expirationTime'] = expiryTimeSeconds;
                       }
                       const listing = await seaport.createSellOrder(obj);
                       console.log('listing', listing);
