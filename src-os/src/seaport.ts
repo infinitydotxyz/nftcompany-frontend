@@ -604,6 +604,7 @@ export class OpenSeaPort {
     (order.metadata as any).asset.image = assetDetails?.image;
     (order.metadata as any).asset.imagePreview = assetDetails?.imagePreview;
     (order.metadata as any).asset.title = assetDetails?.title;
+    (order.metadata as any).asset.collectionName = assetDetails?.collectionName;
     (order as any).metadata.hasBonusReward = hasBonusReward;
     if (typeof hasBonusReward === 'undefined') {
       (order as any).metadata.checkBonusReward = true;

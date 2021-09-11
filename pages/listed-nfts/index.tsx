@@ -109,7 +109,7 @@ export default function ListNFTs() {
           onSubmit={() => {
             setDeleteModalItem(null);
             fetchData();
-            showMessage(toast, 'info', `Listing deleted successfully.`);
+            showMessage(toast, 'info', `Listing cancelled successfully.`);
           }}
         />
       )}
