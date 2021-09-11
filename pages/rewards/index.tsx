@@ -122,13 +122,14 @@ export default function Rewards() {
                 <ul className={styles.list}>
                   <li>
                     <span>Your Listings</span>
-                    <span className={styles.bar} style={{ width: `${20 * numListingsPct}vw` }}>
-                      {data?.numListings}
+                    {/* <span style={{ width: `${20 * numListingsPct}vw` }}> */}
+                    <span>
+                      {data?.numListings || 0} , APR 10%
                     </span>
                   </li>
                   <li>
                     <span>Total Listings</span>
-                    <span className={styles.bar}>{data?.totalListings}</span>
+                    <span>{data?.totalListings || 0}</span>
                   </li>
                 </ul>
 
@@ -137,13 +138,13 @@ export default function Rewards() {
                 <ul className={styles.list}>
                   <li>
                     <span>Your Bonus Listings</span>
-                    <span className={styles.bar} style={{ width: `${20 * numBonusListingsPct}vw` }}>
-                      {data?.numBonusListings > 0 ? data?.numBonusListings : 0}
+                    <span className={styles.bar}>
+                      {data?.numBonusListings  || 0} , APR 10%
                     </span>
                   </li>
                   <li>
                     <span>Total Bonus Listings</span>
-                    <span className={styles.bar}>{data?.totalListings}</span>
+                    <span className={styles.bar}>{data?.totalListings || 0}</span>
                   </li>
                 </ul>
 
@@ -152,13 +153,13 @@ export default function Rewards() {
                 <ul className={styles.list}>
                   <li>
                     <span>Your Paid Fees</span>
-                    <span className={styles.bar} style={{ width: `${20 * feesPaidPct}vw` }}>
-                      {data?.feesPaid > 0 ? data?.feesPaid : 0}
+                    <span className={styles.bar}>
+                      {data?.feesPaid || 0}
                     </span>
                   </li>
                   <li>
                     <span>Total Fees</span>
-                    <span className={styles.bar}>{data?.totalListings}</span>
+                    <span className={styles.bar}>{data?.totalListings || 0}</span>
                   </li>
                 </ul>
               </div>
@@ -169,7 +170,7 @@ export default function Rewards() {
                 <ul className={styles.list}>
                   <li>
                     <span>Current Block</span>
-                    <span>{data?.currentBlock}</span>
+                    <span>{data?.currentBlock || 0}</span>
                   </li>
                   <li>
                     <span>Your Rewards:</span>
