@@ -185,7 +185,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
 
                     // const tokenAddress = data.data.asset_contract;
                     // const tokenId = data.data.token_id;
-                    const { tokenAddress, tokenId } = data;
+                    const { tokenAddress, tokenId, collectionName } = data;
                     const expirationTime = endPriceShowed ? expiryTimeMs : 0;
                     let err = null;
                     try {

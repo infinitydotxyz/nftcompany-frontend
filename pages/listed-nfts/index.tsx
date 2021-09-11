@@ -10,26 +10,28 @@ import CardList from 'components/Card/CardList';
 import { apiGet, apiDelete } from 'utils/apiUtil';
 import { weiToEther } from '../../src/utils/ethersUtil';
 import DeleteListingModal from './DeleteListingModal';
+import { useAppContext } from 'utils/context/AppContext';
 
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 
 export default function ListNFTs() {
+  const { user } = useAppContext();
   const toast = useToast();
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
-  const [user, setUser] = useState<any>(null);
   const [deleteModalItem, setDeleteModalItem] = useState(null);
 
   const fetchData = async () => {
-    const account = await getAccount();
-    setUser({ account });
-
+    if (!user?.account) {
+      setData([])
+      return
+    }
     await setIsFetching(true);
     let listingData = [];
     try {
-      const { result, error } = await apiGet(`/u/${account}/listings`);
+      const { result, error } = await apiGet(`/u/${user?.account}/listings`);
       if (error) {
         showMessage(toast, 'error', `${error}`);
         return;
@@ -62,8 +64,9 @@ export default function ListNFTs() {
   };
 
   React.useEffect(() => {
+    console.log('- Listed NFTs - user:', user)
     fetchData();
-  }, []);
+  }, [user]);
   return (
     <>
       <Head>
@@ -106,7 +109,7 @@ export default function ListNFTs() {
           onSubmit={() => {
             setDeleteModalItem(null);
             fetchData();
-            showMessage(toast, 'info', `Listing deleted successfully.`);
+            showMessage(toast, 'info', `Listing cancelled successfully.`);
           }}
         />
       )}

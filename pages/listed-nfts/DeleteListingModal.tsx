@@ -40,7 +40,7 @@ const DeleteListingModal: React.FC<IProps> = ({ user, data, onSubmit, onClose }:
               <div className={styles.title}>&nbsp;</div>
 
               <div className={styles.row}>
-                Confirm delete this listing?
+                Confirm cancel this listing?
               </div>
 
               <div className={styles.footer}>

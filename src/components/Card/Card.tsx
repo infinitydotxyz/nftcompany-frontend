@@ -17,6 +17,7 @@ export type CardData = {
   tokenAddress?: string;
   tokenId?: string;
   collectionName?: string;
+  metadata?: any;
 };
 
 type Props = {
@@ -34,6 +35,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
   if (!data) {
     return null;
   }
+  const collectionName = data.collectionName || data?.metadata?.asset?.collectionName;
   return (
     <div className={styles.card} {...rest}>
       {/* <Link href={`/preview?id=${data.id}${viewInfo ? '&view=info' : ''}`} passHref> */}
@@ -92,7 +94,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
       <div className={styles.cardBody}>
         <div className={styles.cardLine}>
           <div className={styles.cardTitle}>
-            {data.collectionName && <div style={{ color: '#999', fontSize: '0.8em' }}>{data.collectionName}</div>}
+            {collectionName && <div style={{ color: '#999', fontSize: '0.8em' }}>{collectionName}</div>}
             <div>{data.title}</div>
           </div>
           <div className={styles.cardPrice}>{showItems.indexOf('PRICE') >= 0 ? `${data.price} ETH` : ``}</div>

@@ -3,7 +3,6 @@ import '../styles/grid.css';
 import '../styles/fonts.css';
 import '../src/components/nft/components.scss';
 import { ChakraProvider, extendTheme, ThemeConfig } from '@chakra-ui/react';
-// import { FilterContext } from '../src/hooks/useFilter';
 import type { AppProps } from 'next/app';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -29,7 +28,6 @@ const config: ThemeConfig = {
 const theme = extendTheme({ config, colors });
 
 function MyApp({ Component, pageProps }: AppProps) {
-  // const [filter, setFilter] = useState<any>({ search: '' });
   const router = useRouter();
 
   useEffect(() => {
@@ -46,9 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const getLayout = (Component as any).getLayout || ((page: NextPage) => page);
   return getLayout(
     <ChakraProvider theme={theme}>
-      {/* <FilterContext.Provider value={{ filter, setFilter }}> */}
       <Component {...pageProps} />
-      {/* </FilterContext.Provider> */}
     </ChakraProvider>
   );
 }
