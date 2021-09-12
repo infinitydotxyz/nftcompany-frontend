@@ -36,6 +36,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
     return null;
   }
   const collectionName = data.collectionName || data?.metadata?.asset?.collectionName;
+  const hasBlueCheck = data?.metadata?.hasBlueCheck;
   return (
     <div className={styles.card} {...rest}>
       {/* <Link href={`/preview?id=${data.id}${viewInfo ? '&view=info' : ''}`} passHref> */}
@@ -94,7 +95,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
       <div className={styles.cardBody}>
         <div className={styles.cardLine}>
           <div className={styles.cardTitle}>
-            {collectionName && <div style={{ color: '#999', fontSize: '0.8em' }}>{collectionName}</div>}
+            {collectionName && <div className={styles.collectionName}>{collectionName}{hasBlueCheck === true ? ' ✅' :''}</div>}
             <div>{data.title}</div>
           </div>
           <div className={styles.cardPrice}>{showItems.indexOf('PRICE') >= 0 ? `${data.price} ETH` : ``}</div>
