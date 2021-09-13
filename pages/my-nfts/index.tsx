@@ -69,6 +69,8 @@ const transformOpenSea = (item: any) => {
   };
 };
 
+const ITEMS_PER_PAGE = 50
+
 export default function MyNFTs() {
   const toast = useToast();
   const [isFetching, setIsFetching] = useState(false);
@@ -86,10 +88,9 @@ export default function MyNFTs() {
     await setIsFetching(true);
     const newCurrentPage = currentPage + 1;
     const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
-      offset: 0,
-      limit: 50,
-      source: 1,
-      page: newCurrentPage
+      offset: newCurrentPage * ITEMS_PER_PAGE,
+      limit: ITEMS_PER_PAGE,
+      source: 1
     });
     if (error) {
       showMessage(toast, 'error', `${error.message}`);
