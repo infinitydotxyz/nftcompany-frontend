@@ -15,7 +15,7 @@ const FetchMoreElement = ({ inView, ref, onFetchMore }: any) => {
   );
 };
 
-export const FetchMoreInView = ({ onFetchMore }: any) => {
+export const FetchMore = ({ onFetchMore }: any) => {
   return (
     <InView>  
       {({ inView, ref }) => {

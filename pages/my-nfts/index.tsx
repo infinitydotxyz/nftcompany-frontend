@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { useToast } from '@chakra-ui/toast';
 import { showMessage } from 'utils/commonUtil';
-import { FetchMoreInView } from 'components/FetchMore/FetchMore';
+import { FetchMore } from 'components/FetchMore/FetchMore';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
@@ -77,7 +77,7 @@ export default function MyNFTs() {
   const [data, setData] = useState<any>([]);
   const [listModalItem, setListModalItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(-1);
-  const [fetchMoreReady, setFetchMoreReady] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const { user } = useAppContext();
 
   const fetchData = async () => {
@@ -115,7 +115,7 @@ export default function MyNFTs() {
       return;
     }
     console.log('currentPage loaded:', currentPage);
-    setFetchMoreReady(true);
+    setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
   return (
     <>
@@ -151,10 +151,10 @@ export default function MyNFTs() {
           </div>
         </div>
 
-        {fetchMoreReady && (
-          <FetchMoreInView currentPage={currentPage} onFetchMore={async () => {
+        {dataLoaded && (
+          <FetchMore currentPage={currentPage} onFetchMore={async () => {
             console.log('onFetchMore()')
-            await setFetchMoreReady(false);
+            await setDataLoaded(false);
             await fetchData();
           }} />
         )}
