@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { useToast } from '@chakra-ui/toast';
 import { showMessage } from 'utils/commonUtil';
+import { FetchMoreInView } from 'components/FetchMore/FetchMore';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
@@ -73,35 +74,48 @@ export default function MyNFTs() {
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
   const [listModalItem, setListModalItem] = useState(null);
-
+  const [currentPage, setCurrentPage] = useState(-1);
+  const [fetchMoreReady, setFetchMoreReady] = useState(false);
   const { user } = useAppContext();
+
+  const fetchData = async () => {
+    if (!user || !user?.account) {
+      setData([]);
+      return;
+    }
+    await setIsFetching(true);
+    const newCurrentPage = currentPage + 1;
+    const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
+      offset: 0,
+      limit: 50,
+      source: 1,
+      page: newCurrentPage
+    });
+    if (error) {
+      showMessage(toast, 'error', `${error.message}`);
+      return;
+    }
+    const moreData = (result?.assets || []).map((item: any) => {
+      const newItem = transformOpenSea(item);
+      return newItem;
+    });
+    await setData([ ...data, ...moreData ]);
+    await setIsFetching(false);
+    await setCurrentPage(newCurrentPage);
+  };
+
   React.useEffect(() => {
     console.log('- My NFTs - user:', user);
-
-    const fetchData = async () => {
-      if (!user?.account) {
-        setData([]);
-        return;
-      }
-      await setIsFetching(true);
-      const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
-        offset: 0,
-        limit: 50,
-        source: 1
-      });
-      if (error) {
-        showMessage(toast, 'error', `${error.message}`);
-        return;
-      }
-      const data = (result?.assets || []).map((item: any) => {
-        const newItem = transformOpenSea(item);
-        return newItem;
-      });
-      await setIsFetching(false);
-      setData(data);
-    };
     fetchData();
   }, [user]);
+
+  React.useEffect(() => {
+    if (currentPage < 0) {
+      return;
+    }
+    console.log('currentPage loaded:', currentPage);
+    setFetchMoreReady(true);
+  }, [currentPage]);
   return (
     <>
       <Head>
@@ -135,6 +149,14 @@ export default function MyNFTs() {
             )}
           </div>
         </div>
+
+        {fetchMoreReady && (
+          <FetchMoreInView currentPage={currentPage} onFetchMore={async () => {
+            console.log('onFetchMore()')
+            await setFetchMoreReady(false);
+            await fetchData();
+          }} />
+        )}
 
         {listModalItem && <ListNFTModal data={listModalItem} onClose={() => setListModalItem(null)} />}
       </div>

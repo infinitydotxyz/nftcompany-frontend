@@ -38,7 +38,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
   const collectionName = data.collectionName || data?.metadata?.asset?.collectionName;
   const hasBlueCheck = data?.metadata?.hasBlueCheck;
   return (
-    <div className={styles.card} {...rest}>
+    <div id={`id_${data.id}`} className={styles.card} {...rest}>
       {/* <Link href={`/preview?id=${data.id}${viewInfo ? '&view=info' : ''}`} passHref> */}
       <div className={styles.cardPreview}>
         {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
