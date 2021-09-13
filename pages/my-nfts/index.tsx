@@ -111,7 +111,7 @@ export default function MyNFTs() {
   }, [user]);
 
   React.useEffect(() => {
-    if (currentPage < 0) {
+    if (currentPage < 0 || data.length < ITEMS_PER_PAGE) {
       return;
     }
     console.log('currentPage loaded:', currentPage);
