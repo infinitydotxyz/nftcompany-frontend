@@ -14,44 +14,6 @@ import { apiGet } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 
-// transform unmarshall data
-const getAssetList = (data: any[]) =>
-  data.map((item) => {
-    try {
-      // const details = JSON.parse(item.issuer_specific_data.entire_response).result.data;
-      // const obj = {
-      //   id: item.token_id,
-      //   title: details.name,
-      //   description: details.description,
-      //   price: 0.1,
-      //   inStock: 1,
-      //   image: details['small_image'],
-      //   data: { ...item, details }
-      // };
-      const details = JSON.parse(item?.issuer_specific_data?.entire_response);
-      const obj = {
-        id: item.token_id,
-        title: details.name,
-        description: details.description,
-        price: 0.1,
-        inStock: 1,
-        image: details.image,
-        imagePreview: details.image,
-        data: { ...item, details }
-      };
-      return obj;
-    } catch (e) {
-      console.error(e);
-      return {
-        id: item.token_id,
-        title: `ID: ${item.token_id}`,
-        image: 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png',
-        imagePreview: 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png',
-        data: { ...item }
-      };
-    }
-  });
-
 const transformOpenSea = (item: any) => {
   if (!item) {
     return null;
@@ -99,7 +61,7 @@ export default function MyNFTs() {
       const newItem = transformOpenSea(item);
       return newItem;
     });
-    await setData([ ...data, ...moreData ]);
+    await setData([...data, ...moreData]);
     await setIsFetching(false);
     await setCurrentPage(newCurrentPage);
   };
@@ -151,11 +113,14 @@ export default function MyNFTs() {
         </div>
 
         {dataLoaded && (
-          <FetchMore currentPage={currentPage} onFetchMore={async () => {
-            console.log('onFetchMore()')
-            await setDataLoaded(false);
-            await fetchData();
-          }} />
+          <FetchMore
+            currentPage={currentPage}
+            onFetchMore={async () => {
+              console.log('onFetchMore()');
+              await setDataLoaded(false);
+              await fetchData();
+            }}
+          />
         )}
 
         {listModalItem && <ListNFTModal data={listModalItem} onClose={() => setListModalItem(null)} />}
