@@ -120,7 +120,7 @@ export default function MyNFTs() {
   return (
     <>
       <Head>
-        <title>List NFTs</title>
+        <title>My NFTs</title>
       </Head>
       <div className={pageStyles.dashboard}>
         <div className="container container-fluid">

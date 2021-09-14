@@ -101,7 +101,7 @@ export default function Rewards() {
   return (
     <>
       <Head>
-        <title>Offers</title>
+        <title>Rewards</title>
       </Head>
       <div className={pageStyles.dashboard}>
         <div className="container container-fluid">
