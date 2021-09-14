@@ -48,3 +48,8 @@ export interface Asset {
   title: string;
   image: string;
 }
+
+export interface NFTListings {
+  count: number;
+  listings: NftListing[];
+}

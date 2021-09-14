@@ -45,10 +45,10 @@ export default function Dashboard() {
   }, []);
 
   const getNftListings = async (filter?: Filter) => {
-    await setIsFetching(true);
+    setIsFetching(true);
     const response = await getListings(filter);
     setListedNfts(response);
-    await setIsFetching(false);
+    setIsFetching(false);
   };
 
   return (
