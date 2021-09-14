@@ -4,6 +4,11 @@
 node_modules
 .pnp
 .pnp.js
+.pnpm-debug.log
+package-lock.json
+pnpm-lock.yaml
+src-os/package-lock.json
+src-os/pnpm-lock.yaml
 
 # testing
 coverage

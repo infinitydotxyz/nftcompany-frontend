@@ -23,6 +23,8 @@ export async function initEthers() {
     alert('Please install the MetaMask extension first.');
     return;
   }
+  await window.ethereum.enable();
+
   ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
   return ethersProvider;
 }
