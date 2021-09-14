@@ -31,6 +31,7 @@ type Props = {
 
 function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PRICE'], actions = [], ...rest }: Props) {
   const [modalShowed, setModalShowed] = useState(false);
+  const [showBuyModal, setShowBuyModal] = useState(false);
 
   if (!data) {
     return null;
@@ -68,7 +69,19 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
               <span>List NFT</span>
             </a>
           )}
-
+          {actions?.indexOf('BUY_NFT') >= 0 && (
+            <a
+              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
+              href="#popup-bid"
+              data-effect="mfp-zoom-in"
+              onClick={(ev) => {
+                ev.preventDefault();
+                setShowBuyModal(true);
+              }}
+            >
+              <span>Buy NFT</span>
+            </a>
+          )}
           {actions?.indexOf('CANCEL_LISTING') >= 0 && (
             <a
               className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
@@ -95,7 +108,12 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
       <div className={styles.cardBody}>
         <div className={styles.cardLine}>
           <div className={styles.cardTitle}>
-            {collectionName && <div className={styles.collectionName}>{collectionName}{hasBlueCheck === true ? ' ✅' :''}</div>}
+            {collectionName && (
+              <div className={styles.collectionName}>
+                {collectionName}
+                {hasBlueCheck === true ? ' ✅' : ''}
+              </div>
+            )}
             <div>{data.title}</div>
           </div>
           <div className={styles.cardPrice}>{showItems.indexOf('PRICE') >= 0 ? `${data.price} ETH` : ``}</div>
@@ -105,6 +123,8 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
           {/* <div className="card__counter">{data.inStock} in stock</div> */}
         </div>
       </div>
+
+      {showBuyModal && <PlaceBidModal data={data} onClose={() => setShowBuyModal(false)} />}
 
       {/* {modalShowed && (
         <NFTModal
@@ -116,8 +136,6 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
           onClose={() => setModalShowed(false)}
         />
       )} */}
-
-      {/* {modalShowed && <PlaceBidModal onClose={() => setModalShowed(false)} />} */}
 
       {/* {modalShowed && <ListNFTModal onClose={() => setModalShowed(false)} />} */}
     </div>

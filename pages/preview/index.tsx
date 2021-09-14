@@ -83,7 +83,9 @@ export default function Preview() {
 
           <div className={styles.main}>
             {/* <Card data={sampleData[idNum]} /> */}
-            {data && data.image && <img src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'} />}
+            {data && data.image && (
+              <img src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'} />
+            )}
 
             <section className={styles.info}>
               <h3>{data?.title}</h3>
@@ -111,7 +113,7 @@ export default function Preview() {
                 </>
               )}
 
-              {placeBidShowed && <PlaceBidModal onClose={() => setPlaceBidShowed(false)} />}
+              {placeBidShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidShowed(false)} />}
               {purchaseShowed && <PurchaseModal onClose={() => setPurchaseShowed(false)} />}
             </section>
           </div>

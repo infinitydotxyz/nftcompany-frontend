@@ -1,7 +1,6 @@
 .title {
   font-size: 26px;
   font-weight: bold;
-  margin-bottom: 20px;
 }
 
 .row {
@@ -24,7 +23,7 @@
           text-align: right;
           padding: 0 10px;
           margin: 0 10px;
-          width: 30%;
+          width: 60%;
           font-weight: bold;
         }
         input {
@@ -36,8 +35,13 @@
   }
 }
 
+.space {
+  margin-bottom: 10px;
+}
+
 .footer {
   display: flex;
+  justify-content: center;
   margin-bottom: 20px;
 
   a {
