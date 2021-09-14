@@ -80,7 +80,7 @@ export default function Rewards() {
     const account = await getAccount();
     setUser({ account });
 
-    await setIsFetching(true);
+    setIsFetching(true);
     try {
       const res = await fetch(`${API_BASE_MAINNET}/u/${account}/reward`);
       const data = (await res.json()) || [];

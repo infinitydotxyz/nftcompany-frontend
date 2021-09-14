@@ -36,6 +36,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
   if (!data) {
     return null;
   }
+
   const collectionName = data.collectionName || data?.metadata?.asset?.collectionName;
   const hasBlueCheck = data?.metadata?.hasBlueCheck;
   return (
