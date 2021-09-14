@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { forwardRef } from 'react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NiceSelect from 'components/NiceSelect/NiceSelect';
@@ -16,10 +16,14 @@ type Props = {
   setExpanded?: any;
   onChange?: (filter: Filter) => void;
 };
-function FilterPanel({ isExpanded, setExpanded, onChange }: Props) {
+const FilterPanel = forwardRef(({ isExpanded, setExpanded, onChange }: Props, ref) => {
   const [filter, setFilter] = useState<Filter | null>(null);
-  const [values, setValues] = useState([5]);
-
+  const [values, setValues] = useState([10000]);
+  React.useImperativeHandle(ref, () => ({
+    clear() {
+      clearFilter();
+    }
+  }));
   React.useEffect(() => {
     // console.log('isExpanded', isExpanded);
   }, [isExpanded]);
@@ -35,6 +39,10 @@ function FilterPanel({ isExpanded, setExpanded, onChange }: Props) {
   const updateFilter = (price: number[]) => {
     setValues(price);
     handleChanges({ ...filter, price: price[0] });
+  };
+  const clearFilter = () => {
+    setFilter(null);
+    setValues([10000]);
   };
 
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
@@ -110,6 +118,6 @@ function FilterPanel({ isExpanded, setExpanded, onChange }: Props) {
       </AnimatePresence>
     </section>
   );
-}
+});
 
 export default FilterPanel;
