@@ -12,6 +12,7 @@ import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import { apiGet } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
+import { ITEMS_PER_PAGE } from 'utils/constants';
 
 // transform unmarshall data
 const getAssetList = (data: any[]) =>
@@ -68,8 +69,6 @@ const transformOpenSea = (item: any) => {
     price: 0.1
   };
 };
-
-const ITEMS_PER_PAGE = 50
 
 export default function MyNFTs() {
   const toast = useToast();
