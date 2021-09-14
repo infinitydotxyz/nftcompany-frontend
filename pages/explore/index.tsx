@@ -1,22 +1,27 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Spinner } from '@chakra-ui/react';
+import { Button, Spinner } from '@chakra-ui/react';
 // import { Select } from '@chakra-ui/react';
 import CardList from 'components/Card/CardList';
 import FilterPanel, { Filter } from 'components/FilterPanel/FilterPanel';
 import { FilterIcon } from 'components/Icons/Icons';
-import { sampleData, dummyFetch } from '../../src/utils/apiUtil';
 import styles from '../../styles/Dashboard.module.scss';
-import { getListings } from 'services/Listings.service';
+import { getListings, orderToCardData } from 'services/Listings.service';
 import { CardData } from 'components/Card/Card';
+import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Order } from 'types/Nft.interface';
 
 export default function Dashboard() {
   const [tabIndex, setTabIndex] = useState(1);
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [listedNfts, setListedNfts] = useState<CardData[]>([]);
+  const [filter, setFilters] = useState<Filter>();
+  const exploreRef = useRef<any>();
+  const filterRef = useRef<any>();
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -56,8 +61,52 @@ export default function Dashboard() {
       <Head>
         <title>Explore</title>
       </Head>
+
       <div className={styles.dashboard}>
         <div className="container container-fluid">
+          <div className="section-bar">
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginRight: 30,
+                marginBottom: 15,
+                marginTop: 15,
+                width: '100%'
+              }}
+            >
+              <div style={{ width: '85%' }}>
+                <ExploreSearch
+                  ref={exploreRef}
+                  onClear={(selectedOrder: Order) => {
+                    filterRef.current.clear();
+                    setFilters(undefined);
+                    getNftListings();
+                  }}
+                  onChange={async (order) => {
+                    if (order) {
+                      const cardData = orderToCardData(order);
+                      filterRef.current.clear();
+                      setFilters(undefined);
+                      setListedNfts([cardData]);
+                    }
+                  }}
+                />
+              </div>
+              <Button
+                style={{ width: '15%', marginLeft: 10, marginRight: 10 }}
+                onClick={() => {
+                  exploreRef.current.clearFromParent();
+                  filterRef.current.clear();
+                  setFilters(undefined);
+
+                  getNftListings();
+                }}
+              >
+                Clear
+              </Button>
+            </div>
+          </div>
           <div className="section-bar">
             <div className="right">
               <div className="tg-title">{title}</div>
@@ -151,14 +200,16 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-
-          <FilterPanel
-            isExpanded={filterShowed}
-            onChange={async (filter) => {
-              getNftListings(filter);
-            }}
-          />
-
+          <div>
+            <FilterPanel
+              isExpanded={filterShowed}
+              ref={filterRef}
+              onChange={async (filter) => {
+                setFilters(filter);
+                getNftListings(filter);
+              }}
+            />
+          </div>
           {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={listedNfts} actions={['BUY_NFT']} />}
         </div>
       </div>

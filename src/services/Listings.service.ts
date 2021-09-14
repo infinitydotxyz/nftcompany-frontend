@@ -10,7 +10,6 @@ export const getListings = async (listingFilter?: Filter): Promise<CardData[]> =
   if (error !== undefined) {
     return [];
   }
-
   return listingToCardData(result.listings);
 };
 
@@ -34,4 +33,26 @@ export const listingToCardData = (listing: Order[]): CardData[] => {
     return cardData;
   });
   return cards;
+};
+export interface TitleQuery {
+  startsWith: string;
+}
+export const getListingsByTitle = async (titleQuery: TitleQuery): Promise<string[]> => {
+  const path = `/titles/`;
+  const { result, error }: { result: string[]; error: any } = (await apiGet(path, titleQuery)) as any;
+  if (error !== undefined) {
+    return [];
+  }
+  return result;
+};
+
+export const orderToCardData = (nft: Order) => {
+  const cardData: CardData = {
+    id: nft?.id,
+    image: nft?.metadata?.asset?.image,
+    title: nft?.metadata?.asset?.title,
+    inStock: +nft?.metadata?.asset?.quantity,
+    price: nft?.basePrice ? weiToEther(nft?.basePrice) : undefined
+  };
+  return cardData;
 };
