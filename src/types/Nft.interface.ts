@@ -1,4 +1,4 @@
-export interface NftListing {
+export interface Order {
   blueCheck: boolean;
   howToCall: number;
   salt: string;
@@ -49,7 +49,7 @@ export interface Asset {
   image: string;
 }
 
-export interface NFTListings {
+export interface Orders {
   count: number;
-  listings: NftListing[];
+  listings: Order[];
 }
