@@ -32,6 +32,7 @@ specifiers:
   react-chartjs-2: ^2.11.2
   react-datetime: ^3.1.0
   react-dom: 17.0.2
+  react-intersection-observer: ^8.32.1
   react-range: ^1.8.9
   recharts: ^2.0.10
   typescript: 4.3.5
@@ -66,6 +67,7 @@ dependencies:
   react-chartjs-2: 2.11.2_f236ea5690127753093b714bf94225a6
   react-datetime: 3.1.1_moment@2.29.1+react@17.0.2
   react-dom: 17.0.2_react@17.0.2
+  react-intersection-observer: 8.32.1_react@17.0.2
   react-range: 1.8.11_react-dom@17.0.2+react@17.0.2
   recharts: 2.1.2_react-dom@17.0.2+react@17.0.2
   web3: 0.20.7
@@ -95,7 +97,7 @@ packages:
       bintrees: 1.0.2
       bn.js: 4.12.0
       compare-versions: 3.6.0
-      ethereumjs-abi: 0.6.8
+      ethereumjs-abi: 0.6.6
       ethereumjs-blockstream: 2.0.7
       ethereumjs-util: 5.2.1
       find-versions: 2.0.0
@@ -3004,7 +3006,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001257
-      electron-to-chromium: 1.3.837
+      electron-to-chromium: 1.3.838
     dev: false
 
   /browserslist/4.16.6:
@@ -3860,6 +3862,10 @@ packages:
     resolution: {integrity: sha512-AWDQiLSmSXg7/cDwMtkl7v3od7yLGQmvP2uydZYx4L2GEWUUFbCEfR72aCIB8ig3zI+vqYwvPScKfma3LD5xNw==}
     dev: false
 
+  /electron-to-chromium/1.3.838:
+    resolution: {integrity: sha512-65O6UJiyohFAdX/nc6KJ0xG/4zOn7XCO03kQNNbCeMRGxlWTLzc6Uyi0tFNQuuGWqySZJi8CD2KXPXySVYmzMA==}
+    dev: false
+
   /elliptic/6.5.4:
     resolution: {integrity: sha512-iLhC6ULemrljPZb+QutR5TQGB+pdW6KGD5RSegS+8sorOZT+rdQFbsQFJgvN3eRqNALqJer4oQ16YvJHlU8hzQ==}
     dependencies:
@@ -4372,11 +4378,11 @@ packages:
       secp256k1: 4.0.2
       setimmediate: 1.0.5
 
-  /ethereumjs-abi/0.6.8:
-    resolution: {integrity: sha512-Tx0r/iXI6r+lRsdvkFDlut0N08jWMnKRZ6Gkq+Nmw75lZe4e6o3EkSnkaBP5NF6+m5PTGAr9JP43N3LyeoglsA==}
+  /ethereumjs-abi/0.6.6:
+    resolution: {integrity: sha512-w8KubDsA/+OAuqtIR9RGsMcoZ5nhM8vxwjJAJvEIY+clhxA3BHoLG3+ClYQaQhD0n3mlDt3U5rBrmSVJvI3c8A==}
     dependencies:
       bn.js: 4.12.0
-      ethereumjs-util: 6.2.1
+      ethereumjs-util: 5.2.1
     dev: false
 
   /ethereumjs-account/2.0.5:
@@ -7179,6 +7185,14 @@ packages:
       use-sidecar: 1.0.5_react@17.0.2
     transitivePeerDependencies:
       - '@types/react'
+    dev: false
+
+  /react-intersection-observer/8.32.1_react@17.0.2:
+    resolution: {integrity: sha512-FOmMkMw7MeJ8FkuADpU8TRcvGuTvPB+DRkaikS1QXcWArYLCWC3mjRorq2XeRGBuqmaueOBd27PUazTu9AgInw==}
+    peerDependencies:
+      react: ^15.0.0 || ^16.0.0 || ^17.0.0|| ^18.0.0
+    dependencies:
+      react: 17.0.2
     dev: false
 
   /react-is/16.10.2:

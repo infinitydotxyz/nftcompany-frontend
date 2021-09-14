@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { useToast } from '@chakra-ui/toast';
 import { showMessage } from 'utils/commonUtil';
+import { FetchMore } from 'components/FetchMore/FetchMore';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
@@ -11,44 +12,7 @@ import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import { apiGet } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
-
-// transform unmarshall data
-const getAssetList = (data: any[]) =>
-  data.map((item) => {
-    try {
-      // const details = JSON.parse(item.issuer_specific_data.entire_response).result.data;
-      // const obj = {
-      //   id: item.token_id,
-      //   title: details.name,
-      //   description: details.description,
-      //   price: 0.1,
-      //   inStock: 1,
-      //   image: details['small_image'],
-      //   data: { ...item, details }
-      // };
-      const details = JSON.parse(item?.issuer_specific_data?.entire_response);
-      const obj = {
-        id: item.token_id,
-        title: details.name,
-        description: details.description,
-        price: 0.1,
-        inStock: 1,
-        image: details.image,
-        imagePreview: details.image,
-        data: { ...item, details }
-      };
-      return obj;
-    } catch (e) {
-      console.error(e);
-      return {
-        id: item.token_id,
-        title: `ID: ${item.token_id}`,
-        image: 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png',
-        imagePreview: 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png',
-        data: { ...item }
-      };
-    }
-  });
+import { ITEMS_PER_PAGE } from 'utils/constants';
 
 const transformOpenSea = (item: any) => {
   if (!item) {
@@ -73,39 +37,51 @@ export default function MyNFTs() {
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
   const [listModalItem, setListModalItem] = useState(null);
-
+  const [currentPage, setCurrentPage] = useState(-1);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const { user } = useAppContext();
+
+  const fetchData = async () => {
+    if (!user || !user?.account) {
+      setData([]);
+      return;
+    }
+    await setIsFetching(true);
+    const newCurrentPage = currentPage + 1;
+    const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
+      offset: newCurrentPage * ITEMS_PER_PAGE,
+      limit: ITEMS_PER_PAGE,
+      source: 1
+    });
+    if (error) {
+      showMessage(toast, 'error', `${error.message}`);
+      return;
+    }
+    const moreData = (result?.assets || []).map((item: any) => {
+      const newItem = transformOpenSea(item);
+      return newItem;
+    });
+    await setData([...data, ...moreData]);
+    await setIsFetching(false);
+    await setCurrentPage(newCurrentPage);
+  };
+
   React.useEffect(() => {
     console.log('- My NFTs - user:', user);
-
-    const fetchData = async () => {
-      if (!user?.account) {
-        setData([]);
-        return;
-      }
-      await setIsFetching(true);
-      const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
-        offset: 0,
-        limit: 50,
-        source: 1
-      });
-      if (error) {
-        showMessage(toast, 'error', `${error.message}`);
-        return;
-      }
-      const data = (result?.assets || []).map((item: any) => {
-        const newItem = transformOpenSea(item);
-        return newItem;
-      });
-      await setIsFetching(false);
-      setData(data);
-    };
     fetchData();
   }, [user]);
+
+  React.useEffect(() => {
+    if (currentPage < 0 || data.length < ITEMS_PER_PAGE) {
+      return;
+    }
+    console.log('currentPage loaded:', currentPage);
+    setDataLoaded(true); // current page's data loaded & rendered.
+  }, [currentPage]);
   return (
     <>
       <Head>
-        <title>List NFTs</title>
+        <title>My NFTs</title>
       </Head>
       <div className={pageStyles.dashboard}>
         <div className="container container-fluid">
@@ -135,6 +111,17 @@ export default function MyNFTs() {
             )}
           </div>
         </div>
+
+        {dataLoaded && (
+          <FetchMore
+            currentPage={currentPage}
+            onFetchMore={async () => {
+              console.log('onFetchMore()');
+              await setDataLoaded(false);
+              await fetchData();
+            }}
+          />
+        )}
 
         {listModalItem && <ListNFTModal data={listModalItem} onClose={() => setListModalItem(null)} />}
       </div>

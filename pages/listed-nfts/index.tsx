@@ -70,7 +70,7 @@ export default function ListNFTs() {
   return (
     <>
       <Head>
-        <title>List NFTs</title>
+        <title>Listed NFTs</title>
       </Head>
       <div className={pageStyles.dashboard}>
         <div className="container container-fluid">
