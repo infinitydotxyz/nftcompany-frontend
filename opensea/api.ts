@@ -33,7 +33,7 @@ import {
 } from './constants'
 import {
   getAuthHeaders
-} from '../../src/utils/apiUtil'
+} from '../src/utils/apiUtil'
 
 export class OpenSeaAPI {
 

@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import qs from 'query-string';
 import { API_BASE } from './constants';
 import { getAccount, getWeb3 } from './ethersUtil';
-const personalSignAsync = require('../../src-os/src/utils/utils').personalSignAsync;
+const personalSignAsync = require('../../opensea/utils/utils').personalSignAsync;
 
 const axiosApi: AxiosInstance = axios.create({
   headers: {}

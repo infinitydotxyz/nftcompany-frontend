@@ -5,9 +5,9 @@ const ethers = require('ethers');
 
 // OpenSea's dependencies:
 const Web3 = require('web3');
-const OpenSeaPort = require('../../src-os/src').OpenSeaPort;
-const Network = require('../../src-os/src').Network;
-const WyvernSchemaName = require('../../src-os/src').WyvernSchemaName;
+const OpenSeaPort = require('../../opensea').OpenSeaPort;
+const Network = require('../../opensea').Network;
+const WyvernSchemaName = require('../../opensea').WyvernSchemaName;
 
 declare global {
   interface Window {
