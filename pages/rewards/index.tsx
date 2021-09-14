@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { API_BASE_MAINNET } from '../../src-os/src/constants';
+import { API_BASE_MAINNET } from '../../opensea/constants';
 import { getAccount } from 'utils/ethersUtil';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import { Bar } from 'react-chartjs-2';

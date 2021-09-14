@@ -9,9 +9,7 @@ import { useRouter } from 'next/router';
 
 import { initEthers } from '../src/utils/ethersUtil';
 import styles from '../styles/Connect.module.scss';
-import { getAccount, getWeb3 } from '../src/utils/ethersUtil';
 import { setAuthHeaders } from '../src/utils/apiUtil';
-const personalSignAsync = require('../src-os/src/utils/utils').personalSignAsync;
 
 export default function ConnectWallet() {
   const router = useRouter();

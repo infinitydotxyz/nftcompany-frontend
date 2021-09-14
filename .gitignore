@@ -7,8 +7,6 @@ node_modules
 .pnpm-debug.log
 package-lock.json
 pnpm-lock.yaml
-src-os/package-lock.json
-src-os/pnpm-lock.yaml
 
 # testing
 coverage
