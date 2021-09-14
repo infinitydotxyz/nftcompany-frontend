@@ -115,56 +115,30 @@ export default function Rewards() {
 
           <div className={styles.main}>
             <section className="container container-fluid grid">
-              {/* First Column */}
-              <div className={`col-md-6 col-sm-12 ${styles.rewardBox}`}>
-                <h3 className="tg-title">Listings:</h3>
-
-                <ul className={styles.list}>
-                  <li>
-                    <span>Your Listings</span>
-                    {/* <span style={{ width: `${20 * numListingsPct}vw` }}> */}
-                    <span>
-                      {data?.numListings || 0} , APR 10%
-                    </span>
-                  </li>
-                  <li>
-                    <span>Total Listings</span>
-                    <span>{data?.totalListings || 0}</span>
-                  </li>
-                </ul>
-
-                <h3 className="tg-title">Bonus Listings:</h3>
-
-                <ul className={styles.list}>
-                  <li>
-                    <span>Your Bonus Listings</span>
-                    <span className={styles.bar}>
-                      {data?.numBonusListings  || 0} , APR 10%
-                    </span>
-                  </li>
-                  <li>
-                    <span>Total Bonus Listings</span>
-                    <span className={styles.bar}>{data?.totalListings || 0}</span>
-                  </li>
-                </ul>
-
-                <h3 className="tg-title">Fees:</h3>
-
-                <ul className={styles.list}>
-                  <li>
-                    <span>Your Paid Fees</span>
-                    <span className={styles.bar}>
-                      {data?.feesPaid || 0}
-                    </span>
-                  </li>
-                  <li>
-                    <span>Total Fees</span>
-                    <span className={styles.bar}>{data?.totalListings || 0}</span>
-                  </li>
-                </ul>
+              <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
+                <h3>Listing Rewards</h3>
+                <div>{data?.numListings || 0}, APR 10%</div>
+                <div>Total: {data?.totalListings || 0}</div>
               </div>
+              <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
+                <h3>Bonus Rewards</h3>
+                <div>{data?.numBonusListings || 0}, APR 10%</div>
+                <div>Total: {data?.totalListings || 0}</div>
+              </div>
+              <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
+                <h3>Fee Rewards</h3>
+                <div>{data?.feesPaid || 0}, APR 10%</div>
+                <div>Total: {data?.totalListings || 0}</div>
+              </div>
+              <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
+                <h3>Net Rewards</h3>
+                <div>0, APR 10%</div>
+                <div>Total: 0</div>
+              </div>
+
+              
               {/* Second Column */}
-              <div className={`col-md-6 col-sm-12 ${styles.rewardBox}`}>
+              <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
                 <h3 className="tg-title">Rewards 💰</h3>
 
                 <ul className={styles.list}>
@@ -202,10 +176,10 @@ export default function Rewards() {
                 </ul>
               </div>
 
-              <div className={`col-md-12 col-sm-12 d-flex align-items-center ${styles.leaderBox}`}>
+              <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
                 <h3 className="tg-title">Leaderboard 🏆</h3>
                 <div className={styles.leaderBody}>
-                  <Table mt={4} width={'100%'}>
+                  <Table mt={4}>
                     <Thead>
                       <Tr>
                         <Th>Rank</Th>
