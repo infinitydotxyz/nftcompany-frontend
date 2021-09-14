@@ -31,7 +31,7 @@ type Props = {
 
 function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PRICE'], actions = [], ...rest }: Props) {
   const [modalShowed, setModalShowed] = useState(false);
-  const [showBuyModal, setShowBuyModal] = useState(false);
+  const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
 
   if (!data) {
     return null;
@@ -76,7 +76,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
               data-effect="mfp-zoom-in"
               onClick={(ev) => {
                 ev.preventDefault();
-                setShowBuyModal(true);
+                setPlaceBidModalShowed(true);
               }}
             >
               <span>Buy NFT</span>
@@ -124,7 +124,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
         </div>
       </div>
 
-      {showBuyModal && <PlaceBidModal data={data} onClose={() => setShowBuyModal(false)} />}
+      {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
 
       {/* {modalShowed && (
         <NFTModal
