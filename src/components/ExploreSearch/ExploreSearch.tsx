@@ -1,58 +1,40 @@
-import React, { forwardRef, Fragment, useImperativeHandle, useRef, useState } from 'react';
+import React, { Fragment, useRef } from 'react';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
-import { getListingsByTitle } from 'services/Listings.service';
+import { getListingsByTitle, orderToCardData } from 'services/Listings.service';
 import { Order } from 'types/Nft.interface';
 
 interface Props {
-  onChange: (titleQuery: Order) => void;
-  onClear: (selectedOrder: Order) => void;
-  ref?: any;
+  setFilters: any;
+  setListedNfts: any;
+  setExploreSearchState: any;
+  exploreSearchState: ExploreSearchState;
 }
-interface ExploreSearchState {
+export interface ExploreSearchState {
   isLoading: boolean;
   options: Order[];
   query: string;
 }
-const ExploreSearch = forwardRef(({ onChange, onClear }: Props, ref) => {
-  useImperativeHandle(
-    ref,
-    () => ({
-      clearFromParent() {
-        console.log('oy');
-        resetState();
-      }
-    }),
-    []
-  );
+const ExploreSearch = ({ setFilters, setListedNfts, setExploreSearchState, exploreSearchState }: Props) => {
   const typeaheadRef = useRef<any>();
-  const [exploreSearchState, setExploreSearchState] = useState<ExploreSearchState>({
-    isLoading: false,
-    options: [],
-    query: ''
-  });
-  const filterBy = () => true;
-  const resetState = () => {
-    setExploreSearchState({ options: [], isLoading: false, query: '' });
-    typeaheadRef.current.clear();
-  };
   const handleSearch = async (query: string) => {
-    setExploreSearchState({ ...exploreSearchState, isLoading: true, query });
     const response: Order[] = (await getListingsByTitle({ startsWith: query })) as any;
     setExploreSearchState({
-      ...exploreSearchState,
       isLoading: false,
-      query,
-      options: response
+      options: response,
+      query
     });
   };
   return (
     <AsyncTypeahead
       id="explore-typeahead"
-      onChange={(selected: Order[]) => {
-        onChange(selected[0]);
+      onChange={(selectedOrders: Order[]) => {
+        if (selectedOrders.length > 0) {
+          setFilters({ price: 10000, sortByPrice: undefined, sortByLikes: undefined });
+          setListedNfts(selectedOrders.map(orderToCardData));
+          typeaheadRef.current.clear();
+        }
       }}
       ref={typeaheadRef}
-      filterBy={filterBy}
       labelKey={(option) => option.metadata.asset.title}
       isLoading={exploreSearchState.isLoading}
       onSearch={handleSearch}
@@ -64,8 +46,7 @@ const ExploreSearch = forwardRef(({ onChange, onClear }: Props, ref) => {
         </Fragment>
       )}
     />
-    //     </div>
   );
-});
+};
 
 export default ExploreSearch;

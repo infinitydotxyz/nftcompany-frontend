@@ -14,36 +14,26 @@ export type Filter = {
 type Props = {
   isExpanded: boolean;
   setExpanded?: any;
-  onChange?: (filter: Filter) => void;
+  setFilters: any;
+  getNftListings: any;
+  filter: Filter | undefined;
 };
 
-const FilterPanel = forwardRef(({ isExpanded, setExpanded, onChange }: Props, ref) => {
-  const [filter, setFilter] = useState<Filter | null>(null);
+const FilterPanel = ({ isExpanded, setExpanded, setFilters, filter, getNftListings }: Props) => {
   const [values, setValues] = useState([10000]);
-  React.useImperativeHandle(ref, () => ({
-    clear() {
-      clearFilter();
-    }
-  }));
   React.useEffect(() => {
-    // console.log('isExpanded', isExpanded);
-  }, [isExpanded]);
+    setValues([filter?.price || 10000]);
+  }, [filter]);
 
   const handleChanges = async (changes: Filter) => {
     const updatedFilter = { ...changes };
     console.log('updatedFilter', updatedFilter);
-    setFilter(updatedFilter);
-    if (onChange) {
-      onChange(updatedFilter);
-    }
+    setFilters(updatedFilter);
+    getNftListings(updatedFilter);
   };
   const updateFilter = (price: number[]) => {
     setValues(price);
     handleChanges({ ...filter, price: price[0] });
-  };
-  const clearFilter = () => {
-    setFilter(null);
-    setValues([10000]);
   };
 
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
@@ -119,7 +109,7 @@ const FilterPanel = forwardRef(({ isExpanded, setExpanded, onChange }: Props, re
       </AnimatePresence>
     </section>
   );
-});
+};
 
 FilterPanel.displayName = 'FilterPanel';
 
