@@ -7,7 +7,6 @@ import { getSchemaName, web3GetSeaport } from 'utils/ethersUtil';
 import { showMessage } from 'utils/commonUtil';
 import { useToast } from '@chakra-ui/react';
 import { useAppContext } from 'utils/context/AppContext';
-const OrderSide = require('../../../src-os/src').OrderSide;
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';

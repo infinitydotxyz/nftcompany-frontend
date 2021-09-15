@@ -17,9 +17,9 @@ export type CardData = {
   tokenAddress?: string;
   tokenId?: string;
   collectionName?: string;
-  maker: string;
-  hasBonusReward: boolean;
-  hasBlueCheck: boolean;
+  maker?: string;
+  hasBonusReward?: boolean;
+  hasBlueCheck?: boolean;
 };
 
 type Props = {
