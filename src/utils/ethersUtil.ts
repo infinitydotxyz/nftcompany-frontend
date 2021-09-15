@@ -18,14 +18,14 @@ let openSeaPort: any;
 
 type initEthersArgs = {
   onError?: (tx: any) => void;
-}
+  onPending?: (tx: any) => void;
+};
 
-export async function initEthers({ onError }: initEthersArgs = {}) {
+export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
   if (!window?.ethereum) {
     alert('Please install the MetaMask extension first.');
     return;
   }
-
   try {
     // deprecated: await window.ethereum.enable();
     // so you are required to call this instead
@@ -35,13 +35,13 @@ export async function initEthers({ onError }: initEthersArgs = {}) {
   } catch (err: any) {
     console.log(err);
   }
-
+  console.log('- initEthers');
   ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
 
-  console.log('** initEthers')
   ethersProvider.on('pending', (tx: any) => {
     // Emitted when any new pending transaction is noticed
     console.log('- ethersProvider - PENDING:', tx);
+    onPending && onPending(tx);
   });
 
   ethersProvider.on('error', (tx: any) => {
