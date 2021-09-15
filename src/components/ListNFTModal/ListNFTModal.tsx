@@ -1,7 +1,5 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { useToast } from '@chakra-ui/react';
-import { showMessage } from 'utils/commonUtil';
 import { Switch } from '@chakra-ui/react';
 import Datetime from 'react-datetime';
 import TabBar from 'components/TabBar/TabBar';
@@ -9,6 +7,7 @@ import { getAddressBalance, getSchemaName, web3GetSeaport } from 'utils/ethersUt
 import { getAccount } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { WETH_ADDRESS } from 'utils/constants';
+import { useAppContext } from 'utils/context/AppContext';
 import styles from './ListNFTModal.module.scss';
 
 const Modal = dynamic(() => import('hooks/useModal'));
@@ -22,9 +21,9 @@ interface IProps {
 }
 
 const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
-  const toast = useToast();
+  const { showAppError, showAppMessage } = useAppContext();
   const [price, setPrice] = React.useState(0);
-  const [balance, setBalance] = React.useState('');
+  // const [balance, setBalance] = React.useState('');
   const [endPriceShowed, setEndPriceShowed] = React.useState(false);
   const [reservePrice, setReservePrice] = React.useState(0);
   const [endPrice, setEndPrice] = React.useState(0);
@@ -42,12 +41,12 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
         const { result } = await apiGet(`/token/${data.tokenAddress}/verfiedBonusReward`);
         setBackendChecks({ hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified });
       };
-      const getInfo = async () => {
-        const bal = await getAddressBalance(account);
-        setBalance(parseFloat(`${bal}`).toFixed(4));
-      };
+      // const getInfo = async () => {
+      //   const bal = await getAddressBalance(account);
+      //   setBalance(parseFloat(`${bal}`).toFixed(4));
+      // };
       getBackendChecks();
-      getInfo();
+      // getInfo();
     };
     connect();
   }, []);
@@ -217,11 +216,11 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       console.log('listing', listing);
                     } catch (e: any) {
                       err = e;
-                      console.error(e, '   ', expirationTime);
-                      showMessage(toast, 'error', e.message);
+                      console.error('ERROR: ', e, '   ', expirationTime);
+                      showAppError(e.message);
                     }
                     if (!err) {
-                      showMessage(toast, 'info', 'NFT listed successfully!');
+                      showAppMessage('NFT listed successfully!');
                       onClose && onClose();
                     }
                   }}

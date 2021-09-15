@@ -1,6 +1,3 @@
-import { API_BASE } from './constants';
-import axios from 'axios';
-
 const ethers = require('ethers');
 
 // OpenSea's dependencies:
@@ -18,7 +15,11 @@ declare global {
 
 let ethersProvider: any;
 
-export async function initEthers() {
+type initEthersArgs = {
+  onError?: (tx: any) => void;
+}
+
+export async function initEthers({ onError }: initEthersArgs = {}) {
   if (!window?.ethereum) {
     alert('Please install the MetaMask extension first.');
     return;
@@ -35,6 +36,19 @@ export async function initEthers() {
   }
 
   ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+
+  console.log('** initEthers')
+  ethersProvider.on('pending', (tx: any) => {
+    // Emitted when any new pending transaction is noticed
+    console.log('- ethersProvider - PENDING:', tx);
+  });
+
+  ethersProvider.on('error', (tx: any) => {
+    // Emitted when any error occurs
+    console.log('- ethersProvider - ERROR:', tx);
+    onError && onError(tx);
+  });
+
   return ethersProvider;
 }
 
