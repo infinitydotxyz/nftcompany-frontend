@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Menu, MenuButton, MenuList, MenuItem, Button, MenuDivider } from '@chakra-ui/react';
-import { InfoOutlineIcon, ExternalLinkIcon } from '@chakra-ui/icons'
+import { InfoOutlineIcon, ExternalLinkIcon, StarIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FilterContext } from 'hooks/useFilter';
@@ -33,7 +33,7 @@ const Header = () => {
   console.log('filter', filter);
 
   const { user, setUser } = useAppContext();
-  console.log('- Header - user:', user)
+  console.log('- Header - user:', user);
 
   useEffect(() => {
     const handleAccountChange = async (accounts: string[]) => {
@@ -46,7 +46,7 @@ const Header = () => {
             await setAuthHeaders(accounts[0]);
             setUser({ account: await getAccount() });
             // window.location.reload(); // no need anymore as other comps can auto refresh.
-          }, 500)
+          }, 500);
         }
       };
     };
@@ -114,12 +114,13 @@ const Header = () => {
                   items={[
                     // { title: 'NFT', link: '/explore/nfts' },
                     // { title: 'Bids & Offers', link: '/offers' },
-                    { title: 'My NFTs', link: '/my-nfts' },
-                    { title: 'Listed NFTs', link: '/listed-nfts' },
-                    { title: 'Rewards', link: '/rewards' },
+                    // { title: 'My NFTs', link: '/my-nfts' },
+                    // { title: 'Listed NFTs', link: '/listed-nfts' },
+                    // { title: 'Rewards', link: '/rewards' },
                     { title: 'Explore', link: '/explore' }
                   ]}
-                  active={['/my-nfts', '/listed-nfts', '/rewards'].indexOf(route)}
+                  // active={['/my-nfts', '/listed-nfts', '/rewards'].indexOf(route)}
+                  active={['/explore'].indexOf(route)}
                   onClickItem={(item, _) => {
                     router.push(item.link || '');
                   }}
@@ -134,17 +135,39 @@ const Header = () => {
                         <a className="connect-wallet">{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</a>
                       </MenuButton>
                       <MenuList
-                        // bg="#fff"
-                        // textColor="#333"
-                        // minWidth="160px"
-                        // p="8"
-                        // border="1px solid #ccc"
-                        // borderRadius="6"
-                        // _hover={{ backgroundColor: 'blue', color: 'white' }}
+                      // bg="#fff"
+                      // textColor="#333"
+                      // minWidth="160px"
+                      // p="8"
+                      // border="1px solid #ccc"
+                      // borderRadius="6"
+                      // _hover={{ backgroundColor: 'blue', color: 'white' }}
                       >
-                        <MenuItem textColor="#333" icon={<InfoOutlineIcon />} onClick={() => {}}>{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</MenuItem>
+                        <MenuItem
+                          textColor="#333"
+                          icon={<InfoOutlineIcon />}
+                          onClick={() => {}}
+                        >{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</MenuItem>
                         <MenuDivider />
-                        <MenuItem textColor="#333" icon={<ExternalLinkIcon />} onClick={() => setUser(null)}>Sign out</MenuItem>
+                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/my-nfts')}>
+                          My NFTs
+                        </MenuItem>
+                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
+                          Listed NFTs
+                        </MenuItem>
+                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers')}>
+                          Offers Made
+                        </MenuItem>
+                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/my-nfts')}>
+                          Offers Received
+                        </MenuItem>
+                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/rewards')}>
+                          Rewards
+                        </MenuItem>
+                        <MenuDivider />
+                        <MenuItem textColor="#333" icon={<ExternalLinkIcon />} onClick={() => setUser(null)}>
+                          Sign out
+                        </MenuItem>
                       </MenuList>
                     </Menu>
                   </li>
