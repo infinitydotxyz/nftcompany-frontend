@@ -28,7 +28,7 @@ export default function OffersMade() {
     await setIsFetching(true);
     let listingData = [];
     try {
-      const { result, error } = await apiGet(`/u/${user?.account}/listings`);
+      const { result, error } = await apiGet(`/u/${user?.account}/offersmade`);
       if (error) {
         showMessage(toast, 'error', `${error}`);
         return;

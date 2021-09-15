@@ -131,7 +131,7 @@ const Header = () => {
                 {user?.account ? (
                   <li>
                     <Menu>
-                      <MenuButton rightIcon={null}>
+                      <MenuButton>
                         <a className="connect-wallet">{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</a>
                       </MenuButton>
                       <MenuList
