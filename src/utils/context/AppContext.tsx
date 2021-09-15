@@ -3,7 +3,7 @@ import { initEthers } from 'utils/ethersUtil';
 import { setAuthHeaders } from 'utils/apiUtil';
 import { useToast } from '@chakra-ui/toast';
 import { showMessage } from 'utils/commonUtil';
-import { EventEmitter, EventSubscription } from 'fbemitter';
+// import { EventEmitter, EventSubscription } from 'fbemitter';
 import { getOpenSeaport } from 'utils/ethersUtil';
 const { EventType } = require('../../../opensea/types');
 
