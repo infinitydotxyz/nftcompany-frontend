@@ -195,6 +195,10 @@ export class OpenSeaPort {
     //this.logger = logger || ((arg: string) => arg)
   }
 
+  public getEmitter() {
+    return this._emitter;
+  }
+
   /**
    * Add a listener to a marketplace event
    * @param event An event to listen for

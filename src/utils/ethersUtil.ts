@@ -1,6 +1,3 @@
-import { API_BASE } from './constants';
-import axios from 'axios';
-
 const ethers = require('ethers');
 
 // OpenSea's dependencies:
@@ -17,13 +14,18 @@ declare global {
 // const hstABI = require("human-standard-token-abi");
 
 let ethersProvider: any;
+let openSeaPort: any;
 
-export async function initEthers() {
+type initEthersArgs = {
+  onError?: (tx: any) => void;
+  onPending?: (tx: any) => void;
+};
+
+export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
   if (!window?.ethereum) {
     alert('Please install the MetaMask extension first.');
     return;
   }
-
   try {
     // deprecated: await window.ethereum.enable();
     // so you are required to call this instead
@@ -33,8 +35,21 @@ export async function initEthers() {
   } catch (err: any) {
     console.log(err);
   }
-
+  console.log('- initEthers');
   ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+
+  ethersProvider.on('pending', (tx: any) => {
+    // Emitted when any new pending transaction is noticed
+    console.log('- ethersProvider - PENDING:', tx);
+    onPending && onPending(tx);
+  });
+
+  ethersProvider.on('error', (tx: any) => {
+    // Emitted when any error occurs
+    console.log('- ethersProvider - ERROR:', tx);
+    onError && onError(tx);
+  });
+
   return ethersProvider;
 }
 
@@ -83,12 +98,15 @@ export const getWeb3 = () => {
   return web3;
 };
 
-export const web3GetSeaport = () => {
+export const getOpenSeaport = () => {
+  if (openSeaPort) {
+    return openSeaPort;
+  }
   const network = getChainName();
-  const seaport = new OpenSeaPort(getWeb3().currentProvider, {
+  openSeaPort = new OpenSeaPort(getWeb3().currentProvider, {
     networkName: network
   });
-  return seaport;
+  return openSeaPort;
 };
 
 export const getSchemaName = (address: string) => {

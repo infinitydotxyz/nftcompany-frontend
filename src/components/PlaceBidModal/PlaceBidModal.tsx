@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import styles from './PlaceBidModal.module.scss';
 import Datetime from 'react-datetime';
 import { CardData } from 'components/Card/Card';
-import { getSchemaName, web3GetSeaport } from 'utils/ethersUtil';
+import { getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
 import { showMessage } from 'utils/commonUtil';
 import { useToast } from '@chakra-ui/react';
 import { useAppContext } from 'utils/context/AppContext';
@@ -24,7 +24,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
   const buyNft = () => {
     try {
-      const seaport = web3GetSeaport();
+      const seaport = getOpenSeaport();
 
       seaport.api
         .getOrder({
@@ -52,7 +52,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
   const makeAnOffer = () => {
     try {
-      const seaport = web3GetSeaport();
+      const seaport = getOpenSeaport();
       seaport.createBuyOrder({
         asset: {
           tokenAddress: data.tokenAddress,
