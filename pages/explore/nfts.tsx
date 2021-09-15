@@ -1,9 +1,9 @@
-import React from 'react';
+import HeaderActionButtons from 'containers/header/HeaderActionButtons';
+import Layout from 'containers/layout';
 import { NextPage } from 'next';
 import Head from 'next/head';
-import Layout from 'containers/layout';
 import Image from 'next/image';
-import HeaderActionButtons from 'containers/header/HeaderActionButtons';
+import React from 'react';
 import styles from '../../styles/Dashboard.module.scss';
 
 export default function Nfts() {

@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import { Switch } from '@chakra-ui/react';
 import Datetime from 'react-datetime';
 import TabBar from 'components/TabBar/TabBar';
-import { getAddressBalance, getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
+import { getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
 import { getAccount } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { WETH_ADDRESS } from 'utils/constants';

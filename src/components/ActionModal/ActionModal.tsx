@@ -1,7 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import styles from './ActionModal.module.scss';
-import Image from 'next/image';
 import { getAddressBalance } from 'utils/ethersUtil';
 
 const Modal = dynamic(() => import('hooks/useModal'));

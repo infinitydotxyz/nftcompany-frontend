@@ -1,6 +1,9 @@
 {
   "extends": ["next", "next/core-web-vitals"],
+  "plugins": ["unused-imports"],
   "rules": {
-    "@next/next/no-img-element": "off"
-  }
+    "@next/next/no-img-element": "off",
+    "unused-imports/no-unused-imports-ts": 2
+  },
+  "ignorePatterns": ["Crypter-NFT-code"]
 }

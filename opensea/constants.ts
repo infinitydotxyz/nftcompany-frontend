@@ -1,5 +1,5 @@
 import { WyvernProtocol } from 'wyvern-js';
-import { BigNumber } from 'bignumber.js'; // Typescript import issue
+// Typescript import issue
 import { API_BASE, RINKEBY_API_BASE, RINKEBY_SITE_HOST, SITE_HOST, PROVIDER_URL_ETH_MAINNET, NFTC_FEE_RECIPIENT } from '../src/utils/constants'; // constants from NFTCompany
 
 export const DEFAULT_GAS_INCREASE_FACTOR = 1.01;

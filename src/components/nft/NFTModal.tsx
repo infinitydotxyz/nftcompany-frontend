@@ -1,7 +1,6 @@
 /* eslint-disable react/display-name */
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { Tab, TabList, TabPanel, TabPanels, Tabs, Spinner } from '@chakra-ui/react';
 

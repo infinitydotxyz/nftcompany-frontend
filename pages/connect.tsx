@@ -1,10 +1,8 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
-import Layout from 'containers/layout';
-import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
 import { initEthers } from '../src/utils/ethersUtil';

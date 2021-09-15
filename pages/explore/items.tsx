@@ -3,10 +3,8 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import styles from '../../styles/Dashboard.module.scss';
-import NFT from 'components/nft/nft';
 import CardList from 'components/Card/CardList';
 import { sampleData } from '../../src/utils/apiUtil';
-import { Select } from '@chakra-ui/react';
 
 export default function MyItems() {
   return (

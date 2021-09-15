@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { InView, useInView } from 'react-intersection-observer';
+import React from 'react';
+import { InView } from 'react-intersection-observer';
 
 const FetchMoreElement = ({ inView, ref, onFetchMore }: any) => {
   // console.log('inView', ' ', inView);

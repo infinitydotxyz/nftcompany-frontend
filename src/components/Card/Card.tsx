@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
-import NFTModal from 'components/nft/NFTModal';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import OfferStatusModal from 'components/OfferStatusModal/OfferStatusModal';

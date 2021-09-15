@@ -19,8 +19,7 @@ import {
   assetFromJSON,
   delay,
   orderFromJSON,
-  tokenFromJSON,
-  personalSignAsync
+  tokenFromJSON
 } from './utils/utils'
 import {
   API_BASE_MAINNET,

@@ -1,14 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @next/next/no-html-link-for-pages */
-import React from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
-import Image from 'next/image';
-import Layout from 'containers/layout';
 import { Box } from '@chakra-ui/react';
-import { NextPage } from 'next';
-import styles from '../styles/Home.module.scss';
 import Questions from 'components/landing/question';
+import Layout from 'containers/layout';
+import { NextPage } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
+import styles from '../styles/Home.module.scss';
 
 export default function Home() {
   return (

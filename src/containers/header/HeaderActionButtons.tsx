@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
 import { useToast } from '@chakra-ui/react';
 import { showMessage } from 'utils/commonUtil';
 import { getAccount } from 'utils/ethersUtil';
