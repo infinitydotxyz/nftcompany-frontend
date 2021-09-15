@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
@@ -8,9 +8,9 @@ import CardList from 'components/Card/CardList';
 import FilterPanel, { Filter } from 'components/FilterPanel/FilterPanel';
 import { FilterIcon } from 'components/Icons/Icons';
 import styles from '../../styles/Dashboard.module.scss';
-import { getListings, orderToCardData } from 'services/Listings.service';
+import { getListings } from 'services/Listings.service';
 import { CardData } from 'components/Card/Card';
-import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
+import ExploreSearch, { ExploreSearchState } from 'components/ExploreSearch/ExploreSearch';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Order } from 'types/Nft.interface';
 
@@ -20,8 +20,11 @@ export default function Dashboard() {
   const [isFetching, setIsFetching] = useState(false);
   const [listedNfts, setListedNfts] = useState<CardData[]>([]);
   const [filter, setFilters] = useState<Filter>();
-  const exploreRef = useRef<any>();
-  const filterRef = useRef<any>();
+  const [exploreSearchState, setExploreSearchState] = useState<ExploreSearchState>({
+    isLoading: false,
+    options: [],
+    query: ''
+  });
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -46,7 +49,7 @@ export default function Dashboard() {
     }
   }, [tabIndex]);
   React.useEffect(() => {
-    getNftListings();
+    getNftListings(filter);
   }, []);
 
   const getNftListings = async (filter?: Filter) => {
@@ -77,29 +80,21 @@ export default function Dashboard() {
             >
               <div style={{ width: '85%' }}>
                 <ExploreSearch
-                  ref={exploreRef}
-                  onClear={(selectedOrder: Order) => {
-                    filterRef.current.clear();
-                    setFilters(undefined);
-                    getNftListings();
-                  }}
-                  onChange={async (order) => {
-                    if (order) {
-                      const cardData = orderToCardData(order);
-                      filterRef.current.clear();
-                      setFilters(undefined);
-                      setListedNfts([cardData]);
-                    }
-                  }}
+                  setFilters={setFilters}
+                  setListedNfts={setListedNfts}
+                  setExploreSearchState={setExploreSearchState}
+                  exploreSearchState={exploreSearchState}
                 />
               </div>
               <Button
                 style={{ width: '15%', marginLeft: 10, marginRight: 10 }}
                 onClick={() => {
-                  exploreRef.current.clearFromParent();
-                  filterRef.current.clear();
-                  setFilters(undefined);
-
+                  setFilters({ price: 10000, sortByPrice: undefined, sortByLikes: undefined });
+                  setExploreSearchState({
+                    isLoading: false,
+                    options: [],
+                    query: ''
+                  });
                   getNftListings();
                 }}
               >
@@ -203,12 +198,10 @@ export default function Dashboard() {
 
           <div>
             <FilterPanel
+              filter={filter}
+              setFilters={setFilters}
               isExpanded={filterShowed}
-              ref={filterRef}
-              onChange={async (filter) => {
-                setFilters(filter);
-                getNftListings(filter);
-              }}
+              getNftListings={getNftListings}
             />
           </div>
           {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={listedNfts} />}
