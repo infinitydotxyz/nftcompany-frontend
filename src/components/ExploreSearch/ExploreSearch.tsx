@@ -35,6 +35,7 @@ const ExploreSearch = ({ setFilters, setListedNfts, setExploreSearchState, explo
         }
       }}
       ref={typeaheadRef}
+      minLength={1}
       labelKey={(option) => option.metadata.asset.title}
       isLoading={exploreSearchState.isLoading}
       onSearch={handleSearch}
