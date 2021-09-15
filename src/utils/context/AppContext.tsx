@@ -5,7 +5,7 @@ import { useToast } from '@chakra-ui/toast';
 import { showMessage } from 'utils/commonUtil';
 import { EventEmitter, EventSubscription } from 'fbemitter';
 import { getOpenSeaport } from 'utils/ethersUtil';
-import { EventType } from '../../../opensea/types';
+const { EventType } = require('../../../opensea/types');
 
 type User = {
   account: string;
@@ -46,13 +46,13 @@ export function AppContextProvider({ children }: any) {
       showAppError('Failed to connect.');
     }
   };
-  
+
   React.useEffect(() => {
     connectMetaMask();
 
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
     const seaport = getOpenSeaport();
-    Object.values(EventType).forEach((eventName: string) => {
+    Object.values(EventType).forEach((eventName: any) => {
       seaport.addListener(
         eventName,
         (data: any) => {
@@ -65,7 +65,6 @@ export function AppContextProvider({ children }: any) {
     });
     const emitter = seaport.getEmitter();
     // emitter.emit('TransactionConfirmed', { error: 'test', accountAddress: '0x123' }); // simulate OpenSea event.
-    // console.log('emit', emitter);
   }, []);
 
   const value = {
