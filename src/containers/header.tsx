@@ -155,10 +155,10 @@ const Header = () => {
                         <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
                           Listed NFTs
                         </MenuItem>
-                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers')}>
+                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-made')}>
                           Offers Made
                         </MenuItem>
-                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/my-nfts')}>
+                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-received')}>
                           Offers Received
                         </MenuItem>
                         <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/rewards')}>
