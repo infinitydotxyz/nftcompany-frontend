@@ -1,6 +1,7 @@
 import '../styles/globals.css';
 import '../styles/grid.css';
 import '../styles/fonts.css';
+import '../styles/Typeahead.css';
 import '../src/components/nft/components.scss';
 import { AppChakraProvider } from 'utils/themeUtil';
 import type { AppProps } from 'next/app';
