@@ -17,7 +17,9 @@ export type CardData = {
   tokenAddress?: string;
   tokenId?: string;
   collectionName?: string;
-  metadata?: any;
+  maker: string;
+  hasBonusReward: boolean;
+  hasBlueCheck: boolean;
 };
 
 type Props = {
@@ -37,8 +39,8 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
     return null;
   }
 
-  const collectionName = data.collectionName || data?.metadata?.asset?.collectionName;
-  const hasBlueCheck = data?.metadata?.hasBlueCheck;
+  const collectionName = data.collectionName;
+  const hasBlueCheck = data.hasBlueCheck;
   return (
     <div id={`id_${data.id}`} className={styles.card} {...rest}>
       {/* <Link href={`/preview?id=${data.id}${viewInfo ? '&view=info' : ''}`} passHref> */}

@@ -19,7 +19,11 @@ export const getListings = async (listingFilter?: Filter): Promise<CardData[]> =
       inStock: +listingItem.metadata.asset.quantity,
       price: weiToEther(listingItem.basePrice),
       tokenAddress: listingItem.metadata.asset.address,
-      tokenId: listingItem.metadata.asset.id
+      tokenId: listingItem.metadata.asset.id,
+      maker: listingItem.maker,
+      hasBonusReward: listingItem.metadata.hasBonusReward,
+      hasBlueCheck: listingItem.metadata.hasBlueCheck,
+      collectionName: listingItem.metadata.collectionName
     };
     return cardData;
   });

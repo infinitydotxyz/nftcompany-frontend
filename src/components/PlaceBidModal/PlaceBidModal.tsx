@@ -26,19 +26,21 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const buyNft = () => {
     try {
       const seaport = web3GetSeaport();
+
       seaport.api
         .getOrder({
-          maker: '0xC844c8e1207B9d3C54878C849A431301bA9c23E0', //todo: adi this needs to be fetched
+          maker: data.maker,
           assetContractAddress: data.tokenAddress,
           tokenId: data.tokenId,
-          side: OrderSide.Sell
+          side: 1 // OrderSide.Sell
         })
-        .then(function (order: any) {
-          console.log('order', order);
+        .then(async function (order: any) {
           // Important to check if the order is still available as it can have already been fulfilled by
           // another user or cancelled by the creator
           if (order) {
-            seaport.fulfillOrder({ order: order, accountAddress: user?.account });
+            const result = await seaport.fulfillOrder({ order: order, accountAddress: user?.account });
+
+            console.log('buyNft result: ', result);
           } else {
             // Handle when the order does not exist anymore
             showMessage(toast, 'error', 'Error when purchasing.');
@@ -60,7 +62,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         },
         accountAddress: user?.account,
         startAmount: offerPrice,
-
+        assetDetails: data,
         // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
         // endAmount: 100,
         expirationTime: expiryTimeSeconds
