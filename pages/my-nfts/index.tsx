@@ -46,7 +46,7 @@ export default function MyNFTs() {
       setData([]);
       return;
     }
-    await setIsFetching(true);
+    setIsFetching(true);
     const newCurrentPage = currentPage + 1;
     const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
       offset: newCurrentPage * ITEMS_PER_PAGE,
@@ -61,9 +61,9 @@ export default function MyNFTs() {
       const newItem = transformOpenSea(item);
       return newItem;
     });
-    await setData([...data, ...moreData]);
-    await setIsFetching(false);
-    await setCurrentPage(newCurrentPage);
+    setData([...data, ...moreData]);
+    setIsFetching(false);
+    setCurrentPage(newCurrentPage);
   };
 
   React.useEffect(() => {

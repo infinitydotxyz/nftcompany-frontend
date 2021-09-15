@@ -32,7 +32,6 @@ export default function CardList({ data, viewInfo, showItems, actions, onClickAc
           />
         );
       })}
-
     </div>
   );
 }

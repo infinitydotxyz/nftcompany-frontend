@@ -91,7 +91,7 @@ const HeaderActionButtons = () => {
                 expirationTime: 0
               });
               console.log('listing', listing);
-            } catch (e) {
+            } catch (e: any) {
               err = e;
               showMessage(toast, 'error', e.message);
             }
@@ -119,7 +119,7 @@ const HeaderActionButtons = () => {
                 expirationTime: 0
               });
               console.log('listing', listing);
-            } catch (e) {
+            } catch (e: any) {
               err = e;
               showMessage(toast, 'error', e.message);
             }
@@ -155,7 +155,7 @@ const HeaderActionButtons = () => {
                     showMessage(toast, 'error', 'Error when purchasing.');
                   }
                 });
-            } catch (e) {
+            } catch (e: any) {
               err = e;
               showMessage(toast, 'error', e.message);
             }

@@ -83,15 +83,15 @@ export default function Preview() {
 
           <div className={styles.main}>
             {/* <Card data={sampleData[idNum]} /> */}
-            {data && data.image && <img src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'} />}
+            {data && data.image && (
+              <img src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'} />
+            )}
 
             <section className={styles.info}>
               <h3>{data?.title}</h3>
               <span className={styles.price}>{data?.price} ETH</span>
               <span className={styles.counter}>10 in stock</span>
-
               <div className={styles.description}>{data?.description}</div>
-
               {view === 'info' ? null : (
                 <>
                   <TabBar tabs={Tabs} activeTab={activeTab} setActiveTab={(tab) => setActiveTab(tab)} />
@@ -111,7 +111,8 @@ export default function Preview() {
                 </>
               )}
 
-              {placeBidShowed && <PlaceBidModal onClose={() => setPlaceBidShowed(false)} />}
+              {/* SNG fix later.  data is not CardData, using test data and this page isn't used anywhere */}
+              {placeBidShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidShowed(false)} />}
               {purchaseShowed && <PurchaseModal onClose={() => setPurchaseShowed(false)} />}
             </section>
           </div>
