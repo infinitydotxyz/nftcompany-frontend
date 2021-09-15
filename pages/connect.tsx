@@ -4,20 +4,17 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-
-import { initEthers } from '../src/utils/ethersUtil';
 import styles from '../styles/Connect.module.scss';
-import { setAuthHeaders } from '../src/utils/apiUtil';
 
 export default function ConnectWallet() {
   const router = useRouter();
-  // const [ethersRes, setEthersRes] = useState<any>(null);
-
   useEffect(() => {
     // TBD
   }, []);
 
   const connectMetaMask = async () => {
+    const initEthers = (await import('../src/utils/ethersUtil')).initEthers;
+    const setAuthHeaders = (await import('../src/utils/apiUtil')).setAuthHeaders;
     const res = await initEthers(); // returns provider
     if (res && res.getSigner) {
       await setAuthHeaders(await res.getSigner().getAddress());
@@ -25,7 +22,6 @@ export default function ConnectWallet() {
     } else {
       alert('Failed to connect.'); // TODO: use a toaster
     }
-    // console.log("Address: ", await res.getAddress());
   };
 
   return (
