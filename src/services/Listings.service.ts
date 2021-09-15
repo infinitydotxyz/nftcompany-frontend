@@ -11,13 +11,15 @@ export const getListings = async (listingFilter?: Filter): Promise<CardData[]> =
     return [];
   }
 
-  const cards = result['listings'].map((nft, index) => {
+  const cards = result['listings'].map((listingItem, index) => {
     const cardData: CardData = {
-      id: nft.metadata.asset.id,
-      image: nft.metadata.asset.image,
-      title: nft.metadata.asset.title,
-      inStock: +nft.metadata.asset.quantity,
-      price: weiToEther(nft.basePrice)
+      id: listingItem.metadata.asset.id,
+      image: listingItem.metadata.asset.image,
+      title: listingItem.metadata.asset.title,
+      inStock: +listingItem.metadata.asset.quantity,
+      price: weiToEther(listingItem.basePrice),
+      tokenAddress: listingItem.metadata.asset.address,
+      tokenId: listingItem.metadata.asset.id
     };
     return cardData;
   });
