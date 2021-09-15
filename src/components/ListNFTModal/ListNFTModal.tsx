@@ -123,7 +123,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       <li>
                         <div>Expiration time</div>
                         <div>
-                          <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf()/1000)} />
+                          <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
                         </div>
                         <div></div>
                       </li>
@@ -166,7 +166,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     <li>
                       <div>Expiration time</div>
                       <div>
-                        <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf()/1000)} />
+                        <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
                       </div>
                       <div></div>
                     </li>
@@ -178,9 +178,9 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 <a
                   className="action-btn"
                   onClick={async () => {
-                    if (!price) {
-                      alert('Please enter price.');
-                    }
+                    // if (!price) {
+                    //   alert('Please enter price.');
+                    // }
                     console.log('List NFT', data);
 
                     // const tokenAddress = data.data.asset_contract;

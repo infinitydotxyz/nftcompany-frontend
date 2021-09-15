@@ -23,7 +23,16 @@ export async function initEthers() {
     alert('Please install the MetaMask extension first.');
     return;
   }
-  await window.ethereum.enable();
+
+  try {
+    // deprecated: await window.ethereum.enable();
+    // so you are required to call this instead
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+    console.log('accounts:', accounts);
+  } catch (err: any) {
+    console.log(err);
+  }
 
   ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
   return ethersProvider;

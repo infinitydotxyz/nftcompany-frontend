@@ -80,7 +80,7 @@ export default function Rewards() {
     const account = await getAccount();
     setUser({ account });
 
-    await setIsFetching(true);
+    setIsFetching(true);
     try {
       const res = await fetch(`${API_BASE_MAINNET}/u/${account}/reward`);
       const data = (await res.json()) || [];
@@ -136,7 +136,6 @@ export default function Rewards() {
                 <div>Total: 0</div>
               </div>
 
-              
               {/* Second Column */}
               <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
                 <h3 className="tg-title">Rewards 💰</h3>
@@ -151,7 +150,7 @@ export default function Rewards() {
                     <span>&nbsp;</span>
                   </li>
                   <li>
-                    <Bar width={500} height={200} data={chartData} options={options} legend={false} />
+                    <Bar width={500} height={200} data={chartData} options={options} />
                   </li>
                   {/* <li>
                     <span>Bonus Reward</span>
