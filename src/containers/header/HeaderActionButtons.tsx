@@ -5,7 +5,7 @@ import { showMessage } from 'utils/commonUtil';
 import { getAccount } from 'utils/ethersUtil';
 // import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
-import { getSchemaName, web3GetSeaport } from 'utils/ethersUtil';
+import { getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
 import ActionModal, { ActionModalType } from 'components/ActionModal/ActionModal';
 
 const parseNftUrl = (nftUrl: string) => {
@@ -77,7 +77,7 @@ const HeaderActionButtons = () => {
 
             let err = null;
             try {
-              const seaport = web3GetSeaport();
+              const seaport = getOpenSeaport();
               const listing = await seaport.createSellOrder({
                 asset: {
                   tokenAddress,
@@ -105,7 +105,7 @@ const HeaderActionButtons = () => {
             console.log('- onClickMakeOffer: tokenAddress, tokenId, price', tokenAddress, tokenId, price);
             let err = null;
             try {
-              const seaport = web3GetSeaport();
+              const seaport = getOpenSeaport();
               const listing = await seaport.createBuyOrder({
                 asset: {
                   tokenAddress,
@@ -133,7 +133,7 @@ const HeaderActionButtons = () => {
             console.log('- onClickBuyNow: tokenAddress, tokenId, price', tokenAddress, tokenId, price);
             let err = null;
             try {
-              const seaport = web3GetSeaport();
+              const seaport = getOpenSeaport();
               seaport.api
                 .getOrder({
                   maker: '0xC844c8e1207B9d3C54878C849A431301bA9c23E0', //todo: adi this needs to be fetched

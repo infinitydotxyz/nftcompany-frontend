@@ -14,6 +14,7 @@ declare global {
 // const hstABI = require("human-standard-token-abi");
 
 let ethersProvider: any;
+let openSeaPort: any;
 
 type initEthersArgs = {
   onError?: (tx: any) => void;
@@ -97,12 +98,15 @@ export const getWeb3 = () => {
   return web3;
 };
 
-export const web3GetSeaport = () => {
+export const getOpenSeaport = () => {
+  if (openSeaPort) {
+    return openSeaPort;
+  }
   const network = getChainName();
-  const seaport = new OpenSeaPort(getWeb3().currentProvider, {
+  openSeaPort = new OpenSeaPort(getWeb3().currentProvider, {
     networkName: network
   });
-  return seaport;
+  return openSeaPort;
 };
 
 export const getSchemaName = (address: string) => {
