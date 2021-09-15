@@ -11,8 +11,6 @@ import styles from '../../styles/Dashboard.module.scss';
 import { getListings } from 'services/Listings.service';
 import { CardData } from 'components/Card/Card';
 import ExploreSearch, { ExploreSearchState } from 'components/ExploreSearch/ExploreSearch';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Order } from 'types/Nft.interface';
 
 export default function Dashboard() {
   const [tabIndex, setTabIndex] = useState(1);
