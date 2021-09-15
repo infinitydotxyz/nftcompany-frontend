@@ -4,6 +4,8 @@ import NFTModal from 'components/nft/NFTModal';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import styles from './CardList.module.scss';
+import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
+import OfferStatusModal from 'components/OfferStatusModal/OfferStatusModal';
 
 export type CardData = {
   id: string;
@@ -35,6 +37,8 @@ type Props = {
 function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PRICE'], actions = [], ...rest }: Props) {
   const [modalShowed, setModalShowed] = useState(false);
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
+  const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
+  const [offerStatusModalShowed, setOfferStatusModalShowed] = useState(false);
 
   if (!data) {
     return null;
@@ -105,6 +109,36 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
               <span>Cancel Listing</span>
             </a>
           )}
+
+          {actions?.indexOf('ACCEPT_OFFER') >= 0 && (
+            <a
+              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
+              href="#popup-bid"
+              data-effect="mfp-zoom-in"
+              onClick={(ev) => {
+                ev.preventDefault();
+
+                setAcceptOfferModalShowed(true);
+              }}
+            >
+              <span>Accept Offer</span>
+            </a>
+          )}
+
+          {actions?.indexOf('OFFER_STATUS') >= 0 && (
+            <a
+              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
+              href="#popup-bid"
+              data-effect="mfp-zoom-in"
+              onClick={(ev) => {
+                ev.preventDefault();
+
+                setOfferStatusModalShowed(true);
+              }}
+            >
+              <span>Offer Status</span>
+            </a>
+          )}
         </div>
       </div>
       {/* </Link> */}
@@ -129,6 +163,8 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
       </div>
 
       {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
+      {offerStatusModalShowed && <OfferStatusModal data={data} onClose={() => setOfferStatusModalShowed(false)} />}
+      {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
 
       {/* {modalShowed && (
         <NFTModal

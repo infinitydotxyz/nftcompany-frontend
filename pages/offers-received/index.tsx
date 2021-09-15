@@ -25,7 +25,7 @@ export default function OffersReceived() {
       setData([]);
       return;
     }
-    await setIsFetching(true);
+    setIsFetching(true);
     let listingData = [];
     try {
       const { result, error } = await apiGet(`/u/${user?.account}/offersreceived`);
@@ -56,7 +56,7 @@ export default function OffersReceived() {
       };
     });
     console.log('data', data);
-    await setIsFetching(false);
+    setIsFetching(false);
     setData(data);
   };
 
@@ -87,7 +87,7 @@ export default function OffersReceived() {
             ) : (
               <CardList
                 data={data}
-                actions={['CANCEL_LISTING']}
+                actions={['ACCEPT_OFFER']}
                 onClickAction={async (item, action) => {
                   console.log('item, action', item, action);
                   setDeleteModalItem(item);
