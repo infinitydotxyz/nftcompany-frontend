@@ -2,7 +2,7 @@ import React, { Fragment, useRef } from 'react';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { getListingsByTitle, orderToCardData } from 'services/Listings.service';
 import { Order } from 'types/Nft.interface';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 interface Props {
   setFilters: any;
   setListedNfts: any;

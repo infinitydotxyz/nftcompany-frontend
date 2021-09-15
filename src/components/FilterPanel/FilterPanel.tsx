@@ -27,7 +27,6 @@ const FilterPanel = ({ isExpanded, setExpanded, setFilters, filter, getNftListin
 
   const handleChanges = async (changes: Filter) => {
     const updatedFilter = { ...changes };
-    console.log('updatedFilter', updatedFilter);
     setFilters(updatedFilter);
     getNftListings(updatedFilter);
   };
