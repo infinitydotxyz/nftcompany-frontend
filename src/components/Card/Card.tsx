@@ -20,6 +20,7 @@ export type CardData = {
   maker?: string;
   hasBonusReward?: boolean;
   hasBlueCheck?: boolean;
+  owner?: string;
 };
 
 type Props = {

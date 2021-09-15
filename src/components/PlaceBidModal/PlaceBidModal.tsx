@@ -62,8 +62,6 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         accountAddress: user?.account,
         startAmount: offerPrice,
         assetDetails: data,
-        // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
-        // endAmount: 100,
         expirationTime: expiryTimeSeconds
       });
     } catch (err: any) {

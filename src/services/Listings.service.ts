@@ -23,7 +23,8 @@ export const getListings = async (listingFilter?: Filter): Promise<CardData[]> =
       maker: listingItem.maker,
       hasBonusReward: listingItem.metadata.hasBonusReward,
       hasBlueCheck: listingItem.metadata.hasBlueCheck,
-      collectionName: listingItem.metadata.collectionName
+      collectionName: listingItem.metadata.collectionName,
+      owner: listingItem.maker
     };
     return cardData;
   });
