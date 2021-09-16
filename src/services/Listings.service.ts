@@ -75,11 +75,18 @@ export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAh
 };
 export const orderToCardData = (nft: Order): CardData => {
   const cardData: CardData = {
-    id: nft?.metadata?.asset?.id,
-    image: nft?.metadata?.asset?.image,
-    title: nft?.metadata?.asset?.title,
-    inStock: +nft?.metadata?.asset?.quantity,
-    price: nft?.basePrice ? weiToEther(nft?.basePrice) : undefined
+    id: nft.metadata.asset.id,
+    image: nft.metadata.asset.image,
+    title: nft.metadata.asset.title,
+    inStock: +nft.metadata.asset.quantity,
+    price: weiToEther(nft.basePrice),
+    tokenAddress: nft.metadata.asset.address,
+    tokenId: nft.metadata.asset.id,
+    maker: nft.maker,
+    hasBonusReward: nft.metadata.hasBonusReward,
+    hasBlueCheck: nft.metadata.hasBlueCheck,
+    collectionName: nft.metadata.collectionName,
+    owner: nft.maker
   };
   return cardData;
 };

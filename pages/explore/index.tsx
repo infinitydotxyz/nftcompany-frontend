@@ -193,7 +193,6 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-
           <div>
             <FilterPanel
               filter={filter}
@@ -202,7 +201,8 @@ export default function Dashboard() {
               getNftListings={getNftListings}
             />
           </div>
-          {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={listedNfts} />}
+          {/* {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={listedNfts} />} */}
+          {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={listedNfts} actions={['BUY_NFT']} />}
         </div>
       </div>
     </>

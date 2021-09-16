@@ -17,7 +17,10 @@ export type CardData = {
   tokenAddress?: string;
   tokenId?: string;
   collectionName?: string;
-  metadata?: any;
+  maker?: string;
+  hasBonusReward?: boolean;
+  hasBlueCheck?: boolean;
+  owner?: string;
 };
 
 type Props = {
@@ -31,12 +34,14 @@ type Props = {
 
 function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PRICE'], actions = [], ...rest }: Props) {
   const [modalShowed, setModalShowed] = useState(false);
+  const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
 
   if (!data) {
     return null;
   }
-  const collectionName = data.collectionName || data?.metadata?.asset?.collectionName;
-  const hasBlueCheck = data?.metadata?.hasBlueCheck;
+
+  const collectionName = data.collectionName;
+  const hasBlueCheck = data.hasBlueCheck;
   return (
     <div id={`id_${data.id}`} className={styles.card} {...rest}>
       {/* <Link href={`/preview?id=${data.id}${viewInfo ? '&view=info' : ''}`} passHref> */}
@@ -68,7 +73,19 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
               <span>List NFT</span>
             </a>
           )}
-
+          {actions?.indexOf('BUY_NFT') >= 0 && (
+            <a
+              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
+              href="#popup-bid"
+              data-effect="mfp-zoom-in"
+              onClick={(ev) => {
+                ev.preventDefault();
+                setPlaceBidModalShowed(true);
+              }}
+            >
+              <span>Buy NFT</span>
+            </a>
+          )}
           {actions?.indexOf('CANCEL_LISTING') >= 0 && (
             <a
               className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
@@ -95,7 +112,12 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
       <div className={styles.cardBody}>
         <div className={styles.cardLine}>
           <div className={styles.cardTitle}>
-            {collectionName && <div className={styles.collectionName}>{collectionName}{hasBlueCheck === true ? ' ✅' :''}</div>}
+            {collectionName && (
+              <div className={styles.collectionName}>
+                {collectionName}
+                {hasBlueCheck === true ? ' ✅' : ''}
+              </div>
+            )}
             <div>{data.title}</div>
           </div>
           <div className={styles.cardPrice}>{showItems.indexOf('PRICE') >= 0 ? `${data.price} ETH` : ``}</div>
@@ -105,6 +127,8 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
           {/* <div className="card__counter">{data.inStock} in stock</div> */}
         </div>
       </div>
+
+      {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
 
       {/* {modalShowed && (
         <NFTModal
@@ -116,8 +140,6 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
           onClose={() => setModalShowed(false)}
         />
       )} */}
-
-      {/* {modalShowed && <PlaceBidModal onClose={() => setModalShowed(false)} />} */}
 
       {/* {modalShowed && <ListNFTModal onClose={() => setModalShowed(false)} />} */}
     </div>

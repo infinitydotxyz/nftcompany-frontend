@@ -1,15 +1,74 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import styles from './PlaceBidModal.module.scss';
+import Datetime from 'react-datetime';
+import { CardData } from 'components/Card/Card';
+import { getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
+import { showMessage } from 'utils/commonUtil';
+import { useToast } from '@chakra-ui/react';
+import { useAppContext } from 'utils/context/AppContext';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
 
 interface IProps {
+  data: CardData;
   onClose?: () => void;
 }
 
-const PlaceBidModal: React.FC<IProps> = ({ onClose }: IProps) => {
+const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
+  const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
+  const [offerPrice, setOfferPrice] = React.useState(0);
+  const toast = useToast();
+  const { user } = useAppContext();
+
+  const buyNft = () => {
+    try {
+      const seaport = getOpenSeaport();
+
+      seaport.api
+        .getOrder({
+          maker: data.maker,
+          assetContractAddress: data.tokenAddress,
+          tokenId: data.tokenId,
+          side: 1 // OrderSide.Sell
+        })
+        .then(async function (order: any) {
+          // Important to check if the order is still available as it can have already been fulfilled by
+          // another user or cancelled by the creator
+          if (order) {
+            const result = await seaport.fulfillOrder({ order: order, accountAddress: user?.account });
+
+            console.log('buyNft result: ', result);
+          } else {
+            // Handle when the order does not exist anymore
+            showMessage(toast, 'error', 'Error when purchasing.');
+          }
+        });
+    } catch (err: any) {
+      showMessage(toast, 'error', err.message);
+    }
+  };
+
+  const makeAnOffer = () => {
+    try {
+      const seaport = getOpenSeaport();
+      seaport.createBuyOrder({
+        asset: {
+          tokenAddress: data.tokenAddress,
+          tokenId: data.tokenId,
+          schemaName: getSchemaName(data.tokenAddress!)
+        },
+        accountAddress: user?.account,
+        startAmount: offerPrice,
+        assetDetails: data,
+        expirationTime: expiryTimeSeconds
+      });
+    } catch (err: any) {
+      showMessage(toast, 'error', err.message);
+    }
+  };
+
   return (
     <>
       {!isServer && (
@@ -25,18 +84,41 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose }: IProps) => {
         >
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'blue' }}>
             <div className="modal-body">
-              <div className={styles.title}>Place a bid</div>
+              <div className={styles.title}>Buy NFT</div>
 
-              <div className={styles.row}>You are about to place a bid on this NFT.</div>
+              <div className={styles.space}>You are about to buy this NFT.</div>
 
-              <div className={styles.title}>Your bid</div>
+              <div className={styles.row}>
+                <ul>
+                  <li>
+                    <div>Price</div>
+                    <div>
+                      <span>{data.price}</span>
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                </ul>
+              </div>
+
+              <div className={styles.footer}>
+                <a className="action-btn" onClick={buyNft}>
+                  Buy now
+                </a>
+              </div>
+
+              <div className={styles.space}>
+                <hr />
+              </div>
+
+              <div className={styles.title}>Make an offer</div>
+              <div className={styles.space}>You are about to place a bid on this NFT.</div>
 
               <div className={styles.row}>
                 <ul>
                   <li>
                     <div>Enter bid</div>
                     <div>
-                      <input type="number" autoFocus />
+                      <input type="number" onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))} />
                     </div>
                     <div>ETH</div>
                   </li>
@@ -48,25 +130,18 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose }: IProps) => {
                     <div>ETH</div>
                   </li>
                   <li>
-                    <div>Service fee</div>
+                    <div>Expire date</div>
                     <div>
-                      <span>0</span>
+                      <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
                     </div>
-                    <div>ETH</div>
-                  </li>
-                  <li>
-                    <div>Total bid amount</div>
-                    <div>
-                      <span>0</span>
-                    </div>
-                    <div>ETH</div>
                   </li>
                 </ul>
               </div>
 
               <div className={styles.footer}>
-                <a className="action-btn">Approve</a>
-                <a className="action-btn">Place a bid</a>
+                <a className="action-btn" onClick={makeAnOffer}>
+                  Make an offer
+                </a>
                 <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
                   Cancel
                 </a>
