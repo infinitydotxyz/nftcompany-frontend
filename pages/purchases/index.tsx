@@ -6,15 +6,14 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
-import { apiGet, apiDelete } from 'utils/apiUtil';
-import { weiToEther } from '../../src/utils/ethersUtil';
+import { apiGet } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import { ordersToCardData } from 'services/Listings.service';
 
-export default function OffersMade() {
+export default function Purchases() {
   const { user } = useAppContext();
   const toast = useToast();
   const [isFetching, setIsFetching] = useState(false);
@@ -45,19 +44,19 @@ export default function OffersMade() {
   };
 
   React.useEffect(() => {
-    console.log('- Offers Made - user:', user);
+    console.log('- Purchases - user:', user);
     fetchData();
   }, [user]);
   return (
     <>
       <Head>
-        <title>Offers Made</title>
+        <title>Purchases</title>
       </Head>
       <div className={pageStyles.dashboard}>
         <div className="container container-fluid">
           <div className="section-bar">
             <div className="">
-              <div className="tg-title">Offers Made</div>
+              <div className="tg-title">Purchases</div>
             </div>
 
             <div className="center">&nbsp;</div>
@@ -66,7 +65,7 @@ export default function OffersMade() {
           </div>
 
           <div className={styles.main}>
-            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} actions={['CANCEL_OFFER']} />}
+            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} actions={['VIEW_ORDER']} />}
           </div>
         </div>
       </div>
@@ -75,4 +74,4 @@ export default function OffersMade() {
 }
 
 // eslint-disable-next-line react/display-name
-OffersMade.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
+Purchases.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
