@@ -116,28 +116,24 @@ export default function Rewards() {
           <div className={styles.main}>
             <section className="container container-fluid grid">
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
-                <h3>Listing Rewards</h3>
-                <div>{data?.numListings || 0}, APR 10%</div>
-                <div>Total: {data?.totalListings || 0}</div>
+                <h3>Total Tx Volume</h3>
+                <div>$242,869,800</div>
               </div>
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
-                <h3>Bonus Rewards</h3>
-                <div>{data?.numBonusListings || 0}, APR 10%</div>
-                <div>Total: {data?.totalListings || 0}</div>
+                <h3>NFTS Rewards</h3>
+                <div>$242,869,800</div>
               </div>
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
-                <h3>Fee Rewards</h3>
-                <div>{data?.feesPaid || 0}, APR 10%</div>
-                <div>Total: {data?.totalListings || 0}</div>
+                <h3>NFTS Price</h3>
+                <div>$242,869,800</div>
               </div>
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
-                <h3>Net Rewards</h3>
-                <div>0, APR 10%</div>
-                <div>Total: 0</div>
+                <h3>Time Left</h3>
+                <div>15:32:00</div>
               </div>
 
-              {/* Second Column */}
-              <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
+              {/* Chart */}
+              {/* <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
                 <h3 className="tg-title">Rewards 💰</h3>
 
                 <ul className={styles.list}>
@@ -152,31 +148,84 @@ export default function Rewards() {
                   <li>
                     <Bar width={500} height={200} data={chartData} options={options} />
                   </li>
-                  {/* <li>
-                    <span>Bonus Reward</span>
-                    <span>{data?.bonusReward}</span>
-                  </li>
-                  <li>
-                    <span>Fee Reward</span>
-                    <span>{data?.feeReward}</span>
-                  </li>
-                  <li>
-                    <span>Gross Reward</span>
-                    <span>{data?.grossReward}</span>
-                  </li>
-                  <li>
-                    <span>Penalty</span>
-                    <span>{data?.penalty}</span>
-                  </li>
-                  <li>
-                    <span>NetReward</span>
-                    <span>{data?.netReward}</span>
-                  </li> */}
                 </ul>
+              </div> */}
+
+              <div className={`col-md-12 col-sm-12`}>
+                <h3 className={styles.h3}>My Rewards 💰</h3>
+              </div>
+
+              <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
+                <h3>Listing Rewards</h3>
+                <main>
+                  <div className="grid">
+                    <span className="col-md-6">APR</span>
+                    <span className="col-md-6">10%</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Listings</span>
+                    <span className="col-md-6">{data?.numListings || 0}</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Total</span>
+                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                  </div>
+                </main>
+              </div>
+              <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
+                <h3>Bonus Rewards</h3>
+                <main>
+                  <div className="grid">
+                    <span className="col-md-6">APR</span>
+                    <span className="col-md-6">10%</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Bonus Rewards</span>
+                    <span className="col-md-6">{data?.numBonusListings || 0}</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Total</span>
+                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                  </div>
+                </main>
+              </div>
+              <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
+                <h3>Fee Rewards</h3>
+                <main>
+                  <div className="grid">
+                    <span className="col-md-6">APR</span>
+                    <span className="col-md-6">10%</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Fee Rewards</span>
+                    <span className="col-md-6">{data?.feesPaid || 0}</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Total</span>
+                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                  </div>
+                </main>
+              </div>
+              <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
+                <h3>Net Rewards</h3>
+                <main>
+                  <div className="grid">
+                    <span className="col-md-6">APR</span>
+                    <span className="col-md-6">10%</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Net Rewards</span>
+                    <span className="col-md-6">{data?.feesPaid || 0}</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Total</span>
+                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                  </div>
+                </main>
               </div>
 
               <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
-                <h3 className="tg-title">Leaderboard 🏆</h3>
+                <h3 className={styles.h3}>Leaderboard 🏆</h3>
                 <div className={styles.leaderBody}>
                   <Table mt={4}>
                     <Thead>
