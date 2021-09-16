@@ -210,7 +210,7 @@ export default function Dashboard() {
           {isFetching ? (
             <Spinner size="md" color="gray.800" />
           ) : (
-            <CardList showItems={[]} data={listedNfts} actions={['LIST_NFT']} />
+            <CardList showItems={[]} data={listedNfts} actions={['BUY_NFT']} />
           )}
         </div>
       </div>
