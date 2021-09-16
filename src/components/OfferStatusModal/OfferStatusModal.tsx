@@ -62,7 +62,7 @@ const OfferStatusModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
               <div className={styles.footer}>
                 <a className="action-btn" onClick={cancelOffer}>
-                  Delete Offer
+                  Cancel Offer
                 </a>
 
                 <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>

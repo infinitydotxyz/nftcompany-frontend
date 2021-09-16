@@ -72,7 +72,7 @@ export default function OffersMade() {
             ) : (
               <CardList
                 data={data}
-                actions={['OFFER_STATUS']}
+                actions={['CANCEL_OFFER']}
                 onClickAction={async (item, action) => {
                   console.log('item, action', item, action);
                   setDeleteModalItem(item);

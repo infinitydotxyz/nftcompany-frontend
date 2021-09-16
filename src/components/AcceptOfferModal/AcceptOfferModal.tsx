@@ -31,7 +31,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           maker: data.maker,
           assetContractAddress: data.tokenAddress,
           tokenId: data.tokenId,
-          side: 0 // OrderSide.Sell
+          side: 0 // OrderSide.Buy
         })
         .then(async function (order: any) {
           // Important to check if the order is still available as it can have already been fulfilled by

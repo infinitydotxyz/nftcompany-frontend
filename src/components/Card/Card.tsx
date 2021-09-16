@@ -125,7 +125,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
             </a>
           )}
 
-          {actions?.indexOf('OFFER_STATUS') >= 0 && (
+          {actions?.indexOf('CANCEL_OFFER') >= 0 && (
             <a
               className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
               href="#popup-bid"
