@@ -75,13 +75,19 @@ export const getListingById = async (id: string): Promise<Order | null> => {
   }
   return result;
 };
-export const getListingsByCollectionName = async (collectionName: string): Promise<Order[] | null> => {
+export const getListingsByCollectionName = async (
+  collectionName: string,
+  listingFilter?: Filter
+): Promise<CardData[]> => {
   const path = `/listingsByCollectionName/`;
-  const { result, error }: { result: Order[]; error: any } = (await apiGet(path, { collectionName })) as any;
+  const { result, error }: { result: Order[]; error: any } = (await apiGet(path, {
+    ...listingFilter,
+    collectionName
+  })) as any;
   if (error !== undefined) {
-    return null;
+    return [];
   }
-  return result;
+  return result.map(orderToCardData);
 };
 
 export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAheadOptions> => {
@@ -95,11 +101,18 @@ export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAh
 };
 export const orderToCardData = (nft: Order): CardData => {
   const cardData: CardData = {
-    id: nft?.id,
-    image: nft?.metadata?.asset?.image,
-    title: nft?.metadata?.asset?.title,
-    inStock: +nft?.metadata?.asset?.quantity,
-    price: nft?.basePrice ? weiToEther(nft?.basePrice) : undefined
+    id: nft.id,
+    image: nft.metadata.asset.image,
+    title: nft.metadata.asset.title,
+    inStock: +nft.metadata.asset.quantity,
+    price: weiToEther(nft.basePrice),
+    tokenAddress: nft.metadata.asset.address,
+    tokenId: nft.metadata.asset.id,
+    maker: nft.maker,
+    hasBonusReward: nft.metadata.hasBonusReward,
+    hasBlueCheck: nft.metadata.hasBlueCheck,
+    collectionName: nft.metadata.asset.collectionName,
+    owner: nft.maker
   };
   return cardData;
 };

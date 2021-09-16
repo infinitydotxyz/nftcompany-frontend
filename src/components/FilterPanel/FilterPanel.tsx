@@ -17,6 +17,7 @@ type Props = {
   setFilters: any;
   getNftListings: any;
   filter: Filter | undefined;
+  exploreSearchState: any;
 };
 
 const FilterPanel = ({ isExpanded, setExpanded, setFilters, filter, getNftListings }: Props) => {
