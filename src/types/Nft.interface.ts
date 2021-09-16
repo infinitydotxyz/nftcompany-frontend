@@ -1,4 +1,5 @@
 export interface Order {
+  id: string;
   blueCheck: boolean;
   howToCall: number;
   salt: string;
@@ -48,6 +49,7 @@ export interface Asset {
   imagePreview: string;
   title: string;
   image: string;
+  owner: string;
 }
 
 export interface Orders {

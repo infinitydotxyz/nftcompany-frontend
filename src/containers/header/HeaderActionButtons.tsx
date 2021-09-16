@@ -112,7 +112,8 @@ const HeaderActionButtons = () => {
                   tokenId,
                   schemaName: getSchemaName(tokenAddress)
                 },
-                accountAddress: user?.account,
+                assetDetails: '--',
+                accountAddress: user!.account,
                 startAmount: price,
                 // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
                 // endAmount: 100,
@@ -139,7 +140,7 @@ const HeaderActionButtons = () => {
                   maker: '0xC844c8e1207B9d3C54878C849A431301bA9c23E0', //todo: adi this needs to be fetched
                   assetContractAddress: tokenAddress,
                   tokenId: tokenId,
-                  side: 1 // sell side order
+                  side: 1 // OrderSide.Sell
                 })
                 .then(function (order: any) {
                   console.log('order', order);

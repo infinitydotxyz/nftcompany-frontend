@@ -37,7 +37,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           // Important to check if the order is still available as it can have already been fulfilled by
           // another user or cancelled by the creator
           if (order) {
-            const result = await seaport.fulfillOrder({ order: order, accountAddress: user?.account });
+            const result = await seaport.fulfillOrder({ order: order, accountAddress: user!.account });
 
             console.log('buyNft result: ', result);
           } else {
@@ -55,11 +55,11 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       const seaport = getOpenSeaport();
       seaport.createBuyOrder({
         asset: {
-          tokenAddress: data.tokenAddress,
-          tokenId: data.tokenId,
+          tokenAddress: data.tokenAddress!,
+          tokenId: data.tokenId!,
           schemaName: getSchemaName(data.tokenAddress!)
         },
-        accountAddress: user?.account,
+        accountAddress: user!.account,
         startAmount: offerPrice,
         assetDetails: data,
         expirationTime: expiryTimeSeconds

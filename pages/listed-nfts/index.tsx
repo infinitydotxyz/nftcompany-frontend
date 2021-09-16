@@ -13,6 +13,7 @@ import { useAppContext } from 'utils/context/AppContext';
 
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
+import { listingToCardData } from 'services/Listings.service';
 
 export default function ListNFTs() {
   const { user } = useAppContext();
@@ -27,7 +28,7 @@ export default function ListNFTs() {
       setData([]);
       return;
     }
-    await setIsFetching(true);
+    setIsFetching(true);
     let listingData = [];
     try {
       const { result, error } = await apiGet(`/u/${user?.account}/listings`);
@@ -40,25 +41,10 @@ export default function ListNFTs() {
     } catch (e) {
       console.error(e);
     }
-    const data = (listingData || []).map((item: any) => {
-      const details = item.metadata.asset;
-      // console.log('details', details);
-      return {
-        id: item.id,
-        title: details.title,
-        description: '',
-        image: details.image,
-        imagePreview: details.imagePreview,
-        tokenAddress: details.address,
-        tokenId: details.id,
-        inStock: 1,
-        price: weiToEther(item.basePrice),
-        maker: item.maker,
-        metadata: item.metadata
-      };
-    });
+    const data = listingToCardData(listingData || []);
+
     console.log('data', data);
-    await setIsFetching(false);
+    setIsFetching(false);
     setData(data);
   };
 

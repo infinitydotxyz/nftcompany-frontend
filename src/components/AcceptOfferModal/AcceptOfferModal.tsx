@@ -6,6 +6,7 @@ import { getOpenSeaport } from 'utils/ethersUtil';
 import { showMessage } from 'utils/commonUtil';
 import { useToast } from '@chakra-ui/react';
 import { useAppContext } from 'utils/context/AppContext';
+import Assets from 'components/nft/assets';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -30,15 +31,17 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           maker: data.maker,
           assetContractAddress: data.tokenAddress,
           tokenId: data.tokenId,
-          side: 1 // OrderSide.Sell
+          side: 0 // OrderSide.Sell
         })
         .then(async function (order: any) {
           // Important to check if the order is still available as it can have already been fulfilled by
           // another user or cancelled by the creator
-          if (order) {
-            const result = await seaport.fulfillOrder({ order: order, accountAddress: user?.account });
 
-            console.log('acceptOffer result: ', result);
+          if (order) {
+            const result = await seaport.fulfillOrder({
+              order: order,
+              accountAddress: user!.account
+            });
           } else {
             // Handle when the order does not exist anymore
             showMessage(toast, 'error', 'Error when purchasing.');

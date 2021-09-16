@@ -1,5 +1,5 @@
 import { CardData } from 'components/Card/Card';
-import { Orders } from 'types/Nft.interface';
+import { Orders, Order } from 'types/Nft.interface';
 import { weiToEther } from 'utils/ethersUtil';
 import { Filter } from 'components/FilterPanel/FilterPanel';
 import { apiGet } from 'utils/apiUtil';
@@ -11,9 +11,13 @@ export const getListings = async (listingFilter?: Filter): Promise<CardData[]> =
     return [];
   }
 
-  const cards = result['listings'].map((listingItem, index) => {
+  return listingToCardData(result.listings);
+};
+
+export const listingToCardData = (listing: Order[]): CardData[] => {
+  const cards = listing.map((listingItem, index) => {
     const cardData: CardData = {
-      id: listingItem.metadata.asset.id,
+      id: listingItem.id,
       image: listingItem.metadata.asset.image,
       title: listingItem.metadata.asset.title,
       inStock: +listingItem.metadata.asset.quantity,
@@ -26,6 +30,7 @@ export const getListings = async (listingFilter?: Filter): Promise<CardData[]> =
       collectionName: listingItem.metadata.collectionName,
       owner: listingItem.maker
     };
+
     return cardData;
   });
   return cards;
