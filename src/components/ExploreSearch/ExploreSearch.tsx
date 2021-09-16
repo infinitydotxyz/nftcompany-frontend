@@ -1,6 +1,12 @@
 import React, { Fragment, useRef } from 'react';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
-import { getListingsByTitle, orderToCardData } from 'services/Listings.service';
+import {
+  getListingById,
+  getListingsByCollectionName,
+  getTypeAheadOptions,
+  orderToCardData,
+  TypeAheadOption
+} from 'services/Listings.service';
 import { Order } from 'types/Nft.interface';
 interface Props {
   setFilters: any;
@@ -10,39 +16,57 @@ interface Props {
 }
 export interface ExploreSearchState {
   isLoading: boolean;
-  options: Order[];
+  options: TypeAheadOption[];
   query: string;
 }
 const ExploreSearch = ({ setFilters, setListedNfts, setExploreSearchState, exploreSearchState }: Props) => {
   const typeaheadRef = useRef<any>();
   const handleSearch = async (query: string) => {
-    const response: Order[] = (await getListingsByTitle({ startsWith: query })) as any;
+    const results = await getTypeAheadOptions({ startsWith: query });
+    // console.log(results);
+    // const response: Order[] = (await getListingsByTitle({ startsWith: query })) as any;
     setExploreSearchState({
       isLoading: false,
-      options: response,
+      options: [...results.collectionNames, ...results.nftNames],
       query
     });
+  };
+  const getListing = async (option: TypeAheadOption) => {
+    if (option.type === 'Asset' && option.id) {
+      const response = await getListingById(option.id);
+      if (response) {
+        const cardData = orderToCardData(response);
+        console.log(cardData);
+        setListedNfts([cardData]);
+      }
+    } else if (option.type === 'Collection') {
+      const response = await getListingsByCollectionName(option.name);
+      if (response) {
+        const cardData = response.map(orderToCardData);
+        setListedNfts(cardData);
+      }
+    }
   };
   return (
     <AsyncTypeahead
       id="explore-typeahead"
-      onChange={(selectedOrders: Order[]) => {
-        if (selectedOrders.length > 0) {
-          setFilters({ price: 10000, sortByPrice: undefined, sortByLikes: undefined });
-          setListedNfts(selectedOrders.map(orderToCardData));
-          typeaheadRef.current.clear();
+      onChange={(selectedOption: TypeAheadOption[]) => {
+        if (selectedOption.length > 0) {
+          getListing(selectedOption[0]);
+          // typeaheadRef.current.clear();
         }
       }}
       ref={typeaheadRef}
       minLength={1}
-      labelKey={(option) => option.metadata.asset.title}
+      labelKey={(option) => option.name}
       isLoading={exploreSearchState.isLoading}
       onSearch={handleSearch}
       options={exploreSearchState.options}
       placeholder="Search For Any Nft"
       renderMenuItemChildren={(option) => (
         <Fragment>
-          <span>{option.metadata.asset.title}</span>
+          <strong>{option.type}:</strong>
+          <span> {option.name}</span>
         </Fragment>
       )}
     />
