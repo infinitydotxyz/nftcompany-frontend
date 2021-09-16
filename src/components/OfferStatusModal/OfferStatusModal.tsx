@@ -1,12 +1,11 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import styles from './OfferStatusModal.module.scss';
-import Datetime from 'react-datetime';
 import { CardData } from 'components/Card/Card';
-import { getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
 import { showMessage } from 'utils/commonUtil';
 import { useToast } from '@chakra-ui/react';
 import { useAppContext } from 'utils/context/AppContext';
+import { apiDelete } from 'utils/apiUtil';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -22,29 +21,9 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const toast = useToast();
   const { user } = useAppContext();
 
-  const cancelOffer = () => {
+  const cancelOffer = async () => {
     try {
-      const seaport = getOpenSeaport();
-
-      // seaport.api
-      //   .getOrder({
-      //     maker: data.maker,
-      //     assetContractAddress: data.tokenAddress,
-      //     tokenId: data.tokenId,
-      //     side: 1 // OrderSide.Sell
-      //   })
-      //   .then(async function (order: any) {
-      //     // Important to check if the order is still available as it can have already been fulfilled by
-      //     // another user or cancelled by the creator
-      //     if (order) {
-      //       const result = await seaport.fulfillOrder({ order: order, accountAddress: user?.account });
-
-      //       console.log('buyNft result: ', result);
-      //     } else {
-      //       // Handle when the order does not exist anymore
-      //       showMessage(toast, 'error', 'Error when purchasing.');
-      //     }
-      //   });
+      await apiDelete(`/u/${user!.account}/offers/${data.id}`);
     } catch (err: any) {
       showMessage(toast, 'error', err.message);
     }

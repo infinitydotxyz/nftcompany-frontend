@@ -6,7 +6,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
-import { apiGet, apiDelete } from 'utils/apiUtil';
+import { apiGet } from 'utils/apiUtil';
 import { weiToEther } from '../../src/utils/ethersUtil';
 import DeleteListingModal from './DeleteListingModal';
 import { useAppContext } from 'utils/context/AppContext';
