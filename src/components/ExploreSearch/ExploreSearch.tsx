@@ -37,7 +37,7 @@ const ExploreSearch = ({ setFilters, setListedNfts, setExploreSearchState, explo
   };
   const getListing = async (option: TypeAheadOption) => {
     if (option.type === 'Asset' && option.id) {
-      const response = await getListingById(option.id);
+      const response = await getListingById(option.id, option.address);
       if (response) {
         const cardData = orderToCardData(response);
         setListedNfts([cardData]);

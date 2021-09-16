@@ -24,6 +24,7 @@ export interface TypeAheadOption {
   type: 'Collection' | 'Asset';
   name: string;
   id?: string;
+  address?: string;
 }
 export interface TypeAheadOptions {
   collectionNames: TypeAheadOption[];
@@ -31,6 +32,7 @@ export interface TypeAheadOptions {
 }
 export interface TitleResponse {
   id: string;
+  address: string;
   title: string;
 }
 export const getTitlesOfListings = async (titleQuery: TypeaheadQuery): Promise<TitleResponse[]> => {
@@ -50,9 +52,9 @@ export const getCollectionNamesOfListings = async (collectionQuery: TypeaheadQue
   }
   return result;
 };
-export const getListingById = async (id: string): Promise<Order | null> => {
+export const getListingById = async (id?: string, address?: string): Promise<Order | null> => {
   const path = `/listingById/`;
-  const { result, error }: { result: Order; error: any } = (await apiGet(path, { id })) as any;
+  const { result, error }: { result: Order; error: any } = (await apiGet(path, { id, address })) as any;
   if (error !== undefined) {
     return null;
   }
@@ -74,11 +76,11 @@ export const getListingsByCollectionName = async (
 };
 
 export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAheadOptions> => {
-  const collectionNames: TypeAheadOption[] = await (await getCollectionNamesOfListings(query)).map((collectionName) => {
+  const collectionNames: TypeAheadOption[] = (await getCollectionNamesOfListings(query)).map((collectionName) => {
     return { name: collectionName, type: 'Collection' };
   });
-  const nftNames: TypeAheadOption[] = await (await getTitlesOfListings(query)).map((listing) => {
-    return { name: listing.title, type: 'Asset', id: listing.id };
+  const nftNames: TypeAheadOption[] = (await getTitlesOfListings(query)).map((listing) => {
+    return { name: listing.title, type: 'Asset', id: listing.id, address: listing.address };
   });
   return { collectionNames, nftNames };
 };
