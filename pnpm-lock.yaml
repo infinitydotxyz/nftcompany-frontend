@@ -33,7 +33,6 @@ specifiers:
   prop-types: ^15.7.2
   query-string: ^7.0.1
   react: 17.0.2
-  react-bootstrap: ^2.0.0-beta.6
   react-bootstrap-typeahead: 4.2.3
   react-chartjs-2: ^3.0.4
   react-datetime: ^3.1.1
@@ -74,7 +73,6 @@ dependencies:
   node-sass: 5.0.0
   query-string: 7.0.1
   react: 17.0.2
-  react-bootstrap: 2.0.0-beta.6_react-dom@17.0.2+react@17.0.2
   react-bootstrap-typeahead: 4.2.3_react-dom@17.0.2+react@17.0.2
   react-chartjs-2: 3.0.4_chart.js@3.5.1+react@17.0.2
   react-datetime: 3.1.1_moment@2.29.1+react@17.0.2
@@ -7463,33 +7461,6 @@ packages:
       warning: 4.0.3
     dev: false
 
-  /react-bootstrap/2.0.0-beta.6_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-eHEkmESWYYgNLjqbz31G696Eytu+6GeF8CPHQ8t9Se12dUEej8OjBakyQP0OGms9yy1ZZeLG/Fvuo7VxiwMcuQ==}
-    peerDependencies:
-      react: '>=16.14.0'
-      react-dom: '>=16.14.0'
-    dependencies:
-      '@babel/runtime': 7.15.4
-      '@restart/context': 2.1.4_react@17.0.2
-      '@restart/hooks': 0.3.27_react@17.0.2
-      '@restart/ui': 0.2.2_react-dom@17.0.2+react@17.0.2
-      '@types/invariant': 2.2.35
-      '@types/prop-types': 15.7.4
-      '@types/react': 17.0.20
-      '@types/react-transition-group': 4.4.2
-      '@types/warning': 3.0.0
-      classnames: 2.3.1
-      dom-helpers: 5.2.1
-      invariant: 2.2.4
-      prop-types: 15.7.2
-      prop-types-extra: 1.1.1_react@17.0.2
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      react-transition-group: 4.4.2_react-dom@17.0.2+react@17.0.2
-      uncontrollable: 7.2.1_react@17.0.2
-      warning: 4.0.3
-    dev: false
-
   /react-chartjs-2/3.0.4_chart.js@3.5.1+react@17.0.2:
     resolution: {integrity: sha512-pcbFNpkPMTkGXXJ7k7hnukbRD0ZV01qB6JQY1ontITc2IYvhGlK6BBDy28VeydYs1Dl/c5ZpRgRVEtT5GUnxcQ==}
     peerDependencies:
@@ -9096,6 +9067,12 @@ packages:
     resolution: {integrity: sha512-pzP0PWoZUhsECYjABgCGQlRGL1n7tOHsgwYv3oIiEpJwGhFTuty/YNeduxQYzXXa3Ge5BdT6sHYIQYpl4uJ+5Q==}
     dev: false
 
+  /typedarray-to-buffer/3.1.5:
+    resolution: {integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==}
+    dependencies:
+      is-typedarray: 1.0.0
+    dev: true
+
   /types-bn/0.0.1:
     resolution: {integrity: sha512-Kqx+ic862yy/dqXex5M6ZFEf3w1Hwx2yynygY7zhnWw3n58jImSwUlN0JoaWyuCFWfbf12X+7/qiURXYSKv6GA==}
     dependencies:
@@ -9191,18 +9168,6 @@ packages:
       '@babel/runtime': 7.15.4
       invariant: 2.2.4
       react: 17.0.2
-    dev: false
-
-  /uncontrollable/7.2.1_react@17.0.2:
-    resolution: {integrity: sha512-svtcfoTADIB0nT9nltgjujTi7BzVmwjZClOmskKu/E8FW9BXzg9os8OLr4f8Dlnk0rYWJIWr4wv9eKUXiQvQwQ==}
-    peerDependencies:
-      react: '>=15.0.0'
-    dependencies:
-      '@babel/runtime': 7.15.4
-      '@types/react': 17.0.20
-      invariant: 2.2.4
-      react: 17.0.2
-      react-lifecycles-compat: 3.0.4
     dev: false
 
   /unfetch/4.2.0:
