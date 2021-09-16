@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Range, getTrackBackground } from 'react-range';
 
-const STEP = 0.1;
-const MIN = 0.01;
-const MAX = 10;
+const STEP = 1;
+// the range component gets buggy when we set this to zero so set it to a small number
+const MIN = 0.00000000001;
+const MAX = 10000;
 
 type Props = {
   values: number[];
@@ -17,8 +18,8 @@ function PriceRange({ values, setValues, className, style, onFinalSetValue }: Pr
   return (
     <span className={className} style={style}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div>0.01 ETH</div>
-        <div>10 ETH</div>
+        <div>0 ETH</div>
+        <div>{MAX} ETH</div>
       </div>
       <Range
         values={values}

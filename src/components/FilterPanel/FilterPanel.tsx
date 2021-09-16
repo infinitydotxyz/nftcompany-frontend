@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { forwardRef } from 'react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NiceSelect from 'components/NiceSelect/NiceSelect';
@@ -14,23 +14,22 @@ export type Filter = {
 type Props = {
   isExpanded: boolean;
   setExpanded?: any;
-  onChange?: (filter: Filter) => void;
+  setFilters: any;
+  getNftListings: any;
+  filter: Filter | undefined;
+  exploreSearchState: any;
 };
-function FilterPanel({ isExpanded, setExpanded, onChange }: Props) {
-  const [filter, setFilter] = useState<Filter | null>(null);
-  const [values, setValues] = useState([5]);
 
+const FilterPanel = ({ isExpanded, setExpanded, setFilters, filter, getNftListings }: Props) => {
+  const [values, setValues] = useState([10000]);
   React.useEffect(() => {
-    // console.log('isExpanded', isExpanded);
-  }, [isExpanded]);
+    setValues([filter?.price || 10000]);
+  }, [filter]);
 
   const handleChanges = async (changes: Filter) => {
     const updatedFilter = { ...changes };
-    console.log('updatedFilter', updatedFilter);
-    setFilter(updatedFilter);
-    if (onChange) {
-      onChange(updatedFilter);
-    }
+    setFilters(updatedFilter);
+    getNftListings(updatedFilter);
   };
   const updateFilter = (price: number[]) => {
     setValues(price);
@@ -110,6 +109,8 @@ function FilterPanel({ isExpanded, setExpanded, onChange }: Props) {
       </AnimatePresence>
     </section>
   );
-}
+};
+
+FilterPanel.displayName = 'FilterPanel';
 
 export default FilterPanel;
