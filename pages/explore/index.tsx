@@ -8,10 +8,9 @@ import CardList from 'components/Card/CardList';
 import FilterPanel, { Filter } from 'components/FilterPanel/FilterPanel';
 import { FilterIcon } from 'components/Icons/Icons';
 import styles from '../../styles/Dashboard.module.scss';
-import { getListings } from 'services/Listings.service';
+import { getListings, getListingsByCollectionName } from 'services/Listings.service';
 import { CardData } from 'components/Card/Card';
 import ExploreSearch, { ExploreSearchState } from 'components/ExploreSearch/ExploreSearch';
-
 export default function Dashboard() {
   const [tabIndex, setTabIndex] = useState(1);
   const [filterShowed, setFilterShowed] = useState(false);
@@ -21,7 +20,8 @@ export default function Dashboard() {
   const [exploreSearchState, setExploreSearchState] = useState<ExploreSearchState>({
     isLoading: false,
     options: [],
-    query: ''
+    query: '',
+    collectionName: ''
   });
 
   const title = React.useMemo(() => {
@@ -48,11 +48,16 @@ export default function Dashboard() {
   }, [tabIndex]);
   React.useEffect(() => {
     getNftListings(filter);
-  }, []);
+  }, [exploreSearchState.collectionName]);
 
   const getNftListings = async (filter?: Filter) => {
     setIsFetching(true);
-    const response = await getListings(filter);
+    let response;
+    if (exploreSearchState.collectionName) {
+      response = await getListingsByCollectionName(exploreSearchState.collectionName, filter);
+    } else {
+      response = await getListings(filter);
+    }
     setListedNfts(response);
     setIsFetching(false);
   };
@@ -87,11 +92,11 @@ export default function Dashboard() {
               <Button
                 style={{ width: '15%', marginLeft: 10, marginRight: 10 }}
                 onClick={() => {
-                  setFilters({ price: 10000, sortByPrice: undefined, sortByLikes: undefined });
                   setExploreSearchState({
                     isLoading: false,
                     options: [],
-                    query: ''
+                    query: '',
+                    collectionName: ''
                   });
                   getNftListings();
                 }}
@@ -199,10 +204,15 @@ export default function Dashboard() {
               setFilters={setFilters}
               isExpanded={filterShowed}
               getNftListings={getNftListings}
+              exploreSearchState={exploreSearchState}
             />
           </div>
           {/* {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={listedNfts} />} */}
-          {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={listedNfts} actions={['BUY_NFT']} />}
+          {isFetching ? (
+            <Spinner size="md" color="gray.800" />
+          ) : (
+            <CardList showItems={[]} data={listedNfts} actions={['LIST_NFT']} />
+          )}
         </div>
       </div>
     </>

@@ -18,13 +18,17 @@ export interface ExploreSearchState {
   isLoading: boolean;
   options: TypeAheadOption[];
   query: string;
+  collectionName: string;
 }
 const ExploreSearch = ({ setFilters, setListedNfts, setExploreSearchState, exploreSearchState }: Props) => {
+  React.useEffect(() => {
+    if (exploreSearchState.collectionName === '') {
+      typeaheadRef.current.clear();
+    }
+  }, [exploreSearchState.collectionName]);
   const typeaheadRef = useRef<any>();
   const handleSearch = async (query: string) => {
     const results = await getTypeAheadOptions({ startsWith: query });
-    // console.log(results);
-    // const response: Order[] = (await getListingsByTitle({ startsWith: query })) as any;
     setExploreSearchState({
       isLoading: false,
       options: [...results.collectionNames, ...results.nftNames],
@@ -36,14 +40,17 @@ const ExploreSearch = ({ setFilters, setListedNfts, setExploreSearchState, explo
       const response = await getListingById(option.id);
       if (response) {
         const cardData = orderToCardData(response);
-        console.log(cardData);
         setListedNfts([cardData]);
+        setExploreSearchState({ ...exploreSearchState, collectionName: '' });
       }
     } else if (option.type === 'Collection') {
       const response = await getListingsByCollectionName(option.name);
       if (response) {
-        const cardData = response.map(orderToCardData);
+        console.log(response);
+        const cardData = response;
         setListedNfts(cardData);
+        // typeaheadRef.current.clear();
+        setExploreSearchState({ ...exploreSearchState, collectionName: option.name });
       }
     }
   };
@@ -53,7 +60,9 @@ const ExploreSearch = ({ setFilters, setListedNfts, setExploreSearchState, explo
       onChange={(selectedOption: TypeAheadOption[]) => {
         if (selectedOption.length > 0) {
           getListing(selectedOption[0]);
-          // typeaheadRef.current.clear();
+          if (selectedOption[0].type === 'Collection') {
+            setExploreSearchState({ ...exploreSearchState, collectionName: selectedOption[0].type });
+          }
         }
       }}
       ref={typeaheadRef}

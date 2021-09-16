@@ -55,13 +55,19 @@ export const getListingById = async (id: string): Promise<Order | null> => {
   }
   return result;
 };
-export const getListingsByCollectionName = async (collectionName: string): Promise<Order[] | null> => {
+export const getListingsByCollectionName = async (
+  collectionName: string,
+  listingFilter?: Filter
+): Promise<CardData[]> => {
   const path = `/listingsByCollectionName/`;
-  const { result, error }: { result: Order[]; error: any } = (await apiGet(path, { collectionName })) as any;
+  const { result, error }: { result: Order[]; error: any } = (await apiGet(path, {
+    ...listingFilter,
+    collectionName
+  })) as any;
   if (error !== undefined) {
-    return null;
+    return [];
   }
-  return result;
+  return result.map(orderToCardData);
 };
 
 export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAheadOptions> => {
@@ -85,7 +91,7 @@ export const orderToCardData = (nft: Order): CardData => {
     maker: nft.maker,
     hasBonusReward: nft.metadata.hasBonusReward,
     hasBlueCheck: nft.metadata.hasBlueCheck,
-    collectionName: nft.metadata.collectionName,
+    collectionName: nft.metadata.asset.collectionName,
     owner: nft.maker
   };
   return cardData;

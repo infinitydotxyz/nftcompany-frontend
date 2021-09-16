@@ -38,7 +38,6 @@ export interface Metadata {
   hasBonusReward: boolean;
   schema: string;
   hasBlueCheck: boolean;
-  collectionName: string;
 }
 
 export interface Asset {
@@ -48,6 +47,7 @@ export interface Asset {
   imagePreview: string;
   title: string;
   image: string;
+  collectionName: string;
 }
 
 export interface Orders {
