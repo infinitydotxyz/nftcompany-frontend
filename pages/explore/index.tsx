@@ -207,16 +207,11 @@ export default function Dashboard() {
               exploreSearchState={exploreSearchState}
             />
           </div>
-<<<<<<< HEAD
-          {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={listedNfts} actions={['BUY_NFT']} />}
-=======
-          {/* {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={listedNfts} />} */}
           {isFetching ? (
             <Spinner size="md" color="gray.800" />
           ) : (
             <CardList showItems={[]} data={listedNfts} actions={['LIST_NFT']} />
           )}
->>>>>>> f8dd5ff... Updated filter logic
         </div>
       </div>
     </>
