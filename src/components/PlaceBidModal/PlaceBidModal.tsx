@@ -25,7 +25,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const buyNft = () => {
     try {
       const seaport = getOpenSeaport();
-
+      // todo: adi - do we need this
       seaport.api
         .getOrder({
           maker: data.maker,
