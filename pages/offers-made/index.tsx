@@ -6,19 +6,17 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
-import { apiGet } from 'utils/apiUtil';
+import { apiGet, apiDelete } from 'utils/apiUtil';
 import { weiToEther } from '../../src/utils/ethersUtil';
-import DeleteListingModal from './DeleteListingModal';
 import { useAppContext } from 'utils/context/AppContext';
 
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import { listingToCardData } from 'services/Listings.service';
 
-export default function ListNFTs() {
+export default function OffersMade() {
   const { user } = useAppContext();
   const toast = useToast();
-  const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
   const [deleteModalItem, setDeleteModalItem] = useState(null);
@@ -31,7 +29,7 @@ export default function ListNFTs() {
     setIsFetching(true);
     let listingData = [];
     try {
-      const { result, error } = await apiGet(`/u/${user?.account}/listings`);
+      const { result, error } = await apiGet(`/u/${user?.account}/offersmade`);
       if (error) {
         showMessage(toast, 'error', `${error}`);
         return;
@@ -42,26 +40,25 @@ export default function ListNFTs() {
       console.error(e);
     }
     const data = listingToCardData(listingData || []);
-
     console.log('data', data);
     setIsFetching(false);
     setData(data);
   };
 
   React.useEffect(() => {
-    console.log('- Listed NFTs - user:', user);
+    console.log('- Offers Made - user:', user);
     fetchData();
   }, [user]);
   return (
     <>
       <Head>
-        <title>Listed NFTs</title>
+        <title>Offers Made</title>
       </Head>
       <div className={pageStyles.dashboard}>
         <div className="container container-fluid">
           <div className="section-bar">
             <div className="">
-              <div className="tg-title">Listed NFTs</div>
+              <div className="tg-title">Offers Made</div>
             </div>
 
             <div className="center">&nbsp;</div>
@@ -75,7 +72,7 @@ export default function ListNFTs() {
             ) : (
               <CardList
                 data={data}
-                actions={['CANCEL_LISTING']}
+                actions={['CANCEL_OFFER']}
                 onClickAction={async (item, action) => {
                   console.log('item, action', item, action);
                   setDeleteModalItem(item);
@@ -85,22 +82,9 @@ export default function ListNFTs() {
           </div>
         </div>
       </div>
-
-      {deleteModalItem && (
-        <DeleteListingModal
-          user={user}
-          data={deleteModalItem}
-          onClose={() => setDeleteModalItem(null)}
-          onSubmit={() => {
-            setDeleteModalItem(null);
-            fetchData();
-            showMessage(toast, 'info', `Listing cancelled successfully.`);
-          }}
-        />
-      )}
     </>
   );
 }
 
 // eslint-disable-next-line react/display-name
-ListNFTs.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
+OffersMade.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
