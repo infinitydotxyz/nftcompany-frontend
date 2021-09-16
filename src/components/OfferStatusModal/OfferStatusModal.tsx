@@ -15,7 +15,7 @@ interface IProps {
   onClose?: () => void;
 }
 
-const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
+const OfferStatusModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
   const [offerPrice, setOfferPrice] = React.useState(0);
   const toast = useToast();
@@ -62,7 +62,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
               <div className={styles.footer}>
                 <a className="action-btn" onClick={cancelOffer}>
-                  Cancel Offer
+                  Delete Offer
                 </a>
 
                 <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
@@ -77,4 +77,4 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   );
 };
 
-export default PlaceBidModal;
+export default OfferStatusModal;
