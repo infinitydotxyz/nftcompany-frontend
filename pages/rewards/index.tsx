@@ -8,6 +8,8 @@ import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import { Bar } from 'react-chartjs-2';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Rewards.module.scss';
+import { useAppContext } from 'utils/context/AppContext';
+import { apiGet } from 'utils/apiUtil';
 
 function float2dollar(value: number) {
   return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
@@ -72,31 +74,27 @@ const options = {
 };
 
 export default function Rewards() {
-  const [user, setUser] = useState<any>(null);
+  const { user } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>(null);
 
   const fetchData = async () => {
-    const account = await getAccount();
-    setUser({ account });
-
     setIsFetching(true);
     try {
-      const res = await fetch(`${API_BASE_MAINNET}/u/${account}/reward`);
-      const data = (await res.json()) || [];
-      console.log('data', data);
-      setData(data);
+      const { result, error } = await apiGet(`/u/${user?.account}/reward`);
+      console.log('result', result);
+      setData(result);
     } catch (e) {
       console.error(e);
     }
   };
   React.useEffect(() => {
     fetchData();
-  }, []);
+  }, [user]);
 
-  const numListingsPct = data?.totalListings > 0 ? data?.numListings / data?.totalListings : 0;
-  const numBonusListingsPct = data?.totalBonusListings > 0 ? data?.numBonusListings / data?.totalBonusListings : 0;
-  const feesPaidPct = data?.totalFees > 0 ? data?.feesPaid / data?.totalFees : 0;
+  // const numListingsPct = data?.totalListings > 0 ? data?.numListings / data?.totalListings : 0;
+  // const numBonusListingsPct = data?.totalBonusListings > 0 ? data?.numBonusListings / data?.totalBonusListings : 0;
+  // const feesPaidPct = data?.totalFees > 0 ? data?.feesPaid / data?.totalFees : 0;
 
   return (
     <>
@@ -116,28 +114,24 @@ export default function Rewards() {
           <div className={styles.main}>
             <section className="container container-fluid grid">
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
-                <h3>Listing Rewards</h3>
-                <div>{data?.numListings || 0}, APR 10%</div>
-                <div>Total: {data?.totalListings || 0}</div>
+                <h3>Total Tx Volume</h3>
+                <div>$242,869,800</div>
               </div>
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
-                <h3>Bonus Rewards</h3>
-                <div>{data?.numBonusListings || 0}, APR 10%</div>
-                <div>Total: {data?.totalListings || 0}</div>
+                <h3>NFTS Rewards</h3>
+                <div>$242,869,800</div>
               </div>
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
-                <h3>Fee Rewards</h3>
-                <div>{data?.feesPaid || 0}, APR 10%</div>
-                <div>Total: {data?.totalListings || 0}</div>
+                <h3>NFTS Price</h3>
+                <div>$242,869,800</div>
               </div>
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
-                <h3>Net Rewards</h3>
-                <div>0, APR 10%</div>
-                <div>Total: 0</div>
+                <h3>Time Left</h3>
+                <div>15:32:00</div>
               </div>
 
-              {/* Second Column */}
-              <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
+              {/* Chart */}
+              {/* <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
                 <h3 className="tg-title">Rewards 💰</h3>
 
                 <ul className={styles.list}>
@@ -152,31 +146,84 @@ export default function Rewards() {
                   <li>
                     <Bar width={500} height={200} data={chartData} options={options} />
                   </li>
-                  {/* <li>
-                    <span>Bonus Reward</span>
-                    <span>{data?.bonusReward}</span>
-                  </li>
-                  <li>
-                    <span>Fee Reward</span>
-                    <span>{data?.feeReward}</span>
-                  </li>
-                  <li>
-                    <span>Gross Reward</span>
-                    <span>{data?.grossReward}</span>
-                  </li>
-                  <li>
-                    <span>Penalty</span>
-                    <span>{data?.penalty}</span>
-                  </li>
-                  <li>
-                    <span>NetReward</span>
-                    <span>{data?.netReward}</span>
-                  </li> */}
                 </ul>
+              </div> */}
+
+              <div className={`col-md-12 col-sm-12`}>
+                <h3 className={styles.h3}>My Rewards 💰</h3>
+              </div>
+
+              <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
+                <h3>Listing Rewards</h3>
+                <main>
+                  <div className="grid">
+                    <span className="col-md-6">APR</span>
+                    <span className="col-md-6">10%</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Listings</span>
+                    <span className="col-md-6">{data?.numListings || 0}</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Total</span>
+                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                  </div>
+                </main>
+              </div>
+              <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
+                <h3>Bonus Rewards</h3>
+                <main>
+                  <div className="grid">
+                    <span className="col-md-6">APR</span>
+                    <span className="col-md-6">10%</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Bonus Rewards</span>
+                    <span className="col-md-6">{data?.numBonusListings || 0}</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Total</span>
+                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                  </div>
+                </main>
+              </div>
+              <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
+                <h3>Fee Rewards</h3>
+                <main>
+                  <div className="grid">
+                    <span className="col-md-6">APR</span>
+                    <span className="col-md-6">10%</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Fee Rewards</span>
+                    <span className="col-md-6">{data?.feesPaid || 0}</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Total</span>
+                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                  </div>
+                </main>
+              </div>
+              <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
+                <h3>Net Rewards</h3>
+                <main>
+                  <div className="grid">
+                    <span className="col-md-6">APR</span>
+                    <span className="col-md-6">10%</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Net Rewards</span>
+                    <span className="col-md-6">{data?.feesPaid || 0}</span>
+                  </div>
+                  <div className="grid">
+                    <span className="col-md-6">Total</span>
+                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                  </div>
+                </main>
               </div>
 
               <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
-                <h3 className="tg-title">Leaderboard 🏆</h3>
+                <h3 className={styles.h3}>Leaderboard 🏆</h3>
                 <div className={styles.leaderBody}>
                   <Table mt={4}>
                     <Thead>

@@ -30,8 +30,12 @@
   // align-items: center;
   margin-bottom: 40px;
 
+  h3 {
+    font-size: 20px;
+  }
+
   .leaderBody {
-    width: 60%;
+    width: 100%;
     // border: 1px solid #ccc;
     border-radius: 24px;
     box-shadow: 0 9px 9px #eee;
@@ -43,9 +47,34 @@
   box-shadow: 0 9px 9px #eee;
   border-radius: 24px;
   padding: 15px;
-
   h3 {
     font-weight: bold;
-    margin-bottom: 20px;
+    padding: 15px 0;
   }
+  div {
+    font-size: 1.2em;
+  }
+}
+
+.myRewardBox {
+  height: 225px;
+  box-shadow: 0 9px 9px #eee;
+  border-radius: 24px;
+  h3 {
+    padding: 15px;
+    font-weight: bold;
+  }
+  main {
+    div {
+      border-top: 1px solid #ddd;
+    }
+    span {
+      padding: 15px;
+    }
+  }
+}
+
+.h3 {
+  font-weight: bold;
+  font-size: 20px;
 }
