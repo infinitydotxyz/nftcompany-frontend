@@ -8,6 +8,8 @@ import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import { Bar } from 'react-chartjs-2';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Rewards.module.scss';
+import { useAppContext } from 'utils/context/AppContext';
+import { apiGet } from 'utils/apiUtil';
 
 function float2dollar(value: number) {
   return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
@@ -72,31 +74,27 @@ const options = {
 };
 
 export default function Rewards() {
-  const [user, setUser] = useState<any>(null);
+  const { user } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>(null);
 
   const fetchData = async () => {
-    const account = await getAccount();
-    setUser({ account });
-
     setIsFetching(true);
     try {
-      const res = await fetch(`${API_BASE_MAINNET}/u/${account}/reward`);
-      const data = (await res.json()) || [];
-      console.log('data', data);
-      setData(data);
+      const { result, error } = await apiGet(`/u/${user?.account}/reward`);
+      console.log('result', result);
+      setData(result);
     } catch (e) {
       console.error(e);
     }
   };
   React.useEffect(() => {
     fetchData();
-  }, []);
+  }, [user]);
 
-  const numListingsPct = data?.totalListings > 0 ? data?.numListings / data?.totalListings : 0;
-  const numBonusListingsPct = data?.totalBonusListings > 0 ? data?.numBonusListings / data?.totalBonusListings : 0;
-  const feesPaidPct = data?.totalFees > 0 ? data?.feesPaid / data?.totalFees : 0;
+  // const numListingsPct = data?.totalListings > 0 ? data?.numListings / data?.totalListings : 0;
+  // const numBonusListingsPct = data?.totalBonusListings > 0 ? data?.numBonusListings / data?.totalBonusListings : 0;
+  // const feesPaidPct = data?.totalFees > 0 ? data?.feesPaid / data?.totalFees : 0;
 
   return (
     <>
