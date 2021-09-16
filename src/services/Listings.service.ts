@@ -26,7 +26,7 @@ export const listingToCardData = (listing: Order[]): CardData[] => {
       maker: listingItem.maker,
       hasBonusReward: listingItem.metadata.hasBonusReward,
       hasBlueCheck: listingItem.metadata.hasBlueCheck,
-      collectionName: listingItem.metadata.collectionName,
+      collectionName: listingItem.metadata.asset.collectionName,
       owner: listingItem.maker
     };
 
