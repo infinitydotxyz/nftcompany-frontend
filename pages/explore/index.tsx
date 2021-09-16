@@ -207,7 +207,6 @@ export default function Dashboard() {
               exploreSearchState={exploreSearchState}
             />
           </div>
-          {/* {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={listedNfts} />} */}
           {isFetching ? (
             <Spinner size="md" color="gray.800" />
           ) : (
