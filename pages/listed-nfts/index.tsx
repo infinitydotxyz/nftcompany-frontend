@@ -13,7 +13,7 @@ import { useAppContext } from 'utils/context/AppContext';
 
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
-import { listingToCardData } from 'services/Listings.service';
+import { ordersToCardData } from 'services/Listings.service';
 
 export default function ListNFTs() {
   const { user } = useAppContext();
@@ -41,7 +41,7 @@ export default function ListNFTs() {
     } catch (e) {
       console.error(e);
     }
-    const data = listingToCardData(listingData || []);
+    const data = ordersToCardData(listingData || []);
 
     console.log('data', data);
     setIsFetching(false);
