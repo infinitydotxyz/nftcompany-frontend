@@ -7,7 +7,6 @@ import {
   orderToCardData,
   TypeAheadOption
 } from 'services/Listings.service';
-import { Order } from 'types/Nft.interface';
 interface Props {
   setFilters: any;
   setListedNfts: any;
@@ -67,6 +66,7 @@ const ExploreSearch = ({ setFilters, setListedNfts, setExploreSearchState, explo
       }}
       ref={typeaheadRef}
       minLength={1}
+      filterBy={() => true}
       labelKey={(option) => option.name}
       isLoading={exploreSearchState.isLoading}
       onSearch={handleSearch}
