@@ -1,6 +1,5 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { useToast } from '@chakra-ui/react';
 import { apiDelete } from 'utils/apiUtil';
 import { showMessage } from 'utils/commonUtil';
 import styles from './DeleteListingModal.module.scss';
@@ -16,8 +15,6 @@ interface IProps {
 }
 
 const DeleteListingModal: React.FC<IProps> = ({ user, data, onSubmit, onClose }: IProps) => {
-  const toast = useToast();
-
   React.useEffect(() => {
     // TBD
   }, []);
@@ -39,9 +36,7 @@ const DeleteListingModal: React.FC<IProps> = ({ user, data, onSubmit, onClose }:
             <div className="modal-body">
               <div className={styles.title}>&nbsp;</div>
 
-              <div className={styles.row}>
-                Confirm cancel this listing?
-              </div>
+              <div className={styles.row}>Confirm cancel this listing?</div>
 
               <div className={styles.footer}>
                 <a

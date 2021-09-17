@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Menu, MenuButton, MenuList, MenuItem, Button, MenuDivider } from '@chakra-ui/react';
+import { Menu, MenuButton, MenuList, useDisclosure, MenuItem, Button, MenuDivider, useToast } from '@chakra-ui/react';
 import { InfoOutlineIcon, ExternalLinkIcon, StarIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,6 +9,8 @@ import { getAccount } from '../../src/utils/ethersUtil';
 import { setAuthHeaders } from '../../src/utils/apiUtil';
 import NavBar from 'components/NavBar/NavBar';
 import { useAppContext } from 'utils/context/AppContext';
+import { showMessage } from 'utils/commonUtil';
+import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 
 let isChangingAccount = false;
 
@@ -26,11 +28,14 @@ type ContextType = {
 };
 
 const Header = () => {
+  const toast = useToast();
   const router = useRouter();
   const { route } = router;
   // const [user, setUser] = useState<any>(null);
   const { filter, setFilter } = useContext<any>(FilterContext);
   console.log('filter', filter);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { user, setUser } = useAppContext();
   console.log('- Header - user:', user);
@@ -122,26 +127,25 @@ const Header = () => {
 
                 {user?.account ? (
                   <li>
-                    <Menu>
-                      <MenuButton>
-                        <a className="connect-wallet">{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</a>
-                      </MenuButton>
-                      <MenuList
-                      // bg="#fff"
-                      // textColor="#333"
-                      // minWidth="160px"
-                      // p="8"
-                      // border="1px solid #ccc"
-                      // borderRadius="6"
-                      // _hover={{ backgroundColor: 'blue', color: 'white' }}
-                      >
+                    <Menu isLazy isOpen={isOpen} offset={[0, 10]}>
+                      <div style={{ paddingBottom: 20, paddingTop: 20 }} onMouseEnter={onOpen} onMouseLeave={onClose}>
+                        <MenuButton>
+                          <a className="connect-wallet">{`${user?.account.slice(0, 6)}...${user?.account.slice(
+                            -4
+                          )}`}</a>
+                        </MenuButton>
+                      </div>
+
+                      <MenuList onClick={onClose} onMouseLeave={onClose} onMouseEnter={onOpen}>
+                        <AddressMenuItem user={user} />
+                        <MenuDivider />
                         <MenuItem
                           textColor="#333"
-                          icon={<InfoOutlineIcon />}
-                          onClick={() => {}}
-                        >{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</MenuItem>
-                        <MenuDivider />
-                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/my-nfts')}>
+                          icon={<StarIcon />}
+                          onClick={() => {
+                            return router.push('/my-nfts');
+                          }}
+                        >
                           My NFTs
                         </MenuItem>
                         <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
