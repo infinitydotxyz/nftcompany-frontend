@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import { apiGet } from 'utils/apiUtil';
 import DeleteListingModal from './DeleteListingModal';
@@ -12,6 +11,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import { ordersToCardData } from 'services/Listings.service';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
+import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 
 export default function ListNFTs() {
   const { user, showAppError, showAppMessage } = useAppContext();
@@ -82,18 +82,9 @@ export default function ListNFTs() {
           </div>
 
           <div className={styles.main}>
-            {/* {isFetching ? (
-              <Spinner size="md" color="gray.800" />
-            ) : (
-              <CardList
-                data={data}
-                actions={['CANCEL_LISTING']}
-                onClickAction={async (item, action) => {
-                  console.log('item, action', item, action);
-                  setDeleteModalItem(item);
-                }}
-              />
-            )} */}
+            {data?.length === 0 && isFetching && (
+              <LoadingCardList />
+            )}
             <CardList
                 data={data}
                 actions={['CANCEL_LISTING']}
