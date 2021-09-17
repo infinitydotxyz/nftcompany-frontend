@@ -125,7 +125,7 @@ export default function ListNFTs() {
               showAppMessage(`Listing cancelled successfully.`);
               setTimeout(() => {
                 fetchData(true);
-              }, 1000); // TODO: without this delay, for some reason, api still returns old data.
+              }, 2000); // TODO: remove this delay once API has await delete.
             }
           }}
         />
