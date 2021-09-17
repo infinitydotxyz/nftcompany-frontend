@@ -7,7 +7,7 @@ import { showMessage } from 'utils/commonUtil';
 import { getOpenSeaport } from 'utils/ethersUtil';
 const { EventType } = require('../../../opensea/types');
 
-type User = {
+export type User = {
   account: string;
 };
 
@@ -39,7 +39,7 @@ export function AppContextProvider({ children }: any) {
       showMessage(toast, 'error', `MetaMask RPC Error: ${error?.message}` || 'MetaMask RPC Error');
     };
     const res = await initEthers({ onError }); // returns provider
-    
+
     if (res && res.getSigner) {
       await setAuthHeaders(await res.getSigner().getAddress());
     } else {
@@ -56,7 +56,7 @@ export function AppContextProvider({ children }: any) {
       seaport.addListener(
         eventName,
         (data: any) => {
-          const arr: string[] = []
+          const arr: string[] = [];
           Object.keys(data).forEach((k: string) => arr.push(`${k}: ${data[k]}`));
           showAppMessage(`${eventName}: ${arr.join(', ')}`);
         },

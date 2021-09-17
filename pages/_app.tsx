@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import '../styles/globals.scss';
 import '../styles/grid.css';
 import '../styles/fonts.css';
 import '../styles/Typeahead.css';

@@ -97,20 +97,21 @@ export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAh
   });
   return { collectionNames, nftNames };
 };
-export const orderToCardData = (nft: Order): CardData => {
+export const orderToCardData = (order: Order): CardData => {
   const cardData: CardData = {
-    id: nft.id,
-    image: nft.metadata.asset.image,
-    title: nft.metadata.asset.title,
-    inStock: +nft.metadata.asset.quantity,
-    price: weiToEther(nft.basePrice),
-    tokenAddress: nft.metadata.asset.address,
-    tokenId: nft.metadata.asset.id,
-    maker: nft.maker,
-    hasBonusReward: nft.metadata.hasBonusReward,
-    hasBlueCheck: nft.metadata.hasBlueCheck,
-    collectionName: nft.metadata.asset.collectionName,
-    owner: nft.maker
+    id: order.id,
+    image: order.metadata.asset.image,
+    title: order.metadata.asset.title,
+    inStock: +order.metadata.asset.quantity,
+    price: weiToEther(order.basePrice),
+    tokenAddress: order.metadata.asset.address,
+    tokenId: order.metadata.asset.id,
+    maker: order.maker,
+    hasBonusReward: order.metadata.hasBonusReward,
+    hasBlueCheck: order.metadata.hasBlueCheck,
+    collectionName: order.metadata.asset.collectionName,
+    owner: order.maker,
+    metadata: order.metadata
   };
   return cardData;
 };

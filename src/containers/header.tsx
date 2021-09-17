@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Menu, MenuButton, MenuList, MenuItem, Button, MenuDivider, Box } from '@chakra-ui/react';
-import { InfoOutlineIcon, ExternalLinkIcon, StarIcon } from '@chakra-ui/icons';
+import { MenuItem, MenuDivider, Box, useToast } from '@chakra-ui/react';
+import { ExternalLinkIcon, StarIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -10,6 +10,8 @@ import NavBar from 'components/NavBar/NavBar';
 import { useAppContext } from 'utils/context/AppContext';
 import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import { useAppSearchContext } from 'hooks/useSearch';
+import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
+import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 
 let isChangingAccount = false;
 
@@ -28,9 +30,9 @@ type ContextType = {
 
 const Header = () => {
   const { exploreSearchState, setExploreSearchState, setFilterState } = useAppSearchContext();
+  const toast = useToast();
   const router = useRouter();
   const { route } = router;
-  // const [user, setUser] = useState<any>(null);
 
   const { user, setUser } = useAppContext();
   console.log('- Header - user:', user);
@@ -80,6 +82,7 @@ const Header = () => {
             <div className="col-sm-12 col-md-8">
               <ul className="links">
                 {/* <HeaderActionButtons user={user} /> */}
+
                 <Box flex="2" mr="4">
                   <ExploreSearch
                     setFilters={setFilterState}
@@ -87,6 +90,39 @@ const Header = () => {
                     exploreSearchState={exploreSearchState}
                   />
                 </Box>
+                <HoverMenuButton buttonTitle="NFTs">
+                  <MenuItem
+                    textColor="#333"
+                    icon={<StarIcon />}
+                    onClick={() => {
+                      return router.push('/my-nfts');
+                    }}
+                  >
+                    My NFTs
+                  </MenuItem>
+                  <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
+                    Listed for sale
+                  </MenuItem>
+                </HoverMenuButton>
+
+                <HoverMenuButton buttonTitle="Offers">
+                  <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-made')}>
+                    Offers Made
+                  </MenuItem>
+                  <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-received')}>
+                    Offers Received
+                  </MenuItem>
+                </HoverMenuButton>
+
+                <HoverMenuButton buttonTitle="Transactions">
+                  <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/purchases')}>
+                    Purchases
+                  </MenuItem>
+                  <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/sales')}>
+                    Sales
+                  </MenuItem>
+                </HoverMenuButton>
+
                 <NavBar
                   items={[{ title: 'Explore', link: '/explore' }]}
                   active={['/explore'].indexOf(route)}
@@ -95,59 +131,26 @@ const Header = () => {
                   }}
                 />
 
-                <span>&nbsp;&nbsp;&nbsp;</span>
-
                 {user?.account ? (
                   <li>
-                    <Menu>
-                      <MenuButton>
-                        <a className="connect-wallet">{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</a>
-                      </MenuButton>
-                      <MenuList
-                      // bg="#fff"
-                      // textColor="#333"
-                      // minWidth="160px"
-                      // p="8"
-                      // border="1px solid #ccc"
-                      // borderRadius="6"
-                      // _hover={{ backgroundColor: 'blue', color: 'white' }}
-                      >
-                        <MenuItem
-                          textColor="#333"
-                          icon={<InfoOutlineIcon />}
-                          onClick={() => {}}
-                        >{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</MenuItem>
-                        <MenuDivider />
-                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/my-nfts')}>
-                          My NFTs
-                        </MenuItem>
-                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
-                          Listed NFTs
-                        </MenuItem>
+                    <HoverMenuButton
+                      buttonContent={
+                        <div className="connect-button">
+                          {`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}
+                        </div>
+                      }
+                    >
+                      <AddressMenuItem user={user} />
 
-                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-made')}>
-                          Offers Made
-                        </MenuItem>
-                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-received')}>
-                          Offers Received
-                        </MenuItem>
+                      <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/rewards')}>
+                        Rewards
+                      </MenuItem>
 
-                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/purchases')}>
-                          Purchases
-                        </MenuItem>
-                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/sales')}>
-                          Sales
-                        </MenuItem>
-                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/rewards')}>
-                          Rewards
-                        </MenuItem>
-
-                        <MenuDivider />
-                        <MenuItem textColor="#333" icon={<ExternalLinkIcon />} onClick={() => setUser(null)}>
-                          Sign out
-                        </MenuItem>
-                      </MenuList>
-                    </Menu>
+                      <MenuDivider />
+                      <MenuItem textColor="#333" icon={<ExternalLinkIcon />} onClick={() => setUser(null)}>
+                        Sign out
+                      </MenuItem>
+                    </HoverMenuButton>
                   </li>
                 ) : (
                   <li>

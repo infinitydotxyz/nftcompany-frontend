@@ -55,7 +55,7 @@ const ExploreSearch = ({ setExploreSearchState, exploreSearchState }: Props) => 
           isLoading={exploreSearchState.isLoading}
           onSearch={handleSearch}
           options={exploreSearchState.options}
-          placeholder="Search For Any Nft"
+          placeholder="Search For Any Collection or Nft"
           renderMenuItemChildren={(option) => (
             <Fragment>
               <Box d="flex" alignItems="flex-start" textAlign="center">

@@ -7,6 +7,7 @@ import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import OfferStatusModal from 'components/OfferStatusModal/OfferStatusModal';
 import { CheckCircleIcon } from '@chakra-ui/icons';
+import { Metadata } from 'types/Nft.interface';
 
 export type CardData = {
   id: string;
@@ -24,6 +25,7 @@ export type CardData = {
   hasBonusReward?: boolean;
   hasBlueCheck?: boolean;
   owner?: string;
+  metadata?: Metadata;
 };
 
 type Props = {

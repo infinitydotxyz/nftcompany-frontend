@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
-import { useToast } from '@chakra-ui/toast';
-import { showMessage } from 'utils/commonUtil';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import { apiGet } from 'utils/apiUtil';
-import { weiToEther } from '../../src/utils/ethersUtil';
 import DeleteListingModal from './DeleteListingModal';
+import { ITEMS_PER_PAGE } from 'utils/constants';
+import { FetchMore, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-
+import { ordersToCardData } from 'services/Listings.service';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
-import { ordersToCardData } from 'services/Listings.service';
 
 export default function ListNFTs() {
-  const { user } = useAppContext();
-  const toast = useToast();
+  const { user, showAppError, showAppMessage } = useAppContext();
+  const [currentPage, setCurrentPage] = useState(-1);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
@@ -30,10 +29,14 @@ export default function ListNFTs() {
     }
     setIsFetching(true);
     let listingData = [];
+    const newCurrentPage = currentPage + 1;
     try {
-      const { result, error } = await apiGet(`/u/${user?.account}/listings`);
+      const { result, error } = await apiGet(`/u/${user?.account}/listings`, {
+        startAfter: getLastItemCreatedAt(data),
+        limit: ITEMS_PER_PAGE
+      });
       if (error) {
-        showMessage(toast, 'error', `${error}`);
+        showAppError(`Failed to fetch listings. ${error?.message}.`);
         return;
       }
       listingData = result?.listings || [];
@@ -41,17 +44,26 @@ export default function ListNFTs() {
     } catch (e) {
       console.error(e);
     }
-    const data = ordersToCardData(listingData || []);
+    const moreData = ordersToCardData(listingData || []);
 
-    console.log('data', data);
+    console.log('moreData', moreData);
     setIsFetching(false);
-    setData(data);
+    setData([ ...data, ...moreData ]);
+    setCurrentPage(newCurrentPage);
   };
 
   React.useEffect(() => {
     console.log('- Listed NFTs - user:', user);
     fetchData();
   }, [user]);
+
+  React.useEffect(() => {
+    if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
+      return;
+    }
+    console.log('currentPage loaded:', currentPage);
+    setDataLoaded(true); // current page's data loaded & rendered.
+  }, [currentPage]);
   return (
     <>
       <Head>
@@ -70,7 +82,7 @@ export default function ListNFTs() {
           </div>
 
           <div className={styles.main}>
-            {isFetching ? (
+            {/* {isFetching ? (
               <Spinner size="md" color="gray.800" />
             ) : (
               <CardList
@@ -81,8 +93,27 @@ export default function ListNFTs() {
                   setDeleteModalItem(item);
                 }}
               />
-            )}
+            )} */}
+            <CardList
+                data={data}
+                actions={['CANCEL_LISTING']}
+                onClickAction={async (item, action) => {
+                  console.log('item, action', item, action);
+                  setDeleteModalItem(item);
+                }}
+              />
           </div>
+
+          {dataLoaded && (
+            <FetchMore
+              currentPage={currentPage}
+              onFetchMore={async () => {
+                console.log('onFetchMore()');
+                await setDataLoaded(false);
+                await fetchData();
+              }}
+            />
+          )}
         </div>
       </div>
 
@@ -94,7 +125,7 @@ export default function ListNFTs() {
           onSubmit={() => {
             setDeleteModalItem(null);
             fetchData();
-            showMessage(toast, 'info', `Listing cancelled successfully.`);
+            showAppMessage(`Listing cancelled successfully.`);
           }}
         />
       )}

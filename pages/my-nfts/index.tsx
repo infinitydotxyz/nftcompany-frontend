@@ -2,17 +2,16 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { useToast } from '@chakra-ui/toast';
-import { showMessage } from 'utils/commonUtil';
-import { FetchMore } from 'components/FetchMore/FetchMore';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
+import { apiGet } from 'utils/apiUtil';
+import { ITEMS_PER_PAGE } from 'utils/constants';
+import { FetchMore } from 'components/FetchMore/FetchMore';
+import { useAppContext } from 'utils/context/AppContext';
+
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
-import { apiGet } from 'utils/apiUtil';
-import { useAppContext } from 'utils/context/AppContext';
-import { ITEMS_PER_PAGE } from 'utils/constants';
 
 const transformOpenSea = (item: any) => {
   if (!item) {
@@ -33,13 +32,12 @@ const transformOpenSea = (item: any) => {
 };
 
 export default function MyNFTs() {
-  const toast = useToast();
+  const { user, showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
   const [listModalItem, setListModalItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
-  const { user } = useAppContext();
 
   const fetchData = async () => {
     if (!user || !user?.account) {
@@ -48,21 +46,22 @@ export default function MyNFTs() {
     }
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
+
     const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
       offset: newCurrentPage * ITEMS_PER_PAGE,
       limit: ITEMS_PER_PAGE,
       source: 1
     });
     if (error) {
-      showMessage(toast, 'error', `${error.message}`);
+      showAppError(`${error.message}`);
       return;
     }
     const moreData = (result?.assets || []).map((item: any) => {
       const newItem = transformOpenSea(item);
       return newItem;
     });
-    setData([...data, ...moreData]);
     setIsFetching(false);
+    setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);
   };
 
@@ -72,7 +71,7 @@ export default function MyNFTs() {
   }, [user]);
 
   React.useEffect(() => {
-    if (currentPage < 0 || data.length < ITEMS_PER_PAGE) {
+    if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
       return;
     }
     console.log('currentPage loaded:', currentPage);
@@ -96,7 +95,7 @@ export default function MyNFTs() {
           </div>
 
           <div className={styles.main}>
-            {isFetching ? (
+            {/* {isFetching ? (
               <Spinner size="md" color="gray.800" />
             ) : (
               <CardList
@@ -108,7 +107,16 @@ export default function MyNFTs() {
                   setListModalItem(item);
                 }}
               />
-            )}
+            )} */}
+            <CardList
+              data={data}
+              showItems={[]}
+              actions={['LIST_NFT']}
+              onClickAction={(item, action) => {
+                // console.log('item, action', item, action);
+                setListModalItem(item);
+              }}
+            />
           </div>
         </div>
 

@@ -1,0 +1,27 @@
+.hoverButton {
+  padding: 10px 20px;
+  border-radius: 20px;
+  margin-right: 10px;
+  color: #aaa;
+  cursor: pointer;
+  transition: 0.1s all ease-in;
+  font-weight: bold;
+
+  &.menuOpen {
+    background-color: #4047ff;
+    color: #fff;
+  }
+}
+
+.buttonContent {
+  display: flex;
+  white-space: nowrap;
+  .arrow {
+    padding-left: 6px;
+    color: #aaa;
+
+    .menuOpen & {
+      color: #fff;
+    }
+  }
+}
