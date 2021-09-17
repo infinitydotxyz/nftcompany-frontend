@@ -12,6 +12,7 @@ import PreviewModal from 'components/PreviewModal/PreviewModal';
 export type CardData = {
   id: string;
   title: string;
+  description: string;
   image: string;
   imagePreview?: string;
   price?: number;
@@ -69,6 +70,8 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
                 data-effect="mfp-zoom-in"
                 onClick={(ev) => {
                   ev.preventDefault();
+                  ev.stopPropagation();
+
                   // if (onClickPlaceBid) {
                   //   onClickPlaceBid();
                   // }
@@ -88,6 +91,8 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
                 data-effect="mfp-zoom-in"
                 onClick={(ev) => {
                   ev.preventDefault();
+                  ev.stopPropagation();
+
                   setPlaceBidModalShowed(true);
                 }}
               >
@@ -101,6 +106,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
                 data-effect="mfp-zoom-in"
                 onClick={(ev) => {
                   ev.preventDefault();
+                  ev.stopPropagation();
                   // if (onClickPlaceBid) {
                   //   onClickPlaceBid();
                   // }
@@ -121,6 +127,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
                 data-effect="mfp-zoom-in"
                 onClick={(ev) => {
                   ev.preventDefault();
+                  ev.stopPropagation();
 
                   setAcceptOfferModalShowed(true);
                 }}
@@ -136,6 +143,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
                 data-effect="mfp-zoom-in"
                 onClick={(ev) => {
                   ev.preventDefault();
+                  ev.stopPropagation();
 
                   setOfferStatusModalShowed(true);
                 }}

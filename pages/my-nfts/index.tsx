@@ -12,11 +12,13 @@ import { useAppContext } from 'utils/context/AppContext';
 
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
+import { CardData } from 'components/Card/Card';
 
 const transformOpenSea = (item: any) => {
   if (!item) {
     return null;
   }
+
   return {
     id: `${item?.asset_contract?.address}_${item?.token_id}`,
     title: item.name,
@@ -28,7 +30,7 @@ const transformOpenSea = (item: any) => {
     collectionName: item.asset_contract.name,
     inStock: 1,
     price: 0.1
-  };
+  } as CardData;
 };
 
 export default function MyNFTs() {

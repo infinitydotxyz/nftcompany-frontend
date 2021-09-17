@@ -33,35 +33,29 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
         >
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'blue' }}>
             <div className="modal-body">
-              <div className={styles.title}>NFT Information</div>
+              <div className={styles.title}>{data?.title}</div>
 
-              <div className={styles.space}>All you need to know about this NFT.</div>
+              <div className={styles.space}>{data?.collectionName}</div>
 
               <div className={styles.main}>
-                {data && data.image && (
+                <div className={styles.imgBox}>
                   <img
                     src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
                   />
-                )}
+                </div>
 
-                <section className={styles.info}>
-                  <h3>{data?.title}</h3>
-                  <span className={styles.price}>{data?.price} ETH</span>
-                  <span className={styles.counter}>10 in stock</span>
-                  <div className={styles.description}>{'data?.description'}</div>
+                <div className={styles.infoBox}>
+                  <div className={styles.price}>{data?.price} ETH</div>
+                  <div className={styles.counter}>{data.inStock ?? 0} in stock</div>
+                  <div className={styles.description}>{data?.description}</div>
 
-                  <a className="action-btn" onClick={() => setPurchaseShowed(true)}>
-                    Buy now
-                  </a>
-                  <a className="action-btn action-2nd" onClick={() => setPlaceBidShowed(true)}>
-                    Make an offer
-                  </a>
-                </section>
+                  {/* tokenAddress: item.asset_contract.address, tokenId: item.token_id, */}
+                </div>
               </div>
 
-              <div className={styles.footer}>
-                <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
-                  Cancel
+              <div className={styles.buttons}>
+                <a className="action-btn  " onClick={() => setPlaceBidShowed(true)}>
+                  Make an offer
                 </a>
               </div>
             </div>
