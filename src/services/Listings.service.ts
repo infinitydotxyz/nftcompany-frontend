@@ -17,24 +17,29 @@ export const ordersToCardData = (listings: Order[]): CardData[] => {
   const cards = listings.map(orderToCardData);
   return cards;
 };
+
 export interface TypeaheadQuery {
   startsWith: string;
 }
+
 export interface TypeAheadOption {
   type: 'Collection' | 'Asset';
   name: string;
   id?: string;
   address?: string;
 }
+
 export interface TypeAheadOptions {
   collectionNames: TypeAheadOption[];
   nftNames: TypeAheadOption[];
 }
+
 export interface TitleResponse {
   id: string;
   address: string;
   title: string;
 }
+
 export const getTitlesOfListings = async (titleQuery: TypeaheadQuery): Promise<TitleResponse[]> => {
   const path = `/titles/`;
   const { result, error }: { result: TitleResponse[]; error: any } = (await apiGet(path, titleQuery)) as any;
@@ -52,6 +57,7 @@ export const getCollectionNamesOfListings = async (collectionQuery: TypeaheadQue
   }
   return result;
 };
+
 export const getListingById = async (id?: string, address?: string): Promise<Order | null> => {
   const path = `/listingById/`;
   const { result, error }: { result: Order; error: any } = (await apiGet(path, { id, address })) as any;
@@ -60,6 +66,7 @@ export const getListingById = async (id?: string, address?: string): Promise<Ord
   }
   return result;
 };
+
 export const getListingsByCollectionName = async (
   collectionName: string,
   listingFilter?: Filter
@@ -102,6 +109,7 @@ export const orderToCardData = (order: Order): CardData => {
     tokenAddress: order.metadata.asset.address,
     tokenId: order.metadata.asset.id,
     maker: order.maker,
+    data: order,
     hasBonusReward: order.metadata.hasBonusReward,
     hasBlueCheck: order.metadata.hasBlueCheck,
     collectionName: order.metadata.asset.collectionName,

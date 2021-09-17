@@ -5,7 +5,7 @@ import Layout from 'containers/layout';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Offers.module.scss';
 
-export default function Preview() {
+export default function Offers() {
   return (
     <>
       <Head>
@@ -49,4 +49,4 @@ export default function Preview() {
 }
 
 // eslint-disable-next-line react/display-name
-Preview.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
+Offers.getLayout = (page: NextPage) => <Layout>{page}</Layout>;

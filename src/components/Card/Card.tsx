@@ -7,6 +7,7 @@ import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import OfferStatusModal from 'components/OfferStatusModal/OfferStatusModal';
 import { Metadata } from 'types/Nft.interface';
+import PreviewModal from 'components/PreviewModal/PreviewModal';
 
 export type CardData = {
   id: string;
@@ -41,6 +42,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [offerStatusModalShowed, setOfferStatusModalShowed] = useState(false);
+  const [previewModalShowed, setPreviewModalShowed] = useState(false);
 
   if (!data) {
     return null;
@@ -49,8 +51,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
   const collectionName = data.collectionName;
   const hasBlueCheck = data.hasBlueCheck;
   return (
-    <div id={`id_${data.id}`} className={styles.card} {...rest}>
-      {/* <Link href={`/preview?id=${data.id}${viewInfo ? '&view=info' : ''}`} passHref> */}
+    <div id={`id_${data.id}`} className={styles.card} {...rest} onClick={() => setPreviewModalShowed(true)}>
       <div className={styles.cardPreview}>
         {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
         <img src={data.image} alt="Card preview" />
@@ -143,7 +144,6 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
           )}
         </div>
       </div>
-      {/* </Link> */}
 
       <div className={styles.cardBody}>
         <div className={styles.cardLine}>
@@ -167,6 +167,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
       {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
       {offerStatusModalShowed && <OfferStatusModal data={data} onClose={() => setOfferStatusModalShowed(false)} />}
       {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
+      {previewModalShowed && <PreviewModal data={data} onClose={() => setPreviewModalShowed(false)} />}
 
       {/* {modalShowed && (
         <NFTModal
