@@ -13,7 +13,7 @@ import { ExploreSearchState } from 'hooks/useSearch';
 import { useRouter } from 'next/router';
 interface Props {
   setFilters: any;
-  setExploreSearchState: any;
+  setExploreSearchState: (explore: ExploreSearchState) => void;
   exploreSearchState: ExploreSearchState;
 }
 const ExploreSearch = ({ setExploreSearchState, exploreSearchState }: Props) => {
@@ -28,36 +28,30 @@ const ExploreSearch = ({ setExploreSearchState, exploreSearchState }: Props) => 
     });
   };
   const router = useRouter();
-  const getListing = async (option: TypeAheadOption) => {
-    if (option.type === 'Asset' && option.id) {
-      const response = await getListingById(option.id, option.address);
-      if (response) {
-        const cardData = orderToCardData(response);
-        setExploreSearchState({ ...exploreSearchState, collectionName: '', listedNfts: [cardData] });
-      }
-    } else if (option.type === 'Collection') {
-      const response = await getListingsByCollectionName(option.name);
-      if (response) {
-        const cardData = response;
-        setExploreSearchState({ ...exploreSearchState, collectionName: option.name, listedNfts: [cardData] });
-      }
-    }
-  };
   return (
     <Box display="flex">
       <Box flex="1">
         <AsyncTypeahead
           id="explore-typeahead"
-          onChange={(selectedOption: TypeAheadOption[]) => {
-            if (selectedOption.length > 0) {
-              getListing(selectedOption[0]);
-              if (selectedOption[0].type === 'Collection') {
-                setExploreSearchState({ ...exploreSearchState, collectionName: selectedOption[0].name });
-              }
+          onChange={(selectedOptions: TypeAheadOption[]) => {
+            if (selectedOptions[0]?.type === 'Collection') {
+              setExploreSearchState({
+                ...exploreSearchState,
+                listedNfts: [],
+                selectedOption: null,
+                collectionName: selectedOptions[0].name
+              });
+            } else {
+              setExploreSearchState({
+                ...exploreSearchState,
+                listedNfts: [],
+                selectedOption: selectedOptions[0],
+                collectionName: ''
+              });
+            }
 
-              if (router.route !== '/explore') {
-                router.push('/explore');
-              }
+            if (router.route !== '/explore') {
+              router.push('/explore');
             }
           }}
           ref={typeaheadRef}
@@ -87,7 +81,7 @@ const ExploreSearch = ({ setExploreSearchState, exploreSearchState }: Props) => 
           )}
         ></AsyncTypeahead>
       </Box>
-      {exploreSearchState.collectionName && (
+      {(exploreSearchState.collectionName || exploreSearchState.selectedOption) && (
         <CloseIcon
           color="gray.400"
           m="auto"
@@ -95,7 +89,7 @@ const ExploreSearch = ({ setExploreSearchState, exploreSearchState }: Props) => 
           cursor="pointer"
           onClick={() => {
             typeaheadRef.current.clear();
-            setExploreSearchState({ ...exploreSearchState, collectionName: '' });
+            setExploreSearchState({ ...exploreSearchState, collectionName: '', selectedOption: null });
           }}
         />
       )}

@@ -1,3 +1,4 @@
+import { CardData } from 'components/Card/Card';
 import { Filter } from 'components/FilterPanel/FilterPanel';
 import React, { useContext, useState } from 'react';
 import { TypeAheadOption } from 'services/Listings.service';
@@ -8,20 +9,22 @@ export interface ExploreSearchState {
   options: TypeAheadOption[];
   query: string;
   collectionName: string;
-  listedNfts: Order[];
+  listedNfts: CardData[];
+  selectedOption: TypeAheadOption | null;
 }
 export const defaultExploreSearchState: ExploreSearchState = {
   isLoading: false,
   options: [],
   query: '',
   collectionName: '',
-  listedNfts: []
+  listedNfts: [],
+  selectedOption: null
 };
 // ExploreSearch
 const ExploreSearchContext = React.createContext<any>(defaultExploreSearchState);
 const SetExploreSearchContext = React.createContext<any>(() => {});
 
-export function useExploreSearchContext() {
+export function useExploreSearchContext(): ExploreSearchState {
   return useContext(ExploreSearchContext);
 }
 export function useSetExploreSearchContext() {
