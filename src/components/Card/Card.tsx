@@ -12,7 +12,7 @@ import PreviewModal from 'components/PreviewModal/PreviewModal';
 export type CardData = {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   image: string;
   imagePreview?: string;
   price?: number;
