@@ -7,10 +7,12 @@ import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import OfferStatusModal from 'components/OfferStatusModal/OfferStatusModal';
 import { Metadata } from 'types/Nft.interface';
+import PreviewModal from 'components/PreviewModal/PreviewModal';
 
 export type CardData = {
   id: string;
   title: string;
+  description?: string;
   image: string;
   imagePreview?: string;
   price?: number;
@@ -41,6 +43,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [offerStatusModalShowed, setOfferStatusModalShowed] = useState(false);
+  const [previewModalShowed, setPreviewModalShowed] = useState(false);
 
   if (!data) {
     return null;
@@ -50,123 +53,126 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
   const hasBlueCheck = data.hasBlueCheck;
   return (
     <div id={`id_${data.id}`} className={styles.card} {...rest}>
-      {/* <Link href={`/preview?id=${data.id}${viewInfo ? '&view=info' : ''}`} passHref> */}
-      <div className={styles.cardPreview}>
-        {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
-        <img src={data.image} alt="Card preview" />
+      <div onClick={() => setPreviewModalShowed(true)}>
+        <div className={styles.cardPreview}>
+          {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
+          <img src={data.image} alt="Card preview" />
 
-        <div className={styles.cardControls}>
-          {/* <div className="status-green card__category">purchasing !</div> */}
-          {/* <button className="card__favorite">
+          <div className={styles.cardControls}>
+            {/* <div className="status-green card__category">purchasing !</div> */}
+            {/* <button className="card__favorite">
               <svg className="icon icon-heart"></svg>
             </button> */}
-          {actions?.indexOf('LIST_NFT') >= 0 && (
-            <a
-              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-              href="#popup-bid"
-              data-effect="mfp-zoom-in"
-              onClick={(ev) => {
-                ev.preventDefault();
-                // if (onClickPlaceBid) {
-                //   onClickPlaceBid();
-                // }
-                if (onClickAction) {
-                  onClickAction(data, 'LIST_NFT');
-                }
-                setModalShowed(true);
-              }}
-            >
-              <span>List NFT</span>
-            </a>
-          )}
-          {actions?.indexOf('BUY_NFT') >= 0 && (
-            <a
-              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-              href="#popup-bid"
-              data-effect="mfp-zoom-in"
-              onClick={(ev) => {
-                ev.preventDefault();
-                setPlaceBidModalShowed(true);
-              }}
-            >
-              <span>Buy NFT</span>
-            </a>
-          )}
-          {actions?.indexOf('CANCEL_LISTING') >= 0 && (
-            <a
-              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-              href="#popup-bid"
-              data-effect="mfp-zoom-in"
-              onClick={(ev) => {
-                ev.preventDefault();
-                // if (onClickPlaceBid) {
-                //   onClickPlaceBid();
-                // }
-                if (onClickAction) {
-                  onClickAction(data, 'CANCEL_LISTING');
-                }
-                setModalShowed(true);
-              }}
-            >
-              <span>Cancel Listing</span>
-            </a>
-          )}
+            {actions?.indexOf('LIST_NFT') >= 0 && (
+              <a
+                className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
+                href="#popup-bid"
+                data-effect="mfp-zoom-in"
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
 
-          {actions?.indexOf('ACCEPT_OFFER') >= 0 && (
-            <a
-              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-              href="#popup-bid"
-              data-effect="mfp-zoom-in"
-              onClick={(ev) => {
-                ev.preventDefault();
-
-                setAcceptOfferModalShowed(true);
-              }}
-            >
-              <span>Accept Offer</span>
-            </a>
-          )}
-
-          {actions?.indexOf('CANCEL_OFFER') >= 0 && (
-            <a
-              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-              href="#popup-bid"
-              data-effect="mfp-zoom-in"
-              onClick={(ev) => {
-                ev.preventDefault();
-
-                setOfferStatusModalShowed(true);
-              }}
-            >
-              <span>Offer Status</span>
-            </a>
-          )}
-        </div>
-      </div>
-      {/* </Link> */}
-
-      <div className={styles.cardBody}>
-        <div className={styles.cardLine}>
-          <div className={styles.cardTitle}>
-            {collectionName && (
-              <div className={styles.collectionName}>
-                {collectionName}
-                {hasBlueCheck === true ? ' ✅' : ''}
-              </div>
+                  // if (onClickPlaceBid) {
+                  //   onClickPlaceBid();
+                  // }
+                  if (onClickAction) {
+                    onClickAction(data, 'LIST_NFT');
+                  }
+                  setModalShowed(true);
+                }}
+              >
+                <span>List NFT</span>
+              </a>
             )}
-            <div>{data.title}</div>
+            {actions?.indexOf('BUY_NFT') >= 0 && (
+              <a
+                className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
+                href="#popup-bid"
+                data-effect="mfp-zoom-in"
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+
+                  setPlaceBidModalShowed(true);
+                }}
+              >
+                <span>Buy NFT</span>
+              </a>
+            )}
+            {actions?.indexOf('CANCEL_LISTING') >= 0 && (
+              <a
+                className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
+                href="#popup-bid"
+                data-effect="mfp-zoom-in"
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                  // if (onClickPlaceBid) {
+                  //   onClickPlaceBid();
+                  // }
+                  if (onClickAction) {
+                    onClickAction(data, 'CANCEL_LISTING');
+                  }
+                  setModalShowed(true);
+                }}
+              >
+                <span>Cancel Listing</span>
+              </a>
+            )}
+
+            {actions?.indexOf('ACCEPT_OFFER') >= 0 && (
+              <a
+                className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
+                href="#popup-bid"
+                data-effect="mfp-zoom-in"
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+
+                  setAcceptOfferModalShowed(true);
+                }}
+              >
+                <span>Accept Offer</span>
+              </a>
+            )}
+
+            {actions?.indexOf('CANCEL_OFFER') >= 0 && (
+              <a
+                className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
+                href="#popup-bid"
+                data-effect="mfp-zoom-in"
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+
+                  setOfferStatusModalShowed(true);
+                }}
+              >
+                <span>Offer Status</span>
+              </a>
+            )}
           </div>
-          <div className={styles.cardPrice}>{showItems.indexOf('PRICE') >= 0 ? `${data.price} ETH` : ``}</div>
         </div>
-        <div className={styles.cardLine}>
-          <div>&nbsp;</div>
-          {/* <div className="card__counter">{data.inStock} in stock</div> */}
+
+        <div className={styles.cardBody}>
+          <div className={styles.cardLine}>
+            <div className={styles.cardTitle}>
+              {collectionName && (
+                <div className={styles.collectionName}>
+                  {collectionName}
+                  {hasBlueCheck === true ? ' ✅' : ''}
+                </div>
+              )}
+              <div>{data.title}</div>
+            </div>
+            <div className={styles.cardPrice}>{showItems.indexOf('PRICE') >= 0 ? `${data.price} ETH` : ``}</div>
+          </div>
+          <div className={styles.cardLine}>
+            <div>&nbsp;</div>
+            {/* <div className="card__counter">{data.inStock} in stock</div> */}
+          </div>
         </div>
       </div>
-
-      {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
-      {offerStatusModalShowed && <OfferStatusModal data={data} onClose={() => setOfferStatusModalShowed(false)} />}
-      {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
 
       {/* {modalShowed && (
         <NFTModal
@@ -180,6 +186,18 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
       )} */}
 
       {/* {modalShowed && <ListNFTModal onClose={() => setModalShowed(false)} />} */}
+
+      {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
+      {offerStatusModalShowed && <OfferStatusModal data={data} onClose={() => setOfferStatusModalShowed(false)} />}
+      {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
+      {previewModalShowed && (
+        <PreviewModal
+          data={data}
+          onClose={() => {
+            setPreviewModalShowed(false);
+          }}
+        />
+      )}
     </div>
   );
 }
