@@ -27,12 +27,12 @@ export default function Purchases() {
     setIsFetching(true);
     let listingData = [];
     try {
-      const { result, error } = await apiGet(`/u/${user?.account}/offersmade`);
+      const { result, error } = await apiGet(`/u/${user?.account}/purchases`);
       if (error) {
         showMessage(toast, 'error', `${error}`);
         return;
       }
-      listingData = result?.listings || [];
+      listingData = result?.purchases || [];
       console.log('listingData', listingData);
     } catch (e) {
       console.error(e);
