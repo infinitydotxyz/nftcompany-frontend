@@ -113,14 +113,6 @@ const Header = () => {
               <ul className="links">
                 {/* <HeaderActionButtons user={user} /> */}
 
-                <NavBar
-                  items={[{ title: 'Explore', link: '/explore' }]}
-                  active={['/explore'].indexOf(route)}
-                  onClickItem={(item, _) => {
-                    router.push(item.link || '');
-                  }}
-                />
-
                 <HoverMenuButton buttonTitle="My NFTs">
                   <MenuItem
                     textColor="#333"
@@ -136,6 +128,32 @@ const Header = () => {
                   </MenuItem>
                 </HoverMenuButton>
 
+                <HoverMenuButton buttonTitle="Offers">
+                  <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-made')}>
+                    Offers Made
+                  </MenuItem>
+                  <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-received')}>
+                    Offers Received
+                  </MenuItem>
+                </HoverMenuButton>
+
+                <HoverMenuButton buttonTitle="Transactions">
+                  <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/purchases')}>
+                    Purchases
+                  </MenuItem>
+                  <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/sales')}>
+                    Sales
+                  </MenuItem>
+                </HoverMenuButton>
+
+                <NavBar
+                  items={[{ title: 'Explore', link: '/explore' }]}
+                  active={['/explore'].indexOf(route)}
+                  onClickItem={(item, _) => {
+                    router.push(item.link || '');
+                  }}
+                />
+
                 {user?.account ? (
                   <li>
                     <HoverMenuButton
@@ -146,21 +164,7 @@ const Header = () => {
                       }
                     >
                       <AddressMenuItem user={user} />
-                      <MenuDivider />
 
-                      <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-made')}>
-                        Offers Made
-                      </MenuItem>
-                      <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-received')}>
-                        Offers Received
-                      </MenuItem>
-
-                      <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/purchases')}>
-                        Purchases
-                      </MenuItem>
-                      <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/sales')}>
-                        Sales
-                      </MenuItem>
                       <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/rewards')}>
                         Rewards
                       </MenuItem>

@@ -1,6 +1,5 @@
 .hoverButton {
   padding: 10px 20px;
-  // border: 1px solid #aaa;
   border-radius: 20px;
   margin-right: 15px;
   color: #aaa;
@@ -11,5 +10,18 @@
   &.menuOpen {
     background-color: #4047ff;
     color: #fff;
+  }
+}
+
+.buttonContent {
+  display: flex;
+  white-space: nowrap;
+  .arrow {
+    padding-left: 6px;
+    color: #aaa;
+
+    .menuOpen & {
+      color: #fff;
+    }
   }
 }

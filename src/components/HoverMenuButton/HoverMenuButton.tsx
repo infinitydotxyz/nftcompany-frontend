@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './HoverMenuButton.module.scss';
 import { Menu, MenuButton, MenuList, useDisclosure } from '@chakra-ui/react';
+import { TriangleDownIcon } from '@chakra-ui/icons';
 
 type Props = {
   buttonContent?: JSX.Element;
@@ -18,7 +19,14 @@ export const HoverMenuButton = ({ buttonTitle, buttonContent, children }: Props)
 
   if (buttonTitle != null) {
     addStyle = true;
-    buttonContent = <div>{buttonTitle}</div>;
+    buttonContent = (
+      <div className={styles.buttonContent}>
+        <div>{buttonTitle}</div>
+        <div className={styles.arrow}>
+          <TriangleDownIcon fontSize={10} />
+        </div>
+      </div>
+    );
   }
 
   return (
