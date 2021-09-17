@@ -17,14 +17,12 @@ const FetchMoreElement = ({ inView, ref, onFetchMore }: any) => {
 
 export const FetchMore = ({ onFetchMore }: any) => {
   return (
-    <InView>  
+    <InView>
       {({ inView, ref }) => {
+        // console.log('FetchMore inView:', inView);
         return (
           <div ref={ref}>
-            <FetchMoreElement
-              inView={inView}
-              onFetchMore={onFetchMore}
-            />
+            <FetchMoreElement inView={inView} onFetchMore={onFetchMore} />
           </div>
         );
       }}
