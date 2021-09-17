@@ -9,20 +9,12 @@ import FilterPanel, { Filter } from 'components/FilterPanel/FilterPanel';
 import { FilterIcon } from 'components/Icons/Icons';
 import styles from '../../styles/Dashboard.module.scss';
 import { getListingById, getListings, getListingsByCollectionName, orderToCardData } from 'services/Listings.service';
-import {
-  useExploreSearchContext,
-  useFilterContext,
-  useSetExploreSearchContext,
-  useSetFilterContext
-} from 'hooks/useSearch';
+import { useAppSearchContext } from 'hooks/useSearch';
 export default function Dashboard() {
   const [tabIndex, setTabIndex] = useState(1);
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-  const exploreSearchContext = useExploreSearchContext();
-  const setExploreSearchContext = useSetExploreSearchContext();
-  const setFilterContext = useSetFilterContext();
-  const filterContext = useFilterContext();
+  const { exploreSearchState, setExploreSearchState, setFilterState, filterState } = useAppSearchContext();
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -48,34 +40,34 @@ export default function Dashboard() {
   }, [tabIndex]);
   React.useEffect(() => {
     onSearch();
-  }, [exploreSearchContext.collectionName, exploreSearchContext.selectedOption]);
+  }, [exploreSearchState.collectionName, exploreSearchState.selectedOption]);
 
   React.useEffect(() => {
     onSearch();
   }, []);
   const onSearch = async () => {
     setIsFetching(true);
-    if (exploreSearchContext.collectionName) {
+    if (exploreSearchState.collectionName) {
       // they selected a collection search for collections
-      const response = await getListingsByCollectionName(exploreSearchContext.collectionName);
+      const response = await getListingsByCollectionName(exploreSearchState.collectionName);
       if (response) {
         const cardData = response;
-        setExploreSearchContext({ ...exploreSearchContext, listedNfts: cardData });
+        setExploreSearchState({ ...exploreSearchState, listedNfts: cardData });
       }
-    } else if (exploreSearchContext.selectedOption) {
+    } else if (exploreSearchState.selectedOption) {
       // they selected an asset search for that instead
 
       const response = await getListingById(
-        exploreSearchContext.selectedOption.id,
-        exploreSearchContext.selectedOption.address
+        exploreSearchState.selectedOption.id,
+        exploreSearchState.selectedOption.address
       );
       if (response) {
         const cardData = orderToCardData(response);
-        setExploreSearchContext({ ...exploreSearchContext, listedNfts: [cardData] });
+        setExploreSearchState({ ...exploreSearchState, listedNfts: [cardData] });
       }
     } else {
       const response = await getListings();
-      setExploreSearchContext({ ...exploreSearchContext, listedNfts: response });
+      setExploreSearchState({ ...exploreSearchState, listedNfts: response });
     }
     setIsFetching(false);
   };
@@ -83,16 +75,16 @@ export default function Dashboard() {
   const onFilterSearch = async (filter?: Filter) => {
     setIsFetching(true);
     let response;
-    if (exploreSearchContext.collectionName) {
-      response = await getListingsByCollectionName(exploreSearchContext.collectionName, filter);
-      setExploreSearchContext({
-        ...exploreSearchContext,
+    if (exploreSearchState.collectionName) {
+      response = await getListingsByCollectionName(exploreSearchState.collectionName, filter);
+      setExploreSearchState({
+        ...exploreSearchState,
         listedNfts: response,
-        collectionName: exploreSearchContext.collectionName
+        collectionName: exploreSearchState.collectionName
       });
     } else {
       response = await getListings(filter);
-      setExploreSearchContext({ ...exploreSearchContext, listedNfts: response });
+      setExploreSearchState({ ...exploreSearchState, listedNfts: response });
     }
     setIsFetching(false);
   };
@@ -116,7 +108,7 @@ export default function Dashboard() {
               <div className="center" style={{ flex: 1, marginRight: 30 }}>
                 <ul className="links">
                   <li>
-                    {!exploreSearchContext.selectedOption && (
+                    {!exploreSearchState.selectedOption && (
                       <a className="active cpointer" onClick={() => setFilterShowed(!filterShowed)}>
                         Filter <FilterIcon />
                       </a>
@@ -127,20 +119,20 @@ export default function Dashboard() {
             </div>
           </div>
           <div>
-            {!exploreSearchContext.selectedOption && (
+            {!exploreSearchState.selectedOption && (
               <FilterPanel
-                filter={filterContext}
-                setFilters={setFilterContext}
+                filter={filterState}
+                setFilters={setFilterState}
                 isExpanded={filterShowed}
                 getNftListings={onFilterSearch}
-                exploreSearchState={exploreSearchContext}
+                exploreSearchState={exploreSearchState}
               />
             )}
           </div>
           {isFetching ? (
             <Spinner size="md" color="gray.800" />
           ) : (
-            <CardList showItems={[]} data={exploreSearchContext.listedNfts} actions={['BUY_NFT']} />
+            <CardList showItems={[]} data={exploreSearchState.listedNfts} actions={['BUY_NFT']} />
           )}
         </div>
       </div>

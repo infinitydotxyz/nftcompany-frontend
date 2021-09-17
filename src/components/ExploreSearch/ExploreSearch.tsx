@@ -1,12 +1,6 @@
 import React, { Fragment, useRef } from 'react';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
-import {
-  getListingById,
-  getListingsByCollectionName,
-  getTypeAheadOptions,
-  orderToCardData,
-  TypeAheadOption
-} from 'services/Listings.service';
+import { getTypeAheadOptions, TypeAheadOption } from 'services/Listings.service';
 import { CheckCircleIcon, CloseIcon } from '@chakra-ui/icons';
 import { Box } from '@chakra-ui/react';
 import { ExploreSearchState } from 'hooks/useSearch';

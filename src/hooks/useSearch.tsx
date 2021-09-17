@@ -21,43 +21,23 @@ export const defaultExploreSearchState: ExploreSearchState = {
   selectedOption: null
 };
 // ExploreSearch
-const ExploreSearchContext = React.createContext<any>(defaultExploreSearchState);
-const SetExploreSearchContext = React.createContext<any>(() => {});
+const AppSearchContext = React.createContext({} as any);
 
-export function useExploreSearchContext(): ExploreSearchState {
-  return useContext(ExploreSearchContext);
-}
-export function useSetExploreSearchContext() {
-  return useContext(SetExploreSearchContext);
-}
-// Filter
-const FilterStateContext = React.createContext<any>(null);
-const SetFilterContext = React.createContext<any>(null);
-
-export function useFilterContext() {
-  return useContext(FilterStateContext);
-}
-export function useSetFilterContext() {
-  return useContext(SetFilterContext);
+export function useAppSearchContext(): {
+  exploreSearchState: ExploreSearchState;
+  filterState: Filter;
+  setExploreSearchState: (state: ExploreSearchState) => void;
+  setFilterState: (state: Filter) => void;
+} {
+  return useContext(AppSearchContext);
 }
 
 export function FilterContextProvider({ children }: any) {
   const [exploreSearchState, setExploreSearchState] = useState<ExploreSearchState>(defaultExploreSearchState);
-  //   TODO move filter state into this
   const [filterState, setFilterState] = useState<Filter>();
 
-  function setExploreSearch(exploreSearchState: ExploreSearchState) {
-    setExploreSearchState(exploreSearchState);
-  }
-  return (
-    <ExploreSearchContext.Provider value={exploreSearchState}>
-      <FilterStateContext.Provider value={filterState}>
-        <SetFilterContext.Provider value={setFilterState}>
-          <SetExploreSearchContext.Provider value={setExploreSearch}>{children}</SetExploreSearchContext.Provider>
-        </SetFilterContext.Provider>
-      </FilterStateContext.Provider>
-    </ExploreSearchContext.Provider>
-  );
+  const value = { exploreSearchState, filterState, setExploreSearchState, setFilterState };
+  return <AppSearchContext.Provider value={value}>{children}</AppSearchContext.Provider>;
 }
 
 export const FilterContext = React.createContext({});

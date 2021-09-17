@@ -9,7 +9,7 @@ import { setAuthHeaders } from '../../src/utils/apiUtil';
 import NavBar from 'components/NavBar/NavBar';
 import { useAppContext } from 'utils/context/AppContext';
 import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
-import { useExploreSearchContext, useSetExploreSearchContext, useSetFilterContext } from 'hooks/useSearch';
+import { useAppSearchContext } from 'hooks/useSearch';
 
 let isChangingAccount = false;
 
@@ -27,9 +27,7 @@ type ContextType = {
 };
 
 const Header = () => {
-  const exploreSearchContext = useExploreSearchContext();
-  const setExploreSearchContext = useSetExploreSearchContext();
-  const setFilters = useSetFilterContext();
+  const { exploreSearchState, setExploreSearchState, setFilterState } = useAppSearchContext();
   const router = useRouter();
   const { route } = router;
   // const [user, setUser] = useState<any>(null);
@@ -47,7 +45,6 @@ const Header = () => {
             isChangingAccount = false;
             await setAuthHeaders(accounts[0]);
             setUser({ account: await getAccount() });
-            // window.location.reload(); // no need anymore as other comps can auto refresh.
           }, 500);
         }
       };
@@ -78,34 +75,6 @@ const Header = () => {
                   <Image alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={80} />
                 </a>
               </Link>
-
-              {/* TODO: add Search once we have data store */}
-              {/* <div className="hd-db">
-                <div className="hd-db-l">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></path>
-                    <path
-                      d="M22 22L20 20"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></path>
-                  </svg>
-                </div>
-                <input
-                  className="hd-db-input"
-                  placeholder="Search items..."
-                  type="text"
-                  onChange={(ev) => setFilter({ search: ev.target.value })}
-                />
-              </div> */}
             </div>
 
             <div className="col-sm-12 col-md-8">
@@ -113,9 +82,9 @@ const Header = () => {
                 {/* <HeaderActionButtons user={user} /> */}
                 <Box flex="2" mr="4">
                   <ExploreSearch
-                    setFilters={setFilters}
-                    setExploreSearchState={setExploreSearchContext}
-                    exploreSearchState={exploreSearchContext}
+                    setFilters={setFilterState}
+                    setExploreSearchState={setExploreSearchState}
+                    exploreSearchState={exploreSearchState}
                   />
                 </Box>
                 <NavBar
