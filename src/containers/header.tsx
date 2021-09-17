@@ -158,7 +158,7 @@ const Header = () => {
                   <li>
                     <HoverMenuButton
                       buttonContent={
-                        <div className="connect-wallet">
+                        <div className="connect-button">
                           {`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}
                         </div>
                       }
