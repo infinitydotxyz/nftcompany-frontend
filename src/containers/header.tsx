@@ -47,8 +47,8 @@ const Header = () => {
           setTimeout(async () => {
             isChangingAccount = false;
             await setAuthHeaders(accounts[0]);
-            setUser({ account: await getAccount() });
-            // window.location.reload(); // no need anymore as other comps can auto refresh.
+            // setUser({ account: await getAccount() });
+            window.location.reload(); // use page reload for now to avoid complicated logic in other comps.
           }, 500);
         }
       };
