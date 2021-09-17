@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Menu, MenuButton, MenuList, useDisclosure, MenuItem, Button, MenuDivider, useToast } from '@chakra-ui/react';
-import { InfoOutlineIcon, ExternalLinkIcon, StarIcon } from '@chakra-ui/icons';
+import React, { useEffect, useContext } from 'react';
+import { Menu, MenuButton, MenuList, useDisclosure, MenuItem, MenuDivider, useToast } from '@chakra-ui/react';
+import { ExternalLinkIcon, StarIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FilterContext } from 'hooks/useFilter';
@@ -9,7 +9,6 @@ import { getAccount } from '../../src/utils/ethersUtil';
 import { setAuthHeaders } from '../../src/utils/apiUtil';
 import NavBar from 'components/NavBar/NavBar';
 import { useAppContext } from 'utils/context/AppContext';
-import { showMessage } from 'utils/commonUtil';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 
 let isChangingAccount = false;
@@ -29,6 +28,8 @@ type ContextType = {
 
 const Header = () => {
   const toast = useToast();
+  let hoverTimer: any;
+  let menuListTimer: any;
   const router = useRouter();
   const { route } = router;
   // const [user, setUser] = useState<any>(null);
@@ -128,15 +129,30 @@ const Header = () => {
                 {user?.account ? (
                   <li>
                     <Menu isLazy isOpen={isOpen} offset={[0, 10]}>
-                      <div style={{ paddingBottom: 20, paddingTop: 20 }} onMouseEnter={onOpen} onMouseLeave={onClose}>
-                        <MenuButton>
-                          <a className="connect-wallet">{`${user?.account.slice(0, 6)}...${user?.account.slice(
-                            -4
-                          )}`}</a>
-                        </MenuButton>
-                      </div>
+                      <MenuButton
+                        onMouseEnter={() => {
+                          clearTimeout(menuListTimer);
+                          if (!isOpen) {
+                            onOpen();
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          hoverTimer = setTimeout(onClose, 300);
+                        }}
+                      >
+                        <a className="connect-wallet">{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</a>
+                      </MenuButton>
 
-                      <MenuList onClick={onClose} onMouseLeave={onClose} onMouseEnter={onOpen}>
+                      <MenuList
+                        onClick={onClose}
+                        onMouseLeave={() => {
+                          menuListTimer = setTimeout(onClose, 300);
+                        }}
+                        onMouseEnter={() => {
+                          clearTimeout(hoverTimer);
+                          hoverTimer = null;
+                        }}
+                      >
                         <AddressMenuItem user={user} />
                         <MenuDivider />
                         <MenuItem
