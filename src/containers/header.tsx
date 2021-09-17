@@ -111,15 +111,7 @@ const Header = () => {
                 {/* <HeaderActionButtons user={user} /> */}
 
                 <NavBar
-                  items={[
-                    // { title: 'NFT', link: '/explore/nfts' },
-                    // { title: 'Bids & Offers', link: '/offers' },
-                    // { title: 'My NFTs', link: '/my-nfts' },
-                    // { title: 'Listed NFTs', link: '/listed-nfts' },
-                    // { title: 'Rewards', link: '/rewards' },
-                    { title: 'Explore', link: '/explore' }
-                  ]}
-                  // active={['/my-nfts', '/listed-nfts', '/rewards'].indexOf(route)}
+                  items={[{ title: 'Explore', link: '/explore' }]}
                   active={['/explore'].indexOf(route)}
                   onClickItem={(item, _) => {
                     router.push(item.link || '');
@@ -155,15 +147,24 @@ const Header = () => {
                         <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
                           Listed NFTs
                         </MenuItem>
+
                         <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-made')}>
                           Offers Made
                         </MenuItem>
                         <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-received')}>
                           Offers Received
                         </MenuItem>
+
+                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/purchases')}>
+                          Purchases
+                        </MenuItem>
+                        <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/sales')}>
+                          Sales
+                        </MenuItem>
                         <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/rewards')}>
                           Rewards
                         </MenuItem>
+
                         <MenuDivider />
                         <MenuItem textColor="#333" icon={<ExternalLinkIcon />} onClick={() => setUser(null)}>
                           Sign out
