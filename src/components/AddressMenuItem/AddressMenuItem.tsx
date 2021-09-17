@@ -28,7 +28,7 @@ export const AddressMenuItem = ({ user }: Props) => {
       </div>
 
       <div className={styles.right}>
-        <Tooltip label="Copy to Clipboard">
+        <Tooltip label="Copy Address">
           <MenuItem
             className={styles.button}
             onClick={(e) => {
