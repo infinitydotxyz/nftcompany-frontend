@@ -3612,7 +3612,6 @@ export class OpenSeaPort {
         args[10],
         txnData
       );
-      console.log('Gas estimate', gasEstimate);
       txnData.gas = this._correctGasAmount(gasEstimate);
     } catch (error: any) {
       console.error(`Failed atomic match with args: `, args, error);
