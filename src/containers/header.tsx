@@ -73,10 +73,19 @@ const Header = () => {
               </a>
             </Link>
 
-            <div className="col-lg-3"></div>
-            <div className="col-lg-3 col-12">
-              <ExploreSearch />
-            </div>
+            <div className="col-lg-1"></div>
+            <Box className="col-lg-5 col-12" display="flex">
+              <NavBar
+                items={[{ title: 'Explore', link: '/explore' }]}
+                active={['/explore'].indexOf(route)}
+                onClickItem={(item, _) => {
+                  router.push(item.link || '');
+                }}
+              />
+              <Box flex="1" mt="2">
+                <ExploreSearch />
+              </Box>
+            </Box>
             <div className="col-12 col-lg-6">
               <ul className="links" style={{ justifyContent: 'space-between' }}>
                 {/* <HeaderActionButtons user={user} /> */}
