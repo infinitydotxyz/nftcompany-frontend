@@ -1,14 +1,14 @@
-import React, { useEffect, useContext } from 'react';
-import { MenuItem, MenuDivider, useToast } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import { MenuItem, MenuDivider, Box, useToast } from '@chakra-ui/react';
 import { ExternalLinkIcon, StarIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
 import { getAccount } from '../../src/utils/ethersUtil';
 import { setAuthHeaders } from '../../src/utils/apiUtil';
 import NavBar from 'components/NavBar/NavBar';
 import { useAppContext } from 'utils/context/AppContext';
+import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 
@@ -31,9 +31,6 @@ const Header = () => {
   const toast = useToast();
   const router = useRouter();
   const { route } = router;
-  // const [user, setUser] = useState<any>(null);
-  const { filter, setFilter } = useContext<any>(FilterContext);
-  console.log('filter', filter);
 
   const { user, setUser } = useAppContext();
   console.log('- Header - user:', user);
@@ -48,7 +45,6 @@ const Header = () => {
             isChangingAccount = false;
             await setAuthHeaders(accounts[0]);
             setUser({ account: await getAccount() });
-            // window.location.reload(); // no need anymore as other comps can auto refresh.
           }, 500);
         }
       };
@@ -71,46 +67,27 @@ const Header = () => {
       <div className="hd-f">
         <div className="container container-fluid">
           <div className="grid align-items-center">
-            <div className="col-sm-12 col-md-4 d-flex">
-              <div style={{ width: 480, height: 0 }}></div>
-              <Link href="/">
-                <a className="logo-link" style={{ position: 'absolute', top: 2, left: 67 }}>
-                  {/* TODO: use logo image without padding and align center for this */}
-                  <Image alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={80} />
-                </a>
-              </Link>
+            <Link href="/">
+              <a className="logo-link" style={{ position: 'absolute', top: 5, left: 67 }}>
+                <Image alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={80} />
+              </a>
+            </Link>
 
-              {/* TODO: add Search once we have data store */}
-              {/* <div className="hd-db">
-                <div className="hd-db-l">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></path>
-                    <path
-                      d="M22 22L20 20"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></path>
-                  </svg>
-                </div>
-                <input
-                  className="hd-db-input"
-                  placeholder="Search items..."
-                  type="text"
-                  onChange={(ev) => setFilter({ search: ev.target.value })}
-                />
-              </div> */}
-            </div>
-
-            <div className="col-sm-12 col-md-8">
-              <ul className="links">
+            <div className="col-lg-1"></div>
+            <Box className="col-lg-5 col-12" display="flex">
+              <NavBar
+                items={[{ title: 'Explore', link: '/explore' }]}
+                active={['/explore'].indexOf(route)}
+                onClickItem={(item, _) => {
+                  router.push(item.link || '');
+                }}
+              />
+              <Box flex="1" mt="2">
+                <ExploreSearch />
+              </Box>
+            </Box>
+            <div className="col-12 col-lg-6">
+              <ul className="links" style={{ justifyContent: 'space-between' }}>
                 {/* <HeaderActionButtons user={user} /> */}
 
                 <HoverMenuButton buttonTitle="NFTs">
@@ -145,14 +122,6 @@ const Header = () => {
                     Sales
                   </MenuItem>
                 </HoverMenuButton>
-
-                <NavBar
-                  items={[{ title: 'Explore', link: '/explore' }]}
-                  active={['/explore'].indexOf(route)}
-                  onClickItem={(item, _) => {
-                    router.push(item.link || '');
-                  }}
-                />
 
                 {user?.account ? (
                   <li>

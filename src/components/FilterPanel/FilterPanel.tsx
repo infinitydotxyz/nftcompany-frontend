@@ -59,7 +59,7 @@ const FilterPanel = ({ isExpanded, setExpanded, setFilters, filter, getNftListin
             transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
           >
             <div className={styles.container}>
-              <span className={styles.item}>
+              {/* <span className={styles.item}>
                 <NiceSelect
                   placeholder="Sort by likes"
                   id="filter"
@@ -78,7 +78,7 @@ const FilterPanel = ({ isExpanded, setExpanded, setFilters, filter, getNftListin
                     Least liked
                   </option>
                 </NiceSelect>
-              </span>
+              </span> */}
 
               <span className={styles.item}>
                 <NiceSelect
