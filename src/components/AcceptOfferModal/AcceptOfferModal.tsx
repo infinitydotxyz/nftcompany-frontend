@@ -6,7 +6,6 @@ import { getOpenSeaport } from 'utils/ethersUtil';
 import { showMessage } from 'utils/commonUtil';
 import { useToast } from '@chakra-ui/react';
 import { useAppContext } from 'utils/context/AppContext';
-import Assets from 'components/nft/assets';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';

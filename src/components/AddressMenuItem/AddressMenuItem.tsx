@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './AddressMenuItem.module.scss';
 import { Tooltip } from '@chakra-ui/react';
 
-import { MenuItem, Button, useToast } from '@chakra-ui/react';
+import { MenuItem, useToast } from '@chakra-ui/react';
 import { ExternalLinkIcon, CopyIcon } from '@chakra-ui/icons';
 import { showMessage } from 'utils/commonUtil';
 import { User } from 'utils/context/AppContext';

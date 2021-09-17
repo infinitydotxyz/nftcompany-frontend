@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
-import { useToast } from '@chakra-ui/toast';
-import { showMessage } from 'utils/commonUtil';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';

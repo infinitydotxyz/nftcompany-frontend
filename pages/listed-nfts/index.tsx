@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import { apiGet } from 'utils/apiUtil';
 import DeleteListingModal from './DeleteListingModal';

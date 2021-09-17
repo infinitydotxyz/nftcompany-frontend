@@ -1,3 +1,7 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true'
+});
+
 module.exports = {
   reactStrictMode: true,
   distDir: 'build',
@@ -25,11 +29,7 @@ module.exports = {
         ]
       }
     ];
-  }
+  },
 };
-
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true'
-});
 
 module.exports = withBundleAnalyzer({});
