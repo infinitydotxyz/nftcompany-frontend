@@ -69,6 +69,7 @@ export default function Dashboard() {
       const response = await getListings();
       setExploreSearchState({ ...exploreSearchState, listedNfts: response });
     }
+    setFilterState({ sortByLikes: '', sortByPrice: '', price: 0 });
     setIsFetching(false);
   };
 
