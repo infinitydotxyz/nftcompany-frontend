@@ -121,6 +121,21 @@ const Header = () => {
                   }}
                 />
 
+                <HoverMenuButton buttonTitle="My NFTs">
+                  <MenuItem
+                    textColor="#333"
+                    icon={<StarIcon />}
+                    onClick={() => {
+                      return router.push('/my-nfts');
+                    }}
+                  >
+                    My NFTs
+                  </MenuItem>
+                  <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
+                    Listed NFTs
+                  </MenuItem>
+                </HoverMenuButton>
+
                 {user?.account ? (
                   <li>
                     <HoverMenuButton
@@ -132,18 +147,6 @@ const Header = () => {
                     >
                       <AddressMenuItem user={user} />
                       <MenuDivider />
-                      <MenuItem
-                        textColor="#333"
-                        icon={<StarIcon />}
-                        onClick={() => {
-                          return router.push('/my-nfts');
-                        }}
-                      >
-                        My NFTs
-                      </MenuItem>
-                      <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
-                        Listed NFTs
-                      </MenuItem>
 
                       <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-made')}>
                         Offers Made

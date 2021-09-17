@@ -3,21 +3,29 @@ import styles from './HoverMenuButton.module.scss';
 import { Menu, MenuButton, MenuList, useDisclosure } from '@chakra-ui/react';
 
 type Props = {
-  buttonContent: JSX.Element;
+  buttonContent?: JSX.Element;
+  buttonTitle?: string;
   children: JSX.Element[];
 };
 
-export const HoverMenuButton = ({ buttonContent, children }: Props) => {
+export const HoverMenuButton = ({ buttonTitle, buttonContent, children }: Props) => {
   let hoverTimer: any;
   let menuListTimer: any;
   const delay = 200;
+  let addStyle = false;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  if (buttonTitle != null) {
+    addStyle = true;
+    buttonContent = <div>{buttonTitle}</div>;
+  }
+
   return (
     <div className={styles.main}>
-      <Menu isLazy isOpen={isOpen} offset={[0, 10]}>
+      <Menu isLazy isOpen={isOpen}>
         <MenuButton
+          className={`${styles.hoverButton}  ${addStyle && isOpen ? styles.menuOpen : ''}`}
           onMouseEnter={() => {
             clearTimeout(menuListTimer);
             if (!isOpen) {

@@ -1,0 +1,15 @@
+.hoverButton {
+  padding: 10px 20px;
+  // border: 1px solid #aaa;
+  border-radius: 20px;
+  margin-right: 15px;
+  color: #aaa;
+  cursor: pointer;
+  transition: 0.1s all ease-in;
+  font-weight: bold;
+
+  &.menuOpen {
+    background-color: #4047ff;
+    color: #fff;
+  }
+}
