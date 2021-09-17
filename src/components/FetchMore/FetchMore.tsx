@@ -29,3 +29,5 @@ export const FetchMore = ({ onFetchMore }: any) => {
     </InView>
   );
 };
+
+export const getLastItemCreatedAt = (data: any) => data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt : ''

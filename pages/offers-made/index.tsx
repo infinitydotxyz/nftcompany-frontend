@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
-import { useToast } from '@chakra-ui/toast';
-import { showMessage } from 'utils/commonUtil';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import { apiGet, apiDelete } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore } from 'components/FetchMore/FetchMore';
+import { FetchMore, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 
 import pageStyles from '../../styles/Dashboard.module.scss';
@@ -32,7 +30,7 @@ export default function OffersMade() {
     const newCurrentPage = currentPage + 1;
     try {
       const { result, error } = await apiGet(`/u/${user?.account}/offersmade`, {
-        startAfter: data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt : '',
+        startAfter: getLastItemCreatedAt(data),
         limit: ITEMS_PER_PAGE
       });
       if (error) {

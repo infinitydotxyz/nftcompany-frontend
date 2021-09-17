@@ -7,7 +7,7 @@ import CardList from 'components/Card/CardList';
 import { apiGet } from 'utils/apiUtil';
 import DeleteListingModal from './DeleteListingModal';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore } from 'components/FetchMore/FetchMore';
+import { FetchMore, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import { ordersToCardData } from 'services/Listings.service';
 import pageStyles from '../../styles/Dashboard.module.scss';
@@ -32,7 +32,7 @@ export default function ListNFTs() {
     const newCurrentPage = currentPage + 1;
     try {
       const { result, error } = await apiGet(`/u/${user?.account}/listings`, {
-        startAfter: data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt : '',
+        startAfter: getLastItemCreatedAt(data),
         limit: ITEMS_PER_PAGE
       });
       if (error) {
