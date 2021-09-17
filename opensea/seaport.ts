@@ -3595,7 +3595,6 @@ export class OpenSeaPort {
       ]
     ];
 
-    console.log('Txn data', txnData);
     // Estimate gas first
     try {
       // Typescript splat doesn't typecheck
