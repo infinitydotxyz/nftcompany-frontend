@@ -12,7 +12,7 @@ type Props = {
 export const HoverMenuButton = ({ buttonTitle, buttonContent, children }: Props) => {
   let hoverTimer: any;
   let menuListTimer: any;
-  const delay = 200;
+  const delay = 100;
   let addStyle = false;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -54,7 +54,6 @@ export const HoverMenuButton = ({ buttonTitle, buttonContent, children }: Props)
           }}
           onMouseEnter={() => {
             clearTimeout(hoverTimer);
-            hoverTimer = null;
           }}
         >
           {children}

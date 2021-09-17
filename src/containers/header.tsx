@@ -113,7 +113,7 @@ const Header = () => {
               <ul className="links">
                 {/* <HeaderActionButtons user={user} /> */}
 
-                <HoverMenuButton buttonTitle="My NFTs">
+                <HoverMenuButton buttonTitle="NFTs">
                   <MenuItem
                     textColor="#333"
                     icon={<StarIcon />}
@@ -124,7 +124,7 @@ const Header = () => {
                     My NFTs
                   </MenuItem>
                   <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
-                    Listed NFTs
+                    Listed for sale
                   </MenuItem>
                 </HoverMenuButton>
 
