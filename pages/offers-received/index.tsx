@@ -19,7 +19,6 @@ export default function OffersReceived() {
   const toast = useToast();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
-  const [deleteModalItem, setDeleteModalItem] = useState(null);
 
   const fetchData = async () => {
     if (!user?.account) {
@@ -67,18 +66,7 @@ export default function OffersReceived() {
           </div>
 
           <div className={styles.main}>
-            {isFetching ? (
-              <Spinner size="md" color="gray.800" />
-            ) : (
-              <CardList
-                data={data}
-                actions={['ACCEPT_OFFER']}
-                onClickAction={async (item, action) => {
-                  console.log('item, action', item, action);
-                  setDeleteModalItem(item);
-                }}
-              />
-            )}
+            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} actions={['ACCEPT_OFFER']} />}
           </div>
         </div>
       </div>

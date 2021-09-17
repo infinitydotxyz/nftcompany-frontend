@@ -14,7 +14,7 @@ import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import { ordersToCardData } from 'services/Listings.service';
 
-export default function OffersMade() {
+export default function Sales() {
   const { user } = useAppContext();
   const toast = useToast();
   const [isFetching, setIsFetching] = useState(false);
@@ -28,12 +28,13 @@ export default function OffersMade() {
     setIsFetching(true);
     let listingData = [];
     try {
-      const { result, error } = await apiGet(`/u/${user?.account}/offersmade`);
+      const { result, error } = await apiGet(`/u/${user?.account}/sales`);
       if (error) {
         showMessage(toast, 'error', `${error}`);
         return;
       }
-      listingData = result?.listings || [];
+      listingData = result?.sales || [];
+      console.log('result', result);
       console.log('listingData', listingData);
     } catch (e) {
       console.error(e);
@@ -45,19 +46,19 @@ export default function OffersMade() {
   };
 
   React.useEffect(() => {
-    console.log('- Offers Made - user:', user);
+    console.log('- Sales - user:', user);
     fetchData();
   }, [user]);
   return (
     <>
       <Head>
-        <title>Offers Made</title>
+        <title>Sales</title>
       </Head>
       <div className={pageStyles.dashboard}>
         <div className="container container-fluid">
           <div className="section-bar">
             <div className="">
-              <div className="tg-title">Offers Made</div>
+              <div className="tg-title">Sales</div>
             </div>
 
             <div className="center">&nbsp;</div>
@@ -66,7 +67,7 @@ export default function OffersMade() {
           </div>
 
           <div className={styles.main}>
-            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} actions={['CANCEL_OFFER']} />}
+            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} actions={['VIEW_ORDER']} />}
           </div>
         </div>
       </div>
@@ -75,4 +76,4 @@ export default function OffersMade() {
 }
 
 // eslint-disable-next-line react/display-name
-OffersMade.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
+Sales.getLayout = (page: NextPage) => <Layout>{page}</Layout>;

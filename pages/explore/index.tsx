@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Button, Spinner } from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
 // import { Select } from '@chakra-ui/react';
 import CardList from 'components/Card/CardList';
 import FilterPanel, { Filter } from 'components/FilterPanel/FilterPanel';
 import { FilterIcon } from 'components/Icons/Icons';
 import styles from '../../styles/Dashboard.module.scss';
 import { getListings, getListingsByCollectionName } from 'services/Listings.service';
-import { CardData } from 'components/Card/Card';
-import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import {
   useExploreSearchContext,
   useFilterContext,
