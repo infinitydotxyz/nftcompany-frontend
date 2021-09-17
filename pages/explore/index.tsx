@@ -10,11 +10,14 @@ import { FilterIcon } from 'components/Icons/Icons';
 import styles from '../../styles/Dashboard.module.scss';
 import { getListingById, getListings, getListingsByCollectionName, orderToCardData } from 'services/Listings.service';
 import { useAppSearchContext } from 'hooks/useSearch';
+import { useAppContext } from 'utils/context/AppContext';
+const SEARCH_ERROR_MESSAGE = 'Unable to fetch assets';
 export default function Dashboard() {
   const [tabIndex, setTabIndex] = useState(1);
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const { exploreSearchState, setExploreSearchState, setFilterState, filterState } = useAppSearchContext();
+  const { showAppError } = useAppContext();
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -50,9 +53,11 @@ export default function Dashboard() {
     if (exploreSearchState.collectionName) {
       // they selected a collection search for collections
       const response = await getListingsByCollectionName(exploreSearchState.collectionName);
-      if (response) {
+      if (response.length !== 0) {
         const cardData = response;
         setExploreSearchState({ ...exploreSearchState, listedNfts: cardData });
+      } else {
+        showAppError(SEARCH_ERROR_MESSAGE);
       }
     } else if (exploreSearchState.selectedOption) {
       // they selected an asset search for that instead
@@ -64,10 +69,16 @@ export default function Dashboard() {
       if (response) {
         const cardData = orderToCardData(response);
         setExploreSearchState({ ...exploreSearchState, listedNfts: [cardData] });
+      } else {
+        showAppError(SEARCH_ERROR_MESSAGE);
       }
     } else {
       const response = await getListings();
-      setExploreSearchState({ ...exploreSearchState, listedNfts: response });
+      if (response.length !== 0) {
+        setExploreSearchState({ ...exploreSearchState, listedNfts: response });
+      } else {
+        showAppError(SEARCH_ERROR_MESSAGE);
+      }
     }
     setFilterState({ sortByLikes: '', sortByPrice: '', price: 0 });
     setIsFetching(false);
@@ -78,14 +89,22 @@ export default function Dashboard() {
     let response;
     if (exploreSearchState.collectionName) {
       response = await getListingsByCollectionName(exploreSearchState.collectionName, filter);
-      setExploreSearchState({
-        ...exploreSearchState,
-        listedNfts: response,
-        collectionName: exploreSearchState.collectionName
-      });
+      if (response.length !== 0) {
+        setExploreSearchState({
+          ...exploreSearchState,
+          listedNfts: response,
+          collectionName: exploreSearchState.collectionName
+        });
+      } else {
+        showAppError(SEARCH_ERROR_MESSAGE);
+      }
     } else {
       response = await getListings(filter);
-      setExploreSearchState({ ...exploreSearchState, listedNfts: response });
+      if (response.length !== 0) {
+        setExploreSearchState({ ...exploreSearchState, listedNfts: response });
+      } else {
+        showAppError(SEARCH_ERROR_MESSAGE);
+      }
     }
     setIsFetching(false);
   };
