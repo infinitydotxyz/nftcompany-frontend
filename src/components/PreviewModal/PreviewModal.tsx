@@ -34,7 +34,6 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'blue' }}>
             <div className="modal-body">
               <div className={styles.title}>{data?.title}</div>
-
               <div className={styles.space}>{data?.collectionName}</div>
 
               <div className={styles.main}>
@@ -43,13 +42,11 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
                     src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
                   />
                 </div>
-
                 <div className={styles.infoBox}>
                   <div>
                     <div className={styles.price}>{data?.price} ETH</div>
                     <div className={styles.counter}>{data.inStock ?? 0} in stock</div>
                   </div>
-
                   <div className={styles.description}>{data?.description}</div>
                 </div>
               </div>
