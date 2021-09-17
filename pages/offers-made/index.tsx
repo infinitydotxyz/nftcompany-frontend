@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
-import { useToast } from '@chakra-ui/toast';
-import { showMessage } from 'utils/commonUtil';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import { apiGet, apiDelete } from 'utils/apiUtil';
-import { weiToEther } from '../../src/utils/ethersUtil';
+import { ITEMS_PER_PAGE } from 'utils/constants';
+import { FetchMore, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 
 import pageStyles from '../../styles/Dashboard.module.scss';
@@ -15,10 +14,11 @@ import styles from '../../styles/Dashboard.module.scss';
 import { ordersToCardData } from 'services/Listings.service';
 
 export default function OffersMade() {
-  const { user } = useAppContext();
-  const toast = useToast();
+  const { user, showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
+  const [currentPage, setCurrentPage] = useState(-1);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const fetchData = async () => {
     if (!user?.account) {
@@ -27,10 +27,14 @@ export default function OffersMade() {
     }
     setIsFetching(true);
     let listingData = [];
+    const newCurrentPage = currentPage + 1;
     try {
-      const { result, error } = await apiGet(`/u/${user?.account}/offersmade`);
+      const { result, error } = await apiGet(`/u/${user?.account}/offersmade`, {
+        startAfter: getLastItemCreatedAt(data),
+        limit: ITEMS_PER_PAGE
+      });
       if (error) {
-        showMessage(toast, 'error', `${error}`);
+        showAppError(`${error?.message}`);
         return;
       }
       listingData = result?.listings || [];
@@ -38,16 +42,25 @@ export default function OffersMade() {
     } catch (e) {
       console.error(e);
     }
-    const data = ordersToCardData(listingData || []);
-    console.log('data', data);
+    const moreData = ordersToCardData(listingData || []);
+    console.log('moreData', moreData);
     setIsFetching(false);
-    setData(data);
+    setData([ ...data, ...moreData ]);
+    setCurrentPage(newCurrentPage);
   };
 
   React.useEffect(() => {
     console.log('- Offers Made - user:', user);
     fetchData();
   }, [user]);
+
+  React.useEffect(() => {
+    if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
+      return;
+    }
+    console.log('currentPage loaded:', currentPage);
+    setDataLoaded(true); // current page's data loaded & rendered.
+  }, [currentPage]);
   return (
     <>
       <Head>
@@ -66,8 +79,20 @@ export default function OffersMade() {
           </div>
 
           <div className={styles.main}>
-            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} actions={['CANCEL_OFFER']} />}
+            {/* {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} actions={['CANCEL_OFFER']} />} */}
+            <CardList data={data} actions={['CANCEL_OFFER']} />
           </div>
+
+          {dataLoaded && (
+            <FetchMore
+              currentPage={currentPage}
+              onFetchMore={async () => {
+                console.log('onFetchMore()');
+                await setDataLoaded(false);
+                await fetchData();
+              }}
+            />
+          )}
         </div>
       </div>
     </>

@@ -7,6 +7,8 @@ import Layout from 'containers/layout';
 import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import { apiGet } from 'utils/apiUtil';
+import { ITEMS_PER_PAGE } from 'utils/constants';
+import { FetchMore, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 
 import pageStyles from '../../styles/Dashboard.module.scss';
@@ -14,10 +16,11 @@ import styles from '../../styles/Dashboard.module.scss';
 import { ordersToCardData } from 'services/Listings.service';
 
 export default function Purchases() {
-  const { user } = useAppContext();
-  const toast = useToast();
+  const { user, showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
+  const [currentPage, setCurrentPage] = useState(-1);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const fetchData = async () => {
     if (!user?.account) {
@@ -26,10 +29,14 @@ export default function Purchases() {
     }
     setIsFetching(true);
     let listingData = [];
+    const newCurrentPage = currentPage + 1;
     try {
-      const { result, error } = await apiGet(`/u/${user?.account}/purchases`);
+      const { result, error } = await apiGet(`/u/${user?.account}/purchases`, {
+        startAfter: getLastItemCreatedAt(data),
+        limit: ITEMS_PER_PAGE
+      });
       if (error) {
-        showMessage(toast, 'error', `${error}`);
+        showAppError(`${error?.message}`);
         return;
       }
       listingData = result?.purchases || [];
@@ -37,16 +44,25 @@ export default function Purchases() {
     } catch (e) {
       console.error(e);
     }
-    const data = ordersToCardData(listingData || []);
-    console.log('data', data);
+    const moreData = ordersToCardData(listingData || []);
+    console.log('moreData', moreData);
     setIsFetching(false);
-    setData(data);
+    setData([ ...data, ...moreData ]);
+    setCurrentPage(newCurrentPage);
   };
 
   React.useEffect(() => {
     console.log('- Purchases - user:', user);
     fetchData();
   }, [user]);
+
+  React.useEffect(() => {
+    if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
+      return;
+    }
+    console.log('currentPage loaded:', currentPage);
+    setDataLoaded(true); // current page's data loaded & rendered.
+  }, [currentPage]);
   return (
     <>
       <Head>
@@ -65,8 +81,20 @@ export default function Purchases() {
           </div>
 
           <div className={styles.main}>
-            {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} actions={['VIEW_ORDER']} />}
+            {/* {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} actions={['VIEW_ORDER']} />} */}
+            <CardList data={data} actions={['VIEW_ORDER']} />
           </div>
+
+          {dataLoaded && (
+            <FetchMore
+              currentPage={currentPage}
+              onFetchMore={async () => {
+                console.log('onFetchMore()');
+                await setDataLoaded(false);
+                await fetchData();
+              }}
+            />
+          )}
         </div>
       </div>
     </>
