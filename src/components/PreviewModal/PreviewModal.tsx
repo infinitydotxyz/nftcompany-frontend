@@ -54,7 +54,15 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
               </div>
 
               <div className={styles.buttons}>
-                <a className="action-btn  " onClick={() => setPlaceBidShowed(true)}>
+                <a
+                  className="action-btn action-2nd"
+                  onClick={() => {
+                    window.open(`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`, '_blank');
+                  }}
+                >
+                  Go to Etherscan
+                </a>
+                <a className="action-btn" onClick={() => setPlaceBidShowed(true)}>
                   Make an offer
                 </a>
               </div>
