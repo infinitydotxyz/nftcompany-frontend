@@ -1,0 +1,17 @@
+.main {
+  display: flex;
+  align-items: center;
+
+  .left {
+    font-weight: none;
+    color: black;
+    flex: 1;
+  }
+  .right {
+    padding: 0 10px;
+    flex: 0;
+  }
+  .button {
+    flex: 0;
+  }
+}
