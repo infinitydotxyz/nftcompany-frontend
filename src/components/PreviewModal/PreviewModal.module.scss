@@ -13,6 +13,9 @@
 
   .infoBox {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 
     margin-left: 20px;
 
@@ -23,19 +26,22 @@
     }
 
     .price {
+      display: inline-block;
       border: 2px solid rgb(69, 178, 107);
       border-radius: 4px;
       color: rgb(69, 178, 107);
       padding: 5px;
       font-weight: 500;
+      margin-bottom: 10px;
     }
 
     .counter {
+      display: inline-block;
       font-size: 16px;
       font-weight: 700;
       line-height: 1;
       color: #777e90;
-      margin-left: 10px;
+      margin-left: 20px;
     }
 
     .description {

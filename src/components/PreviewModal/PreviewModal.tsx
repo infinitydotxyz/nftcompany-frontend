@@ -45,11 +45,12 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
                 </div>
 
                 <div className={styles.infoBox}>
-                  <div className={styles.price}>{data?.price} ETH</div>
-                  <div className={styles.counter}>{data.inStock ?? 0} in stock</div>
-                  <div className={styles.description}>{data?.description}</div>
+                  <div>
+                    <div className={styles.price}>{data?.price} ETH</div>
+                    <div className={styles.counter}>{data.inStock ?? 0} in stock</div>
+                  </div>
 
-                  {/* tokenAddress: item.asset_contract.address, tokenId: item.token_id, */}
+                  <div className={styles.description}>{data?.description}</div>
                 </div>
               </div>
 
