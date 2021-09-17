@@ -9,7 +9,6 @@ import { setAuthHeaders } from '../../src/utils/apiUtil';
 import NavBar from 'components/NavBar/NavBar';
 import { useAppContext } from 'utils/context/AppContext';
 import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
-import { useAppSearchContext } from 'hooks/useSearch';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 
@@ -29,7 +28,6 @@ type ContextType = {
 };
 
 const Header = () => {
-  const { exploreSearchState, setExploreSearchState, setFilterState } = useAppSearchContext();
   const toast = useToast();
   const router = useRouter();
   const { route } = router;
@@ -69,27 +67,20 @@ const Header = () => {
       <div className="hd-f">
         <div className="container container-fluid">
           <div className="grid align-items-center">
-            <div className="col-sm-12 col-md-4 d-flex">
-              <div style={{ width: 480, height: 0 }}></div>
-              <Link href="/">
-                <a className="logo-link" style={{ position: 'absolute', top: 2, left: 67 }}>
-                  {/* TODO: use logo image without padding and align center for this */}
-                  <Image alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={80} />
-                </a>
-              </Link>
-            </div>
+            <Link href="/">
+              <a className="logo-link" style={{ position: 'absolute', top: 5, left: 67 }}>
+                <Image alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={80} />
+              </a>
+            </Link>
 
-            <div className="col-sm-12 col-md-8">
-              <ul className="links">
+            <div className="col-lg-3"></div>
+            <div className="col-lg-3 col-12">
+              <ExploreSearch />
+            </div>
+            <div className="col-12 col-lg-6">
+              <ul className="links" style={{ justifyContent: 'space-between' }}>
                 {/* <HeaderActionButtons user={user} /> */}
 
-                <Box flex="2" mr="4">
-                  <ExploreSearch
-                    setFilters={setFilterState}
-                    setExploreSearchState={setExploreSearchState}
-                    exploreSearchState={exploreSearchState}
-                  />
-                </Box>
                 <HoverMenuButton buttonTitle="NFTs">
                   <MenuItem
                     textColor="#333"
@@ -122,14 +113,6 @@ const Header = () => {
                     Sales
                   </MenuItem>
                 </HoverMenuButton>
-
-                <NavBar
-                  items={[{ title: 'Explore', link: '/explore' }]}
-                  active={['/explore'].indexOf(route)}
-                  onClickItem={(item, _) => {
-                    router.push(item.link || '');
-                  }}
-                />
 
                 {user?.account ? (
                   <li>

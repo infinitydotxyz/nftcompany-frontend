@@ -3,14 +3,10 @@ import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { getTypeAheadOptions, TypeAheadOption } from 'services/Listings.service';
 import { CheckCircleIcon, CloseIcon } from '@chakra-ui/icons';
 import { Box } from '@chakra-ui/react';
-import { ExploreSearchState } from 'hooks/useSearch';
+import { useAppSearchContext } from 'hooks/useSearch';
 import { useRouter } from 'next/router';
-interface Props {
-  setFilters: any;
-  setExploreSearchState: (explore: ExploreSearchState) => void;
-  exploreSearchState: ExploreSearchState;
-}
-const ExploreSearch = ({ setExploreSearchState, exploreSearchState }: Props) => {
+const ExploreSearch = () => {
+  const { exploreSearchState, setExploreSearchState } = useAppSearchContext();
   const typeaheadRef = useRef<any>();
   const handleSearch = async (query: string) => {
     const results = await getTypeAheadOptions({ startsWith: query });

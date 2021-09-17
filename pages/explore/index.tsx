@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Spinner } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 // import { Select } from '@chakra-ui/react';
 import CardList from 'components/Card/CardList';
 import FilterPanel, { Filter } from 'components/FilterPanel/FilterPanel';
@@ -109,17 +109,19 @@ export default function Dashboard() {
                 <ul className="links">
                   <li>
                     {!exploreSearchState.selectedOption && (
-                      <a className="active cpointer" onClick={() => setFilterShowed(!filterShowed)}>
-                        Filter <FilterIcon />
-                      </a>
+                      <Box mr="6">
+                        <a className="active cpointer" onClick={() => setFilterShowed(!filterShowed)}>
+                          Filter <FilterIcon />
+                        </a>
+                      </Box>
                     )}
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-          <div>
-            {!exploreSearchState.selectedOption && (
+          {!exploreSearchState.selectedOption && (
+            <Box mr="6">
               <FilterPanel
                 filter={filterState}
                 setFilters={setFilterState}
@@ -127,8 +129,8 @@ export default function Dashboard() {
                 getNftListings={onFilterSearch}
                 exploreSearchState={exploreSearchState}
               />
-            )}
-          </div>
+            </Box>
+          )}
           {isFetching ? (
             <Spinner size="md" color="gray.800" />
           ) : (
