@@ -6,6 +6,7 @@ import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import OfferStatusModal from 'components/OfferStatusModal/OfferStatusModal';
+import { CheckCircleIcon } from '@chakra-ui/icons';
 
 export type CardData = {
   id: string;
@@ -149,7 +150,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
             {collectionName && (
               <div className={styles.collectionName}>
                 {collectionName}
-                {hasBlueCheck === true ? ' ✅' : ''}
+                {hasBlueCheck === true ? <CheckCircleIcon color="blue.500" w="4" h="4" ml="1" mb="1" /> : ''}
               </div>
             )}
             <div>{data.title}</div>

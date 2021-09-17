@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Menu, MenuButton, MenuList, MenuItem, Button, MenuDivider } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import { Menu, MenuButton, MenuList, MenuItem, Button, MenuDivider, Box } from '@chakra-ui/react';
 import { InfoOutlineIcon, ExternalLinkIcon, StarIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FilterContext } from 'hooks/useFilter';
 import { useRouter } from 'next/router';
 import { getAccount } from '../../src/utils/ethersUtil';
 import { setAuthHeaders } from '../../src/utils/apiUtil';
 import NavBar from 'components/NavBar/NavBar';
 import { useAppContext } from 'utils/context/AppContext';
+import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
+import { useExploreSearchContext, useSetExploreSearchContext, useSetFilterContext } from 'hooks/useSearch';
 
 let isChangingAccount = false;
 
@@ -26,11 +27,12 @@ type ContextType = {
 };
 
 const Header = () => {
+  const exploreSearchContext = useExploreSearchContext();
+  const setExploreSearchContext = useSetExploreSearchContext();
+  const setFilters = useSetFilterContext();
   const router = useRouter();
   const { route } = router;
   // const [user, setUser] = useState<any>(null);
-  const { filter, setFilter } = useContext<any>(FilterContext);
-  console.log('filter', filter);
 
   const { user, setUser } = useAppContext();
   console.log('- Header - user:', user);
@@ -109,7 +111,13 @@ const Header = () => {
             <div className="col-sm-12 col-md-8">
               <ul className="links">
                 {/* <HeaderActionButtons user={user} /> */}
-
+                <Box flex="2" mr="4">
+                  <ExploreSearch
+                    setFilters={setFilters}
+                    setExploreSearchState={setExploreSearchContext}
+                    exploreSearchState={exploreSearchContext}
+                  />
+                </Box>
                 <NavBar
                   items={[
                     // { title: 'NFT', link: '/explore/nfts' },

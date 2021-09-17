@@ -7,7 +7,7 @@ import { AppChakraProvider } from 'utils/themeUtil';
 import type { AppProps } from 'next/app';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import * as gtag from '../lib/ga/gtag';
 const isProduction = process.env.NODE_ENV === 'production';
 

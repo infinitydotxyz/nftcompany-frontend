@@ -10,19 +10,21 @@ import { FilterIcon } from 'components/Icons/Icons';
 import styles from '../../styles/Dashboard.module.scss';
 import { getListings, getListingsByCollectionName } from 'services/Listings.service';
 import { CardData } from 'components/Card/Card';
-import ExploreSearch, { ExploreSearchState } from 'components/ExploreSearch/ExploreSearch';
+import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
+import {
+  useExploreSearchContext,
+  useFilterContext,
+  useSetExploreSearchContext,
+  useSetFilterContext
+} from 'hooks/useSearch';
 export default function Dashboard() {
   const [tabIndex, setTabIndex] = useState(1);
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-  const [listedNfts, setListedNfts] = useState<CardData[]>([]);
-  const [filter, setFilters] = useState<Filter>();
-  const [exploreSearchState, setExploreSearchState] = useState<ExploreSearchState>({
-    isLoading: false,
-    options: [],
-    query: '',
-    collectionName: ''
-  });
+  const exploreSearchContext = useExploreSearchContext();
+  const setExploreSearchContext = useSetExploreSearchContext();
+  const setFilterContext = useSetFilterContext();
+  const filterContext = useFilterContext();
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -47,18 +49,23 @@ export default function Dashboard() {
     }
   }, [tabIndex]);
   React.useEffect(() => {
-    getNftListings(filter);
-  }, [exploreSearchState.collectionName]);
+    getNftListings(filterContext);
+  }, [exploreSearchContext.collectionName]);
 
   const getNftListings = async (filter?: Filter) => {
     setIsFetching(true);
     let response;
-    if (exploreSearchState.collectionName) {
-      response = await getListingsByCollectionName(exploreSearchState.collectionName, filter);
+    if (exploreSearchContext.collectionName) {
+      response = await getListingsByCollectionName(exploreSearchContext.collectionName, filter);
+      setExploreSearchContext({
+        ...exploreSearchContext,
+        listedNfts: response,
+        collectionName: exploreSearchContext.collectionName
+      });
     } else {
       response = await getListings(filter);
+      setExploreSearchContext({ ...exploreSearchContext, listedNfts: response });
     }
-    setListedNfts(response);
     setIsFetching(false);
   };
 
@@ -80,30 +87,7 @@ export default function Dashboard() {
                 marginTop: 15,
                 width: '100%'
               }}
-            >
-              <div style={{ width: '85%' }}>
-                <ExploreSearch
-                  setFilters={setFilters}
-                  setListedNfts={setListedNfts}
-                  setExploreSearchState={setExploreSearchState}
-                  exploreSearchState={exploreSearchState}
-                />
-              </div>
-              <Button
-                style={{ width: '15%', marginLeft: 10, marginRight: 10 }}
-                onClick={() => {
-                  setExploreSearchState({
-                    isLoading: false,
-                    options: [],
-                    query: '',
-                    collectionName: ''
-                  });
-                  getNftListings();
-                }}
-              >
-                Clear
-              </Button>
-            </div>
+            ></div>
           </div>
           <div className="section-bar">
             <div className="right">
@@ -200,17 +184,17 @@ export default function Dashboard() {
           </div>
           <div>
             <FilterPanel
-              filter={filter}
-              setFilters={setFilters}
+              filter={filterContext}
+              setFilters={setFilterContext}
               isExpanded={filterShowed}
               getNftListings={getNftListings}
-              exploreSearchState={exploreSearchState}
+              exploreSearchState={exploreSearchContext}
             />
           </div>
           {isFetching ? (
             <Spinner size="md" color="gray.800" />
           ) : (
-            <CardList showItems={[]} data={listedNfts} actions={['BUY_NFT']} />
+            <CardList showItems={[]} data={exploreSearchContext.listedNfts} actions={['BUY_NFT']} />
           )}
         </div>
       </div>
