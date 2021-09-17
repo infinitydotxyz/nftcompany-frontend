@@ -20,10 +20,10 @@ const LoadingCard = (props: any) => (
 
 const LoadingCardList = () => {
   return (
-    <div style={{ marginTop: 20 }}>
-      <LoadingCard />
+    <div style={{ marginTop: 40 }}>
+      <LoadingCard style={{ marginRight: '5%' }} />
 
-      <LoadingCard style={{ marginLeft: 20 }} />
+      <LoadingCard/>
     </div>
   );
 };
