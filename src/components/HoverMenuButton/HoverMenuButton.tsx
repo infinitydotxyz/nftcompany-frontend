@@ -31,7 +31,8 @@ export const HoverMenuButton = ({ buttonTitle, buttonContent, children }: Props)
 
   return (
     <div className={styles.main}>
-      <Menu isLazy isOpen={isOpen}>
+      {/* setting an id on menu prevents a console warning about non matching ids */}
+      <Menu isLazy isOpen={isOpen} id="hover-menu">
         <MenuButton
           className={`${styles.hoverButton}  ${addStyle && isOpen ? styles.menuOpen : ''}`}
           onMouseEnter={() => {
