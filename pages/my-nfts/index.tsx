@@ -6,7 +6,7 @@ import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore } from 'components/FetchMore/FetchMore';
+import { FetchMore, NoData } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 
 import pageStyles from '../../styles/Dashboard.module.scss';
@@ -79,6 +79,7 @@ export default function MyNFTs() {
     console.log('currentPage loaded:', currentPage);
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
+
   return (
     <>
       <Head>
@@ -97,9 +98,9 @@ export default function MyNFTs() {
           </div>
 
           <div className={styles.main}>
-            {data?.length === 0 && isFetching && (
-              <LoadingCardList />
-            )}
+            <NoData isFetching={isFetching} data={data} currentPage={currentPage} />
+            {data?.length === 0 && isFetching && <LoadingCardList />}
+            
             <CardList
               data={data}
               showItems={[]}

@@ -5,7 +5,7 @@ import Layout from 'containers/layout';
 import CardList from 'components/Card/CardList';
 import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
+import { FetchMore, getLastItemCreatedAt, NoData } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 
 import pageStyles from '../../styles/Dashboard.module.scss';
@@ -79,7 +79,9 @@ export default function Purchases() {
           </div>
 
           <div className={styles.main}>
+            <NoData isFetching={isFetching} data={data} currentPage={currentPage} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
+            
             <CardList data={data} actions={['VIEW_ORDER']} />
           </div>
 

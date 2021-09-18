@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { InView, useInView } from 'react-intersection-observer';
+import { Box } from '@chakra-ui/layout';
 
 const FetchMoreElement = ({ inView, ref, onFetchMore }: any) => {
   // console.log('inView', ' ', inView);
@@ -8,11 +9,7 @@ const FetchMoreElement = ({ inView, ref, onFetchMore }: any) => {
       onFetchMore();
     }
   }, [inView]);
-  return (
-    <div ref={ref}>
-      {/* <h2>Loading...</h2> */}
-    </div>
-  );
+  return <div ref={ref}>{/* <h2>Loading...</h2> */}</div>;
 };
 
 export const FetchMore = ({ onFetchMore }: any) => {
@@ -30,4 +27,14 @@ export const FetchMore = ({ onFetchMore }: any) => {
   );
 };
 
-export const getLastItemCreatedAt = (data: any) => data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt : ''
+export const getLastItemCreatedAt = (data: any[]) =>
+  data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt : '';
+
+export const NoData = ({ isFetching, data, currentPage }: { isFetching: boolean, data: any[]; currentPage: number }) => {
+  if (!isFetching && data?.length === 0 && currentPage >= 1) {
+    return (
+      <Box mt={10}>No Item To Display</Box>
+    )
+  }
+  return null;
+}
