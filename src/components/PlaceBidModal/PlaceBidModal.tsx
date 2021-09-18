@@ -46,11 +46,11 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
             showMessage(toast, 'error', 'Error when purchasing.');
           }
         }).catch((err: GenericError) => {
-          console.log('ERROR:', err)
+          console.error('ERROR:', err)
           showMessage(toast, 'error', err?.message);
         });
     } catch (err) {
-      console.log('ERROR:', err)
+      console.error('ERROR:', err)
       showMessage(toast, 'error', (err as GenericError)?.message);
     }
   };
@@ -68,9 +68,12 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         startAmount: offerPrice,
         assetDetails: data,
         expirationTime: expiryTimeSeconds
-      });
-    } catch (err: any) {
-      showMessage(toast, 'error', err.message);
+      }).catch((err: GenericError) => {
+        console.error('ERROR:', err)
+        showMessage(toast, 'error', err?.message);
+      });;
+    } catch (err) {
+      showMessage(toast, 'error', (err as GenericError)?.message);
     }
   };
 
