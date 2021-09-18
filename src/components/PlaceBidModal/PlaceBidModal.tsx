@@ -7,6 +7,7 @@ import { getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
 import { showMessage } from 'utils/commonUtil';
 import { useToast } from '@chakra-ui/react';
 import { useAppContext } from 'utils/context/AppContext';
+import { GenericError } from 'types';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -44,9 +45,13 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
             // Handle when the order does not exist anymore
             showMessage(toast, 'error', 'Error when purchasing.');
           }
+        }).catch((err: GenericError) => {
+          console.log('ERROR:', err)
+          showMessage(toast, 'error', err?.message);
         });
-    } catch (err: any) {
-      showMessage(toast, 'error', err.message);
+    } catch (err) {
+      console.log('ERROR:', err)
+      showMessage(toast, 'error', (err as GenericError)?.message);
     }
   };
 
