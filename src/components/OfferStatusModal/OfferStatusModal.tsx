@@ -2,10 +2,9 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import styles from './OfferStatusModal.module.scss';
 import { CardData } from 'components/Card/Card';
-import { showMessage } from 'utils/commonUtil';
-import { useToast } from '@chakra-ui/react';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiDelete } from 'utils/apiUtil';
+import { GenericError } from 'types';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -18,14 +17,13 @@ interface IProps {
 const OfferStatusModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
   const [offerPrice, setOfferPrice] = React.useState(0);
-  const toast = useToast();
-  const { user } = useAppContext();
+  const { user, showAppError } = useAppContext();
 
   const cancelOffer = async () => {
     try {
       await apiDelete(`/u/${user!.account}/offers/${data.id}`);
-    } catch (err: any) {
-      showMessage(toast, 'error', err.message);
+    } catch (err) {
+      showAppError((err as GenericError)?.message);
     }
   };
 

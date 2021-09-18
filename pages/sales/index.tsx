@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
-import { useToast } from '@chakra-ui/toast';
-import { showMessage } from 'utils/commonUtil';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import CardList from 'components/Card/CardList';
@@ -16,8 +14,7 @@ import { ordersToCardData } from 'services/Listings.service';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 
 export default function Sales() {
-  const { user } = useAppContext();
-  const toast = useToast();
+  const { user, showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState(-1);
@@ -37,7 +34,7 @@ export default function Sales() {
         limit: ITEMS_PER_PAGE
       });
       if (error) {
-        showMessage(toast, 'error', `${error}`);
+        showAppError(`${error?.message}`);
         return;
       }
       listingData = result?.sales || [];

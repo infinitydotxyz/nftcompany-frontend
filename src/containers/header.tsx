@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { MenuItem, MenuDivider, Box, useToast } from '@chakra-ui/react';
+import { MenuItem, MenuDivider, Box } from '@chakra-ui/react';
 import { ExternalLinkIcon, StarIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,7 +28,6 @@ type ContextType = {
 };
 
 const Header = () => {
-  const toast = useToast();
   const router = useRouter();
   const { route } = router;
 
