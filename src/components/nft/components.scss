@@ -246,7 +246,6 @@
     left: 0;
     right: 0;
     top: 0;
-    padding: 1.5rem 0;
     box-shadow: inset 0px -1px 0px #f3f3f4;
     background-color: rgba(#fff, 0.8);
     backdrop-filter: blur(12px);
@@ -256,10 +255,9 @@
     display: flex;
     list-style: none;
     font-weight: bold;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     li {
-      margin-right: 2rem;
       letter-spacing: -0.025em;
       color: #aaa;
 
@@ -401,4 +399,7 @@
       }
     }
   }
+}
+.can-click {
+  cursor: pointer;
 }
