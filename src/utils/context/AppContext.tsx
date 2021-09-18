@@ -57,7 +57,11 @@ export function AppContextProvider({ children }: any) {
         eventName,
         (data: any) => {
           const arr: string[] = [];
-          Object.keys(data).forEach((k: string) => arr.push(`${k}: ${data[k]}`));
+          Object.keys(data).forEach((k: string) => {
+            if (typeof data[k] !== 'object') {
+              arr.push(`${k}: ${data[k]}`);
+            }
+          });
           showAppMessage(`${eventName}: ${arr.join(', ')}`);
         },
         true

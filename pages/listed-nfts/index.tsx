@@ -6,7 +6,7 @@ import CardList from 'components/Card/CardList';
 import { apiDelete, apiGet } from 'utils/apiUtil';
 import DeleteListingModal from './DeleteListingModal';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
+import { FetchMore, getLastItemCreatedAt, NoData } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import { ordersToCardData } from 'services/Listings.service';
 import pageStyles from '../../styles/Dashboard.module.scss';
@@ -87,7 +87,9 @@ export default function ListNFTs() {
           </div>
 
           <div className={styles.main}>
+            <NoData isFetching={isFetching} data={data} currentPage={currentPage} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
+            
             <CardList
               data={data}
               actions={['CANCEL_LISTING']}
