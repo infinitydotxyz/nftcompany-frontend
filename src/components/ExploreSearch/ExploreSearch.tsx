@@ -1,10 +1,11 @@
 import React, { Fragment, useRef } from 'react';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { getTypeAheadOptions, TypeAheadOption } from 'services/Listings.service';
-import { CheckCircleIcon, CloseIcon } from '@chakra-ui/icons';
+import { CloseIcon } from '@chakra-ui/icons';
 import { Box } from '@chakra-ui/react';
 import { useAppSearchContext } from 'hooks/useSearch';
 import { useRouter } from 'next/router';
+import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 const ExploreSearch = () => {
   const { exploreSearchState, setExploreSearchState } = useAppSearchContext();
   const typeaheadRef = useRef<any>();
@@ -63,7 +64,7 @@ const ExploreSearch = () => {
                 </Box>
                 {option.hasBlueCheck && (
                   <Box m="1" ml="0">
-                    <CheckCircleIcon color="blue.500" w="4" h="4" />
+                    <BlueCheckIcon hasBlueCheck={option.hasBlueCheck} />
                   </Box>
                 )}
               </Box>
