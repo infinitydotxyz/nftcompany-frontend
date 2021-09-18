@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
-import NFTModal from 'components/nft/NFTModal';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import OfferStatusModal from 'components/OfferStatusModal/OfferStatusModal';
+import { CheckCircleIcon } from '@chakra-ui/icons';
 import { Metadata } from 'types/Nft.interface';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 
@@ -160,7 +158,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
               {collectionName && (
                 <div className={styles.collectionName}>
                   {collectionName}
-                  {hasBlueCheck === true ? ' ✅' : ''}
+                  {hasBlueCheck === true ? <CheckCircleIcon color="blue.500" w="4" h="4" ml="1" mb="1" /> : ''}
                 </div>
               )}
               <div>{data.title}</div>

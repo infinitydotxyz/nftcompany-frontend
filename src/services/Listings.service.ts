@@ -27,6 +27,7 @@ export interface TypeAheadOption {
   name: string;
   id?: string;
   address?: string;
+  hasBlueCheck?: boolean;
 }
 
 export interface TypeAheadOptions {
@@ -49,9 +50,13 @@ export const getTitlesOfListings = async (titleQuery: TypeaheadQuery): Promise<T
   return result;
 };
 
-export const getCollectionNamesOfListings = async (collectionQuery: TypeaheadQuery): Promise<string[]> => {
+export interface CollectionResponse {
+  collectionName: string;
+  hasBlueCheck: boolean;
+}
+export const getCollectionNamesOfListings = async (collectionQuery: TypeaheadQuery): Promise<CollectionResponse[]> => {
   const path = `/collections/`;
-  const { result, error }: { result: string[]; error: any } = (await apiGet(path, collectionQuery)) as any;
+  const { result, error }: { result: CollectionResponse[]; error: any } = (await apiGet(path, collectionQuery)) as any;
   if (error !== undefined) {
     return [];
   }
@@ -86,8 +91,8 @@ export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAh
   if (query?.startsWith) {
     query.startsWith = query.startsWith.replace(/ /g, '');
   }
-  const collectionNames: TypeAheadOption[] = (await getCollectionNamesOfListings(query)).map((collectionName) => {
-    return { name: collectionName, type: 'Collection' };
+  const collectionNames: TypeAheadOption[] = (await getCollectionNamesOfListings(query)).map((collectionInfo) => {
+    return { name: collectionInfo.collectionName, type: 'Collection', hasBlueCheck: collectionInfo.hasBlueCheck };
   });
   const nftNames: TypeAheadOption[] = (await getTitlesOfListings(query)).map((listing) => {
     return {
