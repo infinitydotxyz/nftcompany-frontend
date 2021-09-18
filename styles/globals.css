@@ -114,16 +114,8 @@ svg {
   border: 1px solid #aaa;
   border-radius: 4px;
 }
-
 @media (max-width: 767px) {
-  .logo-link {
-    width: 100%;
-    left: 0 !important;
-    text-align: center;
-  }
   .logo-link img {
-    height: 24px;
-    width: 100%;
     margin-top: 10px !important;
   }
   .header-links-wrapper {

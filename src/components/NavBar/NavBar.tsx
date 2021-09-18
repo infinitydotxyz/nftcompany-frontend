@@ -17,11 +17,7 @@ const NavBar = ({ items, active, onClickItem }: Props) => {
     <ul className={styles.main}>
       {items.map((item, idx) => {
         return (
-          <li
-            key={item.title}
-            className={active === idx ? styles.active : ''}
-            onClick={() => onClickItem && onClickItem(item, idx)}
-          >
+          <li key={item.title} onClick={() => onClickItem && onClickItem(item, idx)}>
             {item.title}
           </li>
         );
