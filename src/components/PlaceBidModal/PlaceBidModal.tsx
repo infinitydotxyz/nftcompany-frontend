@@ -4,8 +4,6 @@ import styles from './PlaceBidModal.module.scss';
 import Datetime from 'react-datetime';
 import { CardData } from 'components/Card/Card';
 import { getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
-import { showMessage } from 'utils/commonUtil';
-import { useToast } from '@chakra-ui/react';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 
@@ -20,8 +18,7 @@ interface IProps {
 const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
   const [offerPrice, setOfferPrice] = React.useState(0);
-  const toast = useToast();
-  const { user } = useAppContext();
+  const { user, showAppError } = useAppContext();
 
   const buyNft = () => {
     try {
@@ -43,15 +40,15 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
             console.log('buyNft result: ', result);
           } else {
             // Handle when the order does not exist anymore
-            showMessage(toast, 'error', 'Error when purchasing.');
+            showAppError('Error when purchasing.');
           }
         }).catch((err: GenericError) => {
           console.error('ERROR:', err)
-          showMessage(toast, 'error', err?.message);
+          showAppError(err?.message);
         });
     } catch (err) {
       console.error('ERROR:', err)
-      showMessage(toast, 'error', (err as GenericError)?.message);
+      showAppError((err as GenericError)?.message);
     }
   };
 
@@ -70,10 +67,10 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         expirationTime: expiryTimeSeconds
       }).catch((err: GenericError) => {
         console.error('ERROR:', err)
-        showMessage(toast, 'error', err?.message);
+        showAppError(err?.message);
       });;
     } catch (err) {
-      showMessage(toast, 'error', (err as GenericError)?.message);
+      showAppError((err as GenericError)?.message);
     }
   };
 
