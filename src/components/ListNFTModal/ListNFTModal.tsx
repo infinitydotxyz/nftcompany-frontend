@@ -124,8 +124,8 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     {endPriceShowed && (
                       <li>
                         <div>Expiration time</div>
-                        <div>
-                          <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
+                        <div className={styles.dateContainer}>
+                          <Datetime inputProps={{ style: { width: 180 } }} onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
                         </div>
                         <div></div>
                       </li>
@@ -167,8 +167,8 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     </li>
                     <li>
                       <div>Expiration time</div>
-                      <div>
-                        <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
+                      <div className={styles.dateContainer}>
+                        <Datetime inputProps={{ style: { width: 180 } }} onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
                       </div>
                       <div></div>
                     </li>
