@@ -3,6 +3,8 @@ import dynamic from 'next/dynamic';
 import { Switch } from '@chakra-ui/react';
 import Datetime from 'react-datetime';
 import TabBar from 'components/TabBar/TabBar';
+import { Button } from '@chakra-ui/button';
+import { Spinner } from '@chakra-ui/spinner';
 import { getAddressBalance, getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
 import { getAccount } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
@@ -22,6 +24,7 @@ interface IProps {
 
 const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
   const { showAppError, showAppMessage } = useAppContext();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [price, setPrice] = React.useState(0);
   // const [balance, setBalance] = React.useState('');
   const [endPriceShowed, setEndPriceShowed] = React.useState(false);
@@ -174,8 +177,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
               )}
 
               <div className={styles.footer}>
-                <a
-                  className="action-btn"
+                <Button
+                  colorScheme="blue"
+                  size="md"
+                  disabled={isSubmitting}
                   onClick={async () => {
                     // if (!price) {
                     //   alert('Please enter price.');
@@ -188,6 +193,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     const expirationTime = endPriceShowed ? expiryTimeSeconds : 0;
                     let err = null;
                     try {
+                      setIsSubmitting(true);
                       const seaport = getOpenSeaport();
                       let obj: any = {
                         asset: {
@@ -215,22 +221,26 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       const listing = await seaport.createSellOrder(obj);
                       console.log('listing', listing);
                     } catch (e: any) {
+                      setIsSubmitting(false);
                       err = e;
                       console.error('ERROR: ', e, '   ', expirationTime);
                       showAppError(e.message);
                     }
                     if (!err) {
+                      setIsSubmitting(false);
                       showAppMessage('NFT listed successfully!');
                       onClose && onClose();
                     }
                   }}
                 >
-                  &nbsp;&nbsp;&nbsp; List NFT &nbsp;&nbsp;&nbsp;
-                </a>
+                  List NFT
+                </Button>
 
-                <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
+                <Button size="md" ml={4} disabled={isSubmitting} onClick={() => onClose && onClose()}>
                   Cancel
-                </a>
+                </Button>
+
+                {isSubmitting && <Spinner size="md" color="teal" ml={4} mt={2} />}
               </div>
             </div>
           </div>
