@@ -3,9 +3,9 @@ import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import OfferStatusModal from 'components/OfferStatusModal/OfferStatusModal';
-import { CheckCircleIcon } from '@chakra-ui/icons';
 import { Metadata } from 'types/Nft.interface';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
+import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 
 export type CardData = {
   id: string;
@@ -156,9 +156,10 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
           <div className={styles.cardLine}>
             <div className={styles.cardTitle}>
               {collectionName && (
-                <div className={styles.collectionName}>
-                  {collectionName}
-                  {hasBlueCheck === true ? <CheckCircleIcon color="blue.500" w="4" h="4" ml="1" mb="1" /> : ''}
+                <div className={styles.collectionRow}>
+                  <div className={styles.collectionName}>{collectionName}</div>
+
+                  <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
                 </div>
               )}
               <div>{data.title}</div>
