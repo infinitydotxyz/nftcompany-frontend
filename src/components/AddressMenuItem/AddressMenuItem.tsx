@@ -2,17 +2,16 @@ import React from 'react';
 import styles from './AddressMenuItem.module.scss';
 import { Tooltip } from '@chakra-ui/react';
 
-import { MenuItem, Button, useToast } from '@chakra-ui/react';
+import { MenuItem } from '@chakra-ui/react';
 import { ExternalLinkIcon, CopyIcon } from '@chakra-ui/icons';
-import { showMessage } from 'utils/commonUtil';
-import { User } from 'utils/context/AppContext';
+import { useAppContext, User } from 'utils/context/AppContext';
 
 type Props = {
   user: User;
 };
 
 export const AddressMenuItem = ({ user }: Props) => {
-  const toast = useToast();
+  const { showAppMessage } = useAppContext();
 
   return (
     <div className={styles.main}>
@@ -35,7 +34,7 @@ export const AddressMenuItem = ({ user }: Props) => {
               e.stopPropagation();
               navigator.clipboard.writeText(user?.account);
 
-              showMessage(toast, 'info', `Copied to Clipboard.`);
+              showAppMessage(`Copied to Clipboard.`);
             }}
           >
             <CopyIcon />

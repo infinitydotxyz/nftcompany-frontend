@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
-import { apiGet } from 'utils/apiUtil';
+import { apiDelete, apiGet } from 'utils/apiUtil';
 import DeleteListingModal from './DeleteListingModal';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
@@ -12,6 +11,8 @@ import { useAppContext } from 'utils/context/AppContext';
 import { ordersToCardData } from 'services/Listings.service';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
+import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
+import { CardData } from 'components/Card/Card';
 
 export default function ListNFTs() {
   const { user, showAppError, showAppMessage } = useAppContext();
@@ -20,19 +21,23 @@ export default function ListNFTs() {
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
-  const [deleteModalItem, setDeleteModalItem] = useState(null);
+  const [deleteModalItem, setDeleteModalItem] = useState<CardData | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = async (isRefreshing: boolean = false) => {
     if (!user?.account) {
       setData([]);
       return;
     }
     setIsFetching(true);
     let listingData = [];
-    const newCurrentPage = currentPage + 1;
+    let newCurrentPage = currentPage + 1;
+    if (isRefreshing) {
+      newCurrentPage = 0;
+      setDataLoaded(false);
+    }
     try {
       const { result, error } = await apiGet(`/u/${user?.account}/listings`, {
-        startAfter: getLastItemCreatedAt(data),
+        startAfter: isRefreshing ? '' : getLastItemCreatedAt(data),
         limit: ITEMS_PER_PAGE
       });
       if (error) {
@@ -48,7 +53,7 @@ export default function ListNFTs() {
 
     console.log('moreData', moreData);
     setIsFetching(false);
-    setData([ ...data, ...moreData ]);
+    setData(isRefreshing ? moreData : [...data, ...moreData]);
     setCurrentPage(newCurrentPage);
   };
 
@@ -82,26 +87,15 @@ export default function ListNFTs() {
           </div>
 
           <div className={styles.main}>
-            {/* {isFetching ? (
-              <Spinner size="md" color="gray.800" />
-            ) : (
-              <CardList
-                data={data}
-                actions={['CANCEL_LISTING']}
-                onClickAction={async (item, action) => {
-                  console.log('item, action', item, action);
-                  setDeleteModalItem(item);
-                }}
-              />
-            )} */}
+            {data?.length === 0 && isFetching && <LoadingCardList />}
             <CardList
-                data={data}
-                actions={['CANCEL_LISTING']}
-                onClickAction={async (item, action) => {
-                  console.log('item, action', item, action);
-                  setDeleteModalItem(item);
-                }}
-              />
+              data={data}
+              actions={['CANCEL_LISTING']}
+              onClickAction={async (item, action) => {
+                console.log('item, action', item, action);
+                setDeleteModalItem(item);
+              }}
+            />
           </div>
 
           {dataLoaded && (
@@ -122,10 +116,17 @@ export default function ListNFTs() {
           user={user}
           data={deleteModalItem}
           onClose={() => setDeleteModalItem(null)}
-          onSubmit={() => {
+          onSubmit={async () => {
             setDeleteModalItem(null);
-            fetchData();
-            showAppMessage(`Listing cancelled successfully.`);
+            const { error } = await apiDelete(`/u/${user?.account}/listings/${deleteModalItem?.id}`);
+            if (error) {
+              showAppError(`Failed to cancel this listing. ${error?.message}`);
+            } else {
+              showAppMessage(`Listing cancelled successfully.`);
+              setTimeout(() => {
+                fetchData(true);
+              }, 2000); // TODO: remove this delay once API has await delete.
+            }
           }}
         />
       )}

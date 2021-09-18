@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import { apiGet } from 'utils/apiUtil';
@@ -13,6 +12,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import { CardData } from 'components/Card/Card';
+import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 
 const transformOpenSea = (item: any) => {
   if (!item) {
@@ -97,19 +97,9 @@ export default function MyNFTs() {
           </div>
 
           <div className={styles.main}>
-            {/* {isFetching ? (
-              <Spinner size="md" color="gray.800" />
-            ) : (
-              <CardList
-                data={data}
-                showItems={[]}
-                actions={['LIST_NFT']}
-                onClickAction={(item, action) => {
-                  // console.log('item, action', item, action);
-                  setListModalItem(item);
-                }}
-              />
-            )} */}
+            {data?.length === 0 && isFetching && (
+              <LoadingCardList />
+            )}
             <CardList
               data={data}
               showItems={[]}

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { MenuItem, MenuDivider, Box, useToast } from '@chakra-ui/react';
+import { MenuItem, MenuDivider, Box } from '@chakra-ui/react';
 import { ExternalLinkIcon, StarIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,7 +28,6 @@ type ContextType = {
 };
 
 const Header = () => {
-  const toast = useToast();
   const router = useRouter();
   const { route } = router;
 
@@ -44,7 +43,8 @@ const Header = () => {
           setTimeout(async () => {
             isChangingAccount = false;
             await setAuthHeaders(accounts[0]);
-            setUser({ account: await getAccount() });
+            // setUser({ account: await getAccount() });
+            window.location.reload(); // use page reload for now to avoid complicated logic in other comps.
           }, 500);
         }
       };
