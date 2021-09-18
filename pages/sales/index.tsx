@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
-import { useToast } from '@chakra-ui/toast';
-import { showMessage } from 'utils/commonUtil';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import { apiGet, apiDelete } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
@@ -14,10 +11,10 @@ import { useAppContext } from 'utils/context/AppContext';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import { ordersToCardData } from 'services/Listings.service';
+import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 
 export default function Sales() {
-  const { user } = useAppContext();
-  const toast = useToast();
+  const { user, showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState(-1);
@@ -37,7 +34,7 @@ export default function Sales() {
         limit: ITEMS_PER_PAGE
       });
       if (error) {
-        showMessage(toast, 'error', `${error}`);
+        showAppError(`${error?.message}`);
         return;
       }
       listingData = result?.sales || [];
@@ -49,7 +46,7 @@ export default function Sales() {
     const moreData = ordersToCardData(listingData || []);
     console.log('moreData', moreData);
     setIsFetching(false);
-    setData([ ...data, ...moreData ]);
+    setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);
   };
 
@@ -83,7 +80,7 @@ export default function Sales() {
           </div>
 
           <div className={styles.main}>
-            {/* {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} actions={['VIEW_ORDER']} />} */}
+            {data?.length === 0 && isFetching && <LoadingCardList />}
             <CardList data={data} actions={['VIEW_ORDER']} />
           </div>
 

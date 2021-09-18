@@ -10,7 +10,7 @@ const FetchMoreElement = ({ inView, ref, onFetchMore }: any) => {
   }, [inView]);
   return (
     <div ref={ref}>
-      <h2>Loading...</h2>
+      {/* <h2>Loading...</h2> */}
     </div>
   );
 };

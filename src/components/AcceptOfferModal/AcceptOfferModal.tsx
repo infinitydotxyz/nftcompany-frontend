@@ -3,10 +3,8 @@ import dynamic from 'next/dynamic';
 import styles from './AcceptOfferModal.module.scss';
 import { CardData } from 'components/Card/Card';
 import { getOpenSeaport } from 'utils/ethersUtil';
-import { showMessage } from 'utils/commonUtil';
-import { useToast } from '@chakra-ui/react';
 import { useAppContext } from 'utils/context/AppContext';
-import Assets from 'components/nft/assets';
+import { GenericError } from 'types';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -19,8 +17,7 @@ interface IProps {
 const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
   const [offerPrice, setOfferPrice] = React.useState(0);
-  const toast = useToast();
-  const { user } = useAppContext();
+  const { user, showAppError } = useAppContext();
 
   const acceptOffer = () => {
     try {
@@ -44,11 +41,11 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
             });
           } else {
             // Handle when the order does not exist anymore
-            showMessage(toast, 'error', 'Error when purchasing.');
+            showAppError('Error when purchasing.');
           }
         });
-    } catch (err: any) {
-      showMessage(toast, 'error', err.message);
+    } catch (err) {
+      showAppError((err as GenericError)?.message);
     }
   };
 

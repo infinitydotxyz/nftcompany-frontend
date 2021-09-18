@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
-import { useToast } from '@chakra-ui/toast';
-import { showMessage } from 'utils/commonUtil';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Spinner } from '@chakra-ui/spinner';
 import CardList from 'components/Card/CardList';
 import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
@@ -14,6 +11,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import { ordersToCardData } from 'services/Listings.service';
+import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 
 export default function OffersReceived() {
   const { user, showAppError } = useAppContext();
@@ -47,7 +45,7 @@ export default function OffersReceived() {
     const moreData = ordersToCardData(listingData || []);
     console.log('moreData', moreData);
     setIsFetching(false);
-    setData([ ...data, ...moreData ]);
+    setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);
   };
 
@@ -81,7 +79,7 @@ export default function OffersReceived() {
           </div>
 
           <div className={styles.main}>
-            {/* {isFetching ? <Spinner size="md" color="gray.800" /> : <CardList data={data} actions={['ACCEPT_OFFER']} />} */}
+            {data?.length === 0 && isFetching && <LoadingCardList />}
             <CardList data={data} actions={['ACCEPT_OFFER']} />
           </div>
 

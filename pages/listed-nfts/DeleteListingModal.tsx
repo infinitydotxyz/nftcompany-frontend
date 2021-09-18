@@ -1,7 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { apiDelete } from 'utils/apiUtil';
-import { showMessage } from 'utils/commonUtil';
 import styles from './DeleteListingModal.module.scss';
 
 const Modal = dynamic(() => import('hooks/useModal'));
@@ -42,7 +41,6 @@ const DeleteListingModal: React.FC<IProps> = ({ user, data, onSubmit, onClose }:
                 <a
                   className="action-btn"
                   onClick={async () => {
-                    await apiDelete(`/u/${user.account}/listings/${data.id}`);
                     onSubmit && onSubmit();
                   }}
                 >
