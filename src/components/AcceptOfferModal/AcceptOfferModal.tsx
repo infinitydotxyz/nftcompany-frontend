@@ -39,6 +39,8 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               order: order,
               accountAddress: user!.account
             });
+
+            // TODO: call /trackTxn like PlaceBidModal
           } else {
             // Handle when the order does not exist anymore
             showAppError('Error when purchasing.');

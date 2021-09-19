@@ -41,6 +41,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
             {/* <button className="card__favorite">
               <svg className="icon icon-heart"></svg>
             </button> */}
+
             {actions?.indexOf('LIST_NFT') >= 0 && (
               <a
                 className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
@@ -50,9 +51,6 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
                   ev.preventDefault();
                   ev.stopPropagation();
 
-                  // if (onClickPlaceBid) {
-                  //   onClickPlaceBid();
-                  // }
                   if (onClickAction) {
                     onClickAction(data, 'LIST_NFT');
                   }
@@ -85,9 +83,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
                 onClick={(ev) => {
                   ev.preventDefault();
                   ev.stopPropagation();
-                  // if (onClickPlaceBid) {
-                  //   onClickPlaceBid();
-                  // }
+
                   if (onClickAction) {
                     onClickAction(data, 'CANCEL_LISTING');
                   }
@@ -163,8 +159,6 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
           onClose={() => setModalShowed(false)}
         />
       )} */}
-
-      {/* {modalShowed && <ListNFTModal onClose={() => setModalShowed(false)} />} */}
 
       {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
       {offerStatusModalShowed && <OfferStatusModal data={data} onClose={() => setOfferStatusModalShowed(false)} />}
