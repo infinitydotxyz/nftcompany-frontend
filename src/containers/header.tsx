@@ -93,12 +93,8 @@ const Header = () => {
               >
                 My NFTs
               </MenuItem>
-              <MenuItem
-                textColor="#333"
-                icon={<StarIcon />}
-                onClick={() => router.push('/user/0xC844c8e1207B9d3C54878C849A431301bA9c23E0')}
-              >
-                $$ Listed for sale
+              <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
+                Listed for sale
               </MenuItem>
             </HoverMenuButton>
 
@@ -142,7 +138,7 @@ const Header = () => {
             ) : (
               <li>
                 <Link href="/connect">
-                  <a className="connect-wallet">
+                  <div className="connect-wallet">
                     <svg width={20} height={20} fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
                         fillRule="evenodd"
@@ -152,7 +148,7 @@ const Header = () => {
                       />
                     </svg>
                     Connect
-                  </a>
+                  </div>
                 </Link>
               </li>
             )}
