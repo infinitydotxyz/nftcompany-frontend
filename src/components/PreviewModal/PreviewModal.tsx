@@ -6,6 +6,7 @@ import styles from './PreviewModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
+import { Link, Tooltip } from '@chakra-ui/react';
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
 
@@ -25,9 +26,14 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
     ownedByYou = true;
   }
 
+  let owner = data.owner ?? '';
+  if (owner.length > 16) {
+    owner = `${owner.slice(0, 4)}...${owner.slice(-4)}`;
+  }
+
   let tokenAddress = data.tokenAddress;
   if (tokenAddress != null) {
-    if (tokenAddress?.length > 16) {
+    if (tokenAddress.length > 16) {
       tokenAddress = `${tokenAddress.slice(0, 6)}...${tokenAddress.slice(-4)}`;
     }
   }
@@ -35,7 +41,7 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
   let tokenId = data.tokenId;
   if (tokenId != null) {
     if (tokenId?.length > 16) {
-      tokenId = `${tokenId.slice(0, 6)}...${tokenId.slice(-4)}`;
+      tokenId = `${tokenId.slice(0, 4)}...${tokenId.slice(-4)}`;
     }
   }
 
@@ -44,6 +50,18 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
   if (description == null || description?.length == 0) {
     description = 'none';
   }
+
+  let _ownerSection =
+    owner.length > 0 ? (
+      <>
+        <div className={styles.label}>Owner</div>
+        <Tooltip label={data.tokenAddress} hasArrow openDelay={1000}>
+          <Link color="blue.500" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
+            {owner}
+          </Link>
+        </Tooltip>
+      </>
+    ) : null;
 
   return (
     <>
@@ -86,24 +104,31 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
                     <div className={styles.price}>{data?.price} ETH</div>
 
                     <div className={styles.label}>Token Address</div>
-                    <a
-                      href={`https://etherscan.io/token/${data.tokenAddress}`}
-                      className={styles.tokenAddress}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {tokenAddress}
-                    </a>
+                    <Tooltip label={data.tokenAddress} hasArrow openDelay={1000}>
+                      <Link
+                        color="blue.500"
+                        href={`https://etherscan.io/token/${data.tokenAddress}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {tokenAddress}
+                      </Link>
+                    </Tooltip>
 
                     <div className={styles.label}>Token Id</div>
-                    <a
-                      href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
-                      className={styles.tokenId}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {tokenId}
-                    </a>
+
+                    <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
+                      <Link
+                        color="blue.500"
+                        href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {tokenId}
+                      </Link>
+                    </Tooltip>
+
+                    {_ownerSection}
 
                     <span className={styles.label}>Description</span>
                     <div className={styles.description}>{description}</div>
