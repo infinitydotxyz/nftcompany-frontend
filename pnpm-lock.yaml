@@ -2,7 +2,9 @@ lockfileVersion: 5.3
 
 specifiers:
   '@babel/core': ^7.15.5
+  '@chakra-ui/button': ^1.4.2
   '@chakra-ui/icons': ^1.0.15
+  '@chakra-ui/layout': ^1.4.9
   '@chakra-ui/react': ^1.6.7
   '@chakra-ui/spinner': ^1.1.12
   '@chakra-ui/system': ^1.7.3
@@ -48,7 +50,9 @@ specifiers:
 
 dependencies:
   '@babel/core': 7.15.5
+  '@chakra-ui/button': 1.4.2_beb3eeb2d477ea47016f511436674e29
   '@chakra-ui/icons': 1.0.15_beb3eeb2d477ea47016f511436674e29
+  '@chakra-ui/layout': 1.4.9_beb3eeb2d477ea47016f511436674e29
   '@chakra-ui/react': 1.6.7_5169fdecf8b87f3c70d2eb6f5638b7f6
   '@chakra-ui/spinner': 1.1.12_beb3eeb2d477ea47016f511436674e29
   '@chakra-ui/system': 1.7.3_2305e84770652125202aaa4817ae97a9
