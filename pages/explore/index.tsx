@@ -47,7 +47,7 @@ export default function Dashboard() {
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
 
-  const fetchData = async (isRefreshing: boolean = false) => {
+  const fetchData = async (filter: Filter | undefined, isRefreshing: boolean = false) => {
     setIsFetching(true);
     let newCurrentPage = currentPage + 1;
     if (isRefreshing) {
@@ -55,6 +55,7 @@ export default function Dashboard() {
       setDataLoaded(false);
     }
     const moreData = await getListings({
+      ...filter,
       startAfter: isRefreshing ? '' : getLastItemCreatedAt(exploreSearchState.listedNfts),
       startAfterPrice: isRefreshing ? '' : getLastItemBasePrice(exploreSearchState.listedNfts),
       limit: ITEMS_PER_PAGE
@@ -64,7 +65,9 @@ export default function Dashboard() {
     setCurrentPage(newCurrentPage);
   };
 
+  // on Search changed:
   const onSearch = async () => {
+    setDataLoaded(false);
     setIsFetching(true);
     if (exploreSearchState.collectionName) {
       // they selected a collection search for collections
@@ -89,14 +92,15 @@ export default function Dashboard() {
         showAppError(SEARCH_ERROR_MESSAGE);
       }
     } else {
+      console.log('onSearch - fetchData()')
       // initial fetch, or after clearing search/filter:
-      await fetchData(true);
+      await fetchData({}, true);
     }
     setFilterState({ sortByLikes: '', sortByPrice: '', price: 0 });
     setIsFetching(false);
   };
 
-  const onFilterSearch = async (filter?: Filter) => {
+  const onChangeFilter = async (filter?: Filter) => {
     setIsFetching(true);
     let response;
     if (exploreSearchState.collectionName) {
@@ -111,12 +115,8 @@ export default function Dashboard() {
         showAppError(SEARCH_ERROR_MESSAGE);
       }
     } else {
-      response = await getListings(filter);
-      if (response.length !== 0) {
-        setExploreSearchState({ ...exploreSearchState, listedNfts: response });
-      } else {
-        showAppError(SEARCH_ERROR_MESSAGE);
-      }
+      console.log('onChangeFilter - fetchData(filter)')
+      await fetchData(filter, true);
     }
     setIsFetching(false);
   };
@@ -158,7 +158,7 @@ export default function Dashboard() {
                 filter={filterState}
                 setFilters={setFilterState}
                 isExpanded={filterShowed}
-                getNftListings={onFilterSearch}
+                onChangeFilter={onChangeFilter}
                 exploreSearchState={exploreSearchState}
               />
             </Box>
@@ -173,9 +173,9 @@ export default function Dashboard() {
             <FetchMore
               currentPage={currentPage}
               onFetchMore={async () => {
-                console.log('onFetchMore()');
+                console.log('onFetchMore(), filter:', filterState);
                 setDataLoaded(false);
-                await fetchData();
+                await fetchData(filterState ? filterState : {});
               }}
             />
           )}
