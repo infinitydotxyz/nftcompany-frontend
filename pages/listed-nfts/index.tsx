@@ -89,7 +89,7 @@ export default function ListNFTs() {
           <div className={styles.main}>
             <NoData isFetching={isFetching} data={data} currentPage={currentPage} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
-            
+
             <CardList
               data={data}
               actions={['CANCEL_LISTING']}
@@ -105,7 +105,7 @@ export default function ListNFTs() {
               currentPage={currentPage}
               onFetchMore={async () => {
                 console.log('onFetchMore()');
-                await setDataLoaded(false);
+                setDataLoaded(false);
                 await fetchData();
               }}
             />

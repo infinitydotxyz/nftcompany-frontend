@@ -118,7 +118,7 @@ export default function MyNFTs() {
             currentPage={currentPage}
             onFetchMore={async () => {
               console.log('onFetchMore()');
-              await setDataLoaded(false);
+              setDataLoaded(false);
               await fetchData();
             }}
           />
