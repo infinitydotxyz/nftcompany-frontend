@@ -18,7 +18,7 @@ type Props = {
   isExpanded: boolean;
   setExpanded?: any;
   setFilters: any;
-  onChangeFilter: () => {};
+  onChangeFilter: (updatedFilter: Filter) => {};
   filter: Filter | undefined;
   exploreSearchState: any;
 };
