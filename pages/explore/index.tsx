@@ -22,7 +22,7 @@ export default function Dashboard() {
   const title = React.useMemo(() => {
     switch (tabIndex) {
       case 1:
-        return 'Hot Bids 🔥';
+        return 'Hot Items 🔥';
         break;
       case 2:
         return 'Artistic 🎨';
