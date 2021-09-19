@@ -56,3 +56,23 @@ export interface Orders {
   count: number;
   listings: Order[];
 }
+
+export type CardData = {
+  id: string;
+  title: string;
+  description?: string;
+  image: string;
+  imagePreview?: string;
+  price?: number;
+  inStock?: number;
+  viewInfo?: boolean;
+  data?: any;
+  tokenAddress?: string;
+  tokenId?: string;
+  collectionName?: string;
+  maker?: string;
+  hasBonusReward?: boolean;
+  hasBlueCheck?: boolean;
+  owner?: string;
+  metadata?: Metadata;
+};

@@ -1,6 +1,7 @@
 import React from 'react';
+import { CardData } from 'types/Nft.interface';
+import Card from './Card';
 import styles from './CardList.module.scss';
-import Card, { CardData } from './Card';
 
 type Props = {
   data: CardData[];

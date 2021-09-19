@@ -12,7 +12,7 @@ import { ordersToCardData } from 'services/Listings.service';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
-import { CardData } from 'components/Card/Card';
+import { CardData } from 'types/Nft.interface';
 
 export default function ListNFTs() {
   const { user, showAppError, showAppMessage } = useAppContext();
@@ -89,7 +89,7 @@ export default function ListNFTs() {
           <div className={styles.main}>
             <NoData isFetching={isFetching} data={data} currentPage={currentPage} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
-            
+
             <CardList
               data={data}
               actions={['CANCEL_LISTING']}
@@ -105,7 +105,7 @@ export default function ListNFTs() {
               currentPage={currentPage}
               onFetchMore={async () => {
                 console.log('onFetchMore()');
-                await setDataLoaded(false);
+                setDataLoaded(false);
                 await fetchData();
               }}
             />

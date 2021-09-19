@@ -81,7 +81,7 @@ export default function OffersMade() {
           <div className={styles.main}>
             <NoData isFetching={isFetching} data={data} currentPage={currentPage} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
-            
+
             <CardList data={data} actions={['CANCEL_OFFER']} />
           </div>
 
@@ -90,7 +90,7 @@ export default function OffersMade() {
               currentPage={currentPage}
               onFetchMore={async () => {
                 console.log('onFetchMore()');
-                await setDataLoaded(false);
+                setDataLoaded(false);
                 await fetchData();
               }}
             />

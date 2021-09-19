@@ -3,29 +3,9 @@ import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import OfferStatusModal from 'components/OfferStatusModal/OfferStatusModal';
-import { Metadata } from 'types/Nft.interface';
+import { CardData, Metadata } from 'types/Nft.interface';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-
-export type CardData = {
-  id: string;
-  title: string;
-  description?: string;
-  image: string;
-  imagePreview?: string;
-  price?: number;
-  inStock?: number;
-  viewInfo?: boolean;
-  data?: any;
-  tokenAddress?: string;
-  tokenId?: string;
-  collectionName?: string;
-  maker?: string;
-  hasBonusReward?: boolean;
-  hasBlueCheck?: boolean;
-  owner?: string;
-  metadata?: Metadata;
-};
 
 type Props = {
   data: CardData;

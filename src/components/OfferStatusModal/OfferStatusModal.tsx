@@ -1,7 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import styles from './OfferStatusModal.module.scss';
-import { CardData } from 'components/Card/Card';
+import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiDelete } from 'utils/apiUtil';
 import { GenericError } from 'types';
