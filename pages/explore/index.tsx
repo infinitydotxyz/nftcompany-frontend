@@ -191,7 +191,7 @@ export default function Dashboard() {
           <NoData isFetching={isFetching} data={exploreSearchState.listedNfts} currentPage={currentPage} />
           {exploreSearchState.listedNfts?.length === 0 && isFetching && <LoadingCardList />}
 
-          <CardList showItems={[]} data={exploreSearchState.listedNfts} actions={['BUY_NFT']} />
+          <CardList showItems={['PRICE']} data={exploreSearchState.listedNfts} actions={['BUY_NFT']} />
 
           {dataLoaded && (
             <FetchMore
