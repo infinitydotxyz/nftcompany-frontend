@@ -93,8 +93,12 @@ const Header = () => {
               >
                 My NFTs
               </MenuItem>
-              <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
-                Listed for sale
+              <MenuItem
+                textColor="#333"
+                icon={<StarIcon />}
+                onClick={() => router.push('/user/0xC844c8e1207B9d3C54878C849A431301bA9c23E0')}
+              >
+                $$ Listed for sale
               </MenuItem>
             </HoverMenuButton>
 

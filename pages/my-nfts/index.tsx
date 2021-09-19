@@ -50,7 +50,7 @@ export default function MyNFTs() {
     const newCurrentPage = currentPage + 1;
 
     const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
-      offset: newCurrentPage * ITEMS_PER_PAGE,
+      offset: Math.round(newCurrentPage / ITEMS_PER_PAGE),
       limit: ITEMS_PER_PAGE,
       source: 1
     });
@@ -100,7 +100,7 @@ export default function MyNFTs() {
           <div className={styles.main}>
             <NoData isFetching={isFetching} data={data} currentPage={currentPage} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
-            
+
             <CardList
               data={data}
               showItems={[]}
