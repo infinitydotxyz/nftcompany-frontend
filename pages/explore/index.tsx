@@ -10,7 +10,6 @@ import CardList from 'components/Card/CardList';
 import FilterPanel, { Filter } from 'components/FilterPanel/FilterPanel';
 import { FilterIcon } from 'components/Icons/Icons';
 import {
-  getAllListings,
   getListingById,
   getListings,
   getListingsByCollectionName,
