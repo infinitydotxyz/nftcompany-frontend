@@ -16,7 +16,7 @@ import { transformOpenSea } from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
 
 export default function UserPage() {
-  const { user, showAppError } = useAppContext();
+  const { showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<CardData[]>([]);
   const [listModalItem, setListModalItem] = useState(null);
@@ -42,6 +42,7 @@ export default function UserPage() {
       limit: ITEMS_PER_PAGE,
       source: 1
     });
+
     if (error) {
       showAppError(`${error.message}`);
       return;
@@ -73,7 +74,7 @@ export default function UserPage() {
 
   React.useEffect(() => {
     fetchData();
-  }, [user]);
+  }, [userParam]);
 
   React.useEffect(() => {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
