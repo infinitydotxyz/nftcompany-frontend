@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MenuItem, MenuDivider, Box } from '@chakra-ui/react';
-import { ExternalLinkIcon, StarIcon } from '@chakra-ui/icons';
+import { ExternalLinkIcon, SettingsIcon, StarIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -11,6 +11,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
+import SettingsModal from 'components/SettingsModal/SettingsModal';
 
 let isChangingAccount = false;
 
@@ -28,6 +29,7 @@ type ContextType = {
 };
 
 const Header = () => {
+  const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const router = useRouter();
   const { route } = router;
 
@@ -128,6 +130,9 @@ const Header = () => {
                   <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/rewards')}>
                     Rewards
                   </MenuItem>
+                  <MenuItem textColor="#333" icon={<SettingsIcon />} onClick={() => setSettingsModalShowed(true)}>
+                    Settings
+                  </MenuItem>
 
                   <MenuDivider />
                   <MenuItem textColor="#333" icon={<ExternalLinkIcon />} onClick={() => setUser(null)}>
@@ -155,6 +160,8 @@ const Header = () => {
           </ul>
         </Box>
       </Box>
+
+      {settingsModalShowed && <SettingsModal onClose={() => setSettingsModalShowed(false)} />}
     </header>
   );
 };

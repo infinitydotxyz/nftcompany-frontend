@@ -1,0 +1,17 @@
+.main {
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+    margin-top: 40px;
+  }
+}
