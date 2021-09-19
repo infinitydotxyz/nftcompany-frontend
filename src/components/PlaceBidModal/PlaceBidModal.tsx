@@ -2,7 +2,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import styles from './PlaceBidModal.module.scss';
 import Datetime from 'react-datetime';
-import { CardData } from 'components/Card/Card';
+import { CardData } from 'types/Nft.interface';
 import { getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
@@ -42,12 +42,13 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
             // Handle when the order does not exist anymore
             showAppError('Error when purchasing.');
           }
-        }).catch((err: GenericError) => {
-          console.error('ERROR:', err)
+        })
+        .catch((err: GenericError) => {
+          console.error('ERROR:', err);
           showAppError(err?.message);
         });
     } catch (err) {
-      console.error('ERROR:', err)
+      console.error('ERROR:', err);
       showAppError((err as GenericError)?.message);
     }
   };
@@ -55,20 +56,22 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const makeAnOffer = () => {
     try {
       const seaport = getOpenSeaport();
-      seaport.createBuyOrder({
-        asset: {
-          tokenAddress: data.tokenAddress!,
-          tokenId: data.tokenId!,
-          schemaName: getSchemaName(data.tokenAddress!)
-        },
-        accountAddress: user!.account,
-        startAmount: offerPrice,
-        assetDetails: data,
-        expirationTime: expiryTimeSeconds
-      }).catch((err: GenericError) => {
-        console.error('ERROR:', err)
-        showAppError(err?.message);
-      });;
+      seaport
+        .createBuyOrder({
+          asset: {
+            tokenAddress: data.tokenAddress!,
+            tokenId: data.tokenId!,
+            schemaName: getSchemaName(data.tokenAddress!)
+          },
+          accountAddress: user!.account,
+          startAmount: offerPrice,
+          assetDetails: data,
+          expirationTime: expiryTimeSeconds
+        })
+        .catch((err: GenericError) => {
+          console.error('ERROR:', err);
+          showAppError(err?.message);
+        });
     } catch (err) {
       showAppError((err as GenericError)?.message);
     }

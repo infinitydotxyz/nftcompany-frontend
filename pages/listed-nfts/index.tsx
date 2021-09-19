@@ -12,7 +12,7 @@ import { ordersToCardData } from 'services/Listings.service';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
-import { CardData } from 'components/Card/Card';
+import { CardData } from 'types/Nft.interface';
 
 export default function ListNFTs() {
   const { user, showAppError, showAppMessage } = useAppContext();

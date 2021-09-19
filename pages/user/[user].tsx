@@ -92,7 +92,7 @@ export default function UserPage() {
         <div className="container container-fluid">
           <div className="section-bar">
             <div className="">
-              <div className="tg-title">My NFTs</div>
+              <div className="tg-title">Users NFTs</div>
             </div>
 
             <div className="center">&nbsp;</div>

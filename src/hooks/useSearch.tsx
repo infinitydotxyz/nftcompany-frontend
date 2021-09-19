@@ -1,4 +1,4 @@
-import { CardData } from 'components/Card/Card';
+import { CardData } from 'types/Nft.interface';
 import { Filter } from 'components/FilterPanel/FilterPanel';
 import React, { useContext, useState } from 'react';
 import { TypeAheadOption } from 'services/Listings.service';

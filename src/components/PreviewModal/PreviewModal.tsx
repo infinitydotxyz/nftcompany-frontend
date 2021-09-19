@@ -3,7 +3,7 @@ import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import PurchaseModal from 'components/PurchaseModal/PurchaseModal';
 import dynamic from 'next/dynamic';
 import styles from './PreviewModal.module.scss';
-import { CardData } from 'components/Card/Card';
+import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 const Modal = dynamic(() => import('hooks/useModal'));

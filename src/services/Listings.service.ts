@@ -1,4 +1,4 @@
-import { CardData } from 'components/Card/Card';
+import { CardData } from 'types/Nft.interface';
 import { Order, Orders } from 'types/Nft.interface';
 import { weiToEther } from 'utils/ethersUtil';
 import { Filter } from 'components/FilterPanel/FilterPanel';

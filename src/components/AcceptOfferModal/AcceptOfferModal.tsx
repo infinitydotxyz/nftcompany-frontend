@@ -1,7 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import styles from './AcceptOfferModal.module.scss';
-import { CardData } from 'components/Card/Card';
+import { CardData } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
