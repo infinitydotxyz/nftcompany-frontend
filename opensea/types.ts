@@ -593,6 +593,7 @@ export interface Order extends UnsignedOrder, Partial<ECSignature> {
   markedInvalid?: boolean
   asset?: OpenSeaAsset
   assetBundle?: OpenSeaAssetBundle
+  id?: string // firebase doc.id
 }
 
 /**

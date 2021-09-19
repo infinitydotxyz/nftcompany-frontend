@@ -6,6 +6,7 @@ import { CardData } from 'types/Nft.interface';
 import { getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
+import { apiPost } from 'utils/apiUtil';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -35,9 +36,12 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           // Important to check if the order is still available as it can have already been fulfilled by
           // another user or cancelled by the creator
           if (order) {
-            const result = await seaport.fulfillOrder({ order: order, accountAddress: user!.account });
+            const txid = await seaport.fulfillOrder({ order: order, accountAddress: user!.account });
 
-            console.log('buyNft result: ', result);
+            console.log('buyNft result: seaport.fulfillOrder txid:', txid);
+            // console.log('order', order)
+            // const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/orders/trackTxn?orderId=${order.id}`, {}, order);
+            // console.log('***', result, error)
           } else {
             // Handle when the order does not exist anymore
             showAppError('Error when purchasing.');

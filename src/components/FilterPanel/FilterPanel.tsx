@@ -9,6 +9,9 @@ export type Filter = {
   sortByLikes?: string;
   sortByPrice?: string;
   price?: number;
+  startAfter?: number;
+  startAfterPrice?: number;
+  limit?: number;
 };
 
 type Props = {
