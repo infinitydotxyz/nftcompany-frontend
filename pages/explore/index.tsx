@@ -3,21 +3,29 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Box, Spinner } from '@chakra-ui/react';
+import { ITEMS_PER_PAGE } from 'utils/constants';
+import { FetchMore, NoData } from 'components/FetchMore/FetchMore';
 // import { Select } from '@chakra-ui/react';
 import CardList from 'components/Card/CardList';
 import FilterPanel, { Filter } from 'components/FilterPanel/FilterPanel';
 import { FilterIcon } from 'components/Icons/Icons';
-import styles from '../../styles/Dashboard.module.scss';
 import { getListingById, getListings, getListingsByCollectionName, orderToCardData } from 'services/Listings.service';
 import { useAppSearchContext } from 'hooks/useSearch';
 import { useAppContext } from 'utils/context/AppContext';
+
+import styles from '../../styles/Dashboard.module.scss';
+import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
+
 const SEARCH_ERROR_MESSAGE = 'Unable to fetch assets';
+
 export default function Dashboard() {
+  const { user, showAppError } = useAppContext();
+  const { exploreSearchState, setExploreSearchState, setFilterState, filterState } = useAppSearchContext();
   const [tabIndex, setTabIndex] = useState(1);
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-  const { exploreSearchState, setExploreSearchState, setFilterState, filterState } = useAppSearchContext();
-  const { showAppError } = useAppContext();
+  const [currentPage, setCurrentPage] = useState(-1);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -41,13 +49,37 @@ export default function Dashboard() {
         break;
     }
   }, [tabIndex]);
+
+  const fetchData = async () => {
+    setIsFetching(true);
+    const newCurrentPage = currentPage + 1;
+
+    const moreData = await getListings({ offset: newCurrentPage * ITEMS_PER_PAGE, limit: ITEMS_PER_PAGE });
+    if (moreData.length !== 0) {
+      setIsFetching(false);
+      setExploreSearchState({ ...exploreSearchState, listedNfts: [...exploreSearchState.listedNfts, ...moreData] });
+      setCurrentPage(newCurrentPage);
+    } else {
+      showAppError(SEARCH_ERROR_MESSAGE);
+    }
+  };
+
   React.useEffect(() => {
     onSearch();
   }, [exploreSearchState.collectionName, exploreSearchState.selectedOption]);
 
   React.useEffect(() => {
-    onSearch();
-  }, []);
+    fetchData();
+  }, [user]);
+
+  React.useEffect(() => {
+    if (currentPage < 0 || exploreSearchState.listedNfts.length < currentPage * ITEMS_PER_PAGE) {
+      return;
+    }
+    console.log('currentPage loaded:', currentPage);
+    setDataLoaded(true); // current page's data loaded & rendered.
+  }, [currentPage]);
+
   const onSearch = async () => {
     setIsFetching(true);
     if (exploreSearchState.collectionName) {
@@ -73,12 +105,7 @@ export default function Dashboard() {
         showAppError(SEARCH_ERROR_MESSAGE);
       }
     } else {
-      const response = await getListings();
-      if (response.length !== 0) {
-        setExploreSearchState({ ...exploreSearchState, listedNfts: response });
-      } else {
-        showAppError(SEARCH_ERROR_MESSAGE);
-      }
+      await fetchData();
     }
     setFilterState({ sortByLikes: '', sortByPrice: '', price: 0 });
     setIsFetching(false);
@@ -151,10 +178,21 @@ export default function Dashboard() {
               />
             </Box>
           )}
-          {isFetching ? (
-            <Spinner size="md" color="gray.800" />
-          ) : (
-            <CardList showItems={[]} data={exploreSearchState.listedNfts} actions={['BUY_NFT']} />
+
+          <NoData isFetching={isFetching} data={exploreSearchState.listedNfts} currentPage={currentPage} />
+          {exploreSearchState.listedNfts?.length === 0 && isFetching && <LoadingCardList />}
+
+          <CardList showItems={[]} data={exploreSearchState.listedNfts} actions={['BUY_NFT']} />
+
+          {dataLoaded && (
+            <FetchMore
+              currentPage={currentPage}
+              onFetchMore={async () => {
+                console.log('onFetchMore()');
+                setDataLoaded(false);
+                await fetchData();
+              }}
+            />
           )}
         </div>
       </div>

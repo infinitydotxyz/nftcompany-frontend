@@ -28,7 +28,6 @@ export default function MyNFTs() {
       setData([]);
       return;
     }
-
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
 
