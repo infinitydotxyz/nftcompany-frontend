@@ -18,12 +18,12 @@ type Props = {
   isExpanded: boolean;
   setExpanded?: any;
   setFilters: any;
-  getNftListings: any;
+  onChangeFilter: () => {};
   filter: Filter | undefined;
   exploreSearchState: any;
 };
 
-const FilterPanel = ({ isExpanded, setExpanded, setFilters, filter, getNftListings }: Props) => {
+const FilterPanel = ({ isExpanded, setExpanded, setFilters, filter, onChangeFilter }: Props) => {
   const [values, setValues] = useState([10000]);
   React.useEffect(() => {
     setValues([filter?.price || 10000]);
@@ -32,7 +32,7 @@ const FilterPanel = ({ isExpanded, setExpanded, setFilters, filter, getNftListin
   const handleChanges = async (changes: Filter) => {
     const updatedFilter = { ...changes };
     setFilters(updatedFilter);
-    getNftListings(updatedFilter);
+    onChangeFilter(updatedFilter);
   };
   const updateFilter = (price: number[]) => {
     setValues(price);
