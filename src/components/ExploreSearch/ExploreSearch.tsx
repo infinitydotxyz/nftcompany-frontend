@@ -52,7 +52,7 @@ const ExploreSearch = () => {
           isLoading={exploreSearchState.isLoading}
           onSearch={handleSearch}
           options={exploreSearchState.options}
-          placeholder="Search For Any Collection or Nft"
+          placeholder="Search items..."
           renderMenuItemChildren={(option) => (
             <Fragment>
               <Box d="flex" alignItems="flex-start" textAlign="center">
