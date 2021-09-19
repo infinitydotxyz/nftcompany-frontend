@@ -7,17 +7,18 @@ import { apiGet, apiDelete } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, getLastItemCreatedAt, NoData } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
-import { ordersToCardData } from 'services/Listings.service';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useRouter } from 'next/router';
+import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
+import { transformOpenSea } from 'utils/commonUtil';
 
 export default function UserPage() {
   const { user, showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
+  const [listModalItem, setListModalItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -27,37 +28,33 @@ export default function UserPage() {
   } = router;
 
   const fetchData = async () => {
-    if (!user?.account) {
+    if (!user || !user?.account) {
       setData([]);
       return;
     }
     setIsFetching(true);
-    let listingData = [];
     const newCurrentPage = currentPage + 1;
-    try {
-      const { result, error } = await apiGet(`/p/u/${userParam}/assets`, {
-        offset: Math.round(newCurrentPage / ITEMS_PER_PAGE),
-        limit: ITEMS_PER_PAGE,
-        source: 1
-      });
-      if (error) {
-        showAppError(`${error?.message}`);
-        return;
-      }
-      listingData = result?.listings || [];
-      console.log('listingData', listingData);
-    } catch (e) {
-      console.error(e);
+
+    const { result, error } = await apiGet(`/p/u/${userParam}/assets`, {
+      offset: Math.round(newCurrentPage / ITEMS_PER_PAGE),
+      limit: ITEMS_PER_PAGE,
+      source: 1
+    });
+    if (error) {
+      showAppError(`${error.message}`);
+      return;
     }
-    const moreData = ordersToCardData(listingData || []);
-    console.log('moreData', moreData);
+    const moreData = (result?.assets || []).map((item: any) => {
+      const newItem = transformOpenSea(item);
+      return newItem;
+    });
     setIsFetching(false);
     setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);
   };
 
   React.useEffect(() => {
-    console.log('- Offers Made - user:', user);
+    console.log('- My NFTs - user:', user);
     fetchData();
   }, [user]);
 
@@ -68,16 +65,17 @@ export default function UserPage() {
     console.log('currentPage loaded:', currentPage);
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
+
   return (
     <>
       <Head>
-        <title>Offers Made</title>
+        <title>My NFTs</title>
       </Head>
       <div className={pageStyles.dashboard}>
         <div className="container container-fluid">
           <div className="section-bar">
             <div className="">
-              <div className="tg-title">Offers Made</div>
+              <div className="tg-title">My NFTs</div>
             </div>
 
             <div className="center">&nbsp;</div>
@@ -89,20 +87,30 @@ export default function UserPage() {
             <NoData isFetching={isFetching} data={data} currentPage={currentPage} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
 
-            <CardList data={data} actions={['CANCEL_OFFER']} />
-          </div>
-
-          {dataLoaded && (
-            <FetchMore
-              currentPage={currentPage}
-              onFetchMore={async () => {
-                console.log('onFetchMore()');
-                setDataLoaded(false);
-                await fetchData();
+            <CardList
+              data={data}
+              showItems={[]}
+              actions={['LIST_NFT']}
+              onClickAction={(item, action) => {
+                // console.log('item, action', item, action);
+                setListModalItem(item);
               }}
             />
-          )}
+          </div>
         </div>
+
+        {dataLoaded && (
+          <FetchMore
+            currentPage={currentPage}
+            onFetchMore={async () => {
+              console.log('onFetchMore()');
+              setDataLoaded(false);
+              await fetchData();
+            }}
+          />
+        )}
+
+        {listModalItem && <ListNFTModal data={listModalItem} onClose={() => setListModalItem(null)} />}
       </div>
     </>
   );

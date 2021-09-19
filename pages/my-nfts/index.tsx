@@ -11,27 +11,8 @@ import { useAppContext } from 'utils/context/AppContext';
 
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
-import { CardData } from 'components/Card/Card';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
-
-const transformOpenSea = (item: any) => {
-  if (!item) {
-    return null;
-  }
-
-  return {
-    id: `${item?.asset_contract?.address}_${item?.token_id}`,
-    title: item.name,
-    description: item.description,
-    image: item.image_url,
-    imagePreview: item.image_preview_url,
-    tokenAddress: item.asset_contract.address,
-    tokenId: item.token_id,
-    collectionName: item.asset_contract.name,
-    inStock: 1,
-    price: 0.1
-  } as CardData;
-};
+import { transformOpenSea } from 'utils/commonUtil';
 
 export default function MyNFTs() {
   const { user, showAppError } = useAppContext();
