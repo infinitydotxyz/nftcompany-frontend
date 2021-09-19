@@ -13,11 +13,12 @@ import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { transformOpenSea } from 'utils/commonUtil';
+import { CardData } from 'types/Nft.interface';
 
 export default function MyNFTs() {
   const { user, showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
-  const [data, setData] = useState<any>([]);
+  const [data, setData] = useState<CardData[]>([]);
   const [listModalItem, setListModalItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -27,11 +28,12 @@ export default function MyNFTs() {
       setData([]);
       return;
     }
+
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
 
     const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
-      offset: Math.round(newCurrentPage / ITEMS_PER_PAGE),
+      offset: newCurrentPage * ITEMS_PER_PAGE,
       limit: ITEMS_PER_PAGE,
       source: 1
     });
