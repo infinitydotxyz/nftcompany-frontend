@@ -13,6 +13,15 @@ export const getListings = async (listingFilter?: Filter): Promise<CardData[]> =
   return ordersToCardData(result.listings);
 };
 
+export const getAllListings = async (listingFilter?: Filter): Promise<CardData[]> => {
+  const path = `/all-listings/`;
+  const { result, error }: { result: Orders; error: any } = (await apiGet(path, listingFilter)) as any;
+  if (error !== undefined) {
+    return [];
+  }
+  return ordersToCardData(result.listings);
+};
+
 export const ordersToCardData = (listings: Order[]): CardData[] => {
   const cards = listings.map(orderToCardData);
   return cards;

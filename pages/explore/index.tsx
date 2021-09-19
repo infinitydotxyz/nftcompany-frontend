@@ -4,12 +4,18 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { Box, Spinner } from '@chakra-ui/react';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore, NoData } from 'components/FetchMore/FetchMore';
+import { FetchMore, getLastItemBasePrice, getLastItemCreatedAt, NoData } from 'components/FetchMore/FetchMore';
 // import { Select } from '@chakra-ui/react';
 import CardList from 'components/Card/CardList';
 import FilterPanel, { Filter } from 'components/FilterPanel/FilterPanel';
 import { FilterIcon } from 'components/Icons/Icons';
-import { getListingById, getListings, getListingsByCollectionName, orderToCardData } from 'services/Listings.service';
+import {
+  getAllListings,
+  getListingById,
+  getListings,
+  getListingsByCollectionName,
+  orderToCardData
+} from 'services/Listings.service';
 import { useAppSearchContext } from 'hooks/useSearch';
 import { useAppContext } from 'utils/context/AppContext';
 
@@ -30,7 +36,7 @@ export default function Dashboard() {
   const title = React.useMemo(() => {
     switch (tabIndex) {
       case 1:
-        return 'Hot Bids 🔥';
+        return 'Explore';
         break;
       case 2:
         return 'Artistic 🎨';
@@ -50,26 +56,12 @@ export default function Dashboard() {
     }
   }, [tabIndex]);
 
-  const fetchData = async () => {
-    setIsFetching(true);
-    const newCurrentPage = currentPage + 1;
-
-    const moreData = await getListings({ offset: newCurrentPage * ITEMS_PER_PAGE, limit: ITEMS_PER_PAGE });
-    if (moreData.length !== 0) {
-      setIsFetching(false);
-      setExploreSearchState({ ...exploreSearchState, listedNfts: [...exploreSearchState.listedNfts, ...moreData] });
-      setCurrentPage(newCurrentPage);
-    } else {
-      showAppError(SEARCH_ERROR_MESSAGE);
-    }
-  };
-
   React.useEffect(() => {
     onSearch();
   }, [exploreSearchState.collectionName, exploreSearchState.selectedOption]);
 
   React.useEffect(() => {
-    fetchData();
+    // fetchData();
   }, [user]);
 
   React.useEffect(() => {
@@ -79,6 +71,23 @@ export default function Dashboard() {
     console.log('currentPage loaded:', currentPage);
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
+
+  const fetchData = async (isRefreshing: boolean = false) => {
+    setIsFetching(true);
+    let newCurrentPage = currentPage + 1;
+    if (isRefreshing) {
+      newCurrentPage = 0;
+      setDataLoaded(false);
+    }
+    const moreData = await getListings({
+      startAfter: isRefreshing ? '' : getLastItemCreatedAt(exploreSearchState.listedNfts),
+      startAfterPrice: isRefreshing ? '' : getLastItemBasePrice(exploreSearchState.listedNfts),
+      limit: ITEMS_PER_PAGE
+    });
+    setIsFetching(false);
+    setExploreSearchState({ ...exploreSearchState, listedNfts: isRefreshing ? moreData : [...exploreSearchState.listedNfts, ...moreData] });
+    setCurrentPage(newCurrentPage);
+  };
 
   const onSearch = async () => {
     setIsFetching(true);
@@ -105,7 +114,8 @@ export default function Dashboard() {
         showAppError(SEARCH_ERROR_MESSAGE);
       }
     } else {
-      await fetchData();
+      // initial fetch, or after clearing search/filter:
+      await fetchData(true);
     }
     setFilterState({ sortByLikes: '', sortByPrice: '', price: 0 });
     setIsFetching(false);

@@ -9,7 +9,8 @@ export type Filter = {
   sortByLikes?: string;
   sortByPrice?: string;
   price?: number;
-  offset?: number;
+  startAfter?: number;
+  startAfterPrice?: number;
   limit?: number;
 };
 

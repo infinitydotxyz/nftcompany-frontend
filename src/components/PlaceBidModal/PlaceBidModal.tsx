@@ -39,9 +39,9 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
             const txid = await seaport.fulfillOrder({ order: order, accountAddress: user!.account });
 
             console.log('buyNft result: seaport.fulfillOrder txid:', txid);
-            console.log('order', order)
-            const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/orders/fulfilled?orderId=${order.id}`, {}, order);
-            console.log('***', result, error)
+            // console.log('order', order)
+            // const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/orders/trackTxn?orderId=${order.id}`, {}, order);
+            // console.log('***', result, error)
           } else {
             // Handle when the order does not exist anymore
             showAppError('Error when purchasing.');

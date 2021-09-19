@@ -32,7 +32,7 @@ export default function MyNFTs() {
     const newCurrentPage = currentPage + 1;
 
     const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
-      offset: newCurrentPage * ITEMS_PER_PAGE,
+      offset: newCurrentPage * ITEMS_PER_PAGE, // not "startAfter" because this is not firebase query.
       limit: ITEMS_PER_PAGE,
       source: 1
     });
