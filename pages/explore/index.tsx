@@ -26,34 +26,10 @@ const SEARCH_ERROR_MESSAGE = 'Unable to fetch assets';
 export default function Dashboard() {
   const { user, showAppError } = useAppContext();
   const { exploreSearchState, setExploreSearchState, setFilterState, filterState } = useAppSearchContext();
-  const [tabIndex, setTabIndex] = useState(1);
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
-
-  const title = React.useMemo(() => {
-    switch (tabIndex) {
-      case 1:
-        return 'Explore';
-        break;
-      case 2:
-        return 'Artistic 🎨';
-        break;
-      case 3:
-        return 'Coins 🪙';
-        break;
-      case 4:
-        return 'Games 🎮';
-        break;
-      case 5:
-        return 'Music 🎵';
-        break;
-
-      default:
-        break;
-    }
-  }, [tabIndex]);
 
   React.useEffect(() => {
     onSearch();
@@ -155,7 +131,7 @@ export default function Dashboard() {
         <div className="container container-fluid">
           <div className="section-bar">
             <div className="right">
-              <div className="tg-title">{title}</div>
+              <div className="tg-title">Explore</div>
             </div>
 
             <div className="center"></div>
