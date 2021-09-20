@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
-import OfferStatusModal from 'components/OfferStatusModal/OfferStatusModal';
+import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import { CardData, Metadata } from 'types/Nft.interface';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
@@ -20,7 +20,7 @@ type Props = {
 function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PRICE'], actions = [], ...rest }: Props) {
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
-  const [offerStatusModalShowed, setOfferStatusModalShowed] = useState(false);
+  const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
   const [previewModalShowed, setPreviewModalShowed] = useState(false);
 
   if (!data) {
@@ -111,10 +111,10 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
                   ev.preventDefault();
                   ev.stopPropagation();
 
-                  setOfferStatusModalShowed(true);
+                  setCancelOfferModalShowed(true);
                 }}
               >
-                <span>Offer Status</span>
+                <span>Cancel Offer</span>
               </a>
             )}
           </div>
@@ -142,7 +142,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
       </div>
 
       {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
-      {offerStatusModalShowed && <OfferStatusModal data={data} onClose={() => setOfferStatusModalShowed(false)} />}
+      {cancelOfferModalShowed && <CancelOfferModal data={data} onClose={() => setCancelOfferModalShowed(false)} />}
       {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
       {previewModalShowed && (
         <PreviewModal
