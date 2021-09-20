@@ -67,7 +67,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     <>
       {!isServer && (
         <Modal
-          brandColor={'blue'}
+          brandColor={'brandBlue'}
           isActive={true}
           onClose={onClose}
           activator={({ setShow }: any) => (

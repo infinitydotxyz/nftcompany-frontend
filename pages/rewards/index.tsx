@@ -29,7 +29,7 @@ const chartData = {
     {
       label: 'Rewards', // legend
       data: [1, 2, 4, 8, 2, 15],
-      backgroundColor: 'blue'
+      backgroundColor: 'brandBlue'
     }
   ]
 };
@@ -42,7 +42,7 @@ const options = {
         display: true,
         gridLines: {
           display: false,
-          color: 'blue'
+          color: 'brandBlue'
         },
         ticks: {
           beginAtZero: true,
@@ -57,7 +57,7 @@ const options = {
         display: true,
         gridLines: {
           display: false,
-          color: 'blue'
+          color: 'brandBlue'
         },
         ticks: {
           beginAtZero: false,

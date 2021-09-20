@@ -29,9 +29,7 @@ export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
   try {
     // deprecated: await window.ethereum.enable();
     // so you are required to call this instead
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-    console.log('accounts:', accounts);
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
   } catch (err: any) {
     console.log(err);
   }

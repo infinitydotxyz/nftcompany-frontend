@@ -21,7 +21,7 @@ const DeleteListingModal: React.FC<IProps> = ({ user, data, onSubmit, onClose }:
     <>
       {!isServer && (
         <Modal
-          brandColor={'blue'}
+          brandColor={'brandBlue'}
           isActive={true}
           onClose={onClose}
           activator={({ setShow }: any) => (

@@ -27,7 +27,7 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
 
   let owner = data.owner ?? '';
   if (owner.length > 16) {
-    owner = `${owner.slice(0, 4)}...${owner.slice(-4)}`;
+    owner = `${owner.slice(0, 6)}...${owner.slice(-4)}`;
   }
 
   let tokenAddress = data.tokenAddress;
@@ -55,7 +55,7 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
       <>
         <div className={styles.label}>Owner</div>
         <Tooltip label={data.tokenAddress} hasArrow openDelay={1000}>
-          <Link color="blue.500" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
+          <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
             {owner}
           </Link>
         </Tooltip>
@@ -66,7 +66,7 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
     <>
       {!isServer && (
         <Modal
-          brandColor={'blue'}
+          brandColor={'brandBlue'}
           isActive={true}
           onClose={onClose}
           activator={({ setShow }: any) => (
@@ -109,7 +109,7 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
                     <div className={styles.label}>Token Address</div>
                     <Tooltip label={data.tokenAddress} hasArrow openDelay={1000}>
                       <Link
-                        color="blue.500"
+                        color="brandBlue"
                         href={`https://etherscan.io/token/${data.tokenAddress}`}
                         target="_blank"
                         rel="noreferrer"
@@ -122,7 +122,7 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
 
                     <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
                       <Link
-                        color="blue.500"
+                        color="brandBlue"
                         href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
                         target="_blank"
                         rel="noreferrer"

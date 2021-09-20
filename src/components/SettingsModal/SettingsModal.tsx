@@ -82,7 +82,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
   const _subscribeSection = showSubscribeSection ? (
     <div className={styles.subscribe}>
       <div>
-        <Link color="blue.500" onClick={toggleSubscribe}>
+        <Link color="brandBlue" onClick={toggleSubscribe}>
           {subscribed ? 'Unsubscribe' : 'Subscribe'}
         </Link>
         {` if you ${subscribed ? 'do not' : ''} want to receive emails about your account activity.`}
@@ -94,7 +94,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
     <>
       {!isServer && (
         <Modal
-          brandColor={'blue'}
+          brandColor={'brandBlue'}
           isActive={true}
           onClose={onClose}
           activator={({ setShow }: any) => (
@@ -124,7 +124,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
                 {_subscribeSection}
 
                 <div className={styles.buttons}>
-                  <Button colorScheme="blue" onClick={() => saveEmail()}>
+                  <Button bgColor="brandBlue" color="white" onClick={() => saveEmail()}>
                     Save
                   </Button>
                   <Button colorScheme="gray" onClick={onClose}>
