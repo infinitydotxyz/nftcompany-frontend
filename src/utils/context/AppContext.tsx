@@ -47,11 +47,10 @@ export function AppContextProvider({ children }: any) {
       showToast(toast, 'error', `MetaMask RPC Error: ${error?.message}` || 'MetaMask RPC Error');
     };
     const res = await initEthers({ onError }); // returns provider
-
     if (res && res.getSigner) {
       await setAuthHeaders(await res.getSigner().getAddress());
     } else {
-      showAppError('Failed to connect.');
+      showAppError('Failed to connect');
     }
   };
 
