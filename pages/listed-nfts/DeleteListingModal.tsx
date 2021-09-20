@@ -1,15 +1,14 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
 import styles from './DeleteListingModal.module.scss';
+import ModalDialog from 'hooks/ModalDialog';
 
-const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
 
 interface IProps {
   user?: any;
   data?: any;
   onSubmit?: () => void;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 const DeleteListingModal: React.FC<IProps> = ({ user, data, onSubmit, onClose }: IProps) => {
@@ -20,16 +19,7 @@ const DeleteListingModal: React.FC<IProps> = ({ user, data, onSubmit, onClose }:
   return (
     <>
       {!isServer && (
-        <Modal
-          brandColor={'brandBlue'}
-          isActive={true}
-          onClose={onClose}
-          activator={({ setShow }: any) => (
-            <div onClick={() => setShow(true)} className={'nftholder'}>
-              &nbsp;
-            </div>
-          )}
-        >
+        <ModalDialog onClose={onClose}>
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.title}>&nbsp;</div>
@@ -52,7 +42,7 @@ const DeleteListingModal: React.FC<IProps> = ({ user, data, onSubmit, onClose }:
               </div>
             </div>
           </div>
-        </Modal>
+        </ModalDialog>
       )}
     </>
   );

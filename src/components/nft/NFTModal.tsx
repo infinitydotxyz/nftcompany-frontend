@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { Tab, TabList, TabPanel, TabPanels, Tabs, Spinner } from '@chakra-ui/react';
+import ModalDialog from 'hooks/ModalDialog';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const Dashboard = dynamic(() => import('./dashboard'), { loading: () => <Spinner size="md" color="gray.800" /> });
@@ -19,23 +20,14 @@ interface IProps {
   brandColor: string;
   bgColor: string;
   active?: boolean;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 const NFTModal: React.FC<IProps> = ({ title, id, address, brandColor, bgColor, active, onClose }: IProps) => {
   return (
     <>
       {!isServer && (
-        <Modal
-          brandColor={brandColor}
-          isActive={true}
-          onClose={onClose}
-          activator={({ setShow }: any) => (
-            <div onClick={() => setShow(true)} className={'nftholder'}>
-              &nbsp;
-            </div>
-          )}
-        >
+        <ModalDialog onClose={onClose}>
           <div className={`modal ${'ntfmodal'}`} style={{ background: bgColor, borderColor: brandColor }}>
             <div className="modal-body">
               <div className={'label'}>
@@ -69,7 +61,7 @@ const NFTModal: React.FC<IProps> = ({ title, id, address, brandColor, bgColor, a
               </Tabs>
             </div>
           </div>
-        </Modal>
+        </ModalDialog>
       )}
     </>
   );

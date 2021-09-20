@@ -1,10 +1,8 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
 import styles from './ActionModal.module.scss';
-import Image from 'next/image';
 import { getAddressBalance } from 'utils/ethersUtil';
+import ModalDialog from 'hooks/ModalDialog';
 
-const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
 
 export const ActionModalType = {
@@ -19,7 +17,7 @@ interface IProps {
   onClickMakeOffer?: (nftLink: string, price: number) => void;
   onClickBuyNow?: (nftLink: string, price: number) => void;
   onClickListNFT?: (nftLink: string, price: number) => void;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 const ActionModal: React.FC<IProps> = ({
@@ -44,16 +42,7 @@ const ActionModal: React.FC<IProps> = ({
   return (
     <>
       {!isServer && (
-        <Modal
-          brandColor={'brandBlue'}
-          isActive={true}
-          onClose={onClose}
-          activator={({ setShow }: any) => (
-            <div onClick={() => setShow(true)} className={'nftholder'}>
-              &nbsp;
-            </div>
-          )}
-        >
+        <ModalDialog onClose={onClose}>
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.title}>{type}</div>
@@ -135,7 +124,7 @@ const ActionModal: React.FC<IProps> = ({
               </div>
             </div>
           </div>
-        </Modal>
+        </ModalDialog>
       )}
     </>
   );

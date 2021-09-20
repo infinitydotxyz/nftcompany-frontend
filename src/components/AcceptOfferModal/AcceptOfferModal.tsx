@@ -6,13 +6,14 @@ import { getOpenSeaport } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
+import ModalDialog from 'hooks/ModalDialog';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
 
 interface IProps {
   data: CardData;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
@@ -66,16 +67,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   return (
     <>
       {!isServer && (
-        <Modal
-          brandColor={'brandBlue'}
-          isActive={true}
-          onClose={onClose}
-          activator={({ setShow }: any) => (
-            <div onClick={() => setShow(true)} className={'nftholder'}>
-              &nbsp;
-            </div>
-          )}
-        >
+        <ModalDialog onClose={onClose}>
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.title}>Accept Offer</div>
@@ -104,7 +96,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               </div>
             </div>
           </div>
-        </Modal>
+        </ModalDialog>
       )}
     </>
   );

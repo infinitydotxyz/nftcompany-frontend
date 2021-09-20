@@ -12,6 +12,7 @@ import { apiGet } from 'utils/apiUtil';
 import { WETH_ADDRESS } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from './ListNFTModal.module.scss';
+import ModalDialog from 'hooks/ModalDialog';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -20,7 +21,7 @@ interface IProps {
   data?: any;
   onClickMakeOffer?: (nftLink: string, price: number) => void;
   onClickBuyNow?: (nftLink: string, price: number) => void;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
@@ -58,16 +59,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
   return (
     <>
       {!isServer && (
-        <Modal
-          brandColor={'brandBlue'}
-          isActive={true}
-          onClose={onClose}
-          activator={({ setShow }: any) => (
-            <div onClick={() => setShow(true)} className={'nftholder'}>
-              &nbsp;
-            </div>
-          )}
-        >
+        <ModalDialog onClose={onClose}>
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.title}>List NFT</div>
@@ -275,7 +267,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
               </div>
             </div>
           </div>
-        </Modal>
+        </ModalDialog>
       )}
     </>
   );
