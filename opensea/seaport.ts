@@ -1115,7 +1115,7 @@ export class OpenSeaPort {
   public async cancelOrder({ order, accountAddress }: { order: Order; accountAddress: string }) {
     this._dispatch(EventType.CancelOrder, { order, accountAddress });
 
-    const transactionHash = await this._wyvernProtocol.wyvernExchange.cancelOrder_.sendTransactionAsync(
+    const txnHash = await this._wyvernProtocol.wyvernExchange.cancelOrder_.sendTransactionAsync(
       [
         order.exchange,
         order.maker,
@@ -1149,7 +1149,7 @@ export class OpenSeaPort {
       { from: accountAddress }
     );
 
-    await this._confirmTransaction(transactionHash.toString(), EventType.CancelOrder, 'Cancelling order', async () => {
+    await this._confirmTransaction(txnHash.toString(), EventType.CancelOrder, 'Cancelling order', async () => {
       const isOpen = await this._validateOrder(order);
       return !isOpen;
     });

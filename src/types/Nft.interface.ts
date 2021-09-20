@@ -75,4 +75,5 @@ export type CardData = {
   hasBlueCheck?: boolean;
   owner?: string;
   metadata?: Metadata;
+  isOfferMadeOnListing?: boolean;
 };

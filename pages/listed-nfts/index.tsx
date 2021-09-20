@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import CardList from 'components/Card/CardList';
-import { apiDelete, apiGet } from 'utils/apiUtil';
+import { apiGet } from 'utils/apiUtil';
 import DeleteListingModal from './DeleteListingModal';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, getLastItemCreatedAt, NoData } from 'components/FetchMore/FetchMore';
@@ -13,6 +13,9 @@ import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { CardData } from 'types/Nft.interface';
+import { getOpenSeaport } from 'utils/ethersUtil';
+import { apiPost } from 'utils/apiUtil';
+import { GenericError } from 'types';
 
 export default function ListNFTs() {
   const { user, showAppError, showAppMessage } = useAppContext();
@@ -22,6 +25,42 @@ export default function ListNFTs() {
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
   const [deleteModalItem, setDeleteModalItem] = useState<CardData | null>(null);
+
+  const cancelListing = async () => {
+    try {
+      const seaport = getOpenSeaport();
+      seaport.api
+        .getOrder({
+          maker: user!.account,
+          id: data.id,
+          side: 1 // sell order
+        })
+        .then(async function (order: any) {
+          if (order) {
+            const txnHash = await seaport.cancelOrder({
+              order: order,
+              accountAddress: user!.account
+            });
+            console.log('Cancel listing txn hash: ' + txnHash);
+            const payload = {
+              actionType: 'cancel',
+              txnHash,
+              side: 1,
+              orderId: data.id
+            };
+            const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/pendingtxns`, {}, payload);
+            if (error) {
+              showAppError((error as GenericError)?.message);
+            }
+          } else {
+            // Handle when the order does not exist anymore
+            showAppError('Listing not found to cancel. Refresh page.');
+          }
+        });
+    } catch (err) {
+      showAppError((err as GenericError)?.message);
+    }
+  }
 
   const fetchData = async (isRefreshing: boolean = false) => {
     if (!user?.account) {
@@ -115,15 +154,7 @@ export default function ListNFTs() {
           onClose={() => setDeleteModalItem(null)}
           onSubmit={async () => {
             setDeleteModalItem(null);
-            const { error } = await apiDelete(`/u/${user?.account}/listings/${deleteModalItem?.id}`);
-            if (error) {
-              showAppError(`Failed to cancel this listing. ${error?.message}`);
-            } else {
-              showAppMessage(`Listing cancelled successfully.`);
-              setTimeout(() => {
-                fetchData(true);
-              }, 2000); // TODO: remove this delay once API has await delete.
-            }
+            cancelListing();
           }}
         />
       )}

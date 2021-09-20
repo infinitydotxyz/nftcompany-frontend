@@ -1,6 +1,5 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { apiDelete } from 'utils/apiUtil';
 import styles from './DeleteListingModal.module.scss';
 
 const Modal = dynamic(() => import('hooks/useModal'));

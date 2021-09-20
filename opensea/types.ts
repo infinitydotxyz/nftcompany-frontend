@@ -662,6 +662,7 @@ export interface OrderQuery extends Partial<OrderJSON> {
   listedBefore?: number | string
   limit?: number
   offset?: number
+  id? : string
 }
 
 /**

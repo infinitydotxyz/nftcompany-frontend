@@ -26,13 +26,11 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const buyNft = () => {
     try {
       const seaport = getOpenSeaport();
-      // todo: adi - do we need this
       seaport.api
         .getOrder({
           maker: data.maker,
-          assetContractAddress: data.tokenAddress,
-          tokenId: data.tokenId,
-          side: 1 // OrderSide.Sell
+          id: data.id,
+          side: 1 // sell order
         })
         .then(async function (order: any) {
           // Important to check if the order is still available as it can have already been fulfilled by
@@ -42,7 +40,9 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               order: order,
               accountAddress: user!.account
             });
-            console.log('Buy NFT txn hash: ' + txnHash + ' salePriceInEth: ' + salePriceInEth);
+            console.log(
+              'Buy NFT txn hash: ' + txnHash + ' salePriceInEth: ' + salePriceInEth + ' feesInEth: ' + feesInEth
+            );
             const payload = {
               actionType: 'fulfill',
               txnHash,
@@ -59,7 +59,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
             }
           } else {
             // Handle when the order does not exist anymore
-            showAppError('Error when purchasing.');
+            showAppError('Listing no longer exists');
           }
         })
         .catch((err: GenericError) => {

@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import styles from './AcceptOfferModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
+import { apiPost } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 
@@ -22,28 +23,40 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const acceptOffer = () => {
     try {
       const seaport = getOpenSeaport();
-      // todo: adi - do we need this
       seaport.api
         .getOrder({
           maker: data.maker,
-          assetContractAddress: data.tokenAddress,
-          tokenId: data.tokenId,
-          side: 0 // OrderSide.Buy
+          id: data.id,
+          side: 0 // buy order
         })
         .then(async function (order: any) {
           // Important to check if the order is still available as it can have already been fulfilled by
           // another user or cancelled by the creator
-
           if (order) {
-            const result = await seaport.fulfillOrder({
+            const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
               order: order,
               accountAddress: user!.account
             });
-
-            // TODO: call /trackTxn like PlaceBidModal
+            console.log(
+              'Accept offer txn hash: ' + txnHash + ' salePriceInEth: ' + salePriceInEth + ' feesInEth: ' + feesInEth
+            );
+            const payload = {
+              actionType: 'fulfill',
+              txnHash,
+              side: 0,
+              orderId: data.id,
+              isOfferMadeOnListing: data.isOfferMadeOnListing,
+              maker: data.maker,
+              salePriceInEth: +salePriceInEth,
+              feesInEth: +feesInEth
+            };
+            const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/pendingtxns`, {}, payload);
+            if (error) {
+              showAppError((error as GenericError)?.message);
+            }
           } else {
             // Handle when the order does not exist anymore
-            showAppError('Error when purchasing.');
+            showAppError('Offer no longer exists');
           }
         });
     } catch (err) {

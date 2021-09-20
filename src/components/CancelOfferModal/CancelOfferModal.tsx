@@ -3,12 +3,12 @@ import dynamic from 'next/dynamic';
 import styles from './CancelOfferModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
-import { apiDelete } from 'utils/apiUtil';
+import { getOpenSeaport } from 'utils/ethersUtil';
+import { apiPost } from 'utils/apiUtil';
 import { GenericError } from 'types';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
-
 interface IProps {
   data: CardData;
   onClose?: () => void;
@@ -21,7 +21,35 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
   const cancelOffer = async () => {
     try {
-      await apiDelete(`/u/${user!.account}/offers/${data.id}`);
+      const seaport = getOpenSeaport();
+      seaport.api
+        .getOrder({
+          maker: user!.account,
+          id: data.id,
+          side: 0 // buy order
+        })
+        .then(async function (order: any) {
+          if (order) {
+            const txnHash = await seaport.cancelOrder({
+              order: order,
+              accountAddress: user!.account
+            });
+            console.log('Cancel offer txn hash: ' + txnHash);
+            const payload = {
+              actionType: 'cancel',
+              txnHash,
+              side: 0,
+              orderId: data.id
+            };
+            const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/pendingtxns`, {}, payload);
+            if (error) {
+              showAppError((error as GenericError)?.message);
+            }
+          } else {
+            // Handle when the order does not exist anymore
+            showAppError('Offer not found to cancel. Refresh page.');
+          }
+        });
     } catch (err) {
       showAppError((err as GenericError)?.message);
     }
