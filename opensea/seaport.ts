@@ -1087,7 +1087,7 @@ export class OpenSeaPort {
     accountAddress: string;
     recipientAddress?: string;
     referrerAddress?: string;
-  }): Promise<string> {
+  }): Promise<Object> {
     const matchingOrder = this._makeMatchingOrder({
       order,
       accountAddress,
@@ -1097,13 +1097,13 @@ export class OpenSeaPort {
     const { buy, sell } = assignOrdersToSides(order, matchingOrder);
 
     const metadata = this._getMetadata(order, referrerAddress);
-    const transactionHash = await this._atomicMatch({ buy, sell, accountAddress, metadata });
+    const { txnHash, salePriceInEth, feesInEth } = await this._atomicMatch({ buy, sell, accountAddress, metadata });
 
-    await this._confirmTransaction(transactionHash, EventType.MatchOrders, 'Fulfilling order', async () => {
+    await this._confirmTransaction(txnHash, EventType.MatchOrders, 'Fulfilling order', async () => {
       const isOpen = await this._validateOrder(order);
       return !isOpen;
     });
-    return transactionHash;
+    return { txnHash, salePriceInEth, feesInEth };
   }
 
   /**
@@ -3515,6 +3515,9 @@ export class OpenSeaPort {
   }) {
     console.log('_atomicMatch', buy, sell);
     let value;
+    let salePriceInEth;
+    let feesInEth;
+    const feePercentage = DEFAULT_SELLER_FEE_BASIS_POINTS / INVERSE_BASIS_POINT;
     let shouldValidateBuy = true;
     let shouldValidateSell = true;
 
@@ -3522,6 +3525,11 @@ export class OpenSeaPort {
       // USER IS THE SELLER, only validate the buy order
       await this._sellOrderValidationAndApprovals({ order: sell, accountAddress });
       shouldValidateSell = false;
+      // set sale price and fees
+      const salePriceWei = buy.basePrice.add(buy.extra);
+      const feeWei = salePriceWei.times(feePercentage);
+      salePriceInEth = this.web3.fromWei(salePriceWei, 'ether');
+      feesInEth = this.web3.fromWei(feeWei, 'ether');
     } else if (buy.maker.toLowerCase() == accountAddress.toLowerCase()) {
       // USER IS THE BUYER, only validate the sell order
       await this._buyOrderValidationAndApprovals({ order: buy, counterOrder: sell, accountAddress });
@@ -3530,6 +3538,9 @@ export class OpenSeaPort {
       // If using ETH to pay, set the value of the transaction to the current price
       if (buy.paymentToken == NULL_ADDRESS) {
         value = await this._getRequiredAmountForTakingSellOrder(sell);
+        const feeWei = value.times(feePercentage);
+        salePriceInEth = this.web3.fromWei(value, 'ether');
+        feesInEth = this.web3.fromWei(feeWei, 'ether');
       }
     } else {
       // User is neither - matching service
@@ -3539,7 +3550,7 @@ export class OpenSeaPort {
 
     this._dispatch(EventType.MatchOrders, { buy, sell, accountAddress, matchMetadata: metadata });
 
-    let txHash;
+    let txnHash;
     const txnData: any = { from: accountAddress, value };
     const args: WyvernAtomicMatchParameters = [
       [
@@ -3626,7 +3637,7 @@ export class OpenSeaPort {
     // Then do the transaction
     try {
       this.logger(`Fulfilling order with gas set to ${txnData.gas}`);
-      txHash = await this._wyvernProtocol.wyvernExchange.atomicMatch_.sendTransactionAsync(
+      txnHash = await this._wyvernProtocol.wyvernExchange.atomicMatch_.sendTransactionAsync(
         args[0],
         args[1],
         args[2],
@@ -3647,7 +3658,7 @@ export class OpenSeaPort {
 
       throw new Error(`Failed to authorize transaction: "${error.message ? error.message : 'user denied'}..."`);
     }
-    return txHash;
+    return { txnHash, salePriceInEth, feesInEth };
   }
 
   private async _getRequiredAmountForTakingSellOrder(sell: Order) {

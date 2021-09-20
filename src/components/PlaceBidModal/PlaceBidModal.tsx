@@ -37,12 +37,25 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           // Important to check if the order is still available as it can have already been fulfilled by
           // another user or cancelled by the creator
           if (order) {
-            const txid = await seaport.fulfillOrder({ order: order, accountAddress: user!.account });
-
-            console.log('buyNft result: seaport.fulfillOrder txid:', txid);
-            // console.log('order', order)
-            // const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/orders/trackTxn?orderId=${order.id}`, {}, order);
-            // console.log('***', result, error)
+            const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
+              order: order,
+              accountAddress: user!.account
+            });
+            console.log('Buy NFT txn hash: ' + txnHash + ' salePriceInEth: ' + salePriceInEth);
+            const payload = {
+              actionType: 'fulfill',
+              txnHash,
+              side: 1,
+              orderId: data.id,
+              isOfferMadeOnListing: false,
+              maker: data.maker,
+              salePriceInEth: +salePriceInEth,
+              feesInEth: +feesInEth
+            };
+            const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/pendingtxns`, {}, payload);
+            if (error) {
+              showAppError((error as GenericError)?.message);
+            }
           } else {
             // Handle when the order does not exist anymore
             showAppError('Error when purchasing.');
