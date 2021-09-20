@@ -19,8 +19,9 @@
     display: flex;
     list-style: none;
     font-weight: bold;
-    justify-content: space-between;
     align-items: center;
+    gap: 6px;
+
     li {
       letter-spacing: -0.025em;
 
@@ -35,8 +36,6 @@
 
   .connectButton {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
     align-items: center;
     padding: 8px 16px;
     color: #333;
@@ -44,11 +43,6 @@
     border: 1px solid #eee;
     border-radius: 60px;
     cursor: pointer;
-    font-weight: bold;
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    margin: 0;
     transition: 0.2s ease-in-out;
 
     &:hover {

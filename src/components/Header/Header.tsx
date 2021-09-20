@@ -66,17 +66,19 @@ const Header = () => {
   }, []);
   return (
     <header className={styles.header} onClick={() => {}}>
-      <Box className={styles.hdf} display="flex" justifyContent="space-between">
+      <Box className={styles.hdf} display="flex">
         <Box display="flex" justifyContent="flex-start">
           <Link href="/">
             <Image className="can-click" alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={60} />
           </Link>
         </Box>
-        <Box flex="3" my="auto" mx="auto" maxW="300px" minW="50px">
+
+        <Box maxW="300px" minW="50px">
           <ExploreSearch />
         </Box>
+        <Box flex={3} />
 
-        <Box flex="2" pr="4" maxW="600px">
+        <Box pr="4">
           <ul className={styles.links}>
             <NavBar
               items={[{ title: 'Explore', link: '/explore' }]}
