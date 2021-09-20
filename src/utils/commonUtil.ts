@@ -12,7 +12,7 @@ export const showMessage = (toast: any, type: 'success' | 'error' | 'warning' | 
   });
 };
 
-export const transformOpenSea = (item: any) => {
+export const transformOpenSea = (item: any, owner: string) => {
   if (!item) {
     return null;
   }
@@ -27,6 +27,7 @@ export const transformOpenSea = (item: any) => {
     tokenId: item.token_id,
     collectionName: item.asset_contract.name,
     inStock: 1,
-    price: 0.1
+    price: 0.1,
+    owner: owner
   } as CardData;
 };

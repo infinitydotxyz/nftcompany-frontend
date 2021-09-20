@@ -41,7 +41,7 @@ export default function MyNFTs() {
       return;
     }
     const moreData = (result?.assets || []).map((item: any) => {
-      const newItem = transformOpenSea(item);
+      const newItem = transformOpenSea(item, user?.account);
       return newItem;
     });
     setIsFetching(false);

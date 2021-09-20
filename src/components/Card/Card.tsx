@@ -17,7 +17,6 @@ type Props = {
 };
 
 function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PRICE'], actions = [], ...rest }: Props) {
-  const [modalShowed, setModalShowed] = useState(false);
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [offerStatusModalShowed, setOfferStatusModalShowed] = useState(false);
@@ -33,15 +32,9 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
     <div id={`id_${data.id}`} className={styles.card} {...rest}>
       <div onClick={() => setPreviewModalShowed(true)}>
         <div className={styles.cardPreview}>
-          {/* <Image src={data.img} alt="Card preview" width="280" height="300" /> */}
           <img src={data.image} alt="Card preview" />
 
           <div className={styles.cardControls}>
-            {/* <div className="status-green card__category">purchasing !</div> */}
-            {/* <button className="card__favorite">
-              <svg className="icon icon-heart"></svg>
-            </button> */}
-
             {actions?.indexOf('LIST_NFT') >= 0 && (
               <a
                 className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
@@ -54,7 +47,6 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
                   if (onClickAction) {
                     onClickAction(data, 'LIST_NFT');
                   }
-                  setModalShowed(true);
                 }}
               >
                 <span>List NFT</span>
@@ -87,7 +79,6 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
                   if (onClickAction) {
                     onClickAction(data, 'CANCEL_LISTING');
                   }
-                  setModalShowed(true);
                 }}
               >
                 <span>Cancel Listing</span>
@@ -148,17 +139,6 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
           </div>
         </div>
       </div>
-
-      {/* {modalShowed && (
-        <NFTModal
-          title="AAVE"
-          address="0xc812...AeFg"
-          id="2456123"
-          brandColor="#24DB83"
-          bgColor="#E6FBF0"
-          onClose={() => setModalShowed(false)}
-        />
-      )} */}
 
       {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
       {offerStatusModalShowed && <OfferStatusModal data={data} onClose={() => setOfferStatusModalShowed(false)} />}

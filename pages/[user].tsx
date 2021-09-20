@@ -11,7 +11,6 @@ import pageStyles from '../styles/Dashboard.module.scss';
 import styles from '../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useRouter } from 'next/router';
-import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import { transformOpenSea } from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
 
@@ -19,7 +18,6 @@ export default function UserPage() {
   const { showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<CardData[]>([]);
-  const [listModalItem, setListModalItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -48,7 +46,7 @@ export default function UserPage() {
       return;
     }
     const moreData = (result?.assets || []).map((item: any) => {
-      const newItem = transformOpenSea(item);
+      const newItem = transformOpenSea(item, userParam as string);
       return newItem;
     });
     setIsFetching(false);
@@ -105,15 +103,7 @@ export default function UserPage() {
             <NoData isFetching={isFetching} data={data} currentPage={currentPage} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
 
-            <CardList
-              data={data}
-              showItems={[]}
-              actions={['LIST_NFT']}
-              onClickAction={(item, action) => {
-                // console.log('item, action', item, action);
-                setListModalItem(item);
-              }}
-            />
+            <CardList data={data} showItems={[]} />
           </div>
         </div>
 
@@ -127,8 +117,6 @@ export default function UserPage() {
             }}
           />
         )}
-
-        {listModalItem && <ListNFTModal data={listModalItem} onClose={() => setListModalItem(null)} />}
       </div>
     </>
   );
