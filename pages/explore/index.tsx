@@ -43,7 +43,6 @@ export default function Dashboard() {
     if (currentPage < 0 || exploreSearchState.listedNfts.length < currentPage * ITEMS_PER_PAGE) {
       return;
     }
-    console.log('currentPage loaded:', currentPage);
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
 
@@ -92,7 +91,6 @@ export default function Dashboard() {
         showAppError(SEARCH_ERROR_MESSAGE);
       }
     } else {
-      console.log('onSearch - fetchData()')
       // initial fetch, or after clearing search/filter:
       await fetchData({}, true);
     }
@@ -173,7 +171,6 @@ export default function Dashboard() {
             <FetchMore
               currentPage={currentPage}
               onFetchMore={async () => {
-                console.log('onFetchMore(), filter:', filterState);
                 setDataLoaded(false);
                 await fetchData(filterState ? filterState : {});
               }}

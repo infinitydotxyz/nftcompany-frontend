@@ -29,12 +29,10 @@ type ContextType = {
 };
 
 const Header = () => {
-  const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const router = useRouter();
   const { route } = router;
-
   const { user, setUser } = useAppContext();
-  console.log('- Header - user:', user);
+  const [settingsModalShowed, setSettingsModalShowed] = useState(false);
 
   useEffect(() => {
     const handleAccountChange = async (accounts: string[]) => {
@@ -96,7 +94,7 @@ const Header = () => {
                 My NFTs
               </MenuItem>
               <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
-                Listed for sale
+                Listed For Sale
               </MenuItem>
             </HoverMenuButton>
 

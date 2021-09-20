@@ -251,7 +251,6 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                         obj['expirationTime'] = expiryTimeSeconds;
                       }
                       const listing = await seaport.createSellOrder(obj);
-                      console.log('listing', listing);
                     } catch (e: any) {
                       setIsSubmitting(false);
                       err = e;
