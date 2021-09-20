@@ -5,30 +5,27 @@
 
 .row {
   margin-bottom: 20px;
+  display: flex;
 
-  ul {
-    list-style: none;
-    li {
-      display: flex;
-      align-items: center;
-      margin: 20px 0;
+  .left {
+    display: flex;
+    align-items: center;
 
-      div:nth-child(1) {
-        color: #888;
-      }
-      div:nth-child(2) {
-        flex: 1;
-        text-align: right;
-        span,
-        input {
-          text-align: right;
-          padding: 0 10px;
-          margin: 0 10px;
-          width: 142px;
-          font-weight: bold;
-          border: 1px solid #aaa;
-        }
-      }
+    color: #888;
+  }
+
+  .right {
+    display: flex;
+    flex: 1;
+    text-align: right;
+    align-items: center;
+    justify-content: flex-end;
+    input {
+      text-align: right;
+      padding: 0 10px;
+      margin: 0 10px;
+      font-weight: bold;
+      border: 1px solid #aaa;
     }
   }
 }
