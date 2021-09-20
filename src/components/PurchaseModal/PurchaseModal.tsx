@@ -23,7 +23,7 @@ const PurchaseModal: React.FC<IProps> = ({ onClose }: IProps) => {
             </div>
           )}
         >
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'blue' }}>
+          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.title}>Purchase now</div>
 

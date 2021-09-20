@@ -87,7 +87,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
             </div>
           )}
         >
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'blue' }}>
+          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.main}>
                 <div className={styles.title}>Settings</div>

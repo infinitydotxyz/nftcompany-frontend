@@ -22,7 +22,14 @@ interface IProps {
   onClose?: () => void;
 }
 
-const ActionModal: React.FC<IProps> = ({ user, type, onClickListNFT, onClickMakeOffer, onClickBuyNow, onClose }: IProps) => {
+const ActionModal: React.FC<IProps> = ({
+  user,
+  type,
+  onClickListNFT,
+  onClickMakeOffer,
+  onClickBuyNow,
+  onClose
+}: IProps) => {
   const [nftLink, setNftLink] = React.useState('');
   const [price, setPrice] = React.useState(0);
   const [balance, setBalance] = React.useState('');
@@ -31,9 +38,9 @@ const ActionModal: React.FC<IProps> = ({ user, type, onClickListNFT, onClickMake
     const getInfo = async () => {
       const bal = await getAddressBalance(user.account);
       setBalance(parseFloat(`${bal}`).toFixed(4));
-    }
+    };
     getInfo();
-  }, [])
+  }, []);
   return (
     <>
       {!isServer && (
@@ -47,7 +54,7 @@ const ActionModal: React.FC<IProps> = ({ user, type, onClickListNFT, onClickMake
             </div>
           )}
         >
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'blue' }}>
+          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.title}>{type}</div>
 

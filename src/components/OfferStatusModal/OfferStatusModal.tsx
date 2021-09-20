@@ -40,7 +40,7 @@ const OfferStatusModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
             </div>
           )}
         >
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'blue' }}>
+          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.title}>Offer Status</div>
 

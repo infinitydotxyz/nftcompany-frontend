@@ -78,7 +78,7 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
         >
           <div
             className={`modal ${'ntfmodal'}`}
-            style={{ width: '80vw', maxWidth: 1000, background: 'white', borderColor: 'blue' }}
+            style={{ width: '80vw', maxWidth: 1000, background: 'white', borderColor: 'white' }}
           >
             <div className="modal-body">
               <div className={styles.main}>
