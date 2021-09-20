@@ -14,6 +14,7 @@ specifiers:
   '@types/react': 17.0.20
   '@types/react-bootstrap-typeahead': ^5.1.7
   '@types/react-dom': ^17.0.9
+  '@types/validator': 13.6.3
   axios: ^0.21.4
   bignumber.js: ^4.1.0
   chart.js: ^3.5.1
@@ -43,6 +44,7 @@ specifiers:
   react-range: ^1.8.11
   recharts: ^2.1.2
   typescript: 4.4.3
+  validator: ^13.6.0
   web3: 0.20.7
   web3-typescript-typings: ^0.9.3
   wyvern-js: git+https://github.com/ProjectOpenSea/wyvern-js.git#v3.2.1
@@ -84,6 +86,7 @@ dependencies:
   react-intersection-observer: 8.32.1_react@17.0.2
   react-range: 1.8.11_react-dom@17.0.2+react@17.0.2
   recharts: 2.1.2_9bdd65c2b60ce8638444b80b396a481b
+  validator: 13.6.0
   web3: 0.20.7
   wyvern-js: github.com/ProjectOpenSea/wyvern-js/fabb7660f23f2252c141077e32193d281036299e
   wyvern-schemas: github.com/ProjectOpenSea/wyvern-schemas/e1a08fcf8ce2b11a0fe9cbdc7c9f77c59fadef26
@@ -92,6 +95,7 @@ devDependencies:
   '@types/react': 17.0.20
   '@types/react-bootstrap-typeahead': 5.1.7
   '@types/react-dom': 17.0.9
+  '@types/validator': 13.6.3
   eslint: 7.32.0
   eslint-config-next: 11.1.2_82ad98da5e129ae9d310451a179848d9
   prop-types: 15.7.2
@@ -2064,6 +2068,10 @@ packages:
   /@types/tinycolor2/1.4.2:
     resolution: {integrity: sha512-PeHg/AtdW6aaIO2a+98Xj7rWY4KC1E6yOy7AFknJQ7VXUGNrMlyxDFxJo7HqLtjQms/ZhhQX52mLVW/EX3JGOw==}
     dev: false
+
+  /@types/validator/13.6.3:
+    resolution: {integrity: sha512-fWG42pMJOL4jKsDDZZREnXLjc3UE0R8LOJfARWYg6U966rxDT7TYejYzLnUF5cvSObGg34nd0+H2wHHU5Omdfw==}
+    dev: true
 
   /@types/warning/3.0.0:
     resolution: {integrity: sha1-DSUBJorY+ZYrdA04fEZU9fjiPlI=}
@@ -9240,6 +9248,11 @@ packages:
     dependencies:
       spdx-correct: 3.1.1
       spdx-expression-parse: 3.0.1
+
+  /validator/13.6.0:
+    resolution: {integrity: sha512-gVgKbdbHgtxpRyR8K0O6oFZPhhB5tT1jeEHZR0Znr9Svg03U0+r9DXWMrnRAB+HtCStDQKlaIZm42tVsVjqtjg==}
+    engines: {node: '>= 0.10'}
+    dev: false
 
   /verror/1.10.0:
     resolution: {integrity: sha1-OhBcoXBTr1XW4nDB+CiGguGNpAA=}

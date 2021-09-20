@@ -45,6 +45,7 @@
     "react-intersection-observer": "^8.32.1",
     "react-range": "^1.8.11",
     "recharts": "^2.1.2",
+    "validator": "^13.6.0",
     "web3": "0.20.7",
     "wyvern-js": "git+https://github.com/ProjectOpenSea/wyvern-js.git#v3.2.1",
     "wyvern-schemas": "git+https://github.com/ProjectOpenSea/wyvern-schemas.git#v0.11.1"
@@ -53,6 +54,7 @@
     "@types/react": "17.0.20",
     "@types/react-bootstrap-typeahead": "^5.1.7",
     "@types/react-dom": "^17.0.9",
+    "@types/validator": "13.6.3",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
     "prop-types": "^15.7.2",

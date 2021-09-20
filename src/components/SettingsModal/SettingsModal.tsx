@@ -3,9 +3,10 @@ import dynamic from 'next/dynamic';
 import styles from './SettingsModal.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet, apiPost } from 'utils/apiUtil';
-import { Button, Input, Link } from '@chakra-ui/react';
+import { Button, FormControl, Input, Link } from '@chakra-ui/react';
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
+import validator from 'validator';
 
 interface Props {
   onClose: () => void;
@@ -13,24 +14,39 @@ interface Props {
 
 const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
   const [email, setEmail] = useState('');
+  const [emailInvalid, setEmailInvalid] = useState(true);
   const [showSubscribeSection, setShowSubscribeSection] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
 
   const { user, showAppError } = useAppContext();
 
-  const updateEmail = async (email: string) => {
-    if (user != null && email?.length > 0) {
+  const saveEmail = async () => {
+    if (user != null && email?.length > 0 && !emailInvalid) {
       const response = await apiPost(`/u/${user?.account}/setEmail`, null, { email: email });
 
       if (response.status == 200) {
         onClose();
+      } else {
+        showAppError('An error occured');
       }
+    } else {
+      showAppError('Email is invalid');
     }
+  };
+
+  const updateEmail = async (newEmail: string) => {
+    if (newEmail && newEmail.length > 0) {
+      setEmailInvalid(!validator.isEmail(newEmail));
+    } else {
+      setEmailInvalid(false);
+    }
+
+    setEmail(newEmail);
   };
 
   const getEmail = async () => {
     if (!user || !user?.account) {
-      setEmail('');
+      updateEmail('');
       return;
     }
 
@@ -43,7 +59,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
     // we can't check email below since setEmail is async
     const emailFromServer = result?.address ?? '';
 
-    setEmail(emailFromServer);
+    updateEmail(emailFromServer);
     setSubscribed(result?.subscribed ?? false);
 
     // we don't show subscribe/unsubscribe if they don't have an email set on the server
@@ -91,21 +107,24 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
             <div className="modal-body">
               <div className={styles.main}>
                 <div className={styles.title}>Settings</div>
-                <Input
-                  fontWeight={500}
-                  variant="filled"
-                  placeholder="Email"
-                  value={email}
-                  onSubmit={() => {
-                    updateEmail(email);
-                  }}
-                  onChange={(e: any) => setEmail(e.target.value)}
-                />
+
+                <FormControl isInvalid={emailInvalid}>
+                  <Input
+                    fontWeight={500}
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onSubmit={() => {
+                      saveEmail();
+                    }}
+                    onChange={(e: any) => updateEmail(e.target.value)}
+                  />
+                </FormControl>
 
                 {_subscribeSection}
 
                 <div className={styles.buttons}>
-                  <Button colorScheme="blue" onClick={() => updateEmail(email)}>
+                  <Button colorScheme="blue" onClick={() => saveEmail()}>
                     Save
                   </Button>
                   <Button colorScheme="gray" onClick={onClose}>
