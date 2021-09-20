@@ -107,7 +107,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     </li>
                     {endPriceShowed && (
                       <li>
-                        <div>Ending price</div>
+                        <div>
+                          Ending price
+                          <HelpTooltip text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found." />
+                        </div>
                         <div>
                           <input
                             className={styles.priceInput}
@@ -119,7 +122,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       </li>
                     )}
                     <li>
-                      <div>Include ending price</div>
+                      <div>
+                        Include ending price
+                        <HelpTooltip text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found." />
+                      </div>
                       <div style={{ marginRight: 10 }}>
                         <Switch size="lg" onChange={(ev) => setEndPriceShowed(ev.target.checked)} />
                       </div>
@@ -127,7 +133,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     </li>
                     {endPriceShowed && (
                       <li>
-                        <div>Expiration time</div>
+                        <div>
+                          Expiration time
+                          <HelpTooltip text="Your listing will automatically end at this time. No need to cancel it!" />
+                        </div>
                         <div className={styles.dateContainer}>
                           <Datetime
                             inputProps={{ style: { width: 180 } }}
@@ -155,7 +164,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     </li>
                     <li>
                       <div>
-                        Minimum bid{' '}
+                        Minimum bid
                         <HelpTooltip text="Set your starting bid price. This starting bid price will be publicly visible. If you receive a bid above this starting value but below your reserve price, you can accept it at any time." />
                       </div>
                       <div>
@@ -170,7 +179,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     </li>
                     <li>
                       <div>
-                        Reserve price{' '}
+                        Reserve price
                         <HelpTooltip text="Create a hidden limit by setting a reserve price. If you don’t receive any bids equal to or greater than your reserve, the auction will end without a sale. We require a minimum reserve price of ㆔1 or the equivalent value in your selected token." />
                       </div>
                       <div>
@@ -184,7 +193,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     </li>
                     <li>
                       <div>
-                        Expiration time{' '}
+                        Expiration time
                         <HelpTooltip text="Your auction will automatically end at this time and the highest bidder will win. No need to cancel it!" />
                       </div>
                       <div className={styles.dateContainer}>
