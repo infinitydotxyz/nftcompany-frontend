@@ -45,7 +45,6 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               txnHash,
               side: 0,
               orderId: data.id,
-              isOfferMadeOnListing: data.isOfferMadeOnListing,
               maker: data.maker,
               salePriceInEth: +salePriceInEth,
               feesInEth: +feesInEth

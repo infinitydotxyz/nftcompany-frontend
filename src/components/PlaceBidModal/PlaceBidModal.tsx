@@ -48,7 +48,6 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               txnHash,
               side: 1,
               orderId: data.id,
-              isOfferMadeOnListing: false,
               maker: data.maker,
               salePriceInEth: +salePriceInEth,
               feesInEth: +feesInEth
