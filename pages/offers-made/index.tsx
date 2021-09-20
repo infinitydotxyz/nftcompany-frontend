@@ -38,12 +38,10 @@ export default function OffersMade() {
         return;
       }
       listingData = result?.listings || [];
-      console.log('listingData', listingData);
     } catch (e) {
       console.error(e);
     }
     const moreData = ordersToCardData(listingData || []);
-    console.log('moreData', moreData);
     setIsFetching(false);
     setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);
@@ -58,7 +56,6 @@ export default function OffersMade() {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
       return;
     }
-    console.log('currentPage loaded:', currentPage);
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
   return (
@@ -89,7 +86,6 @@ export default function OffersMade() {
             <FetchMore
               currentPage={currentPage}
               onFetchMore={async () => {
-                console.log('onFetchMore()');
                 setDataLoaded(false);
                 await fetchData();
               }}

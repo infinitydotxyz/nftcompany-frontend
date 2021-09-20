@@ -38,13 +38,10 @@ export default function Sales() {
         return;
       }
       listingData = result?.sales || [];
-      console.log('result', result);
-      console.log('listingData', listingData);
     } catch (e) {
       console.error(e);
     }
     const moreData = ordersToCardData(listingData || []);
-    console.log('moreData', moreData);
     setIsFetching(false);
     setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);
@@ -59,7 +56,6 @@ export default function Sales() {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
       return;
     }
-    console.log('currentPage loaded:', currentPage);
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
   return (
@@ -90,7 +86,6 @@ export default function Sales() {
             <FetchMore
               currentPage={currentPage}
               onFetchMore={async () => {
-                console.log('onFetchMore()');
                 setDataLoaded(false);
                 await fetchData();
               }}

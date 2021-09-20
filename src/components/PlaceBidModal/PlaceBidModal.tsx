@@ -8,6 +8,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 import { apiPost } from 'utils/apiUtil';
 import { Input } from '@chakra-ui/react';
+import { PriceBox } from 'components/PriceBox/PriceBox';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -115,15 +116,10 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               <div className={styles.space}>You are about to buy this NFT.</div>
 
               <div className={styles.row}>
-                <ul>
-                  <li>
-                    <div>Price</div>
-                    <div>
-                      <span>{data.price}</span>
-                    </div>
-                    <div>ETH</div>
-                  </li>
-                </ul>
+                <div className={styles.left}>Price</div>
+                <div className={styles.right}>
+                  <PriceBox price={data.price} />
+                </div>
               </div>
 
               <div className={styles.footer}>
@@ -140,22 +136,28 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               <div className={styles.space}>You are about to place a bid on this NFT.</div>
 
               <div className={styles.row}>
-                <ul>
-                  <li>
-                    <div>Enter offer</div>
-                    <div>
-                      <Input size={'sm'} type="number" onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))} />
-                    </div>
-                    <div>WETH</div>
-                  </li>
-                  <li>
-                    <div>Expire date</div>
-                    <div>{/* spacer */}</div>
-                    <div>
-                      <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
-                    </div>
-                  </li>
-                </ul>
+                <div className={styles.left}>
+                  <div>Enter offer</div>
+                </div>
+                <div className={styles.right}>
+                  <div>
+                    <Input
+                      style={{ width: 166 }}
+                      size={'sm'}
+                      type="number"
+                      onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}
+                    />
+                  </div>
+                  <div>WETH</div>
+                </div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.left}>
+                  <div>Expire date</div>
+                </div>
+                <div className={styles.right}>
+                  <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
+                </div>
               </div>
 
               <div className={styles.footer}>

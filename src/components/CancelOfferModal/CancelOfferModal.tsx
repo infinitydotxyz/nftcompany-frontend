@@ -1,6 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import styles from './OfferStatusModal.module.scss';
+import styles from './CancelOfferModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiDelete } from 'utils/apiUtil';
@@ -14,7 +14,7 @@ interface IProps {
   onClose?: () => void;
 }
 
-const OfferStatusModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
+const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
   const [offerPrice, setOfferPrice] = React.useState(0);
   const { user, showAppError } = useAppContext();
@@ -42,7 +42,7 @@ const OfferStatusModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         >
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
-              <div className={styles.title}>Offer Status</div>
+              <div className={styles.title}>Cancel Offer</div>
 
               <div className={styles.space}>Your offer on this NFT.</div>
 
@@ -75,4 +75,4 @@ const OfferStatusModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   );
 };
 
-export default OfferStatusModal;
+export default CancelOfferModal;

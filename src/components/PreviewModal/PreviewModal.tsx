@@ -6,6 +6,7 @@ import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { Link, Tooltip } from '@chakra-ui/react';
+import { PriceBox } from 'components/PriceBox/PriceBox';
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
 
@@ -99,7 +100,7 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
 
                     <span className={styles.label}>Price</span>
 
-                    <div className={styles.price}>{data?.price} ETH</div>
+                    <PriceBox price={data?.price} />
 
                     <div className={styles.label}>Token Address</div>
                     <Tooltip label={data.tokenAddress} hasArrow openDelay={1000}>

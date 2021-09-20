@@ -5,6 +5,7 @@ import Datetime from 'react-datetime';
 import TabBar from 'components/TabBar/TabBar';
 import { Button } from '@chakra-ui/button';
 import { Spinner } from '@chakra-ui/spinner';
+import HelpTooltip from 'components/HelpTooltip/HelpTooltip';
 import { getAddressBalance, getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
 import { getAccount } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
@@ -90,6 +91,9 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 <div className={styles.row}>
                   <ul className={styles.fields}>
                     <li>
+                      <div>Sell at a fixed or declining price.</div>
+                    </li>
+                    <li>
                       <div>{endPriceShowed ? 'Starting price' : 'Price'}</div>
                       <div>
                         <input
@@ -103,7 +107,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     </li>
                     {endPriceShowed && (
                       <li>
-                        <div>Ending price</div>
+                        <div>
+                          Ending price
+                          <HelpTooltip text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found." />
+                        </div>
                         <div>
                           <input
                             className={styles.priceInput}
@@ -115,7 +122,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       </li>
                     )}
                     <li>
-                      <div>Include ending price</div>
+                      <div>
+                        Include ending price
+                        <HelpTooltip text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found." />
+                      </div>
                       <div style={{ marginRight: 10 }}>
                         <Switch size="lg" onChange={(ev) => setEndPriceShowed(ev.target.checked)} />
                       </div>
@@ -123,9 +133,15 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     </li>
                     {endPriceShowed && (
                       <li>
-                        <div>Expiration time</div>
+                        <div>
+                          Expiration time
+                          <HelpTooltip text="Your listing will automatically end at this time. No need to cancel it!" />
+                        </div>
                         <div className={styles.dateContainer}>
-                          <Datetime inputProps={{ style: { width: 180 } }} onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
+                          <Datetime
+                            inputProps={{ style: { width: 180 } }}
+                            onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)}
+                          />
                         </div>
                         <div></div>
                       </li>
@@ -141,9 +157,16 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 </div>
               ) : (
                 <div className={styles.row}>
+                  {/* ------ English Auction (Highest Bid) ------ */}
                   <ul className={styles.fields}>
                     <li>
-                      <div>Minimum bid</div>
+                      <div>Auction to the highest bidder.</div>
+                    </li>
+                    <li>
+                      <div>
+                        Minimum bid
+                        <HelpTooltip text="Set your starting bid price. This starting bid price will be publicly visible. If you receive a bid above this starting value but below your reserve price, you can accept it at any time." />
+                      </div>
                       <div>
                         <input
                           type="number"
@@ -155,7 +178,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       <div>WETH</div>
                     </li>
                     <li>
-                      <div>Reserve price</div>
+                      <div>
+                        Reserve price
+                        <HelpTooltip text="Create a hidden limit by setting a reserve price. If you don’t receive any bids equal to or greater than your reserve, the auction will end without a sale. We require a minimum reserve price of ㆔1 or the equivalent value in your selected token." />
+                      </div>
                       <div>
                         <input
                           type="number"
@@ -166,9 +192,15 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       <div>WETH</div>
                     </li>
                     <li>
-                      <div>Expiration time</div>
+                      <div>
+                        Expiration time
+                        <HelpTooltip text="Your auction will automatically end at this time and the highest bidder will win. No need to cancel it!" />
+                      </div>
                       <div className={styles.dateContainer}>
-                        <Datetime inputProps={{ style: { width: 180 } }} onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
+                        <Datetime
+                          inputProps={{ style: { width: 180 } }}
+                          onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)}
+                        />
                       </div>
                       <div></div>
                     </li>
@@ -219,7 +251,6 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                         obj['expirationTime'] = expiryTimeSeconds;
                       }
                       const listing = await seaport.createSellOrder(obj);
-                      console.log('listing', listing);
                     } catch (e: any) {
                       setIsSubmitting(false);
                       err = e;

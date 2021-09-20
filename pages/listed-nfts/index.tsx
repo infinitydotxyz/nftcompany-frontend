@@ -45,20 +45,17 @@ export default function ListNFTs() {
         return;
       }
       listingData = result?.listings || [];
-      console.log('listingData', listingData);
     } catch (e) {
       console.error(e);
     }
     const moreData = ordersToCardData(listingData || []);
 
-    console.log('moreData', moreData);
     setIsFetching(false);
     setData(isRefreshing ? moreData : [...data, ...moreData]);
     setCurrentPage(newCurrentPage);
   };
 
   React.useEffect(() => {
-    console.log('- Listed NFTs - user:', user);
     fetchData();
   }, [user]);
 
@@ -66,7 +63,6 @@ export default function ListNFTs() {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
       return;
     }
-    console.log('currentPage loaded:', currentPage);
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
   return (
@@ -104,7 +100,6 @@ export default function ListNFTs() {
             <FetchMore
               currentPage={currentPage}
               onFetchMore={async () => {
-                console.log('onFetchMore()');
                 setDataLoaded(false);
                 await fetchData();
               }}

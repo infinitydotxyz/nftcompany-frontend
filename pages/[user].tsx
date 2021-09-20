@@ -111,7 +111,6 @@ export default function UserPage() {
           <FetchMore
             currentPage={currentPage}
             onFetchMore={async () => {
-              console.log('onFetchMore()');
               setDataLoaded(false);
               await fetchData();
             }}

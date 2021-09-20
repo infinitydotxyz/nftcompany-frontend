@@ -4,14 +4,15 @@ import { ExternalLinkIcon, SettingsIcon, StarIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { getAccount } from '../../src/utils/ethersUtil';
-import { setAuthHeaders } from '../../src/utils/apiUtil';
+import { getAccount } from '../../../src/utils/ethersUtil';
+import { setAuthHeaders } from '../../../src/utils/apiUtil';
 import NavBar from 'components/NavBar/NavBar';
 import { useAppContext } from 'utils/context/AppContext';
 import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import SettingsModal from 'components/SettingsModal/SettingsModal';
+import styles from './Header.module.scss';
 
 let isChangingAccount = false;
 
@@ -29,10 +30,11 @@ type ContextType = {
 };
 
 const Header = () => {
+  const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const router = useRouter();
   const { route } = router;
+
   const { user, setUser } = useAppContext();
-  const [settingsModalShowed, setSettingsModalShowed] = useState(false);
 
   useEffect(() => {
     const handleAccountChange = async (accounts: string[]) => {
@@ -63,19 +65,19 @@ const Header = () => {
     };
   }, []);
   return (
-    <header className="hd-d" onClick={() => {}}>
-      <Box className="hd-f " display="flex" justifyContent="space-between">
+    <header className={styles.header} onClick={() => {}}>
+      <Box className={styles.hdf} display="flex" justifyContent="space-between">
         <Box display="flex" justifyContent="flex-start">
           <Link href="/">
             <Image className="can-click" alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={60} />
           </Link>
         </Box>
-        <Box flex="3" my="auto" mx="auto" maxW="500px">
+        <Box flex="3" my="auto" mx="auto" maxW="300px" minW="50px">
           <ExploreSearch />
         </Box>
 
         <Box flex="2" pr="4" maxW="600px">
-          <ul className="links">
+          <ul className={styles.links}>
             <NavBar
               items={[{ title: 'Explore', link: '/explore' }]}
               active={['/explore'].indexOf(route)}
@@ -94,7 +96,7 @@ const Header = () => {
                 My NFTs
               </MenuItem>
               <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
-                Listed For Sale
+                Listed for sale
               </MenuItem>
             </HoverMenuButton>
 
@@ -120,7 +122,9 @@ const Header = () => {
               <li>
                 <HoverMenuButton
                   buttonContent={
-                    <div className="connect-button">{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</div>
+                    <div className={styles.connectButton}>{`${user?.account.slice(0, 6)}...${user?.account.slice(
+                      -4
+                    )}`}</div>
                   }
                 >
                   <AddressMenuItem user={user} />
@@ -141,7 +145,7 @@ const Header = () => {
             ) : (
               <li>
                 <Link href="/connect">
-                  <div className="connect-wallet">
+                  <div className={styles.connectButton}>
                     <svg width={20} height={20} fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
                         fillRule="evenodd"

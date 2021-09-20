@@ -2,10 +2,9 @@ import React from 'react';
 import { FilterContext, FilterContextProvider } from '../hooks/useSearch';
 import { AppContextProvider } from 'utils/context/AppContext';
 import { AppChakraProvider } from 'utils/themeUtil';
-
-import Header from './header';
 import LandingHeader from './LandingHeader';
 import LandingFooter from './footer';
+import Header from 'components/Header/Header';
 
 interface IProps {
   children: any;

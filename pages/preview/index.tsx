@@ -11,6 +11,7 @@ import UserList from 'components/UserList/UserList';
 import BidBox from 'components/BidBox/BidBox';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import PurchaseModal from 'components/PurchaseModal/PurchaseModal';
+import { PriceBox } from 'components/PriceBox/PriceBox';
 
 const Tabs = [
   {
@@ -89,7 +90,7 @@ export default function Preview() {
 
             <section className={styles.info}>
               <h3>{data?.title}</h3>
-              <span className={styles.price}>{data?.price} ETH</span>
+              <PriceBox price={data?.price} />
               <span className={styles.counter}>10 in stock</span>
               <div className={styles.description}>{data?.description}</div>
               {view === 'info' ? null : (

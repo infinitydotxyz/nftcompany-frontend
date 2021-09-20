@@ -50,7 +50,6 @@ export default function MyNFTs() {
   };
 
   React.useEffect(() => {
-    console.log('- My NFTs - user:', user);
     fetchData();
   }, [user]);
 
@@ -58,7 +57,6 @@ export default function MyNFTs() {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
       return;
     }
-    console.log('currentPage loaded:', currentPage);
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
 
@@ -99,7 +97,6 @@ export default function MyNFTs() {
           <FetchMore
             currentPage={currentPage}
             onFetchMore={async () => {
-              console.log('onFetchMore()');
               setDataLoaded(false);
               await fetchData();
             }}
