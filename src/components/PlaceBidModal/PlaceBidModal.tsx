@@ -143,6 +143,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   </li>
                   <li>
                     <div>Expire date</div>
+                    <div>{/* spacer */}</div>
                     <div>
                       <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
                     </div>

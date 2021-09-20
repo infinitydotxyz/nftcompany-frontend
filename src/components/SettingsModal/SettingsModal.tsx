@@ -105,11 +105,11 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
                 {_subscribeSection}
 
                 <div className={styles.buttons}>
-                  <Button colorScheme="gray" onClick={onClose}>
-                    Cancel
-                  </Button>
                   <Button colorScheme="blue" onClick={() => updateEmail(email)}>
                     Save
+                  </Button>
+                  <Button colorScheme="gray" onClick={onClose}>
+                    Cancel
                   </Button>
                 </div>
               </div>
