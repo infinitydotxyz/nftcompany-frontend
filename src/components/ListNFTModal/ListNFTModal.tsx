@@ -91,6 +91,9 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 <div className={styles.row}>
                   <ul className={styles.fields}>
                     <li>
+                      <div>Sell at a fixed or declining price.</div>
+                    </li>
+                    <li>
                       <div>{endPriceShowed ? 'Starting price' : 'Price'}</div>
                       <div>
                         <input
@@ -148,9 +151,12 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                   {/* ------ English Auction (Highest Bid) ------ */}
                   <ul className={styles.fields}>
                     <li>
+                      <div>Auction to the highest bidder.</div>
+                    </li>
+                    <li>
                       <div>
                         Minimum bid{' '}
-                        <HelpTooltip text="This starting bid price will be publicly visible. If you receive a bid above this starting value but below your reserve price, you can accept it at any time." />
+                        <HelpTooltip text="Set your starting bid price. This starting bid price will be publicly visible. If you receive a bid above this starting value but below your reserve price, you can accept it at any time." />
                       </div>
                       <div>
                         <input
@@ -163,7 +169,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       <div>WETH</div>
                     </li>
                     <li>
-                      <div>Reserve price</div>
+                      <div>
+                        Reserve price{' '}
+                        <HelpTooltip text="Create a hidden limit by setting a reserve price. If you don’t receive any bids equal to or greater than your reserve, the auction will end without a sale. We require a minimum reserve price of ㆔1 or the equivalent value in your selected token." />
+                      </div>
                       <div>
                         <input
                           type="number"
@@ -174,7 +183,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       <div>WETH</div>
                     </li>
                     <li>
-                      <div>Expiration time</div>
+                      <div>
+                        Expiration time{' '}
+                        <HelpTooltip text="Your auction will automatically end at this time and the highest bidder will win. No need to cancel it!" />
+                      </div>
                       <div className={styles.dateContainer}>
                         <Datetime
                           inputProps={{ style: { width: 180 } }}

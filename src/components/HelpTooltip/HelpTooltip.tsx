@@ -1,5 +1,5 @@
 import React from 'react';
-import { InfoIcon } from '@chakra-ui/icons';
+import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
 
 type HelpTooltipProps = {
@@ -9,7 +9,7 @@ type HelpTooltipProps = {
 export default function HelpTooltip({ text }: HelpTooltipProps) {
   return (
     <Tooltip label={text} placement="top" hasArrow>
-      <InfoIcon />
+      <InfoOutlineIcon ml={1} />
     </Tooltip>
   );
 }
