@@ -92,6 +92,55 @@ const Header = () => {
     </MenuItem>
   ];
 
+  let accountItems: JSX.Element[] = [];
+  if (user?.account) {
+    accountItems = [
+      <AddressMenuItem key="AddressMenuItem" user={user} />,
+
+      <MenuItem key="Rewards" icon={<StarIcon />} onClick={() => router.push('/rewards')}>
+        Rewards
+      </MenuItem>,
+      <MenuItem key="Settings" icon={<SettingsIcon />} onClick={() => setSettingsModalShowed(true)}>
+        Settings
+      </MenuItem>,
+
+      <MenuDivider key="dd1" />,
+      <MenuItem key="Sign out" icon={<ExternalLinkIcon />} onClick={() => setUser(null)}>
+        Sign out
+      </MenuItem>
+    ];
+  }
+
+  let accountButton;
+
+  if (user?.account) {
+    accountButton = (
+      <HoverMenuButton
+        buttonContent={
+          <div className={styles.connectButton}>{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</div>
+        }
+      >
+        {accountItems}
+      </HoverMenuButton>
+    );
+  } else {
+    accountButton = (
+      <Link href="/connect">
+        <div className={styles.connectButton}>
+          <svg width={20} height={20} fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M13.19.367a14.05 14.05 0 00-6.38 0l-.44.102C3.435 1.153 1.121 3.524.397 6.59c-.53 2.24-.53 4.58 0 6.82.724 3.066 3.038 5.437 5.973 6.12l.44.103c2.101.49 4.279.49 6.38 0l.44-.102c2.935-.684 5.249-3.055 5.973-6.121.53-2.24.53-4.58 0-6.82-.724-3.066-3.038-5.437-5.973-6.12l-.44-.103zm3.066 7.197a5.322 5.322 0 011.197-.077c.438.022.783.382.842.84.143 1.11.143 2.236 0 3.347-.059.457-.404.817-.842.838-.398.02-.8-.005-1.197-.076l-.078-.014c-1.033-.185-1.832-.921-2.102-1.849a2.047 2.047 0 010-1.146c.27-.928 1.069-1.664 2.102-1.849l.078-.014zM5.101 6.641c0-.37.286-.671.639-.671H10c.353 0 .64.3.64.671 0 .371-.287.672-.64.672H5.74c-.353 0-.64-.3-.64-.672z"
+              fill="#777"
+            />
+          </svg>
+          Connect
+        </div>
+      </Link>
+    );
+  }
+
   return (
     <header className={styles.header} onClick={() => {}}>
       <Box className={styles.hdf} display="flex">
@@ -107,20 +156,19 @@ const Header = () => {
         <Box flex={3} />
 
         <Box pr="4">
-          <ul className={styles.links}>
-            <NavBar
-              items={[{ title: 'Explore', link: '/explore' }]}
-              active={['/explore'].indexOf(route)}
-              onClickItem={(item, _) => {
-                router.push(item.link || '');
-              }}
-            />
+          <div className={styles.links}>
+            <div key="Explore" className={styles.exploreButton} onClick={() => router.push('/explore')}>
+              Explore
+            </div>
+
             <div className={styles.expanded}>
-              <HoverMenuButton buttonTitle="NFTs">{ntfItems}</HoverMenuButton>
+              <div className={styles.linksButtons}>
+                <HoverMenuButton buttonTitle="NFTs">{ntfItems}</HoverMenuButton>
 
-              <HoverMenuButton buttonTitle="Offers">{offerItems}</HoverMenuButton>
+                <HoverMenuButton buttonTitle="Offers">{offerItems}</HoverMenuButton>
 
-              <HoverMenuButton buttonTitle="Transactions">{transactionItems}</HoverMenuButton>
+                <HoverMenuButton buttonTitle="Transactions">{transactionItems}</HoverMenuButton>
+              </div>
             </div>
 
             <div className={styles.compressed}>
@@ -129,48 +177,8 @@ const Header = () => {
               </HoverMenuButton>
             </div>
 
-            {user?.account ? (
-              <li>
-                <HoverMenuButton
-                  buttonContent={
-                    <div className={styles.connectButton}>{`${user?.account.slice(0, 6)}...${user?.account.slice(
-                      -4
-                    )}`}</div>
-                  }
-                >
-                  <AddressMenuItem user={user} />
-
-                  <MenuItem icon={<StarIcon />} onClick={() => router.push('/rewards')}>
-                    Rewards
-                  </MenuItem>
-                  <MenuItem icon={<SettingsIcon />} onClick={() => setSettingsModalShowed(true)}>
-                    Settings
-                  </MenuItem>
-
-                  <MenuDivider />
-                  <MenuItem icon={<ExternalLinkIcon />} onClick={() => setUser(null)}>
-                    Sign out
-                  </MenuItem>
-                </HoverMenuButton>
-              </li>
-            ) : (
-              <li>
-                <Link href="/connect">
-                  <div className={styles.connectButton}>
-                    <svg width={20} height={20} fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M13.19.367a14.05 14.05 0 00-6.38 0l-.44.102C3.435 1.153 1.121 3.524.397 6.59c-.53 2.24-.53 4.58 0 6.82.724 3.066 3.038 5.437 5.973 6.12l.44.103c2.101.49 4.279.49 6.38 0l.44-.102c2.935-.684 5.249-3.055 5.973-6.121.53-2.24.53-4.58 0-6.82-.724-3.066-3.038-5.437-5.973-6.12l-.44-.103zm3.066 7.197a5.322 5.322 0 011.197-.077c.438.022.783.382.842.84.143 1.11.143 2.236 0 3.347-.059.457-.404.817-.842.838-.398.02-.8-.005-1.197-.076l-.078-.014c-1.033-.185-1.832-.921-2.102-1.849a2.047 2.047 0 010-1.146c.27-.928 1.069-1.664 2.102-1.849l.078-.014zM5.101 6.641c0-.37.286-.671.639-.671H10c.353 0 .64.3.64.671 0 .371-.287.672-.64.672H5.74c-.353 0-.64-.3-.64-.672z"
-                        fill="#777"
-                      />
-                    </svg>
-                    Connect
-                  </div>
-                </Link>
-              </li>
-            )}
-          </ul>
+            {accountButton}
+          </div>
         </Box>
       </Box>
 

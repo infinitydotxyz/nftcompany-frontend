@@ -17,21 +17,17 @@
 
   .links {
     display: flex;
-    list-style: none;
+    font-weight: bold;
+    align-items: center;
+  }
+
+  .linksButtons {
+    display: flex;
     font-weight: bold;
     align-items: center;
     gap: 6px;
 
-    li {
-      letter-spacing: -0.025em;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-    li.active-link {
-      color: #4f5153;
-    }
+    letter-spacing: -0.025em;
   }
 
   .connectButton {
@@ -53,6 +49,25 @@
       display: inline-block;
       margin-right: 8px;
     }
+  }
+}
+
+.exploreButton {
+  padding: 10px;
+  border-radius: 20px;
+  color: #333;
+  cursor: pointer;
+  transition: 0.1s all ease-in;
+  margin-right: 6px;
+
+  &:hover {
+    background-color: #4047ff;
+    color: #fff;
+  }
+
+  &.active {
+    background-color: #4047ff;
+    color: #fff !important;
   }
 }
 
