@@ -10,7 +10,6 @@ import TabBar from 'components/TabBar/TabBar';
 import UserList from 'components/UserList/UserList';
 import BidBox from 'components/BidBox/BidBox';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import PurchaseModal from 'components/PurchaseModal/PurchaseModal';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 
 const Tabs = [
@@ -35,7 +34,6 @@ const Tabs = [
 export default function Preview() {
   const [activeTab, setActiveTab] = useState(Tabs[3].id);
   const [placeBidShowed, setPlaceBidShowed] = useState(false);
-  const [purchaseShowed, setPurchaseShowed] = useState(false);
   const router = useRouter();
   const {
     query: { id, view = '' }
@@ -102,11 +100,8 @@ export default function Preview() {
                   <UserList data={sampleUserLists[parseInt(activeTab)]} />
 
                   <BidBox user={sampleUserLists[0][0]}>
-                    <a className="action-btn" onClick={() => setPurchaseShowed(true)}>
-                      Purchase now
-                    </a>
                     <a className="action-btn action-2nd" onClick={() => setPlaceBidShowed(true)}>
-                      Place a bid
+                      Purchase now
                     </a>
                   </BidBox>
                 </>
@@ -114,7 +109,6 @@ export default function Preview() {
 
               {/* SNG fix later.  data is not CardData, using test data and this page isn't used anywhere */}
               {placeBidShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidShowed(false)} />}
-              {purchaseShowed && <PurchaseModal onClose={() => setPurchaseShowed(false)} />}
             </section>
           </div>
         </div>
