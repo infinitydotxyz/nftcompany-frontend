@@ -129,6 +129,9 @@ function sleep(ms: number) {
 }
 
 export async function setAuthHeaders(address: string) {
+  if (!address) {
+    return
+  }
   const localStorage = window.localStorage;
   const user = address.trim().toLowerCase();
   const currentUser = localStorage.getItem('CURRENT_USER');
