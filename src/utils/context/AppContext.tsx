@@ -26,7 +26,7 @@ const showToast = (toast: any, type: 'success' | 'error' | 'warning' | 'info', m
     title: type === 'error' ? 'Error' : 'Info',
     description: message,
     status: type,
-    duration: type === 'error' ? 10000 : 4000,
+    duration: type === 'error' ? 6000 : 3000,
     isClosable: true
   });
 };
