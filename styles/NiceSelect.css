@@ -117,8 +117,7 @@
   transform-origin: 50% 0;
   -webkit-transform: scale(0.75) translateY(-19px);
   transform: scale(0.75) translateY(-19px);
-  -webkit-transition: all 0.2s cubic-bezier(0.5, 0, 0, 1.25),
-    opacity 0.15s ease-out;
+  -webkit-transition: all 0.2s cubic-bezier(0.5, 0, 0, 1.25), opacity 0.15s ease-out;
   transition: all 0.2s cubic-bezier(0.5, 0, 0, 1.25), opacity 0.15s ease-out;
   z-index: 9;
   opacity: 0;
@@ -154,7 +153,7 @@
 }
 .nice-select .option.selected {
   /* font-weight: bold; */
-  color: blue;
+  color: #4047ff;
 }
 .nice-select .option.disabled {
   background-color: transparent;

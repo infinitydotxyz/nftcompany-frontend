@@ -46,7 +46,7 @@ export default function ListNFTs() {
               actionType: 'cancel',
               txnHash,
               side: 1,
-              orderId: data.id
+              orderId: item?.id
             };
             const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/pendingtxns`, {}, payload);
             if (error) {

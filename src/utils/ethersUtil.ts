@@ -1,9 +1,9 @@
 const ethers = require('ethers');
+import { setAuthHeaders } from './apiUtil';
 
 // OpenSea's dependencies:
 const Web3 = require('web3');
 const OpenSeaPort = require('../../opensea').OpenSeaPort;
-const Network = require('../../opensea').Network;
 const WyvernSchemaName = require('../../opensea').WyvernSchemaName;
 
 declare global {
@@ -23,19 +23,15 @@ type initEthersArgs = {
 
 export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
   if (!window?.ethereum) {
-    alert('Please install the MetaMask extension first.');
+    alert('Please install MetaMask');
     return;
   }
   try {
-    // deprecated: await window.ethereum.enable();
-    // so you are required to call this instead
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-    console.log('accounts:', accounts);
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
   } catch (err: any) {
     console.log(err);
+    return;
   }
-  console.log('- initEthers');
   ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
 
   ethersProvider.on('pending', (tx: any) => {
@@ -93,7 +89,7 @@ export const getWeb3 = () => {
   } else if ((window as any).web3) {
     web3 = new Web3(web3.currentProvider);
   } else {
-    alert('Please install the MetaMask extension first.');
+    alert('Please install MetaMask');
   }
   return web3;
 };
@@ -102,7 +98,9 @@ export const getOpenSeaport = () => {
   if (openSeaPort) {
     return openSeaPort;
   }
-  const network = getChainName();
+
+  //const network = getChainName();
+  const network = 'main';
   openSeaPort = new OpenSeaPort(getWeb3().currentProvider, {
     networkName: network
   });
@@ -119,9 +117,12 @@ export const getSchemaName = (address: string) => {
     return WyvernSchemaName.ERC721;
   }
 };
+
+// todo: adi - this uses an async method
 // we only support main and rinkeby for now so lets only allow those chainIds
 export const getChainName = (): string | null => {
   const chainId = Number(window.ethereum.request({ method: 'net_version' }).result);
+  console.log('chain id: ' + chainId);
   if (chainId === 1) {
     return 'main';
   } else if (chainId === 4) {

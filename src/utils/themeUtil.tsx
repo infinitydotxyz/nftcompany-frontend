@@ -6,9 +6,8 @@ const colors = {
     heading: 'Greycliff',
     body: 'Greycliff'
   },
-  brand: {
-    500: '#4047FF'
-  }
+
+  brandBlue: '#4047FF'
 };
 
 const Menu = {
@@ -17,7 +16,7 @@ const Menu = {
     item: {
       color: '#333',
 
-      _hover: { bg: 'blue', color: 'white' }
+      _hover: { bg: 'brandBlue', color: 'white' }
     }
   }
 };

@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { API_BASE_MAINNET } from '../../opensea/constants';
-import { getAccount } from 'utils/ethersUtil';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
-import { Bar } from 'react-chartjs-2';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Rewards.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
@@ -29,7 +26,7 @@ const chartData = {
     {
       label: 'Rewards', // legend
       data: [1, 2, 4, 8, 2, 15],
-      backgroundColor: 'blue'
+      backgroundColor: 'brandBlue'
     }
   ]
 };
@@ -42,7 +39,7 @@ const options = {
         display: true,
         gridLines: {
           display: false,
-          color: 'blue'
+          color: 'brandBlue'
         },
         ticks: {
           beginAtZero: true,
@@ -57,7 +54,7 @@ const options = {
         display: true,
         gridLines: {
           display: false,
-          color: 'blue'
+          color: 'brandBlue'
         },
         ticks: {
           beginAtZero: false,

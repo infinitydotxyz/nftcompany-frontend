@@ -3,10 +3,9 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
-import Layout from 'containers/layout';
-import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
+import { useAppContext } from 'utils/context/AppContext';
 import { initEthers } from '../src/utils/ethersUtil';
 import styles from '../styles/Connect.module.scss';
 import { setAuthHeaders } from '../src/utils/apiUtil';
@@ -25,9 +24,8 @@ export default function ConnectWallet() {
       await setAuthHeaders(await res.getSigner().getAddress());
       router.push('/my-nfts');
     } else {
-      alert('Failed to connect.'); // TODO: use a toaster
+      alert('Failed to connect'); // TODO: use toast
     }
-    // console.log("Address: ", await res.getAddress());
   };
 
   return (
