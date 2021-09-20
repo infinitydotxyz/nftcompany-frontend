@@ -6,6 +6,7 @@ import OfferStatusModal from 'components/OfferStatusModal/OfferStatusModal';
 import { CardData, Metadata } from 'types/Nft.interface';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
+import { PriceBox } from 'components/PriceBox/PriceBox';
 
 type Props = {
   data: CardData;
@@ -131,7 +132,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
               )}
               <div>{data.title}</div>
             </div>
-            <div className={styles.cardPrice}>{showItems.indexOf('PRICE') >= 0 ? `${data.price} ETH` : ``}</div>
+            <PriceBox price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined} />
           </div>
           <div className={styles.cardLine}>
             <div>&nbsp;</div>
