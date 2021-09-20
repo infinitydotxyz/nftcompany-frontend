@@ -26,20 +26,20 @@ export default function ListNFTs() {
   const [data, setData] = useState<any>([]);
   const [deleteModalItem, setDeleteModalItem] = useState<CardData | null>(null);
 
-  const cancelListing = async () => {
+  const cancelListing = async (item: CardData) => {
     try {
       const seaport = getOpenSeaport();
       seaport.api
         .getOrder({
           maker: user!.account,
-          id: data.id,
+          id: item?.id,
           side: 1 // sell order
         })
         .then(async function (order: any) {
           if (order) {
             const txnHash = await seaport.cancelOrder({
               order: order,
-              accountAddress: user!.account
+              accountAddress: user?.account
             });
             console.log('Cancel listing txn hash: ' + txnHash);
             const payload = {
@@ -153,8 +153,8 @@ export default function ListNFTs() {
           data={deleteModalItem}
           onClose={() => setDeleteModalItem(null)}
           onSubmit={async () => {
+            cancelListing({ ...deleteModalItem });
             setDeleteModalItem(null);
-            cancelListing();
           }}
         />
       )}
