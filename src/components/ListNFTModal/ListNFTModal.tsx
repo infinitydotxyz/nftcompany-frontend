@@ -5,6 +5,7 @@ import Datetime from 'react-datetime';
 import TabBar from 'components/TabBar/TabBar';
 import { Button } from '@chakra-ui/button';
 import { Spinner } from '@chakra-ui/spinner';
+import HelpTooltip from 'components/HelpTooltip/HelpTooltip';
 import { getAddressBalance, getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
 import { getAccount } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
@@ -125,7 +126,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       <li>
                         <div>Expiration time</div>
                         <div className={styles.dateContainer}>
-                          <Datetime inputProps={{ style: { width: 180 } }} onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
+                          <Datetime
+                            inputProps={{ style: { width: 180 } }}
+                            onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)}
+                          />
                         </div>
                         <div></div>
                       </li>
@@ -141,9 +145,13 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 </div>
               ) : (
                 <div className={styles.row}>
+                  {/* ------ English Auction (Highest Bid) ------ */}
                   <ul className={styles.fields}>
                     <li>
-                      <div>Minimum bid</div>
+                      <div>
+                        Minimum bid{' '}
+                        <HelpTooltip text="This starting bid price will be publicly visible. If you receive a bid above this starting value but below your reserve price, you can accept it at any time." />
+                      </div>
                       <div>
                         <input
                           type="number"
@@ -168,7 +176,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     <li>
                       <div>Expiration time</div>
                       <div className={styles.dateContainer}>
-                        <Datetime inputProps={{ style: { width: 180 } }} onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
+                        <Datetime
+                          inputProps={{ style: { width: 180 } }}
+                          onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)}
+                        />
                       </div>
                       <div></div>
                     </li>
