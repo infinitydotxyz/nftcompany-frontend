@@ -64,6 +64,34 @@ const Header = () => {
       (window as any).ethereum.removeListener('accountsChanged', handleAccountChange);
     };
   }, []);
+
+  const ntfItems = [
+    <MenuItem key="nfts" icon={<StarIcon />} onClick={() => router.push('/my-nfts')}>
+      My NFTs
+    </MenuItem>,
+    <MenuItem key="listed" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
+      Listed for sale
+    </MenuItem>
+  ];
+
+  const offerItems = [
+    <MenuItem key="made" icon={<StarIcon />} onClick={() => router.push('/offers-made')}>
+      Offers Made
+    </MenuItem>,
+    <MenuItem key="received" icon={<StarIcon />} onClick={() => router.push('/offers-received')}>
+      Offers Received
+    </MenuItem>
+  ];
+
+  const transactionItems = [
+    <MenuItem key="purchases" icon={<StarIcon />} onClick={() => router.push('/purchases')}>
+      Purchases
+    </MenuItem>,
+    <MenuItem key="sales" icon={<StarIcon />} onClick={() => router.push('/sales')}>
+      Sales
+    </MenuItem>
+  ];
+
   return (
     <header className={styles.header} onClick={() => {}}>
       <Box className={styles.hdf} display="flex">
@@ -87,37 +115,19 @@ const Header = () => {
                 router.push(item.link || '');
               }}
             />
-            <HoverMenuButton buttonTitle="NFTs">
-              <MenuItem
-                icon={<StarIcon />}
-                onClick={() => {
-                  return router.push('/my-nfts');
-                }}
-              >
-                My NFTs
-              </MenuItem>
-              <MenuItem icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
-                Listed for sale
-              </MenuItem>
-            </HoverMenuButton>
+            <div className={styles.expanded}>
+              <HoverMenuButton buttonTitle="NFTs">{ntfItems}</HoverMenuButton>
 
-            <HoverMenuButton buttonTitle="Offers">
-              <MenuItem icon={<StarIcon />} onClick={() => router.push('/offers-made')}>
-                Offers Made
-              </MenuItem>
-              <MenuItem icon={<StarIcon />} onClick={() => router.push('/offers-received')}>
-                Offers Received
-              </MenuItem>
-            </HoverMenuButton>
+              <HoverMenuButton buttonTitle="Offers">{offerItems}</HoverMenuButton>
 
-            <HoverMenuButton buttonTitle="Transactions">
-              <MenuItem icon={<StarIcon />} onClick={() => router.push('/purchases')}>
-                Purchases
-              </MenuItem>
-              <MenuItem icon={<StarIcon />} onClick={() => router.push('/sales')}>
-                Sales
-              </MenuItem>
-            </HoverMenuButton>
+              <HoverMenuButton buttonTitle="Transactions">{transactionItems}</HoverMenuButton>
+            </div>
+
+            <div className={styles.compressed}>
+              <HoverMenuButton buttonTitle="NFTs">
+                {[...ntfItems, <MenuDivider key="d1" />, ...offerItems, <MenuDivider key="d2" />, ...transactionItems]}
+              </HoverMenuButton>
+            </div>
 
             {user?.account ? (
               <li>

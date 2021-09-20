@@ -6,7 +6,7 @@ import { TriangleDownIcon } from '@chakra-ui/icons';
 type Props = {
   buttonContent?: JSX.Element;
   buttonTitle?: string;
-  children: JSX.Element[];
+  children: JSX.Element[] | JSX.Element;
 };
 
 export const HoverMenuButton = ({ buttonTitle, buttonContent, children }: Props) => {

@@ -55,3 +55,20 @@
     }
   }
 }
+
+.expanded {
+  display: flex;
+}
+
+.compressed {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .expanded {
+    display: none;
+  }
+  .compressed {
+    display: flex;
+  }
+}
