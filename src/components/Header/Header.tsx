@@ -87,7 +87,6 @@ const Header = () => {
             />
             <HoverMenuButton buttonTitle="NFTs">
               <MenuItem
-                textColor="#333"
                 icon={<StarIcon />}
                 onClick={() => {
                   return router.push('/my-nfts');
@@ -95,25 +94,25 @@ const Header = () => {
               >
                 My NFTs
               </MenuItem>
-              <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
+              <MenuItem icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
                 Listed for sale
               </MenuItem>
             </HoverMenuButton>
 
             <HoverMenuButton buttonTitle="Offers">
-              <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-made')}>
+              <MenuItem icon={<StarIcon />} onClick={() => router.push('/offers-made')}>
                 Offers Made
               </MenuItem>
-              <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/offers-received')}>
+              <MenuItem icon={<StarIcon />} onClick={() => router.push('/offers-received')}>
                 Offers Received
               </MenuItem>
             </HoverMenuButton>
 
             <HoverMenuButton buttonTitle="Transactions">
-              <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/purchases')}>
+              <MenuItem icon={<StarIcon />} onClick={() => router.push('/purchases')}>
                 Purchases
               </MenuItem>
-              <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/sales')}>
+              <MenuItem icon={<StarIcon />} onClick={() => router.push('/sales')}>
                 Sales
               </MenuItem>
             </HoverMenuButton>
@@ -129,15 +128,15 @@ const Header = () => {
                 >
                   <AddressMenuItem user={user} />
 
-                  <MenuItem textColor="#333" icon={<StarIcon />} onClick={() => router.push('/rewards')}>
+                  <MenuItem icon={<StarIcon />} onClick={() => router.push('/rewards')}>
                     Rewards
                   </MenuItem>
-                  <MenuItem textColor="#333" icon={<SettingsIcon />} onClick={() => setSettingsModalShowed(true)}>
+                  <MenuItem icon={<SettingsIcon />} onClick={() => setSettingsModalShowed(true)}>
                     Settings
                   </MenuItem>
 
                   <MenuDivider />
-                  <MenuItem textColor="#333" icon={<ExternalLinkIcon />} onClick={() => setUser(null)}>
+                  <MenuItem icon={<ExternalLinkIcon />} onClick={() => setUser(null)}>
                     Sign out
                   </MenuItem>
                 </HoverMenuButton>
