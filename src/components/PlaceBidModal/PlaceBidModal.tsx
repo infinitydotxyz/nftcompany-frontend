@@ -36,6 +36,9 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           // Important to check if the order is still available as it can have already been fulfilled by
           // another user or cancelled by the creator
           if (order) {
+            // const txnHash = '0xcc128a83022cf34fbc5ec756146ee43bc63f2666443e22ade15180c6304b0d54';
+            // const salePriceInEth = '1';
+            // const feesInEth = '1';
             const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
               order: order,
               accountAddress: user!.account
