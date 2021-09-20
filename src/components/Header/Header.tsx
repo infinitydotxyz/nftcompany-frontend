@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { getAccount } from '../../../src/utils/ethersUtil';
 import { setAuthHeaders } from '../../../src/utils/apiUtil';
-import NavBar from 'components/NavBar/NavBar';
 import { useAppContext } from 'utils/context/AppContext';
 import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';

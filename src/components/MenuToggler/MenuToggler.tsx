@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './MenuToggler.module.scss';
 
 type Props = {
   isActive: boolean;
@@ -6,10 +7,17 @@ type Props = {
 };
 
 function MenuToggler({ isActive, ...props }: Props) {
+  let buttonClasses = [styles.hamburger];
+
+  if (isActive) {
+    buttonClasses.push(styles.hamburgerSpin);
+    buttonClasses.push(styles.isActive);
+  }
+
   return (
-    <button className={`hamburger ${isActive && 'hamburger--spin is-active'}`} type="button" {...props}>
-      <span className="hamburger-box">
-        <span className="hamburger-inner"></span>
+    <button className={buttonClasses.join(' ')} type="button" {...props}>
+      <span className={styles.hamburgerBox}>
+        <span className={styles.hamburgerInner}></span>
       </span>
     </button>
   );
