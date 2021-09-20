@@ -1153,6 +1153,8 @@ export class OpenSeaPort {
       const isOpen = await this._validateOrder(order);
       return !isOpen;
     });
+
+    return txnHash;
   }
 
   /**
