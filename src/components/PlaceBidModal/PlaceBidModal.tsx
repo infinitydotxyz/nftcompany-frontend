@@ -9,13 +9,13 @@ import { GenericError } from 'types';
 import { apiPost } from 'utils/apiUtil';
 import { Input } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
+import ModalDialog from 'hooks/ModalDialog';
 
-const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
 
 interface IProps {
   data: CardData;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
@@ -98,16 +98,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   return (
     <>
       {!isServer && (
-        <Modal
-          brandColor={'brandBlue'}
-          isActive={true}
-          onClose={onClose}
-          activator={({ setShow }: any) => (
-            <div onClick={() => setShow(true)} className={'nftholder'}>
-              &nbsp;
-            </div>
-          )}
-        >
+        <ModalDialog onClose={onClose}>
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.title}>Buy NFT</div>
@@ -171,7 +162,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               </div>
             </div>
           </div>
-        </Modal>
+        </ModalDialog>
       )}
     </>
   );

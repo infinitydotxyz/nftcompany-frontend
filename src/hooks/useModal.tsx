@@ -10,7 +10,7 @@ interface IProps {
   onClose?: () => void;
 }
 const Modal = ({ children, activator, brandColor, isActive, onClose }: IProps) => {
-  const [show, setShow] = useState(isActive || false);
+  const [show, setShow] = useState(isActive ?? false);
 
   const escFunction = useCallback((event) => {
     if (event.keyCode === 27) {

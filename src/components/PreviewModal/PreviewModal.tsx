@@ -7,12 +7,12 @@ import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { Link, Tooltip } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-const Modal = dynamic(() => import('hooks/useModal'));
+import ModalDialog from 'hooks/ModalDialog';
 const isServer = typeof window === 'undefined';
 
 interface Props {
   data: CardData;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
@@ -65,16 +65,7 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
   return (
     <>
       {!isServer && (
-        <Modal
-          brandColor={'brandBlue'}
-          isActive={true}
-          onClose={onClose}
-          activator={({ setShow }: any) => (
-            <div onClick={() => setShow(true)} className={'nftholder'}>
-              &nbsp;
-            </div>
-          )}
-        >
+        <ModalDialog onClose={onClose}>
           <div
             className={`modal ${'ntfmodal'}`}
             style={{ width: '80vw', maxWidth: 1000, background: 'white', borderColor: 'white' }}
@@ -150,7 +141,7 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
 
             {placeBidShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidShowed(false)} />}
           </div>
-        </Modal>
+        </ModalDialog>
       )}
     </>
   );
