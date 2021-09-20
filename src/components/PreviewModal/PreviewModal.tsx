@@ -19,10 +19,10 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
   const [placeBidShowed, setPlaceBidShowed] = useState(false);
   const { user } = useAppContext();
 
-  let ownedByYou = false;
+  let showPurchase = true;
 
-  if (data.owner == null || data.owner === user?.account) {
-    ownedByYou = true;
+  if (data.owner == null || data.owner === user?.account || data.price == undefined) {
+    showPurchase = false;
   }
 
   let owner = data.owner ?? '';
@@ -98,9 +98,13 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
 
                     <div className={styles.title}>{data?.title}</div>
 
-                    <span className={styles.label}>Price</span>
+                    {data.price != undefined && (
+                      <>
+                        <span className={styles.label}>Price</span>
 
-                    <PriceBox price={data?.price} />
+                        <PriceBox price={data?.price} />
+                      </>
+                    )}
 
                     <div className={styles.label}>Token Address</div>
                     <Tooltip label={data.tokenAddress} hasArrow openDelay={1000}>
@@ -133,7 +137,7 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
                     <div className={styles.description}>{description}</div>
 
                     <div className={styles.buttons}>
-                      {!ownedByYou && (
+                      {showPurchase && (
                         <a className="action-btn" onClick={() => setPlaceBidShowed(true)}>
                           Purchase
                         </a>

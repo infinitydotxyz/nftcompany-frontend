@@ -78,7 +78,9 @@ function PriceRange({ values, setValues, className, style, onFinalSetValue }: Pr
             <div
               style={{
                 position: 'absolute',
-                top: '-33px',
+                display: isDragged ? 'block' : 'none',
+                bottom: '-33px',
+                transform: 'translate(-35%, 0%)',
                 color: '#fff',
                 fontWeight: 600,
                 fontSize: '14px',

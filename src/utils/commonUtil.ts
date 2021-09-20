@@ -14,8 +14,6 @@ export const transformOpenSea = (item: any, owner: string) => {
     tokenAddress: item.asset_contract.address,
     tokenId: item.token_id,
     collectionName: item.asset_contract.name,
-    inStock: 1,
-    price: 0.1,
     owner: owner
   } as CardData;
 };

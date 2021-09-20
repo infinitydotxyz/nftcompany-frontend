@@ -11,12 +11,29 @@ const colors = {
   }
 };
 
+const Menu = {
+  parts: ['menu', 'item'],
+  baseStyle: {
+    item: {
+      color: '#333',
+
+      _hover: { bg: 'blue', color: 'white' }
+    }
+  }
+};
+
 const config: ThemeConfig = {
   // useSystemColorMode: true,
   initialColorMode: 'light'
 };
 
-export const theme = extendTheme({ config, colors });
+export const theme = extendTheme({
+  config,
+  colors,
+  components: {
+    Menu
+  }
+});
 
 export const AppChakraProvider = ({ children }: { children: any }) => (
   <ChakraProvider theme={theme}>{children}</ChakraProvider>

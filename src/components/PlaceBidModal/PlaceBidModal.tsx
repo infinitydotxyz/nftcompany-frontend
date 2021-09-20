@@ -115,12 +115,14 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
               <div className={styles.space}>You are about to buy this NFT.</div>
 
-              <div className={styles.row}>
-                <div className={styles.left}>Price</div>
-                <div className={styles.right}>
-                  <PriceBox price={data.price} />
+              {data.price != undefined && (
+                <div className={styles.row}>
+                  <div className={styles.left}>Price</div>
+                  <div className={styles.right}>
+                    <PriceBox price={data.price} />
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className={styles.footer}>
                 <a className="action-btn" onClick={buyNft}>
