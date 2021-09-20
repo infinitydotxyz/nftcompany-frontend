@@ -202,7 +202,8 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
 
               <div className={styles.footer}>
                 <Button
-                  colorScheme="blue"
+                  color="white"
+                  bgColor="brandBlue"
                   size="md"
                   disabled={isSubmitting}
                   onClick={async () => {
