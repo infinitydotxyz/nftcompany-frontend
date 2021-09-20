@@ -2,7 +2,6 @@ import * as React from 'react';
 import { initEthers } from 'utils/ethersUtil';
 import { setAuthHeaders } from 'utils/apiUtil';
 import { useToast } from '@chakra-ui/toast';
-import { showMessage } from 'utils/commonUtil';
 // import { EventEmitter, EventSubscription } from 'fbemitter';
 import { getOpenSeaport } from 'utils/ethersUtil';
 const { EventType } = require('../../../opensea/types');
@@ -22,13 +21,22 @@ const AppContext = React.createContext<AppContextType | null>(null);
 
 let lastError = '';
 
+const showToast = (toast: any, type: 'success' | 'error' | 'warning' | 'info', message: string) => {
+  toast({
+    title: type === 'error' ? 'Error' : 'Info',
+    description: message,
+    status: type,
+    duration: type === 'error' ? 10000 : 4000,
+    isClosable: true
+  });
+};
+
 export function AppContextProvider({ children }: any) {
   const toast = useToast();
   const [user, setUser] = React.useState<User | null>(null);
 
-  const showAppError = (message: string) => showMessage(toast, 'error', message);
-
-  const showAppMessage = (message: string) => showMessage(toast, 'info', message);
+  const showAppError = (message: string) => showToast(toast, 'error', message);
+  const showAppMessage = (message: string) => showToast(toast, 'info', message);
 
   const connectMetaMask = async () => {
     const onError = (error: any) => {
@@ -36,7 +44,7 @@ export function AppContextProvider({ children }: any) {
         return; // to avoid showing the same error message so many times.
       }
       lastError = error?.message;
-      showMessage(toast, 'error', `MetaMask RPC Error: ${error?.message}` || 'MetaMask RPC Error');
+      showToast(toast, 'error', `MetaMask RPC Error: ${error?.message}` || 'MetaMask RPC Error');
     };
     const res = await initEthers({ onError }); // returns provider
 
