@@ -7,6 +7,7 @@ import { getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 import { apiPost } from 'utils/apiUtil';
+import { Input } from '@chakra-ui/react';
 
 const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
@@ -128,18 +129,11 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               <div className={styles.row}>
                 <ul>
                   <li>
-                    <div>Enter bid</div>
+                    <div>Enter offer</div>
                     <div>
-                      <input type="number" onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))} />
+                      <Input size={'sm'} type="number" onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))} />
                     </div>
-                    <div>ETH</div>
-                  </li>
-                  <li>
-                    <div>Your balance</div>
-                    <div>
-                      <span>5.2</span>
-                    </div>
-                    <div>ETH</div>
+                    <div>WETH</div>
                   </li>
                   <li>
                     <div>Expire date</div>

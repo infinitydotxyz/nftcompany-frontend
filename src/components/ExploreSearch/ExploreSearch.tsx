@@ -6,6 +6,8 @@ import { Box } from '@chakra-ui/react';
 import { useAppSearchContext } from 'hooks/useSearch';
 import { useRouter } from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
+import styles from './ExploreSearch.module.scss';
+
 const ExploreSearch = () => {
   const { exploreSearchState, setExploreSearchState } = useAppSearchContext();
   const typeaheadRef = useRef<any>();
@@ -21,7 +23,7 @@ const ExploreSearch = () => {
   const router = useRouter();
   return (
     <Box display="flex">
-      <Box flex="1">
+      <Box className={styles.typeahead} flex="1">
         <AsyncTypeahead
           id="explore-typeahead"
           onChange={(selectedOptions: TypeAheadOption[]) => {

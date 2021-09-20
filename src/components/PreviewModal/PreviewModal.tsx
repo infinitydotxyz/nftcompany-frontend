@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import PurchaseModal from 'components/PurchaseModal/PurchaseModal';
 import dynamic from 'next/dynamic';
 import styles from './PreviewModal.module.scss';
 import { CardData } from 'types/Nft.interface';
@@ -17,7 +16,6 @@ interface Props {
 
 const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
   const [placeBidShowed, setPlaceBidShowed] = useState(false);
-  const [purchaseShowed, setPurchaseShowed] = useState(false);
   const { user } = useAppContext();
 
   let ownedByYou = false;
@@ -146,7 +144,6 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
             </div>
 
             {placeBidShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidShowed(false)} />}
-            {purchaseShowed && <PurchaseModal onClose={() => setPurchaseShowed(false)} />}
           </div>
         </Modal>
       )}

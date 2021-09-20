@@ -125,13 +125,13 @@
   }
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (min-width: 1000px) and (max-width: 1400px) {
   .cardList {
     grid-gap: 16px;
 
     .card {
-      flex: 0 0 calc(98% - 32px); /* 1-card layout */
-      max-width: calc(98% - 32px);
+      flex: 0 0 calc(32% - 32px); /* 3-card layout */
+      max-width: calc(32% - 32px);
 
       .cardPreview {
         max-height: inherit;
@@ -140,13 +140,28 @@
   }
 }
 
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
+@media only screen and (min-width: 700px) and (max-width: 1000px) {
   .cardList {
     grid-gap: 16px;
 
     .card {
       flex: 0 0 calc(48% - 32px); /* 2-card layout */
       max-width: calc(48% - 32px);
+
+      .cardPreview {
+        max-height: inherit;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .cardList {
+    grid-gap: 16px;
+
+    .card {
+      flex: 0 0 calc(98% - 32px); /* 1-card layout */
+      max-width: calc(98% - 32px);
 
       .cardPreview {
         max-height: inherit;

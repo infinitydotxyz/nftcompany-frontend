@@ -10,6 +10,7 @@
     list-style: none;
     li {
       display: flex;
+      align-items: center;
       margin: 20px 0;
 
       div:nth-child(1) {
@@ -23,12 +24,9 @@
           text-align: right;
           padding: 0 10px;
           margin: 0 10px;
-          width: 60%;
+          width: 142px;
           font-weight: bold;
-        }
-        input {
-          background-color: rgb(245, 245, 245);
-          box-shadow: 3px 3px 3px #eee;
+          border: 1px solid #aaa;
         }
       }
     }
