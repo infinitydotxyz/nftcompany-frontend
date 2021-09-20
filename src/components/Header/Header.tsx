@@ -12,6 +12,7 @@ import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import SettingsModal from 'components/SettingsModal/SettingsModal';
 import styles from './Header.module.scss';
+import MoreVert from './more_vert.svg';
 
 let isChangingAccount = false;
 
@@ -179,6 +180,11 @@ const Header = () => {
             </div>
 
             {accountButton}
+
+            {/* using Image() put space at the bottom */}
+            {/* <HoverMenuButton buttonContent={<img src={MoreVert.src} height={32} width={32} />}>
+              {ntfItems}
+            </HoverMenuButton> */}
           </div>
         </Box>
       </Box>

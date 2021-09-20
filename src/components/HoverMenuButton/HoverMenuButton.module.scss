@@ -15,6 +15,13 @@
 .buttonContent {
   display: flex;
   white-space: nowrap;
+
+  // switch svgs to white
+  img {
+    .menuOpen & {
+      filter: invert(1);
+    }
+  }
   .arrow {
     padding-left: 6px;
     color: #aaa;
