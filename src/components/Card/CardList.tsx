@@ -1,5 +1,6 @@
 import React from 'react';
 import { CardData } from 'types/Nft.interface';
+import { uuidv4 } from 'utils/commonUtil';
 import Card from './Card';
 import styles from './CardList.module.scss';
 
@@ -10,7 +11,6 @@ type Props = {
   showItems?: string[];
   onClickAction?: (item: any, action: string) => void;
 };
-
 export default function CardList({ data, viewInfo, showItems, actions, onClickAction }: Props) {
   React.useEffect(() => {
     // console.log('CardList useEffect.')
@@ -24,7 +24,7 @@ export default function CardList({ data, viewInfo, showItems, actions, onClickAc
         }
         return (
           <Card
-            key={item?.id || item?.title}
+            key={item?.id || uuidv4()}
             showItems={showItems}
             actions={actions}
             data={item}

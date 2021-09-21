@@ -3,13 +3,13 @@ import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { getTypeAheadOptions, TypeAheadOption } from 'services/Listings.service';
 import { CloseIcon } from '@chakra-ui/icons';
 import { Box } from '@chakra-ui/react';
-import { useAppSearchContext } from 'hooks/useSearch';
+import { defaultFilterState, useAppSearchContext } from 'hooks/useSearch';
 import { useRouter } from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import styles from './ExploreSearch.module.scss';
 
 const ExploreSearch = () => {
-  const { exploreSearchState, setExploreSearchState } = useAppSearchContext();
+  const { exploreSearchState, setExploreSearchState, setFilterState } = useAppSearchContext();
   const typeaheadRef = useRef<any>();
   const handleSearch = async (query: string) => {
     const results = await getTypeAheadOptions({ startsWith: query });
@@ -42,7 +42,7 @@ const ExploreSearch = () => {
                 collectionName: ''
               });
             }
-
+            setFilterState(defaultFilterState);
             if (router.route !== '/explore') {
               router.push('/explore');
             }
@@ -83,6 +83,7 @@ const ExploreSearch = () => {
           onClick={() => {
             typeaheadRef.current.clear();
             setExploreSearchState({ ...exploreSearchState, collectionName: '', selectedOption: null });
+            setFilterState(defaultFilterState);
           }}
         />
       )}
