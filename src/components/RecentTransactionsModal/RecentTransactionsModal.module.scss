@@ -19,6 +19,12 @@
   }
 }
 
+.extLink {
+  cursor: pointer;
+  margin-left: 5px;
+  vertical-align: 2px;
+}
+
 .space {
   margin-bottom: 10px;
 }
@@ -31,5 +37,11 @@
 
   a {
     margin-right: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal {
+    width: 92vw !important;
   }
 }

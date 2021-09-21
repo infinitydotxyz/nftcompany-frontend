@@ -17,6 +17,8 @@ export enum EventType {
   OrderDenied = "OrderDenied",
 }
 
+export const ellipsisAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`
+
 export const transformOpenSea = (item: any, owner: string) => {
   if (!item) {
     return null;

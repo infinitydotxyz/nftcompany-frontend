@@ -14,6 +14,7 @@ import MoreVert from './more_vert.svg';
 import RecentTransactionsModal from 'components/RecentTransactionsModal/RecentTransactionsModal';
 
 import styles from './Header.module.scss';
+import { ellipsisAddress } from 'utils/commonUtil';
 
 let isChangingAccount = false;
 
@@ -107,7 +108,7 @@ const Header = () => {
     accountButton = (
       <div style={{ marginLeft: 6 }}>
         <HoverMenuButton
-          buttonTitle={`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}
+          buttonTitle={ellipsisAddress(user?.account)}
           shadow={true}
           arrow={false}
         >

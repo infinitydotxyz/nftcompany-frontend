@@ -1,21 +1,18 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
-import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
-import { getOpenSeaport } from 'utils/ethersUtil';
-import { apiGet, apiPost } from 'utils/apiUtil';
-import { GenericError } from 'types';
+import { apiGet } from 'utils/apiUtil';
 import ModalDialog from 'hooks/ModalDialog';
+import { Tooltip } from '@chakra-ui/tooltip';
 import styles from './RecentTransactionsModal.module.scss';
+import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 
-const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
 interface IProps {
   onClose: () => void;
 }
 
 const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, showAppMessage } = useAppContext();
   const [data, setData] = React.useState([]);
 
   const fetchData = async () => {
@@ -25,7 +22,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
     } else {
       setData(result?.listings || []);
     }
-    console.log('result', result);
+    // console.log('result', result);
   };
   React.useEffect(() => {
     fetchData();
@@ -35,12 +32,12 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white', width: '50vw' }}>
+          <div className={`modal ${'ntfmodal'} ${styles.modal}`} style={{ background: 'white', borderColor: 'white', width: '60vw' }}>
             <div className="modal-body">
               <div className={styles.title}>Pending Transactions</div>
 
               <section className="container container-fluid grid">
-                <div className={`col-md-12 ${styles.txnRow}`}>
+                <div className={`col-md-12 col-sm-12 ${styles.txnRow}`}>
                   <span>
                     <strong>Time</strong>
                   </span>
@@ -50,9 +47,31 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
                 </div>
                 {data.map((item: any) => {
                   return (
-                    <div key={item.txnHash} className={`col-md-12 ${styles.txnRow}`}>
+                    <div key={item.txnHash} className={`col-md-12 col-sm-12 ${styles.txnRow}`}>
                       <span>{`${new Date(item.createdAt).toLocaleString()}`}</span>
-                      <span>{item.txnHash}</span>
+                      <span>
+                        {item.txnHash}{' '}
+                        <i className={styles.extLink}>
+                          <Tooltip label={'Open Etherscan Link'} placement="top" hasArrow>
+                            <ExternalLinkIcon
+                              onClick={() => {
+                                window.open(`https://etherscan.io/address/${item.txnHash}`, '_blank');
+                              }}
+                            />
+                          </Tooltip>{' '}
+                        </i>
+                        <i className={styles.extLink}>
+                          <Tooltip label={'Open Etherscan Link'} placement="top" hasArrow>
+                            <CopyIcon
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigator.clipboard.writeText(item.txnHash);
+                                showAppMessage(`Copied to Clipboard.`);
+                              }}
+                            />
+                          </Tooltip>{' '}
+                        </i>
+                      </span>
                     </div>
                   );
                 })}

@@ -8,6 +8,7 @@ import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { Link, Tooltip } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'hooks/ModalDialog';
+import { ellipsisAddress } from 'utils/commonUtil';
 const isServer = typeof window === 'undefined';
 
 interface Props {
@@ -27,20 +28,20 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
 
   let owner = data.owner ?? '';
   if (owner.length > 16) {
-    owner = `${owner.slice(0, 6)}...${owner.slice(-4)}`;
+    owner = ellipsisAddress(owner);
   }
 
   let tokenAddress = data.tokenAddress;
   if (tokenAddress != null) {
     if (tokenAddress.length > 16) {
-      tokenAddress = `${tokenAddress.slice(0, 6)}...${tokenAddress.slice(-4)}`;
+      tokenAddress = ellipsisAddress(tokenAddress);
     }
   }
 
   let tokenId = data.tokenId;
   if (tokenId != null) {
     if (tokenId?.length > 16) {
-      tokenId = `${tokenId.slice(0, 4)}...${tokenId.slice(-4)}`;
+      tokenId = ellipsisAddress(tokenId);
     }
   }
 
