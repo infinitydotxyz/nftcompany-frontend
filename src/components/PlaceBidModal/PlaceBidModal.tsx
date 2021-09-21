@@ -21,7 +21,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
   const [order, setOrder] = React.useState<Order | undefined>();
   const [offerPrice, setOfferPrice] = React.useState(0);
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, showAppMessage } = useAppContext();
 
   const loadOrder = useCallback(async () => {
     let orderParams: any;
@@ -108,6 +108,10 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           assetDetails: data,
           expirationTime: expiryTimeSeconds
         })
+        .then(() => {
+          showAppMessage('Offer sent successfully.');
+          onClose();
+        })
         .catch((err: GenericError) => {
           console.error('ERROR:', err);
           showAppError(err?.message);
@@ -149,43 +153,52 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               <div className={styles.title}>Make an offer</div>
               <div className={styles.space}>Place a bid on this NFT.</div>
 
-              <div className={styles.row}>
-                <div className={styles.left}>
-                  <div>Enter offer</div>
+              <form
+                onSubmit={(ev) => {
+                  ev.preventDefault();
+                  makeAnOffer();
+                }}
+              >
+                <div className={styles.row}>
+                  <div className={styles.left}>
+                    <div>Enter offer</div>
+                  </div>
+                  <div className={styles.right}>
+                    <div>
+                      <Input
+                        style={{ width: 166 }}
+                        required
+                        size={'sm'}
+                        type="number"
+                        step={0.000000001}
+                        onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}
+                      />
+                    </div>
+                    <div>WETH</div>
+                  </div>
                 </div>
-                <div className={styles.right}>
-                  <div>
-                    <Input
-                      style={{ width: 166 }}
-                      size={'sm'}
-                      type="number"
-                      onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}
+                <div className={styles.row}>
+                  <div className={styles.left}>
+                    <div>Expire date</div>
+                  </div>
+                  <div className={styles.right}>
+                    <Datetime
+                      inputProps={{ style: { width: 165, marginRight: 52 } }}
+                      onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)}
                     />
                   </div>
-                  <div>WETH</div>
+                  <div>&nbsp;</div>
                 </div>
-              </div>
-              <div className={styles.row}>
-                <div className={styles.left}>
-                  <div>Expire date</div>
-                </div>
-                <div className={styles.right}>
-                  <Datetime
-                    inputProps={{ style: { width: 180, marginRight: 52 } }}
-                    onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)}
-                  />
-                </div>
-                <div>&nbsp;</div>
-              </div>
 
-              <div className={styles.footer}>
-                <a className="action-btn" onClick={makeAnOffer}>
-                  Make an offer
-                </a>
-                <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
-                  Cancel
-                </a>
-              </div>
+                <div className={styles.footer}>
+                  <Button type="submit" colorScheme="blue" className="action-btn">
+                    Make an offer
+                  </Button>
+                  <Button ml={4} onClick={() => onClose && onClose()}>
+                    Cancel
+                  </Button>
+                </div>
+              </form>
             </div>
           </div>
         </ModalDialog>
