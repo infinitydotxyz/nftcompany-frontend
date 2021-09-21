@@ -18,7 +18,7 @@ interface IProps {
 const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
   const [offerPrice, setOfferPrice] = React.useState(0);
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, showAppMessage } = useAppContext();
 
   const cancelOffer = async () => {
     try {
@@ -30,10 +30,18 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       });
 
       if (order) {
-        const txnHash = await seaport.cancelOrder({
-          order: order,
-          accountAddress: user!.account
-        });
+        const txnHash = await seaport
+          .cancelOrder({
+            order: order,
+            accountAddress: user!.account
+          })
+          .then(() => {
+            onClose();
+          })
+          .catch((err: GenericError) => {
+            console.error('ERROR:', err);
+            showAppError(err?.message);
+          });
         console.log('Cancel offer txn hash: ' + txnHash);
         const payload = {
           actionType: 'cancel',
