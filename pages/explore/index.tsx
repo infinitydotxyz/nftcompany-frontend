@@ -162,7 +162,7 @@ export default function Dashboard() {
             </Box>
           )}
 
-          <NoData isFetching={isFetching} data={exploreSearchState.listedNfts} currentPage={currentPage} />
+          <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={exploreSearchState.listedNfts} />
           {exploreSearchState.listedNfts?.length === 0 && isFetching && <LoadingCardList />}
 
           <CardList showItems={['PRICE']} data={exploreSearchState.listedNfts} actions={['BUY_NFT']} />
@@ -170,6 +170,7 @@ export default function Dashboard() {
           {dataLoaded && (
             <FetchMore
               currentPage={currentPage}
+              data={exploreSearchState.listedNfts}
               onFetchMore={async () => {
                 setDataLoaded(false);
                 await fetchData(filterState ? filterState : {});
