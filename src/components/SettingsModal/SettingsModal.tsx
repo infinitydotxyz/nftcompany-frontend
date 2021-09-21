@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import dynamic from 'next/dynamic';
 import styles from './SettingsModal.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet, apiPost } from 'utils/apiUtil';
-import { Button, FormControl, Input, Link } from '@chakra-ui/react';
-const isServer = typeof window === 'undefined';
+import { IconButton, Button, FormControl, Input, Link, Box, FormLabel } from '@chakra-ui/react';
+import { CopyIcon } from '@chakra-ui/icons';
 import validator from 'validator';
 import ModalDialog from 'hooks/ModalDialog';
+
+const isServer = typeof window === 'undefined';
 
 interface Props {
   onClose: () => void;
@@ -18,7 +19,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
   const [showSubscribeSection, setShowSubscribeSection] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
 
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, showAppMessage } = useAppContext();
 
   const saveEmail = async () => {
     if (user != null && email?.length > 0 && !emailInvalid) {
@@ -90,6 +91,58 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
     </div>
   ) : null;
 
+  let shortAddress = user!.account;
+  shortAddress = `${shortAddress.slice(0, 8)}...${shortAddress.slice(-8)}`;
+
+  let displayUrl = `${window.origin}/${shortAddress}`;
+
+  let content = null;
+  if (user?.account) {
+    content = (
+      <>
+        <FormControl isInvalid={emailInvalid}>
+          <FormLabel>Share your user page</FormLabel>
+          <div className={styles.addressLink}>
+            <Link className={styles.address} href={`/${user!.account}`}>
+              {displayUrl}
+            </Link>
+            <Box flex={1} />
+            <IconButton
+              isActive={false}
+              aria-label="Copy"
+              className={styles.button}
+              icon={<CopyIcon />}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (user?.account) {
+                  navigator.clipboard.writeText(user!.account);
+
+                  showAppMessage(`Copied to Clipboard.`);
+                }
+              }}
+            />
+          </div>
+        </FormControl>
+
+        <FormControl isInvalid={emailInvalid}>
+          <FormLabel>Email address</FormLabel>
+          <Input
+            fontWeight={500}
+            type="email"
+            placeholder="Email"
+            value={email}
+            onSubmit={() => {
+              saveEmail();
+            }}
+            onChange={(e: any) => updateEmail(e.target.value)}
+          />
+        </FormControl>
+
+        {_subscribeSection}
+      </>
+    );
+  }
+
   return (
     <>
       {!isServer && (
@@ -97,23 +150,9 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.main}>
-                <div className={styles.title}>Settings</div>
+                <div className={styles.title}>Account</div>
 
-                <FormControl isInvalid={emailInvalid}>
-                  <Input
-                    fontWeight={500}
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onSubmit={() => {
-                      saveEmail();
-                    }}
-                    onChange={(e: any) => updateEmail(e.target.value)}
-                  />
-                </FormControl>
-
-                {_subscribeSection}
-
+                {content}
                 <div className={styles.buttons}>
                   <Button bgColor="brandBlue" color="white" onClick={() => saveEmail()}>
                     Save

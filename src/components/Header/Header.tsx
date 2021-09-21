@@ -91,7 +91,7 @@ const Header = () => {
         Rewards
       </MenuItem>,
       <MenuItem key="Settings" icon={<SettingsIcon />} onClick={() => setSettingsModalShowed(true)}>
-        Settings
+        Account
       </MenuItem>,
 
       <MenuDivider key="dd1" />,
