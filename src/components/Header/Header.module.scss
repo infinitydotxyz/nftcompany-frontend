@@ -91,7 +91,17 @@
   display: flex;
 }
 
-@media (min-width: 600px) and (max-width: 1000px) {
+.showSmallLogo {
+  display: none;
+  padding-left: 20px;
+}
+
+.showLargeLogo {
+  display: flex;
+  padding-left: 20px;
+}
+
+@media (min-width: 650px) and (max-width: 1000px) {
   .showLargeNav {
     display: none;
   }
@@ -105,11 +115,19 @@
     display: none;
   }
   .showExplore {
+    display: flex;
+  }
+
+  .showSmallLogo {
+    display: none;
+  }
+
+  .showLargeLogo {
     display: flex;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 650px) {
   .showLargeNav {
     display: none;
   }
@@ -123,6 +141,14 @@
     display: flex;
   }
   .showExplore {
+    display: none;
+  }
+
+  .showSmallLogo {
+    display: flex;
+  }
+
+  .showLargeLogo {
     display: none;
   }
 }
