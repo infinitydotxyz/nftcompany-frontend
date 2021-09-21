@@ -1,5 +1,22 @@
 import { CardData } from 'types/Nft.interface';
 
+// OpenSea's EventType
+export enum EventType {
+  // Transactions and signature requests
+  TransactionCreated = "TransactionCreated",
+  TransactionConfirmed = "TransactionConfirmed",
+  TransactionDenied = "TransactionDenied",
+  TransactionFailed = "TransactionFailed",
+
+  // Basic actions: matching orders, creating orders, and cancelling orders
+  MatchOrders = "MatchOrders",
+  CancelOrder = "CancelOrder",
+  ApproveOrder = "ApproveOrder",
+  CreateOrder = "CreateOrder",
+  // When the signature request for an order is denied
+  OrderDenied = "OrderDenied",
+}
+
 export const transformOpenSea = (item: any, owner: string) => {
   if (!item) {
     return null;
@@ -21,16 +38,16 @@ export const transformOpenSea = (item: any, owner: string) => {
 export const getCustomMessage = (eventName: string, data: any) => {
   let customMsg = '';
   const ev = data?.event;
-  if (eventName === 'TransactionCreated') {
+  if (eventName === EventType.TransactionCreated) {
     if (ev === 'MatchOrders') {
       customMsg = 'MatchOrders: Your transaction has been sent to chain.';
     }
-    if (ev === 'CancelOrder') {
+    if (ev === EventType.CancelOrder) {
       customMsg = 'CancelOrder: Your transaction has been sent to chain.';
     }
   }
-  if (eventName === 'TransactionConfirmed') {
-    if ('CancelOrder') {
+  if (eventName === EventType.TransactionConfirmed) {
+    if (ev === EventType.CancelOrder) {
       customMsg = 'CancelOrder: Transaction confirmed.';
     }
   }
