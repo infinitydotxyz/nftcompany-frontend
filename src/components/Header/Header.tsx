@@ -12,9 +12,10 @@ import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import SettingsModal from 'components/SettingsModal/SettingsModal';
 import MoreVert from './more_vert.svg';
 import RecentTransactionsModal from 'components/RecentTransactionsModal/RecentTransactionsModal';
+import { ellipsisAddress } from 'utils/commonUtil';
+import { ListIcon } from 'components/Icons/Icons';
 
 import styles from './Header.module.scss';
-import { ellipsisAddress } from 'utils/commonUtil';
 
 let isChangingAccount = false;
 
@@ -78,7 +79,7 @@ const Header = () => {
     <MenuItem key="sales" icon={<StarIcon />} onClick={() => router.push('/sales')}>
       Sales
     </MenuItem>,
-    <MenuItem key="transactions" icon={<StarIcon />} onClick={() => setTransactionsModalShowed(true)}>
+    <MenuItem key="transactions" icon={<ListIcon />} onClick={() => setTransactionsModalShowed(true)}>
       Transactions
     </MenuItem>
   ];
