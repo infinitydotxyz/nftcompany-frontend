@@ -29,38 +29,36 @@ export default function ListNFTs() {
   const cancelListing = async (item: CardData) => {
     try {
       const seaport = getOpenSeaport();
-      seaport.api
-        .getOrder({
-          maker: user!.account,
-          id: item?.id,
-          side: 1 // sell order
-        })
-        .then(async function (order: any) {
-          if (order) {
-            const txnHash = await seaport.cancelOrder({
-              order: order,
-              accountAddress: user?.account
-            });
-            console.log('Cancel listing txn hash: ' + txnHash);
-            const payload = {
-              actionType: 'cancel',
-              txnHash,
-              side: 1,
-              orderId: item?.id
-            };
-            const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/pendingtxns`, {}, payload);
-            if (error) {
-              showAppError((error as GenericError)?.message);
-            }
-          } else {
-            // Handle when the order does not exist anymore
-            showAppError('Listing not found to cancel. Refresh page.');
-          }
+      const order = seaport.api.getOrder({
+        maker: user!.account,
+        id: item?.id,
+        side: 1 // sell order
+      });
+
+      if (order) {
+        const txnHash = await seaport.cancelOrder({
+          order: order,
+          accountAddress: user?.account
         });
+        console.log('Cancel listing txn hash: ' + txnHash);
+        const payload = {
+          actionType: 'cancel',
+          txnHash,
+          side: 1,
+          orderId: item?.id
+        };
+        const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
+        if (error) {
+          showAppError((error as GenericError)?.message);
+        }
+      } else {
+        // Handle when the order does not exist anymore
+        showAppError('Listing not found to cancel. Refresh page.');
+      }
     } catch (err) {
       showAppError((err as GenericError)?.message);
     }
-  }
+  };
 
   const fetchData = async (isRefreshing: boolean = false) => {
     if (!user?.account) {
