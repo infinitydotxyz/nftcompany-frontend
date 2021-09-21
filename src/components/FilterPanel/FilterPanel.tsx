@@ -73,7 +73,7 @@ const FilterPanel = ({ isExpanded, setExpanded, onChangeFilter }: Props) => {
                   placeholder="Sort by price"
                   id="filter2"
                   value={filterState?.sortByPrice}
-                  onChange={(ev) => handleChanges({ sortByPrice: ev.target.value })}
+                  onChange={(ev) => handleChanges({ ...filterState, sortByPrice: ev.target.value })}
                 >
                   <option
                     key="DESC"

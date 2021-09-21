@@ -1,7 +1,8 @@
-import { useAppSearchContext } from 'hooks/useSearch';
+import { filter } from '.pnpm/@chakra-ui+styled-system@1.12.2/node_modules/@chakra-ui/styled-system';
+import { defaultFilterState, useAppSearchContext } from 'hooks/useSearch';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 const { createSliderWithTooltip } = Slider;
 const Range = createSliderWithTooltip(Slider.Range);
 const MAX = 1000;
@@ -16,6 +17,14 @@ const PriceSlider = () => {
   const { filterState, setFilterState } = useAppSearchContext();
   const [sliderMin, setSliderMin] = useState(0);
   const [sliderMax, setSliderMax] = useState(1000);
+  useEffect(() => {
+    if (filterState.priceMin !== sliderMin) {
+      setSliderMin(defaultFilterState.priceMin);
+    }
+    if (filterState.priceMax !== sliderMax) {
+      setSliderMax(defaultFilterState.priceMax);
+    }
+  }, [filterState.priceMin, filterState.priceMax]);
   return (
     <>
       <Range

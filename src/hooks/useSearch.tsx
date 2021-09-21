@@ -15,8 +15,8 @@ export interface ExploreSearchState {
 export interface Filter {
   sortByLikes?: string;
   sortByPrice?: string;
-  priceMin?: number;
-  priceMax?: number;
+  priceMin: number;
+  priceMax: number;
   startAfter?: number;
   startAfterPrice?: number;
   limit?: number;
