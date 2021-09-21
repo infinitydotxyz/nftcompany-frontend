@@ -16,39 +16,43 @@ interface IProps {
 
 const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
   const { user, showAppError } = useAppContext();
+  const [data, setData] = React.useState([]);
 
   const fetchData = async () => {
     const { result, error } = await apiGet(`/u/${user?.account}/wyvern/v1/pendingtxns`);
     if (error) {
       showAppError(error?.message);
+    } else {
+      setData(result?.listings || []);
     }
-    console.log('result', result)
-  }
+    console.log('result', result);
+  };
   React.useEffect(() => {
     fetchData();
-  }, [user])
+  }, [user]);
 
   return (
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
+          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white', width: '50vw' }}>
             <div className="modal-body">
               <div className={styles.title}>Pending Transactions</div>
 
-              <div className={styles.space}>More...</div>
-
-              {/* <div className={styles.row}>
-                <ul>
-                  <li>
-                    <div>Price</div>
-                    <div>
-                      <span>{data.price}</span>
+              <section className="container container-fluid grid">
+                <div className={`col-md-12 ${styles.txnRow}`}>
+                  <span><strong>Time</strong></span>
+                  <span><strong>Txn Hash</strong></span>
+                </div>
+                {data.map((item: any) => {
+                  return (
+                    <div className={`col-md-12 ${styles.txnRow}`}>
+                      <span>{`${new Date(item.createdAt).toLocaleString()}`}</span>
+                      <span>{item.txnHash}</span>
                     </div>
-                    <div>ETH</div>
-                  </li>
-                </ul>
-              </div> */}
+                  );
+                })}
+              </section>
 
               <div className={styles.footer}>
                 <a className="action-btn" onClick={() => onClose && onClose()}>

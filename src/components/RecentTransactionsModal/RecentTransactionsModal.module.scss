@@ -3,35 +3,19 @@
   font-weight: bold;
 }
 
-.row {
-  margin-bottom: 20px;
+.txnRow {
+  display: flex;
 
-  ul {
-    list-style: none;
-    li {
-      display: flex;
-      margin: 20px 0;
+  &:first-child {
+    margin-top: 20px;
+  }
 
-      div:nth-child(1) {
-        color: #888;
-      }
-      div:nth-child(2) {
-        flex: 1;
-        text-align: right;
-        span,
-        input {
-          text-align: right;
-          padding: 0 10px;
-          margin: 0 10px;
-          width: 60%;
-          font-weight: bold;
-        }
-        input {
-          background-color: rgb(245, 245, 245);
-          box-shadow: 3px 3px 3px #eee;
-        }
-      }
-    }
+  span:nth-child(1) {
+    width: 30%;
+    color: #aaa;
+  }
+  span:nth-child(2) {
+    width: 70%;
   }
 }
 
@@ -42,6 +26,7 @@
 .footer {
   display: flex;
   justify-content: flex-start;
+  margin-top: 20px;
   margin-bottom: 20px;
 
   a {
