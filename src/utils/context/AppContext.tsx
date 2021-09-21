@@ -40,13 +40,19 @@ export function AppContextProvider({ children }: any) {
   const showAppMessage = (message: string) => showToast(toast, 'info', message);
 
   const connectMetaMask = async () => {
+    // show MetaMask's errors:
     const onError = (error: any) => {
-      if (error?.message === lastError) {
+      const errorMsg = error?.message
+      if (errorMsg === lastError) {
         return; // to avoid showing the same error message so many times.
       }
-      lastError = error?.message;
-      showToast(toast, 'error', `MetaMask RPC Error: ${error?.message}` || 'MetaMask RPC Error');
+      if (errorMsg.indexOf('The method does not exist') >= 0) {
+        return; // TODO: ignore this error for now.
+      }
+      lastError = errorMsg;
+      showToast(toast, 'error', `MetaMask RPC Error: ${errorMsg}` || 'MetaMask RPC Error');
     };
+    
     const res = await initEthers({ onError }); // returns provider
     if (res && res.getSigner) {
       await setAuthHeaders(await res.getSigner().getAddress());

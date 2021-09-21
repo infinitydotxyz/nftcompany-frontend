@@ -170,8 +170,12 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   <div>Expire date</div>
                 </div>
                 <div className={styles.right}>
-                  <Datetime onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)} />
+                  <Datetime
+                    inputProps={{ style: { width: 180, marginRight: 52 } }}
+                    onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)}
+                  />
                 </div>
+                <div>&nbsp;</div>
               </div>
 
               <div className={styles.footer}>
