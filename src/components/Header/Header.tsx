@@ -32,7 +32,6 @@ type ContextType = {
 const Header = () => {
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const router = useRouter();
-  const { route } = router;
 
   const { user, setUser } = useAppContext();
 
@@ -191,7 +190,7 @@ const Header = () => {
 
         <Box flex={1} />
 
-        <Box flex={4} pr="2" maxW="360px" minW="100px">
+        <Box flex={10} pr="2" maxW="360px" minW="100px">
           <ExploreSearch />
         </Box>
 
