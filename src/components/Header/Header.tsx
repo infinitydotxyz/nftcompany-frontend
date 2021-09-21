@@ -143,6 +143,24 @@ const Header = () => {
     );
   }
 
+  const medNavMenu = [
+    ...ntfItems,
+    <MenuDivider key="d1" />,
+    ...offerItems,
+    <MenuDivider key="d2" />,
+    ...transactionItems
+  ];
+
+  const mobileNavMenu = [
+    <MenuItem key="explore-menu" icon={<ExternalLinkIcon />} onClick={() => router.push('/explore')}>
+      Explore
+    </MenuItem>,
+    <MenuDivider key="m2" />,
+    ...medNavMenu,
+    <MenuDivider key="m1" />,
+    ...accountItems
+  ];
+
   return (
     <header className={styles.header} onClick={() => {}}>
       <Box className={styles.hdf} display="flex">
@@ -159,11 +177,13 @@ const Header = () => {
 
         <Box pr="4">
           <div className={styles.links}>
-            <div key="Explore" className={styles.exploreButton} onClick={() => router.push('/explore')}>
-              Explore
+            <div className={styles.showExplore}>
+              <div key="Explore" className={styles.exploreButton} onClick={() => router.push('/explore')}>
+                Explore
+              </div>
             </div>
 
-            <div className={styles.expanded}>
+            <div className={styles.showLargeNav}>
               <div className={styles.linksButtons}>
                 <HoverMenuButton buttonTitle="NFTs">{ntfItems}</HoverMenuButton>
 
@@ -173,18 +193,20 @@ const Header = () => {
               </div>
             </div>
 
-            <div className={styles.compressed}>
+            <div className={styles.showMediumNav}>
               <HoverMenuButton buttonTitle="NFTs">
                 {[...ntfItems, <MenuDivider key="d1" />, ...offerItems, <MenuDivider key="d2" />, ...transactionItems]}
               </HoverMenuButton>
             </div>
 
-            {accountButton}
+            <div className={styles.showConnectButton}>{accountButton}</div>
 
-            {/* using Image() put space at the bottom */}
-            {/* <HoverMenuButton buttonContent={<img src={MoreVert.src} height={32} width={32} />}>
-              {ntfItems}
-            </HoverMenuButton> */}
+            <div className={styles.showMobileMenu}>
+              {/* using Image() put space at the bottom */}
+              <HoverMenuButton buttonContent={<img src={MoreVert.src} height={32} width={32} />}>
+                {mobileNavMenu}
+              </HoverMenuButton>
+            </div>
           </div>
         </Box>
       </Box>
