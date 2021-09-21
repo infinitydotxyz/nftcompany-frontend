@@ -6,6 +6,9 @@ import LandingHeader from './LandingHeader';
 import LandingFooter from './footer';
 import Header from 'components/Header/Header';
 
+import LogRocket from 'logrocket';
+LogRocket.init('0pu9ak/nftco');
+
 interface IProps {
   children: any;
   landing?: boolean;
