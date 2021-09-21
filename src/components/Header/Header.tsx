@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MenuItem, MenuDivider, Box } from '@chakra-ui/react';
 import { ExternalLinkIcon, SettingsIcon, StarIcon } from '@chakra-ui/icons';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { getAccount } from '../../../src/utils/ethersUtil';
@@ -11,16 +10,18 @@ import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import SettingsModal from 'components/SettingsModal/SettingsModal';
-import styles from './Header.module.scss';
 import MoreVert from './more_vert.svg';
+import RecentTransactionsModal from 'components/RecentTransactionsModal/RecentTransactionsModal';
+
+import styles from './Header.module.scss';
 
 let isChangingAccount = false;
 
 const Header = () => {
-  const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const router = useRouter();
-
   const { user, setUser } = useAppContext();
+  const [settingsModalShowed, setSettingsModalShowed] = useState(false);
+  const [transactionsModalShowed, setTransactionsModalShowed] = useState(false);
 
   useEffect(() => {
     const handleAccountChange = async (accounts: string[]) => {
@@ -76,7 +77,7 @@ const Header = () => {
     <MenuItem key="sales" icon={<StarIcon />} onClick={() => router.push('/sales')}>
       Sales
     </MenuItem>,
-    <MenuItem key="transactions" icon={<StarIcon />} onClick={() => router.push('/sales')}>
+    <MenuItem key="transactions" icon={<StarIcon />} onClick={() => setTransactionsModalShowed(true)}>
       Transactions
     </MenuItem>
   ];
@@ -221,6 +222,7 @@ const Header = () => {
       </Box>
 
       {settingsModalShowed && <SettingsModal onClose={() => setSettingsModalShowed(false)} />}
+      {transactionsModalShowed && <RecentTransactionsModal onClose={() => setTransactionsModalShowed(false)} />}
     </header>
   );
 };
