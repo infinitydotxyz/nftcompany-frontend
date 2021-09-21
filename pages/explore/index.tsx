@@ -21,7 +21,7 @@ const SEARCH_ERROR_MESSAGE = 'Unable to fetch assets';
 
 export default function Dashboard() {
   const { user, showAppError } = useAppContext();
-  const { exploreSearchState, setExploreSearchState, filterState, setFilterState } = useAppSearchContext();
+  const { exploreSearchState, setExploreSearchState, filterState } = useAppSearchContext();
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [currentPage, setCurrentPage] = useState(-1);
@@ -55,7 +55,7 @@ export default function Dashboard() {
       setDataLoaded(false);
     }
     const moreData = await getListings({
-      ...filter,
+      ...(filter as Filter),
       startAfter: isRefreshing ? '' : getLastItemCreatedAt(exploreSearchState.listedNfts),
       startAfterPrice: isRefreshing ? '' : getLastItemBasePrice(exploreSearchState.listedNfts),
       limit: ITEMS_PER_PAGE
@@ -173,7 +173,7 @@ export default function Dashboard() {
               data={exploreSearchState.listedNfts}
               onFetchMore={async () => {
                 setDataLoaded(false);
-                await fetchData(filterState ? filterState : {});
+                await fetchData(filterState ? filterState : ({} as Filter));
               }}
             />
           )}

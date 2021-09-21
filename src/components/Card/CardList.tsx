@@ -1,5 +1,6 @@
 import React from 'react';
 import { CardData } from 'types/Nft.interface';
+import { uuidv4 } from 'utils/commonUtil';
 import Card from './Card';
 import styles from './CardList.module.scss';
 
@@ -10,15 +11,6 @@ type Props = {
   showItems?: string[];
   onClickAction?: (item: any, action: string) => void;
 };
-// if items used their title as a key they ran the risk of having the same value
-// to fix this we can use a guid generator instead
-function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    var r = (Math.random() * 16) | 0,
-      v = c == 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
 export default function CardList({ data, viewInfo, showItems, actions, onClickAction }: Props) {
   React.useEffect(() => {
     // console.log('CardList useEffect.')

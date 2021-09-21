@@ -1,4 +1,3 @@
-import { filter } from '.pnpm/@chakra-ui+styled-system@1.12.2/node_modules/@chakra-ui/styled-system';
 import { defaultFilterState, useAppSearchContext } from 'hooks/useSearch';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -61,6 +60,10 @@ const PriceSlider = () => {
         ]}
         tipFormatter={(value) => `${value}`}
         onChange={([priceMin, priceMax]) => {
+          if (priceMax === 0) {
+            setSliderMax(1);
+            return;
+          }
           setSliderMax(priceMax);
           setSliderMin(priceMin);
         }}
