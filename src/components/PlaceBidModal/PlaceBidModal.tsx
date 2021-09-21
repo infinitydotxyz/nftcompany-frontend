@@ -125,7 +125,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
             <div className="modal-body">
               <div className={styles.title}>Buy NFT</div>
 
-              <div className={styles.space}>You are about to buy this NFT.</div>
+              <div className={styles.space}>Buy this NFT at the fixed price.</div>
 
               {data.price != undefined && (
                 <div className={styles.row}>
@@ -147,7 +147,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               </div>
 
               <div className={styles.title}>Make an offer</div>
-              <div className={styles.space}>You are about to place a bid on this NFT.</div>
+              <div className={styles.space}>Place a bid on this NFT.</div>
 
               <div className={styles.row}>
                 <div className={styles.left}>
