@@ -7,25 +7,21 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, getLastItemBasePrice, getLastItemCreatedAt, NoData } from 'components/FetchMore/FetchMore';
 // import { Select } from '@chakra-ui/react';
 import CardList from 'components/Card/CardList';
-import FilterPanel, { Filter } from 'components/FilterPanel/FilterPanel';
+import FilterPanel from 'components/FilterPanel/FilterPanel';
 import { FilterIcon } from 'components/Icons/Icons';
-import {
-  getListingById,
-  getListings,
-  getListingsByCollectionName,
-  orderToCardData
-} from 'services/Listings.service';
-import { useAppSearchContext } from 'hooks/useSearch';
+import { getListingById, getListings, getListingsByCollectionName, orderToCardData } from 'services/Listings.service';
+import { Filter, useAppSearchContext } from 'hooks/useSearch';
 import { useAppContext } from 'utils/context/AppContext';
 
 import styles from '../../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
+import PriceSlider from 'components/FilterPanel/PriceSlider';
 
 const SEARCH_ERROR_MESSAGE = 'Unable to fetch assets';
 
 export default function Dashboard() {
   const { user, showAppError } = useAppContext();
-  const { exploreSearchState, setExploreSearchState, setFilterState, filterState } = useAppSearchContext();
+  const { exploreSearchState, setExploreSearchState, filterState, setFilterState } = useAppSearchContext();
   const [filterShowed, setFilterShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [currentPage, setCurrentPage] = useState(-1);
@@ -33,7 +29,12 @@ export default function Dashboard() {
 
   React.useEffect(() => {
     onSearch();
-  }, [exploreSearchState.collectionName, exploreSearchState.selectedOption]);
+  }, [
+    exploreSearchState.collectionName,
+    exploreSearchState.selectedOption,
+    filterState.priceMin,
+    filterState.priceMax
+  ]);
 
   React.useEffect(() => {
     // fetchData();
@@ -60,7 +61,10 @@ export default function Dashboard() {
       limit: ITEMS_PER_PAGE
     });
     setIsFetching(false);
-    setExploreSearchState({ ...exploreSearchState, listedNfts: isRefreshing ? moreData : [...exploreSearchState.listedNfts, ...moreData] });
+    setExploreSearchState({
+      ...exploreSearchState,
+      listedNfts: isRefreshing ? moreData : [...exploreSearchState.listedNfts, ...moreData]
+    });
     setCurrentPage(newCurrentPage);
   };
 
@@ -70,7 +74,7 @@ export default function Dashboard() {
     setIsFetching(true);
     if (exploreSearchState.collectionName) {
       // they selected a collection search for collections
-      const response = await getListingsByCollectionName(exploreSearchState.collectionName);
+      const response = await getListingsByCollectionName(exploreSearchState.collectionName, filterState);
       if (response.length !== 0) {
         const cardData = response;
         setExploreSearchState({ ...exploreSearchState, listedNfts: cardData });
@@ -92,9 +96,8 @@ export default function Dashboard() {
       }
     } else {
       // initial fetch, or after clearing search/filter:
-      await fetchData({}, true);
+      await fetchData(filterState, true);
     }
-    setFilterState({ sortByLikes: '', sortByPrice: '', price: 0 });
     setIsFetching(false);
   };
 
@@ -113,7 +116,7 @@ export default function Dashboard() {
         showAppError(SEARCH_ERROR_MESSAGE);
       }
     } else {
-      console.log('onChangeFilter - fetchData(filter)')
+      console.log('onChangeFilter - fetchData(filter)');
       await fetchData(filter, true);
     }
     setIsFetching(false);
@@ -124,7 +127,6 @@ export default function Dashboard() {
       <Head>
         <title>Explore</title>
       </Head>
-
       <div className={styles.dashboard}>
         <div className="container container-fluid">
           <div className="section-bar">
@@ -151,10 +153,8 @@ export default function Dashboard() {
             </div>
           </div>
           {!exploreSearchState.selectedOption && (
-            <Box mr="6">
+            <Box mr="6" mt="5">
               <FilterPanel
-                filter={filterState}
-                setFilters={setFilterState}
                 isExpanded={filterShowed}
                 onChangeFilter={onChangeFilter}
                 exploreSearchState={exploreSearchState}

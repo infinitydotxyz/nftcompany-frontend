@@ -4,40 +4,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import NiceSelect from 'components/NiceSelect/NiceSelect';
 import PriceRange from './PriceRange';
 import styles from './FilterPanel.module.css';
-
-export type Filter = {
-  sortByLikes?: string;
-  sortByPrice?: string;
-  price?: number;
-  startAfter?: number;
-  startAfterPrice?: number;
-  limit?: number;
-};
+import PriceSlider from './PriceSlider';
+import { Box } from '@chakra-ui/react';
+import { Filter, useAppSearchContext } from 'hooks/useSearch';
 
 type Props = {
   isExpanded: boolean;
   setExpanded?: any;
-  setFilters: any;
   onChangeFilter: (updatedFilter: Filter) => {};
-  filter: Filter | undefined;
   exploreSearchState: any;
 };
 
-const FilterPanel = ({ isExpanded, setExpanded, setFilters, filter, onChangeFilter }: Props) => {
-  const [values, setValues] = useState([10000]);
-  React.useEffect(() => {
-    setValues([filter?.price || 10000]);
-  }, [filter]);
-
+const FilterPanel = ({ isExpanded, setExpanded, onChangeFilter }: Props) => {
   const handleChanges = async (changes: Filter) => {
-    const updatedFilter = { ...changes };
-    setFilters(updatedFilter);
+    const updatedFilter = { ...filterState, ...changes };
+    setFilterState(updatedFilter);
     onChangeFilter(updatedFilter);
   };
-  const updateFilter = (price: number[]) => {
-    setValues(price);
-    handleChanges({ ...filter, price: price[0] });
-  };
+
+  const { setFilterState, filterState } = useAppSearchContext();
 
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
   // them in and out while also only rendering the contents of open accordions
@@ -87,25 +72,26 @@ const FilterPanel = ({ isExpanded, setExpanded, setFilters, filter, onChangeFilt
                 <NiceSelect
                   placeholder="Sort by price"
                   id="filter2"
-                  value={filter?.sortByPrice}
+                  value={filterState?.sortByPrice}
                   onChange={(ev) => handleChanges({ sortByPrice: ev.target.value })}
                 >
-                  <option key="DESC" value="DESC" data-value={'DESC'} data-selected={filter?.sortByPrice === 'DESC'}>
+                  <option
+                    key="DESC"
+                    value="DESC"
+                    data-value={'DESC'}
+                    data-selected={filterState?.sortByPrice === 'DESC'}
+                  >
                     Highest price
                   </option>
-                  <option key="ASC" value="ASC" data-value={'ASC'} data-selected={filter?.sortByPrice === 'ASC'}>
+                  <option key="ASC" value="ASC" data-value={'ASC'} data-selected={filterState?.sortByPrice === 'ASC'}>
                     Lowest price
                   </option>
                 </NiceSelect>
               </span>
 
-              <PriceRange
-                values={values}
-                setValues={setValues}
-                onFinalSetValue={updateFilter}
-                className={styles.item}
-                style={{ width: 200 }}
-              />
+              <Box w="300px" ml="5" display="flex" alignItems="center">
+                <PriceSlider />
+              </Box>
             </div>
           </motion.section>
         )}

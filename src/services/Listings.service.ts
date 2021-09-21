@@ -1,8 +1,8 @@
 import { CardData } from 'types/Nft.interface';
 import { Order, Orders } from 'types/Nft.interface';
 import { weiToEther } from 'utils/ethersUtil';
-import { Filter } from 'components/FilterPanel/FilterPanel';
 import { apiGet } from 'utils/apiUtil';
+import { Filter } from 'hooks/useSearch';
 
 export const getListings = async (listingFilter?: Filter): Promise<CardData[]> => {
   const path = `/listings/`;

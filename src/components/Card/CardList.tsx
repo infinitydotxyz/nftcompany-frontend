@@ -10,7 +10,15 @@ type Props = {
   showItems?: string[];
   onClickAction?: (item: any, action: string) => void;
 };
-
+// if items used their title as a key they ran the risk of having the same value
+// to fix this we can use a guid generator instead
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = (Math.random() * 16) | 0,
+      v = c == 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
 export default function CardList({ data, viewInfo, showItems, actions, onClickAction }: Props) {
   React.useEffect(() => {
     // console.log('CardList useEffect.')
@@ -24,7 +32,7 @@ export default function CardList({ data, viewInfo, showItems, actions, onClickAc
         }
         return (
           <Card
-            key={item?.id || item?.title}
+            key={item?.id || uuidv4()}
             showItems={showItems}
             actions={actions}
             data={item}
