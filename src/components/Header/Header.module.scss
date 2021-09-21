@@ -71,19 +71,84 @@
   }
 }
 
-.expanded {
+.showLargeNav {
   display: flex;
 }
 
-.compressed {
+.showConnectButton {
+  display: flex;
+}
+
+.showMediumNav {
   display: none;
 }
 
-@media (max-width: 800px) {
-  .expanded {
+.showMobileMenu {
+  display: none;
+}
+
+.showExplore {
+  display: flex;
+}
+
+.showSmallLogo {
+  display: none;
+  padding-left: 20px;
+}
+
+.showLargeLogo {
+  display: flex;
+  padding-left: 20px;
+}
+
+@media (min-width: 650px) and (max-width: 1000px) {
+  .showLargeNav {
     display: none;
   }
-  .compressed {
+  .showConnectButton {
     display: flex;
+  }
+  .showMediumNav {
+    display: flex;
+  }
+  .showMobileMenu {
+    display: none;
+  }
+  .showExplore {
+    display: flex;
+  }
+
+  .showSmallLogo {
+    display: none;
+  }
+
+  .showLargeLogo {
+    display: flex;
+  }
+}
+
+@media (max-width: 650px) {
+  .showLargeNav {
+    display: none;
+  }
+  .showConnectButton {
+    display: none;
+  }
+  .showMediumNav {
+    display: none;
+  }
+  .showMobileMenu {
+    display: flex;
+  }
+  .showExplore {
+    display: none;
+  }
+
+  .showSmallLogo {
+    display: flex;
+  }
+
+  .showLargeLogo {
+    display: none;
   }
 }

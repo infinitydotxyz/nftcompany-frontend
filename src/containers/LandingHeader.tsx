@@ -25,7 +25,15 @@ const LandingHeader = () => {
             </Link>
           </div>
           <div className="d-md-none">
-            <MenuToggler isActive={mobileMenuOpen} onClick={toggleMenu} />
+            <div
+              style={{
+                position: 'absolute',
+                right: 20,
+                top: 40
+              }}
+            >
+              <MenuToggler isActive={mobileMenuOpen} onClick={toggleMenu} />
+            </div>
           </div>
           <div className="col-sm-12 col-md-9 header-links-wrapper">
             <ul className="header-links">

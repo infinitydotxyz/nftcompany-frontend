@@ -17,3 +17,22 @@ export const transformOpenSea = (item: any, owner: string) => {
     owner: owner
   } as CardData;
 };
+
+export const getCustomMessage = (eventName: string, data: any) => {
+  let customMsg = '';
+  const ev = data?.event;
+  if (eventName === 'TransactionCreated') {
+    if (ev === 'MatchOrders') {
+      customMsg = 'MatchOrders: Your transaction has been sent to chain.';
+    }
+    if (ev === 'CancelOrder') {
+      customMsg = 'CancelOrder: Your transaction has been sent to chain.';
+    }
+  }
+  if (eventName === 'TransactionConfirmed') {
+    if ('CancelOrder') {
+      customMsg = 'CancelOrder: Transaction confirmed.';
+    }
+  }
+  return customMsg;
+}

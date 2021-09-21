@@ -76,7 +76,7 @@ export default function Purchases() {
           </div>
 
           <div className={styles.main}>
-            <NoData isFetching={isFetching} data={data} currentPage={currentPage} />
+            <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
 
             <CardList data={data} actions={['VIEW_ORDER']} />
@@ -85,6 +85,7 @@ export default function Purchases() {
           {dataLoaded && (
             <FetchMore
               currentPage={currentPage}
+              data={data}
               onFetchMore={async () => {
                 setDataLoaded(false);
                 await fetchData();

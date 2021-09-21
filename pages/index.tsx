@@ -17,7 +17,7 @@ export default function Home() {
         <title>Home page</title>
       </Head>
       <section className={styles.intro}>
-        <div className="container container-avg">
+        <div className="container container-avg" style={{ display: 'flex', flexDirection: 'column' }}>
           <h1 className={`tg-hero-title text-center ${styles['tg-hero-title']}`}>Supercharged NFTs.</h1>
 
           <Image alt="NFT Company" src="/img/artwork-1.png" width={860} height={480} />

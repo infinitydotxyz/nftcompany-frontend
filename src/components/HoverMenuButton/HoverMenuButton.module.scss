@@ -3,7 +3,7 @@
   border-radius: 20px;
   color: #333;
   cursor: pointer;
-  transition: 0.1s all ease-in;
+  // transition: 0.1s all ease-in;
   font-weight: bold;
 
   &.menuOpen {
@@ -15,6 +15,13 @@
 .buttonContent {
   display: flex;
   white-space: nowrap;
+
+  // switch svgs to white
+  img {
+    .menuOpen & {
+      filter: invert(1);
+    }
+  }
   .arrow {
     padding-left: 6px;
     color: #aaa;

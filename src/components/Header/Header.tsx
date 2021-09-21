@@ -12,6 +12,7 @@ import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import SettingsModal from 'components/SettingsModal/SettingsModal';
 import styles from './Header.module.scss';
+import MoreVert from './more_vert.svg';
 
 let isChangingAccount = false;
 
@@ -142,27 +143,65 @@ const Header = () => {
     );
   }
 
+  const medNavMenu = [
+    ...ntfItems,
+    <MenuDivider key="d1" />,
+    ...offerItems,
+    <MenuDivider key="d2" />,
+    ...transactionItems
+  ];
+
+  const mobileNavMenu = [
+    <MenuItem key="explore-menu" icon={<ExternalLinkIcon />} onClick={() => router.push('/explore')}>
+      Explore
+    </MenuItem>,
+    <MenuDivider key="m2" />,
+    ...medNavMenu,
+    <MenuDivider key="m1" />,
+    ...accountItems
+  ];
+
   return (
     <header className={styles.header} onClick={() => {}}>
       <Box className={styles.hdf} display="flex">
-        <Box display="flex" justifyContent="flex-start">
+        <div className={styles.showLargeLogo}>
           <Link href="/">
-            <Image className="can-click" alt="logo" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={60} />
+            <img
+              style={{ flex: '0 1 auto' }}
+              className="can-click"
+              alt="logo"
+              src="/img/nftcompanyTransparentBgSvg.svg"
+              width={200}
+            />
           </Link>
-        </Box>
+        </div>
+        <div className={styles.showSmallLogo}>
+          <Link href="/">
+            <img
+              style={{ flex: '0 1 auto' }}
+              className="can-click"
+              alt="logo"
+              src="/img/ncTransparentBgSvg.svg"
+              width={60}
+            />
+          </Link>
+        </div>
 
-        <Box maxW="300px" minW="50px">
+        <Box flex={1} />
+
+        <Box flex={4} pr="2" maxW="360px" minW="100px">
           <ExploreSearch />
         </Box>
-        <Box flex={3} />
 
         <Box pr="4">
           <div className={styles.links}>
-            <div key="Explore" className={styles.exploreButton} onClick={() => router.push('/explore')}>
-              Explore
+            <div className={styles.showExplore}>
+              <div key="Explore" className={styles.exploreButton} onClick={() => router.push('/explore')}>
+                Explore
+              </div>
             </div>
 
-            <div className={styles.expanded}>
+            <div className={styles.showLargeNav}>
               <div className={styles.linksButtons}>
                 <HoverMenuButton buttonTitle="NFTs">{ntfItems}</HoverMenuButton>
 
@@ -172,13 +211,20 @@ const Header = () => {
               </div>
             </div>
 
-            <div className={styles.compressed}>
+            <div className={styles.showMediumNav}>
               <HoverMenuButton buttonTitle="NFTs">
                 {[...ntfItems, <MenuDivider key="d1" />, ...offerItems, <MenuDivider key="d2" />, ...transactionItems]}
               </HoverMenuButton>
             </div>
 
-            {accountButton}
+            <div className={styles.showConnectButton}>{accountButton}</div>
+
+            <div className={styles.showMobileMenu}>
+              {/* using Image() put space at the bottom */}
+              <HoverMenuButton buttonContent={<img src={MoreVert.src} height={32} width={32} />}>
+                {mobileNavMenu}
+              </HoverMenuButton>
+            </div>
           </div>
         </Box>
       </Box>

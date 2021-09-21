@@ -13,12 +13,10 @@ export const HoverMenuButton = ({ buttonTitle, buttonContent, children }: Props)
   let hoverTimer: any;
   let menuListTimer: any;
   const delay = 100;
-  let addStyle = false;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (buttonTitle != null) {
-    addStyle = true;
     buttonContent = (
       <div className={styles.buttonContent}>
         <div>{buttonTitle}</div>
@@ -27,6 +25,8 @@ export const HoverMenuButton = ({ buttonTitle, buttonContent, children }: Props)
         </div>
       </div>
     );
+  } else {
+    buttonContent = <div className={styles.buttonContent}>{buttonContent}</div>;
   }
 
   return (
@@ -34,7 +34,7 @@ export const HoverMenuButton = ({ buttonTitle, buttonContent, children }: Props)
       {/* setting an id on menu prevents a console warning about non matching ids */}
       <Menu isLazy isOpen={isOpen} id="hover-menu">
         <MenuButton
-          className={`${styles.hoverButton}  ${addStyle && isOpen ? styles.menuOpen : ''}`}
+          className={`${styles.hoverButton}  ${isOpen ? styles.menuOpen : ''}`}
           onMouseEnter={() => {
             clearTimeout(menuListTimer);
             if (!isOpen) {
