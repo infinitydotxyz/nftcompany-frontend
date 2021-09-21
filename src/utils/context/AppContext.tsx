@@ -4,6 +4,7 @@ import { setAuthHeaders } from 'utils/apiUtil';
 import { useToast } from '@chakra-ui/toast';
 // import { EventEmitter, EventSubscription } from 'fbemitter';
 import { getOpenSeaport } from 'utils/ethersUtil';
+import { getCustomMessage } from 'utils/commonUtil';
 const { EventType } = require('../../../opensea/types');
 
 export type User = {
@@ -57,24 +58,23 @@ export function AppContextProvider({ children }: any) {
   React.useEffect(() => {
     connectMetaMask();
 
+    const listener = (eventName: any, data: any) => {
+      const arr: string[] = [];
+      Object.keys(data).forEach((k: string) => {
+        if (typeof data[k] !== 'object') {
+          arr.push(`${k}: ${data[k]}`);
+        }
+      });
+      const msg = getCustomMessage(eventName, data) || `${eventName}: ${arr.join(', ')}`;
+      showAppMessage(msg);
+    };
+
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
     const seaport = getOpenSeaport();
     Object.values(EventType).forEach((eventName: any) => {
-      seaport.addListener(
-        eventName,
-        (data: any) => {
-          const arr: string[] = [];
-          Object.keys(data).forEach((k: string) => {
-            if (typeof data[k] !== 'object') {
-              arr.push(`${k}: ${data[k]}`);
-            }
-          });
-          showAppMessage(`${eventName}: ${arr.join(', ')}`);
-        },
-        true
-      );
+      seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
     });
-    const emitter = seaport.getEmitter();
+    // const emitter = seaport.getEmitter();
     // emitter.emit('TransactionConfirmed', { error: 'test', accountAddress: '0x123' }); // simulate OpenSea event.
   }, []);
 
