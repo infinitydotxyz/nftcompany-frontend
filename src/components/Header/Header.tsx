@@ -115,13 +115,15 @@ const Header = () => {
 
   if (user?.account) {
     accountButton = (
-      <HoverMenuButton
-        buttonContent={
-          <div className={styles.connectButton}>{`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}</div>
-        }
-      >
-        {accountItems}
-      </HoverMenuButton>
+      <div style={{ marginLeft: 6 }}>
+        <HoverMenuButton
+          buttonTitle={`${user?.account.slice(0, 6)}...${user?.account.slice(-4)}`}
+          shadow={true}
+          arrow={false}
+        >
+          {accountItems}
+        </HoverMenuButton>
+      </div>
     );
   } else {
     accountButton = (

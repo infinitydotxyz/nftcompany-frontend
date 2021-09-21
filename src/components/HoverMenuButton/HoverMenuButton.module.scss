@@ -1,15 +1,19 @@
 .hoverButton {
-  padding: 10px;
+  padding: 8px 12px;
   border-radius: 20px;
   color: #333;
   cursor: pointer;
-  // transition: 0.1s all ease-in;
   font-weight: bold;
 
   &.menuOpen {
     background-color: #4047ff;
     color: #fff;
   }
+}
+
+.buttonShadow {
+  box-shadow: 0px 4px 6px rgba(64, 71, 255, 0.15);
+  border: 1px solid #eee;
 }
 
 .buttonContent {

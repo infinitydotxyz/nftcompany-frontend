@@ -7,9 +7,11 @@ type Props = {
   buttonContent?: JSX.Element;
   buttonTitle?: string;
   children: JSX.Element[] | JSX.Element;
+  shadow?: boolean;
+  arrow?: boolean;
 };
 
-export const HoverMenuButton = ({ buttonTitle, buttonContent, children }: Props) => {
+export const HoverMenuButton = ({ shadow = false, arrow = true, buttonTitle, buttonContent, children }: Props) => {
   let hoverTimer: any;
   let menuListTimer: any;
   const delay = 100;
@@ -20,13 +22,26 @@ export const HoverMenuButton = ({ buttonTitle, buttonContent, children }: Props)
     buttonContent = (
       <div className={styles.buttonContent}>
         <div>{buttonTitle}</div>
-        <div className={styles.arrow}>
-          <TriangleDownIcon fontSize={10} />
-        </div>
+
+        {arrow && (
+          <div className={styles.arrow}>
+            <TriangleDownIcon fontSize={10} />
+          </div>
+        )}
       </div>
     );
   } else {
     buttonContent = <div className={styles.buttonContent}>{buttonContent}</div>;
+  }
+
+  let buttonClass = [styles.hoverButton];
+
+  if (isOpen) {
+    buttonClass.push(styles.menuOpen);
+  }
+
+  if (shadow) {
+    buttonClass.push(styles.buttonShadow);
   }
 
   return (
@@ -34,7 +49,7 @@ export const HoverMenuButton = ({ buttonTitle, buttonContent, children }: Props)
       {/* setting an id on menu prevents a console warning about non matching ids */}
       <Menu isLazy isOpen={isOpen} id="hover-menu">
         <MenuButton
-          className={`${styles.hoverButton}  ${isOpen ? styles.menuOpen : ''}`}
+          className={buttonClass.join(' ')}
           onMouseEnter={() => {
             clearTimeout(menuListTimer);
             if (!isOpen) {
