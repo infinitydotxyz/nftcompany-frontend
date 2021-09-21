@@ -1,5 +1,4 @@
 import { CardData } from 'types/Nft.interface';
-import { Filter } from 'components/FilterPanel/FilterPanel';
 import React, { useContext, useState } from 'react';
 import { TypeAheadOption } from 'services/Listings.service';
 import { Order } from 'types/Nft.interface';
@@ -12,6 +11,16 @@ export interface ExploreSearchState {
   listedNfts: CardData[];
   selectedOption: TypeAheadOption | null;
 }
+
+export interface Filter {
+  sortByLikes?: string;
+  sortByPrice?: string;
+  priceMin: number;
+  priceMax: number;
+  startAfter?: number;
+  startAfterPrice?: number;
+  limit?: number;
+}
 export const defaultExploreSearchState: ExploreSearchState = {
   isLoading: false,
   options: [],
@@ -20,6 +29,14 @@ export const defaultExploreSearchState: ExploreSearchState = {
   listedNfts: [],
   selectedOption: null
 };
+
+export const defaultFilterState: Filter = {
+  sortByLikes: '',
+  sortByPrice: '',
+  priceMin: 0,
+  priceMax: 1000
+};
+
 // ExploreSearch
 const AppSearchContext = React.createContext({} as any);
 
@@ -34,9 +51,10 @@ export function useAppSearchContext(): {
 
 export function FilterContextProvider({ children }: any) {
   const [exploreSearchState, setExploreSearchState] = useState<ExploreSearchState>(defaultExploreSearchState);
-  const [filterState, setFilterState] = useState<Filter>();
+  const [filterState, setFilterState] = useState<Filter>(defaultFilterState);
 
   const value = { exploreSearchState, filterState, setExploreSearchState, setFilterState };
+
   return <AppSearchContext.Provider value={value}>{children}</AppSearchContext.Provider>;
 }
 
