@@ -41,12 +41,16 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
 
               <section className="container container-fluid grid">
                 <div className={`col-md-12 ${styles.txnRow}`}>
-                  <span><strong>Time</strong></span>
-                  <span><strong>Txn Hash</strong></span>
+                  <span>
+                    <strong>Time</strong>
+                  </span>
+                  <span>
+                    <strong>Txn Hash</strong>
+                  </span>
                 </div>
                 {data.map((item: any) => {
                   return (
-                    <div className={`col-md-12 ${styles.txnRow}`}>
+                    <div key={item.txnHash} className={`col-md-12 ${styles.txnRow}`}>
                       <span>{`${new Date(item.createdAt).toLocaleString()}`}</span>
                       <span>{item.txnHash}</span>
                     </div>
