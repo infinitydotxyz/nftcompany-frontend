@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styles from './PlaceBidModal.module.scss';
 import Datetime from 'react-datetime';
-import { CardData } from 'types/Nft.interface';
+import { CardData, Order } from 'types/Nft.interface';
 import { getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 import { apiPost } from 'utils/apiUtil';
-import { Input } from '@chakra-ui/react';
+import { Button, Input } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'hooks/ModalDialog';
 
@@ -19,21 +19,49 @@ interface IProps {
 
 const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
+  const [order, setOrder] = React.useState<Order | undefined>();
   const [offerPrice, setOfferPrice] = React.useState(0);
   const { user, showAppError } = useAppContext();
 
-  const buyNft = async () => {
-    try {
-      const seaport = getOpenSeaport();
-      const order = await seaport.api.getOrder({
+  const loadOrder = useCallback(async () => {
+    let orderParams: any;
+
+    if (data.id && data.maker) {
+      orderParams = {
         maker: data.maker,
         id: data.id,
         side: 1 // sell order
-      });
+      };
+    } else {
+      orderParams = {
+        maker: data.owner,
+        tokenId: data.tokenId,
+        tokenAddress: data.tokenAddress,
+        side: 1 // sell order
+      };
+    }
 
+    try {
+      const seaport = getOpenSeaport();
+      const order: Order = await seaport.api.getOrder(orderParams);
+
+      setOrder(order);
+    } catch (err: any) {
+      console.log(err);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    loadOrder();
+  }, [loadOrder]);
+
+  const buyNft = async () => {
+    try {
       // Important to check if the order is still available as it can have already been fulfilled by
       // another user or cancelled by the creator
       if (order) {
+        const seaport = getOpenSeaport();
+
         // const txnHash = '0xcc128a83022cf34fbc5ec756146ee43bc63f2666443e22ade15180c6304b0d54';
         // const salePriceInEth = '1';
         // const feesInEth = '1';
@@ -46,8 +74,8 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           actionType: 'fulfill',
           txnHash,
           side: 1,
-          orderId: data.id,
-          maker: data.maker,
+          orderId: order.id,
+          maker: order.maker,
           salePriceInEth: +salePriceInEth,
           feesInEth: +feesInEth
         };
@@ -109,9 +137,9 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               )}
 
               <div className={styles.footer}>
-                <a className="action-btn" onClick={buyNft}>
+                <Button bgColor="brandBlue" color="white" isDisabled={!order} onClick={buyNft}>
                   Buy now
-                </a>
+                </Button>
               </div>
 
               <div className={styles.space}>
