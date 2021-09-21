@@ -16,19 +16,6 @@ import MoreVert from './more_vert.svg';
 
 let isChangingAccount = false;
 
-interface ITodo {
-  id: number;
-  title: string;
-  description: string;
-  status: boolean;
-}
-
-type ContextType = {
-  todos: ITodo[];
-  saveTodo: (todo: ITodo) => void;
-  updateTodo: (id: number) => void;
-};
-
 const Header = () => {
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const router = useRouter();
@@ -88,6 +75,9 @@ const Header = () => {
     </MenuItem>,
     <MenuItem key="sales" icon={<StarIcon />} onClick={() => router.push('/sales')}>
       Sales
+    </MenuItem>,
+    <MenuItem key="transactions" icon={<StarIcon />} onClick={() => router.push('/sales')}>
+      Transactions
     </MenuItem>
   ];
 
@@ -208,7 +198,7 @@ const Header = () => {
 
                 <HoverMenuButton buttonTitle="Offers">{offerItems}</HoverMenuButton>
 
-                <HoverMenuButton buttonTitle="Transactions">{transactionItems}</HoverMenuButton>
+                <HoverMenuButton buttonTitle="Activity">{transactionItems}</HoverMenuButton>
               </div>
             </div>
 
