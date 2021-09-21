@@ -29,7 +29,7 @@ export default function ListNFTs() {
   const cancelListing = async (item: CardData) => {
     try {
       const seaport = getOpenSeaport();
-      const order = seaport.api.getOrder({
+      const order = await seaport.api.getOrder({
         maker: user!.account,
         id: item?.id,
         side: 1 // sell order

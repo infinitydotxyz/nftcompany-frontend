@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import dynamic from 'next/dynamic';
 import styles from './PreviewModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
@@ -22,7 +21,9 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
 
   let showPurchase = true;
 
-  if (data.owner == null || data.owner === user?.account || data.price == undefined) {
+  // show purchase with no price, we can look up any offers and buy and make offers
+  //  || data.price == undefined) {
+  if (data.owner == null || data.owner === user?.account) {
     showPurchase = false;
   }
 

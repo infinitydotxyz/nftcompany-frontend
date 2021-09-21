@@ -1,5 +1,4 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
 import styles from './PlaceBidModal.module.scss';
 import Datetime from 'react-datetime';
 import { CardData } from 'types/Nft.interface';
@@ -26,7 +25,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const buyNft = async () => {
     try {
       const seaport = getOpenSeaport();
-      const order = seaport.api.getOrder({
+      const order = await seaport.api.getOrder({
         maker: data.maker,
         id: data.id,
         side: 1 // sell order
