@@ -23,34 +23,32 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const cancelOffer = async () => {
     try {
       const seaport = getOpenSeaport();
-      seaport.api
-        .getOrder({
-          maker: user!.account,
-          id: data.id,
-          side: 0 // buy order
-        })
-        .then(async function (order: any) {
-          if (order) {
-            const txnHash = await seaport.cancelOrder({
-              order: order,
-              accountAddress: user!.account
-            });
-            console.log('Cancel offer txn hash: ' + txnHash);
-            const payload = {
-              actionType: 'cancel',
-              txnHash,
-              side: 0,
-              orderId: data.id
-            };
-            const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
-            if (error) {
-              showAppError((error as GenericError)?.message);
-            }
-          } else {
-            // Handle when the order does not exist anymore
-            showAppError('Offer not found to cancel. Refresh page.');
-          }
+      const order = await seaport.api.getOrder({
+        maker: user!.account,
+        id: data.id,
+        side: 0 // buy order
+      });
+
+      if (order) {
+        const txnHash = await seaport.cancelOrder({
+          order: order,
+          accountAddress: user!.account
         });
+        console.log('Cancel offer txn hash: ' + txnHash);
+        const payload = {
+          actionType: 'cancel',
+          txnHash,
+          side: 0,
+          orderId: data.id
+        };
+        const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
+        if (error) {
+          showAppError((error as GenericError)?.message);
+        }
+      } else {
+        // Handle when the order does not exist anymore
+        showAppError('Offer not found to cancel. Refresh page.');
+      }
     } catch (err) {
       showAppError((err as GenericError)?.message);
     }
