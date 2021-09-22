@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { initEthers } from 'utils/ethersUtil';
 import { setAuthHeaders } from 'utils/apiUtil';
 import { useToast } from '@chakra-ui/toast';
 // import { EventEmitter, EventSubscription } from 'fbemitter';
-import { getOpenSeaport } from 'utils/ethersUtil';
+import { initEthers, getOpenSeaport } from 'utils/ethersUtil';
 import { getCustomMessage } from 'utils/commonUtil';
 const { EventType } = require('../../../opensea/types');
 
@@ -42,7 +41,7 @@ export function AppContextProvider({ children }: any) {
   const connectMetaMask = async () => {
     // show MetaMask's errors:
     const onError = (error: any) => {
-      const errorMsg = error?.message
+      const errorMsg = error?.message;
       if (errorMsg === lastError) {
         return; // to avoid showing the same error message so many times.
       }
@@ -52,7 +51,7 @@ export function AppContextProvider({ children }: any) {
       lastError = errorMsg;
       showToast(toast, 'error', `MetaMask RPC Error: ${errorMsg}` || 'MetaMask RPC Error');
     };
-    
+
     const res = await initEthers({ onError }); // returns provider
     if (res && res.getSigner) {
       await setAuthHeaders(await res.getSigner().getAddress());

@@ -3,21 +3,21 @@ import { CardData } from 'types/Nft.interface';
 // OpenSea's EventType
 export enum EventType {
   // Transactions and signature requests
-  TransactionCreated = "TransactionCreated",
-  TransactionConfirmed = "TransactionConfirmed",
-  TransactionDenied = "TransactionDenied",
-  TransactionFailed = "TransactionFailed",
+  TransactionCreated = 'TransactionCreated',
+  TransactionConfirmed = 'TransactionConfirmed',
+  TransactionDenied = 'TransactionDenied',
+  TransactionFailed = 'TransactionFailed',
 
   // Basic actions: matching orders, creating orders, and cancelling orders
-  MatchOrders = "MatchOrders",
-  CancelOrder = "CancelOrder",
-  ApproveOrder = "ApproveOrder",
-  CreateOrder = "CreateOrder",
+  MatchOrders = 'MatchOrders',
+  CancelOrder = 'CancelOrder',
+  ApproveOrder = 'ApproveOrder',
+  CreateOrder = 'CreateOrder',
   // When the signature request for an order is denied
-  OrderDenied = "OrderDenied",
+  OrderDenied = 'OrderDenied'
 }
 
-export const ellipsisAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`
+export const ellipsisAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
 export const transformOpenSea = (item: any, owner: string) => {
   if (!item) {
@@ -61,8 +61,8 @@ export const getCustomMessage = (eventName: string, data: any) => {
 // to fix this we can use a guid generator instead
 export const uuidv4 = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    var r = (Math.random() * 16) | 0,
-      v = c == 'x' ? r : (r & 0x3) | 0x8;
+    let r = (Math.random() * 16) | 0;
+    let v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 };

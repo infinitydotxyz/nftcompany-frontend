@@ -43,7 +43,7 @@ module.exports = {
     // 'no-param-reassign': 2,
     'no-return-assign': 2,
     'no-unmodified-loop-condition': 2,
-    // 'no-unused-expressions': 2,
+    'no-unused-expressions': 2,
     'no-useless-call': 2,
     'no-useless-escape': 2,
     'no-with': 2,
@@ -53,7 +53,7 @@ module.exports = {
     // camelcase: 2,
     // 'comma-dangle': 2,
     'no-array-constructor': 2,
-    'no-bitwise': 2,
+    // 'no-bitwise': 2,
     'no-multi-assign': 2,
     'no-tabs': 2,
     // quotes: [

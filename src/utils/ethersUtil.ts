@@ -37,13 +37,13 @@ export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
   ethersProvider.on('pending', (tx: any) => {
     // Emitted when any new pending transaction is noticed
     console.log('- ethersProvider - PENDING:', tx);
-    onPending && onPending(tx);
+    onPending?.(tx);
   });
 
   ethersProvider.on('error', (tx: any) => {
     // Emitted when any error occurs
     console.log('- ethersProvider - ERROR:', tx);
-    onError && onError(tx);
+    onError?.(tx);
   });
 
   return ethersProvider;
@@ -99,7 +99,7 @@ export const getOpenSeaport = () => {
     return openSeaPort;
   }
 
-  //const network = getChainName();
+  // const network = getChainName();
   const network = 'main';
   openSeaPort = new OpenSeaPort(getWeb3().currentProvider, {
     networkName: network

@@ -248,7 +248,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     if (!err) {
                       setIsSubmitting(false);
                       showAppMessage('NFT listed successfully!');
-                      onClose && onClose();
+                      onClose();
                     }
                   }}
                 >
