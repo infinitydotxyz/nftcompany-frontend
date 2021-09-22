@@ -13,6 +13,7 @@ import { Filter, useAppSearchContext } from 'hooks/useSearch';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from '../../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
+import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 
 const SEARCH_ERROR_MESSAGE = 'Unable to fetch assets';
 
@@ -132,6 +133,8 @@ export default function ExplorePage() {
           <div className="section-bar">
             <div className="tg-title">Explore</div>
 
+            <div style={{ flex: 1 }} />
+            <SortMenuButton onChangeFilter={onChangeFilter} />
             {/* <div className="left">
               <ul className="links">
                 <li>
