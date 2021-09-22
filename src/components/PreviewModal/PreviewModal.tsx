@@ -56,7 +56,7 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
     owner.length > 0 ? (
       <>
         <div className={styles.label}>Owner</div>
-        <Tooltip label={data.tokenAddress} hasArrow openDelay={1000}>
+        <Tooltip label={data.owner} hasArrow openDelay={1000}>
           <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
             {owner}
           </Link>

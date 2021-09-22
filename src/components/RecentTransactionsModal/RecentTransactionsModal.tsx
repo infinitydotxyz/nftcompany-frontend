@@ -48,7 +48,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
               {isLoading ? (
                 <Spinner />
               ) : data?.length === 0 ? (
-                <Box mt={6}>No Item To Display.</Box>
+                <Box mt={6}>Nothing to show.</Box>
               ) : (
                 <section className="container container-fluid grid">
                   <div className={`col-md-12 col-sm-12 ${styles.txnRow}`}>

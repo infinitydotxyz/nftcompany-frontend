@@ -55,7 +55,7 @@ export const NoData = ({
   currentPage?: number;
 }) => {
   if (dataLoaded && !isFetching && data?.length === 0) {
-    return <Box mt={10}>No Item To Display</Box>;
+    return <Box mt={10}>Nothing to show</Box>;
   }
   return null;
 };

@@ -54,6 +54,7 @@ export interface CollectionResponse {
   collectionName: string;
   hasBlueCheck: boolean;
 }
+
 export const getCollectionNamesOfListings = async (collectionQuery: TypeaheadQuery): Promise<CollectionResponse[]> => {
   const path = `/collections/`;
   const { result, error }: { result: CollectionResponse[]; error: any } = (await apiGet(path, collectionQuery)) as any;
@@ -81,9 +82,11 @@ export const getListingsByCollectionName = async (
     ...listingFilter,
     collectionName
   })) as any;
+
   if (error !== undefined) {
     return [];
   }
+
   return result.map(orderToCardData);
 };
 
@@ -91,6 +94,7 @@ export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAh
   if (query?.startsWith) {
     query.startsWith = query.startsWith.replace(/ /g, '');
   }
+
   const collectionNames: TypeAheadOption[] = (await getCollectionNamesOfListings(query)).map((collectionInfo) => {
     return { name: collectionInfo.collectionName, type: 'Collection', hasBlueCheck: collectionInfo.hasBlueCheck };
   });
@@ -102,8 +106,10 @@ export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAh
       address: listing.address
     };
   });
+
   return { collectionNames, nftNames };
 };
+
 export const orderToCardData = (order: Order): CardData => {
   const cardData: CardData = {
     id: order.id,
