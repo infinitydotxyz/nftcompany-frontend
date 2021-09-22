@@ -73,7 +73,7 @@ export default function Purchases() {
             <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
 
-            <CardList data={data} actions={['VIEW_ORDER']} />
+            <CardList data={data} action="VIEW_ORDER" />
           </div>
 
           {dataLoaded && (

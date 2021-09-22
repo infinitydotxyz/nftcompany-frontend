@@ -8,15 +8,26 @@ import { Link, Tooltip } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'hooks/ModalDialog';
 import { ellipsisAddress } from 'utils/commonUtil';
+import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
+import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
+import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
+import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
+
 const isServer = typeof window === 'undefined';
 
 interface Props {
   data: CardData;
+  action: string; // 'purchase', 'accept-offer', 'cancel-offer'
   onClose: () => void;
 }
 
-const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
+const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
   const [placeBidShowed, setPlaceBidShowed] = useState(false);
+  const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
+  const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
+  const [listNFTModalShowed, setListNFTModalShowed] = useState(false);
+  const [deleteListingModalShowed, setDeleteListingModalShowed] = useState(false);
+
   const { user } = useAppContext();
 
   let showPurchase = true;
@@ -63,6 +74,53 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
         </Tooltip>
       </>
     ) : null;
+
+  let purchaseButton;
+  switch (action) {
+    case 'CANCEL_LISTING':
+      purchaseButton = (
+        <a className="action-btn" onClick={() => setDeleteListingModalShowed(true)}>
+          Cancel Listing
+        </a>
+      );
+
+      break;
+    case 'CANCEL_OFFER':
+      purchaseButton = (
+        <a className="action-btn" onClick={() => setCancelOfferModalShowed(true)}>
+          Cancel Offer
+        </a>
+      );
+
+      break;
+    case 'ACCEPT_OFFER':
+      purchaseButton = (
+        <a className="action-btn" onClick={() => setAcceptOfferModalShowed(true)}>
+          Accept Offer
+        </a>
+      );
+      break;
+    case 'LIST_NFT':
+      purchaseButton = (
+        <a className="action-btn" onClick={() => setListNFTModalShowed(true)}>
+          List NFT
+        </a>
+      );
+      break;
+    case 'VIEW_ORDER':
+      break;
+    case 'BUY_NFT':
+    default:
+      // not even sure I need this if statement, SNG remove later
+      if (showPurchase) {
+        purchaseButton = (
+          <a className="action-btn" onClick={() => setPlaceBidShowed(true)}>
+            Purchase
+          </a>
+        );
+      }
+      break;
+  }
 
   return (
     <>
@@ -129,19 +187,24 @@ const PreviewModal: React.FC<Props> = ({ onClose, data }: Props) => {
                     <span className={styles.label}>Description</span>
                     <div className={styles.description}>{description}</div>
 
-                    <div className={styles.buttons}>
-                      {showPurchase && (
-                        <a className="action-btn" onClick={() => setPlaceBidShowed(true)}>
-                          Purchase
-                        </a>
-                      )}
-                    </div>
+                    <div className={styles.buttons}>{purchaseButton}</div>
                   </div>
                 </div>
               </div>
             </div>
 
+            {deleteListingModalShowed && (
+              <CancelListingModal data={data} onClose={() => setDeleteListingModalShowed(false)} />
+            )}
+
             {placeBidShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidShowed(false)} />}
+            {cancelOfferModalShowed && (
+              <CancelOfferModal data={data} onClose={() => setCancelOfferModalShowed(false)} />
+            )}
+            {listNFTModalShowed && <ListNFTModal data={data} onClose={() => setListNFTModalShowed(false)} />}
+            {acceptOfferModalShowed && (
+              <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />
+            )}
           </div>
         </ModalDialog>
       )}

@@ -167,7 +167,7 @@ export default function ExplorePage() {
             showItems={['PRICE']}
             excludedMaker={user?.account}
             data={exploreSearchState.listedNfts}
-            actions={['BUY_NFT']}
+            action="BUY_NFT"
           />
 
           {dataLoaded && (

@@ -73,7 +73,7 @@ export default function OffersReceived() {
             <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
 
-            <CardList data={data} actions={['ACCEPT_OFFER']} />
+            <CardList data={data} action="ACCEPT_OFFER" />
           </div>
 
           {dataLoaded && (

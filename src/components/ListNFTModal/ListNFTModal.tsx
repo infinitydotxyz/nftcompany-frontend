@@ -6,7 +6,7 @@ import TabBar from 'components/TabBar/TabBar';
 import { Button } from '@chakra-ui/button';
 import { Spinner } from '@chakra-ui/spinner';
 import HelpTooltip from 'components/HelpTooltip/HelpTooltip';
-import { getAddressBalance, getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaport } from 'utils/ethersUtil';
 import { getAccount } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { WETH_ADDRESS } from 'utils/constants';
@@ -14,7 +14,6 @@ import { useAppContext } from 'utils/context/AppContext';
 import styles from './ListNFTModal.module.scss';
 import ModalDialog from 'hooks/ModalDialog';
 
-const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
 
 interface IProps {

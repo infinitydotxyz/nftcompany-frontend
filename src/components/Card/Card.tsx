@@ -13,11 +13,11 @@ type Props = {
   onClickPlaceBid?: () => void;
   onClickAction?: (item: any, action: string) => any;
   showItems?: string[];
-  actions?: string[];
+  action?: string;
   [key: string]: any;
 };
 
-function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PRICE'], actions = [], ...rest }: Props) {
+function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PRICE'], action = '', ...rest }: Props) {
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
@@ -36,7 +36,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
           <img src={data.image} alt="Card preview" />
 
           <div className={styles.cardControls}>
-            {actions?.indexOf('LIST_NFT') >= 0 && (
+            {action === 'LIST_NFT' && (
               <a
                 className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
                 href="#popup-bid"
@@ -53,7 +53,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
                 <span>List NFT</span>
               </a>
             )}
-            {actions?.indexOf('BUY_NFT') >= 0 && (
+            {action === 'BUY_NFT' && (
               <a
                 className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
                 href="#popup-bid"
@@ -68,7 +68,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
                 <span>Buy NFT</span>
               </a>
             )}
-            {actions?.indexOf('CANCEL_LISTING') >= 0 && (
+            {action === 'CANCEL_LISTING' && (
               <a
                 className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
                 href="#popup-bid"
@@ -86,7 +86,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
               </a>
             )}
 
-            {actions?.indexOf('ACCEPT_OFFER') >= 0 && (
+            {action === 'ACCEPT_OFFER' && (
               <a
                 className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
                 href="#popup-bid"
@@ -102,7 +102,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
               </a>
             )}
 
-            {actions?.indexOf('CANCEL_OFFER') >= 0 && (
+            {action === 'CANCEL_OFFER' && (
               <a
                 className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
                 href="#popup-bid"
@@ -142,6 +142,7 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
       {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
       {previewModalShowed && (
         <PreviewModal
+          action={action}
           data={data}
           onClose={() => {
             setPreviewModalShowed(false);

@@ -78,7 +78,7 @@ export default function MyNFTs() {
             <CardList
               data={data}
               showItems={[]}
-              actions={['LIST_NFT']}
+              action="LIST_NFT"
               onClickAction={(item, action) => {
                 // console.log('item, action', item, action);
                 setListModalItem(item);

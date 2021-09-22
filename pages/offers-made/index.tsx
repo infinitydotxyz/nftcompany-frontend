@@ -73,7 +73,7 @@ export default function OffersMade() {
             <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
 
-            <CardList data={data} actions={['CANCEL_OFFER']} />
+            <CardList data={data} action="CANCEL_OFFER" />
           </div>
 
           {dataLoaded && (

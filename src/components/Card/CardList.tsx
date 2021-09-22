@@ -8,15 +8,11 @@ type Props = {
   data: CardData[];
   excludedMaker?: string;
   viewInfo?: boolean;
-  actions?: string[];
+  action?: string;
   showItems?: string[];
   onClickAction?: (item: any, action: string) => void;
 };
-export default function CardList({ data, excludedMaker, viewInfo, showItems, actions, onClickAction }: Props) {
-  React.useEffect(() => {
-    // console.log('CardList useEffect.')
-  }, []);
-
+export default function CardList({ data, excludedMaker, viewInfo, showItems, action, onClickAction }: Props) {
   return (
     <div className={`${styles.cardList}`}>
       {(data || []).map((item) => {
@@ -30,7 +26,7 @@ export default function CardList({ data, excludedMaker, viewInfo, showItems, act
           <Card
             key={item?.id || uuidv4()}
             showItems={showItems}
-            actions={actions}
+            action={action}
             data={item}
             viewInfo={viewInfo}
             onClickAction={onClickAction}

@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import { Tab, TabList, TabPanel, TabPanels, Tabs, Spinner } from '@chakra-ui/react';
 import ModalDialog from 'hooks/ModalDialog';
 
-const Modal = dynamic(() => import('hooks/useModal'));
 const Dashboard = dynamic(() => import('./dashboard'), { loading: () => <Spinner size="md" color="gray.800" /> });
 const Supply = dynamic(() => import('./supply'), { loading: () => <Spinner size="md" color="gray.800" /> });
 const Borrow = dynamic(() => import('./borrow'), { loading: () => <Spinner size="md" color="gray.800" /> });

@@ -8,7 +8,6 @@ import { apiPost } from 'utils/apiUtil';
 import { GenericError } from 'types';
 import ModalDialog from 'hooks/ModalDialog';
 
-const Modal = dynamic(() => import('hooks/useModal'));
 const isServer = typeof window === 'undefined';
 interface IProps {
   data: CardData;
