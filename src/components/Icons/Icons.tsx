@@ -20,17 +20,10 @@ export function FilterIcon() {
 }
 
 export const ListIcon = (props: object) => (
-  <Icon boxSize={5} viewBox="0 0 60 60" {...props}>
+  <Icon boxSize={6} viewBox="0 0 24 24" {...props}>
     <g fill="currentColor">
-      <path d="M57.124,51.893H16.92c-1.657,0-3-1.343-3-3s1.343-3,3-3h40.203c1.657,0,3,1.343,3,3S58.781,51.893,57.124,51.893z" />
-      <path
-        d="M57.124,33.062H16.92c-1.657,0-3-1.343-3-3s1.343-3,3-3h40.203c1.657,0,3,1.343,3,3
-		C60.124,31.719,58.781,33.062,57.124,33.062z"
-      />
-      <path d="M57.124,14.231H16.92c-1.657,0-3-1.343-3-3s1.343-3,3-3h40.203c1.657,0,3,1.343,3,3S58.781,14.231,57.124,14.231z" />
-      <circle cx="4.029" cy="11.463" r="4.029" />
-      <circle cx="4.029" cy="30.062" r="4.029" />
-      <circle cx="4.029" cy="48.661" r="4.029" />
+      <path d="M0 0h24v24H0z" fill="none" />
+      <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" />
     </g>
   </Icon>
 );
