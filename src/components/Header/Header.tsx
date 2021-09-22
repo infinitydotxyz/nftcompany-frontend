@@ -108,11 +108,7 @@ const Header = () => {
   if (user?.account) {
     accountButton = (
       <div style={{ marginLeft: 6 }}>
-        <HoverMenuButton
-          buttonTitle={ellipsisAddress(user?.account)}
-          shadow={true}
-          arrow={false}
-        >
+        <HoverMenuButton buttonTitle={ellipsisAddress(user?.account)} shadow={true} arrow={false}>
           {accountItems}
         </HoverMenuButton>
       </div>
@@ -120,7 +116,7 @@ const Header = () => {
   } else {
     accountButton = (
       <div style={{ marginLeft: 6 }}>
-        <Link href="/connect">
+        <Link href="/connect" passHref>
           <div className={styles.connectButton}>
             <svg width={20} height={20} fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -159,7 +155,7 @@ const Header = () => {
     <header className={styles.header} onClick={() => {}}>
       <Box className={styles.hdf} display="flex">
         <div className={styles.showLargeLogo}>
-          <Link href="/">
+          <Link href="/" passHref>
             <img
               style={{ flex: '0 1 auto' }}
               className="can-click"
@@ -170,7 +166,7 @@ const Header = () => {
           </Link>
         </div>
         <div className={styles.showSmallLogo}>
-          <Link href="/">
+          <Link href="/" passHref>
             <img
               style={{ flex: '0 1 auto' }}
               className="can-click"
@@ -215,7 +211,7 @@ const Header = () => {
 
             <div className={styles.showMobileMenu}>
               {/* using Image() put space at the bottom */}
-              <HoverMenuButton buttonContent={<img src={MoreVert.src} height={32} width={32} />}>
+              <HoverMenuButton buttonContent={<img alt="menu" src={MoreVert.src} height={32} width={32} />}>
                 {mobileNavMenu}
               </HoverMenuButton>
             </div>
