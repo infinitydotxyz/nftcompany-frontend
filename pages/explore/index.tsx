@@ -47,7 +47,7 @@ export default function ExplorePage() {
       setDataLoaded(false);
     }
 
-    let moreData = await getListings({
+    const moreData = await getListings({
       ...filter,
       startAfter: isRefreshing ? '' : getLastItemCreatedAt(exploreSearchState.listedNfts),
       startAfterPrice: isRefreshing ? '' : getLastItemBasePrice(exploreSearchState.listedNfts),

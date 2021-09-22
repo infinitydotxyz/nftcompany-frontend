@@ -50,10 +50,10 @@ export default function UserPage() {
     });
     setIsFetching(false);
 
-    let sortedData = [...data, ...moreData];
+    const sortedData = [...data, ...moreData];
     sortedData.sort((a, b) => {
-      let fa = a.title.toLowerCase();
-      let fb = b.title.toLowerCase();
+      const fa = a.title.toLowerCase();
+      const fb = b.title.toLowerCase();
 
       if (fa < fb) {
         return -1;

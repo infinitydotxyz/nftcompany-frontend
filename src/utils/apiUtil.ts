@@ -150,7 +150,7 @@ export async function getAuthHeaders() {
   // fetch auth signature and message from local storage
   const localStorage = window.localStorage;
   let sig = localStorage.getItem('X-AUTH-SIGNATURE') || '';
-  let msg = localStorage.getItem('X-AUTH-MESSAGE') || 'LOGIN';
+  const msg = localStorage.getItem('X-AUTH-MESSAGE') || 'LOGIN';
   // if they are empty, resign and store
   if (!sig) {
     console.log('No auth found, re logging in');

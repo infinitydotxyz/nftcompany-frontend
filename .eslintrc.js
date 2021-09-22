@@ -83,7 +83,7 @@ module.exports = {
     'no-proto': 2,
     'no-trailing-spaces': 2,
     'wrap-iife': [2, 'any'],
-    // 'prefer-const': 2,
+    'prefer-const': 2,
     'yield-star-spacing': [2, 'both'],
     'no-new-object': 2,
     'no-new-require': 2,

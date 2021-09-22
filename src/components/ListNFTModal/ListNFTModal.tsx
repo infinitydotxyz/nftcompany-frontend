@@ -215,7 +215,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     try {
                       setIsSubmitting(true);
                       const seaport = getOpenSeaport();
-                      let obj: any = {
+                      const obj: any = {
                         asset: {
                           tokenAddress,
                           tokenId,

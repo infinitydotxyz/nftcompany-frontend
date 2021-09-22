@@ -1,7 +1,6 @@
 import { CardData } from 'types/Nft.interface';
 import React, { useContext, useState } from 'react';
 import { TypeAheadOption } from 'services/Listings.service';
-import { Order } from 'types/Nft.interface';
 
 export interface ExploreSearchState {
   isLoading: boolean;

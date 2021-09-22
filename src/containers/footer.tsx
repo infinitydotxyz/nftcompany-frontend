@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { Link } from '@chakra-ui/react';
-import { Box } from '@chakra-ui/react';
+import { Box, Link } from '@chakra-ui/react';
 
 const LandingFooter = () => {
   return (
@@ -19,33 +18,33 @@ const LandingFooter = () => {
             </p>
           </Box>
           {/* <div className="col-sm-12 col-md-3">
-						<div className="tg-desc">NFT Company</div>
-						<ul className="footer-links">
-							<li>
-								<a href="">Home</a>
-							</li>
-							<li>
-								<a href="">About</a>
-							</li>
-							<li>
-								<a href="https://medium.com/@mavriklabs">Blog</a>
-							</li>
-						</ul>
-					</div> */}
+            <div className="tg-desc">NFT Company</div>
+            <ul className="footer-links">
+            <li>
+              <a href="">Home</a>
+            </li>
+            <li>
+              <a href="">About</a>
+            </li>
+            <li>
+              <a href="https://medium.com/@mavriklabs">Blog</a>
+            </li>
+            </ul>
+          </div> */}
           {/* <div className="col-sm-12 col-md-3">
-						<div className="tg-desc">Legal</div>
-						<ul className="footer-links">
-							<li>
-								<a href="">Terms of Service</a>
-							</li>
-							<li>
-								<a href="">Privacy Policy</a>
-							</li>
-							<li>
-								<a href="">Cookie Policy</a>
-							</li>
-						</ul>
-					</div> */}
+            <div className="tg-desc">Legal</div>
+            <ul className="footer-links">
+            <li>
+              <a href="">Terms of Service</a>
+            </li>
+            <li>
+              <a href="">Privacy Policy</a>
+            </li>
+            <li>
+              <a href="">Cookie Policy</a>
+            </li>
+            </ul>
+          </div> */}
         </div>
 
         <div className="grid second">

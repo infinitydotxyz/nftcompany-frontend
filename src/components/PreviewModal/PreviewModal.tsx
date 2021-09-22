@@ -121,7 +121,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
       break;
   }
 
-  let _ownerSection =
+  const _ownerSection =
     owner?.length > 0 ? (
       <>
         <div className={styles.label}>Owner</div>
@@ -133,7 +133,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
       </>
     ) : null;
 
-  let _offerMakerSection =
+  const _offerMakerSection =
     offerMaker?.length > 0 ? (
       <>
         <div className={styles.label}>Offer Maker</div>

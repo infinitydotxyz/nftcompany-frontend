@@ -34,7 +34,7 @@ export const HoverMenuButton = ({ shadow = false, arrow = true, buttonTitle, but
     buttonContent = <div className={styles.buttonContent}>{buttonContent}</div>;
   }
 
-  let buttonClass = [styles.hoverButton];
+  const buttonClass = [styles.hoverButton];
 
   if (isOpen) {
     buttonClass.push(styles.menuOpen);

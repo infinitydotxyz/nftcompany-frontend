@@ -7,7 +7,7 @@ type Props = {
 };
 
 function MenuToggler({ isActive, ...props }: Props) {
-  let buttonClasses = [styles.hamburger];
+  const buttonClasses = [styles.hamburger];
 
   if (isActive) {
     buttonClasses.push(styles.hamburgerSpin);

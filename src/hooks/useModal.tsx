@@ -19,7 +19,7 @@ const Modal = ({ children, activator, brandColor, isActive, onClose }: IProps) =
   }, []);
 
   useEffect(() => {
-    let root = document.documentElement;
+    const root = document.documentElement;
     root.style.setProperty('--brand-color', brandColor);
   }, [brandColor, isActive]);
 
