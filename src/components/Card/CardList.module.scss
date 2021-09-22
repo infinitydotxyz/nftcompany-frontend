@@ -16,14 +16,11 @@
 }
 
 .cardList {
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 36px;
-
   display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 56px;
 
-  .card {
-    margin: 32px 16px 0;
-  }
+  margin: 40px 0;
 }
 
 .card {
@@ -43,12 +40,13 @@
     border-radius: 16px;
     cursor: pointer;
     overflow: hidden;
+    height: 280px;
 
     img {
       min-width: 250px;
       transition: transform 1s;
       object-fit: cover;
-      min-height: 250px;
+      min-height: 280px;
     }
     &:hover img {
       transform: scale(1.1);
@@ -110,7 +108,7 @@
 
 @media only screen and (min-width: 1000px) and (max-width: 1400px) {
   .cardList {
-    grid-gap: 16px;
+    grid-gap: 36px;
     grid-template-columns: repeat(3, 1fr);
 
     .card {
@@ -123,7 +121,7 @@
 
 @media only screen and (min-width: 700px) and (max-width: 1000px) {
   .cardList {
-    grid-gap: 16px;
+    grid-gap: 36px;
     grid-template-columns: repeat(2, 1fr);
 
     .card {
@@ -136,7 +134,7 @@
 
 @media only screen and (max-width: 700px) {
   .cardList {
-    grid-gap: 16px;
+    grid-gap: 36px;
     grid-template-columns: repeat(1, 1fr);
 
     .card {
