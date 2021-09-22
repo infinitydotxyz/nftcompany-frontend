@@ -30,6 +30,9 @@ const Menu = {
     item: {
       color: '#333',
 
+      _focus: { bg: 'white', color: '#333' },
+      _active: { bg: 'white', color: '#333' },
+
       _hover: { bg: 'brandBlue', color: 'white' }
     }
   }

@@ -22,7 +22,7 @@ export default function ConnectWallet() {
     const res = await initEthers(); // returns provider
     if (res && res.getSigner) {
       await setAuthHeaders(await res.getSigner().getAddress());
-      router.push('/my-nfts');
+      router.push('/explore');
     } else {
       alert('Failed to connect'); // TODO: use toast
     }
