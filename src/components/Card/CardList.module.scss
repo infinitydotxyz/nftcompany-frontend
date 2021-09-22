@@ -16,16 +16,12 @@
 }
 
 .cardList {
-  list-style: none;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 36px;
 
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -16px 0;
+  display: grid;
 
   .card {
-    max-width: calc(22% - 32px);
     margin: 32px 16px 0;
   }
 }
@@ -52,7 +48,7 @@
       min-width: 250px;
       transition: transform 1s;
       object-fit: cover;
-      height: 250px;
+      min-height: 250px;
     }
     &:hover img {
       transform: scale(1.1);
@@ -115,11 +111,9 @@
 @media only screen and (min-width: 1000px) and (max-width: 1400px) {
   .cardList {
     grid-gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
 
     .card {
-      flex: 0 0 calc(32% - 32px); /* 3-card layout */
-      max-width: calc(32% - 32px);
-
       .cardPreview {
         max-height: inherit;
       }
@@ -130,11 +124,9 @@
 @media only screen and (min-width: 700px) and (max-width: 1000px) {
   .cardList {
     grid-gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
 
     .card {
-      flex: 0 0 calc(48% - 32px); /* 2-card layout */
-      max-width: calc(48% - 32px);
-
       .cardPreview {
         max-height: inherit;
       }
@@ -145,11 +137,9 @@
 @media only screen and (max-width: 700px) {
   .cardList {
     grid-gap: 16px;
+    grid-template-columns: repeat(1, 1fr);
 
     .card {
-      flex: 0 0 calc(98% - 32px); /* 1-card layout */
-      max-width: calc(98% - 32px);
-
       .cardPreview {
         max-height: inherit;
       }
