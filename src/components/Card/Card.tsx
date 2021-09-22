@@ -3,7 +3,7 @@ import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
-import { CardData, Metadata } from 'types/Nft.interface';
+import { CardData } from 'types/Nft.interface';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
@@ -133,10 +133,6 @@ function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PR
               <div>{data.title}</div>
             </div>
             <PriceBox price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined} />
-          </div>
-          <div className={styles.cardLine}>
-            <div>&nbsp;</div>
-            {/* <div className="card__counter">{data.inStock} in stock</div> */}
           </div>
         </div>
       </div>
