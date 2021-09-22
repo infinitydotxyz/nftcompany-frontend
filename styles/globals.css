@@ -119,9 +119,6 @@ svg {
   .header-links-wrapper {
     display: none;
   }
-  .section-bar {
-    margin-top: 50px;
-  }
   .links {
     justify-content: center !important;
   }
