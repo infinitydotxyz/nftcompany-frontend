@@ -16,11 +16,11 @@ interface IProps {
 }
 
 const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
-  const [isSubmitting, setisSubmitting] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { user, showAppError } = useAppContext();
 
   const cancelListing = async () => {
-    setisSubmitting(true);
+    setIsSubmitting(true);
 
     try {
       const seaport = getOpenSeaport();
@@ -53,7 +53,7 @@ const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
     } catch (err) {
       showAppError((err as GenericError)?.message);
     } finally {
-      setisSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -69,7 +69,6 @@ const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
 
               <div className={styles.footer}>
                 <Button
-                  ml={4}
                   disabled={isSubmitting}
                   onClick={async () => {
                     await cancelListing();
