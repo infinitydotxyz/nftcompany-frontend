@@ -14,11 +14,7 @@ export default function Offers() {
       <div className={pageStyles.dashboard}>
         <div className="container container-fluid">
           <div className="section-bar">
-            <div className="right">{/* <div className="tg-title">{title}</div> */}</div>
-
-            <div className="center">{/* Center */}</div>
-
-            <div className="left">{/* TBD */}</div>
+            <div className="tg-title"></div>
           </div>
 
           <div className={styles.main}>

@@ -66,13 +66,7 @@ export default function OffersReceived() {
       <div className={pageStyles.dashboard}>
         <div className="container container-fluid">
           <div className="section-bar">
-            <div className="">
-              <div className="tg-title">Offers Received</div>
-            </div>
-
-            <div className="center">&nbsp;</div>
-
-            <div className="left">{/* TBD */}</div>
+            <div className="tg-title">Offers Received</div>
           </div>
 
           <div className={styles.main}>

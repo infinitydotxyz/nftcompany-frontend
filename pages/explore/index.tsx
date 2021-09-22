@@ -130,29 +130,24 @@ export default function ExplorePage() {
       <div className={styles.dashboard}>
         <div className="container container-fluid">
           <div className="section-bar">
-            <div className="right">
-              <div className="tg-title">Explore</div>
-            </div>
+            <div className="tg-title">Explore</div>
 
-            <div className="center"></div>
-
-            <div className="left">
-              <div className="center" style={{ flex: 1, marginRight: 30 }}>
-                <ul className="links">
-                  <li>
-                    {!exploreSearchState.selectedOption && (
-                      <Box mr="6">
-                        <a className="active cpointer" onClick={() => setFilterShowed(!filterShowed)}>
-                          Filter <FilterIcon />
-                        </a>
-                      </Box>
-                    )}
-                  </li>
-                </ul>
-              </div>
-            </div>
+            {/* <div className="left">
+              <ul className="links">
+                <li>
+                  {!exploreSearchState.selectedOption && (
+                    <Box>
+                      <a className="active cpointer" onClick={() => setFilterShowed(!filterShowed)}>
+                        Filter <FilterIcon />
+                      </a>
+                    </Box>
+                  )}
+                </li>
+              </ul>
+            </div> */}
           </div>
-          {!exploreSearchState.selectedOption && (
+
+          {/* {!exploreSearchState.selectedOption && (
             <Box mr="6" mt="5">
               <FilterPanel
                 isExpanded={filterShowed}
@@ -160,7 +155,7 @@ export default function ExplorePage() {
                 exploreSearchState={exploreSearchState}
               />
             </Box>
-          )}
+          )} */}
 
           <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={exploreSearchState.listedNfts} />
           {exploreSearchState.listedNfts?.length === 0 && isFetching && <LoadingCardList />}

@@ -90,13 +90,7 @@ export default function UserPage() {
       <div className={pageStyles.dashboard}>
         <div className="container container-fluid">
           <div className="section-bar">
-            <div className="">
-              <div className="tg-title">Users NFTs</div>
-            </div>
-
-            <div className="center">&nbsp;</div>
-
-            <div className="left">{/* TBD */}</div>
+            <div className="tg-title">Users NFTs</div>
           </div>
 
           <div className={styles.main}>
