@@ -49,7 +49,7 @@
     overflow: hidden;
 
     img {
-      width: 100%;
+      min-width: 250px;
       transition: transform 1s;
       object-fit: cover;
       height: 250px;
