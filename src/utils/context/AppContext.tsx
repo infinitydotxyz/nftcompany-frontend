@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { setAuthHeaders } from 'utils/apiUtil';
-import { useToast } from '@chakra-ui/toast';
 // import { EventEmitter, EventSubscription } from 'fbemitter';
 import { initEthers, getOpenSeaport } from 'utils/ethersUtil';
 import { getCustomMessage } from 'utils/commonUtil';
 const { EventType } = require('../../../opensea/types');
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export type User = {
   account: string;
@@ -21,22 +23,11 @@ const AppContext = React.createContext<AppContextType | null>(null);
 
 let lastError = '';
 
-const showToast = (toast: any, type: 'success' | 'error' | 'warning' | 'info', message: string) => {
-  toast({
-    title: type === 'error' ? 'Error' : 'Info',
-    description: message,
-    status: type,
-    duration: type === 'error' ? 6000 : 3000,
-    isClosable: true
-  });
-};
-
 export function AppContextProvider({ children }: any) {
-  const toast = useToast();
   const [user, setUser] = React.useState<User | null>(null);
 
-  const showAppError = (message: string) => showToast(toast, 'error', message);
-  const showAppMessage = (message: string) => showToast(toast, 'info', message);
+  const showAppError = (message: string) => toast.error(message);
+  const showAppMessage = (message: string) => toast.info(message);
 
   const connectMetaMask = async () => {
     // show MetaMask's errors:
@@ -49,7 +40,7 @@ export function AppContextProvider({ children }: any) {
         return; // TODO: ignore this error for now.
       }
       lastError = errorMsg;
-      showToast(toast, 'error', `MetaMask RPC Error: ${errorMsg}` || 'MetaMask RPC Error');
+      toast.error(`MetaMask RPC Error: ${errorMsg}` || 'MetaMask RPC Error');
     };
 
     const res = await initEthers({ onError }); // returns provider
@@ -89,7 +80,11 @@ export function AppContextProvider({ children }: any) {
     showAppError,
     showAppMessage
   };
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={value}>
+      {children} <ToastContainer position="bottom-right" />
+    </AppContext.Provider>
+  );
 }
 
 export function useAppContext() {
