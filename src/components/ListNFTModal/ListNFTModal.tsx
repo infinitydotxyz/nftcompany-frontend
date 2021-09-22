@@ -222,7 +222,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                         asset: {
                           tokenAddress,
                           tokenId,
-                          schemaName: getSchemaName(tokenAddress)
+                          schemaName: data?.schemaName || '' // getSchemaName(tokenAddress) // TODO: get from opensea data schema_name
                         },
                         accountAddress: user?.account,
                         startAmount: price,

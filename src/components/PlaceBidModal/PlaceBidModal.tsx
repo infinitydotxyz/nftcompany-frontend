@@ -101,7 +101,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           asset: {
             tokenAddress: data.tokenAddress!,
             tokenId: data.tokenId!,
-            schemaName: getSchemaName(data.tokenAddress!)
+            schemaName: data?.schemaName // getSchemaName(data.tokenAddress!)
           },
           accountAddress: user!.account,
           startAmount: offerPrice,

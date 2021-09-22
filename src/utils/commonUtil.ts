@@ -33,7 +33,8 @@ export const transformOpenSea = (item: any, owner: string) => {
     tokenAddress: item.asset_contract.address,
     tokenId: item.token_id,
     collectionName: item.asset_contract.name,
-    owner: owner
+    owner: owner,
+    schemaName: item['asset_contract']['schema_name']
   } as CardData;
 };
 
