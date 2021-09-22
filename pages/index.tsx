@@ -224,11 +224,11 @@ export default function Home() {
                   <Image alt="ETH Global HackMoney" src="/img/ethGlobal.svg" width={500} height={300} />
                 </div>
                 {/* <div className="col-sm-6 col-md-3">
-									<Image alt="NFT Company" src="/logo-investor.png" width={100} height={100} />
-								</div>
-								<div className="col-sm-6 col-md-3">
-									<Image alt="NFT Company" src="/logo-investor.png" width={100} height={100} />
-								</div> */}
+                  <Image alt="NFT Company" src="/logo-investor.png" width={100} height={100} />
+                </div>
+                <div className="col-sm-6 col-md-3">
+                  <Image alt="NFT Company" src="/logo-investor.png" width={100} height={100} />
+                </div> */}
               </div>
             </div>
           </div>

@@ -55,7 +55,7 @@ module.exports = {
     'no-array-constructor': 2,
     'no-bitwise': 2,
     'no-multi-assign': 2,
-    // 'no-tabs': 2,
+    'no-tabs': 2,
     // quotes: [
     //   2,
     //   'single',
