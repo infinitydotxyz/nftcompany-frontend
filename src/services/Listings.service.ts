@@ -125,7 +125,8 @@ export const orderToCardData = (order: Order): CardData => {
     hasBlueCheck: order.metadata.hasBlueCheck,
     collectionName: order.metadata.asset.collectionName,
     owner: order.maker,
-    metadata: order.metadata
+    metadata: order.metadata,
+    schemaName: order.metadata.schema
   };
   return cardData;
 };
