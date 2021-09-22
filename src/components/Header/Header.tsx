@@ -13,7 +13,16 @@ import SettingsModal from 'components/SettingsModal/SettingsModal';
 import MoreVert from './more_vert.svg';
 import RecentTransactionsModal from 'components/RecentTransactionsModal/RecentTransactionsModal';
 import { ellipsisAddress } from 'utils/commonUtil';
-import { ListIcon } from 'components/Icons/Icons';
+import {
+  ListIcon,
+  AddCartIcon,
+  MoneyIcon,
+  OfferIcon,
+  ImageSearchIcon,
+  ImageIcon,
+  CartIcon,
+  ShoppingBagIcon
+} from 'components/Icons/Icons';
 
 import styles from './Header.module.scss';
 
@@ -55,28 +64,28 @@ const Header = () => {
   }, []);
 
   const ntfItems = [
-    <MenuItem key="nfts" icon={<StarIcon />} onClick={() => router.push('/my-nfts')}>
+    <MenuItem key="nfts" icon={<ImageIcon />} onClick={() => router.push('/my-nfts')}>
       My NFTs
     </MenuItem>,
-    <MenuItem key="listed" icon={<StarIcon />} onClick={() => router.push('/listed-nfts')}>
+    <MenuItem key="listed" icon={<CartIcon />} onClick={() => router.push('/listed-nfts')}>
       Listed for sale
     </MenuItem>
   ];
 
   const offerItems = [
-    <MenuItem key="made" icon={<StarIcon />} onClick={() => router.push('/offers-made')}>
+    <MenuItem key="made" icon={<OfferIcon />} onClick={() => router.push('/offers-made')}>
       Offers Made
     </MenuItem>,
-    <MenuItem key="received" icon={<StarIcon />} onClick={() => router.push('/offers-received')}>
+    <MenuItem key="received" icon={<AddCartIcon />} onClick={() => router.push('/offers-received')}>
       Offers Received
     </MenuItem>
   ];
 
   const transactionItems = [
-    <MenuItem key="purchases" icon={<StarIcon />} onClick={() => router.push('/purchases')}>
+    <MenuItem key="purchases" icon={<ShoppingBagIcon />} onClick={() => router.push('/purchases')}>
       Purchases
     </MenuItem>,
-    <MenuItem key="sales" icon={<StarIcon />} onClick={() => router.push('/sales')}>
+    <MenuItem key="sales" icon={<MoneyIcon />} onClick={() => router.push('/sales')}>
       Sales
     </MenuItem>,
     <MenuItem key="transactions" icon={<ListIcon />} onClick={() => setTransactionsModalShowed(true)}>
@@ -89,15 +98,15 @@ const Header = () => {
     accountItems = [
       <AddressMenuItem key="AddressMenuItem" user={user} />,
 
-      <MenuItem key="Rewards" icon={<StarIcon />} onClick={() => router.push('/rewards')}>
+      <MenuItem key="Rewards" icon={<StarIcon boxSize={4} />} onClick={() => router.push('/rewards')}>
         Rewards
       </MenuItem>,
-      <MenuItem key="Settings" icon={<SettingsIcon />} onClick={() => setSettingsModalShowed(true)}>
+      <MenuItem key="Settings" icon={<SettingsIcon boxSize={4} />} onClick={() => setSettingsModalShowed(true)}>
         Account
       </MenuItem>,
 
       <MenuDivider key="dd1" />,
-      <MenuItem key="Sign out" icon={<ExternalLinkIcon />} onClick={() => setUser(null)}>
+      <MenuItem key="Sign out" icon={<ExternalLinkIcon boxSize={4} />} onClick={() => setUser(null)}>
         Sign out
       </MenuItem>
     ];
@@ -142,7 +151,7 @@ const Header = () => {
   ];
 
   const mobileNavMenu = [
-    <MenuItem key="explore-menu" icon={<ExternalLinkIcon />} onClick={() => router.push('/explore')}>
+    <MenuItem key="explore-menu" icon={<ImageSearchIcon />} onClick={() => router.push('/explore')}>
       Explore
     </MenuItem>,
     <MenuDivider key="m2" />,

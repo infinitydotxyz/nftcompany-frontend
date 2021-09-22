@@ -20,7 +20,7 @@ export function FilterIcon() {
 }
 
 export const ListIcon = (props: object) => (
-  <Icon viewBox="0 0 60 60" {...props}>
+  <Icon boxSize={5} viewBox="0 0 60 60" {...props}>
     <g fill="currentColor">
       <path d="M57.124,51.893H16.92c-1.657,0-3-1.343-3-3s1.343-3,3-3h40.203c1.657,0,3,1.343,3,3S58.781,51.893,57.124,51.893z" />
       <path
@@ -31,6 +31,70 @@ export const ListIcon = (props: object) => (
       <circle cx="4.029" cy="11.463" r="4.029" />
       <circle cx="4.029" cy="30.062" r="4.029" />
       <circle cx="4.029" cy="48.661" r="4.029" />
+    </g>
+  </Icon>
+);
+
+export const ImageIcon = (props: object) => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <path d="M0 0h24v24H0V0z" fill="none" />
+      <path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.86 8.86l-3 3.87L9 13.14 6 17h12l-3.86-5.14z" />
+    </g>
+  </Icon>
+);
+
+export const CartIcon = (props: object) => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <path d="M0 0h24v24H0V0z" fill="none" />
+      <path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.37-.66-.11-1.48-.87-1.48H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
+    </g>
+  </Icon>
+);
+
+export const OfferIcon = (props: object) => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <path d="M0 0h24v24H0V0z" fill="none" />
+      <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58s1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41s-.23-1.06-.59-1.42zM13 20.01L4 11V4h7v-.01l9 9-7 7.02z" />
+      <circle cx="6.5" cy="6.5" r="1.5" />
+    </g>
+  </Icon>
+);
+
+export const ImageSearchIcon = (props: object) => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <path d="M0 0h24v24H0V0z" fill="none" />
+      <path d="M18 13v7H4V6h5.02c.05-.71.22-1.38.48-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5l-2-2zm-1.5 5h-11l2.75-3.53 1.96 2.36 2.75-3.54L16.5 18zm2.8-9.11c.44-.7.7-1.51.7-2.39C20 4.01 17.99 2 15.5 2S11 4.01 11 6.5s2.01 4.5 4.49 4.5c.88 0 1.7-.26 2.39-.7L21 13.42 22.42 12 19.3 8.89zM15.5 9C14.12 9 13 7.88 13 6.5S14.12 4 15.5 4 18 5.12 18 6.5 16.88 9 15.5 9z" />
+    </g>
+  </Icon>
+);
+
+export const MoneyIcon = (props: object) => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <path d="M0 0h24v24H0V0z" fill="none" />
+      <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.42 0 2.13.54 2.39 1.4.12.4.45.7.87.7h.3c.66 0 1.13-.65.9-1.27-.42-1.18-1.4-2.16-2.96-2.54V4.5c0-.83-.67-1.5-1.5-1.5S10 3.67 10 4.5v.66c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-1.65 0-2.5-.59-2.83-1.43-.15-.39-.49-.67-.9-.67h-.28c-.67 0-1.14.68-.89 1.3.57 1.39 1.9 2.21 3.4 2.53v.67c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-.65c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" />
+    </g>
+  </Icon>
+);
+
+export const AddCartIcon = (props: object) => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <path d="M0 0h24v24H0V0z" fill="none" />
+      <path d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-8.9-5h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4l-3.87 7H8.53L4.27 2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2z" />
+    </g>
+  </Icon>
+);
+
+export const ShoppingBagIcon = (props: object) => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <rect fill="none" height="24" width="24" />
+      <path d="M18,6h-2c0-2.21-1.79-4-4-4S8,3.79,8,6H6C4.9,6,4,6.9,4,8v12c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V8C20,6.9,19.1,6,18,6z M12,4c1.1,0,2,0.9,2,2h-4C10,4.9,10.9,4,12,4z M18,20H6V8h2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V8h4v2c0,0.55,0.45,1,1,1s1-0.45,1-1V8 h2V20z" />
     </g>
   </Icon>
 );

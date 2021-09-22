@@ -17,7 +17,7 @@ export const AddressMenuItem = ({ user }: Props) => {
     <div className={styles.main}>
       <div className={styles.left}>
         <MenuItem
-          icon={<ExternalLinkIcon />}
+          icon={<ExternalLinkIcon boxSize={5} />}
           onClick={() => {
             window.open(`https://etherscan.io/address/${user.account}`, '_blank');
           }}
@@ -37,7 +37,7 @@ export const AddressMenuItem = ({ user }: Props) => {
               showAppMessage(`Copied to Clipboard.`);
             }}
           >
-            <CopyIcon />
+            <CopyIcon boxSize={5} />
           </MenuItem>
         </Tooltip>
       </div>
