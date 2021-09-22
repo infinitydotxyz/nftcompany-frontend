@@ -6,12 +6,13 @@ import styles from './CardList.module.scss';
 
 type Props = {
   data: CardData[];
+  excludedMaker?: string;
   viewInfo?: boolean;
   actions?: string[];
   showItems?: string[];
   onClickAction?: (item: any, action: string) => void;
 };
-export default function CardList({ data, viewInfo, showItems, actions, onClickAction }: Props) {
+export default function CardList({ data, excludedMaker, viewInfo, showItems, actions, onClickAction }: Props) {
   React.useEffect(() => {
     // console.log('CardList useEffect.')
   }, []);
@@ -20,6 +21,9 @@ export default function CardList({ data, viewInfo, showItems, actions, onClickAc
     <div className={`${styles.cardList}`}>
       {(data || []).map((item) => {
         if (!item) {
+          return null;
+        }
+        if (excludedMaker && item?.maker === excludedMaker) {
           return null;
         }
         return (

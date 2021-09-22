@@ -56,14 +56,6 @@ export default function ExplorePage() {
       limit: ITEMS_PER_PAGE
     });
 
-    // remove any owned by the current user
-    if (user?.account && moreData && moreData.length > 0) {
-      moreData = moreData.filter((item) => {
-        // opensea lowercases their account strings, so compare to lower
-        return item.owner?.toLowerCase() !== user.account.toLowerCase();
-      });
-    }
-
     setIsFetching(false);
     setExploreSearchState({
       ...exploreSearchState,
@@ -104,7 +96,6 @@ export default function ExplorePage() {
       // initial fetch, or after clearing search/filter:
       await fetchData(filterState, true);
     }
-
     setIsFetching(false);
   };
 
@@ -174,7 +165,12 @@ export default function ExplorePage() {
           <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={exploreSearchState.listedNfts} />
           {exploreSearchState.listedNfts?.length === 0 && isFetching && <LoadingCardList />}
 
-          <CardList showItems={['PRICE']} data={exploreSearchState.listedNfts} actions={['BUY_NFT']} />
+          <CardList
+            showItems={['PRICE']}
+            excludedMaker={user?.account}
+            data={exploreSearchState.listedNfts}
+            actions={['BUY_NFT']}
+          />
 
           {dataLoaded && (
             <FetchMore
