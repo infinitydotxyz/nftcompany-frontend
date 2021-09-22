@@ -64,7 +64,7 @@ export default function Purchases() {
         <title>Purchases</title>
       </Head>
       <div className={pageStyles.dashboard}>
-        <div className="container container-fluid">
+        <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Purchases</div>
           </div>

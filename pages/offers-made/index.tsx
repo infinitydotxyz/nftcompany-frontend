@@ -64,7 +64,7 @@ export default function OffersMade() {
         <title>Offers Made</title>
       </Head>
       <div className={pageStyles.dashboard}>
-        <div className="container container-fluid">
+        <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Offers Made</div>
           </div>

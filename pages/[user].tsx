@@ -88,7 +88,7 @@ export default function UserPage() {
         <title>Users NFTs</title>
       </Head>
       <div className={pageStyles.dashboard}>
-        <div className="container container-fluid">
+        <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Users NFTs</div>
           </div>

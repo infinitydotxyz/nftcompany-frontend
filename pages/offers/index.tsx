@@ -12,13 +12,13 @@ export default function Offers() {
         <title>Offers</title>
       </Head>
       <div className={pageStyles.dashboard}>
-        <div className="container container-fluid">
+        <div className="page-container">
           <div className="section-bar">
             <div className="tg-title"></div>
           </div>
 
           <div className={styles.main}>
-            <section className="container container-fluid grid">
+            <section className="grid">
               <div className="col-md-6 col-sm-12">
                 <h3 className="tg-title">My Offers</h3>
 

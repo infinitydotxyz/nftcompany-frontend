@@ -50,7 +50,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
               ) : data?.length === 0 ? (
                 <Box mt={6}>Nothing to show.</Box>
               ) : (
-                <section className="container container-fluid grid">
+                <section className="grid">
                   <div className={`col-md-12 col-sm-12 ${styles.txnRow}`}>
                     <span>
                       <strong>Time</strong>

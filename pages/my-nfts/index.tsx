@@ -66,7 +66,7 @@ export default function MyNFTs() {
         <title>My NFTs</title>
       </Head>
       <div className={pageStyles.dashboard}>
-        <div className="container container-fluid">
+        <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">My NFTs</div>
           </div>

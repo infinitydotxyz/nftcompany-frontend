@@ -162,70 +162,78 @@ const Header = () => {
 
   return (
     <header className={styles.header} onClick={() => {}}>
-      <Box className={styles.hdf} display="flex">
-        <div className={styles.showLargeLogo}>
-          <Link href="/" passHref>
-            <img
-              style={{ flex: '0 1 auto' }}
-              className="can-click"
-              alt="logo"
-              src="/img/nftcompanyTransparentBgSvg.svg"
-              width={200}
-            />
-          </Link>
-        </div>
-        <div className={styles.showSmallLogo}>
-          <Link href="/" passHref>
-            <img
-              style={{ flex: '0 1 auto' }}
-              className="can-click"
-              alt="logo"
-              src="/img/ncTransparentBgSvg.svg"
-              width={60}
-            />
-          </Link>
-        </div>
-
-        <Box flex={1} />
-
-        <Box flex={10} pr="2" maxW="360px" minW="100px">
-          <ExploreSearch />
-        </Box>
-
-        <Box pr="4">
-          <div className={styles.links}>
-            <div className={styles.showExplore}>
-              <div key="Explore" className={styles.exploreButton} onClick={() => router.push('/explore')}>
-                Explore
-              </div>
-            </div>
-
-            <div className={styles.showLargeNav}>
-              <div className={styles.linksButtons}>
-                <HoverMenuButton buttonTitle="NFTs">{ntfItems}</HoverMenuButton>
-
-                <HoverMenuButton buttonTitle="Offers">{offerItems}</HoverMenuButton>
-
-                <HoverMenuButton buttonTitle="Activity">{transactionItems}</HoverMenuButton>
-              </div>
-            </div>
-
-            <div className={styles.showMediumNav}>
-              <HoverMenuButton buttonTitle="NFTs">
-                {[...ntfItems, <MenuDivider key="d1" />, ...offerItems, <MenuDivider key="d2" />, ...transactionItems]}
-              </HoverMenuButton>
-            </div>
-
-            <div className={styles.showConnectButton}>{accountButton}</div>
-
-            <div className={styles.showMobileMenu}>
-              {/* using Image() put space at the bottom */}
-              <HoverMenuButton buttonContent={<img alt="menu" src={MoreVert.src} height={32} width={32} />}>
-                {mobileNavMenu}
-              </HoverMenuButton>
-            </div>
+      <Box className={styles.hdf}>
+        <div className="page-container-header">
+          <div className={styles.showLargeLogo}>
+            <Link href="/" passHref>
+              <img
+                style={{ flex: '0 1 auto' }}
+                className="can-click"
+                alt="logo"
+                src="/img/nftcompanyTransparentBgSvg.svg"
+                width={200}
+              />
+            </Link>
           </div>
-        </Box>
+          <div className={styles.showSmallLogo}>
+            <Link href="/" passHref>
+              <img
+                style={{ flex: '0 1 auto' }}
+                className="can-click"
+                alt="logo"
+                src="/img/ncTransparentBgSvg.svg"
+                width={60}
+              />
+            </Link>
+          </div>
+
+          <Box flex={1} />
+
+          <Box flex={10} pr="2" maxW="400px" minW="100px">
+            <ExploreSearch />
+          </Box>
+
+          <Box pr="4">
+            <div className={styles.links}>
+              <div className={styles.showExplore}>
+                <div key="Explore" className={styles.exploreButton} onClick={() => router.push('/explore')}>
+                  Explore
+                </div>
+              </div>
+
+              <div className={styles.showLargeNav}>
+                <div className={styles.linksButtons}>
+                  <HoverMenuButton buttonTitle="NFTs">{ntfItems}</HoverMenuButton>
+
+                  <HoverMenuButton buttonTitle="Offers">{offerItems}</HoverMenuButton>
+
+                  <HoverMenuButton buttonTitle="Activity">{transactionItems}</HoverMenuButton>
+                </div>
+              </div>
+
+              <div className={styles.showMediumNav}>
+                <HoverMenuButton buttonTitle="NFTs">
+                  {[
+                    ...ntfItems,
+                    <MenuDivider key="d1" />,
+                    ...offerItems,
+                    <MenuDivider key="d2" />,
+                    ...transactionItems
+                  ]}
+                </HoverMenuButton>
+              </div>
+
+              <div className={styles.showConnectButton}>{accountButton}</div>
+
+              <div className={styles.showMobileMenu}>
+                {/* using Image() put space at the bottom */}
+                <HoverMenuButton buttonContent={<img alt="menu" src={MoreVert.src} height={32} width={32} />}>
+                  {mobileNavMenu}
+                </HoverMenuButton>
+              </div>
+            </div>
+          </Box>
+        </div>
       </Box>
 
       {settingsModalShowed && <SettingsModal onClose={() => setSettingsModalShowed(false)} />}

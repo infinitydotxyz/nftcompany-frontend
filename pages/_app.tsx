@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import '../styles/grid.css';
+import '../styles/page.scss';
 import '../styles/fonts.css';
 import '../styles/Typeahead.css';
 import '../src/components/nft/components.scss';

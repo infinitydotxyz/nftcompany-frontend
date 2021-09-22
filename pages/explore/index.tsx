@@ -128,7 +128,7 @@ export default function ExplorePage() {
         <title>Explore</title>
       </Head>
       <div className={styles.dashboard}>
-        <div className="container container-fluid">
+        <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Explore</div>
 

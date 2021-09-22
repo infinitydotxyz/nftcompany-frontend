@@ -3,8 +3,8 @@
   margin-bottom: 2rem;
 
   .hdf {
+    display: flex;
     position: fixed;
-    align-items: center;
     left: 0;
     right: 0;
     top: 0;
@@ -93,12 +93,10 @@
 
 .showSmallLogo {
   display: none;
-  padding-left: 20px;
 }
 
 .showLargeLogo {
   display: flex;
-  padding-left: 20px;
 }
 
 @media (min-width: 650px) and (max-width: 1000px) {

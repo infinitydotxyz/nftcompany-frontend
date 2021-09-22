@@ -99,13 +99,13 @@ export default function Rewards() {
         <title>Rewards</title>
       </Head>
       <div className={pageStyles.dashboard}>
-        <div className="container container-fluid">
+        <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Rewards</div>
           </div>
 
           <div className={styles.main}>
-            <section className="container container-fluid grid">
+            <section className="grid">
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
                 <h3>Total Tx Volume</h3>
                 <div>$242,869,800</div>

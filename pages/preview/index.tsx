@@ -60,7 +60,7 @@ export default function Preview() {
         <title>Preview page</title>
       </Head>
       <div className={pageStyles.dashboard}>
-        <div className="container container-fluid">
+        <div className="page-container">
           <div className="section-bar">
             <div className="right">{/* <div className="tg-title">{title}</div> */}</div>
 
