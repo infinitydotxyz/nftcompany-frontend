@@ -104,12 +104,12 @@ NiceSelect.prototype.extractData = function () {
     if (item.dataset.selected) {
       attributes = {
         selected: item.dataset.selected === 'true',
-        disabled: item.getAttribute('disabled') != null
+        disabled: !!item.getAttribute('disabled')
       };
     } else {
       attributes = {
-        selected: item.getAttribute('selected') != null,
-        disabled: item.getAttribute('disabled') != null
+        selected: !!item.getAttribute('selected'),
+        disabled: !!item.getAttribute('disabled')
       };
     }
 
@@ -162,7 +162,7 @@ NiceSelect.prototype._renderSelectedItems = function () {
     this.selectedOptions.forEach(function (item) {
       selectedHtml += `<span class="current">${item.data.text}</span>`;
     });
-    selectedHtml = selectedHtml == '' ? this.placeholder : selectedHtml;
+    selectedHtml = selectedHtml === '' ? this.placeholder : selectedHtml;
 
     this.dropdown.querySelector('.multiple-options').innerHTML = selectedHtml;
   } else {
@@ -334,13 +334,13 @@ NiceSelect.prototype._onKeyPressed = function (e) {
   const open = this.dropdown.classList.contains('open');
 
   // Space or Enter
-  if (e.keyCode == 32 || e.keyCode == 13) {
+  if (e.keyCode === 32 || e.keyCode === 13) {
     if (open) {
       triggerClick(focusedOption);
     } else {
       triggerClick(this.dropdown);
     }
-  } else if (e.keyCode == 40) {
+  } else if (e.keyCode === 40) {
     // Down
     if (!open) {
       triggerClick(this.dropdown);
@@ -353,7 +353,7 @@ NiceSelect.prototype._onKeyPressed = function (e) {
       }
     }
     e.preventDefault();
-  } else if (e.keyCode == 38) {
+  } else if (e.keyCode === 38) {
     // Up
     if (!open) {
       triggerClick(this.dropdown);
@@ -366,7 +366,7 @@ NiceSelect.prototype._onKeyPressed = function (e) {
       }
     }
     e.preventDefault();
-  } else if (e.keyCode == 27 && open) {
+  } else if (e.keyCode === 27 && open) {
     // Esc
     triggerClick(this.dropdown);
   }
@@ -381,7 +381,7 @@ NiceSelect.prototype._findNext = function (el) {
   }
 
   while (el) {
-    if (!hasClass(el, 'disabled') && el.style.display != 'none') {
+    if (!hasClass(el, 'disabled') && el.style.display !== 'none') {
       return el;
     }
     el = el.nextElementSibling;
@@ -398,7 +398,7 @@ NiceSelect.prototype._findPrev = function (el) {
   }
 
   while (el) {
-    if (!hasClass(el, 'disabled') && el.style.display != 'none') {
+    if (!hasClass(el, 'disabled') && el.style.display !== 'none') {
       return el;
     }
     el = el.previousElementSibling;
@@ -412,7 +412,7 @@ NiceSelect.prototype._onSearchChanged = function (e) {
   let text = e.target.value;
   text = text.toLowerCase();
 
-  if (text == '') {
+  if (text === '') {
     this.options.forEach(function (item) {
       item.element.style.display = '';
     });

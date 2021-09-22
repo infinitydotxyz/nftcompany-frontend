@@ -26,7 +26,7 @@ export default function UserPage() {
   } = router;
 
   const fetchData = async () => {
-    if (!userParam || userParam.length == 0) {
+    if (!userParam || userParam.length === 0) {
       setData([]);
       return;
     }

@@ -149,7 +149,7 @@ module.exports = {
     'keyword-spacing': 2,
     'arrow-spacing': 2,
     'comma-spacing': 2,
-    // eqeqeq: 2,
+    eqeqeq: 2,
     'space-unary-ops': [
       2,
       {

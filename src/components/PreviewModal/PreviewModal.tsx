@@ -34,7 +34,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
   // show purchase with no price, we can look up any offers and buy and make offers
   //  || data.price == undefined) {
-  if (data.owner == null || data.owner === user?.account) {
+  if (!data.owner || data.owner === user?.account) {
     showPurchase = false;
   }
 
@@ -47,14 +47,14 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
   }
 
   let tokenAddress = data.tokenAddress;
-  if (tokenAddress != null) {
+  if (tokenAddress) {
     if (tokenAddress.length > 16) {
       tokenAddress = ellipsisAddress(tokenAddress);
     }
   }
 
   let tokenId = data.tokenId;
-  if (tokenId != null) {
+  if (tokenId) {
     if (tokenId?.length > 16) {
       tokenId = ellipsisAddress(tokenId);
     }
@@ -62,7 +62,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
   let description = data.description;
 
-  if (description == null || description?.length == 0) {
+  if (!description || description?.length === 0) {
     description = 'none';
   }
 
@@ -172,7 +172,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
                     <div className={styles.title}>{data?.title}</div>
 
-                    {data.price != undefined && (
+                    {data.price && (
                       <>
                         <span className={styles.label}>Price</span>
 

@@ -130,13 +130,13 @@ function sleep(ms: number) {
 
 export async function setAuthHeaders(address: string) {
   if (!address) {
-    return
+    return;
   }
   const localStorage = window.localStorage;
   const user = address.trim().toLowerCase();
   const currentUser = localStorage.getItem('CURRENT_USER');
-  if (currentUser == user) {
-    return
+  if (currentUser === user) {
+    return;
   }
   const msg = 'LOGIN';
   const sign = await personalSignAsync(getWeb3(), msg, address);

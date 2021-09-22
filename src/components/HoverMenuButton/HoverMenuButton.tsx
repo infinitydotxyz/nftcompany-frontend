@@ -18,7 +18,7 @@ export const HoverMenuButton = ({ shadow = false, arrow = true, buttonTitle, but
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  if (buttonTitle != null) {
+  if (buttonTitle?.length) {
     buttonContent = (
       <div className={styles.buttonContent}>
         <div>{buttonTitle}</div>

@@ -22,10 +22,10 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
   const { user, showAppError, showAppMessage } = useAppContext();
 
   const saveEmail = async () => {
-    if (user != null && email?.length > 0 && !emailInvalid) {
+    if (user && email?.length > 0 && !emailInvalid) {
       const response = await apiPost(`/u/${user?.account}/setEmail`, null, { email: email });
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         onClose();
       } else {
         showAppError('An error occured');
@@ -74,7 +74,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
   const toggleSubscribe = async () => {
     const response = await apiPost(`/u/${user?.account}/subscribeEmail`, null, { subscribe: !subscribed });
 
-    if (response.status == 200) {
+    if (response.status === 200) {
       // refresh
       getEmail();
     }

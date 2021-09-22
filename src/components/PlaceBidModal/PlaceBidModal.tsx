@@ -131,7 +131,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
               <div className={styles.space}>Buy this NFT at the fixed price.</div>
 
-              {data.price != undefined && (
+              {data.price && (
                 <div className={styles.row}>
                   <div className={styles.left}>Price</div>
                   <div className={styles.right}>
