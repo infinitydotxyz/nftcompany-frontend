@@ -664,6 +664,7 @@ export class OpenSeaPort {
     (order.metadata as any).asset.searchTitle = searchTitle;
     (order.metadata as any).asset.searchCollectionName = searchCollectionName;
     (order.metadata as any).asset.owner = assetDetails?.owner;
+    (order.metadata as any).asset.schemaName = asset.schemaName;
     (order as any).metadata.hasBonusReward = hasBonusReward;
     (order as any).metadata.hasBlueCheck = hasBlueCheck;
 
