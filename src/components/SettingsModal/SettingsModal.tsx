@@ -154,9 +154,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
 
                 {content}
                 <div className={styles.buttons}>
-                  <Button bgColor="brandBlue" color="white" onClick={() => saveEmail()}>
-                    Save
-                  </Button>
+                  <Button onClick={() => saveEmail()}>Save</Button>
                   <Button colorScheme="gray" onClick={onClose}>
                     Cancel
                   </Button>

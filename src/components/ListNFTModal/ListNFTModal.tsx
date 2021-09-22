@@ -202,8 +202,6 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
 
               <div className={styles.footer}>
                 <Button
-                  color="white"
-                  bgColor="brandBlue"
                   size="md"
                   disabled={isSubmitting}
                   onClick={async () => {
@@ -260,7 +258,13 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                   List NFT
                 </Button>
 
-                <Button size="md" ml={4} disabled={isSubmitting} onClick={() => onClose && onClose()}>
+                <Button
+                  colorScheme="gray"
+                  size="md"
+                  ml={4}
+                  disabled={isSubmitting}
+                  onClick={() => onClose && onClose()}
+                >
                   Cancel
                 </Button>
 
