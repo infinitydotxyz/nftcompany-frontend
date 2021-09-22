@@ -46,16 +46,14 @@ export const getLastItemBasePrice = (data: any[]) =>
 export const NoData = ({
   isFetching,
   data,
-  dataLoaded,
-  currentPage
+  dataLoaded
 }: {
   isFetching: boolean;
   data: any[];
   dataLoaded?: boolean;
-  currentPage?: number;
 }) => {
   if (dataLoaded && !isFetching && data?.length === 0) {
-    return <Box mt={10}>Nothing to show</Box>;
+    return <Box mt={10}>Nothing to show.</Box>;
   }
   return null;
 };

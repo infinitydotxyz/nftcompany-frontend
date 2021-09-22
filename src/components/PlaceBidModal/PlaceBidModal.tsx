@@ -55,7 +55,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     loadOrder();
   }, [loadOrder]);
 
-  const buyNft = async () => {
+  const onClickBuyNow = async () => {
     try {
       // Important to check if the order is still available as it can have already been fulfilled by
       // another user or cancelled by the creator
@@ -141,7 +141,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               )}
 
               <div className={styles.footer}>
-                <Button bgColor="brandBlue" color="white" isDisabled={!order} onClick={buyNft}>
+                <Button colorScheme="blue" isDisabled={!order} onClick={onClickBuyNow}>
                   Buy now
                 </Button>
               </div>

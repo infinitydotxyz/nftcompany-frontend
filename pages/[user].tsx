@@ -100,7 +100,7 @@ export default function UserPage() {
           </div>
 
           <div className={styles.main}>
-            <NoData isFetching={isFetching} data={data} currentPage={currentPage} />
+            <NoData isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
 
             <CardList data={data} showItems={[]} />
