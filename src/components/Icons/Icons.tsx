@@ -1,6 +1,9 @@
 import { Icon } from '@chakra-ui/icons';
 import React from 'react';
 
+// Find icons here (download source is easier to view them all)
+// https://github.com/mui-org/material-ui/tree/master/packages/mui-icons-material/material-icons
+
 export function FilterIcon() {
   return (
     <svg
@@ -88,6 +91,23 @@ export const ShoppingBagIcon = (props: object) => (
     <g fill="currentColor">
       <rect fill="none" height="24" width="24" />
       <path d="M18,6h-2c0-2.21-1.79-4-4-4S8,3.79,8,6H6C4.9,6,4,6.9,4,8v12c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V8C20,6.9,19.1,6,18,6z M12,4c1.1,0,2,0.9,2,2h-4C10,4.9,10.9,4,12,4z M18,20H6V8h2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V8h4v2c0,0.55,0.45,1,1,1s1-0.45,1-1V8 h2V20z" />
+    </g>
+  </Icon>
+);
+
+export const UnderConstructionIcon = (props: object) => (
+  <Icon boxSize={200} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <g>
+        <rect
+          height="8.48"
+          transform="matrix(0.7071 -0.7071 0.7071 0.7071 -6.8717 17.6255)"
+          width="3"
+          x="16.34"
+          y="12.87"
+        />
+        <path d="M17.5,10c1.93,0,3.5-1.57,3.5-3.5c0-0.58-0.16-1.12-0.41-1.6l-2.7,2.7L16.4,6.11l2.7-2.7C18.62,3.16,18.08,3,17.5,3 C15.57,3,14,4.57,14,6.5c0,0.41,0.08,0.8,0.21,1.16l-1.85,1.85l-1.78-1.78l0.71-0.71L9.88,5.61L12,3.49 c-1.17-1.17-3.07-1.17-4.24,0L4.22,7.03l1.41,1.41H2.81L2.1,9.15l3.54,3.54l0.71-0.71V9.15l1.41,1.41l0.71-0.71l1.78,1.78 l-7.41,7.41l2.12,2.12L16.34,9.79C16.7,9.92,17.09,10,17.5,10z" />
+      </g>
     </g>
   </Icon>
 );

@@ -47,12 +47,20 @@ export default function ExplorePage() {
       setDataLoaded(false);
     }
 
-    const moreData = await getListings({
+    let moreData = await getListings({
       ...filter,
       startAfter: isRefreshing ? '' : getLastItemCreatedAt(exploreSearchState.listedNfts),
       startAfterPrice: isRefreshing ? '' : getLastItemBasePrice(exploreSearchState.listedNfts),
       limit: ITEMS_PER_PAGE
     });
+
+    // remove any owned by the current user
+    if (user?.account && moreData && moreData.length > 0) {
+      moreData = moreData.filter((item) => {
+        // opensea lowercases their account strings, so compare to lower
+        return item.owner?.toLowerCase() !== user.account.toLowerCase();
+      });
+    }
 
     setIsFetching(false);
     setExploreSearchState({

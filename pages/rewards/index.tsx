@@ -7,6 +7,7 @@ import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Rewards.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
+import { UnderConstructionIcon } from 'components/Icons/Icons';
 
 function float2dollar(value: number) {
   return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
@@ -75,6 +76,9 @@ export default function Rewards() {
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>(null);
 
+  // SNG disabled for now
+  const disabled: boolean = true;
+
   const fetchData = async () => {
     setIsFetching(true);
     try {
@@ -92,6 +96,30 @@ export default function Rewards() {
   // const numListingsPct = data?.totalListings > 0 ? data?.numListings / data?.totalListings : 0;
   // const numBonusListingsPct = data?.totalBonusListings > 0 ? data?.numBonusListings / data?.totalBonusListings : 0;
   // const feesPaidPct = data?.totalFees > 0 ? data?.feesPaid / data?.totalFees : 0;
+
+  if (disabled) {
+    return (
+      <>
+        <Head>
+          <title>Rewards</title>
+        </Head>
+        <div className={pageStyles.dashboard}>
+          <div className="page-container">
+            <div className="section-bar">
+              <div className="tg-title">Rewards</div>
+            </div>
+
+            <div className={styles.comingSoon}>
+              <div style={{ color: '#ddd' }}>
+                <UnderConstructionIcon />
+              </div>
+              <div>Coming Soon...</div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
