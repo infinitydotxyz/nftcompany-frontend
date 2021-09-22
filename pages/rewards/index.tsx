@@ -7,6 +7,7 @@ import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Rewards.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
+import { toCheckSum } from 'utils/ethersUtil';
 
 function float2dollar(value: number) {
   return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
@@ -74,12 +75,15 @@ export default function Rewards() {
   const { user } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>(null);
+  const [leaderBoard, setLeaderBoard] = useState<any[]>([]);
 
   const fetchData = async () => {
     setIsFetching(true);
     try {
+      if (!user?.account) return;
       const { result, error } = await apiGet(`/u/${user?.account}/reward`);
-      console.log('result', result);
+      const leaderBoardInfo = await apiGet(`/rewards/leaderboard`);
+      setLeaderBoard(leaderBoardInfo?.result?.results || []);
       setData(result);
     } catch (e) {
       console.error(e);
@@ -112,19 +116,19 @@ export default function Rewards() {
             <section className="container container-fluid grid">
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
                 <h3>Total Tx Volume</h3>
-                <div>$242,869,800</div>
+                <div>{data?.totalVolume}</div>
               </div>
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
                 <h3>NFTS Rewards</h3>
-                <div>$242,869,800</div>
+                <div> not sure</div>
               </div>
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
                 <h3>NFTS Price</h3>
-                <div>$242,869,800</div>
+                <div> not sure</div>
               </div>
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
                 <h3>Time Left</h3>
-                <div>15:32:00</div>
+                <div>not sure</div>
               </div>
 
               {/* Chart */}
@@ -155,7 +159,7 @@ export default function Rewards() {
                 <main>
                   <div className="grid">
                     <span className="col-md-6">APR</span>
-                    <span className="col-md-6">10%</span>
+                    <span className="col-md-6">not sure</span>
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Listings</span>
@@ -172,11 +176,11 @@ export default function Rewards() {
                 <main>
                   <div className="grid">
                     <span className="col-md-6">APR</span>
-                    <span className="col-md-6">10%</span>
+                    <span className="col-md-6">not sure</span>
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Bonus Rewards</span>
-                    <span className="col-md-6">{data?.numBonusListings || 0}</span>
+                    <span className="col-md-6">{data?.bonusRewards || 0}</span>
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Total</span>
@@ -189,15 +193,15 @@ export default function Rewards() {
                 <main>
                   <div className="grid">
                     <span className="col-md-6">APR</span>
-                    <span className="col-md-6">10%</span>
+                    <span className="col-md-6">not sure</span>
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Fee Rewards</span>
-                    <span className="col-md-6">{data?.feesPaid || 0}</span>
+                    <span className="col-md-6">not sure</span>
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Total</span>
-                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                    <span className="col-md-6">not sure</span>
                   </div>
                 </main>
               </div>
@@ -232,24 +236,16 @@ export default function Rewards() {
                       </Tr>
                     </Thead>
                     <Tbody>
-                      <Tr>
-                        <Td>#1</Td>
-                        <Td>0xksjup...qu38e</Td>
-                        <Td isNumeric>150</Td>
-                        <Td isNumeric>1100</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>#2</Td>
-                        <Td>0xak8y5...ke7uy</Td>
-                        <Td isNumeric>90</Td>
-                        <Td isNumeric>1000</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>#3</Td>
-                        <Td>0xaal9r...33jfy</Td>
-                        <Td isNumeric>82</Td>
-                        <Td isNumeric>850</Td>
-                      </Tr>
+                      {(leaderBoard || []).map((row, index) => {
+                        return (
+                          <Tr>
+                            <Td>#{`${index + 1}`}</Td>
+                            <Td>{toCheckSum(row.id)}</Td>
+                            <Td isNumeric>{row.numListings}</Td>
+                            <Td isNumeric>1100</Td>
+                          </Tr>
+                        );
+                      })}
                     </Tbody>
                   </Table>
                 </div>

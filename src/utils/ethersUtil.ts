@@ -28,7 +28,7 @@ export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
   }
   try {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
-  } catch (err: any) {
+  } catch (err) {
     console.log(err);
     return;
   }
@@ -132,3 +132,9 @@ export const getChainName = (): string | null => {
 };
 
 export const weiToEther = (wei: number) => ethers.utils.formatEther(wei);
+
+export const toCheckSum = (id: string): string => {
+  if (!id) return '';
+  const web3 = getWeb3();
+  return web3?.toChecksumAddress(id);
+};
