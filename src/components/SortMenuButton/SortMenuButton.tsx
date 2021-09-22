@@ -16,29 +16,28 @@ const SortMenuButton = ({ onChangeFilter }: Props) => {
     onChangeFilter(updatedFilter);
   };
 
-  {
-    /* use this later maybe
+  /* use this later maybe
     <div className={styles.item}>
-                <NiceSelect
-                  placeholder="Sort by likes"
-                  id="filter"
-                  value={filter?.sortByLikes}
-                  onChange={(ev) => handleChanges({ sortByLikes: ev.target.value })}
-                >
-                  <option
-                    key={'DESC'}
-                    value={'DESC'}
-                    data-value={'DESC'}
-                    data-selected={filter?.sortByLikes === 'DESC'}
-                  >
-                    Most liked
-                  </option>
-                  <option key={'ASC'} value={'ASC'} data-value={'ASC'} data-selected={filter?.sortByLikes === 'ASC'}>
-                    Least liked
-                  </option>
-                </NiceSelect>
-              </span> */
-  }
+      <NiceSelect
+        placeholder="Sort by likes"
+        id="filter"
+        value={filter?.sortByLikes}
+        onChange={(ev) => handleChanges({ sortByLikes: ev.target.value })}
+      >
+        <option
+          key={'DESC'}
+          value={'DESC'}
+          data-value={'DESC'}
+          data-selected={filter?.sortByLikes === 'DESC'}
+        >
+          Most liked
+        </option>
+        <option key={'ASC'} value={'ASC'} data-value={'ASC'} data-selected={filter?.sortByLikes === 'ASC'}>
+          Least liked
+        </option>
+      </NiceSelect>
+    </span>
+  */
 
   return (
     <NiceSelect

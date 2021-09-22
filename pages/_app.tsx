@@ -18,7 +18,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const handleRouteChange = (url: URL) => {
       /* invoke analytics function only for production */
-      if (isProduction) gtag.pageview(url);
+      if (isProduction) {
+        gtag.pageview(url);
+      }
     };
     router.events.on('routeChangeComplete', handleRouteChange);
     return () => {

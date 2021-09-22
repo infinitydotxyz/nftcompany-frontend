@@ -19,7 +19,7 @@ const UserList = ({ data }: Props) => {
         return (
           <li key={user.id}>
             <div className={styles.avatar}>
-              <img src={user.avatar} />
+              <img alt="avatar" src={user.avatar} />
             </div>
             <div className={styles.desc}>
               <div className={styles.name}>{user.name}</div>

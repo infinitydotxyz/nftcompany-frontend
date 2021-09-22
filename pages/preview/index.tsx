@@ -83,7 +83,10 @@ export default function Preview() {
           <div className={styles.main}>
             {/* <Card data={sampleData[idNum]} /> */}
             {data && data.image && (
-              <img src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'} />
+              <img
+                alt="not available"
+                src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
+              />
             )}
 
             <section className={styles.info}>

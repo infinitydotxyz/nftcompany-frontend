@@ -7,7 +7,6 @@ import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, NoData } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-import pageStyles from '../styles/Dashboard.module.scss';
 import styles from '../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useRouter } from 'next/router';
@@ -53,8 +52,8 @@ export default function UserPage() {
 
     let sortedData = [...data, ...moreData];
     sortedData.sort((a, b) => {
-      let fa = a.title.toLowerCase(),
-        fb = b.title.toLowerCase();
+      let fa = a.title.toLowerCase();
+      let fb = b.title.toLowerCase();
 
       if (fa < fb) {
         return -1;
@@ -87,7 +86,7 @@ export default function UserPage() {
       <Head>
         <title>Users NFTs</title>
       </Head>
-      <div className={pageStyles.dashboard}>
+      <div className={styles.dashboard}>
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Users NFTs</div>

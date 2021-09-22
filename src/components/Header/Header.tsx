@@ -161,7 +161,7 @@ const Header = () => {
   ];
 
   return (
-    <header className={styles.header} onClick={() => {}}>
+    <header className={styles.header}>
       <Box className={styles.hdf}>
         <div className="page-container-header">
           <div className={styles.showLargeLogo}>

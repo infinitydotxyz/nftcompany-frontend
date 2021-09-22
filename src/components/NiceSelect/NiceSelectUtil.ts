@@ -2,13 +2,13 @@
 
 // utility functions
 function triggerClick(el: HTMLElement) {
-  var event = document.createEvent('MouseEvents');
+  let event = document.createEvent('MouseEvents');
   event.initEvent('click', true, false);
   el.dispatchEvent(event);
 }
 
 function triggerChange(el: HTMLElement) {
-  var event = document.createEvent('HTMLEvents');
+  let event = document.createEvent('HTMLEvents');
   event.initEvent('change', true, false);
   el.dispatchEvent(event);
 }
@@ -22,19 +22,26 @@ function data(el: HTMLElement, key: string) {
 }
 
 function hasClass(el: HTMLElement, className: string) {
-  if (el) return el.classList.contains(className);
-  else return false;
+  if (el) {
+    return el.classList.contains(className);
+  } else {
+    return false;
+  }
 }
 
 function addClass(el: HTMLElement, className: string) {
-  if (el) return el.classList.add(className);
+  if (el) {
+    return el.classList.add(className);
+  }
 }
 
 function removeClass(el: HTMLElement, className: string) {
-  if (el) return el.classList.remove(className);
+  if (el) {
+    return el.classList.remove(className);
+  }
 }
 
-var defaultOptions = {
+let defaultOptions = {
   data: null,
   searchable: false
 };
@@ -68,7 +75,7 @@ NiceSelect.prototype.create = function () {
 };
 
 NiceSelect.prototype.processData = function (data) {
-  var options = [];
+  let options = [];
   data.forEach(function (item) {
     options.push({
       data: item,
@@ -82,18 +89,18 @@ NiceSelect.prototype.processData = function (data) {
 };
 
 NiceSelect.prototype.extractData = function () {
-  var options = this.el.querySelectorAll('option');
-  var data = [];
-  var allOptions = [];
-  var selectedOptions = [];
+  let options = this.el.querySelectorAll('option');
+  let data = [];
+  let allOptions = [];
+  let selectedOptions = [];
 
   options.forEach((item) => {
-    var itemData = {
+    let itemData = {
       text: item.innerText,
       value: item.value
     };
 
-    var attributes = null;
+    let attributes = null;
     if (item.dataset.selected) {
       attributes = {
         selected: item.dataset.selected === 'true',
@@ -113,14 +120,16 @@ NiceSelect.prototype.extractData = function () {
   this.data = data;
   this.options = allOptions;
   this.options.forEach(function (item) {
-    if (item.attributes.selected) selectedOptions.push(item);
+    if (item.attributes.selected) {
+      selectedOptions.push(item);
+    }
   });
 
   this.selectedOptions = selectedOptions;
 };
 
 NiceSelect.prototype.renderDropdown = function () {
-  var classes = [
+  let classes = [
     'nice-select',
     attr(this.el, 'class') || '',
     this.disabled ? 'disabled' : '',
@@ -131,7 +140,7 @@ NiceSelect.prototype.renderDropdown = function () {
 <input type="text" class="nice-select-search" placeholder="Search..."/>
 </div>`;
 
-  var html = `<div class="${classes.join(' ')}" tabindex="${this.disabled ? null : 0}">
+  let html = `<div class="${classes.join(' ')}" tabindex="${this.disabled ? null : 0}">
   <span class="${this.multiple ? 'multiple-options' : 'current'}"></span>
   <div class="nice-select-dropdown">
   ${this.config.searchable ? searchHtml : ''}
@@ -148,7 +157,7 @@ NiceSelect.prototype.renderDropdown = function () {
 
 NiceSelect.prototype._renderSelectedItems = function () {
   if (this.multiple) {
-    var selectedHtml = '';
+    let selectedHtml = '';
 
     this.selectedOptions.forEach(function (item) {
       selectedHtml += `<span class="current">${item.data.text}</span>`;
@@ -157,25 +166,25 @@ NiceSelect.prototype._renderSelectedItems = function () {
 
     this.dropdown.querySelector('.multiple-options').innerHTML = selectedHtml;
   } else {
-    var html = this.selectedOptions.length > 0 ? this.selectedOptions[0].data.text : this.placeholder;
+    let html = this.selectedOptions.length > 0 ? this.selectedOptions[0].data.text : this.placeholder;
 
     this.dropdown.querySelector('.current').innerHTML = html;
   }
 };
 
 NiceSelect.prototype._renderItems = function () {
-  var ul = this.dropdown.querySelector('ul');
+  let ul = this.dropdown.querySelector('ul');
   this.options.forEach((item) => {
     ul.appendChild(this._renderItem(item));
   });
 };
 
 NiceSelect.prototype._renderItem = function (option) {
-  var el = document.createElement('li');
+  let el = document.createElement('li');
   el.setAttribute('data-value', option.data.value);
 
   // console.log('option.attributes', option);
-  var classList = [
+  let classList = [
     'option',
     option.attributes.selected ? 'selected' : null,
     option.attributes.disabled ? 'disabled' : null
@@ -191,7 +200,7 @@ NiceSelect.prototype._renderItem = function (option) {
 NiceSelect.prototype.update = function () {
   this.extractData();
   if (this.dropdown) {
-    var open = hasClass(this.dropdown, 'open');
+    let open = hasClass(this.dropdown, 'open');
     this.dropdown.parentNode.removeChild(this.dropdown);
     this.create();
 
@@ -230,7 +239,7 @@ NiceSelect.prototype.destroy = function () {
 };
 
 NiceSelect.prototype.bindEvent = function () {
-  var $this = this;
+  let $this = this;
   this.dropdown.addEventListener('click', this._onClicked.bind(this));
   this.dropdown.addEventListener('keydown', this._onKeyPressed.bind(this));
   window.addEventListener('click', this._onClickedOutside.bind(this));
@@ -241,12 +250,13 @@ NiceSelect.prototype.bindEvent = function () {
 };
 
 NiceSelect.prototype._bindSearchEvent = function () {
-  var searchBox = this.dropdown.querySelector('.nice-select-search');
-  if (searchBox)
+  let searchBox = this.dropdown.querySelector('.nice-select-search');
+  if (searchBox) {
     searchBox.addEventListener('click', function (e) {
       e.stopPropagation();
       return false;
     });
+  }
 
   searchBox.addEventListener('input', this._onSearchChanged.bind(this));
 };
@@ -255,13 +265,13 @@ NiceSelect.prototype._onClicked = function (e) {
   this.dropdown.classList.toggle('open');
 
   if (this.dropdown.classList.contains('open')) {
-    var search = this.dropdown.querySelector('.nice-select-search');
+    let search = this.dropdown.querySelector('.nice-select-search');
     if (search) {
       search.value = '';
       search.focus();
     }
 
-    var t = this.dropdown.querySelector('.focus');
+    let t = this.dropdown.querySelector('.focus');
     removeClass(t, 'focus');
     t = this.dropdown.querySelector('.selected');
     addClass(t, 'focus');
@@ -274,7 +284,7 @@ NiceSelect.prototype._onClicked = function (e) {
 };
 
 NiceSelect.prototype._onItemClicked = function (option, e) {
-  var optionEl = e.target;
+  let optionEl = e.target;
 
   if (!hasClass(optionEl, 'disabled')) {
     if (this.multiple) {
@@ -299,8 +309,10 @@ NiceSelect.prototype._onItemClicked = function (option, e) {
 NiceSelect.prototype.updateSelectValue = function () {
   if (this.multiple) {
     this.selectedOptions.each(function (item) {
-      var el = this.el.querySelector('option[value="' + item.data.value + '"]');
-      if (el) el.setAttribute('selected', true);
+      let el = this.el.querySelector('option[value="' + item.data.value + '"]');
+      if (el) {
+        el.setAttribute('selected', true);
+      }
     });
   } else if (this.selectedOptions.length > 0) {
     this.el.value = this.selectedOptions[0].data.value;
@@ -317,9 +329,9 @@ NiceSelect.prototype._onClickedOutside = function (e) {
 NiceSelect.prototype._onKeyPressed = function (e) {
   // Keyboard events
 
-  var focusedOption = this.dropdown.querySelector('.focus');
+  let focusedOption = this.dropdown.querySelector('.focus');
 
-  var open = this.dropdown.classList.contains('open');
+  let open = this.dropdown.classList.contains('open');
 
   // Space or Enter
   if (e.keyCode == 32 || e.keyCode == 13) {
@@ -333,9 +345,9 @@ NiceSelect.prototype._onKeyPressed = function (e) {
     if (!open) {
       triggerClick(this.dropdown);
     } else {
-      var next = this._findNext(focusedOption);
+      let next = this._findNext(focusedOption);
       if (next) {
-        var t = this.dropdown.querySelector('.focus');
+        let t = this.dropdown.querySelector('.focus');
         removeClass(t, 'focus');
         addClass(next, 'focus');
       }
@@ -346,9 +358,9 @@ NiceSelect.prototype._onKeyPressed = function (e) {
     if (!open) {
       triggerClick(this.dropdown);
     } else {
-      var prev = this._findPrev(focusedOption);
+      let prev = this._findPrev(focusedOption);
       if (prev) {
-        var t = this.dropdown.querySelector('.focus');
+        let t = this.dropdown.querySelector('.focus');
         removeClass(t, 'focus');
         addClass(prev, 'focus');
       }
@@ -396,8 +408,8 @@ NiceSelect.prototype._findPrev = function (el) {
 };
 
 NiceSelect.prototype._onSearchChanged = function (e) {
-  var open = this.dropdown.classList.contains('open');
-  var text = e.target.value;
+  let open = this.dropdown.classList.contains('open');
+  let text = e.target.value;
   text = text.toLowerCase();
 
   if (text == '') {
@@ -405,10 +417,10 @@ NiceSelect.prototype._onSearchChanged = function (e) {
       item.element.style.display = '';
     });
   } else if (open) {
-    var matchReg = new RegExp(text);
+    let matchReg = new RegExp(text);
     this.options.forEach(function (item) {
-      var optionText = item.data.text.toLowerCase();
-      var matched = matchReg.test(optionText);
+      let optionText = item.data.text.toLowerCase();
+      let matched = matchReg.test(optionText);
       item.element.style.display = matched ? '' : 'none';
     });
   }
@@ -417,7 +429,7 @@ NiceSelect.prototype._onSearchChanged = function (e) {
     removeClass(item, 'focus');
   });
 
-  var firstEl = this._findNext(null);
+  let firstEl = this._findNext(null);
   addClass(firstEl, 'focus');
 };
 

@@ -18,7 +18,7 @@ const BidBox = ({ user, children }: Props) => {
     <div className={styles.main}>
       <div className={styles.head}>
         <div className={styles.avatar}>
-          <img src={user.avatar} />
+          <img alt="avatar" src={user.avatar} />
         </div>
         <div className={styles.desc}>
           <div className={styles.info}>

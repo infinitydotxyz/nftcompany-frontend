@@ -38,6 +38,9 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     showPurchase = false;
   }
 
+  let offerMaker = '';
+  let offerMakerShort = '';
+
   let owner = data.owner ?? '';
   if (owner.length > 16) {
     owner = ellipsisAddress(owner);
@@ -63,18 +66,6 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     description = 'none';
   }
 
-  let _ownerSection =
-    owner.length > 0 ? (
-      <>
-        <div className={styles.label}>Owner</div>
-        <Tooltip label={data.owner} hasArrow openDelay={1000}>
-          <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
-            {owner}
-          </Link>
-        </Tooltip>
-      </>
-    ) : null;
-
   let purchaseButton;
   switch (action) {
     case 'CANCEL_LISTING':
@@ -94,6 +85,14 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
       break;
     case 'ACCEPT_OFFER':
+      offerMaker = data.maker ?? 'unkonwn';
+      if (offerMaker.length > 16) {
+        offerMakerShort = ellipsisAddress(offerMaker);
+      }
+
+      // hide the owner
+      owner = '';
+
       purchaseButton = (
         <a className="action-btn" onClick={() => setAcceptOfferModalShowed(true)}>
           Accept Offer
@@ -121,6 +120,30 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
       }
       break;
   }
+
+  let _ownerSection =
+    owner?.length > 0 ? (
+      <>
+        <div className={styles.label}>Owner</div>
+        <Tooltip label={data.owner} hasArrow openDelay={1000}>
+          <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
+            {owner}
+          </Link>
+        </Tooltip>
+      </>
+    ) : null;
+
+  let _offerMakerSection =
+    offerMaker?.length > 0 ? (
+      <>
+        <div className={styles.label}>Offer Maker</div>
+        <Tooltip label={offerMaker} hasArrow openDelay={1000}>
+          <Link color="brandBlue" href={`${window.origin}/${offerMaker}`} target="_blank" rel="noreferrer">
+            {offerMakerShort}
+          </Link>
+        </Tooltip>
+      </>
+    ) : null;
 
   return (
     <>
@@ -183,6 +206,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                     </Tooltip>
 
                     {_ownerSection}
+                    {_offerMakerSection}
 
                     <span className={styles.label}>Description</span>
                     <div className={styles.description}>{description}</div>

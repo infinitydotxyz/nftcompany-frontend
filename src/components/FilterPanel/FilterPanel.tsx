@@ -1,8 +1,6 @@
-import React, { forwardRef } from 'react';
-import { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NiceSelect from 'components/NiceSelect/NiceSelect';
-import PriceRange from './PriceRange';
 import styles from './FilterPanel.module.css';
 import PriceSlider from './PriceSlider';
 import { Box } from '@chakra-ui/react';

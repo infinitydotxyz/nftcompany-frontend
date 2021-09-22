@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import styles from './PlaceBidModal.module.scss';
 import Datetime from 'react-datetime';
 import { CardData, Order } from 'types/Nft.interface';
-import { getSchemaName, getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaport } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 import { apiPost } from 'utils/apiUtil';

@@ -2,12 +2,9 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Box } from '@chakra-ui/react';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, getLastItemBasePrice, getLastItemCreatedAt, NoData } from 'components/FetchMore/FetchMore';
 import CardList from 'components/Card/CardList';
-import FilterPanel from 'components/FilterPanel/FilterPanel';
-import { FilterIcon } from 'components/Icons/Icons';
 import { getListingById, getListings, getListingsByCollectionName, orderToCardData } from 'services/Listings.service';
 import { Filter, useAppSearchContext } from 'hooks/useSearch';
 import { useAppContext } from 'utils/context/AppContext';
@@ -176,7 +173,7 @@ export default function ExplorePage() {
               data={exploreSearchState.listedNfts}
               onFetchMore={async () => {
                 setDataLoaded(false);
-                await fetchData(filterState ? filterState : ({} as Filter));
+                await fetchData(filterState ?? ({} as Filter));
               }}
             />
           )}

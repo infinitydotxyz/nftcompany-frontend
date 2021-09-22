@@ -9,7 +9,6 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, getLastItemCreatedAt, NoData } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import { ordersToCardData } from 'services/Listings.service';
-import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { CardData } from 'types/Nft.interface';
@@ -69,7 +68,7 @@ export default function ListNFTs() {
       <Head>
         <title>Listed NFTs</title>
       </Head>
-      <div className={pageStyles.dashboard}>
+      <div className={styles.dashboard}>
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Listed NFTs</div>

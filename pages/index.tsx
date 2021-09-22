@@ -223,7 +223,7 @@ export default function Home() {
                 <div className="col-sm-6 col-md-3 col-lg-6">
                   <Image alt="ETH Global HackMoney" src="/img/ethGlobal.svg" width={500} height={300} />
                 </div>
-                {/*<div className="col-sm-6 col-md-3">
+                {/* <div className="col-sm-6 col-md-3">
 									<Image alt="NFT Company" src="/logo-investor.png" width={100} height={100} />
 								</div>
 								<div className="col-sm-6 col-md-3">

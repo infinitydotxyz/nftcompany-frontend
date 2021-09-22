@@ -1,13 +1,11 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
 import { Switch } from '@chakra-ui/react';
 import Datetime from 'react-datetime';
 import TabBar from 'components/TabBar/TabBar';
 import { Button } from '@chakra-ui/button';
 import { Spinner } from '@chakra-ui/spinner';
 import HelpTooltip from 'components/HelpTooltip/HelpTooltip';
-import { getOpenSeaport } from 'utils/ethersUtil';
-import { getAccount } from 'utils/ethersUtil';
+import { getAccount, getOpenSeaport } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { WETH_ADDRESS } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';

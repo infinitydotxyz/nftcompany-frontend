@@ -8,8 +8,6 @@ import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, NoData } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-
-import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from '../../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { transformOpenSea } from 'utils/commonUtil';
@@ -65,7 +63,7 @@ export default function MyNFTs() {
       <Head>
         <title>My NFTs</title>
       </Head>
-      <div className={pageStyles.dashboard}>
+      <div className={styles.dashboard}>
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">My NFTs</div>

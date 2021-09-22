@@ -1,8 +1,6 @@
 import React from 'react';
 import styles from './AddressMenuItem.module.scss';
-import { Tooltip } from '@chakra-ui/react';
-
-import { MenuItem } from '@chakra-ui/react';
+import { Tooltip, MenuItem } from '@chakra-ui/react';
 import { ExternalLinkIcon, CopyIcon } from '@chakra-ui/icons';
 import { useAppContext, User } from 'utils/context/AppContext';
 
