@@ -171,7 +171,7 @@ const Header = () => {
                 style={{ flex: '0 1 auto' }}
                 className="can-click"
                 alt="logo"
-                src="/img/nftcompanyTransparentBgSvg.svg"
+                src="/img/nftCompanyBetaTransparentBg.svg"
                 width={200}
               />
             </Link>
@@ -182,7 +182,7 @@ const Header = () => {
                 style={{ flex: '0 1 auto' }}
                 className="can-click"
                 alt="logo"
-                src="/img/ncTransparentBgSvg.svg"
+                src="/img/ncBetaTransparentBgSvg.svg"
                 width={60}
               />
             </Link>
