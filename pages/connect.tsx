@@ -1,11 +1,9 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-
-import { useAppContext } from 'utils/context/AppContext';
 import { initEthers } from '../src/utils/ethersUtil';
 import styles from '../styles/Connect.module.scss';
 import { setAuthHeaders } from '../src/utils/apiUtil';

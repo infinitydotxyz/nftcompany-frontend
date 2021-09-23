@@ -78,8 +78,7 @@ export default function MyNFTs() {
               data={data}
               showItems={[]}
               action="LIST_NFT"
-              onClickAction={(item, action) => {
-                // console.log('item, action', item, action);
+              onClickAction={(item) => {
                 setListModalItem(item);
               }}
             />

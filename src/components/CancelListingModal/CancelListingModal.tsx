@@ -42,7 +42,7 @@ const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
           side: 1,
           orderId: data?.id
         };
-        const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
+        const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
           showAppError((error as GenericError)?.message);
         }

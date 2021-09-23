@@ -79,7 +79,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           salePriceInEth: +salePriceInEth,
           feesInEth: +feesInEth
         };
-        const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
+        const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
           showAppError((error as GenericError)?.message);
         }

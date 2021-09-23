@@ -10,14 +10,13 @@ import { PriceBox } from 'components/PriceBox/PriceBox';
 
 type Props = {
   data: CardData;
-  onClickPlaceBid?: () => void;
   onClickAction?: (item: any, action: string) => any;
   showItems?: string[];
   action?: string;
   [key: string]: any;
 };
 
-function Card({ data, onClickPlaceBid, onClickAction, viewInfo, showItems = ['PRICE'], action = '', ...rest }: Props) {
+function Card({ data, onClickAction, showItems = ['PRICE'], action = '', ...rest }: Props) {
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);

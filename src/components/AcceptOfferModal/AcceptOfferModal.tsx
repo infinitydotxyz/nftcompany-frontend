@@ -1,5 +1,4 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
 import styles from './AcceptOfferModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
@@ -16,8 +15,6 @@ interface IProps {
 }
 
 const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
-  const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
-  const [offerPrice, setOfferPrice] = React.useState(0);
   const { user, showAppError } = useAppContext();
 
   const acceptOffer = async () => {
@@ -48,7 +45,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           salePriceInEth: +salePriceInEth,
           feesInEth: +feesInEth
         };
-        const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
+        const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
           showAppError((error as GenericError)?.message);
         }

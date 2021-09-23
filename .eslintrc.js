@@ -33,6 +33,7 @@ module.exports = {
     'default-case': 2,
     'no-var': 2,
     'no-undef': 2,
+    // 'no-unused-vars': 2,
     // 'no-alert': 2,
     'no-empty-function': 2,
     'no-caller': 2,

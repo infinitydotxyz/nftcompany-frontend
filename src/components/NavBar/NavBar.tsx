@@ -12,7 +12,7 @@ type Props = {
   onClickItem?: (item: Item, index: number) => void;
 };
 
-const NavBar = ({ items, active, onClickItem }: Props) => {
+const NavBar = ({ items, onClickItem }: Props) => {
   return (
     <ul className={styles.main}>
       {items.map((item, idx) => {

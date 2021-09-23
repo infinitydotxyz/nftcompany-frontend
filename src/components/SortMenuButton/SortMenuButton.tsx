@@ -2,7 +2,6 @@ import React from 'react';
 import { SearchFilter, useSearchContext } from 'hooks/useSearch';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import { MenuItem } from '@chakra-ui/react';
-import { StarIcon } from '@chakra-ui/icons';
 import { SortIcon } from 'components/Icons/Icons';
 
 const SortMenuButton = ({}: any) => {

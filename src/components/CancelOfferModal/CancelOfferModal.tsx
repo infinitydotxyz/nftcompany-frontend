@@ -1,5 +1,4 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
 import styles from './CancelOfferModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
@@ -15,9 +14,7 @@ interface IProps {
 }
 
 const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
-  const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
-  const [offerPrice, setOfferPrice] = React.useState(0);
-  const { user, showAppError, showAppMessage } = useAppContext();
+  const { user, showAppError } = useAppContext();
 
   const cancelOffer = async () => {
     try {
@@ -48,7 +45,7 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           side: 0,
           orderId: data.id
         };
-        const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
+        const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
           showAppError((error as GenericError)?.message);
         }

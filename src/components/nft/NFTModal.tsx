@@ -13,15 +13,12 @@ const isServer = typeof window === 'undefined';
 
 interface IProps {
   title: string;
-  id: string;
-  address: string;
   brandColor: string;
   bgColor: string;
-  active?: boolean;
   onClose: () => void;
 }
 
-const NFTModal: React.FC<IProps> = ({ title, id, address, brandColor, bgColor, active, onClose }: IProps) => {
+const NFTModal: React.FC<IProps> = ({ title, brandColor, bgColor, onClose }: IProps) => {
   return (
     <>
       {!isServer && (

@@ -2,7 +2,7 @@ import React from 'react';
 import { InView } from 'react-intersection-observer';
 import styles from './ScrollLoader.module.scss';
 
-const ScrollLoaderElement = ({ inView, ref, onFetchMore, data, currentPage }: any) => {
+const ScrollLoaderElement = ({ inView, ref, onFetchMore }: any) => {
   React.useEffect(() => {
     if (inView === true && onFetchMore) {
       onFetchMore();

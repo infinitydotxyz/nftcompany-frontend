@@ -32,10 +32,16 @@ const fetchData = async (
   return result;
 };
 
-export function useCardProvider(): { list: CardData[]; loadNext: () => void; hasData: () => boolean } {
+export function useCardProvider(): {
+  list: CardData[];
+  loadNext: () => void;
+  hasData: () => boolean;
+  hasLoaded: boolean;
+} {
   const [list, setList] = useState<CardData[]>([]);
   const [listType, setListType] = useState('');
   const [hasMore, setHasMore] = useState(true);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   const searchContext = useSearchContext();
   const { user } = useAppContext();
@@ -75,6 +81,7 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void; has
     }
 
     setList([...previousList, ...result]);
+    setHasLoaded(true);
   };
 
   useEffect(() => {
@@ -127,5 +134,5 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void; has
     }
   }
 
-  return { list: filteredList, loadNext, hasData };
+  return { list: filteredList, loadNext, hasData, hasLoaded };
 }
