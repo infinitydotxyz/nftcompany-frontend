@@ -34,6 +34,7 @@ specifiers:
   logrocket: 2.0.0
   moment: 2.29.1
   next: 11.1.2
+  nextjs-progressbar: ^0.0.11
   node-sass: 5.0.0
   prop-types: 15.7.2
   query-string: 7.0.1
@@ -82,6 +83,7 @@ dependencies:
   logrocket: 2.0.0
   moment: 2.29.1
   next: 11.1.2_932a4068d3ac0ffbc0f00b3698ba80be
+  nextjs-progressbar: 0.0.11_next@11.1.2+react@17.0.2
   node-sass: 5.0.0
   query-string: 7.0.1
   rc-slider: 9.7.2_react-dom@17.0.2+react@17.0.2
@@ -6715,6 +6717,17 @@ packages:
       - webpack
     dev: false
 
+  /nextjs-progressbar/0.0.11_next@11.1.2+react@17.0.2:
+    resolution: {integrity: sha512-4JQkUHgDG6gz5r04lW06cMerKhQeXXq1RCSz2WqHMcJCDgKLCCqRokn603LlEORNpzBEY/pTZJIOlzf2eh4mFQ==}
+    peerDependencies:
+      next: ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
+      react: ^16.0.0 || ^17.0.0
+    dependencies:
+      next: 11.1.2_932a4068d3ac0ffbc0f00b3698ba80be
+      nprogress: 0.2.0
+      react: 17.0.2
+    dev: false
+
   /node-addon-api/2.0.2:
     resolution: {integrity: sha512-Ntyt4AIXyaLIuMHF6IOoTakB3K+RWxwtsHNRxllEoA6vPwP9o4866g6YWDLUdnucilZhmkxiHwHr11gAENw+QA==}
     dev: false
@@ -6863,6 +6876,10 @@ packages:
       console-control-strings: 1.1.0
       gauge: 2.7.4
       set-blocking: 2.0.0
+    dev: false
+
+  /nprogress/0.2.0:
+    resolution: {integrity: sha1-y480xTIT2JVyP8urkH6UIq28r7E=}
     dev: false
 
   /number-is-nan/1.0.1:

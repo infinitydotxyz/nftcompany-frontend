@@ -1,4 +1,5 @@
 import React from 'react';
+import NextNprogress from 'nextjs-progressbar';
 import { SearchContextProvider } from '../hooks/useSearch';
 import { AppContextProvider } from 'utils/context/AppContext';
 import { AppChakraProvider } from 'utils/themeUtil';
@@ -24,6 +25,15 @@ const Layout: React.FC<IProps> = ({ landing, children }: IProps) => {
             {(landing && <LandingHeader />) || <Header />}
             <main>{children}</main>
             {landing && <LandingFooter />}
+
+            <NextNprogress
+              color="#29D"
+              startPosition={0.3}
+              stopDelayMs={200}
+              height={2}
+              showOnShallow={true}
+              options={{ showSpinner: false }}
+            />
           </SearchContextProvider>
         </AppContextProvider>
       </AppChakraProvider>
