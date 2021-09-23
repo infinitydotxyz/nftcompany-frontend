@@ -67,7 +67,6 @@ export type CardData = {
   imagePreview?: string;
   price?: number;
   inStock?: number;
-  viewInfo?: boolean;
   data?: any;
   tokenAddress?: string;
   tokenId?: string;

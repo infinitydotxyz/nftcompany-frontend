@@ -6,12 +6,11 @@ import styles from './CardList.module.scss';
 
 type Props = {
   data: CardData[];
-  viewInfo?: boolean;
   action?: string;
   showItems?: string[];
   onClickAction?: (item: any, action: string) => void;
 };
-export default function CardList({ data, viewInfo, showItems, action, onClickAction }: Props) {
+export default function CardList({ data, showItems, action, onClickAction }: Props) {
   return (
     <div className={`${styles.cardList}`}>
       {(data || []).map((item) => {
@@ -25,7 +24,6 @@ export default function CardList({ data, viewInfo, showItems, action, onClickAct
             showItems={showItems}
             action={action}
             data={item}
-            viewInfo={viewInfo}
             onClickAction={onClickAction}
           />
         );

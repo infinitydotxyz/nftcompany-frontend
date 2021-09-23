@@ -16,7 +16,7 @@ type Props = {
   [key: string]: any;
 };
 
-function Card({ data, onClickAction, showItems = ['PRICE'], action = '', ...rest }: Props) {
+function Card({ data, onClickAction, showItems = ['PRICE'], action = '' }: Props) {
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
@@ -29,7 +29,7 @@ function Card({ data, onClickAction, showItems = ['PRICE'], action = '', ...rest
   const collectionName = data.collectionName;
   const hasBlueCheck = data.hasBlueCheck;
   return (
-    <div id={`id_${data.id}`} className={styles.card} {...rest}>
+    <div id={`id_${data.id}`} className={styles.card}>
       <div onClick={() => setPreviewModalShowed(true)}>
         <div className={styles.cardPreview}>
           <img src={data.image} alt="Card preview" />
