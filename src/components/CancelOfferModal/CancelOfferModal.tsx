@@ -20,7 +20,7 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     try {
       const seaport = getOpenSeaport();
       const order = await seaport.api.getOrder({
-        maker: user!.account,
+        maker: user?.account,
         id: data.id,
         side: 0 // buy order
       });

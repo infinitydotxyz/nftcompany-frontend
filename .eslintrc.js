@@ -2,7 +2,7 @@ module.exports = {
   extends: [
     'next',
     'next/core-web-vitals',
-    // 'eslint:recommended',
+    // 'plugin:@typescript-eslint/recommended',
     'prettier'
   ],
   globals: {
@@ -17,7 +17,7 @@ module.exports = {
     // jsdom: true,
     JSX: true
   },
-
+  parser: '@typescript-eslint/parser',
   env: {
     node: true
   },

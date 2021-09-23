@@ -4,7 +4,7 @@ import React from 'react';
 // Find icons here (download source is easier to view them all)
 // https://github.com/mui-org/material-ui/tree/master/packages/mui-icons-material/material-icons
 
-export function FilterIcon() {
+export const FilterIcon = (): JSX.Element => {
   return (
     <svg
       fill="#fff"
@@ -20,9 +20,9 @@ export function FilterIcon() {
       </g>
     </svg>
   );
-}
+};
 
-export const ListIcon = (props: object) => (
+export const ListIcon = (props: Record<string, unknown>): JSX.Element => (
   <Icon boxSize={6} viewBox="0 0 24 24" {...props}>
     <g fill="currentColor">
       <path d="M0 0h24v24H0z" fill="none" />
@@ -31,7 +31,7 @@ export const ListIcon = (props: object) => (
   </Icon>
 );
 
-export const ImageIcon = (props: object) => (
+export const ImageIcon = (props: Record<string, unknown>): JSX.Element => (
   <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
     <g fill="currentColor">
       <path d="M0 0h24v24H0V0z" fill="none" />
@@ -40,7 +40,7 @@ export const ImageIcon = (props: object) => (
   </Icon>
 );
 
-export const CartIcon = (props: object) => (
+export const CartIcon = (props: Record<string, unknown>): JSX.Element => (
   <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
     <g fill="currentColor">
       <path d="M0 0h24v24H0V0z" fill="none" />
@@ -49,7 +49,7 @@ export const CartIcon = (props: object) => (
   </Icon>
 );
 
-export const OfferIcon = (props: object) => (
+export const OfferIcon = (props: Record<string, unknown>): JSX.Element => (
   <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
     <g fill="currentColor">
       <path d="M0 0h24v24H0V0z" fill="none" />
@@ -59,7 +59,7 @@ export const OfferIcon = (props: object) => (
   </Icon>
 );
 
-export const ImageSearchIcon = (props: object) => (
+export const ImageSearchIcon = (props: Record<string, unknown>): JSX.Element => (
   <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
     <g fill="currentColor">
       <path d="M0 0h24v24H0V0z" fill="none" />
@@ -68,7 +68,7 @@ export const ImageSearchIcon = (props: object) => (
   </Icon>
 );
 
-export const MoneyIcon = (props: object) => (
+export const MoneyIcon = (props: Record<string, unknown>): JSX.Element => (
   <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
     <g fill="currentColor">
       <path d="M0 0h24v24H0V0z" fill="none" />
@@ -77,7 +77,7 @@ export const MoneyIcon = (props: object) => (
   </Icon>
 );
 
-export const AddCartIcon = (props: object) => (
+export const AddCartIcon = (props: Record<string, unknown>): JSX.Element => (
   <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
     <g fill="currentColor">
       <path d="M0 0h24v24H0V0z" fill="none" />
@@ -86,7 +86,7 @@ export const AddCartIcon = (props: object) => (
   </Icon>
 );
 
-export const ShoppingBagIcon = (props: object) => (
+export const ShoppingBagIcon = (props: Record<string, unknown>): JSX.Element => (
   <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
     <g fill="currentColor">
       <rect fill="none" height="24" width="24" />
@@ -95,7 +95,7 @@ export const ShoppingBagIcon = (props: object) => (
   </Icon>
 );
 
-export const UnderConstructionIcon = (props: object) => (
+export const UnderConstructionIcon = (props: Record<string, unknown>): JSX.Element => (
   <Icon boxSize={200} viewBox="0 0 24 24" {...props}>
     <g fill="currentColor">
       <g>
@@ -113,7 +113,7 @@ export const UnderConstructionIcon = (props: object) => (
   </Icon>
 );
 
-export const SortIcon = (props: object) => (
+export const SortIcon = (props: Record<string, unknown>): JSX.Element => (
   <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
     <g fill="currentColor">
       <path d="M0 0h24v24H0V0z" fill="none" />
