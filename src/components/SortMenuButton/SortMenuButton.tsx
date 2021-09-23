@@ -3,6 +3,7 @@ import { SearchFilter, useSearchContext } from 'hooks/useSearch';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import { MenuItem } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
+import { SortIcon } from 'components/Icons/Icons';
 
 const SortMenuButton = ({}: any) => {
   const { setFilterState, filterState } = useSearchContext();
@@ -14,11 +15,17 @@ const SortMenuButton = ({}: any) => {
 
   return (
     <HoverMenuButton buttonTitle="Sort by price">
-      <MenuItem icon={<StarIcon boxSize={4} />} onClick={() => handleChanges({ ...filterState, sortByPrice: 'DESC' })}>
+      <MenuItem
+        icon={<div style={{ transform: 'scaleX(-1)' }}>{<SortIcon />}</div>}
+        onClick={() => handleChanges({ ...filterState, sortByPrice: 'DESC' })}
+      >
         Highest price
       </MenuItem>
 
-      <MenuItem icon={<StarIcon boxSize={4} />} onClick={() => handleChanges({ ...filterState, sortByPrice: 'ASC' })}>
+      <MenuItem
+        icon={<div style={{ transform: 'scaleY(-1)' }}>{<SortIcon />}</div>}
+        onClick={() => handleChanges({ ...filterState, sortByPrice: 'ASC' })}
+      >
         Lowest price
       </MenuItem>
     </HoverMenuButton>
