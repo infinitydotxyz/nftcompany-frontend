@@ -4,7 +4,7 @@ import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import { MenuItem } from '@chakra-ui/react';
 import { SortIcon } from 'components/Icons/Icons';
 
-const SortMenuButton = ({}: any) => {
+const SortMenuButton = () => {
   const { setFilterState, filterState } = useSearchContext();
 
   const handleChanges = async (changes: SearchFilter) => {

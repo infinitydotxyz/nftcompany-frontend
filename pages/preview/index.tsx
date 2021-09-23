@@ -47,8 +47,6 @@ export default function Preview() {
     switch (tabIndex) {
       case 1:
         return 'Preview';
-        break;
-
       default:
         break;
     }
