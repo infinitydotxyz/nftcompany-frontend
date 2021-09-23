@@ -46,16 +46,15 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void; has
     let startAfterPrice = '';
     let previousList: CardData[] = [];
 
+    // always get a fresh search
+    const isTokenIdSearch = newListType.startsWith('token-id');
+
     // are we getting the next page?
-    if (listType === newListType && list?.length > 0) {
+    if (!isTokenIdSearch && listType === newListType && list?.length > 0) {
       previousList = list;
 
       startAfter = getLastItemCreatedAt(list);
       startAfterPrice = getLastItemBasePrice(list);
-    } else {
-      setHasMore(true);
-
-      console.log('fresh list');
     }
 
     setListType(newListType);
@@ -70,6 +69,8 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void; has
 
     if (result.length < PAGE_SIZE) {
       setHasMore(false);
+    } else {
+      setHasMore(true);
     }
 
     setList([...previousList, ...result]);
@@ -85,9 +86,9 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void; has
       if (searchContext.searchState.collectionName) {
         fetchList('collection-name:' + hash);
       } else if (searchContext.searchState.selectedOption) {
-        fetchList('selected-option:' + hash);
+        fetchList('token-id:' + hash);
       } else {
-        fetchList('normal' + hash);
+        fetchList('normal:' + hash);
       }
     };
 
@@ -101,7 +102,6 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void; has
   const loadNext = () => {
     if (hasData() && hasMore) {
       console.log('loadNext');
-      console.log(listType);
 
       fetchList(listType);
     } else {
@@ -117,7 +117,7 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void; has
   let filteredList = list;
 
   // don't filter if we search for that name that you might own
-  if (!listType.startsWith('selected-option')) {
+  if (!listType.startsWith('token-id')) {
     if (userAccount && list && list.length > 0) {
       filteredList = list.filter((item) => {
         // opensea lowercases their account strings, so compare to lower
