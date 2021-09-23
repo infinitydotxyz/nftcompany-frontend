@@ -1,5 +1,6 @@
 import React from 'react';
 import { InView } from 'react-intersection-observer';
+import styles from './ScrollLoader.module.scss';
 
 const ScrollLoaderElement = ({ inView, ref, onFetchMore, data, currentPage }: any) => {
   React.useEffect(() => {
@@ -7,7 +8,9 @@ const ScrollLoaderElement = ({ inView, ref, onFetchMore, data, currentPage }: an
       onFetchMore();
     }
   }, [inView]);
-  return <div ref={ref}>&nbsp;</div>; // render a placeholder to check if it's visible (inView) or not.
+
+  // render a placeholder to check if it's visible (inView) or not.
+  return <div ref={ref} className={styles.element}></div>;
 };
 
 type ScrollLoaderProps = {

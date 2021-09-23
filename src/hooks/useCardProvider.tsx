@@ -6,7 +6,8 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { getListings, TypeAheadOption } from 'services/Listings.service';
 import { getLastItemBasePrice, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
 
-const PAGE_SIZE = ITEMS_PER_PAGE; // 5;
+const PAGE_SIZE = ITEMS_PER_PAGE;
+// const PAGE_SIZE = 7;
 
 const hashString = (s: string) => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
 
