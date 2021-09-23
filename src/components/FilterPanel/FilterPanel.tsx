@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import NiceSelect from 'components/NiceSelect/NiceSelect';
 import styles from './FilterPanel.module.css';
 import PriceSlider from './PriceSlider';
 import { Box } from '@chakra-ui/react';
@@ -67,7 +66,7 @@ const FilterPanel = ({ isExpanded, setExpanded, onChangeFilter }: Props) => {
               </span> */}
 
               <span className={styles.item}>
-                <NiceSelect
+                {/* <NiceSelect
                   placeholder="Sort by price"
                   id="filter2"
                   value={filterState?.sortByPrice}
@@ -84,7 +83,7 @@ const FilterPanel = ({ isExpanded, setExpanded, onChangeFilter }: Props) => {
                   <option key="ASC" value="ASC" data-value={'ASC'} data-selected={filterState?.sortByPrice === 'ASC'}>
                     Lowest price
                   </option>
-                </NiceSelect>
+                </NiceSelect> */}
               </span>
 
               <Box w="300px" ml="5" display="flex" alignItems="center">

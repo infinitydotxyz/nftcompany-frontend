@@ -8,6 +8,8 @@ import { getLastItemBasePrice, getLastItemCreatedAt } from 'components/FetchMore
 
 const PAGE_SIZE = 5;
 
+const hashString = (s: string) => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
+
 const fetchData = async (
   filter: SearchFilter,
   startAfterMillis: string,
@@ -29,10 +31,11 @@ const fetchData = async (
   return result;
 };
 
-export function useCardProvider(): { list: CardData[]; loadNext: () => void } {
+export function useCardProvider(): { list: CardData[]; loadNext: () => void; hasData: boolean } {
   const [list, setList] = useState<CardData[]>([]);
   const [listType, setListType] = useState('');
   const [hasMore, setHasMore] = useState(true);
+  const [hasData, setHasData] = useState(false);
 
   const searchContext = useSearchContext();
   const { user } = useAppContext();
@@ -52,6 +55,7 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void } {
       startAfterPrice = getLastItemBasePrice(list);
     } else {
       setHasMore(true);
+      setHasData(false);
 
       console.log('fresh list');
     }
@@ -79,27 +83,22 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void } {
     }
 
     setList([...previousList, ...result]);
+    setHasData(true);
   };
 
   useEffect(() => {
     const loadData = async () => {
+      let hash = searchContext.searchState.collectionName;
+      hash += JSON.stringify(searchContext.filterState);
+      hash += JSON.stringify(searchContext.searchState.selectedOption);
+      hash = hashString(hash).toString();
+
       if (searchContext.searchState.collectionName) {
-        console.log('getListingsByCollectionName');
-        console.log(searchContext.searchState.collectionName);
-        console.log(searchContext.filterState);
-
-        fetchList('collection-name');
+        fetchList('collection-name:' + hash);
       } else if (searchContext.searchState.selectedOption) {
-        console.log('getListingById');
-        console.log(searchContext.searchState.selectedOption.id);
-        console.log(searchContext.searchState.selectedOption.address);
-
-        fetchList('selected-option');
+        fetchList('selected-option:' + hash);
       } else {
-        console.log('no search, just fetch');
-        console.log(searchContext.filterState);
-
-        fetchList('normal');
+        fetchList('normal' + hash);
       }
     };
 
@@ -107,15 +106,19 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void } {
   }, [searchContext, userAccount]);
 
   const loadNext = () => {
-    console.log('loadNext');
-    console.log(listType);
+    if (hasData && hasMore) {
+      console.log('loadNext');
+      console.log(listType);
 
-    if (hasMore) {
       fetchList(listType);
     } else {
-      console.log('ScrollLoader no more data');
+      if (!hasData) {
+        console.log('ScrollLoader too early to load next, no data');
+      } else {
+        console.log('ScrollLoader no more data');
+      }
     }
   };
 
-  return { list, loadNext };
+  return { list, loadNext, hasData };
 }

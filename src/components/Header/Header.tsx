@@ -97,6 +97,7 @@ const Header = () => {
   if (user?.account) {
     accountItems = [
       <AddressMenuItem key="AddressMenuItem" user={user} />,
+      <MenuDivider key="kdd" />,
 
       <MenuItem key="Rewards" icon={<StarIcon boxSize={4} />} onClick={() => router.push('/rewards')}>
         Rewards
@@ -193,46 +194,38 @@ const Header = () => {
             <ExploreSearch />
           </Box>
 
-          <Box pr="4">
-            <div className={styles.links}>
-              <div className={styles.showExplore}>
-                <div key="Explore" className={styles.exploreButton} onClick={() => router.push('/explore')}>
-                  Explore
-                </div>
-              </div>
-
-              <div className={styles.showLargeNav}>
-                <div className={styles.linksButtons}>
-                  <HoverMenuButton buttonTitle="NFTs">{ntfItems}</HoverMenuButton>
-
-                  <HoverMenuButton buttonTitle="Offers">{offerItems}</HoverMenuButton>
-
-                  <HoverMenuButton buttonTitle="Activity">{transactionItems}</HoverMenuButton>
-                </div>
-              </div>
-
-              <div className={styles.showMediumNav}>
-                <HoverMenuButton buttonTitle="NFTs">
-                  {[
-                    ...ntfItems,
-                    <MenuDivider key="d1" />,
-                    ...offerItems,
-                    <MenuDivider key="d2" />,
-                    ...transactionItems
-                  ]}
-                </HoverMenuButton>
-              </div>
-
-              <div className={styles.showConnectButton}>{accountButton}</div>
-
-              <div className={styles.showMobileMenu}>
-                {/* using Image() put space at the bottom */}
-                <HoverMenuButton buttonContent={<img alt="menu" src={MoreVert.src} height={32} width={32} />}>
-                  {mobileNavMenu}
-                </HoverMenuButton>
+          <div className={styles.links}>
+            <div className={styles.showExplore}>
+              <div key="Explore" className={styles.exploreButton} onClick={() => router.push('/explore')}>
+                Explore
               </div>
             </div>
-          </Box>
+
+            <div className={styles.showLargeNav}>
+              <div className={styles.linksButtons}>
+                <HoverMenuButton buttonTitle="NFTs">{ntfItems}</HoverMenuButton>
+
+                <HoverMenuButton buttonTitle="Offers">{offerItems}</HoverMenuButton>
+
+                <HoverMenuButton buttonTitle="Activity">{transactionItems}</HoverMenuButton>
+              </div>
+            </div>
+
+            <div className={styles.showMediumNav}>
+              <HoverMenuButton buttonTitle="NFTs">
+                {[...ntfItems, <MenuDivider key="d1" />, ...offerItems, <MenuDivider key="d2" />, ...transactionItems]}
+              </HoverMenuButton>
+            </div>
+
+            <div className={styles.showConnectButton}>{accountButton}</div>
+
+            <div className={styles.showMobileMenu}>
+              {/* using Image() put space at the bottom */}
+              <HoverMenuButton buttonContent={<img alt="menu" src={MoreVert.src} height={32} width={32} />}>
+                {mobileNavMenu}
+              </HoverMenuButton>
+            </div>
+          </div>
         </div>
       </Box>
 
