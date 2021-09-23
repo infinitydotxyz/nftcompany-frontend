@@ -166,7 +166,7 @@ const Header = () => {
       <Box className={styles.hdf}>
         <div className="page-container-header">
           <div className={styles.showLargeLogo}>
-            <Link href="/" passHref>
+            <Link href="/explore" passHref>
               <img
                 style={{ flex: '0 1 auto' }}
                 className="can-click"
@@ -177,7 +177,7 @@ const Header = () => {
             </Link>
           </div>
           <div className={styles.showSmallLogo}>
-            <Link href="/" passHref>
+            <Link href="/explore" passHref>
               <img
                 style={{ flex: '0 1 auto' }}
                 className="can-click"
