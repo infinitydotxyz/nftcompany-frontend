@@ -20,6 +20,9 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
   const [data, setData] = React.useState([]);
 
   const fetchData = async () => {
+    if (!user || !user?.account) {
+      return;
+    }
     setIsLoading(true);
     const { result, error } = await apiGet(`/u/${user?.account}/wyvern/v1/txns`);
     if (error) {

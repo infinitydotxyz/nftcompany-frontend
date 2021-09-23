@@ -6,7 +6,7 @@ import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore, NoData } from 'components/FetchMore/FetchMore';
+import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from '../../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
@@ -70,6 +70,7 @@ export default function MyNFTs() {
           </div>
 
           <div className={styles.main}>
+            <PleaseConnectWallet account={user?.account} />
             <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
 

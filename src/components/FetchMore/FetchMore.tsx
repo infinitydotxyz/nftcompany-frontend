@@ -57,3 +57,10 @@ export const NoData = ({
   }
   return null;
 };
+
+export const PleaseConnectWallet = ({ account } : { account: string | undefined }) => {
+  if (account) {
+    return null;
+  }
+  return <Box mt={4}>Please connect to your MetaMask wallet.</Box>
+}

@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore, getLastItemBasePrice, getLastItemCreatedAt, NoData } from 'components/FetchMore/FetchMore';
+import { FetchMore, getLastItemBasePrice, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import CardList from 'components/Card/CardList';
 import { getListingById, getListings, getListingsByCollectionName, orderToCardData } from 'services/Listings.service';
 import { SearchFilter, useSearchContext } from 'hooks/useSearch';

@@ -6,7 +6,7 @@ import CardList from 'components/Card/CardList';
 import { apiGet } from 'utils/apiUtil';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore, getLastItemCreatedAt, NoData } from 'components/FetchMore/FetchMore';
+import { FetchMore, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import { ordersToCardData } from 'services/Listings.service';
 import styles from '../../styles/Dashboard.module.scss';
@@ -75,6 +75,7 @@ export default function ListNFTs() {
           </div>
 
           <div className={styles.main}>
+            <PleaseConnectWallet account={user?.account} />
             <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
 
