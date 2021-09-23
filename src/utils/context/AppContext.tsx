@@ -21,8 +21,6 @@ export type AppContextType = {
 
 const AppContext = React.createContext<AppContextType | null>(null);
 
-let lastError = '';
-
 export function AppContextProvider({ children }: any) {
   const [user, setUser] = React.useState<User | null>(null);
 

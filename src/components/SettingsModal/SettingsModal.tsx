@@ -26,6 +26,8 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
       const response = await apiPost(`/u/${user?.account}/setEmail`, null, { email: email });
 
       if (response.status === 200) {
+        showAppMessage(`Email updated. Check your email to verify.`);
+
         onClose();
       } else {
         showAppError('An error occured');
