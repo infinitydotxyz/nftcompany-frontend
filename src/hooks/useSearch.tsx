@@ -19,6 +19,7 @@ export interface Filter {
   startAfter?: number;
   startAfterPrice?: number;
   limit?: number;
+  user?: string;
 }
 export const defaultExploreSearchState: ExploreSearchState = {
   isLoading: false,
@@ -33,7 +34,7 @@ export const defaultFilterState: Filter = {
   sortByLikes: '',
   sortByPrice: '',
   priceMin: 0,
-  priceMax: 1000
+  priceMax: 10000
 };
 
 // ExploreSearch
