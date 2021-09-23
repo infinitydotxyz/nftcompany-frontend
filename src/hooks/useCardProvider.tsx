@@ -31,11 +31,10 @@ const fetchData = async (
   return result;
 };
 
-export function useCardProvider(): { list: CardData[]; loadNext: () => void; hasData: boolean } {
+export function useCardProvider(): { list: CardData[]; loadNext: () => void; hasData: () => boolean } {
   const [list, setList] = useState<CardData[]>([]);
   const [listType, setListType] = useState('');
   const [hasMore, setHasMore] = useState(true);
-  const [hasData, setHasData] = useState(false);
 
   const searchContext = useSearchContext();
   const { user } = useAppContext();
@@ -55,14 +54,13 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void; has
       startAfterPrice = getLastItemBasePrice(list);
     } else {
       setHasMore(true);
-      setHasData(false);
 
       console.log('fresh list');
     }
 
     setListType(newListType);
 
-    let result = await fetchData(
+    const result = await fetchData(
       searchContext.filterState,
       startAfter,
       startAfterPrice,
@@ -74,16 +72,7 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void; has
       setHasMore(false);
     }
 
-    // remove any owned by the current user
-    if (userAccount && result && result.length > 0) {
-      result = result.filter((item) => {
-        // opensea lowercases their account strings, so compare to lower
-        return item.owner?.toLowerCase() !== userAccount.toLowerCase();
-      });
-    }
-
     setList([...previousList, ...result]);
-    setHasData(true);
   };
 
   useEffect(() => {
@@ -105,14 +94,18 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void; has
     loadData();
   }, [searchContext, userAccount]);
 
+  const hasData = () => {
+    return list.length > 0;
+  };
+
   const loadNext = () => {
-    if (hasData && hasMore) {
+    if (hasData() && hasMore) {
       console.log('loadNext');
       console.log(listType);
 
       fetchList(listType);
     } else {
-      if (!hasData) {
+      if (!hasData()) {
         console.log('ScrollLoader too early to load next, no data');
       } else {
         console.log('ScrollLoader no more data');
@@ -120,5 +113,15 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void; has
     }
   };
 
-  return { list, loadNext, hasData };
+  // remove any owned by the current user
+  let filteredList = list;
+
+  if (userAccount && list && list.length > 0) {
+    filteredList = list.filter((item) => {
+      // opensea lowercases their account strings, so compare to lower
+      return item.owner?.toLowerCase() !== userAccount.toLowerCase();
+    });
+  }
+
+  return { list: filteredList, loadNext, hasData };
 }

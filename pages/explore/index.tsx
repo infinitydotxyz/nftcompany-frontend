@@ -33,11 +33,11 @@ export default function ExplorePage() {
           </div>
 
           <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={cardProvider.list} />
-          {cardProvider.list.length === 0 && isFetching && <LoadingCardList />}
+          {!cardProvider.hasData() && isFetching && <LoadingCardList />}
 
           <CardList showItems={['PRICE']} data={cardProvider.list} action="BUY_NFT" />
 
-          {cardProvider.hasData && (
+          {cardProvider.hasData() && (
             <ScrollLoader
               onFetchMore={async () => {
                 setDataLoaded(false);
