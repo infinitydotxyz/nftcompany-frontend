@@ -2,6 +2,7 @@ import React from 'react';
 import { InView } from 'react-intersection-observer';
 import { Box } from '@chakra-ui/layout';
 import { ITEMS_PER_PAGE } from 'utils/constants';
+import { CardData } from 'types/Nft.interface';
 
 const FetchMoreElement = ({ inView, ref, onFetchMore, data, currentPage }: any) => {
   // console.log('inView', ' ', inView);
@@ -37,11 +38,11 @@ export const FetchMore = ({ onFetchMore, data, currentPage }: FetchMoreProps) =>
   );
 };
 
-export const getLastItemCreatedAt = (data: any[]) =>
-  data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt : '';
+export const getLastItemCreatedAt = (data: CardData[]): string =>
+  data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt ?? '' : '';
 
-export const getLastItemBasePrice = (data: any[]) =>
-  data?.length > 0 ? data[data.length - 1]?.metadata?.basePriceInEth : '';
+export const getLastItemBasePrice = (data: CardData[]): string =>
+  data?.length > 0 ? data[data.length - 1]?.metadata?.basePriceInEth ?? '' : '';
 
 export const NoData = ({
   isFetching,
@@ -58,9 +59,9 @@ export const NoData = ({
   return null;
 };
 
-export const PleaseConnectWallet = ({ account } : { account: string | undefined }) => {
+export const PleaseConnectWallet = ({ account }: { account: string | undefined }) => {
   if (account) {
     return null;
   }
-  return <Box mt={4}>Please connect to your MetaMask wallet.</Box>
-}
+  return <Box mt={4}>Please connect to your MetaMask wallet.</Box>;
+};

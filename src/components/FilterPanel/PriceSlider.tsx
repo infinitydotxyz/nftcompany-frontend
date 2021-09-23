@@ -17,12 +17,12 @@ const PriceSlider = () => {
   const [sliderMin, setSliderMin] = useState(0);
   const [sliderMax, setSliderMax] = useState(1000);
   useEffect(() => {
-    if (filterState.priceMin !== sliderMin) {
-      setSliderMin(defaultFilterState.priceMin);
-    }
-    if (filterState.priceMax !== sliderMax) {
-      setSliderMax(defaultFilterState.priceMax);
-    }
+    // if (filterState.priceMin !== sliderMin) {
+    //   setSliderMin(defaultFilterState.priceMin);
+    // }
+    // if (filterState.priceMax !== sliderMax) {
+    //   setSliderMax(defaultFilterState.priceMax);
+    // }
   }, [filterState.priceMin, filterState.priceMax]);
   return (
     <>

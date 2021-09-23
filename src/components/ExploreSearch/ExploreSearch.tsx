@@ -30,14 +30,12 @@ const ExploreSearch = () => {
             if (selectedOptions[0]?.type === 'Collection') {
               setSearchState({
                 ...searchState,
-                dataList: [],
-                selectedOption: null,
+                selectedOption: undefined,
                 collectionName: selectedOptions[0].name
               });
             } else {
               setSearchState({
                 ...searchState,
-                dataList: [],
                 selectedOption: selectedOptions[0],
                 collectionName: ''
               });
@@ -82,7 +80,7 @@ const ExploreSearch = () => {
           cursor="pointer"
           onClick={() => {
             typeaheadRef.current.clear();
-            setSearchState({ ...searchState, collectionName: '', selectedOption: null });
+            setSearchState({ ...searchState, collectionName: '', selectedOption: undefined });
             setFilterState(defaultFilterState);
           }}
         />

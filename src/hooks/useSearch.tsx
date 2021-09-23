@@ -2,40 +2,54 @@ import { CardData } from 'types/Nft.interface';
 import React, { useContext, useState } from 'react';
 import { TypeAheadOption } from 'services/Listings.service';
 
-export interface SearchState {
+export type SearchState = {
   isLoading: boolean;
   options: TypeAheadOption[];
   query: string;
   collectionName: string;
-  dataList: CardData[];
-  selectedOption: TypeAheadOption | null;
-}
+  selectedOption: TypeAheadOption | undefined;
+};
 
-export interface SearchFilter {
-  sortByLikes?: string;
-  sortByPrice?: string;
-  priceMin: number;
-  priceMax: number;
-  startAfter?: number;
-  startAfterPrice?: number;
-  limit?: number;
-  user?: string;
-}
+export type SearchFilter = {
+  sortByLikes: string;
+  sortByPrice: string;
+  priceMin: string;
+  priceMax: string;
+  startAfterMillis: string;
+  startAfterPrice: string;
+  limit: string;
+  user: string;
+  id: string;
+  tokenId: string;
+  tokenAddress: string;
+  collectionName: string;
+  sortByPriceDirection: string;
+  startAfterUser: string;
+};
 
 export const defaultSearchState: SearchState = {
   isLoading: false,
   options: [],
   query: '',
   collectionName: '',
-  dataList: [],
-  selectedOption: null
+  selectedOption: undefined
 };
 
 export const defaultFilterState: SearchFilter = {
   sortByLikes: '',
   sortByPrice: '',
-  priceMin: 0,
-  priceMax: 1000000
+  priceMin: '',
+  priceMax: '',
+  collectionName: '',
+  limit: '',
+  sortByPriceDirection: '',
+  startAfterMillis: '',
+  startAfterPrice: '',
+  startAfterUser: '',
+  id: '',
+  user: '',
+  tokenAddress: '',
+  tokenId: ''
 };
 
 const SearchContext = React.createContext({} as any);

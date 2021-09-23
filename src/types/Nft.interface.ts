@@ -39,6 +39,8 @@ export interface Metadata {
   hasBonusReward: boolean;
   schema: string;
   hasBlueCheck: boolean;
+  createdAt: string;
+  basePriceInEth: string;
 }
 
 export interface Asset {

@@ -5,10 +5,13 @@ import { SearchFilter } from 'hooks/useSearch';
 
 export const getListings = async (listingFilter?: SearchFilter): Promise<CardData[]> => {
   const path = `/listings/`;
+
   const { result, error }: { result: Orders; error: any } = (await apiGet(path, listingFilter)) as any;
+
   if (error !== undefined) {
     return [];
   }
+
   return ordersToCardData(result.listings);
 };
 
