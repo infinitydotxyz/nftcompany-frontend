@@ -6,7 +6,7 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { getListings, TypeAheadOption } from 'services/Listings.service';
 import { getLastItemBasePrice, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = ITEMS_PER_PAGE; // 5;
 
 const hashString = (s: string) => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
 
@@ -22,7 +22,7 @@ const fetchData = async (
     startAfterMillis: startAfterMillis,
     startAfterPrice: startAfterPrice,
     limit: PAGE_SIZE.toString(),
-    id: typeAhead?.id ?? '',
+    tokenId: typeAhead?.id ?? '',
     tokenAddress: typeAhead?.address ?? '',
     collectionName: collectionName,
     priceMax: collectionName?.length > 0 ? '1000000' : '' // SNG
@@ -116,11 +116,14 @@ export function useCardProvider(): { list: CardData[]; loadNext: () => void; has
   // remove any owned by the current user
   let filteredList = list;
 
-  if (userAccount && list && list.length > 0) {
-    filteredList = list.filter((item) => {
-      // opensea lowercases their account strings, so compare to lower
-      return item.owner?.toLowerCase() !== userAccount.toLowerCase();
-    });
+  // don't filter if we search for that name that you might own
+  if (!listType.startsWith('selected-option')) {
+    if (userAccount && list && list.length > 0) {
+      filteredList = list.filter((item) => {
+        // opensea lowercases their account strings, so compare to lower
+        return item.owner?.toLowerCase() !== userAccount.toLowerCase();
+      });
+    }
   }
 
   return { list: filteredList, loadNext, hasData };
