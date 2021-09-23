@@ -1,9 +1,9 @@
 import { CardData, Order, Orders } from 'types/Nft.interface';
 import { weiToEther } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
-import { Filter } from 'hooks/useSearch';
+import { SearchFilter } from 'hooks/useSearch';
 
-export const getListings = async (listingFilter?: Filter): Promise<CardData[]> => {
+export const getListings = async (listingFilter?: SearchFilter): Promise<CardData[]> => {
   const path = `/listings/`;
   const { result, error }: { result: Orders; error: any } = (await apiGet(path, listingFilter)) as any;
   if (error !== undefined) {
@@ -74,7 +74,7 @@ export const getListingById = async (id?: string, address?: string): Promise<Ord
 
 export const getListingsByCollectionName = async (
   collectionName: string,
-  listingFilter?: Filter
+  listingFilter?: SearchFilter
 ): Promise<CardData[]> => {
   const path = `/listingsByCollectionName/`;
   const { result, error }: { result: Order[]; error: any } = (await apiGet(path, {

@@ -1,16 +1,16 @@
 import React from 'react';
 import NiceSelect from 'components/NiceSelect/NiceSelect';
 import styles from './SortMenuButton.module.scss';
-import { Filter, useAppSearchContext } from 'hooks/useSearch';
+import { SearchFilter, useSearchContext } from 'hooks/useSearch';
 
 type Props = {
-  onChangeFilter: (updatedFilter: Filter) => {};
+  onChangeFilter: (updatedFilter: SearchFilter) => {};
 };
 
 const SortMenuButton = ({ onChangeFilter }: Props) => {
-  const { setFilterState, filterState } = useAppSearchContext();
+  const { setFilterState, filterState } = useSearchContext();
 
-  const handleChanges = async (changes: Filter) => {
+  const handleChanges = async (changes: SearchFilter) => {
     const updatedFilter = { ...filterState, ...changes };
     setFilterState(updatedFilter);
     onChangeFilter(updatedFilter);

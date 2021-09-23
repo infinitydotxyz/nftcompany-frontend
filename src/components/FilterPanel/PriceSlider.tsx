@@ -1,4 +1,4 @@
-import { defaultFilterState, useAppSearchContext } from 'hooks/useSearch';
+import { defaultFilterState, useSearchContext } from 'hooks/useSearch';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { useEffect, useState } from 'react';
@@ -13,7 +13,7 @@ const getMaxMarker = (maxPrice: number) => {
   }
 };
 const PriceSlider = () => {
-  const { filterState, setFilterState } = useAppSearchContext();
+  const { filterState, setFilterState } = useSearchContext();
   const [sliderMin, setSliderMin] = useState(0);
   const [sliderMax, setSliderMax] = useState(1000);
   useEffect(() => {

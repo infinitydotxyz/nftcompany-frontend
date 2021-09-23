@@ -4,23 +4,23 @@ import NiceSelect from 'components/NiceSelect/NiceSelect';
 import styles from './FilterPanel.module.css';
 import PriceSlider from './PriceSlider';
 import { Box } from '@chakra-ui/react';
-import { Filter, useAppSearchContext } from 'hooks/useSearch';
+import { SearchFilter, useSearchContext } from 'hooks/useSearch';
 
 type Props = {
   isExpanded: boolean;
   setExpanded?: any;
-  onChangeFilter: (updatedFilter: Filter) => {};
-  exploreSearchState: any;
+  onChangeFilter: (updatedFilter: SearchFilter) => {};
+  searchState: any;
 };
 
 const FilterPanel = ({ isExpanded, setExpanded, onChangeFilter }: Props) => {
-  const handleChanges = async (changes: Filter) => {
+  const handleChanges = async (changes: SearchFilter) => {
     const updatedFilter = { ...filterState, ...changes };
     setFilterState(updatedFilter);
     onChangeFilter(updatedFilter);
   };
 
-  const { setFilterState, filterState } = useAppSearchContext();
+  const { setFilterState, filterState } = useSearchContext();
 
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
   // them in and out while also only rendering the contents of open accordions

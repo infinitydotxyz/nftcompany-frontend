@@ -3,18 +3,18 @@ import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { getTypeAheadOptions, TypeAheadOption } from 'services/Listings.service';
 import { CloseIcon } from '@chakra-ui/icons';
 import { Box } from '@chakra-ui/react';
-import { defaultFilterState, useAppSearchContext } from 'hooks/useSearch';
+import { defaultFilterState, useSearchContext } from 'hooks/useSearch';
 import { useRouter } from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import styles from './ExploreSearch.module.scss';
 
 const ExploreSearch = () => {
-  const { exploreSearchState, setExploreSearchState, setFilterState } = useAppSearchContext();
+  const { searchState, setSearchState, setFilterState } = useSearchContext();
   const typeaheadRef = useRef<any>();
   const handleSearch = async (query: string) => {
     const results = await getTypeAheadOptions({ startsWith: query });
-    setExploreSearchState({
-      ...exploreSearchState,
+    setSearchState({
+      ...searchState,
       isLoading: false,
       options: [...results.collectionNames, ...results.nftNames],
       query
@@ -28,16 +28,16 @@ const ExploreSearch = () => {
           id="explore-typeahead"
           onChange={(selectedOptions: TypeAheadOption[]) => {
             if (selectedOptions[0]?.type === 'Collection') {
-              setExploreSearchState({
-                ...exploreSearchState,
-                listedNfts: [],
+              setSearchState({
+                ...searchState,
+                dataList: [],
                 selectedOption: null,
                 collectionName: selectedOptions[0].name
               });
             } else {
-              setExploreSearchState({
-                ...exploreSearchState,
-                listedNfts: [],
+              setSearchState({
+                ...searchState,
+                dataList: [],
                 selectedOption: selectedOptions[0],
                 collectionName: ''
               });
@@ -51,9 +51,9 @@ const ExploreSearch = () => {
           minLength={1}
           filterBy={() => true}
           labelKey={(option) => option.name}
-          isLoading={exploreSearchState.isLoading}
+          isLoading={searchState.isLoading}
           onSearch={handleSearch}
-          options={exploreSearchState.options}
+          options={searchState.options}
           placeholder="Search items..."
           renderMenuItemChildren={(option) => (
             <Fragment>
@@ -74,7 +74,7 @@ const ExploreSearch = () => {
           )}
         ></AsyncTypeahead>
       </Box>
-      {(exploreSearchState.collectionName || exploreSearchState.selectedOption) && (
+      {(searchState.collectionName || searchState.selectedOption) && (
         <CloseIcon
           color="gray.400"
           m="auto"
@@ -82,7 +82,7 @@ const ExploreSearch = () => {
           cursor="pointer"
           onClick={() => {
             typeaheadRef.current.clear();
-            setExploreSearchState({ ...exploreSearchState, collectionName: '', selectedOption: null });
+            setSearchState({ ...searchState, collectionName: '', selectedOption: null });
             setFilterState(defaultFilterState);
           }}
         />

@@ -2,16 +2,16 @@ import { CardData } from 'types/Nft.interface';
 import React, { useContext, useState } from 'react';
 import { TypeAheadOption } from 'services/Listings.service';
 
-export interface ExploreSearchState {
+export interface SearchState {
   isLoading: boolean;
   options: TypeAheadOption[];
   query: string;
   collectionName: string;
-  listedNfts: CardData[];
+  dataList: CardData[];
   selectedOption: TypeAheadOption | null;
 }
 
-export interface Filter {
+export interface SearchFilter {
   sortByLikes?: string;
   sortByPrice?: string;
   priceMin: number;
@@ -21,41 +21,39 @@ export interface Filter {
   limit?: number;
   user?: string;
 }
-export const defaultExploreSearchState: ExploreSearchState = {
+
+export const defaultSearchState: SearchState = {
   isLoading: false,
   options: [],
   query: '',
   collectionName: '',
-  listedNfts: [],
+  dataList: [],
   selectedOption: null
 };
 
-export const defaultFilterState: Filter = {
+export const defaultFilterState: SearchFilter = {
   sortByLikes: '',
   sortByPrice: '',
   priceMin: 0,
-  priceMax: 10000
+  priceMax: 1000000
 };
 
-// ExploreSearch
-const AppSearchContext = React.createContext({} as any);
+const SearchContext = React.createContext({} as any);
 
-export function useAppSearchContext(): {
-  exploreSearchState: ExploreSearchState;
-  filterState: Filter;
-  setExploreSearchState: (state: ExploreSearchState) => void;
-  setFilterState: (state: Filter) => void;
+export function useSearchContext(): {
+  searchState: SearchState;
+  filterState: SearchFilter;
+  setSearchState: (state: SearchState) => void;
+  setFilterState: (state: SearchFilter) => void;
 } {
-  return useContext(AppSearchContext);
+  return useContext(SearchContext);
 }
 
-export function FilterContextProvider({ children }: any) {
-  const [exploreSearchState, setExploreSearchState] = useState<ExploreSearchState>(defaultExploreSearchState);
-  const [filterState, setFilterState] = useState<Filter>(defaultFilterState);
+export function SearchContextProvider({ children }: any) {
+  const [searchState, setSearchState] = useState<SearchState>(defaultSearchState);
+  const [filterState, setFilterState] = useState<SearchFilter>(defaultFilterState);
 
-  const value = { exploreSearchState, filterState, setExploreSearchState, setFilterState };
+  const value = { searchState, filterState, setSearchState, setFilterState };
 
-  return <AppSearchContext.Provider value={value}>{children}</AppSearchContext.Provider>;
+  return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;
 }
-
-export const FilterContext = React.createContext({});

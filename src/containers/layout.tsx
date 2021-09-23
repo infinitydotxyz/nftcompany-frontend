@@ -1,5 +1,5 @@
 import React from 'react';
-import { FilterContext, FilterContextProvider } from '../hooks/useSearch';
+import { SearchContextProvider } from '../hooks/useSearch';
 import { AppContextProvider } from 'utils/context/AppContext';
 import { AppChakraProvider } from 'utils/themeUtil';
 import LandingHeader from './LandingHeader';
@@ -20,13 +20,11 @@ const Layout: React.FC<IProps> = ({ landing, children }: IProps) => {
     <>
       <AppChakraProvider>
         <AppContextProvider>
-          <FilterContextProvider>
-            <FilterContext.Provider value={{ filter, setFilter }}>
-              {(landing && <LandingHeader />) || <Header />}
-              <main>{children}</main>
-              {landing && <LandingFooter />}
-            </FilterContext.Provider>
-          </FilterContextProvider>
+          <SearchContextProvider>
+            {(landing && <LandingHeader />) || <Header />}
+            <main>{children}</main>
+            {landing && <LandingFooter />}
+          </SearchContextProvider>
         </AppContextProvider>
       </AppChakraProvider>
     </>
