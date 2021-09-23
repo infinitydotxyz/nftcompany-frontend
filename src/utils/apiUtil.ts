@@ -181,7 +181,7 @@ export const apiGet = async (path: string, query?: any) => {
     const { data, status } = await axiosApi({
       url: `${API_BASE}${path}${queryStr}`,
       method: 'GET',
-      headers: await getAuthHeaders()
+      headers: path.indexOf('/u/') >= 0 ? await getAuthHeaders() : {}
     });
     return { result: data, status };
   } catch (err: any) {

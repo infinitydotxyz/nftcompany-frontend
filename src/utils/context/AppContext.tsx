@@ -29,30 +29,30 @@ export function AppContextProvider({ children }: any) {
   const showAppError = (message: string) => toast.error(message);
   const showAppMessage = (message: string) => toast.info(message);
 
-  const connectMetaMask = async () => {
-    // show MetaMask's errors:
-    const onError = (error: any) => {
-      const errorMsg = error?.message;
-      if (errorMsg === lastError) {
-        return; // to avoid showing the same error message so many times.
-      }
-      if (errorMsg.indexOf('The method does not exist') >= 0) {
-        return; // TODO: ignore this error for now.
-      }
-      lastError = errorMsg;
-      toast.error(`MetaMask RPC Error: ${errorMsg}` || 'MetaMask RPC Error');
-    };
+  // const connectMetaMask = async () => {
+  //   // show MetaMask's errors:
+  //   const onError = (error: any) => {
+  //     const errorMsg = error?.message;
+  //     if (errorMsg === lastError) {
+  //       return; // to avoid showing the same error message so many times.
+  //     }
+  //     if (errorMsg.indexOf('The method does not exist') >= 0) {
+  //       return; // TODO: ignore this error for now.
+  //     }
+  //     lastError = errorMsg;
+  //     toast.error(`MetaMask RPC Error: ${errorMsg}` || 'MetaMask RPC Error');
+  //   };
 
-    const res = await initEthers({ onError }); // returns provider
-    if (res && res.getSigner) {
-      await setAuthHeaders(await res.getSigner().getAddress());
-    } else {
-      showAppError('Failed to connect');
-    }
-  };
+  //   const res = await initEthers({ onError }); // returns provider
+  //   if (res && res.getSigner) {
+  //     await setAuthHeaders(await res.getSigner().getAddress());
+  //   } else {
+  //     showAppError('Failed to connect');
+  //   }
+  // };
 
   React.useEffect(() => {
-    connectMetaMask();
+    // connectMetaMask(); // don't auto connect on page load.
 
     const listener = (eventName: any, data: any) => {
       const arr: string[] = [];
