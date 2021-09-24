@@ -7,12 +7,14 @@
   li {
     padding: 7px 0;
   }
+
   li > span {
     display: inline-block;
     width: 170px;
     font-weight: bold;
     color: #777;
   }
+
   .bar {
     width: 20vw;
     padding-left: 10px;
@@ -20,6 +22,12 @@
     // color: #fff;
     border-radius: 12px;
   }
+}
+
+.boxShadow {
+  border: 1px solid #eee;
+  border-radius: 24px;
+  box-shadow: 0 9px 9px #eee;
 }
 
 .leaderBox {
@@ -36,16 +44,14 @@
 
   .leaderBody {
     width: 100%;
-    // border: 1px solid #ccc;
-    border-radius: 24px;
-    box-shadow: 0 9px 9px #eee;
     margin-top: 20px;
+
+    @extend .boxShadow;
   }
 }
 
 .rewardBox {
-  box-shadow: 0 9px 9px #eee;
-  border-radius: 24px;
+  @extend .boxShadow;
   padding: 15px;
   h3 {
     font-weight: bold;
@@ -58,8 +64,8 @@
 
 .myRewardBox {
   height: 225px;
-  box-shadow: 0 9px 9px #eee;
-  border-radius: 24px;
+  @extend .boxShadow;
+
   h3 {
     padding: 15px;
     font-weight: bold;

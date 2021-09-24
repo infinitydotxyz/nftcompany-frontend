@@ -8,89 +8,46 @@ import styles from './Rewards.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
 import { UnderConstructionIcon } from 'components/Icons/Icons';
+import { LeaderBoard, UserReward } from './types';
 
-function float2dollar(value: number) {
-  return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-}
-
-function formatXAxesLabelText(label: string) {
-  if (/\s/.test(label)) {
-    return label.split(' ');
-  }
-
-  return label;
-}
-
-const chartData = {
-  labels: ['Orders', 'Bonus', 'Fee', 'Gross', 'Penalty', 'Net'],
-  datasets: [
-    {
-      label: 'Rewards', // legend
-      data: [1, 2, 4, 8, 2, 15],
-      backgroundColor: 'brandBlue'
-    }
-  ]
-};
-
-const options = {
-  responsive: false,
-  scales: {
-    xAxes: [
-      {
-        display: true,
-        gridLines: {
-          display: false,
-          color: 'brandBlue'
-        },
-        ticks: {
-          beginAtZero: true,
-          fontFamily: 'Verdana',
-          fontColor: '#777',
-          callback: (label: string) => formatXAxesLabelText(label)
-        }
-      }
-    ],
-    yAxes: [
-      {
-        display: true,
-        gridLines: {
-          display: false,
-          color: 'brandBlue'
-        },
-        ticks: {
-          beginAtZero: false,
-          fontColor: '#777',
-          callback: (value: string) => value
-        },
-        pointLabels: {
-          fontFamily: 'Verdana',
-          fontSize: 34
-        }
-      }
-    ]
-  }
-};
-
-export default function Rewards() {
+const Rewards = (): JSX.Element => {
   const { user } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
-  const [data, setData] = useState<any>(null);
+  const [userReward, setUserReward] = useState<UserReward | undefined>();
+  const [leaderboard, setLeaderBoard] = useState<LeaderBoard | undefined>();
 
   // SNG disabled for now
-  const disabled: boolean = true;
+  const disabled: boolean = false;
 
   const fetchData = async () => {
+    if (!user) {
+      return;
+    }
+
     setIsFetching(true);
     try {
       const { result, error } = await apiGet(`/u/${user?.account}/reward`);
-      console.log('result', result);
-      setData(result);
+
+      setUserReward(result);
     } catch (e) {
       console.error(e);
     }
   };
+
+  const fetchLeaderboard = async () => {
+    setIsFetching(true);
+    try {
+      const { result, error } = await apiGet(`/rewards/leaderboard`);
+
+      setLeaderBoard(result);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   React.useEffect(() => {
     fetchData();
+    fetchLeaderboard();
   }, [user]);
 
   // const numListingsPct = data?.totalListings > 0 ? data?.numListings / data?.totalListings : 0;
@@ -120,6 +77,68 @@ export default function Rewards() {
       </>
     );
   }
+
+  function float2dollar(value: number) {
+    return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+  }
+
+  function formatXAxesLabelText(label: string) {
+    if (/\s/.test(label)) {
+      return label.split(' ');
+    }
+
+    return label;
+  }
+
+  const chartData = {
+    labels: ['Orders', 'Bonus', 'Fee', 'Gross', 'Penalty', 'Net'],
+    datasets: [
+      {
+        label: 'Rewards', // legend
+        data: [1, 2, 4, 8, 2, 15],
+        backgroundColor: 'brandBlue'
+      }
+    ]
+  };
+
+  const options = {
+    responsive: false,
+    scales: {
+      xAxes: [
+        {
+          display: true,
+          gridLines: {
+            display: false,
+            color: 'brandBlue'
+          },
+          ticks: {
+            beginAtZero: true,
+            fontFamily: 'Verdana',
+            fontColor: '#777',
+            callback: (label: string) => formatXAxesLabelText(label)
+          }
+        }
+      ],
+      yAxes: [
+        {
+          display: true,
+          gridLines: {
+            display: false,
+            color: 'brandBlue'
+          },
+          ticks: {
+            beginAtZero: false,
+            fontColor: '#777',
+            callback: (value: string) => value
+          },
+          pointLabels: {
+            fontFamily: 'Verdana',
+            fontSize: 34
+          }
+        }
+      ]
+    }
+  };
 
   return (
     <>
@@ -151,29 +170,24 @@ export default function Rewards() {
                 <div>15:32:00</div>
               </div>
 
-              {/* Chart */}
-              {/* <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
+              <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
                 <h3 className="tg-title">Rewards 💰</h3>
 
                 <ul className={styles.list}>
                   <li>
                     <span>Current Block</span>
-                    <span>{data?.currentBlock || 0}</span>
+                    <span>{userReward?.currentBlock || 0}</span>
                   </li>
                   <li>
                     <span>Your Rewards:</span>
                     <span>&nbsp;</span>
                   </li>
-                  <li>
-                    <Bar width={500} height={200} data={chartData} options={options} />
-                  </li>
+                  <li>{/* <Bar width={500} height={200} data={chartData} options={options} /> */}</li>
                 </ul>
-              </div> */}
-
+              </div>
               <div className={`col-md-12 col-sm-12`}>
                 <h3 className={styles.h3}>My Rewards 💰</h3>
               </div>
-
               <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
                 <h3>Listing Rewards</h3>
                 <main>
@@ -183,11 +197,11 @@ export default function Rewards() {
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Listings</span>
-                    <span className="col-md-6">{data?.numListings || 0}</span>
+                    <span className="col-md-6">{userReward?.numListings || 0}</span>
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Total</span>
-                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                    <span className="col-md-6">{userReward?.totalListings || 0}</span>
                   </div>
                 </main>
               </div>
@@ -200,11 +214,11 @@ export default function Rewards() {
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Bonus Rewards</span>
-                    <span className="col-md-6">{data?.numBonusListings || 0}</span>
+                    <span className="col-md-6">{userReward?.numBonusListings || 0}</span>
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Total</span>
-                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                    <span className="col-md-6">{userReward?.totalListings || 0}</span>
                   </div>
                 </main>
               </div>
@@ -217,11 +231,11 @@ export default function Rewards() {
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Fee Rewards</span>
-                    <span className="col-md-6">{data?.feesPaid || 0}</span>
+                    <span className="col-md-6">{userReward?.totalFees || 0}</span>
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Total</span>
-                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                    <span className="col-md-6">{userReward?.totalListings || 0}</span>
                   </div>
                 </main>
               </div>
@@ -234,15 +248,14 @@ export default function Rewards() {
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Net Rewards</span>
-                    <span className="col-md-6">{data?.feesPaid || 0}</span>
+                    <span className="col-md-6">{userReward?.totalFees || 0}</span>
                   </div>
                   <div className="grid">
                     <span className="col-md-6">Total</span>
-                    <span className="col-md-6">{data?.totalListings || 0}</span>
+                    <span className="col-md-6">{userReward?.totalListings || 0}</span>
                   </div>
                 </main>
               </div>
-
               <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
                 <h3 className={styles.h3}>Leaderboard 🏆</h3>
                 <div className={styles.leaderBody}>
@@ -284,7 +297,8 @@ export default function Rewards() {
       </div>
     </>
   );
-}
+};
 
 // eslint-disable-next-line react/display-name
 Rewards.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
+export default Rewards;
