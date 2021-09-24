@@ -32,7 +32,7 @@ export const ListIcon = (props: Record<string, unknown>): JSX.Element => (
 );
 
 export const EthToken = (props: Record<string, unknown>): JSX.Element => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33" fill="none" {...props}>
+  <svg width="33" height="33" viewBox="0 0 33 33" fill="none" {...props}>
     <script />
     <script />
     <script />
@@ -45,13 +45,11 @@ export const EthToken = (props: Record<string, unknown>): JSX.Element => (
     <path d="M16.3578 52.5998V39.5551L0.417816 30.1377L16.3578 52.5998Z" fill="#8C8C8C" />
     <path d="M16.3575 36.537L32.2973 27.1151L16.3575 19.8699V36.537Z" fill="#141414" />
     <path d="M0.417816 27.1151L16.3576 36.537V19.8699L0.417816 27.1151Z" fill="#393939" />
-    <script type="text/javascript" src="chrome-extension://fnnegphlobjdpkhecapkijjdkgcjhkib/inject-script.js" />
-    <script />
   </svg>
 );
 
 export const WEthToken = (props: Record<string, unknown>): JSX.Element => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33" fill="none" {...props}>
+  <svg width="33" height="33" viewBox="0 0 33 33" fill="none" {...props}>
     <path
       d="M16.8498 0.666687L16.4974 1.85009V36.1896L16.8498 36.5371L32.9842 27.115L16.8498 0.666687Z"
       fill="#DA3979"
@@ -61,11 +59,6 @@ export const WEthToken = (props: Record<string, unknown>): JSX.Element => (
     <path d="M16.85 52.5998V39.5551L0.715607 30.1377L16.85 52.5998Z" fill="#E781A9" />
     <path d="M16.8497 36.537L32.9838 27.1151L16.8497 19.8699V36.537Z" fill="#671334" />
     <path d="M0.715607 27.1151L16.8498 36.537V19.8699L0.715607 27.1151Z" fill="#DA3979" />
-    <script
-      type="text/javascript"
-      src="chrome-extension://fnnegphlobjdpkhecapkijjdkgcjhkib/inject-script.js"
-    />
-    <script />
   </svg>
 );
 
