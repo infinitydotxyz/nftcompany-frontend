@@ -6,7 +6,6 @@
     "dev": "next dev",
     "build": "npx pnpm install && rm -rf ./build && cross-env NODE_ENV=production next build",
     "start": "next start -p 8080",
-    "deploy": "gcloud app deploy",
     "lint": "next lint",
     "format": "prettier --write src/**/*.{tsx,ts}"
   },
