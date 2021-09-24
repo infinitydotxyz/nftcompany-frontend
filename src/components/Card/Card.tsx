@@ -26,7 +26,6 @@ function Card({ data, onClickAction, showItems = ['PRICE'], action = '' }: Props
   if (!data) {
     return null;
   }
-  console.log('data', data);
 
   const collectionName = data.collectionName;
   const hasBlueCheck = data.hasBlueCheck;
