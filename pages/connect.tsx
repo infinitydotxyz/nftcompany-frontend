@@ -9,11 +9,6 @@ import { setAuthHeaders } from '../src/utils/apiUtil';
 
 export default function ConnectWallet() {
   const router = useRouter();
-  // const [ethersRes, setEthersRes] = useState<any>(null);
-
-  useEffect(() => {
-    // TBD
-  }, []);
 
   const connectMetaMask = async () => {
     const res = await initEthers(); // returns provider
