@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Rewards.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
 import { UnderConstructionIcon } from 'components/Icons/Icons';
 import { LeaderBoard, UserReward } from './types';
+import { LeaderBoardTable } from './LeaderBoard/LeaderBoardTable';
+import { InfoCard, InfoCardRow } from './InfoCard/InfoCard';
 
 const Rewards = (): JSX.Element => {
   const { user } = useAppContext();
@@ -19,7 +20,7 @@ const Rewards = (): JSX.Element => {
   // SNG disabled for now
   const disabled: boolean = false;
 
-  const fetchData = async () => {
+  const fetchUserReward = async () => {
     if (!user) {
       return;
     }
@@ -46,9 +47,12 @@ const Rewards = (): JSX.Element => {
   };
 
   React.useEffect(() => {
-    fetchData();
-    fetchLeaderboard();
+    fetchUserReward();
   }, [user]);
+
+  React.useEffect(() => {
+    fetchLeaderboard();
+  }, []);
 
   // const numListingsPct = data?.totalListings > 0 ? data?.numListings / data?.totalListings : 0;
   // const numBonusListingsPct = data?.totalBonusListings > 0 ? data?.numBonusListings / data?.totalBonusListings : 0;
@@ -152,6 +156,8 @@ const Rewards = (): JSX.Element => {
           </div>
 
           <div className={styles.main}>
+            <InfoCardRow data={userReward} />
+
             <section className="grid">
               <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
                 <h3>Total Tx Volume</h3>
@@ -188,6 +194,7 @@ const Rewards = (): JSX.Element => {
               <div className={`col-md-12 col-sm-12`}>
                 <h3 className={styles.h3}>My Rewards 💰</h3>
               </div>
+
               <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
                 <h3>Listing Rewards</h3>
                 <main>
@@ -258,38 +265,7 @@ const Rewards = (): JSX.Element => {
               </div>
               <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
                 <h3 className={styles.h3}>Leaderboard 🏆</h3>
-                <div className={styles.leaderBody}>
-                  <Table mt={4}>
-                    <Thead>
-                      <Tr>
-                        <Th>Rank</Th>
-                        <Th>Address</Th>
-                        <Th isNumeric>Listings</Th>
-                        <Th isNumeric>Rewards</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      <Tr>
-                        <Td>#1</Td>
-                        <Td>0xksjup...qu38e</Td>
-                        <Td isNumeric>150</Td>
-                        <Td isNumeric>1100</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>#2</Td>
-                        <Td>0xak8y5...ke7uy</Td>
-                        <Td isNumeric>90</Td>
-                        <Td isNumeric>1000</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>#3</Td>
-                        <Td>0xaal9r...33jfy</Td>
-                        <Td isNumeric>82</Td>
-                        <Td isNumeric>850</Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-                </div>
+                <LeaderBoardTable data={leaderboard} />
               </div>
             </section>
           </div>

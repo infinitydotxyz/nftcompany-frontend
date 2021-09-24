@@ -1,0 +1,37 @@
+@import '../Shared.module.scss';
+
+.main {
+  .myRewardBox {
+    @extend .boxShadow;
+  }
+
+  h3 {
+    padding: 15px;
+    font-weight: bold;
+  }
+
+  .left {
+    padding: 10px 20px;
+  }
+
+  .right {
+    padding: 10px 20px;
+    text-align: right;
+  }
+
+  .cardGrid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 56px;
+
+    margin: 40px 0;
+  }
+
+  .infoRow {
+    display: grid;
+    border-top: 1px solid #ddd;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+  }
+}
