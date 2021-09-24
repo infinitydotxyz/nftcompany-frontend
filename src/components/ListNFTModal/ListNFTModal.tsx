@@ -22,7 +22,7 @@ interface IProps {
 }
 
 const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
-  const { showAppError, showAppMessage } = useAppContext();
+  const { user, showAppError, showAppMessage } = useAppContext();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [price, setPrice] = React.useState(0);
   // const [balance, setBalance] = React.useState('');
@@ -33,24 +33,17 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
   const [activeTab, setActiveTab] = React.useState('SET_PRICE');
   const [backendChecks, setBackendChecks] = React.useState({});
 
-  const [user, setUser] = React.useState<any>(null);
   React.useEffect(() => {
-    const connect = async () => {
-      const account = await getAccount();
-      setUser({ account });
-
-      const getBackendChecks = async () => {
-        const { result } = await apiGet(`/token/${data.tokenAddress}/verfiedBonusReward`);
-        setBackendChecks({ hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified });
-      };
+    const getBackendChecks = async () => {
+      const { result } = await apiGet(`/token/${data.tokenAddress}/verfiedBonusReward`);
+      setBackendChecks({ hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified });
       // const getInfo = async () => {
       //   const bal = await getAddressBalance(account);
       //   setBalance(parseFloat(`${bal}`).toFixed(4));
       // };
-      getBackendChecks();
       // getInfo();
     };
-    connect();
+    getBackendChecks();
   }, []);
 
   const onClickList = async () => {
