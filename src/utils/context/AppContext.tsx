@@ -93,15 +93,16 @@ export function AppContextProvider({ children }: any) {
     }
   }, [user]);
 
-  const value = {
+  const value: AppContextType = {
     user,
     setUser,
     showAppError,
     showAppMessage
   };
+
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
 
-export function useAppContext() {
+export function useAppContext(): AppContextType {
   return React.useContext(AppContext) as AppContextType;
 }

@@ -54,6 +54,7 @@ const Header = (): JSX.Element => {
       window.ethereum.on('accountsChanged', handleAccountChange);
       setUser({ account: await getAccount() });
     };
+
     if (window?.ethereum) {
       connect();
     }
