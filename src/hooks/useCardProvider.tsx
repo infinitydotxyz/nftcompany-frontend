@@ -130,17 +130,17 @@ export function useCardProvider(): {
   };
 
   // remove any owned by the current user
-  let filteredList = list;
+  const filteredList = list;
 
   // don't filter if we search for that name that you might own
-  if (!listType.startsWith('token-id')) {
-    if (userAccount && list && list.length > 0) {
-      filteredList = list.filter((item) => {
-        // opensea lowercases their account strings, so compare to lower
-        return item.owner?.toLowerCase() !== userAccount.toLowerCase();
-      });
-    }
-  }
+  // if (!listType.startsWith('token-id')) {
+  //   if (userAccount && list && list.length > 0) {
+  //     filteredList = list.filter((item) => {
+  //       // opensea lowercases their account strings, so compare to lower
+  //       return item.owner?.toLowerCase() !== userAccount.toLowerCase();
+  //     });
+  //   }
+  // }
 
   return { list: filteredList, loadNext, hasData, hasLoaded };
 }
