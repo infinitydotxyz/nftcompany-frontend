@@ -38,6 +38,9 @@ export const FetchMore = ({ onFetchMore, data, currentPage }: FetchMoreProps) =>
   );
 };
 
+export const getLastItemMaker = (data: CardData[]): string =>
+  data?.length > 0 ? data[data.length - 1]?.maker ?? '' : '';
+
 export const getLastItemCreatedAt = (data: CardData[]): string =>
   data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt ?? '' : '';
 

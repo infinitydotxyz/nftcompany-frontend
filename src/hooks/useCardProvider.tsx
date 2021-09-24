@@ -4,7 +4,7 @@ import { SearchFilter, useSearchContext } from './useSearch';
 import { useAppContext } from 'utils/context/AppContext';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { getListings, TypeAheadOption } from 'services/Listings.service';
-import { getLastItemBasePrice, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
+import { getLastItemBasePrice, getLastItemCreatedAt, getLastItemMaker } from 'components/FetchMore/FetchMore';
 
 const PAGE_SIZE = ITEMS_PER_PAGE;
 // const PAGE_SIZE = 7;
@@ -13,6 +13,8 @@ const hashString = (s: string) => s.split('').reduce((a, b) => ((a << 5) - a + b
 
 const fetchData = async (
   filter: SearchFilter,
+  user: string,
+  startAfterUser: string,
   startAfterMillis: string,
   startAfterPrice: string,
   collectionName: string,
@@ -20,6 +22,8 @@ const fetchData = async (
 ): Promise<CardData[]> => {
   const result = await getListings({
     ...filter,
+    user: user,
+    startAfterUser: user ? startAfterUser : '',
     startAfterMillis: startAfterMillis,
     startAfterPrice: startAfterPrice,
     limit: PAGE_SIZE.toString(),
@@ -49,7 +53,8 @@ export function useCardProvider(): {
   const userAccount = user?.account;
 
   const fetchList = async (newListType: string) => {
-    let startAfter = '';
+    let startAfterUser = '';
+    let startAfterMillis = '';
     let startAfterPrice = '';
     let previousList: CardData[] = [];
 
@@ -59,8 +64,8 @@ export function useCardProvider(): {
     // are we getting the next page?
     if (!isTokenIdSearch && listType === newListType && list?.length > 0) {
       previousList = list;
-
-      startAfter = getLastItemCreatedAt(list);
+      startAfterUser = getLastItemMaker(list);
+      startAfterMillis = getLastItemCreatedAt(list);
       startAfterPrice = getLastItemBasePrice(list);
     }
 
@@ -68,7 +73,9 @@ export function useCardProvider(): {
 
     const result = await fetchData(
       searchContext.filterState,
-      startAfter,
+      userAccount ?? '',
+      startAfterUser,
+      startAfterMillis,
       startAfterPrice,
       searchContext.searchState.collectionName,
       searchContext.searchState.selectedOption
@@ -89,6 +96,7 @@ export function useCardProvider(): {
       let hash = searchContext.searchState.collectionName;
       hash += JSON.stringify(searchContext.filterState);
       hash += JSON.stringify(searchContext.searchState.selectedOption);
+      hash += JSON.stringify(userAccount);
       hash = hashString(hash).toString();
 
       if (searchContext.searchState.collectionName) {
