@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -10,11 +9,6 @@ import { setAuthHeaders } from '../src/utils/apiUtil';
 
 export default function ConnectWallet() {
   const router = useRouter();
-  // const [ethersRes, setEthersRes] = useState<any>(null);
-
-  useEffect(() => {
-    // TBD
-  }, []);
 
   const connectMetaMask = async () => {
     const res = await initEthers(); // returns provider
