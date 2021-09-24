@@ -16,8 +16,9 @@ interface IProps {
 }
 
 const Layout: React.FC<IProps> = ({ landing, children }: IProps) => {
-  const [filter, setFilter] = React.useState<any>({ search: '' });
   return (
+
+  
     <>
       <AppChakraProvider>
         <AppContextProvider>
