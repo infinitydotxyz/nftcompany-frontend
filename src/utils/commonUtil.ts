@@ -17,6 +17,8 @@ export enum EventType {
   OrderDenied = 'OrderDenied'
 }
 
+export const isServer = () => typeof window === 'undefined';
+
 export const isLocalhost = () => typeof window !== 'undefined' && (window?.location?.host || '').indexOf('localhost') >= 0;
 
 export const ellipsisAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;

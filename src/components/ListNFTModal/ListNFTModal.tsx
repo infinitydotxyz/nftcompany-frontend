@@ -5,14 +5,13 @@ import TabBar from 'components/TabBar/TabBar';
 import { Button } from '@chakra-ui/button';
 import { Spinner } from '@chakra-ui/spinner';
 import HelpTooltip from 'components/HelpTooltip/HelpTooltip';
-import { getAccount, getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaport } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { WETH_ADDRESS } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from './ListNFTModal.module.scss';
 import ModalDialog from 'hooks/ModalDialog';
-
-const isServer = typeof window === 'undefined';
+import { isServer } from 'utils/commonUtil';
 
 interface IProps {
   data?: any;
@@ -25,7 +24,6 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
   const { user, showAppError, showAppMessage } = useAppContext();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [price, setPrice] = React.useState(0);
-  // const [balance, setBalance] = React.useState('');
   const [endPriceShowed, setEndPriceShowed] = React.useState(false);
   const [reservePrice, setReservePrice] = React.useState(0);
   const [endPrice, setEndPrice] = React.useState(0);
@@ -34,16 +32,11 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
   const [backendChecks, setBackendChecks] = React.useState({});
 
   React.useEffect(() => {
-    const getBackendChecks = async () => {
+    const fetchBackendChecks = async () => {
       const { result } = await apiGet(`/token/${data.tokenAddress}/verfiedBonusReward`);
       setBackendChecks({ hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified });
-      // const getInfo = async () => {
-      //   const bal = await getAddressBalance(account);
-      //   setBalance(parseFloat(`${bal}`).toFixed(4));
-      // };
-      // getInfo();
     };
-    getBackendChecks();
+    fetchBackendChecks();
   }, []);
 
   const onClickList = async () => {
@@ -61,7 +54,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
         asset: {
           tokenAddress,
           tokenId,
-          schemaName: data?.schemaName || '' // getSchemaName(tokenAddress) // TODO: get from opensea data schema_name
+          schemaName: data?.schemaName || ''
         },
         accountAddress: user?.account,
         startAmount: price,
@@ -80,7 +73,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
         }
         obj['expirationTime'] = expiryTimeSeconds;
       }
-      const listing = await seaport.createSellOrder(obj);
+      await seaport.createSellOrder(obj);
     } catch (e: any) {
       setIsSubmitting(false);
       err = e;
@@ -96,14 +89,13 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
 
   return (
     <>
-      {!isServer && (
+      {!isServer() && (
         <ModalDialog onClose={onClose}>
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
             <div className="modal-body">
               <div className={styles.title}>List NFT</div>
 
               <div className={styles.row}>
-                {/* <NavBar items={[{ title: 'Set Price' }, { title: 'Highest Bid' }]} active={0} /> */}
                 <TabBar
                   tabs={[
                     { id: 'SET_PRICE', label: 'Set Price' },
@@ -176,13 +168,6 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                         <div></div>
                       </li>
                     )}
-                    {/* <li>
-                      <div>Your balance</div>
-                      <div>
-                        <span>{balance}</span>
-                      </div>
-                      <div>ETH</div>
-                    </li> */}
                   </ul>
                 </div>
               ) : (
