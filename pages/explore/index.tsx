@@ -9,9 +9,11 @@ import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
+import { useAppContext } from 'utils/context/AppContext';
 
 export default function ExplorePage() {
   const cardProvider = useCardProvider();
+  const { user } = useAppContext();
 
   return (
     <>
@@ -31,7 +33,7 @@ export default function ExplorePage() {
 
           {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
-          <CardList showItems={['PRICE']} data={cardProvider.list} action="BUY_NFT" />
+          <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
 
           {cardProvider.hasData() && (
             <ScrollLoader

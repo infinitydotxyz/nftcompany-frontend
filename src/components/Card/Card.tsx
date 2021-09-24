@@ -14,10 +14,11 @@ type Props = {
   onClickAction?: (item: any, action: string) => any;
   showItems?: string[];
   action?: string;
+  userAccount?: string;
   [key: string]: any;
 };
 
-function Card({ data, onClickAction, showItems = ['PRICE'], action = '' }: Props) {
+function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action = '' }: Props) {
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
@@ -27,10 +28,18 @@ function Card({ data, onClickAction, showItems = ['PRICE'], action = '' }: Props
     return null;
   }
 
+  let ownedByYou = false;
+  if (userAccount) {
+    // opensea lowercases their account strings, so compare to lower
+    ownedByYou = data.owner?.toLowerCase() === userAccount.toLowerCase();
+  }
+
   const collectionName = data.collectionName;
   const hasBlueCheck = data.hasBlueCheck;
   return (
     <div id={`id_${data.id}`} className={styles.card}>
+      {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
+
       <div onClick={() => setPreviewModalShowed(true)}>
         <div className={styles.cardPreview}>
           <img src={data.image} alt="Card preview" />

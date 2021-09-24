@@ -8,10 +8,11 @@ type Props = {
   data: CardData[];
   action?: string;
   showItems?: string[];
+  userAccount?: string;
   onClickAction?: (item: any, action: string) => void;
 };
 
-const CardList = ({ data, showItems, action, onClickAction }: Props): JSX.Element => {
+const CardList = ({ data, showItems, userAccount, action, onClickAction }: Props): JSX.Element => {
   return (
     <div className={`${styles.cardList}`}>
       {(data || []).map((item) => {
@@ -24,6 +25,7 @@ const CardList = ({ data, showItems, action, onClickAction }: Props): JSX.Elemen
             key={item?.id || uuidv4()}
             showItems={showItems}
             action={action}
+            userAccount={userAccount}
             data={item}
             onClickAction={onClickAction}
           />
