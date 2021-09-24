@@ -1,5 +1,4 @@
 const ethers = require('ethers');
-import { setAuthHeaders } from './apiUtil';
 
 // OpenSea's dependencies:
 const Web3 = require('web3');

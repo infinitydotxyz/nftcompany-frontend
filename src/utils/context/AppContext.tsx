@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { debounce } from 'lodash';
-import { setAuthHeaders } from 'utils/apiUtil';
 import { useToast } from '@chakra-ui/toast';
 // import { EventEmitter, EventSubscription } from 'fbemitter';
 import { initEthers, getOpenSeaport } from 'utils/ethersUtil';
@@ -20,7 +18,7 @@ export type AppContextType = {
 
 const AppContext = React.createContext<AppContextType | null>(null);
 
-let lastError = '';
+// let lastError = '';
 let lastMsg = '';
 
 const showToast = (toast: any, type: 'success' | 'error' | 'warning' | 'info', message: string) => {
@@ -79,7 +77,7 @@ export function AppContextProvider({ children }: any) {
         return;
       }
       lastMsg = msg;
-      showAppMessage(msg);   
+      showAppMessage(msg);
     };
 
     // const debouncedListener = debounce((eventName: any, data: any) => listener(eventName, data), 300); // didn't work.

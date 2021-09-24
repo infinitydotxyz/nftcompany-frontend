@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
