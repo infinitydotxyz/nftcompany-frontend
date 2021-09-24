@@ -4,7 +4,7 @@ import styles from './TabBar.module.scss';
 export type TabItem = {
   id: string;
   label?: any;
-}
+};
 
 type Props = {
   tabs: TabItem[];
