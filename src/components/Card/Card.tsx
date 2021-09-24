@@ -7,6 +7,7 @@ import { CardData } from 'types/Nft.interface';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
+import { WETH_ADDRESS } from 'utils/constants';
 
 type Props = {
   data: CardData;
@@ -25,6 +26,7 @@ function Card({ data, onClickAction, showItems = ['PRICE'], action = '' }: Props
   if (!data) {
     return null;
   }
+  console.log('data', data);
 
   const collectionName = data.collectionName;
   const hasBlueCheck = data.hasBlueCheck;
@@ -131,7 +133,11 @@ function Card({ data, onClickAction, showItems = ['PRICE'], action = '' }: Props
               )}
               <div>{data.title}</div>
             </div>
-            <PriceBox price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined} />
+            <PriceBox
+              price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
+              token={data?.data?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
+              expirationTime={data?.expirationTime}
+            />
           </div>
         </div>
       </div>

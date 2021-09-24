@@ -77,4 +77,5 @@ export type CardData = {
   owner?: string;
   metadata?: Metadata;
   schemaName?: string;
+  expirationTime?: string;
 };

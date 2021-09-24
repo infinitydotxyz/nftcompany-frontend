@@ -54,7 +54,7 @@ const Header = (): JSX.Element => {
       window.ethereum.on('accountsChanged', handleAccountChange);
       setUser({ account: await getAccount() });
     };
-    if (user?.account) {
+    if (window?.ethereum) {
       connect();
     }
 
@@ -62,7 +62,7 @@ const Header = (): JSX.Element => {
       // on unmounting
       window.ethereum.removeListener('accountsChanged', handleAccountChange);
     };
-  }, [user]);
+  }, []);
 
   const ntfItems = [
     <MenuItem key="nfts" icon={<ImageIcon />} onClick={() => router.push('/my-nfts')}>

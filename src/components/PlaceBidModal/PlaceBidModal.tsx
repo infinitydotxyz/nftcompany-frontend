@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import styles from './PlaceBidModal.module.scss';
 import Datetime from 'react-datetime';
+import { Spinner } from '@chakra-ui/spinner';
 import { CardData, Order } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
@@ -18,10 +19,12 @@ interface IProps {
 }
 
 const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
+  const { user, showAppError, showAppMessage } = useAppContext();
+  const [isBuying, setIsBuying] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
   const [order, setOrder] = React.useState<Order | undefined>();
   const [offerPrice, setOfferPrice] = React.useState(0);
-  const { user, showAppError, showAppMessage } = useAppContext();
 
   const loadOrder = useCallback(async () => {
     let orderParams: any;
@@ -60,6 +63,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       // Important to check if the order is still available as it can have already been fulfilled by
       // another user or cancelled by the creator
       if (order) {
+        setIsBuying(true);
         const seaport = getOpenSeaport();
 
         // const txnHash = '0xcc128a83022cf34fbc5ec756146ee43bc63f2666443e22ade15180c6304b0d54';
@@ -87,14 +91,17 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         // Handle when the order does not exist anymore
         showAppError('Listing no longer exists');
       }
+      setIsBuying(false);
     } catch (err) {
       console.error('ERROR:', err);
       showAppError((err as GenericError)?.message);
+      setIsBuying(false);
     }
   };
 
   const makeAnOffer = () => {
     try {
+      setIsSubmitting(true);
       const seaport = getOpenSeaport();
       seaport
         .createBuyOrder({
@@ -110,13 +117,16 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         })
         .then(() => {
           showAppMessage('Offer sent successfully.');
+          setIsSubmitting(false);
           onClose();
         })
         .catch((err: GenericError) => {
+          setIsSubmitting(false);
           console.error('ERROR:', err);
           showAppError(err?.message);
         });
     } catch (err) {
+      setIsSubmitting(false);
       showAppError((err as GenericError)?.message);
     }
   };
@@ -141,9 +151,11 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               )}
 
               <div className={styles.footer}>
-                <Button isDisabled={!order} onClick={onClickBuyNow}>
+                <Button isDisabled={!order} onClick={onClickBuyNow} disabled={isBuying}>
                   Buy now
                 </Button>
+
+                {isBuying && <Spinner size="md" color="teal" ml={4} mt={2} />}
               </div>
 
               <div className={styles.space}>
@@ -191,12 +203,14 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 </div>
 
                 <div className={styles.footer}>
-                  <Button type="submit" className="action-btn">
+                  <Button type="submit" className="action-btn" disabled={isSubmitting}>
                     Make an offer
                   </Button>
-                  <Button colorScheme="gray" ml={4} onClick={() => onClose && onClose()}>
+                  <Button colorScheme="gray" ml={4} disabled={isSubmitting} onClick={() => onClose && onClose()}>
                     Cancel
                   </Button>
+
+                  {isSubmitting && <Spinner size="md" color="teal" ml={4} mt={2} />}
                 </div>
               </form>
             </div>
