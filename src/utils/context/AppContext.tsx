@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { debounce } from 'lodash';
 import { setAuthHeaders } from 'utils/apiUtil';
 import { useToast } from '@chakra-ui/toast';
 // import { EventEmitter, EventSubscription } from 'fbemitter';
@@ -74,10 +75,12 @@ export function AppContextProvider({ children }: any) {
       showAppMessage(msg);
     };
 
+    const debouncedListener = debounce((eventName: any, data: any) => listener(eventName, data), 300);
+
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
     const seaport = getOpenSeaport();
     Object.values(EventType).forEach((eventName: any) => {
-      seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
+      seaport.addListener(eventName, (data: any) => debouncedListener(eventName, data), true);
     });
     // const emitter = seaport.getEmitter();
     // emitter.emit('TransactionConfirmed', { error: 'test', accountAddress: '0x123' }); // simulate OpenSea event.

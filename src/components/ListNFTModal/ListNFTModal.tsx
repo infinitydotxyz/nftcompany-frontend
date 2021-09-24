@@ -53,6 +53,54 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
     connect();
   }, []);
 
+  const onClickList = async () => {
+    if (!price) {
+      showAppError('Please enter price.');
+      return;
+    }
+    const { tokenAddress, tokenId } = data;
+    const expirationTime = endPriceShowed ? expiryTimeSeconds : 0;
+    let err = null;
+    try {
+      setIsSubmitting(true);
+      const seaport = getOpenSeaport();
+      const obj: any = {
+        asset: {
+          tokenAddress,
+          tokenId,
+          schemaName: data?.schemaName || '' // getSchemaName(tokenAddress) // TODO: get from opensea data schema_name
+        },
+        accountAddress: user?.account,
+        startAmount: price,
+        // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
+        endAmount: endPriceShowed ? endPrice : price,
+        expirationTime,
+        assetDetails: { ...data }, // custom data to pass in details.
+        ...backendChecks
+      };
+      if (activeTab !== 'SET_PRICE') {
+        // for English Auction (Highest Bid):
+        obj['paymentTokenAddress'] = WETH_ADDRESS;
+        obj['waitForHighestBid'] = true;
+        if (reservePrice) {
+          obj['englishAuctionReservePrice'] = reservePrice;
+        }
+        obj['expirationTime'] = expiryTimeSeconds;
+      }
+      const listing = await seaport.createSellOrder(obj);
+    } catch (e: any) {
+      setIsSubmitting(false);
+      err = e;
+      console.error('ERROR: ', e, '   ', expirationTime);
+      showAppError(e.message);
+    }
+    if (!err) {
+      setIsSubmitting(false);
+      showAppMessage('NFT listed successfully!');
+      onClose();
+    }
+  };
+
   return (
     <>
       {!isServer && (
@@ -198,60 +246,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
               )}
 
               <div className={styles.footer}>
-                <Button
-                  size="md"
-                  disabled={isSubmitting}
-                  onClick={async () => {
-                    // if (!price) {
-                    //   alert('Please enter price.');
-                    // }
-                    console.log('List NFT', data);
-
-                    // const tokenAddress = data.data.asset_contract;
-                    // const tokenId = data.data.token_id;
-                    const { tokenAddress, tokenId } = data;
-                    const expirationTime = endPriceShowed ? expiryTimeSeconds : 0;
-                    let err = null;
-                    try {
-                      setIsSubmitting(true);
-                      const seaport = getOpenSeaport();
-                      const obj: any = {
-                        asset: {
-                          tokenAddress,
-                          tokenId,
-                          schemaName: data?.schemaName || '' // getSchemaName(tokenAddress) // TODO: get from opensea data schema_name
-                        },
-                        accountAddress: user?.account,
-                        startAmount: price,
-                        // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
-                        endAmount: endPriceShowed ? endPrice : price,
-                        expirationTime,
-                        assetDetails: { ...data }, // custom data to pass in details.
-                        ...backendChecks
-                      };
-                      if (activeTab !== 'SET_PRICE') {
-                        // for English Auction (Highest Bid):
-                        obj['paymentTokenAddress'] = WETH_ADDRESS;
-                        obj['waitForHighestBid'] = true;
-                        if (reservePrice) {
-                          obj['englishAuctionReservePrice'] = reservePrice;
-                        }
-                        obj['expirationTime'] = expiryTimeSeconds;
-                      }
-                      const listing = await seaport.createSellOrder(obj);
-                    } catch (e: any) {
-                      setIsSubmitting(false);
-                      err = e;
-                      console.error('ERROR: ', e, '   ', expirationTime);
-                      showAppError(e.message);
-                    }
-                    if (!err) {
-                      setIsSubmitting(false);
-                      showAppMessage('NFT listed successfully!');
-                      onClose();
-                    }
-                  }}
-                >
+                <Button size="md" disabled={isSubmitting} onClick={onClickList}>
                   List NFT
                 </Button>
 
