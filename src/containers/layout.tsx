@@ -17,8 +17,6 @@ interface IProps {
 
 const Layout: React.FC<IProps> = ({ landing, children }: IProps) => {
   return (
-
-  
     <>
       <AppChakraProvider>
         <AppContextProvider>
