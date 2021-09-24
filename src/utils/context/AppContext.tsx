@@ -21,6 +21,7 @@ export type AppContextType = {
 const AppContext = React.createContext<AppContextType | null>(null);
 
 let lastError = '';
+let lastMsg = '';
 
 const showToast = (toast: any, type: 'success' | 'error' | 'warning' | 'info', message: string) => {
   toast({
@@ -72,16 +73,22 @@ export function AppContextProvider({ children }: any) {
         }
       });
       const msg = getCustomMessage(eventName, data) || `${eventName}: ${arr.join(', ')}`;
-      showAppMessage(msg);
+      if (lastMsg && msg === lastMsg) {
+        // TODO: to avoid show dup messages.
+        lastMsg = '';
+        return;
+      }
+      lastMsg = msg;
+      showAppMessage(msg);   
     };
 
-    const debouncedListener = debounce((eventName: any, data: any) => listener(eventName, data), 300);
+    // const debouncedListener = debounce((eventName: any, data: any) => listener(eventName, data), 300); // didn't work.
 
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
     if (user?.account) {
       const seaport = getOpenSeaport();
       Object.values(EventType).forEach((eventName: any) => {
-        seaport.addListener(eventName, (data: any) => debouncedListener(eventName, data), true);
+        seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
       });
       // const emitter = seaport.getEmitter();
       // emitter.emit('TransactionConfirmed', { error: 'test', accountAddress: '0x123' }); // simulate OpenSea event.
