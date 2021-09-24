@@ -19,6 +19,21 @@ export enum EventType {
 
 export const ellipsisAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
+// parse a Timestamp string (in millis or secs)
+export const parseTimestampString = (dt: string, inSecond: boolean = false): Date | null => {
+  let dateObj = null;
+  if (!dt || dt === '0') {
+    return null;
+  }
+  try {
+    const dtNum = parseInt(dt);
+    dateObj = new Date(dtNum * (inSecond ? 1000 : 1));
+  } catch (err) {
+    console.error(err);
+  }
+  return dateObj;
+}
+
 export const transformOpenSea = (item: any, owner: string) => {
   if (!item) {
     return null;

@@ -2,6 +2,7 @@ import React from 'react';
 import { EthToken, WEthToken } from 'components/Icons/Icons';
 import { format } from 'timeago.js';
 import styles from './PriceBox.module.scss';
+import { parseTimestampString } from 'utils/commonUtil';
 
 type Props = {
   price?: number;
@@ -12,6 +13,7 @@ type Props = {
 export const PriceBox = ({ price, expirationTime = '', token = '' }: Props) => {
   if (price) {
     // TODO: remove inline styles
+    const expDate = parseTimestampString(expirationTime, true);
     return (
       <div>
         <div className={styles.price}>
@@ -22,7 +24,11 @@ export const PriceBox = ({ price, expirationTime = '', token = '' }: Props) => {
             <WEthToken style={{ width: 12, marginTop: -12 }} />
           )}
         </div>
-        {expirationTime !== '' && expirationTime !== '0' && <div style={{ color: '#aaa', textAlign: 'center' }}>end {format(parseInt(expirationTime) * 1000)}</div>}
+        {expDate && (
+          <div className={styles.expTime} title={expDate.toLocaleString()}>
+            end {format(expDate?.getTime())}
+          </div>
+        )}
       </div>
     );
   }
