@@ -4,7 +4,7 @@ import { ExternalLinkIcon, SettingsIcon, StarIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { getAccount } from '../../../src/utils/ethersUtil';
-import { setAuthHeaders } from '../../../src/utils/apiUtil';
+import { saveAuthHeaders, deleteAuthHeaders } from '../../../src/utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
@@ -42,9 +42,13 @@ const Header = (): JSX.Element => {
         if (isChangingAccount) {
           setTimeout(async () => {
             isChangingAccount = false;
-            await setAuthHeaders(accounts[0]);
+            await saveAuthHeaders(accounts[0]);
+
+            // reload below makes this worthless. code left for documentation
             // setUser({ account: await getAccount() });
-            window.location.reload(); // use page reload for now to avoid complicated logic in other comps.
+
+            // use page reload for now to avoid complicated logic in other comps.
+            window.location.reload();
           }, 500);
         }
       };
@@ -61,7 +65,7 @@ const Header = (): JSX.Element => {
 
     return () => {
       // on unmounting
-      window.ethereum.removeListener('accountsChanged', handleAccountChange);
+      window.ethereum?.removeListener('accountsChanged', handleAccountChange);
     };
   }, []);
 
@@ -109,7 +113,14 @@ const Header = (): JSX.Element => {
       </MenuItem>,
 
       <MenuDivider key="dd1" />,
-      <MenuItem key="Sign out" icon={<ExternalLinkIcon boxSize={4} />} onClick={() => setUser(null)}>
+      <MenuItem
+        key="Sign out"
+        icon={<ExternalLinkIcon boxSize={4} />}
+        onClick={() => {
+          setUser(null);
+          deleteAuthHeaders();
+        }}
+      >
         Sign out
       </MenuItem>
     ];

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useToast } from '@chakra-ui/toast';
-// import { EventEmitter, EventSubscription } from 'fbemitter';
-import { initEthers, getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaport } from 'utils/ethersUtil';
 import { getCustomMessage } from 'utils/commonUtil';
 const { EventType } = require('../../../opensea/types');
 
@@ -54,7 +53,7 @@ export function AppContextProvider({ children }: any) {
 
   //   const res = await initEthers({ onError }); // returns provider
   //   if (res && res.getSigner) {
-  //     await setAuthHeaders(await res.getSigner().getAddress());
+  //     await saveAuthHeaders(await res.getSigner().getAddress());
   //   } else {
   //     showAppError('Failed to connect');
   //   }
