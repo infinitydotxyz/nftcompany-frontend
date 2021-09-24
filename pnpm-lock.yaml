@@ -36,7 +36,7 @@ specifiers:
   logrocket: 2.0.0
   moment: 2.29.1
   next: 11.1.2
-  nextjs-progressbar: ^0.0.11
+  nextjs-progressbar: 0.0.11
   node-sass: 5.0.0
   prettier: 2.4.1
   prop-types: 15.7.2
@@ -51,6 +51,7 @@ specifiers:
   react-intersection-observer: 8.32.1
   react-range: 1.8.11
   recharts: 2.1.4
+  timeago.js: 4.0.2
   typescript: 4.4.3
   validator: 13.6.0
   web3: 0.20.7
@@ -98,6 +99,7 @@ dependencies:
   react-intersection-observer: 8.32.1_react@17.0.2
   react-range: 1.8.11_react-dom@17.0.2+react@17.0.2
   recharts: 2.1.4_9bdd65c2b60ce8638444b80b396a481b
+  timeago.js: 4.0.2
   validator: 13.6.0
   web3: 0.20.7
   wyvern-js: github.com/ProjectOpenSea/wyvern-js/fabb7660f23f2252c141077e32193d281036299e
@@ -9014,6 +9016,10 @@ packages:
 
   /through/2.3.8:
     resolution: {integrity: sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=}
+    dev: false
+
+  /timeago.js/4.0.2:
+    resolution: {integrity: sha512-a7wPxPdVlQL7lqvitHGGRsofhdwtkoSXPGATFuSOA2i1ZNQEPLrGnj68vOp2sOJTCFAQVXPeNMX/GctBaO9L2w==}
     dev: false
 
   /timers-browserify/2.0.12:

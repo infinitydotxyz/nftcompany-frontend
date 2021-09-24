@@ -12,6 +12,7 @@ import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
+import { WETH_ADDRESS } from 'utils/constants';
 
 const isServer = typeof window === 'undefined';
 
@@ -176,7 +177,11 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                       <>
                         <span className={styles.label}>Price</span>
 
-                        <PriceBox price={data?.price} />
+                        <PriceBox
+                          price={data?.price}
+                          token={data?.data?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
+                          expirationTime={data?.expirationTime}
+                        />
                       </>
                     )}
 
