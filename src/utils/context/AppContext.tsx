@@ -78,13 +78,15 @@ export function AppContextProvider({ children }: any) {
     const debouncedListener = debounce((eventName: any, data: any) => listener(eventName, data), 300);
 
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
-    const seaport = getOpenSeaport();
-    Object.values(EventType).forEach((eventName: any) => {
-      seaport.addListener(eventName, (data: any) => debouncedListener(eventName, data), true);
-    });
-    // const emitter = seaport.getEmitter();
-    // emitter.emit('TransactionConfirmed', { error: 'test', accountAddress: '0x123' }); // simulate OpenSea event.
-  }, []);
+    if (user?.account) {
+      const seaport = getOpenSeaport();
+      Object.values(EventType).forEach((eventName: any) => {
+        seaport.addListener(eventName, (data: any) => debouncedListener(eventName, data), true);
+      });
+      // const emitter = seaport.getEmitter();
+      // emitter.emit('TransactionConfirmed', { error: 'test', accountAddress: '0x123' }); // simulate OpenSea event.
+    }
+  }, [user]);
 
   const value = {
     user,

@@ -22,10 +22,6 @@ type initEthersArgs = {
 };
 
 export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
-  if (!window?.ethereum) {
-    alert('Please install MetaMask');
-    return;
-  }
   try {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
   } catch (err: any) {
