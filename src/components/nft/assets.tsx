@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { FormControl, FormLabel, Box, Heading, Input, Button, ButtonGroup } from '@chakra-ui/react';
 import Table from './table';
 
-function Assets() {
+const Assets = (): JSX.Element => {
   const [step, setStep] = useState(0);
 
   return (
@@ -193,6 +193,6 @@ function Assets() {
       )}
     </div>
   );
-}
+};
 
 export default Assets;

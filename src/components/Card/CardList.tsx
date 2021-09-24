@@ -10,7 +10,8 @@ type Props = {
   showItems?: string[];
   onClickAction?: (item: any, action: string) => void;
 };
-export default function CardList({ data, showItems, action, onClickAction }: Props) {
+
+const CardList = ({ data, showItems, action, onClickAction }: Props): JSX.Element => {
   return (
     <div className={`${styles.cardList}`}>
       {(data || []).map((item) => {
@@ -30,4 +31,6 @@ export default function CardList({ data, showItems, action, onClickAction }: Pro
       })}
     </div>
   );
-}
+};
+
+export default CardList;

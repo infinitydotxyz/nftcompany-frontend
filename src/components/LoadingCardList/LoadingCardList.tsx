@@ -23,7 +23,7 @@ const LoadingCardList = () => {
     <div style={{ marginTop: 40 }}>
       <LoadingCard id="card1" style={{ marginRight: '5%' }} />
 
-      <LoadingCard id="card2"/>
+      <LoadingCard id="card2" />
     </div>
   );
 };

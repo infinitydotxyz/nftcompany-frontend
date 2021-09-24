@@ -1,7 +1,28 @@
-.element {
-  position: relative;
+.topTrigger {
+  position: absolute;
   top: -200px;
   width: 10px;
   height: 10px;
-  // background: #ff0;
+
+  // uncomment to confirm position on screen
+  // background: violet;
+}
+
+.bottomTrigger {
+  position: absolute;
+  bottom: -200px;
+  width: 10px;
+  height: 10px;
+
+  // uncomment to confirm position on screen
+  // background: orange;
+}
+
+.inView {
+  position: relative;
+
+  // uncomment to confirm position on screen
+  // width: 10px;
+  // height: 10px;
+  // background: red;
 }

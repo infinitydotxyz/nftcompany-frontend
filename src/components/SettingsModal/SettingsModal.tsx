@@ -93,7 +93,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
     </div>
   ) : null;
 
-  let shortAddress = user!.account;
+  let shortAddress = user?.account ?? '';
   shortAddress = `${shortAddress.slice(0, 8)}...${shortAddress.slice(-8)}`;
 
   const displayUrl = `${window.origin}/${shortAddress}`;

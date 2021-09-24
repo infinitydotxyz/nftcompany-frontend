@@ -7,10 +7,12 @@ type HelpTooltipProps = {
   text: string | JSX.Element;
 };
 
-export default function HelpTooltip({ text }: HelpTooltipProps) {
+const HelpTooltip = ({ text }: HelpTooltipProps): JSX.Element => {
   return (
     <Tooltip label={<Box p={3}>{text}</Box>} placement="top" hasArrow>
       <InfoOutlineIcon ml={2} />
     </Tooltip>
   );
-}
+};
+
+export default HelpTooltip;

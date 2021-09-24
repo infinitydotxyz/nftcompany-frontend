@@ -28,7 +28,7 @@ import styles from './Header.module.scss';
 
 let isChangingAccount = false;
 
-const Header = () => {
+const Header = (): JSX.Element => {
   const router = useRouter();
   const { user, setUser } = useAppContext();
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
@@ -51,7 +51,7 @@ const Header = () => {
     };
 
     const connect = async () => {
-      (window as any).ethereum.on('accountsChanged', handleAccountChange);
+      window.ethereum.on('accountsChanged', handleAccountChange);
       setUser({ account: await getAccount() });
     };
 
@@ -59,7 +59,7 @@ const Header = () => {
 
     return () => {
       // on unmounting
-      (window as any).ethereum.removeListener('accountsChanged', handleAccountChange);
+      window.ethereum.removeListener('accountsChanged', handleAccountChange);
     };
   }, []);
 

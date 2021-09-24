@@ -31,7 +31,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       if (order) {
         const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
           order: order,
-          accountAddress: user!.account
+          accountAddress: user?.account
         });
         console.log(
           'Accept offer txn hash: ' + txnHash + ' salePriceInEth: ' + salePriceInEth + ' feesInEth: ' + feesInEth

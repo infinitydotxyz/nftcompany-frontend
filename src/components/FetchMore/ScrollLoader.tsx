@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { forwardRef, RefObject } from 'react';
 import { InView } from 'react-intersection-observer';
 import styles from './ScrollLoader.module.scss';
 
-const ScrollLoaderElement = ({ inView, ref, onFetchMore }: any) => {
+type Props = {
+  inView: boolean;
+  onFetchMore: () => void;
+  bottom: boolean;
+};
+
+const ScrollLoaderElement = forwardRef(({ inView, bottom, onFetchMore }: Props, ref: any): JSX.Element => {
   React.useEffect(() => {
     if (inView === true && onFetchMore) {
       onFetchMore();
     }
   }, [inView]);
 
-  // render a placeholder to check if it's visible (inView) or not.
-  return <div ref={ref} className={styles.element}></div>;
-};
+  // the style sets a relative offset -200 so that it will trigger earlier
+  return <div ref={ref} className={bottom ? styles.bottomTrigger : styles.topTrigger}></div>;
+});
+
+ScrollLoaderElement.displayName = 'Search';
 
 type ScrollLoaderProps = {
   onFetchMore: () => void;
@@ -19,14 +27,26 @@ type ScrollLoaderProps = {
 
 export const ScrollLoader = ({ onFetchMore }: ScrollLoaderProps) => {
   return (
-    <InView>
-      {({ inView, ref }) => {
-        return (
-          <div ref={ref}>
-            <ScrollLoaderElement inView={inView} onFetchMore={onFetchMore} />
-          </div>
-        );
-      }}
-    </InView>
+    <>
+      <InView>
+        {({ inView, ref }) => {
+          return (
+            <div className={styles.inView}>
+              <ScrollLoaderElement ref={ref} bottom={false} inView={inView} onFetchMore={onFetchMore} />
+            </div>
+          );
+        }}
+      </InView>
+
+      <InView>
+        {({ inView, ref }) => {
+          return (
+            <div className={styles.inView}>
+              <ScrollLoaderElement ref={ref} bottom={true} inView={inView} onFetchMore={onFetchMore} />
+            </div>
+          );
+        }}
+      </InView>
+    </>
   );
 };
