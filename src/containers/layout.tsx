@@ -6,9 +6,12 @@ import { AppChakraProvider } from 'utils/themeUtil';
 import LandingHeader from './LandingHeader';
 import LandingFooter from './footer';
 import Header from 'components/Header/Header';
+import { isLocalhost } from 'utils/commonUtil';
 
 import LogRocket from 'logrocket';
-LogRocket.init('0pu9ak/nftco');
+if (!isLocalhost()) {
+  LogRocket.init('0pu9ak/nftco');
+}
 
 interface IProps {
   children: any;

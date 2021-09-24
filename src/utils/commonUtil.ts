@@ -17,6 +17,8 @@ export enum EventType {
   OrderDenied = 'OrderDenied'
 }
 
+export const isLocalhost = () => typeof window !== 'undefined' && (window?.location?.host || '').indexOf('localhost') >= 0;
+
 export const ellipsisAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
 // parse a Timestamp string (in millis or secs)
@@ -32,7 +34,7 @@ export const parseTimestampString = (dt: string, inSecond: boolean = false): Dat
     console.error(err);
   }
   return dateObj;
-}
+};
 
 export const transformOpenSea = (item: any, owner: string) => {
   if (!item) {
