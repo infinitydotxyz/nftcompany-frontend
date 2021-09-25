@@ -10,7 +10,7 @@ import { apiPost } from 'utils/apiUtil';
 import { Button, Input } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'hooks/ModalDialog';
-import { getToken } from 'utils/commonUtil';
+import { getToken, stringToFloat } from 'utils/commonUtil';
 
 const isServer = typeof window === 'undefined';
 
@@ -26,6 +26,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
   const [order, setOrder] = React.useState<Order | undefined>();
   const [offerPrice, setOfferPrice] = React.useState(0);
+  const token = getToken(data?.data?.paymentToken);
 
   const loadOrder = useCallback(async () => {
     let orderParams: any;
@@ -101,6 +102,13 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   };
 
   const makeAnOffer = () => {
+    if (token === 'WETH') {
+      const basePriceInEthNum = stringToFloat(data.metadata?.basePriceInEth); // validate: offer price must be >= min price:
+      if (offerPrice < basePriceInEthNum) {
+        showAppError(`Offer Price must be greater than Minimum Price ${basePriceInEthNum} WETH`);
+        return;
+      }
+    }
     try {
       setIsSubmitting(true);
       const seaport = getOpenSeaport();
@@ -131,7 +139,6 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       showAppError((err as GenericError)?.message);
     }
   };
-  const token = getToken(data?.data?.paymentToken);
 
   return (
     <>
@@ -191,7 +198,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                         onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}
                       />
                     </div>
-                    <div>WETH</div>
+                    <div className={styles.token}>{token}</div>
                   </div>
                 </div>
                 <div className={styles.row}>

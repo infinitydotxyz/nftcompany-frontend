@@ -41,6 +41,19 @@ export const parseTimestampString = (dt: string, inSecond: boolean = false): Dat
   return dateObj;
 };
 
+export const stringToFloat = (numStr: string | undefined, defaultValue = 0) => {
+  let num = defaultValue;
+  if (!numStr) {
+    return num;
+  }
+  try {
+    num = parseFloat(numStr);
+  } catch (e) {
+    console.error(e);
+  }
+  return num;
+}
+
 export const transformOpenSea = (item: any, owner: string) => {
   if (!item) {
     return null;
