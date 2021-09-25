@@ -58,14 +58,14 @@ export const InfoCardRow = ({ data }: Props) => {
 
   return (
     <div className={styles.main}>
-      <h3 className={styles.sectionTitle}>My Rewards 💰</h3>
+      <h3 className={styles.sectionTitle}>💰 My Rewards</h3>
 
       <div className={styles.cardGrid}>
         <InfoCard items={rewardItems} title="Rewards" />
         <InfoCard items={listingItems} title="Listing Rewards" />
       </div>
 
-      <h3 className={styles.sectionTitle}>Totals 💰</h3>
+      <h3 className={styles.sectionTitle}>💰 Totals</h3>
       <div className={styles.cardGrid}>
         <InfoCard items={totalItems} title="Totals" />
         <InfoCard items={salesItems} title="Sales / Purchases" />

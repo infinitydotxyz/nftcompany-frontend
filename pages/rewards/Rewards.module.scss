@@ -4,15 +4,12 @@
   margin-bottom: 30vh;
 }
 
-.comingSoon {
+.spinner {
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  height: 400px;
   align-items: center;
-  margin-top: 10vh;
-  font-size: 3em;
-  text-align: center;
-  line-height: 1;
-  color: #555;
-  font-weight: bold;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  flex-direction: center;
 }
