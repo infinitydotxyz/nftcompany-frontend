@@ -51,8 +51,8 @@ const styles = {
       body: {
         color: mode('gray.800', 'whiteAlpha.900')(props),
 
-        bg: mode('white', 'gray.800')(props)
-        // bg: mode('#fcfdfd', 'gray.800')(props)
+        // bg: mode('white', 'gray.800')(props)
+        bg: mode('#fcfdfd', 'gray.800')(props)
       },
       '*::placeholder': {
         color: mode('gray.400', 'whiteAlpha.400')(props)
