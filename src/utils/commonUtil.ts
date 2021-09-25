@@ -1,4 +1,5 @@
 import { CardData } from 'types/Nft.interface';
+import { WETH_ADDRESS } from './constants';
 
 // OpenSea's EventType
 export enum EventType {
@@ -22,6 +23,8 @@ export const isServer = () => typeof window === 'undefined';
 export const isLocalhost = () => typeof window !== 'undefined' && (window?.location?.host || '').indexOf('localhost') >= 0;
 
 export const ellipsisAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
+
+export const getToken = (tokenAddress: string): 'WETH' | 'ETH' => tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH';
 
 // parse a Timestamp string (in millis or secs)
 export const parseTimestampString = (dt: string, inSecond: boolean = false): Date | null => {

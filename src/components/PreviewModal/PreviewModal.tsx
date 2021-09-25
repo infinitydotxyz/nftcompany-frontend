@@ -7,7 +7,7 @@ import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { Link, Tooltip } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'hooks/ModalDialog';
-import { ellipsisAddress } from 'utils/commonUtil';
+import { ellipsisAddress, getToken } from 'utils/commonUtil';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
@@ -146,6 +146,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
       </>
     ) : null;
 
+  const paymentToken = getToken(data?.data?.paymentToken);
   return (
     <>
       {!isServer && (
@@ -175,13 +176,9 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
                     {data.price && (
                       <>
-                        <span className={styles.label}>Price</span>
+                        <span className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price' : 'Price'}</span>
 
-                        <PriceBox
-                          price={data?.price}
-                          token={data?.data?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
-                          expirationTime={data?.expirationTime}
-                        />
+                        <PriceBox price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
                       </>
                     )}
 

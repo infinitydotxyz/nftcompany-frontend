@@ -10,6 +10,7 @@ import { apiPost } from 'utils/apiUtil';
 import { Button, Input } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'hooks/ModalDialog';
+import { getToken } from 'utils/commonUtil';
 
 const isServer = typeof window === 'undefined';
 
@@ -130,6 +131,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       showAppError((err as GenericError)?.message);
     }
   };
+  const token = getToken(data?.data?.paymentToken);
 
   return (
     <>
@@ -143,20 +145,23 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
               {data.price && (
                 <div className={styles.row}>
-                  <div className={styles.left}>Price</div>
+                  <div className={styles.left}>{token === 'WETH' ? 'Minimum Price' : 'Price'}</div>
+
                   <div className={styles.right}>
-                    <PriceBox price={data.price} />
+                    <PriceBox price={data.price} token={token} expirationTime={data?.expirationTime} />
                   </div>
                 </div>
               )}
 
-              <div className={styles.footer}>
-                <Button isDisabled={!order} onClick={onClickBuyNow} disabled={isBuying}>
-                  Buy now
-                </Button>
+              {token === 'ETH' && (
+                <div className={styles.footer}>
+                  <Button isDisabled={!order} onClick={onClickBuyNow} disabled={isBuying}>
+                    Buy now
+                  </Button>
 
-                {isBuying && <Spinner size="md" color="teal" ml={4} mt={2} />}
-              </div>
+                  {isBuying && <Spinner size="md" color="teal" ml={4} mt={2} />}
+                </div>
+              )}
 
               <div className={styles.space}>
                 <hr />
