@@ -3,6 +3,7 @@ import styles from './LeaderBoardTable.module.scss';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import { LeaderBoard, UserReward } from '../types';
 import { ellipsisAddress } from 'utils/commonUtil';
+import { ethers } from 'ethers';
 
 type Props = {
   data?: LeaderBoard;
@@ -14,10 +15,12 @@ export const LeaderBoardTable = ({ data }: Props) => {
   }
 
   const rows = data.results.map((item, index) => {
+    const checkSumAddress = ethers.utils.getAddress(item.id);
+
     return (
       <Tr key={item.id}>
         <Td>#{index + 1}</Td>
-        <Td>{ellipsisAddress(item.id)}</Td>
+        <Td>{ellipsisAddress(checkSumAddress)}</Td>
         <Td isNumeric>{item.numListings}</Td>
         <Td isNumeric>{item.numPurchases}</Td>
 
@@ -28,7 +31,7 @@ export const LeaderBoardTable = ({ data }: Props) => {
 
   return (
     <div className={styles.main}>
-      <Table mt={4}>
+      <Table mt={2} mb={6}>
         <Thead>
           <Tr>
             <Th>Rank</Th>

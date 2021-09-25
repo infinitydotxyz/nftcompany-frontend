@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Rewards.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
 import { UnderConstructionIcon } from 'components/Icons/Icons';
 import { LeaderBoard, UserReward } from './types';
 import { LeaderBoardTable } from './LeaderBoard/LeaderBoardTable';
-import { InfoCard, InfoCardRow } from './InfoCard/InfoCard';
+import { InfoCardRow } from './InfoCard List/InfoCardList';
 
 const Rewards = (): JSX.Element => {
   const { user } = useAppContext();
@@ -64,7 +63,7 @@ const Rewards = (): JSX.Element => {
         <Head>
           <title>Rewards</title>
         </Head>
-        <div className={pageStyles.dashboard}>
+        <div className={styles.main}>
           <div className="page-container">
             <div className="section-bar">
               <div className="tg-title">Rewards</div>
@@ -94,180 +93,24 @@ const Rewards = (): JSX.Element => {
     return label;
   }
 
-  const chartData = {
-    labels: ['Orders', 'Bonus', 'Fee', 'Gross', 'Penalty', 'Net'],
-    datasets: [
-      {
-        label: 'Rewards', // legend
-        data: [1, 2, 4, 8, 2, 15],
-        backgroundColor: 'brandBlue'
-      }
-    ]
-  };
-
-  const options = {
-    responsive: false,
-    scales: {
-      xAxes: [
-        {
-          display: true,
-          gridLines: {
-            display: false,
-            color: 'brandBlue'
-          },
-          ticks: {
-            beginAtZero: true,
-            fontFamily: 'Verdana',
-            fontColor: '#777',
-            callback: (label: string) => formatXAxesLabelText(label)
-          }
-        }
-      ],
-      yAxes: [
-        {
-          display: true,
-          gridLines: {
-            display: false,
-            color: 'brandBlue'
-          },
-          ticks: {
-            beginAtZero: false,
-            fontColor: '#777',
-            callback: (value: string) => value
-          },
-          pointLabels: {
-            fontFamily: 'Verdana',
-            fontSize: 34
-          }
-        }
-      ]
-    }
-  };
-
   return (
     <>
       <Head>
         <title>Rewards</title>
       </Head>
-      <div className={pageStyles.dashboard}>
+      <div className={styles.main}>
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Rewards</div>
           </div>
 
-          <div className={styles.main}>
+          <div>
             <InfoCardRow data={userReward} />
 
-            <section className="grid">
-              <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
-                <h3>Total Tx Volume</h3>
-                <div>$242,869,800</div>
-              </div>
-              <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
-                <h3>NFTS Rewards</h3>
-                <div>$242,869,800</div>
-              </div>
-              <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
-                <h3>NFTS Price</h3>
-                <div>$242,869,800</div>
-              </div>
-              <div className={`col-md-3 col-sm-6 ${styles.rewardBox}`}>
-                <h3>Time Left</h3>
-                <div>15:32:00</div>
-              </div>
-
-              <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
-                <h3 className="tg-title">Rewards 💰</h3>
-
-                <ul className={styles.list}>
-                  <li>
-                    <span>Current Block</span>
-                    <span>{userReward?.currentBlock || 0}</span>
-                  </li>
-                  <li>
-                    <span>Your Rewards:</span>
-                    <span>&nbsp;</span>
-                  </li>
-                  <li>{/* <Bar width={500} height={200} data={chartData} options={options} /> */}</li>
-                </ul>
-              </div>
-              <div className={`col-md-12 col-sm-12`}>
-                <h3 className={styles.h3}>My Rewards 💰</h3>
-              </div>
-
-              <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
-                <h3>Listing Rewards</h3>
-                <main>
-                  <div className="grid">
-                    <span className="col-md-6">APR</span>
-                    <span className="col-md-6">10%</span>
-                  </div>
-                  <div className="grid">
-                    <span className="col-md-6">Listings</span>
-                    <span className="col-md-6">{userReward?.numListings || 0}</span>
-                  </div>
-                  <div className="grid">
-                    <span className="col-md-6">Total</span>
-                    <span className="col-md-6">{userReward?.totalListings || 0}</span>
-                  </div>
-                </main>
-              </div>
-              <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
-                <h3>Bonus Rewards</h3>
-                <main>
-                  <div className="grid">
-                    <span className="col-md-6">APR</span>
-                    <span className="col-md-6">10%</span>
-                  </div>
-                  <div className="grid">
-                    <span className="col-md-6">Bonus Rewards</span>
-                    <span className="col-md-6">{userReward?.numBonusListings || 0}</span>
-                  </div>
-                  <div className="grid">
-                    <span className="col-md-6">Total</span>
-                    <span className="col-md-6">{userReward?.totalListings || 0}</span>
-                  </div>
-                </main>
-              </div>
-              <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
-                <h3>Fee Rewards</h3>
-                <main>
-                  <div className="grid">
-                    <span className="col-md-6">APR</span>
-                    <span className="col-md-6">10%</span>
-                  </div>
-                  <div className="grid">
-                    <span className="col-md-6">Fee Rewards</span>
-                    <span className="col-md-6">{userReward?.totalFees || 0}</span>
-                  </div>
-                  <div className="grid">
-                    <span className="col-md-6">Total</span>
-                    <span className="col-md-6">{userReward?.totalListings || 0}</span>
-                  </div>
-                </main>
-              </div>
-              <div className={`col-md-3 col-sm-6 ${styles.myRewardBox}`}>
-                <h3>Net Rewards</h3>
-                <main>
-                  <div className="grid">
-                    <span className="col-md-6">APR</span>
-                    <span className="col-md-6">10%</span>
-                  </div>
-                  <div className="grid">
-                    <span className="col-md-6">Net Rewards</span>
-                    <span className="col-md-6">{userReward?.totalFees || 0}</span>
-                  </div>
-                  <div className="grid">
-                    <span className="col-md-6">Total</span>
-                    <span className="col-md-6">{userReward?.totalListings || 0}</span>
-                  </div>
-                </main>
-              </div>
-              <div className={`col-md-12 col-sm-12 ${styles.leaderBox}`}>
-                <h3 className={styles.h3}>Leaderboard 🏆</h3>
-                <LeaderBoardTable data={leaderboard} />
-              </div>
-            </section>
+            <div className={styles.leaderBox}>
+              <h3 className={styles.sectionTitle}>Leaderboard 🏆</h3>
+              <LeaderBoardTable data={leaderboard} />
+            </div>
           </div>
         </div>
       </div>

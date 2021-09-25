@@ -8,6 +8,7 @@ specifiers:
   '@chakra-ui/react': 1.6.8
   '@chakra-ui/spinner': 1.1.12
   '@chakra-ui/system': 1.7.3
+  '@chakra-ui/theme-tools': 1.2.1
   '@chakra-ui/toast': 1.3.0
   '@chakra-ui/tooltip': 1.3.11
   '@emotion/react': '11'
@@ -67,6 +68,7 @@ dependencies:
   '@chakra-ui/react': 1.6.8_59921ceaa90c07ca44cf1bf1806f1044
   '@chakra-ui/spinner': 1.1.12_beb3eeb2d477ea47016f511436674e29
   '@chakra-ui/system': 1.7.3_2305e84770652125202aaa4817ae97a9
+  '@chakra-ui/theme-tools': 1.2.1_@chakra-ui+system@1.7.3
   '@chakra-ui/toast': 1.3.0_24332c47a350833870bea213fd3659eb
   '@chakra-ui/tooltip': 1.3.11_24332c47a350833870bea213fd3659eb
   '@emotion/react': 11.4.1_7d120459bc49ec1f7e6eba73754045f3

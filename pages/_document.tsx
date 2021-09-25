@@ -1,6 +1,7 @@
 import { ColorModeScript } from '@chakra-ui/react';
 import NextDocument, { Html, Head, Main, NextScript } from 'next/document';
 import { GA_TRACKING_ID } from '../lib/ga/gtag';
+import { theme } from 'utils/themeUtil';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -31,7 +32,7 @@ export default class Document extends NextDocument {
           )}
         </Head>
         <body>
-          <ColorModeScript initialColorMode={'light'} />
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
           <NextScript />
         </body>

@@ -1,64 +1,7 @@
 @import './Shared.module.scss';
 
-.list {
-  margin-left: 25px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  list-style: none;
-
-  li {
-    padding: 7px 0;
-  }
-
-  li > span {
-    display: inline-block;
-    width: 170px;
-    font-weight: bold;
-    color: #777;
-  }
-
-  .bar {
-    width: 20vw;
-    padding-left: 10px;
-    // background-color: #4047FF;
-    // color: #fff;
-    border-radius: 12px;
-  }
-}
-
-.rewardBox {
-  @extend .boxShadow;
-  padding: 15px;
-  h3 {
-    font-weight: bold;
-    padding: 15px 0;
-  }
-  div {
-    font-size: 1.2em;
-  }
-}
-
-.myRewardBox {
-  height: 225px;
-  @extend .boxShadow;
-
-  h3 {
-    padding: 15px;
-    font-weight: bold;
-  }
-  main {
-    div {
-      border-top: 1px solid #ddd;
-    }
-    span {
-      padding: 15px;
-    }
-  }
-}
-
-.h3 {
-  font-weight: bold;
-  font-size: 20px;
+.main {
+  margin-bottom: 80px;
 }
 
 .comingSoon {
