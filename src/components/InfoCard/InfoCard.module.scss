@@ -1,0 +1,36 @@
+@import '/styles/SharedStyles.module.scss';
+
+.main {
+  .card {
+    @extend .boxShadow;
+    background-color: white;
+
+    min-width: 250px;
+
+    .title {
+      padding: 8px 16px;
+      background-color: #eee;
+      font-weight: bold;
+      color: #555;
+    }
+  }
+
+  .left {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+  }
+
+  .right {
+    padding: 8px 20px;
+    text-align: right;
+    font-weight: bold;
+    color: #555;
+  }
+
+  .infoRow {
+    display: grid;
+    border-top: 1px solid #eee;
+    grid-template-columns: 2fr 1fr;
+    width: 100%;
+  }
+}

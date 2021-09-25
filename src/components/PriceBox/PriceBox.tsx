@@ -24,14 +24,9 @@ export const PriceBox = ({ price, expirationTime = '', token = '' }: Props) => {
           </div>
         }
       >
-        <div>
+        <div className={styles.priceBox}>
           <div className={styles.price}>
-            {price}{' '}
-            {token === 'ETH' ? (
-              <EthToken style={{ width: 12, marginTop: -12 }} />
-            ) : (
-              <WEthToken style={{ width: 12, marginTop: -12 }} />
-            )}
+            {price} {token === 'ETH' ? <EthToken /> : <WEthToken />}
           </div>
           {expDate && (
             <div className={styles.expTime} title={expDate.toLocaleString()}>

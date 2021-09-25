@@ -1,0 +1,10 @@
+@import '/styles/SharedStyles.module.scss';
+
+.main {
+  width: 100%;
+  background-color: white;
+  padding: 0 20px;
+  padding-bottom: 40px;
+
+  @extend .boxShadow;
+}
