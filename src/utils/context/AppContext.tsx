@@ -31,8 +31,8 @@ export function AppContextProvider({ children }: any) {
   const [user, setUser] = React.useState<User | null>(null);
   const [userReady, setUserReady] = React.useState(false);
 
-  const showAppError = (message: ReactNode) => toast.error(message);
-  const showAppMessage = (message: ReactNode) => toast.info(message);
+  const showAppError = (message: ReactNode) => toast.error(message, { position: 'bottom-center'});
+  const showAppMessage = (message: ReactNode) => toast.info(message, { position: 'bottom-center'});
 
   // const connectMetaMask = async () => {
   //   // show MetaMask's errors:
