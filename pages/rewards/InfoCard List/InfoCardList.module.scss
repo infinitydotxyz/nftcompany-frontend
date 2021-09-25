@@ -21,10 +21,13 @@
   }
 
   .cardGrid {
-    display: grid;
+    // display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
 
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 56px;
+    // grid-template-columns: repeat(4, 1fr);
+    // grid-gap: 56px;
   }
 
   .infoRow {

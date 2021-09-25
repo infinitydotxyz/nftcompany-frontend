@@ -2,8 +2,9 @@
 
 .main {
   width: 100%;
-  margin-top: 20px;
   background-color: white;
+  padding: 0 20px;
+  padding-bottom: 40px;
 
   @extend .boxShadow;
 }

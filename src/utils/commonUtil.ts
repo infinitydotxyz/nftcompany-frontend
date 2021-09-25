@@ -19,7 +19,8 @@ export enum EventType {
 
 export const isServer = () => typeof window === 'undefined';
 
-export const isLocalhost = () => typeof window !== 'undefined' && (window?.location?.host || '').indexOf('localhost') >= 0;
+export const isLocalhost = () =>
+  typeof window !== 'undefined' && (window?.location?.host || '').indexOf('localhost') >= 0;
 
 export const ellipsisAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
@@ -84,4 +85,48 @@ export const uuidv4 = () => {
     const v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
+};
+
+// makes number strings from strings or numbers
+export const numStr = (value: any): string => {
+  let short;
+
+  if (typeof value === 'undefined' || value === null) {
+    short = '';
+  } else if (typeof value === 'string') {
+    if (value.includes('.')) {
+      const f = parseFloat(value);
+      if (f) {
+        short = f.toFixed(4);
+      }
+    }
+
+    short = value;
+  } else if (typeof value === 'number') {
+    short = value.toFixed(4);
+  } else {
+    short = value.toString();
+  }
+
+  // remove .0000
+  let zeros = '.0000';
+  if (short.endsWith(zeros)) {
+    short = short.substring(0, short.length - zeros.length);
+  }
+
+  // .9800 -> .98
+  if (short.includes('.')) {
+    zeros = '00';
+    if (short.endsWith(zeros)) {
+      short = short.substring(0, short.length - zeros.length);
+    }
+  }
+
+  const p = parseFloat(short);
+  if (!isNaN(p)) {
+    // this adds commas
+    return p.toLocaleString();
+  }
+
+  return short;
 };

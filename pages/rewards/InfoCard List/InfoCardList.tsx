@@ -14,52 +14,46 @@ export const InfoCardRow = ({ data }: Props) => {
 
   const listingItems: DataItem[] = [
     { title: 'Listings', value: data.numListings },
-    { title: 'Bonus Listings', value: data.numBonusListings },
+    { title: 'Bonus listings', value: data.numBonusListings },
     { title: 'Offers', value: data.numOffers },
-    { title: 'Bonus Offers', value: data.numBonusOffers }
+    { title: 'Bonus offers', value: data.numBonusOffers }
   ];
 
   const totalItems: DataItem[] = [
-    { title: 'Total Listings', value: data.totalListings },
-    { title: 'Total Bonus Listings', value: data.totalBonusListings },
-    { title: 'Total Offers', value: data.totalOffers },
-    { title: 'Total Bonus Offers', value: data.totalBonusOffers },
-    // { title: 'purchases Total', value: data.purchasesTotal },
-    // { title: 'purchases Fees Total', value: data.purchasesFeesTotal },
-    { title: 'Purchases Total', value: data.purchasesTotalNumeric },
-    { title: 'Purchases Fees Total', value: data.purchasesFeesTotalNumeric },
-    { title: 'Total Sales', value: data.totalSales },
-    { title: 'Total Volume', value: data.totalVolume },
-    { title: 'Total Fees', value: data.totalFees }
+    { title: 'Total listings', value: data.totalListings },
+    { title: 'Total bonus listings', value: data.totalBonusListings },
+    { title: 'Total offers', value: data.totalOffers },
+    { title: 'Total bonus offers', value: data.totalBonusOffers },
+    { title: 'Total sales', value: data.totalSales },
+    { title: 'Total volume', value: data.totalVolume },
+    { title: 'Total fees', value: data.totalFees }
   ];
 
   const rewardItems: DataItem[] = [
     { title: 'Reward', value: data.reward },
-    { title: 'Bonus Reward', value: data.bonusReward },
-    { title: 'Sale Reward', value: data.saleReward },
-    { title: 'Purchase Reward', value: data.purchaseReward },
-    // { title: 'Gross Reward', value: data.grossReward },
-    // { title: 'Net Reward', value: data.netReward },
-    { title: 'Gross Reward', value: data.grossRewardNumeric?.toString() || '0' },
-    { title: 'Net Reward', value: data.netRewardNumeric?.toString() || '0' },
-    { title: 'penalty', value: data.penalty },
-    { title: 'penaltyActivated', value: data.penaltyActivated },
-    { title: 'penaltyRatio', value: data.penaltyRatio }
+    { title: 'Bonus reward', value: data.bonusReward },
+    { title: 'Sale reward', value: data.saleReward },
+    { title: 'Purchase reward', value: data.purchaseReward },
+    { title: 'Gross reward', value: data.grossRewardNumeric?.toString() || '0' },
+    { title: 'Net reward', value: data.netRewardNumeric?.toString() || '0' },
+    { title: 'Penalty', value: data.penalty },
+    { title: 'Penalty activated', value: data.penaltyActivated },
+    { title: 'Penalty ratio', value: data.penaltyRatio }
   ];
 
   const blockItems: DataItem[] = [
-    { title: 'currentBlock', value: data.currentBlock },
-    { title: 'rewardPerBlock', value: data.rewardPerBlock },
-    { title: 'bonusRewardPerBlock', value: data.bonusRewardPerBlock },
-    { title: 'saleRewardPerBlock', value: data.saleRewardPerBlock },
-    { title: 'purchaseRewardPerBlock', value: data.purchaseRewardPerBlock }
+    { title: 'Current block', value: data.currentBlock },
+    { title: 'Reward per block', value: data.rewardPerBlock },
+    { title: 'Bonus reward per block', value: data.bonusRewardPerBlock },
+    { title: 'Sale reward per block', value: data.saleRewardPerBlock },
+    { title: 'Purchase reward per block', value: data.purchaseRewardPerBlock }
   ];
 
   const salesItems: DataItem[] = [
-    // { title: 'salesTotal', value: data.salesTotal },
-    // { title: 'salesFeesTotal', value: data.salesFeesTotal },
-    { title: 'Sales Total', value: data.salesTotalNumeric },
-    { title: 'Sales Fees Total ', value: data.salesFeesTotalNumeric }
+    { title: 'Sales total', value: data.salesTotalNumeric },
+    { title: 'Sales fees total ', value: data.salesFeesTotalNumeric },
+    { title: 'Purchases total', value: data.purchasesTotalNumeric },
+    { title: 'Purchases fees total', value: data.purchasesFeesTotalNumeric }
   ];
 
   return (
@@ -67,14 +61,15 @@ export const InfoCardRow = ({ data }: Props) => {
       <h3 className={styles.sectionTitle}>My Rewards 💰</h3>
 
       <div className={styles.cardGrid}>
-        <InfoCard items={listingItems} title="Listing Rewards" />
         <InfoCard items={rewardItems} title="Rewards" />
+        <InfoCard items={listingItems} title="Listing Rewards" />
       </div>
 
       <h3 className={styles.sectionTitle}>Totals 💰</h3>
       <div className={styles.cardGrid}>
-        <InfoCard items={salesItems} title="Sales" />
         <InfoCard items={totalItems} title="Totals" />
+        <InfoCard items={salesItems} title="Sales / Purchases" />
+
         <InfoCard items={blockItems} title="Block" />
       </div>
     </div>

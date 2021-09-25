@@ -1,4 +1,5 @@
 import React from 'react';
+import { numStr } from 'utils/commonUtil';
 import styles from './InfoCard.module.scss';
 
 export type DataItem = {
@@ -16,45 +17,8 @@ export const InfoCard = ({ title, items }: IProps) => {
     return <div>Nothing found</div>;
   }
 
-  const shrnk = (value: any): string => {
-    let short;
-
-    if (typeof value === 'string') {
-      if (value.includes('.')) {
-        const f = parseFloat(value);
-        if (f) {
-          short = f.toFixed(4);
-        }
-      }
-
-      short = value;
-    } else if (typeof value === 'number') {
-      short = value.toFixed(4);
-    } else {
-      short = value.toString();
-    }
-
-    let zeros = '.0000';
-    if (short.endsWith(zeros)) {
-      short = short.substring(0, short.length - zeros.length);
-    }
-
-    zeros = '00';
-    if (short.endsWith(zeros)) {
-      short = short.substring(0, short.length - zeros.length);
-    }
-
-    const p = parseFloat(short);
-    if (!isNaN(p)) {
-      // this adds commas
-      return p.toLocaleString();
-    }
-
-    return short;
-  };
-
   const divs = items.map((i) => {
-    const val = shrnk(i.value);
+    const val = numStr(i.value);
 
     return (
       <div key={i.title + i.value} className={styles.infoRow}>
