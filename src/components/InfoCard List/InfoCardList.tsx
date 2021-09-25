@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './InfoCardList.module.scss';
-import { UserReward } from '../types';
 import { DataItem, InfoCard } from '../InfoCard/InfoCard';
+import { UserReward } from 'types/rewardTypes';
 
 type Props = {
   data?: UserReward;

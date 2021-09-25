@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './LeaderBoardTable.module.scss';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
-import { LeaderBoard, UserReward } from '../types';
 import { ellipsisAddress, numStr } from 'utils/commonUtil';
 import { ethers } from 'ethers';
+import { LeaderBoard } from 'types/rewardTypes';
 
 type Props = {
   data?: LeaderBoard;

@@ -5,10 +5,10 @@ import Layout from 'containers/layout';
 import styles from './Rewards.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
-import { LeaderBoard, UserReward } from './types';
-import { LeaderBoardTable } from './LeaderBoard/LeaderBoardTable';
-import { InfoCardRow } from './InfoCard List/InfoCardList';
+import { LeaderBoard, UserReward } from '../../src/types/rewardTypes';
 import { Spinner } from '@chakra-ui/spinner';
+import { InfoCardRow } from 'components/InfoCard List/InfoCardList';
+import { LeaderBoardTable } from 'components/LeaderBoard/LeaderBoardTable';
 
 const Rewards = (): JSX.Element => {
   const { user } = useAppContext();
