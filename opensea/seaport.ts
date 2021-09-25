@@ -196,6 +196,9 @@ export class OpenSeaPort {
   }
 
   public getEmitter() {
+    if (!this._emitter) {
+      this._emitter = new EventEmitter();
+    }
     return this._emitter;
   }
 
@@ -792,7 +795,7 @@ export class OpenSeaPort {
     if (typeof hasBlueCheck === 'undefined') {
       (order as any).metadata.checkBlueCheck = true;
     }
-    console.log('****** OpenSea order:', order, '--- ', assetDetails);
+    console.log('*** order:', order, '--- ', assetDetails);
     // order.metadata.asset.name, desc, image...
 
     await this._sellOrderValidationAndApprovals({ order, accountAddress });

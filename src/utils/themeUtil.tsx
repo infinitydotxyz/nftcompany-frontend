@@ -2,7 +2,7 @@ import React from 'react';
 import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefaultColorScheme } from '@chakra-ui/react';
 
 const colors = {
-  brandBlue: '#4047FF',
+  brandBlue: 'var(--brand-primary)',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   blue: {

@@ -1,3 +1,4 @@
+import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { CardData } from 'types/Nft.interface';
 import { WETH_ADDRESS } from './constants';
 
@@ -20,11 +21,12 @@ export enum EventType {
 
 export const isServer = () => typeof window === 'undefined';
 
-export const isLocalhost = () => typeof window !== 'undefined' && (window?.location?.host || '').indexOf('localhost') >= 0;
+export const isLocalhost = () =>
+  typeof window !== 'undefined' && (window?.location?.host || '').indexOf('localhost') >= 0;
 
 export const ellipsisAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
-export const getToken = (tokenAddress: string): 'WETH' | 'ETH' => tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH';
+export const getToken = (tokenAddress: string): 'WETH' | 'ETH' => (tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH');
 
 // parse a Timestamp string (in millis or secs)
 export const parseTimestampString = (dt: string, inSecond: boolean = false): Date | null => {
@@ -52,7 +54,7 @@ export const stringToFloat = (numStr: string | undefined, defaultValue = 0) => {
     console.error(e);
   }
   return num;
-}
+};
 
 export const transformOpenSea = (item: any, owner: string) => {
   if (!item) {
@@ -74,20 +76,33 @@ export const transformOpenSea = (item: any, owner: string) => {
 };
 
 export const getCustomMessage = (eventName: string, data: any) => {
-  let customMsg = '';
+  let customMsg: ReactJSXElement | string | null = null;
   const ev = data?.event;
+  const createLink = (transactionHash: string) => (
+    <a className="a-link" href={`https://etherscan.io/tx/${transactionHash}`} target="_blank" rel="noreferrer">
+      {data?.transactionHash}
+    </a>
+  );
+
   if (eventName === EventType.TransactionCreated) {
-    if (ev === 'MatchOrders') {
-      customMsg = 'MatchOrders: Your transaction has been sent to chain.';
+    if (ev === EventType.MatchOrders) {
+      customMsg = (
+        <span>MatchOrders: Your transaction has been sent to chain. {createLink(data?.transactionHash)}</span>
+      );
     }
     if (ev === EventType.CancelOrder) {
-      customMsg = 'CancelOrder: Your transaction has been sent to chain.';
+      customMsg = (
+        <span>CancelOrder: Your transaction has been sent to chain. {createLink(data?.transactionHash)}</span>
+      );
     }
   }
   if (eventName === EventType.TransactionConfirmed) {
     if (ev === EventType.CancelOrder) {
       customMsg = 'CancelOrder: Transaction confirmed.';
     }
+  }
+  if (eventName === EventType.MatchOrders) {
+    customMsg = <span>MatchOrders: Your transaction has been sent to chain. {createLink(data?.transactionHash)}</span>;
   }
   return customMsg;
 };
