@@ -1,8 +1,8 @@
 .price {
   display: inline-block;
-  border: 2px solid #333;
+  border: 2px solid var(--text-primary);
   border-radius: 4px;
-  color: #333;
+  color: var(--text-primary);
   padding: 2px 6px 0px 6px;
   font-weight: 700;
   flex-shrink: 0;
@@ -12,6 +12,6 @@
 }
 
 .expTime {
-  color: #aaa;
+  color: var(--text-secondary);
   text-align: center;
 }
