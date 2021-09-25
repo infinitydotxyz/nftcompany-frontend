@@ -9,11 +9,17 @@ type Props = {
   price?: number;
   token?: '' | 'ETH' | 'WETH';
   expirationTime?: string;
+  justifyRight?: boolean;
 };
 
-export const PriceBox = ({ price, expirationTime = '', token = '' }: Props) => {
+export const PriceBox = ({ justifyRight = false, price, expirationTime = '', token = '' }: Props) => {
   if (price) {
-    // TODO: remove inline styles
+    const priceStyle = [styles.priceBox];
+
+    if (justifyRight) {
+      priceStyle.push(styles.onRight);
+    }
+
     const expDate = parseTimestampString(expirationTime, true);
     return (
       <Tooltip
@@ -24,7 +30,7 @@ export const PriceBox = ({ price, expirationTime = '', token = '' }: Props) => {
           </div>
         }
       >
-        <div className={styles.priceBox}>
+        <div className={priceStyle.join(' ')}>
           <div className={styles.price}>
             {price} {token === 'ETH' ? <EthToken /> : <WEthToken />}
           </div>

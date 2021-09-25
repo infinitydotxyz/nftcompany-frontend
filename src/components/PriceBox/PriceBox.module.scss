@@ -1,7 +1,11 @@
 .priceBox {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   flex-direction: column;
+
+  &.onRight {
+    align-items: flex-end;
+  }
 
   .price {
     display: flex;
@@ -23,6 +27,7 @@
   }
 
   .expTime {
+    margin-top: 4px;
     color: #aaa;
     text-align: center;
   }
