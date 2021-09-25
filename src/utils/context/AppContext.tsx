@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useToast } from '@chakra-ui/toast';
-import { getOpenSeaport } from 'utils/ethersUtil';
+import { getAccount, getOpenSeaport } from 'utils/ethersUtil';
 import { getCustomMessage } from 'utils/commonUtil';
+import { deleteAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
 
 export type User = {
@@ -10,7 +11,9 @@ export type User = {
 
 export type AppContextType = {
   user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  signIn: () => void;
+  signOut: () => void;
+  userReady: boolean;
   showAppError: (msg: string) => void;
   showAppMessage: (msg: string) => void;
 };
@@ -33,6 +36,7 @@ const showToast = (toast: any, type: 'success' | 'error' | 'warning' | 'info', m
 export function AppContextProvider({ children }: any) {
   const toast = useToast();
   const [user, setUser] = React.useState<User | null>(null);
+  const [userReady, setUserReady] = React.useState(false);
 
   const showAppError = (message: string) => showToast(toast, 'error', message);
   const showAppMessage = (message: string) => showToast(toast, 'info', message);
@@ -92,9 +96,26 @@ export function AppContextProvider({ children }: any) {
     }
   }, [user]);
 
+  const signIn = async (): Promise<void> => {
+    if (window.ethereum) {
+      setUser({ account: await getAccount() });
+    }
+
+    // views can avoid drawing until a login attempt was made to avoid a user=null and user='xx' refresh
+    setUserReady(true);
+  };
+
+  const signOut = async (): Promise<void> => {
+    setUser(null);
+    deleteAuthHeaders();
+  };
+
   const value: AppContextType = {
     user,
-    setUser,
+    signIn,
+    signOut,
+    userReady,
+
     showAppError,
     showAppMessage
   };

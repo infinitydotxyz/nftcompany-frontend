@@ -48,7 +48,7 @@ export function useCardProvider(): {
   const [hasLoaded, setHasLoaded] = useState(false);
 
   const searchContext = useSearchContext();
-  const { user } = useAppContext();
+  const { user, userReady } = useAppContext();
 
   const userAccount = user?.account;
 
@@ -108,8 +108,11 @@ export function useCardProvider(): {
       }
     };
 
-    loadData();
-  }, [searchContext, userAccount]);
+    // avoid flicker, don't do anything until user is set or set to null
+    if (userReady) {
+      loadData();
+    }
+  }, [searchContext, userAccount, userReady]);
 
   const hasData = () => {
     return list.length > 0;
