@@ -10,7 +10,9 @@ export default class Document extends NextDocument {
     return (
       <Html lang="en">
         <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          {/* Warning: viewport meta tags should not be used in _document.js's <Head>. https://nextjs.org/docs/messages/no-document-viewport-meta */}
+          {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
+
           {/* Global Site Tag (gtag.js) - Google Analytics */}
           {isProduction && (
             <>

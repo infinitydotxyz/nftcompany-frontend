@@ -1,4 +1,3 @@
-import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { CardData } from 'types/Nft.interface';
 import { WETH_ADDRESS } from './constants';
 
@@ -76,7 +75,7 @@ export const transformOpenSea = (item: any, owner: string) => {
 };
 
 export const getCustomMessage = (eventName: string, data: any) => {
-  let customMsg: ReactJSXElement | string | null = null;
+  let customMsg: JSX.Element | string | null = null;
   const ev = data?.event;
   const createLink = (transactionHash: string) => (
     <a className="a-link" href={`https://etherscan.io/tx/${transactionHash}`} target="_blank" rel="noreferrer">
