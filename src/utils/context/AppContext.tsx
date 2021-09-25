@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { useToast } from '@chakra-ui/toast';
 import { getAccount, getOpenSeaport } from 'utils/ethersUtil';
 import { getCustomMessage } from 'utils/commonUtil';
 import { deleteAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ReactNode } from '.pnpm/@types+react@17.0.24/node_modules/@types/react';
 
 export type User = {
   account: string;
@@ -22,24 +25,14 @@ const AppContext = React.createContext<AppContextType | null>(null);
 
 // let lastError = '';
 let lastMsg = '';
-
-const showToast = (toast: any, type: 'success' | 'error' | 'warning' | 'info', message: string) => {
-  toast({
-    title: type === 'error' ? 'Error' : 'Info',
-    description: message,
-    status: type,
-    duration: type === 'error' ? 6000 : 3000,
-    isClosable: true
-  });
-};
+let isListenerAdded = false; // set up event listeners once.
 
 export function AppContextProvider({ children }: any) {
-  const toast = useToast();
   const [user, setUser] = React.useState<User | null>(null);
   const [userReady, setUserReady] = React.useState(false);
 
-  const showAppError = (message: string) => showToast(toast, 'error', message);
-  const showAppMessage = (message: string) => showToast(toast, 'info', message);
+  const showAppError = (message: ReactNode) => toast.error(message, { position: 'bottom-center'});
+  const showAppMessage = (message: ReactNode) => toast.info(message, { position: 'bottom-center'});
 
   // const connectMetaMask = async () => {
   //   // show MetaMask's errors:
@@ -73,26 +66,35 @@ export function AppContextProvider({ children }: any) {
           arr.push(`${k}: ${data[k]}`);
         }
       });
+      console.log('eventName, data', eventName, data);
       const msg = getCustomMessage(eventName, data) || `${eventName}: ${arr.join(', ')}`;
       if (lastMsg && msg === lastMsg) {
         // TODO: to avoid show dup messages.
         lastMsg = '';
         return;
       }
-      lastMsg = msg;
+      lastMsg = `${msg}`;
       showAppMessage(msg);
     };
 
     // const debouncedListener = debounce((eventName: any, data: any) => listener(eventName, data), 300); // didn't work.
 
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
-    if (user?.account) {
+    console.log('user?.account', user?.account);
+    if (user?.account && !isListenerAdded) {
+      isListenerAdded = true;
       const seaport = getOpenSeaport();
       Object.values(EventType).forEach((eventName: any) => {
         seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
       });
+      // for testing: simulate OpenSea event:
       // const emitter = seaport.getEmitter();
-      // emitter.emit('TransactionConfirmed', { error: 'test', accountAddress: '0x123' }); // simulate OpenSea event.
+      // console.log('emitter', emitter);
+      // emitter.emit('MatchOrders', {
+      //   event: 'TransactionCreated',
+      //   accountAddress: '0x123',
+      //   transactionHash: '0x67e01ca68c5ef37ebea8889da25849e3e5efcde6ca7fbef14fb1bc966ca4b9d0'
+      // });
     }
   }, [user]);
 
@@ -120,7 +122,11 @@ export function AppContextProvider({ children }: any) {
     showAppMessage
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={value}>
+      {children} <ToastContainer position="bottom-right" />
+    </AppContext.Provider>
+  );
 }
 
 export function useAppContext(): AppContextType {

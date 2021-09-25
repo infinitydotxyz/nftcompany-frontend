@@ -3,7 +3,7 @@ import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefau
 import { mode } from '@chakra-ui/theme-tools';
 
 const colors = {
-  brandBlue: '#4047FF',
+  brandBlue: 'var(--brand-primary)',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   blue: {
@@ -29,10 +29,10 @@ const Menu = {
   parts: ['menu', 'item'],
   baseStyle: {
     item: {
-      color: '#333',
+      color: 'var(--text-primary)',
 
-      _focus: { bg: 'white', color: '#333' },
-      _active: { bg: 'white', color: '#333' },
+      _focus: { bg: 'white', color: 'var(--text-primary)' },
+      _active: { bg: 'white', color: 'var(--text-primary)' },
 
       _hover: { bg: 'brandBlue', color: 'white' }
     }

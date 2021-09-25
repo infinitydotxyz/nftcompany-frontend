@@ -39,7 +39,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
     fetchBackendChecks();
   }, []);
 
-  const onClickList = async () => {
+  const onClickListNft = async () => {
     if (!price) {
       showAppError('Please enter price.');
       return;
@@ -224,7 +224,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
               )}
 
               <div className={styles.footer}>
-                <Button size="md" disabled={isSubmitting} onClick={onClickList}>
+                <Button size="md" disabled={isSubmitting} onClick={onClickListNft}>
                   List NFT
                 </Button>
 

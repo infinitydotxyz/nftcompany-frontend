@@ -70,7 +70,7 @@ const Header = (): JSX.Element => {
 
   const ntfItems = [
     <MenuItem key="nfts" icon={<ImageIcon />} onClick={() => router.push('/my-nfts')}>
-      My NFTs
+      All NFTs
     </MenuItem>,
     <MenuItem key="listed" icon={<CartIcon />} onClick={() => router.push('/listed-nfts')}>
       Listed for sale
@@ -214,7 +214,7 @@ const Header = (): JSX.Element => {
 
             <div className={styles.showLargeNav}>
               <div className={styles.linksButtons}>
-                <HoverMenuButton buttonTitle="NFTs">{ntfItems}</HoverMenuButton>
+                <HoverMenuButton buttonTitle="My NFTs">{ntfItems}</HoverMenuButton>
 
                 <HoverMenuButton buttonTitle="Offers">{offerItems}</HoverMenuButton>
 
@@ -223,7 +223,7 @@ const Header = (): JSX.Element => {
             </div>
 
             <div className={styles.showMediumNav}>
-              <HoverMenuButton buttonTitle="NFTs">
+              <HoverMenuButton buttonTitle="My NFTs">
                 {[...ntfItems, <MenuDivider key="d1" />, ...offerItems, <MenuDivider key="d2" />, ...transactionItems]}
               </HoverMenuButton>
             </div>
