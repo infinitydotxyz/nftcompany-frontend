@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import styles from './Rewards.module.scss';
+import sharedStyles from '/styles/SharedStyles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
 import { LeaderBoard, UserReward } from '../../src/types/rewardTypes';
@@ -92,7 +93,7 @@ const Rewards = (): JSX.Element => {
             <InfoCardRow data={userReward} />
 
             <div className={styles.leaderBox}>
-              <h3 className={styles.sectionTitle}>🏆 Leaderboard</h3>
+              <h3 className={sharedStyles.sectionTitle}>🏆 Leaderboard</h3>
               <LeaderBoardTable data={leaderboard} />
             </div>
           </div>
