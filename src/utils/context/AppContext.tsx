@@ -31,8 +31,8 @@ export function AppContextProvider({ children }: any) {
   const [user, setUser] = React.useState<User | null>(null);
   const [userReady, setUserReady] = React.useState(false);
 
-  const showAppError = (message: ReactNode) => toast.error(message, { position: 'bottom-center'});
-  const showAppMessage = (message: ReactNode) => toast.info(message, { position: 'bottom-center'});
+  const showAppError = (message: ReactNode) => toast.error(message, { position: 'bottom-center' });
+  const showAppMessage = (message: ReactNode) => toast.info(message, { position: 'bottom-center' });
 
   // const connectMetaMask = async () => {
   //   // show MetaMask's errors:
@@ -80,7 +80,6 @@ export function AppContextProvider({ children }: any) {
     // const debouncedListener = debounce((eventName: any, data: any) => listener(eventName, data), 300); // didn't work.
 
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
-    console.log('user?.account', user?.account);
     if (user?.account && !isListenerAdded) {
       isListenerAdded = true;
       const seaport = getOpenSeaport();
