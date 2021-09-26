@@ -6,7 +6,6 @@ import '../styles/Typeahead.css';
 import '../src/components/nft/components.scss';
 import 'react-widgets/styles.css';
 
-import { AppChakraProvider } from 'utils/themeUtil';
 import type { AppProps } from 'next/app';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -31,11 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [router.events]);
 
   const getLayout = (Component as any).getLayout || ((page: NextPage) => page);
-  return getLayout(
-    <AppChakraProvider>
-      <Component {...pageProps} />
-    </AppChakraProvider>
-  );
+  return getLayout(<Component {...pageProps} />);
 }
 
 export default MyApp;
