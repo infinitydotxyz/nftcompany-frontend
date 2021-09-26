@@ -9,6 +9,8 @@ import { getLastItemBasePrice, getLastItemCreatedAt, getLastItemMaker } from 'co
 const PAGE_SIZE = ITEMS_PER_PAGE;
 // const PAGE_SIZE = 7;
 
+// ==================================================================
+
 const hashString = (s: string) => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
 
 const fetchData = async (
@@ -35,6 +37,8 @@ const fetchData = async (
 
   return result;
 };
+
+// ==================================================================
 
 export function useCardProvider(): {
   list: CardData[];
@@ -144,6 +148,12 @@ export function useCardProvider(): {
       }
     }
 
+    let showLowest = true;
+    // if this is blank, we also show only the lowest
+    if (searchContext.filterState.sortByPrice === 'DESC') {
+      showLowest = false;
+    }
+
     if (dupsIds.size > 0) {
       const result: CardData[] = [];
 
@@ -151,21 +161,24 @@ export function useCardProvider(): {
         if (dupsIds.has(item.tokenId!)) {
           if (!replacedIds.has(item.tokenId!)) {
             replacedIds.add(item.tokenId!);
-
             // find lowest price and add that one
             const choices = dupMap.get(item.tokenId!);
-
             if (choices!.length > 1) {
               let lowestItem = choices![0];
               let minPrice = lowestItem.price ?? 0;
-
               for (const c of choices!) {
-                if (c.price! < minPrice) {
-                  lowestItem = c;
-                  minPrice = c.price ?? 0;
+                if (showLowest) {
+                  if (c.price! < minPrice) {
+                    lowestItem = c;
+                    minPrice = c.price ?? 0;
+                  }
+                } else {
+                  if (c.price! > minPrice) {
+                    lowestItem = c;
+                    minPrice = c.price ?? 0;
+                  }
                 }
               }
-
               result.push(lowestItem);
             } else {
               console.log('this should be 2 or more');
