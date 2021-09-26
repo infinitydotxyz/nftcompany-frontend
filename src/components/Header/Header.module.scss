@@ -9,7 +9,8 @@
     right: 0;
     top: 0;
     box-shadow: inset 0px -1px 0px #f3f3f4;
-    background-color: rgba(var(--chakra-global-body-bg), 0.8);
+    background-color: var(--chakra-colors-headerBg, red);
+
     backdrop-filter: blur(12px);
     z-index: 2;
     padding: 10px 0;

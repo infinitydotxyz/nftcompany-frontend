@@ -5,6 +5,10 @@ import { mode } from '@chakra-ui/theme-tools';
 const colors = {
   brandBlue: 'var(--brand-primary)',
 
+  // custom colors
+  windowBg: '#fcfdfd',
+  headerBg: '#fcfdfdcc', // cc is alpha
+
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   blue: {
     50: '#e8e9ff',
@@ -59,7 +63,7 @@ const styles = {
         color: mode('gray.800', 'whiteAlpha.900')(props),
 
         // bg: mode('white', 'gray.800')(props)
-        bg: mode('#fcfdfd', 'gray.800')(props)
+        bg: mode('windowBg', 'gray.800')(props)
       },
       '*::placeholder': {
         color: mode('gray.400', 'whiteAlpha.400')(props)
