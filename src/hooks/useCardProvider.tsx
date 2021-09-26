@@ -48,7 +48,7 @@ export function useCardProvider(): {
   const [hasLoaded, setHasLoaded] = useState(false);
 
   const searchContext = useSearchContext();
-  const { user } = useAppContext();
+  const { user, userReady } = useAppContext();
 
   const userAccount = user?.account;
 
@@ -108,11 +108,80 @@ export function useCardProvider(): {
       }
     };
 
-    loadData();
-  }, [searchContext, userAccount]);
+    // avoid flicker, don't do anything until user is set or set to null
+    if (userReady) {
+      loadData();
+    }
+  }, [searchContext, userAccount, userReady]);
 
   const hasData = () => {
     return list.length > 0;
+  };
+
+  const removeDuplicates = (srcList: CardData[]): CardData[] => {
+    const dupMap = new Map<string, CardData[]>();
+    const dupsIds = new Set<string>();
+    const replacedIds = new Set<string>();
+
+    for (const item of srcList) {
+      const tokenId = item.tokenId;
+
+      // don't think this could be blank, but being safe
+      if (tokenId) {
+        let a = dupMap.get(tokenId);
+
+        if (!a) {
+          a = [item];
+        } else {
+          a.push(item);
+
+          dupsIds.add(tokenId);
+        }
+
+        dupMap.set(tokenId, a);
+      } else {
+        console.log('no token id?');
+      }
+    }
+
+    if (dupsIds.size > 0) {
+      const result: CardData[] = [];
+
+      for (const item of srcList) {
+        if (dupsIds.has(item.tokenId!)) {
+          if (!replacedIds.has(item.tokenId!)) {
+            replacedIds.add(item.tokenId!);
+
+            // find lowest price and add that one
+            const choices = dupMap.get(item.tokenId!);
+
+            if (choices!.length > 1) {
+              let lowestItem = choices![0];
+              let minPrice = lowestItem.price ?? 0;
+
+              for (const c of choices!) {
+                if (c.price! < minPrice) {
+                  lowestItem = c;
+                  minPrice = c.price ?? 0;
+                }
+              }
+
+              result.push(lowestItem);
+            } else {
+              console.log('this should be 2 or more');
+            }
+          } else {
+            // console.log('skipping duplicate');
+          }
+        } else {
+          result.push(item);
+        }
+      }
+
+      return result;
+    }
+
+    return srcList;
   };
 
   const loadNext = () => {
@@ -129,8 +198,7 @@ export function useCardProvider(): {
     }
   };
 
-  // remove any owned by the current user
-  const filteredList = list;
+  const filteredList = removeDuplicates(list);
 
   // don't filter if we search for that name that you might own
   // if (!listType.startsWith('token-id')) {

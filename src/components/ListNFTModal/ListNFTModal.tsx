@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch } from '@chakra-ui/react';
-import Datetime from 'react-datetime';
+import DatePicker from 'react-widgets/DatePicker';
 import TabBar from 'components/TabBar/TabBar';
 import { Button } from '@chakra-ui/button';
 import { Spinner } from '@chakra-ui/spinner';
@@ -39,7 +39,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
     fetchBackendChecks();
   }, []);
 
-  const onClickList = async () => {
+  const onClickListNft = async () => {
     if (!price) {
       showAppError('Please enter price.');
       return;
@@ -91,7 +91,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
     <>
       {!isServer() && (
         <ModalDialog onClose={onClose}>
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
+          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white', width: 550 }}>
             <div className="modal-body">
               <div className={styles.title}>List NFT</div>
 
@@ -160,9 +160,11 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                           <HelpTooltip text="Your listing will automatically end at this time. No need to cancel it!" />
                         </div>
                         <div className={styles.dateContainer}>
-                          <Datetime
-                            inputProps={{ style: { width: 180 } }}
-                            onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)}
+                          <DatePicker
+                            includeTime
+                            onChange={(dt) => setExpiryTimeSeconds(Math.round((dt || Date.now()).valueOf() / 1000))}
+                            containerClassName={styles.datePicker}
+                            style={{ marginRight: 10 }}
                           />
                         </div>
                         <div></div>
@@ -212,9 +214,11 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                         <HelpTooltip text="Your auction will automatically end at this time and the highest bidder will win. No need to cancel it!" />
                       </div>
                       <div className={styles.dateContainer}>
-                        <Datetime
-                          inputProps={{ style: { width: 180 } }}
-                          onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)}
+                        <DatePicker
+                          includeTime
+                          onChange={(dt) => setExpiryTimeSeconds(Math.round((dt || Date.now()).valueOf() / 1000))}
+                          containerClassName={styles.datePicker}
+                          style={{ marginRight: 10 }}
                         />
                       </div>
                       <div></div>
@@ -224,7 +228,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
               )}
 
               <div className={styles.footer}>
-                <Button size="md" disabled={isSubmitting} onClick={onClickList}>
+                <Button size="md" disabled={isSubmitting} onClick={onClickListNft}>
                   List NFT
                 </Button>
 

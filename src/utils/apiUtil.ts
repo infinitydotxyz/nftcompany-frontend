@@ -128,22 +128,34 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export async function setAuthHeaders(address: string) {
+export async function saveAuthHeaders(address: string) {
   if (!address) {
+    console.log('use deleteAuthHeaders is you want to sign out');
     return;
   }
+
   const localStorage = window.localStorage;
   const user = address.trim().toLowerCase();
   const currentUser = localStorage.getItem('CURRENT_USER');
-  if (currentUser === user) {
-    return;
+
+  if (currentUser !== user) {
+    const msg = 'LOGIN';
+    const sign = await personalSignAsync(getWeb3(), msg, address);
+    const sig = JSON.stringify(sign);
+    localStorage.setItem('CURRENT_USER', user);
+    localStorage.setItem('X-AUTH-SIGNATURE', sig);
+    localStorage.setItem('X-AUTH-MESSAGE', msg);
   }
-  const msg = 'LOGIN';
-  const sign = await personalSignAsync(getWeb3(), msg, address);
-  const sig = JSON.stringify(sign);
-  localStorage.setItem('CURRENT_USER', user);
-  localStorage.setItem('X-AUTH-SIGNATURE', sig);
-  localStorage.setItem('X-AUTH-MESSAGE', msg);
+}
+
+export async function deleteAuthHeaders() {
+  const localStorage = window.localStorage;
+
+  localStorage.removeItem('CURRENT_USER');
+  localStorage.removeItem('X-AUTH-SIGNATURE');
+  localStorage.removeItem('X-AUTH-MESSAGE');
+
+  // need to tell metamask? not fully working SNG
 }
 
 export async function getAuthHeaders() {

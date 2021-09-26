@@ -62,7 +62,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
                 <span>List NFT</span>
               </a>
             )}
-            {action === 'BUY_NFT' && (
+            {action === 'BUY_NFT' && !ownedByYou && (
               <a
                 className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
                 href="#popup-bid"
@@ -142,6 +142,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
               <div>{data.title}</div>
             </div>
             <PriceBox
+              justifyRight={true}
               price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
               token={data?.data?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
               expirationTime={data?.expirationTime}

@@ -31,35 +31,53 @@ export const ListIcon = (props: Record<string, unknown>): JSX.Element => (
   </Icon>
 );
 
+// view-source:https://upload.wikimedia.org/wikipedia/commons/7/70/Ethereum_logo.svg
 export const EthToken = (props: Record<string, unknown>): JSX.Element => (
-  <svg width="33" height="33" viewBox="0 0 33 33" fill="none" {...props}>
-    <script />
-    <script />
-    <script />
-    <path
-      d="M16.3576 0.666687L16.0095 1.85009V36.1896L16.3576 36.5371L32.2976 27.115L16.3576 0.666687Z"
-      fill="#343434"
-    />
-    <path d="M16.3578 0.666687L0.417816 27.115L16.3578 36.5372V19.8699V0.666687Z" fill="#8C8C8C" />
-    <path d="M16.3575 39.5552L16.1613 39.7944V52.0268L16.3575 52.6L32.307 30.1378L16.3575 39.5552Z" fill="#3C3C3B" />
-    <path d="M16.3578 52.5998V39.5551L0.417816 30.1377L16.3578 52.5998Z" fill="#8C8C8C" />
-    <path d="M16.3575 36.537L32.2973 27.1151L16.3575 19.8699V36.537Z" fill="#141414" />
-    <path d="M0.417816 27.1151L16.3576 36.537V19.8699L0.417816 27.1151Z" fill="#393939" />
-  </svg>
+  <Icon viewBox="-2.77410003 -2.77410003 98.01820106 156.13971006" fill="none" {...props}>
+    <g fill="currentColor">
+      <path
+        fillOpacity="1"
+        fillRule="nonzero"
+        opacity="0.60000598"
+        stroke="none"
+        d="M 46.22125,55.68413 0,76.69288 46.22125,104.01413 92.4425,76.69288 46.22125,55.68413 z"
+      />
+      <path
+        fillOpacity="1"
+        fillRule="nonzero"
+        opacity="0.44999701"
+        stroke="none"
+        d="m 3.7e-4,76.6925 46.22125,27.32125 0,-48.33 L 46.22162,0 3.7e-4,76.6925 z"
+      />
+      <path
+        fillOpacity="1"
+        fillRule="nonzero"
+        opacity="0.80000299"
+        stroke="none"
+        d="m 46.22125,0 0,55.68375 0,48.33 L 92.4425,76.6925 46.22125,0 z"
+      />
+      <path
+        fillOpacity="1"
+        fillRule="nonzero"
+        opacity="0.44999701"
+        stroke="none"
+        d="m 3.7e-4,85.45725 46.22125,65.13375 0,-37.82625 L 3.7e-4,85.45725 z"
+      />
+      <path
+        fillOpacity="1"
+        fillRule="nonzero"
+        opacity="0.80000299"
+        stroke="none"
+        d="m 46.22125,112.76525 0,37.82625 L 92.47,85.45775 46.22125,112.76525 z"
+      />
+    </g>
+  </Icon>
 );
 
 export const WEthToken = (props: Record<string, unknown>): JSX.Element => (
-  <svg width="33" height="33" viewBox="0 0 33 33" fill="none" {...props}>
-    <path
-      d="M16.8498 0.666687L16.4974 1.85009V36.1896L16.8498 36.5371L32.9842 27.115L16.8498 0.666687Z"
-      fill="#DA3979"
-    />
-    <path d="M16.85 0.666687L0.715607 27.115L16.85 36.5372V19.8699V0.666687Z" fill="#E781A9" />
-    <path d="M16.8497 39.5552L16.6511 39.7944V52.0268L16.8497 52.6L32.9937 30.1378L16.8497 39.5552Z" fill="#DA3979" />
-    <path d="M16.85 52.5998V39.5551L0.715607 30.1377L16.85 52.5998Z" fill="#E781A9" />
-    <path d="M16.8497 36.537L32.9838 27.1151L16.8497 19.8699V36.537Z" fill="#671334" />
-    <path d="M0.715607 27.1151L16.8498 36.537V19.8699L0.715607 27.1151Z" fill="#DA3979" />
-  </svg>
+  <span style={{ color: '#DA3979' }}>
+    <EthToken />
+  </span>
 );
 
 export const ImageIcon = (props: Record<string, unknown>): JSX.Element => (

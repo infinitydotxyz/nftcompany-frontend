@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { initEthers } from '../src/utils/ethersUtil';
 import styles from '../styles/Connect.module.scss';
-import { setAuthHeaders } from '../src/utils/apiUtil';
+import { saveAuthHeaders } from '../src/utils/apiUtil';
 
 export default function ConnectWallet() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function ConnectWallet() {
   const connectMetaMask = async () => {
     const res = await initEthers(); // returns provider
     if (res && res.getSigner) {
-      await setAuthHeaders(await res.getSigner().getAddress());
+      await saveAuthHeaders(await res.getSigner().getAddress());
       router.push('/explore');
     } else {
       alert('Failed to connect'); // TODO: use toast

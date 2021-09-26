@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { useToast } from '@chakra-ui/toast';
-// import { EventEmitter, EventSubscription } from 'fbemitter';
-import { initEthers, getOpenSeaport } from 'utils/ethersUtil';
+import { getAccount, getOpenSeaport } from 'utils/ethersUtil';
 import { getCustomMessage } from 'utils/commonUtil';
+import { deleteAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ReactNode } from '.pnpm/@types+react@17.0.24/node_modules/@types/react';
 
 export type User = {
   account: string;
@@ -11,7 +14,9 @@ export type User = {
 
 export type AppContextType = {
   user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  signIn: () => void;
+  signOut: () => void;
+  userReady: boolean;
   showAppError: (msg: string) => void;
   showAppMessage: (msg: string) => void;
 };
@@ -20,23 +25,14 @@ const AppContext = React.createContext<AppContextType | null>(null);
 
 // let lastError = '';
 let lastMsg = '';
-
-const showToast = (toast: any, type: 'success' | 'error' | 'warning' | 'info', message: string) => {
-  toast({
-    title: type === 'error' ? 'Error' : 'Info',
-    description: message,
-    status: type,
-    duration: type === 'error' ? 6000 : 3000,
-    isClosable: true
-  });
-};
+let isListenerAdded = false; // set up event listeners once.
 
 export function AppContextProvider({ children }: any) {
-  const toast = useToast();
   const [user, setUser] = React.useState<User | null>(null);
+  const [userReady, setUserReady] = React.useState(false);
 
-  const showAppError = (message: string) => showToast(toast, 'error', message);
-  const showAppMessage = (message: string) => showToast(toast, 'info', message);
+  const showAppError = (message: ReactNode) => toast.error(message, { position: 'bottom-center' });
+  const showAppMessage = (message: ReactNode) => toast.info(message, { position: 'bottom-center' });
 
   // const connectMetaMask = async () => {
   //   // show MetaMask's errors:
@@ -54,7 +50,7 @@ export function AppContextProvider({ children }: any) {
 
   //   const res = await initEthers({ onError }); // returns provider
   //   if (res && res.getSigner) {
-  //     await setAuthHeaders(await res.getSigner().getAddress());
+  //     await saveAuthHeaders(await res.getSigner().getAddress());
   //   } else {
   //     showAppError('Failed to connect');
   //   }
@@ -70,37 +66,66 @@ export function AppContextProvider({ children }: any) {
           arr.push(`${k}: ${data[k]}`);
         }
       });
+      console.log('eventName, data', eventName, data);
       const msg = getCustomMessage(eventName, data) || `${eventName}: ${arr.join(', ')}`;
       if (lastMsg && msg === lastMsg) {
         // TODO: to avoid show dup messages.
         lastMsg = '';
         return;
       }
-      lastMsg = msg;
+      lastMsg = `${msg}`;
       showAppMessage(msg);
     };
 
     // const debouncedListener = debounce((eventName: any, data: any) => listener(eventName, data), 300); // didn't work.
 
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
-    if (user?.account) {
+    if (user?.account && !isListenerAdded) {
+      isListenerAdded = true;
       const seaport = getOpenSeaport();
       Object.values(EventType).forEach((eventName: any) => {
         seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
       });
+      // for testing: simulate OpenSea event:
       // const emitter = seaport.getEmitter();
-      // emitter.emit('TransactionConfirmed', { error: 'test', accountAddress: '0x123' }); // simulate OpenSea event.
+      // console.log('emitter', emitter);
+      // emitter.emit('MatchOrders', {
+      //   event: 'TransactionCreated',
+      //   accountAddress: '0x123',
+      //   transactionHash: '0x67e01ca68c5ef37ebea8889da25849e3e5efcde6ca7fbef14fb1bc966ca4b9d0'
+      // });
     }
   }, [user]);
 
+  const signIn = async (): Promise<void> => {
+    if (window.ethereum) {
+      setUser({ account: await getAccount() });
+    }
+
+    // views can avoid drawing until a login attempt was made to avoid a user=null and user='xx' refresh
+    setUserReady(true);
+  };
+
+  const signOut = async (): Promise<void> => {
+    setUser(null);
+    deleteAuthHeaders();
+  };
+
   const value: AppContextType = {
     user,
-    setUser,
+    signIn,
+    signOut,
+    userReady,
+
     showAppError,
     showAppMessage
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={value}>
+      {children} <ToastContainer position="bottom-right" />
+    </AppContext.Provider>
+  );
 }
 
 export function useAppContext(): AppContextType {

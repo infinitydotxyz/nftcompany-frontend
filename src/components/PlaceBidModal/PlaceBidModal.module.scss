@@ -20,14 +20,25 @@
     text-align: right;
     align-items: center;
     justify-content: flex-end;
-    input {
+    & > div > input {
       text-align: right;
       padding: 0 10px;
       margin: 0 10px;
       font-weight: bold;
-      border: 1px solid #aaa;
+      border: var(--input-border);
+      width: 230px !important;
     }
   }
+}
+
+.token {
+  width: 45px;
+}
+
+.datePicker {
+  border: var(--input-border);
+  border-radius: var(--input-border-radius);
+  min-height: 32px !important;
 }
 
 .space {
