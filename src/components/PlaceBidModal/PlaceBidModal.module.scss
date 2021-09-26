@@ -20,18 +20,25 @@
     text-align: right;
     align-items: center;
     justify-content: flex-end;
-    input {
+    & > div > input {
       text-align: right;
       padding: 0 10px;
       margin: 0 10px;
       font-weight: bold;
       border: 1px solid #aaa;
+      width: 230px !important;
     }
   }
 }
 
 .token {
   width: 45px;
+}
+
+.datePicker {
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  min-height: 32px !important;
 }
 
 .space {

@@ -19,7 +19,7 @@
       div:nth-child(2) {
         flex: 1;
         text-align: right;
-        & > span, input {
+        & > input {
           text-align: right;
           padding: 0 10px;
           margin: 0 10px;
@@ -37,6 +37,12 @@
       }
     }
   }
+}
+
+.datePicker {
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  min-height: 32px !important;
 }
 
 .footer {

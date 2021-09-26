@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import styles from './PlaceBidModal.module.scss';
-import Datetime from 'react-datetime';
+import DatePicker from 'react-widgets/DatePicker';
 import { Spinner } from '@chakra-ui/spinner';
 import { CardData, Order } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
@@ -144,7 +144,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
+          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white', width: 550 }}>
             <div className="modal-body">
               <div className={styles.title}>Buy NFT</div>
 
@@ -206,9 +206,11 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                     <div>Expire date</div>
                   </div>
                   <div className={styles.right}>
-                    <Datetime
-                      inputProps={{ style: { width: 165, marginRight: 52 } }}
-                      onChange={(dt: any) => setExpiryTimeSeconds(dt.valueOf() / 1000)}
+                    <DatePicker
+                      includeTime
+                      onChange={(dt) => setExpiryTimeSeconds(Math.round((dt || Date.now()).valueOf() / 1000))}
+                      style={{ marginRight: 52 }}
+                      containerClassName={styles.datePicker}
                     />
                   </div>
                   <div>&nbsp;</div>
