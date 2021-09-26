@@ -164,6 +164,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                             includeTime
                             onChange={(dt) => setExpiryTimeSeconds(Math.round((dt || Date.now()).valueOf() / 1000))}
                             containerClassName={styles.datePicker}
+                            style={{ marginRight: 10 }}
                           />
                         </div>
                         <div></div>
@@ -216,6 +217,8 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                         <DatePicker
                           includeTime
                           onChange={(dt) => setExpiryTimeSeconds(Math.round((dt || Date.now()).valueOf() / 1000))}
+                          containerClassName={styles.datePicker}
+                          style={{ marginRight: 10 }}
                         />
                       </div>
                       <div></div>

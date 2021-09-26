@@ -102,10 +102,14 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   };
 
   const makeAnOffer = () => {
+    if (offerPrice <= 0) {
+      showAppError(`Offer Price must be greater than 0.`);
+      return;
+    }
     if (token === 'WETH') {
       const basePriceInEthNum = stringToFloat(data.metadata?.basePriceInEth); // validate: offer price must be >= min price:
       if (offerPrice < basePriceInEthNum) {
-        showAppError(`Offer Price must be greater than Minimum Price ${basePriceInEthNum} WETH`);
+        showAppError(`Offer Price must be greater than Minimum Price ${basePriceInEthNum} WETH.`);
         return;
       }
     }

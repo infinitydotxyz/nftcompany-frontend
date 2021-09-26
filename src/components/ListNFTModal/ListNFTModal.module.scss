@@ -28,8 +28,8 @@
         }
         & > input {
           padding: 2px 10px;
-          border: 1px solid #aaa;
-          border-radius: 4px;
+          border: var(--input-border);
+          border-radius: var(--input-border-radius);
         }
       }
       div:nth-child(3) {
@@ -40,8 +40,8 @@
 }
 
 .datePicker {
-  border: 1px solid #aaa;
-  border-radius: 2px;
+  border: var(--input-border);
+  border-radius: var(--input-border-radius);
   min-height: 32px !important;
 }
 
@@ -61,8 +61,8 @@
   width: 30%;
   font-weight: bold;
   padding: 2px 10px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
+  border: var(--input-border);
+  border-radius: var(--input-border-radius);
 
   width: 100px !important;
 }
