@@ -1,8 +1,9 @@
 import React from 'react';
 import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefaultColorScheme } from '@chakra-ui/react';
+import { mode } from '@chakra-ui/theme-tools';
 
 const colors = {
-  brandBlue: '#4047FF',
+  brandBlue: 'var(--brand-primary)',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   blue: {
@@ -26,27 +27,56 @@ const colors = {
 
 const Menu = {
   parts: ['menu', 'item'],
-  baseStyle: {
-    item: {
-      color: '#333',
+  baseStyle: (props: any) => {
+    const { baseStyle } = baseTheme.components.Menu;
+    const baseStyles = baseStyle(props);
 
-      _focus: { bg: 'white', color: '#333' },
-      _active: { bg: 'white', color: '#333' },
+    const bg = mode('white', baseStyles.list?.bg)(props);
+    const textColor = mode('var(--text-primary)', 'white')(props);
 
-      _hover: { bg: 'brandBlue', color: 'white' }
-    }
+    return {
+      item: {
+        color: textColor,
+
+        _focus: { bg: bg, color: textColor },
+        _active: { bg: bg, color: textColor },
+
+        _hover: { bg: 'brandBlue', color: 'white' }
+      }
+    };
   }
 };
 
 const config: ThemeConfig = {
-  // useSystemColorMode: true,
+  useSystemColorMode: false,
   initialColorMode: 'light'
+};
+
+const styles = {
+  global: (props: any) => {
+    return {
+      body: {
+        color: mode('gray.800', 'whiteAlpha.900')(props),
+
+        // bg: mode('white', 'gray.800')(props)
+        bg: mode('#fcfdfd', 'gray.800')(props)
+      },
+      '*::placeholder': {
+        color: mode('gray.400', 'whiteAlpha.400')(props)
+      },
+      '*, *::before, &::after': {
+        borderColor: mode('gray.200', 'whiteAlpha.300')(props),
+        wordWrap: 'break-word'
+      }
+    };
+  }
 };
 
 export const theme = extendTheme(
   {
     config,
     colors,
+    styles,
     components: {
       Menu
     }

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { MenuItem, MenuDivider, Box } from '@chakra-ui/react';
+import { MenuItem, MenuDivider, Box, useColorMode } from '@chakra-ui/react';
 import { ExternalLinkIcon, SettingsIcon, StarIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { getAccount } from '../../../src/utils/ethersUtil';
-import { saveAuthHeaders, deleteAuthHeaders } from '../../../src/utils/apiUtil';
+import { saveAuthHeaders } from '../../../src/utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
@@ -30,9 +29,10 @@ let isChangingAccount = false;
 
 const Header = (): JSX.Element => {
   const router = useRouter();
-  const { user, setUser } = useAppContext();
+  const { user, signIn, signOut } = useAppContext();
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [transactionsModalShowed, setTransactionsModalShowed] = useState(false);
+  const { toggleColorMode } = useColorMode();
 
   useEffect(() => {
     const handleAccountChange = async (accounts: string[]) => {
@@ -45,7 +45,8 @@ const Header = (): JSX.Element => {
             await saveAuthHeaders(accounts[0]);
 
             // reload below makes this worthless. code left for documentation
-            // setUser({ account: await getAccount() });
+            // if we didn't page reload, we would signIn again
+            // signIn();
 
             // use page reload for now to avoid complicated logic in other comps.
             window.location.reload();
@@ -54,24 +55,23 @@ const Header = (): JSX.Element => {
       };
     };
 
-    const connect = async () => {
-      window.ethereum.on('accountsChanged', handleAccountChange);
-      setUser({ account: await getAccount() });
-    };
+    signIn();
 
     if (window?.ethereum) {
-      connect();
+      window.ethereum.on('accountsChanged', handleAccountChange);
     }
 
     return () => {
       // on unmounting
-      window.ethereum?.removeListener('accountsChanged', handleAccountChange);
+      if (window?.ethereum) {
+        window.ethereum.removeListener('accountsChanged', handleAccountChange);
+      }
     };
   }, []);
 
   const ntfItems = [
     <MenuItem key="nfts" icon={<ImageIcon />} onClick={() => router.push('/my-nfts')}>
-      My NFTs
+      All NFTs
     </MenuItem>,
     <MenuItem key="listed" icon={<CartIcon />} onClick={() => router.push('/listed-nfts')}>
       Listed for sale
@@ -117,8 +117,7 @@ const Header = (): JSX.Element => {
         key="Sign out"
         icon={<ExternalLinkIcon boxSize={4} />}
         onClick={() => {
-          setUser(null);
-          deleteAuthHeaders();
+          signOut();
         }}
       >
         Sign out
@@ -216,7 +215,7 @@ const Header = (): JSX.Element => {
 
             <div className={styles.showLargeNav}>
               <div className={styles.linksButtons}>
-                <HoverMenuButton buttonTitle="NFTs">{ntfItems}</HoverMenuButton>
+                <HoverMenuButton buttonTitle="My NFTs">{ntfItems}</HoverMenuButton>
 
                 <HoverMenuButton buttonTitle="Offers">{offerItems}</HoverMenuButton>
 
@@ -225,7 +224,7 @@ const Header = (): JSX.Element => {
             </div>
 
             <div className={styles.showMediumNav}>
-              <HoverMenuButton buttonTitle="NFTs">
+              <HoverMenuButton buttonTitle="My NFTs">
                 {[...ntfItems, <MenuDivider key="d1" />, ...offerItems, <MenuDivider key="d2" />, ...transactionItems]}
               </HoverMenuButton>
             </div>
@@ -239,6 +238,9 @@ const Header = (): JSX.Element => {
               </HoverMenuButton>
             </div>
           </div>
+
+          {/* Work in progress, button hidden until working */}
+          <div style={{ display: 'none', cursor: 'pointer', height: 10, width: 10 }} onClick={toggleColorMode}></div>
         </div>
       </Box>
 

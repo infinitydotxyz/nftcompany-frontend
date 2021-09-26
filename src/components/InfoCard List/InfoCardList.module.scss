@@ -1,0 +1,39 @@
+@import '/styles/SharedStyles.module.scss';
+
+.main {
+  .card {
+    @extend .boxShadow;
+    background-color: white;
+
+    .title {
+      padding: 15px;
+      font-weight: bold;
+    }
+  }
+
+  .left {
+    padding: 10px 20px;
+  }
+
+  .right {
+    padding: 10px 20px;
+    text-align: right;
+  }
+
+  .cardGrid {
+    // display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+
+    // grid-template-columns: repeat(4, 1fr);
+    // grid-gap: 56px;
+  }
+
+  .infoRow {
+    display: grid;
+    border-top: 1px solid #ddd;
+    grid-template-columns: 2fr 1fr;
+    width: 100%;
+  }
+}

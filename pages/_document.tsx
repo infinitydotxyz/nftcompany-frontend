@@ -1,6 +1,7 @@
 import { ColorModeScript } from '@chakra-ui/react';
 import NextDocument, { Html, Head, Main, NextScript } from 'next/document';
 import { GA_TRACKING_ID } from '../lib/ga/gtag';
+import { theme } from 'utils/themeUtil';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -9,7 +10,9 @@ export default class Document extends NextDocument {
     return (
       <Html lang="en">
         <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          {/* Warning: viewport meta tags should not be used in _document.js's <Head>. https://nextjs.org/docs/messages/no-document-viewport-meta */}
+          {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
+
           {/* Global Site Tag (gtag.js) - Google Analytics */}
           {isProduction && (
             <>
@@ -31,7 +34,7 @@ export default class Document extends NextDocument {
           )}
         </Head>
         <body>
-          <ColorModeScript initialColorMode={'light'} />
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
           <NextScript />
         </body>
