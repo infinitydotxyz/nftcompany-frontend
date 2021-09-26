@@ -62,7 +62,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
                 <span>List NFT</span>
               </a>
             )}
-            {action === 'BUY_NFT' && (
+            {action === 'BUY_NFT' && !ownedByYou && (
               <a
                 className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
                 href="#popup-bid"
