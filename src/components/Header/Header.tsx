@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MenuItem, MenuDivider, Box } from '@chakra-ui/react';
+import { MenuItem, MenuDivider, Box, useColorMode } from '@chakra-ui/react';
 import { ExternalLinkIcon, SettingsIcon, StarIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -32,6 +32,7 @@ const Header = (): JSX.Element => {
   const { user, signIn, signOut } = useAppContext();
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [transactionsModalShowed, setTransactionsModalShowed] = useState(false);
+  const { toggleColorMode } = useColorMode();
 
   useEffect(() => {
     const handleAccountChange = async (accounts: string[]) => {
@@ -237,6 +238,9 @@ const Header = (): JSX.Element => {
               </HoverMenuButton>
             </div>
           </div>
+
+          {/* Work in progress, button hidden until working */}
+          <div style={{ display: 'none', cursor: 'pointer', height: 10, width: 10 }} onClick={toggleColorMode}></div>
         </div>
       </Box>
 

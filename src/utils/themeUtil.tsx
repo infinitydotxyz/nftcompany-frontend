@@ -27,15 +27,23 @@ const colors = {
 
 const Menu = {
   parts: ['menu', 'item'],
-  baseStyle: {
-    item: {
-      color: 'var(--text-primary)',
+  baseStyle: (props: any) => {
+    const { baseStyle } = baseTheme.components.Menu;
+    const baseStyles = baseStyle(props);
 
-      _focus: { bg: 'white', color: 'var(--text-primary)' },
-      _active: { bg: 'white', color: 'var(--text-primary)' },
+    const bg = mode('white', baseStyles.list?.bg)(props);
+    const textColor = mode('var(--text-primary)', 'white')(props);
 
-      _hover: { bg: 'brandBlue', color: 'white' }
-    }
+    return {
+      item: {
+        color: textColor,
+
+        _focus: { bg: bg, color: textColor },
+        _active: { bg: bg, color: textColor },
+
+        _hover: { bg: 'brandBlue', color: 'white' }
+      }
+    };
   }
 };
 
@@ -46,7 +54,6 @@ const config: ThemeConfig = {
 
 const styles = {
   global: (props: any) => {
-    // console.log(props);
     return {
       body: {
         color: mode('gray.800', 'whiteAlpha.900')(props),
