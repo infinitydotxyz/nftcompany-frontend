@@ -1,6 +1,7 @@
 import React from 'react';
 import { numStr } from 'utils/commonUtil';
 import styles from './InfoCard.module.scss';
+import { Countdown } from 'components/Countdown/Countdown';
 
 export type DataItem = {
   title: string;
@@ -33,6 +34,24 @@ export const InfoCard = ({ title, items }: IProps) => {
       <div className={styles.card}>
         <div className={styles.title}>{title}</div>
         <div>{divs}</div>
+      </div>
+    </div>
+  );
+};
+
+type Props = {
+  title: string;
+  expiryTimestamp: Date;
+};
+
+export const CountdownCard = ({ expiryTimestamp, title }: Props) => {
+  return (
+    <div className={styles.main}>
+      <div className={styles.card}>
+        <div className={styles.title}>{title}</div>
+        <div className={styles.countdown}>
+          <Countdown expiryTimestamp={expiryTimestamp} />
+        </div>
       </div>
     </div>
   );
