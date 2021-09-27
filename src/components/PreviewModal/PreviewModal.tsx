@@ -68,6 +68,9 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
         </a>
       );
 
+      // hide the owner
+      owner = '';
+
       break;
     case 'CANCEL_OFFER':
       purchaseButton = (
