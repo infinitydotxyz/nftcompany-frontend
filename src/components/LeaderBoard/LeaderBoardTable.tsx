@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './LeaderBoardTable.module.scss';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import { ellipsisAddress, numStr } from 'utils/commonUtil';
-import { ethers } from 'ethers';
 import { LeaderBoard } from 'types/rewardTypes';
 
 type Props = {
@@ -17,12 +16,25 @@ export const LeaderBoardTable = ({ data }: Props) => {
   const rows = data.results.map((item, index) => {
     return (
       <Tr key={item.id}>
-        <Td>#{index + 1}</Td>
-        <Td>{ellipsisAddress(item.id)}</Td>
-        <Td>{numStr(item.numListings)}</Td>
-        <Td>{numStr(item.numPurchases)}</Td>
+        <Td textAlign="left" isNumeric={false}>
+          #{index + 1}
+        </Td>
+        <Td textAlign="left" isNumeric={false}>
+          {ellipsisAddress(item.id)}
+        </Td>
+        <Td textAlign="center" isNumeric={false}>
+          {numStr(item.numListings)}
+        </Td>
+        <Td textAlign="center" isNumeric={false}>
+          {numStr((item.numPurchases ?? 0) + (item.numSales ?? 0))}
+        </Td>
+        <Td textAlign="center" isNumeric={false}>
+          {numStr(item.numOffers)}
+        </Td>
 
-        <Td>{numStr(item.rewardsInfo.netRewardNumeric)}</Td>
+        <Td textAlign="right" isNumeric={false}>
+          {numStr(item.rewardsInfo.netRewardNumeric)}
+        </Td>
       </Tr>
     );
   });
@@ -32,11 +44,12 @@ export const LeaderBoardTable = ({ data }: Props) => {
       <Table colorScheme="gray">
         <Thead>
           <Tr>
-            <Th>Rank</Th>
-            <Th>Address</Th>
+            <Th textAlign="left">Rank</Th>
+            <Th textAlign="left">Address</Th>
             <Th>Listings</Th>
-            <Th>Purchases</Th>
-            <Th>Rewards</Th>
+            <Th>Purchases / Sales</Th>
+            <Th>Offers</Th>
+            <Th textAlign="right">Rewards</Th>
           </Tr>
         </Thead>
         <Tbody>{rows}</Tbody>
