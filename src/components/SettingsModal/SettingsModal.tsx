@@ -5,7 +5,7 @@ import { apiGet, apiPost } from 'utils/apiUtil';
 import { IconButton, Button, FormControl, Input, Link, Box, FormLabel } from '@chakra-ui/react';
 import { CopyIcon } from '@chakra-ui/icons';
 import validator from 'validator';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { ellipsisAddress } from 'utils/commonUtil';
 
 const isServer = typeof window === 'undefined';

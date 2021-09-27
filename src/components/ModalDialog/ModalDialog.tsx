@@ -1,12 +1,13 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import styles from './ModalDialog.module.scss';
 
-interface IProps {
+interface Props {
   children: React.ReactChild;
   onClose: () => void;
 }
-const ModalDialog = ({ children, onClose }: IProps) => {
+const ModalDialog = ({ children, onClose }: Props) => {
   const escFunction = useCallback((event) => {
     if (event.keyCode === 27) {
       // this doesn't work?  two modals, both get closed
@@ -32,9 +33,9 @@ const ModalDialog = ({ children, onClose }: IProps) => {
           <AnimatePresence>
             <>
               <motion.div
-                className="modal--body"
+                className={styles.modalBody}
                 initial={{ opacity: 0, y: '50%', x: '-50%' }}
-                animate={{ opacity: 1, y: '-30%', x: '-50%' }}
+                animate={{ opacity: 1, y: '-50%', x: '-50%' }}
                 exit={{ opacity: 0, y: '50%', x: '-50%' }}
               >
                 {children}
@@ -43,7 +44,7 @@ const ModalDialog = ({ children, onClose }: IProps) => {
                 initial={{ opacity: 0, scale: 0.75 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0 }}
-                className="modal-close"
+                className={styles.modalClose}
                 type="button"
                 onClick={() => onClose()}
               >
@@ -74,7 +75,7 @@ const Overlay = ({ onClose }: any) => (
     animate={{ opacity: 1 }}
     transition={{ duration: 0.2 }}
     style={{ pointerEvents: 'auto' }}
-    className="overlay"
+    className={styles.overlay}
     onClick={() => onClose(false)}
   ></motion.div>
 );

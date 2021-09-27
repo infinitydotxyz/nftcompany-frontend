@@ -9,7 +9,7 @@ import { GenericError } from 'types';
 import { apiPost } from 'utils/apiUtil';
 import { Button, Input } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { getToken, stringToFloat } from 'utils/commonUtil';
 
 const isServer = typeof window === 'undefined';

@@ -10,7 +10,7 @@ import { apiGet } from 'utils/apiUtil';
 import { WETH_ADDRESS } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from './ListNFTModal.module.scss';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { isServer } from 'utils/commonUtil';
 
 interface IProps {

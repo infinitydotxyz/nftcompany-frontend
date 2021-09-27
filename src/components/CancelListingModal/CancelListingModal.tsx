@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './CancelListingModal.module.scss';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { CardData } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';

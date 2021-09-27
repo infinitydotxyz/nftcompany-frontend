@@ -5,7 +5,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import { getOpenSeaport } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
 import { GenericError } from 'types';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { Button } from '@chakra-ui/react';
 
 const isServer = typeof window === 'undefined';

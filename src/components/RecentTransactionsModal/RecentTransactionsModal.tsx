@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { Box } from '@chakra-ui/layout';

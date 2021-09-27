@@ -6,7 +6,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { Button, Link, Tooltip } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { addressesEqual, ellipsisAddress, ellipsisString, getToken, toChecksumAddress } from 'utils/commonUtil';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
