@@ -4,7 +4,7 @@ import styles from './PreviewModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { Link, Tooltip } from '@chakra-ui/react';
+import { Button, Link, Tooltip } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'hooks/ModalDialog';
 import { addressesEqual, ellipsisAddress, ellipsisString, getToken, toChecksumAddress } from 'utils/commonUtil';
@@ -62,22 +62,14 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
   let purchaseButton;
   switch (action) {
     case 'CANCEL_LISTING':
-      purchaseButton = (
-        <a className="action-btn" onClick={() => setDeleteListingModalShowed(true)}>
-          Cancel Listing
-        </a>
-      );
+      purchaseButton = <Button onClick={() => setDeleteListingModalShowed(true)}>Cancel Listing</Button>;
 
       // hide the owner
       owner = '';
 
       break;
     case 'CANCEL_OFFER':
-      purchaseButton = (
-        <a className="action-btn" onClick={() => setCancelOfferModalShowed(true)}>
-          Cancel Offer
-        </a>
-      );
+      purchaseButton = <Button onClick={() => setCancelOfferModalShowed(true)}>Cancel Offer</Button>;
 
       break;
     case 'ACCEPT_OFFER':
@@ -89,18 +81,10 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
       // hide the owner
       owner = '';
 
-      purchaseButton = (
-        <a className="action-btn" onClick={() => setAcceptOfferModalShowed(true)}>
-          Accept Offer
-        </a>
-      );
+      purchaseButton = <Button onClick={() => setAcceptOfferModalShowed(true)}>Accept Offer</Button>;
       break;
     case 'LIST_NFT':
-      purchaseButton = (
-        <a className="action-btn" onClick={() => setListNFTModalShowed(true)}>
-          List NFT
-        </a>
-      );
+      purchaseButton = <Button onClick={() => setListNFTModalShowed(true)}>List NFT</Button>;
       break;
     case 'VIEW_ORDER':
       break;
@@ -108,11 +92,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     default:
       // not even sure I need this if statement, SNG remove later
       if (showPurchase) {
-        purchaseButton = (
-          <a className="action-btn" onClick={() => setPlaceBidShowed(true)}>
-            Purchase
-          </a>
-        );
+        purchaseButton = <Button onClick={() => setPlaceBidShowed(true)}>Purchase</Button>;
       }
       break;
   }

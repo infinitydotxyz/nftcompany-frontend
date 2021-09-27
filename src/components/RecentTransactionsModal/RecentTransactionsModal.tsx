@@ -9,6 +9,7 @@ import { Box } from '@chakra-ui/layout';
 import styles from './RecentTransactionsModal.module.scss';
 import { Spinner } from '@chakra-ui/spinner';
 import { ellipsisString } from 'utils/commonUtil';
+import { Button } from '@chakra-ui/react';
 
 const isServer = typeof window === 'undefined';
 interface IProps {
@@ -106,9 +107,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
               )}
 
               <div className={styles.footer}>
-                <a className="action-btn" onClick={() => onClose && onClose()}>
-                  Close
-                </a>
+                <Button onClick={() => onClose && onClose()}>Close</Button>
               </div>
             </div>
           </div>

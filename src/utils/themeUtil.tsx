@@ -54,6 +54,15 @@ const Menu = {
   }
 };
 
+const Button = {
+  baseStyle: (props: any) => {
+    return {
+      // default is 1.2 and it makes the text a few pixels too high
+      lineHeight: '1.0'
+    };
+  }
+};
+
 const config: ThemeConfig = {
   useSystemColorMode: false,
   initialColorMode: 'light'
@@ -85,7 +94,8 @@ export const theme = extendTheme(
     colors,
     styles,
     components: {
-      Menu
+      Menu,
+      Button
     }
   },
   withDefaultColorScheme({ colorScheme: 'blue' }),

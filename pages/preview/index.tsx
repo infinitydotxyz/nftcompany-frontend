@@ -11,6 +11,7 @@ import UserList from 'components/UserList/UserList';
 import BidBox from 'components/BidBox/BidBox';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import { PriceBox } from 'components/PriceBox/PriceBox';
+import { Button } from '@chakra-ui/react';
 
 const Tabs = [
   {
@@ -101,9 +102,9 @@ export default function Preview() {
                   <UserList data={sampleUserLists[parseInt(activeTab)]} />
 
                   <BidBox user={sampleUserLists[0][0]}>
-                    <a className="action-btn action-2nd" onClick={() => setPlaceBidShowed(true)}>
+                    <Button colorScheme="gray" onClick={() => setPlaceBidShowed(true)}>
                       Purchase now
-                    </a>
+                    </Button>
                   </BidBox>
                 </>
               )}

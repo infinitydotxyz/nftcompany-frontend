@@ -6,6 +6,7 @@ import { getOpenSeaport } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
 import { GenericError } from 'types';
 import ModalDialog from 'hooks/ModalDialog';
+import { Button } from '@chakra-ui/react';
 
 const isServer = typeof window === 'undefined';
 interface IProps {
@@ -81,13 +82,11 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               </div>
 
               <div className={styles.footer}>
-                <a className="action-btn" onClick={cancelOffer}>
-                  Cancel Offer
-                </a>
+                <Button onClick={cancelOffer}>Cancel Offer</Button>
 
-                <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
+                <Button colorScheme="gray" onClick={() => onClose && onClose()}>
                   Cancel
-                </a>
+                </Button>
               </div>
             </div>
           </div>

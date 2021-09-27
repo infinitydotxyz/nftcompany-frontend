@@ -6,6 +6,7 @@ import { apiPost } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 import ModalDialog from 'hooks/ModalDialog';
+import { Button } from '@chakra-ui/react';
 
 const isServer = typeof window === 'undefined';
 
@@ -81,12 +82,10 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               </div>
 
               <div className={styles.footer}>
-                <a className="action-btn" onClick={acceptOffer}>
-                  Accept Offer
-                </a>
-                <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
+                <Button onClick={acceptOffer}>Accept Offer</Button>
+                <Button colorScheme="gray" onClick={() => onClose && onClose()}>
                   Cancel
-                </a>
+                </Button>
               </div>
             </div>
           </div>
