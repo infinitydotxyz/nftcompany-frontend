@@ -75,7 +75,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           order: order,
           accountAddress: user!.account
         });
-        console.log('Buy NFT txn hash: ' + txnHash + ' salePriceInEth: ' + salePriceInEth + ' feesInEth: ' + feesInEth);
+        // console.log('Buy NFT txn hash: ' + txnHash + ' salePriceInEth: ' + salePriceInEth + ' feesInEth: ' + feesInEth);
         const payload = {
           actionType: 'fulfill',
           txnHash,
@@ -150,7 +150,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         <ModalDialog onClose={onClose}>
           <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white', width: 550 }}>
             <div className="modal-body">
-              <div className={styles.title}>Buy NFT</div>
+              <div className={styles.title}>Purchase</div>
 
               <div className={styles.space}>Buy this NFT at the fixed price.</div>
 
@@ -167,7 +167,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               {token === 'ETH' && (
                 <div className={styles.footer}>
                   <Button isDisabled={!order} onClick={onClickBuyNow} disabled={isBuying}>
-                    Buy now
+                    Purchase
                   </Button>
 
                   {isBuying && <Spinner size="md" color="teal" ml={4} mt={2} />}

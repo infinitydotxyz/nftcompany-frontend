@@ -74,7 +74,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
                   setPlaceBidModalShowed(true);
                 }}
               >
-                <span>Buy NFT</span>
+                <span>Purchase</span>
               </a>
             )}
             {action === 'CANCEL_LISTING' && (

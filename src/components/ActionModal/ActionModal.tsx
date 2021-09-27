@@ -8,7 +8,7 @@ const isServer = typeof window === 'undefined';
 export const ActionModalType = {
   ListNFT: 'List NFT',
   MakeOffer: 'Make Offer',
-  BuyNow: 'Buy Now'
+  BuyNow: 'Purchase'
 };
 
 interface IProps {
@@ -114,7 +114,7 @@ const ActionModal: React.FC<IProps> = ({
                 )}
                 {type === ActionModalType.BuyNow && (
                   <a className="action-btn" onClick={() => onClickBuyNow && onClickBuyNow(nftLink, price)}>
-                    &nbsp;&nbsp;&nbsp; Buy Now &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp; Purchase &nbsp;&nbsp;&nbsp;
                   </a>
                 )}
 
