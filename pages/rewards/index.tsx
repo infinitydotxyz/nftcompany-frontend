@@ -27,6 +27,8 @@ const Rewards = (): JSX.Element => {
       const { result, error } = await apiGet(`/u/${user?.account}/reward`);
 
       setUserReward(result);
+
+      // console.log(JSON.stringify(result, null, '  '));
     } catch (e) {
       console.error(e);
     } finally {
@@ -39,6 +41,8 @@ const Rewards = (): JSX.Element => {
       const { result, error } = await apiGet(`/rewards/leaderboard`);
 
       setLeaderBoard(result);
+
+      // console.log(JSON.stringify(result, null, '  '));
     } catch (e) {
       console.error(e);
     }
@@ -91,7 +95,6 @@ const Rewards = (): JSX.Element => {
 
           <div>
             <InfoCardRow data={userReward} />
-
             <div className={styles.leaderBox}>
               <h3 className={sharedStyles.sectionTitle}>🏆 Leaderboard</h3>
               <LeaderBoardTable data={leaderboard} />

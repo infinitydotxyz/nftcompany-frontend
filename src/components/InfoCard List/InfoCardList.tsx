@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './InfoCardList.module.scss';
-import { DataItem, InfoCard } from '../InfoCard/InfoCard';
+import { CountdownCard, DataItem, InfoCard } from '../InfoCard/InfoCard';
 import { UserReward } from 'types/rewardTypes';
 
 type Props = {
@@ -56,6 +56,8 @@ export const InfoCardRow = ({ data }: Props) => {
     { title: 'Purchases fees total', value: data.purchasesFeesTotalNumeric }
   ];
 
+  const expiryTimestamp = new Date(Date.parse('10/21/21'));
+
   return (
     <div className={styles.main}>
       <h3 className={styles.sectionTitle}>💰 My Rewards</h3>
@@ -63,6 +65,7 @@ export const InfoCardRow = ({ data }: Props) => {
       <div className={styles.cardGrid}>
         <InfoCard items={rewardItems} title="Rewards" />
         <InfoCard items={listingItems} title="Listing Rewards" />
+        <CountdownCard expiryTimestamp={expiryTimestamp} title="Countdown" />
       </div>
 
       <h3 className={styles.sectionTitle}>💰 Totals</h3>

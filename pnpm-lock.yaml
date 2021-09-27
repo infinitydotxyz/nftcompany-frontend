@@ -49,6 +49,7 @@ specifiers:
   react-dom: 17.0.2
   react-intersection-observer: 8.32.1
   react-range: 1.8.11
+  react-timer-hook: 3.0.5
   react-toastify: 8.0.3
   react-widgets: 5.4.0
   recharts: 2.1.4
@@ -99,6 +100,7 @@ dependencies:
   react-dom: 17.0.2_react@17.0.2
   react-intersection-observer: 8.32.1_react@17.0.2
   react-range: 1.8.11_react-dom@17.0.2+react@17.0.2
+  react-timer-hook: 3.0.5_react-dom@17.0.2+react@17.0.2
   react-toastify: 8.0.3_react-dom@17.0.2+react@17.0.2
   react-widgets: 5.4.0_react-dom@17.0.2+react@17.0.2
   recharts: 2.1.4_9bdd65c2b60ce8638444b80b396a481b
@@ -7651,6 +7653,16 @@ packages:
       invariant: 2.2.4
       react: 17.0.2
       tslib: 1.14.1
+    dev: false
+
+  /react-timer-hook/3.0.5_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-n+98SdmYvui2ne3KyWb3Ldu4k0NYQa3g/VzW6VEIfZJ8GAk/jJsIY700M8Nd2vNSTj05c7wKyQfJBqZ0x7zfiA==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /react-toastify/8.0.3_react-dom@17.0.2+react@17.0.2:

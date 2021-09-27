@@ -9,7 +9,7 @@ const colors = {
   windowBg: '#fcfdfd',
 
   // unsure how to add opacity on a css var so we have these variants for now
-  headerBg: '#fcfdfdcc', // cc is alpha
+  headerBg: '#fcfdfdcc',
   brandBlueAlpha: '#4047ffaa',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
