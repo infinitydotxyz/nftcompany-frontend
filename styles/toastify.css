@@ -1,3 +1,7 @@
+:root {
+  --toastify-icon-color-info: #eee !important;
+}
+
 .Toastify__toast-container {
   width: 25% !important;
   min-width: 470px;
