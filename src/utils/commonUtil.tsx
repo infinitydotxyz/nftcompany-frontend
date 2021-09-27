@@ -15,7 +15,9 @@ export enum EventType {
   ApproveOrder = 'ApproveOrder',
   CreateOrder = 'CreateOrder',
   // When the signature request for an order is denied
-  OrderDenied = 'OrderDenied'
+  OrderDenied = 'OrderDenied',
+
+  ApproveCurrency = 'ApproveCurrency'
 }
 
 export const isServer = () => typeof window === 'undefined';
@@ -102,6 +104,9 @@ export const getCustomMessage = (eventName: string, data: any) => {
   }
   if (eventName === EventType.MatchOrders) {
     customMsg = <span>MatchOrders: Your transaction has been sent to chain. {createLink(data?.transactionHash)}</span>;
+  }
+  if (eventName === EventType.ApproveCurrency) {
+    customMsg = 'Approving currency for trading.';
   }
   return customMsg;
 };
