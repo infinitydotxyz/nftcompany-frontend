@@ -34,7 +34,7 @@ const ModalDialog = ({ children, onClose }: IProps) => {
               <motion.div
                 className="modal--body"
                 initial={{ opacity: 0, y: '50%', x: '-50%' }}
-                animate={{ opacity: 1, y: '-10%', x: '-50%' }}
+                animate={{ opacity: 1, y: '-0%', x: '-50%' }}
                 exit={{ opacity: 0, y: '50%', x: '-50%' }}
               >
                 {children}
