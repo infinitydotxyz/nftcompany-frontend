@@ -142,7 +142,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
               <div>{data.title}</div>
             </div>
             <PriceBox
-              justifyRight={true}
+              justifyRight
               price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
               token={data?.data?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
               expirationTime={data?.expirationTime}

@@ -159,7 +159,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   <div className={styles.left}>{token === 'WETH' ? 'Minimum Price' : 'Price'}</div>
 
                   <div className={styles.right}>
-                    <PriceBox price={data.price} token={token} expirationTime={data?.expirationTime} />
+                    <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
                   </div>
                 </div>
               )}
