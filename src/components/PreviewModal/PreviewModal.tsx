@@ -7,7 +7,7 @@ import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { Link, Tooltip } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'hooks/ModalDialog';
-import { ellipsisAddress, getToken } from 'utils/commonUtil';
+import { addressesEqual, ellipsisAddress, ellipsisString, getToken, toChecksumAddress } from 'utils/commonUtil';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
@@ -33,9 +33,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
   let showPurchase = true;
 
-  // show purchase with no price, we can look up any offers and buy and make offers
-  //  || data.price == undefined) {
-  if (!data.owner || data.owner === user?.account) {
+  if (!data.owner || addressesEqual(data.owner, user?.account)) {
     showPurchase = false;
   }
 
@@ -43,22 +41,16 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
   let offerMakerShort = '';
 
   let owner = data.owner ?? '';
-  if (owner.length > 16) {
-    owner = ellipsisAddress(owner);
-  }
+  owner = ellipsisAddress(owner);
 
   let tokenAddress = data.tokenAddress;
   if (tokenAddress) {
-    if (tokenAddress.length > 16) {
-      tokenAddress = ellipsisAddress(tokenAddress);
-    }
+    tokenAddress = ellipsisAddress(tokenAddress);
   }
 
   let tokenId = data.tokenId;
   if (tokenId) {
-    if (tokenId?.length > 16) {
-      tokenId = ellipsisAddress(tokenId);
-    }
+    tokenId = ellipsisString(tokenId);
   }
 
   let description = data.description;
@@ -126,7 +118,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     owner?.length > 0 ? (
       <>
         <div className={styles.label}>Owner</div>
-        <Tooltip label={data.owner} hasArrow openDelay={1000}>
+        <Tooltip label={toChecksumAddress(data.owner)} hasArrow openDelay={1000}>
           <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
             {owner}
           </Link>
@@ -138,7 +130,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     offerMaker?.length > 0 ? (
       <>
         <div className={styles.label}>Offer Maker</div>
-        <Tooltip label={offerMaker} hasArrow openDelay={1000}>
+        <Tooltip label={toChecksumAddress(offerMaker)} hasArrow openDelay={1000}>
           <Link color="brandBlue" href={`${window.origin}/${offerMaker}`} target="_blank" rel="noreferrer">
             {offerMakerShort}
           </Link>
@@ -183,7 +175,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                     )}
 
                     <div className={styles.label}>Token Address</div>
-                    <Tooltip label={data.tokenAddress} hasArrow openDelay={1000}>
+                    <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
                       <Link
                         color="brandBlue"
                         href={`https://etherscan.io/token/${data.tokenAddress}`}

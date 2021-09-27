@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import { CardData } from 'types/Nft.interface';
 import { WETH_ADDRESS } from './constants';
 
@@ -25,7 +26,37 @@ export const isServer = () => typeof window === 'undefined';
 export const isLocalhost = () =>
   typeof window !== 'undefined' && (window?.location?.host || '').indexOf('localhost') >= 0;
 
-export const ellipsisAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
+export const toChecksumAddress = (address?: string): string => {
+  if (address) {
+    return ethers.utils.getAddress(address);
+  }
+
+  return '';
+};
+
+// use ellipsisString for non-address numbers, this gets the checksum address
+export const ellipsisAddress = (address: string) => {
+  return ellipsisString(toChecksumAddress(address));
+};
+
+export const addressesEqual = (left?: string, right?: string): boolean => {
+  if (left && right) {
+    return left.toLowerCase() === right.toLowerCase();
+  }
+
+  return left === right;
+};
+
+export const ellipsisString = (inString?: string, left: number = 6, right: number = 4): string => {
+  if (inString) {
+    // don't do anything if less than a certain length
+    if (inString.length > left + right + 5) {
+      return `${inString.slice(0, left)}...${inString.slice(-right)}`;
+    }
+  }
+
+  return '';
+};
 
 export const getToken = (tokenAddress: string): 'WETH' | 'ETH' => (tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH');
 

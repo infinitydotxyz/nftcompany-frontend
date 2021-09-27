@@ -15,12 +15,10 @@ export const LeaderBoardTable = ({ data }: Props) => {
   }
 
   const rows = data.results.map((item, index) => {
-    const checkSumAddress = ethers.utils.getAddress(item.id);
-
     return (
       <Tr key={item.id}>
         <Td>#{index + 1}</Td>
-        <Td>{ellipsisAddress(checkSumAddress)}</Td>
+        <Td>{ellipsisAddress(item.id)}</Td>
         <Td>{numStr(item.numListings)}</Td>
         <Td>{numStr(item.numPurchases)}</Td>
 

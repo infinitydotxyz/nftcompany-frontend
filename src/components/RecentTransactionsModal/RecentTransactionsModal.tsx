@@ -8,7 +8,7 @@ import { Box } from '@chakra-ui/layout';
 
 import styles from './RecentTransactionsModal.module.scss';
 import { Spinner } from '@chakra-ui/spinner';
-import { ellipsisAddress } from 'utils/commonUtil';
+import { ellipsisString } from 'utils/commonUtil';
 
 const isServer = typeof window === 'undefined';
 interface IProps {
@@ -75,7 +75,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
                       <div key={item.txnHash} className={`col-md-12 col-sm-12 ${styles.txnRow}`}>
                         <span>{`${new Date(item.createdAt).toLocaleString()}`}</span>
                         <span>
-                          {ellipsisAddress(item.txnHash)}{' '}
+                          {ellipsisString(item.txnHash)}{' '}
                           <i className={styles.extLink}>
                             <Tooltip label={'Open Etherscan Link'} placement="top" hasArrow>
                               <ExternalLinkIcon

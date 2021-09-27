@@ -6,6 +6,7 @@ import { IconButton, Button, FormControl, Input, Link, Box, FormLabel } from '@c
 import { CopyIcon } from '@chakra-ui/icons';
 import validator from 'validator';
 import ModalDialog from 'hooks/ModalDialog';
+import { ellipsisString } from 'utils/commonUtil';
 
 const isServer = typeof window === 'undefined';
 
@@ -94,7 +95,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
   ) : null;
 
   let shortAddress = user?.account ?? '';
-  shortAddress = `${shortAddress.slice(0, 8)}...${shortAddress.slice(-8)}`;
+  shortAddress = ellipsisString(shortAddress, 8, 8);
 
   const displayUrl = `${window.origin}/${shortAddress}`;
 
