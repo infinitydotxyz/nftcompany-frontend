@@ -207,7 +207,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 </div>
                 <div className={styles.row}>
                   <div className={styles.left}>
-                    <div>Expire date</div>
+                    <div>Expiry date</div>
                   </div>
                   <div className={styles.right}>
                     <DatePicker
