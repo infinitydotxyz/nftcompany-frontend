@@ -63,30 +63,28 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
-            <div className="modal-body">
-              <div className={styles.title}>Accept Offer</div>
+          <div>
+            <div className={styles.title}>Accept Offer</div>
 
-              <div className={styles.space}>You are about to sell this NFT.</div>
+            <div className={styles.space}>You are about to sell this NFT.</div>
 
-              <div className={styles.row}>
-                <ul>
-                  <li>
-                    <div>Price</div>
-                    <div>
-                      <span>{data.price}</span>
-                    </div>
-                    <div>ETH</div>
-                  </li>
-                </ul>
-              </div>
+            <div className={styles.row}>
+              <ul>
+                <li>
+                  <div>Price</div>
+                  <div>
+                    <span>{data.price}</span>
+                  </div>
+                  <div>ETH</div>
+                </li>
+              </ul>
+            </div>
 
-              <div className={styles.footer}>
-                <Button onClick={acceptOffer}>Accept Offer</Button>
-                <Button colorScheme="gray" onClick={() => onClose && onClose()}>
-                  Cancel
-                </Button>
-              </div>
+            <div className={styles.footer}>
+              <Button onClick={acceptOffer}>Accept Offer</Button>
+              <Button colorScheme="gray" onClick={() => onClose && onClose()}>
+                Cancel
+              </Button>
             </div>
           </div>
         </ModalDialog>

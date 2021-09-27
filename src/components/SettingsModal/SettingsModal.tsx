@@ -150,18 +150,16 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
-            <div className="modal-body">
-              <div className={styles.main}>
-                <div className={styles.title}>Account</div>
+          <div>
+            <div className={styles.main}>
+              <div className={styles.title}>Account</div>
 
-                {content}
-                <div className={styles.buttons}>
-                  <Button onClick={() => saveEmail()}>Save</Button>
-                  <Button colorScheme="gray" onClick={onClose}>
-                    Cancel
-                  </Button>
-                </div>
+              {content}
+              <div className={styles.buttons}>
+                <Button onClick={() => saveEmail()}>Save</Button>
+                <Button colorScheme="gray" onClick={onClose}>
+                  Cancel
+                </Button>
               </div>
             </div>
           </div>

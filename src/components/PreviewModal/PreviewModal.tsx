@@ -129,70 +129,65 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div
-            className={`modal ${'ntfmodal'}`}
-            style={{ width: '80vw', maxWidth: 1000, background: 'white', borderColor: 'white' }}
-          >
-            <div className="modal-body">
-              <div className={styles.main}>
-                <div className={styles.nftContent}>
-                  <div className={styles.imgBox}>
-                    <img
-                      alt="not available"
-                      src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
-                    />
+          <div style={{ width: '80vw', maxWidth: 1000 }}>
+            <div className={styles.main}>
+              <div className={styles.nftContent}>
+                <div className={styles.imgBox}>
+                  <img
+                    alt="not available"
+                    src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
+                  />
+                </div>
+
+                <div className={styles.infoBox}>
+                  <div className={styles.collectionRow}>
+                    <div className={styles.collection}>{data?.collectionName}</div>
+
+                    <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
                   </div>
 
-                  <div className={styles.infoBox}>
-                    <div className={styles.collectionRow}>
-                      <div className={styles.collection}>{data?.collectionName}</div>
+                  <div className={styles.title}>{data?.title}</div>
 
-                      <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
-                    </div>
+                  {data.price && (
+                    <>
+                      <span className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price' : 'Price'}</span>
 
-                    <div className={styles.title}>{data?.title}</div>
+                      <PriceBox price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
+                    </>
+                  )}
 
-                    {data.price && (
-                      <>
-                        <span className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price' : 'Price'}</span>
+                  <div className={styles.label}>Token Address</div>
+                  <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
+                    <Link
+                      color="brandBlue"
+                      href={`https://etherscan.io/token/${data.tokenAddress}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {tokenAddress}
+                    </Link>
+                  </Tooltip>
 
-                        <PriceBox price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
-                      </>
-                    )}
+                  <div className={styles.label}>Token Id</div>
 
-                    <div className={styles.label}>Token Address</div>
-                    <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
-                      <Link
-                        color="brandBlue"
-                        href={`https://etherscan.io/token/${data.tokenAddress}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {tokenAddress}
-                      </Link>
-                    </Tooltip>
+                  <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
+                    <Link
+                      color="brandBlue"
+                      href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {tokenId}
+                    </Link>
+                  </Tooltip>
 
-                    <div className={styles.label}>Token Id</div>
+                  {_ownerSection}
+                  {_offerMakerSection}
 
-                    <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
-                      <Link
-                        color="brandBlue"
-                        href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {tokenId}
-                      </Link>
-                    </Tooltip>
+                  <span className={styles.label}>Description</span>
+                  <div className={styles.description}>{description}</div>
 
-                    {_ownerSection}
-                    {_offerMakerSection}
-
-                    <span className={styles.label}>Description</span>
-                    <div className={styles.description}>{description}</div>
-
-                    <div className={styles.buttons}>{purchaseButton}</div>
-                  </div>
+                  <div className={styles.buttons}>{purchaseButton}</div>
                 </div>
               </div>
             </div>

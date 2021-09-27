@@ -91,127 +91,72 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
     <>
       {!isServer() && (
         <ModalDialog onClose={onClose}>
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white', width: 550 }}>
-            <div className="modal-body">
-              <div className={styles.title}>List NFT</div>
+          <div style={{ width: 550 }}>
+            <div className={styles.title}>List NFT</div>
 
+            <div className={styles.row}>
+              <TabBar
+                tabs={[
+                  { id: 'SET_PRICE', label: 'Set Price' },
+                  { id: 'HIGHEST_BID', label: 'Highest Bid' }
+                ]}
+                activeTab={activeTab}
+                setActiveTab={(id: string) => {
+                  setActiveTab(id);
+                  setEndPriceShowed(false);
+                }}
+              />
+            </div>
+
+            {activeTab === 'SET_PRICE' ? (
               <div className={styles.row}>
-                <TabBar
-                  tabs={[
-                    { id: 'SET_PRICE', label: 'Set Price' },
-                    { id: 'HIGHEST_BID', label: 'Highest Bid' }
-                  ]}
-                  activeTab={activeTab}
-                  setActiveTab={(id: string) => {
-                    setActiveTab(id);
-                    setEndPriceShowed(false);
-                  }}
-                />
-              </div>
-
-              {activeTab === 'SET_PRICE' ? (
-                <div className={styles.row}>
-                  <ul className={styles.fields}>
+                <ul className={styles.fields}>
+                  <li>
+                    <div>Sell at a fixed or declining price.</div>
+                  </li>
+                  <li>
+                    <div>{endPriceShowed ? 'Starting price' : 'Price'}</div>
+                    <div>
+                      <input
+                        className={styles.priceInput}
+                        type="number"
+                        autoFocus
+                        onChange={(ev) => setPrice(parseFloat(ev.target.value))}
+                      />
+                    </div>
+                    <div>ETH</div>
+                  </li>
+                  {endPriceShowed && (
                     <li>
-                      <div>Sell at a fixed or declining price.</div>
-                    </li>
-                    <li>
-                      <div>{endPriceShowed ? 'Starting price' : 'Price'}</div>
+                      <div>
+                        Ending price
+                        <HelpTooltip text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found." />
+                      </div>
                       <div>
                         <input
                           className={styles.priceInput}
                           type="number"
-                          autoFocus
-                          onChange={(ev) => setPrice(parseFloat(ev.target.value))}
+                          onChange={(ev) => setEndPrice(parseFloat(ev.target.value))}
                         />
                       </div>
                       <div>ETH</div>
                     </li>
-                    {endPriceShowed && (
-                      <li>
-                        <div>
-                          Ending price
-                          <HelpTooltip text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found." />
-                        </div>
-                        <div>
-                          <input
-                            className={styles.priceInput}
-                            type="number"
-                            onChange={(ev) => setEndPrice(parseFloat(ev.target.value))}
-                          />
-                        </div>
-                        <div>ETH</div>
-                      </li>
-                    )}
-                    <li>
-                      <div>
-                        Include ending price
-                        <HelpTooltip text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found." />
-                      </div>
-                      <div style={{ marginRight: 10 }}>
-                        <Switch size="lg" onChange={(ev) => setEndPriceShowed(ev.target.checked)} />
-                      </div>
-                      <div></div>
-                    </li>
-                    {endPriceShowed && (
-                      <li>
-                        <div>
-                          Expiration time
-                          <HelpTooltip text="Your listing will automatically end at this time. No need to cancel it!" />
-                        </div>
-                        <div className={styles.dateContainer}>
-                          <DatePicker
-                            includeTime
-                            onChange={(dt) => setExpiryTimeSeconds(Math.round((dt || Date.now()).valueOf() / 1000))}
-                            containerClassName={styles.datePicker}
-                            style={{ marginRight: 10 }}
-                          />
-                        </div>
-                        <div></div>
-                      </li>
-                    )}
-                  </ul>
-                </div>
-              ) : (
-                <div className={styles.row}>
-                  {/* ------ English Auction (Highest Bid) ------ */}
-                  <ul className={styles.fields}>
-                    <li>
-                      <div>Auction to the highest bidder.</div>
-                    </li>
-                    <li>
-                      <div>
-                        Minimum bid
-                        <HelpTooltip text="Set your starting bid price. This starting bid price will be publicly visible. If you receive a bid above this starting value but below your reserve price, you can accept it at any time." />
-                      </div>
-                      <div>
-                        <input
-                          type="number"
-                          className={styles.priceInput}
-                          autoFocus
-                          onChange={(ev) => setPrice(parseFloat(ev.target.value))}
-                        />
-                      </div>
-                      <div>WETH</div>
-                    </li>
-                    <li>
-                      <div>
-                        Reserve price
-                        <HelpTooltip text="Create a hidden limit by setting a reserve price. If you don’t receive any bids equal to or greater than your reserve, the auction will end without a sale. We require a minimum reserve price of ㆔1 or the equivalent value in your selected token." />
-                      </div>
-                      <div>
-                        <input
-                          type="number"
-                          className={styles.priceInput}
-                          onChange={(ev) => setReservePrice(parseFloat(ev.target.value))}
-                        />
-                      </div>
-                      <div>WETH</div>
-                    </li>
+                  )}
+                  <li>
+                    <div>
+                      Include ending price
+                      <HelpTooltip text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found." />
+                    </div>
+                    <div style={{ marginRight: 10 }}>
+                      <Switch size="lg" onChange={(ev) => setEndPriceShowed(ev.target.checked)} />
+                    </div>
+                    <div></div>
+                  </li>
+                  {endPriceShowed && (
                     <li>
                       <div>
                         Expiration time
-                        <HelpTooltip text="Your auction will automatically end at this time and the highest bidder will win. No need to cancel it!" />
+                        <HelpTooltip text="Your listing will automatically end at this time. No need to cancel it!" />
                       </div>
                       <div className={styles.dateContainer}>
                         <DatePicker
@@ -223,27 +168,74 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       </div>
                       <div></div>
                     </li>
-                  </ul>
-                </div>
-              )}
-
-              <div className={styles.footer}>
-                <Button size="md" disabled={isSubmitting} onClick={onClickListNft}>
-                  List NFT
-                </Button>
-
-                <Button
-                  colorScheme="gray"
-                  size="md"
-                  ml={4}
-                  disabled={isSubmitting}
-                  onClick={() => onClose && onClose()}
-                >
-                  Cancel
-                </Button>
-
-                {isSubmitting && <Spinner size="md" color="teal" ml={4} mt={2} />}
+                  )}
+                </ul>
               </div>
+            ) : (
+              <div className={styles.row}>
+                {/* ------ English Auction (Highest Bid) ------ */}
+                <ul className={styles.fields}>
+                  <li>
+                    <div>Auction to the highest bidder.</div>
+                  </li>
+                  <li>
+                    <div>
+                      Minimum bid
+                      <HelpTooltip text="Set your starting bid price. This starting bid price will be publicly visible. If you receive a bid above this starting value but below your reserve price, you can accept it at any time." />
+                    </div>
+                    <div>
+                      <input
+                        type="number"
+                        className={styles.priceInput}
+                        autoFocus
+                        onChange={(ev) => setPrice(parseFloat(ev.target.value))}
+                      />
+                    </div>
+                    <div>WETH</div>
+                  </li>
+                  <li>
+                    <div>
+                      Reserve price
+                      <HelpTooltip text="Create a hidden limit by setting a reserve price. If you don’t receive any bids equal to or greater than your reserve, the auction will end without a sale. We require a minimum reserve price of ㆔1 or the equivalent value in your selected token." />
+                    </div>
+                    <div>
+                      <input
+                        type="number"
+                        className={styles.priceInput}
+                        onChange={(ev) => setReservePrice(parseFloat(ev.target.value))}
+                      />
+                    </div>
+                    <div>WETH</div>
+                  </li>
+                  <li>
+                    <div>
+                      Expiration time
+                      <HelpTooltip text="Your auction will automatically end at this time and the highest bidder will win. No need to cancel it!" />
+                    </div>
+                    <div className={styles.dateContainer}>
+                      <DatePicker
+                        includeTime
+                        onChange={(dt) => setExpiryTimeSeconds(Math.round((dt || Date.now()).valueOf() / 1000))}
+                        containerClassName={styles.datePicker}
+                        style={{ marginRight: 10 }}
+                      />
+                    </div>
+                    <div></div>
+                  </li>
+                </ul>
+              </div>
+            )}
+
+            <div className={styles.footer}>
+              <Button size="md" disabled={isSubmitting} onClick={onClickListNft}>
+                List NFT
+              </Button>
+
+              <Button colorScheme="gray" size="md" ml={4} disabled={isSubmitting} onClick={() => onClose && onClose()}>
+                Cancel
+              </Button>
+
+              {isSubmitting && <Spinner size="md" color="teal" ml={4} mt={2} />}
             </div>
           </div>
         </ModalDialog>
