@@ -81,6 +81,7 @@ export type UserReward = {
   salesFeesTotalNumeric: number;
   purchasesTotal: string;
   purchasesFeesTotal: string;
+  totalRewardPaid: string;
   purchasesTotalNumeric: number;
   purchasesFeesTotalNumeric: number;
   numListings: string;
