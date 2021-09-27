@@ -8,6 +8,7 @@ import { Box } from '@chakra-ui/layout';
 
 import styles from './RecentTransactionsModal.module.scss';
 import { Spinner } from '@chakra-ui/spinner';
+import { ellipsisAddress } from 'utils/commonUtil';
 
 const isServer = typeof window === 'undefined';
 interface IProps {
@@ -43,7 +44,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
         <ModalDialog onClose={onClose}>
           <div
             className={`modal ${'ntfmodal'} ${styles.modal}`}
-            style={{ background: 'white', borderColor: 'white', width: '60vw' }}
+            style={{ background: 'white', borderColor: 'white', width: '50vw' }}
           >
             <div className="modal-body">
               <div className={styles.title}>Transactions</div>
@@ -61,6 +62,12 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
                     <span>
                       <strong>Txn Hash</strong>
                     </span>
+                    <span>
+                      <strong>Action</strong>
+                    </span>
+                    <span>
+                      <strong>Status</strong>
+                    </span>
                   </div>
 
                   {data.map((item: any) => {
@@ -68,7 +75,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
                       <div key={item.txnHash} className={`col-md-12 col-sm-12 ${styles.txnRow}`}>
                         <span>{`${new Date(item.createdAt).toLocaleString()}`}</span>
                         <span>
-                          {item.txnHash}{' '}
+                          {ellipsisAddress(item.txnHash)}{' '}
                           <i className={styles.extLink}>
                             <Tooltip label={'Open Etherscan Link'} placement="top" hasArrow>
                               <ExternalLinkIcon
@@ -79,7 +86,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
                             </Tooltip>{' '}
                           </i>
                           <i className={styles.extLink}>
-                            <Tooltip label={'Open Etherscan Link'} placement="top" hasArrow>
+                            <Tooltip label={'Copy to clipboard'} placement="top" hasArrow>
                               <CopyIcon
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -90,6 +97,8 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
                             </Tooltip>{' '}
                           </i>
                         </span>
+                        <span>{`${item.actionType}`}</span>
+                        <span>{`${item.status}`}</span>
                       </div>
                     );
                   })}
