@@ -97,6 +97,9 @@ export const getCustomMessage = (eventName: string, data: any) => {
       );
     }
   }
+  if (eventName === EventType.TransactionDenied) {
+    customMsg = 'Transaction denied.';
+  }
   if (eventName === EventType.TransactionConfirmed) {
     if (ev === EventType.CancelOrder) {
       customMsg = 'CancelOrder: Transaction confirmed.';
