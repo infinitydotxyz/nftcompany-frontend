@@ -218,7 +218,7 @@ export function useCardProvider(): {
   //   if (userAccount && list && list.length > 0) {
   //     filteredList = list.filter((item) => {
   //       // opensea lowercases their account strings, so compare to lower
-  //       return item.owner?.toLowerCase() !== userAccount.toLowerCase();
+  //       return addressesEqual(item.owner, userAccount);
   //     });
   //   }
   // }

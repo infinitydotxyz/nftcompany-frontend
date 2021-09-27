@@ -8,6 +8,7 @@ import PreviewModal from 'components/PreviewModal/PreviewModal';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { WETH_ADDRESS } from 'utils/constants';
+import { addressesEqual } from 'utils/commonUtil';
 
 type Props = {
   data: CardData;
@@ -30,8 +31,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
 
   let ownedByYou = false;
   if (userAccount) {
-    // opensea lowercases their account strings, so compare to lower
-    ownedByYou = data.owner?.toLowerCase() === userAccount.toLowerCase();
+    ownedByYou = addressesEqual(data.owner, userAccount);
   }
 
   const collectionName = data.collectionName;
