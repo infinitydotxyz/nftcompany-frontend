@@ -87,6 +87,9 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
       purchaseButton = <Button onClick={() => setListNFTModalShowed(true)}>List NFT</Button>;
       break;
     case 'VIEW_ORDER':
+      // hide the owner
+      owner = '';
+
       break;
     case 'BUY_NFT':
     default:
