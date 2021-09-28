@@ -56,7 +56,9 @@ export const defaultFilterState: SearchFilter = {
   id: '',
   user: '',
   tokenAddress: '',
-  tokenId: ''
+  tokenId: '',
+  startAfterSearchTitle: '',
+  startAfterSearchCollectionName: ''
 };
 
 const SearchContext = React.createContext({} as any);
