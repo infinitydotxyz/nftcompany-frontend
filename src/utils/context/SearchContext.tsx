@@ -1,6 +1,7 @@
 import { CardData } from 'types/Nft.interface';
 import React, { useContext, useState } from 'react';
 import { TypeAheadOption } from 'services/Listings.service';
+import { string } from 'prop-types';
 
 export type SearchState = {
   isLoading: boolean;
@@ -18,6 +19,8 @@ export type SearchFilter = {
   priceMax: string;
   startAfterMillis: string;
   startAfterPrice: string;
+  startAfterSearchTitle: string;
+  startAfterSearchCollectionName: string;
   limit: string;
   user: string;
   id: string;

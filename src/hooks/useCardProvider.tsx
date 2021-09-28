@@ -4,7 +4,13 @@ import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
 import { useAppContext } from 'utils/context/AppContext';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { getListings, TypeAheadOption } from 'services/Listings.service';
-import { getLastItemBasePrice, getLastItemCreatedAt, getLastItemMaker } from 'components/FetchMore/FetchMore';
+import {
+  getLastItemBasePrice,
+  getLastItemCreatedAt,
+  getLastItemMaker,
+  getLastItemSearchCollectionName,
+  getLastItemSearchTitle
+} from 'components/FetchMore/FetchMore';
 
 const PAGE_SIZE = ITEMS_PER_PAGE;
 // const PAGE_SIZE = 7;
@@ -19,6 +25,8 @@ const fetchData = async (
   startAfterUser: string,
   startAfterMillis: string,
   startAfterPrice: string,
+  startAfterSearchTitle: string,
+  startAfterSearchCollectionName: string,
   collectionName: string,
   text: string,
   typeAhead: TypeAheadOption | undefined
@@ -29,6 +37,8 @@ const fetchData = async (
     startAfterUser: user ? startAfterUser : '',
     startAfterMillis,
     startAfterPrice,
+    startAfterSearchTitle,
+    startAfterSearchCollectionName,
     limit: PAGE_SIZE.toString(),
     tokenId: typeAhead?.id ?? '',
     tokenAddress: typeAhead?.address ?? '',
@@ -62,6 +72,8 @@ export function useCardProvider(): {
     let startAfterUser = '';
     let startAfterMillis = '';
     let startAfterPrice = '';
+    let startAfterSearchCollectionName = '';
+    let startAfterSearchTitle = '';
     let previousList: CardData[] = [];
 
     // always get a fresh search
@@ -70,6 +82,8 @@ export function useCardProvider(): {
     // are we getting the next page?
     if (!isTokenIdSearch && listType === newListType && list?.length > 0) {
       previousList = list;
+      startAfterSearchTitle = getLastItemSearchTitle(list);
+      startAfterSearchCollectionName = getLastItemSearchCollectionName(list);
       startAfterUser = getLastItemMaker(list);
       startAfterMillis = getLastItemCreatedAt(list);
       startAfterPrice = getLastItemBasePrice(list);
@@ -84,6 +98,8 @@ export function useCardProvider(): {
       startAfterUser,
       startAfterMillis,
       startAfterPrice,
+      startAfterSearchTitle,
+      startAfterSearchCollectionName,
       searchContext.searchState.collectionName,
       searchContext.searchState.text,
       searchContext.searchState.selectedOption
