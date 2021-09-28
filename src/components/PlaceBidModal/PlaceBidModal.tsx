@@ -155,11 +155,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
             {data.price && (
               <div className={styles.priceRow}>
-                <div className={styles.left}>{token === 'WETH' ? 'Minimum Price' : 'Price'}</div>
-
-                <div className={styles.right}>
-                  <PriceBox price={data.price} token={token} expirationTime={data?.expirationTime} />
-                </div>
+                <PriceBox price={data.price} token={token} expirationTime={data?.expirationTime} />
               </div>
             )}
 
@@ -201,7 +197,11 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                       onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}
                     />
                   </div>
-                  <div className={styles.token}>{token}</div>
+                  {/*
+                    hardcoded to weth
+                     <div className={styles.token}>{token}</div>
+                   */}
+                  <div className={styles.token}>WETH</div>
                 </div>
               </div>
               <div className={styles.row}>

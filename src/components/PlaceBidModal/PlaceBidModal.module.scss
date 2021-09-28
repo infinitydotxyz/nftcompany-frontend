@@ -4,38 +4,7 @@
 }
 
 .priceRow {
-  display: flex;
   margin-bottom: 20px;
-  align-items: flex-start;
-
-  .left {
-    display: flex;
-    align-items: center;
-    padding-right: 40px;
-
-    // hack to make the Price line up with the priceBox
-    position: relative;
-    top: 4px;
-
-    color: var(--text-secondary);
-    font-weight: 500;
-  }
-
-  .right {
-    display: flex;
-    flex: 1;
-    text-align: right;
-    align-items: center;
-    justify-content: flex-start;
-    & > div > input {
-      text-align: right;
-      padding: 0 10px;
-      margin: 0 10px;
-      font-weight: bold;
-      border: var(--input-border);
-      width: 246px !important;
-    }
-  }
 }
 
 .row {
