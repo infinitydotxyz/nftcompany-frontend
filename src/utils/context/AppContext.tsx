@@ -116,7 +116,6 @@ export function AppContextProvider({ children }: any) {
     signIn,
     signOut,
     userReady,
-
     showAppError,
     showAppMessage
   };
