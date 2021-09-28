@@ -54,8 +54,7 @@ export const ellipsisString = (inString?: string, left: number = 6, right: numbe
       return `${inString.slice(0, left)}...${inString.slice(-right)}`;
     }
   }
-
-  return '';
+  return inString || '';
 };
 
 export const getToken = (tokenAddress: string): 'WETH' | 'ETH' => (tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH');
