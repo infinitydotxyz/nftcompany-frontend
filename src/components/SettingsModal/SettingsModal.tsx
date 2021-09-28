@@ -75,12 +75,14 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
   }, [user]);
 
   const toggleSubscribe = async () => {
-    const response = await apiPost(`/u/${user?.account}/subscribeEmail`, null, { subscribe: !subscribed });
+    const { result, error } = await apiPost(`/u/${user?.account}/subscribeEmail`, null, { subscribe: !subscribed });
 
-    if (response.status === 200) {
-      // refresh
-      getEmail();
+    if (error) {
+      showAppError(`${error.message}`);
+      return;
     }
+
+    setSubscribed(result?.subscribed ?? false);
   };
 
   const _subscribeSection = showSubscribeSection ? (
@@ -111,9 +113,9 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
             </Link>
             <Box flex={1} />
             <IconButton
-              isActive={false}
+              color="#333"
+              colorScheme="grey"
               aria-label="Copy"
-              className={styles.button}
               icon={<CopyIcon />}
               onClick={(e) => {
                 e.stopPropagation();

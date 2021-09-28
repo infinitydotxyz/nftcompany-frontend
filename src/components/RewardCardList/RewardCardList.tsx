@@ -32,7 +32,6 @@ export const RewardCardRow = ({ data }: Props) => {
   ];
 
   const rewardItems: DataItem[] = [
-    { title: 'Reward', value: data.reward },
     { title: 'Gross', value: data.grossRewardNumeric?.toString() || '0' },
     { title: 'Net', value: data.netRewardNumeric?.toString() || '0' }
   ];
@@ -52,6 +51,7 @@ export const RewardCardRow = ({ data }: Props) => {
   ];
 
   const notUsed: DataItem[] = [
+    { title: 'Reward', value: data.reward },
     { title: 'Bonus reward', value: data.bonusReward },
     { title: 'Sale reward', value: data.saleReward },
     { title: 'Purchase reward', value: data.purchaseReward },
@@ -83,11 +83,11 @@ export const RewardCardRow = ({ data }: Props) => {
         <RewardCard items={salesItems} title="Sales / Purchases" />
       </div>
 
-      <h3 className={styles.sectionTitle}>Blockchain</h3>
+      {/* <h3 className={styles.sectionTitle}>Blockchain</h3>
 
       <div className={styles.cardGrid1}>
         <RewardCard items={blockItems} title="Block" />
-      </div>
+      </div> */}
     </div>
   );
 };
