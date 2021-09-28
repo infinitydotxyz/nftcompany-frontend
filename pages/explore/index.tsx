@@ -4,7 +4,6 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { NoData } from 'components/FetchMore/FetchMore';
 import CardList from 'components/Card/CardList';
-import styles from '../../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { useCardProvider } from 'hooks/useCardProvider';
@@ -20,7 +19,7 @@ export default function ExplorePage() {
       <Head>
         <title>Explore</title>
       </Head>
-      <div className={styles.dashboard}>
+      <div>
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Explore</div>

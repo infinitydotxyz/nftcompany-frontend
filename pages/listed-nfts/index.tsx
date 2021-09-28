@@ -9,7 +9,6 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import { ordersToCardData } from 'services/Listings.service';
-import styles from '../../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { CardData } from 'types/Nft.interface';
 
@@ -68,13 +67,13 @@ export default function ListNFTs() {
       <Head>
         <title>Listed NFTs</title>
       </Head>
-      <div className={styles.dashboard}>
+      <div>
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Listed NFTs</div>
           </div>
 
-          <div className={styles.main}>
+          <div>
             <PleaseConnectWallet account={user?.account} />
             <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}

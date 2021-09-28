@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import { sampleData, sampleUserLists } from '../../src/utils/apiUtil';
-import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Preview.module.scss';
 import TabBar from 'components/TabBar/TabBar';
 import UserList from 'components/UserList/UserList';
@@ -58,7 +57,7 @@ export default function Preview() {
       <Head>
         <title>Preview page</title>
       </Head>
-      <div className={pageStyles.dashboard}>
+      <div>
         <div className="page-container">
           <div className="section-bar">
             <div className="right">{/* <div className="tg-title">{title}</div> */}</div>

@@ -2,7 +2,6 @@ import React from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
-import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Offers.module.scss';
 
 export default function Offers() {
@@ -11,13 +10,13 @@ export default function Offers() {
       <Head>
         <title>Offers</title>
       </Head>
-      <div className={pageStyles.dashboard}>
+      <div>
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title"></div>
           </div>
 
-          <div className={styles.main}>
+          <div>
             <section className="grid">
               <div className="col-md-6 col-sm-12">
                 <h3 className="tg-title">My Offers</h3>
