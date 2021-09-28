@@ -22,14 +22,9 @@ export const LeaderBoardTable = ({ data }: Props) => {
         <Td textAlign="left" isNumeric={false}>
           {ellipsisAddress(item.id)}
         </Td>
+
         <Td textAlign="center" isNumeric={false}>
-          {numStr(item.numListings)}
-        </Td>
-        <Td textAlign="center" isNumeric={false}>
-          {numStr((item.numPurchases ?? 0) + (item.numSales ?? 0))}
-        </Td>
-        <Td textAlign="center" isNumeric={false}>
-          {numStr(item.numOffers)}
+          {numStr((item.salesTotalNumeric ?? 0) + (item.purchasesTotalNumeric ?? 0))}
         </Td>
 
         <Td textAlign="right" isNumeric={false}>
@@ -46,9 +41,7 @@ export const LeaderBoardTable = ({ data }: Props) => {
           <Tr>
             <Th textAlign="left">Rank</Th>
             <Th textAlign="left">Address</Th>
-            <Th>Listings</Th>
-            <Th>Purchases / Sales</Th>
-            <Th>Offers</Th>
+            <Th textAlign="center">Volume Traded</Th>
             <Th textAlign="right">Rewards</Th>
           </Tr>
         </Thead>

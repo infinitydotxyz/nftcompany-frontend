@@ -13,6 +13,8 @@ export const RewardCardRow = ({ data }: Props) => {
   }
 
   const listingItems: DataItem[] = [
+    { title: 'Sales', value: data.numSales },
+    { title: 'Purchases', value: data.numPurchases },
     { title: 'Listings', value: data.numListings },
     { title: 'Bonus listings', value: data.numBonusListings },
     { title: 'Offers', value: data.numOffers },
@@ -20,20 +22,19 @@ export const RewardCardRow = ({ data }: Props) => {
   ];
 
   const totalItems: DataItem[] = [
-    { title: 'Total sales', value: data.totalSales },
-    { title: 'Total volume', value: data.totalVolume },
-    { title: 'Total fees', value: data.totalFees }
+    { title: 'Volume', value: data.totalVolume },
+    { title: 'Fees', value: data.totalFees }
   ];
 
-  const totalRewards: DataItem[] = [{ title: 'Total Reward Paid', value: data.totalRewardPaid }];
+  const totalRewards: DataItem[] = [
+    { title: 'Rewards Paid', value: data.totalRewardPaid },
+    { title: 'out of', value: '2000000000' }
+  ];
 
   const rewardItems: DataItem[] = [
     { title: 'Reward', value: data.reward },
-    { title: 'Bonus reward', value: data.bonusReward },
-    { title: 'Sale reward', value: data.saleReward },
-    { title: 'Purchase reward', value: data.purchaseReward },
-    { title: 'Gross reward', value: data.grossRewardNumeric?.toString() || '0' },
-    { title: 'Net reward', value: data.netRewardNumeric?.toString() || '0' }
+    { title: 'Gross', value: data.grossRewardNumeric?.toString() || '0' },
+    { title: 'Net', value: data.netRewardNumeric?.toString() || '0' }
   ];
 
   const blockItems: DataItem[] = [
@@ -45,13 +46,16 @@ export const RewardCardRow = ({ data }: Props) => {
   ];
 
   const salesItems: DataItem[] = [
-    { title: 'Sales total', value: data.salesTotalNumeric },
-    { title: 'Sales fees total ', value: data.salesFeesTotalNumeric },
-    { title: 'Purchases total', value: data.purchasesTotalNumeric },
-    { title: 'Purchases fees total', value: data.purchasesFeesTotalNumeric }
+    { title: 'Total sales amount', value: data.salesTotalNumeric },
+    { title: 'Total purchases amount ', value: data.purchasesTotalNumeric },
+    { title: 'Total fees', value: data.salesFeesTotalNumeric + data.purchasesFeesTotalNumeric }
   ];
 
   const notUsed: DataItem[] = [
+    { title: 'Bonus reward', value: data.bonusReward },
+    { title: 'Sale reward', value: data.saleReward },
+    { title: 'Purchase reward', value: data.purchaseReward },
+    { title: 'Total sales', value: data.totalSales },
     { title: 'Total listings', value: data.totalListings },
     { title: 'Total bonus listings', value: data.totalBonusListings },
     { title: 'Total offers', value: data.totalOffers },
@@ -66,24 +70,23 @@ export const RewardCardRow = ({ data }: Props) => {
   return (
     <div className={styles.main}>
       <div className={styles.cardGrid3}>
-        <RewardCard items={totalItems} title="Totals" />
-        <RewardCard items={totalRewards} title="Rewards" />
+        <RewardCard lines={false} items={totalItems} title="Stats" />
+        <RewardCard lines={false} items={totalRewards} title="NFTS Rewards" />
         <CountdownCard expiryTimestamp={expiryTimestamp} title="Time left" />
       </div>
 
-      <h3 className={styles.sectionTitle}>💰 My Rewards</h3>
+      <h3 className={styles.sectionTitle}>My Stats</h3>
 
       <div className={styles.cardGrid3}>
         <RewardCard items={rewardItems} title="Rewards" />
-        <RewardCard items={listingItems} title="Listing Rewards" />
+        <RewardCard items={listingItems} title="Stats" />
         <RewardCard items={salesItems} title="Sales / Purchases" />
       </div>
 
       <h3 className={styles.sectionTitle}>Blockchain</h3>
 
-      <div className={styles.cardGrid2}>
+      <div className={styles.cardGrid1}>
         <RewardCard items={blockItems} title="Block" />
-        <RewardCard items={notUsed} title="Not used" />
       </div>
     </div>
   );

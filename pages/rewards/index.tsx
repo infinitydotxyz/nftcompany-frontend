@@ -63,14 +63,9 @@ const Rewards = (): JSX.Element => {
           <title>Rewards</title>
         </Head>
         <div className={styles.main}>
-          <div className="page-container">
-            <div className="section-bar">
-              <div className="tg-title">Rewards</div>
-            </div>
-          </div>
           <div className={styles.spinner}>
             <div>
-              <Spinner color="brandBlue" thickness="8px" height={100} width={100} emptyColor="gray.200" speed=".8s" />
+              <Spinner color="brandBlue" thickness="4px" height={26} width={26} emptyColor="gray.200" speed=".8s" />
             </div>
           </div>
         </div>
@@ -89,15 +84,14 @@ const Rewards = (): JSX.Element => {
       </Head>
       <div className={styles.main}>
         <div className="page-container">
-          <div className="section-bar">
-            <div className="tg-title">Rewards</div>
-          </div>
-
           <div className={styles.content}>
             <div className={styles.centered}>
+              <div className="section-bar" style={{ marginBottom: 30 }}>
+                <div className="tg-title">Rewards</div>
+              </div>
               <RewardCardRow data={userReward} />
               <div className={styles.leaderBox}>
-                <h3 className={sharedStyles.sectionTitle}>🏆 Leaderboard</h3>
+                <h3 className={sharedStyles.sectionTitle}>Leaderboard</h3>
                 <LeaderBoardTable data={leaderboard} />
               </div>
             </div>

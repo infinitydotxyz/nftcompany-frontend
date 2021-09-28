@@ -33,6 +33,33 @@ const colors = {
   }
 };
 
+const Table = {
+  baseStyle: {
+    table: {
+      // turned this off, it uses an ugly font
+      fontVariantNumeric: 'none'
+      // borderCollapse: 'collapse',
+      // width: 'full'
+    },
+    th: {
+      // fontFamily: 'heading',
+      // fontWeight: 'bold',
+      // textTransform: 'uppercase',
+      // letterSpacing: 'wider',
+      // textAlign: 'start'
+    },
+    td: {
+      // textAlign: 'start'
+    },
+    caption: {
+      // mt: 4,
+      // fontFamily: 'heading',
+      // textAlign: 'center',
+      // fontWeight: 'medium'
+    }
+  }
+};
+
 const Menu = {
   parts: ['menu', 'item'],
   baseStyle: (props: any) => {
@@ -96,7 +123,8 @@ export const theme = extendTheme(
     styles,
     components: {
       Menu,
-      Button
+      Button,
+      Table
     }
   },
   withDefaultColorScheme({ colorScheme: 'blue' }),
