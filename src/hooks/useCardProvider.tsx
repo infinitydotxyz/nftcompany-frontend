@@ -20,18 +20,20 @@ const fetchData = async (
   startAfterMillis: string,
   startAfterPrice: string,
   collectionName: string,
+  title: string,
   typeAhead: TypeAheadOption | undefined
 ): Promise<CardData[]> => {
   const result = await getListings({
     ...filter,
-    user: user,
+    user,
     startAfterUser: user ? startAfterUser : '',
-    startAfterMillis: startAfterMillis,
-    startAfterPrice: startAfterPrice,
+    startAfterMillis,
+    startAfterPrice,
     limit: PAGE_SIZE.toString(),
     tokenId: typeAhead?.id ?? '',
     tokenAddress: typeAhead?.address ?? '',
-    collectionName: collectionName,
+    collectionName,
+    title,
     priceMax: collectionName?.length > 0 ? '1000000' : '' // SNG
   });
 
@@ -74,6 +76,7 @@ export function useCardProvider(): {
     }
 
     setListType(newListType);
+    console.log('searchContext.searchState', newListType, searchContext.searchState);
 
     const result = await fetchData(
       searchContext.filterState,
@@ -82,6 +85,7 @@ export function useCardProvider(): {
       startAfterMillis,
       startAfterPrice,
       searchContext.searchState.collectionName,
+      searchContext.searchState.title,
       searchContext.searchState.selectedOption
     );
 
@@ -98,6 +102,7 @@ export function useCardProvider(): {
   useEffect(() => {
     const loadData = async () => {
       let hash = searchContext.searchState.collectionName;
+      hash += JSON.stringify(searchContext.searchState.title);
       hash += JSON.stringify(searchContext.filterState);
       hash += JSON.stringify(searchContext.searchState.selectedOption);
       hash += JSON.stringify(userAccount);
@@ -105,6 +110,9 @@ export function useCardProvider(): {
 
       if (searchContext.searchState.collectionName) {
         fetchList('collection-name:' + hash);
+      }
+      if (searchContext.searchState.title) {
+        fetchList('title:' + hash);
       } else if (searchContext.searchState.selectedOption) {
         fetchList('token-id:' + hash);
       } else {
