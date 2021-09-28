@@ -27,18 +27,11 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       });
 
       if (order) {
-        const txnHash = await seaport
-          .cancelOrder({
-            order: order,
-            accountAddress: user!.account
-          })
-          .then(() => {
-            onClose();
-          })
-          .catch((err: GenericError) => {
-            console.error('ERROR:', err);
-            showAppError(err?.message);
-          });
+        const txnHash = await seaport.cancelOrder({
+          order: order,
+          accountAddress: user!.account
+        });
+        onClose();
         console.log('Cancel offer txn hash: ' + txnHash);
         const payload = {
           actionType: 'cancel',
