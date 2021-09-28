@@ -30,14 +30,14 @@ export const RewardCard = ({ title, items }: IProps) => {
   });
 
   return (
-    <div className={styles.main}>
-      <div className={styles.card}>
-        <div className={styles.title}>{title}</div>
-        <div>{divs}</div>
-      </div>
+    <div className={styles.card}>
+      <div className={styles.title}>{title}</div>
+      <div>{divs}</div>
     </div>
   );
 };
+
+// ==========================================================
 
 type Props = {
   title: string;
@@ -46,11 +46,13 @@ type Props = {
 
 export const CountdownCard = ({ expiryTimestamp, title }: Props) => {
   return (
-    <div className={styles.main}>
-      <div className={styles.card}>
-        <div className={styles.title}>{title}</div>
-        <div className={styles.countdown}>
+    <div className={styles.card}>
+      <div className={styles.title}>{title}</div>
+      <div className={styles.countdown}>
+        <div>
           <Countdown expiryTimestamp={expiryTimestamp} />
+
+          <div style={{ marginTop: 4 }}>until next epoch</div>
         </div>
       </div>
     </div>

@@ -1,6 +1,24 @@
 @import '/styles/SharedStyles.module.scss';
 
+@mixin ajustableGrid($columns) {
+  display: grid;
+
+  grid-template-columns: repeat($columns, 1fr);
+  grid-gap: 36px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    grid-gap: 26px;
+
+    grid-template-rows: repeat($columns, 1fr);
+  }
+}
+
 .main {
+  display: flex;
+  // align-items: center;
+  flex-direction: column;
+
   .card {
     @extend .boxShadow;
     background-color: white;
@@ -20,14 +38,12 @@
     text-align: right;
   }
 
-  .cardGrid {
-    // display: grid;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
+  .cardGrid3 {
+    @include ajustableGrid(3);
+  }
 
-    // grid-template-columns: repeat(4, 1fr);
-    // grid-gap: 56px;
+  .cardGrid2 {
+    @include ajustableGrid(2);
   }
 
   .infoRow {

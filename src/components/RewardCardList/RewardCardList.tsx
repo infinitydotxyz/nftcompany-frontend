@@ -65,16 +65,15 @@ export const RewardCardRow = ({ data }: Props) => {
 
   return (
     <div className={styles.main}>
-      <div className={styles.cardGrid}>
+      <div className={styles.cardGrid3}>
         <RewardCard items={totalItems} title="Totals" />
-        <RewardCard items={totalRewards} title="Totals" />
-
+        <RewardCard items={totalRewards} title="Rewards" />
         <CountdownCard expiryTimestamp={expiryTimestamp} title="Time left" />
       </div>
 
       <h3 className={styles.sectionTitle}>💰 My Rewards</h3>
 
-      <div className={styles.cardGrid}>
+      <div className={styles.cardGrid3}>
         <RewardCard items={rewardItems} title="Rewards" />
         <RewardCard items={listingItems} title="Listing Rewards" />
         <RewardCard items={salesItems} title="Sales / Purchases" />
@@ -82,7 +81,7 @@ export const RewardCardRow = ({ data }: Props) => {
 
       <h3 className={styles.sectionTitle}>Blockchain</h3>
 
-      <div className={styles.cardGrid}>
+      <div className={styles.cardGrid2}>
         <RewardCard items={blockItems} title="Block" />
         <RewardCard items={notUsed} title="Not used" />
       </div>

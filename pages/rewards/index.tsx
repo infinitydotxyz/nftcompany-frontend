@@ -93,11 +93,13 @@ const Rewards = (): JSX.Element => {
             <div className="tg-title">Rewards</div>
           </div>
 
-          <div>
-            <RewardCardRow data={userReward} />
-            <div className={styles.leaderBox}>
-              <h3 className={sharedStyles.sectionTitle}>🏆 Leaderboard</h3>
-              <LeaderBoardTable data={leaderboard} />
+          <div className={styles.content}>
+            <div className={styles.centered}>
+              <RewardCardRow data={userReward} />
+              <div className={styles.leaderBox}>
+                <h3 className={sharedStyles.sectionTitle}>🏆 Leaderboard</h3>
+                <LeaderBoardTable data={leaderboard} />
+              </div>
             </div>
           </div>
         </div>

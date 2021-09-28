@@ -11,6 +11,7 @@ const colors = {
   // unsure how to add opacity on a css var so we have these variants for now
   headerBg: '#fcfdfdcc',
   brandBlueAlpha: '#4047ffaa',
+  brandBlueLight: '#4047ff14',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   blue: {

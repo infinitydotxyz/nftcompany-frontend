@@ -1,5 +1,17 @@
 .main {
   margin-bottom: 30vh;
+
+  .content {
+    padding-top: 40px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .centered {
+      max-width: 1000px;
+      width: 100%;
+    }
+  }
 }
 
 .spinner {
