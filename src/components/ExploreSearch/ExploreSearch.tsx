@@ -49,14 +49,14 @@ const ExploreSearch = () => {
         ...searchState,
         selectedOption: undefined,
         collectionName: '',
-        title: ev?.target?.value || ''
+        text: ev?.target?.value || ''
       });
     }
   };
 
   const handleClickCloseIcon = () => {
     typeaheadRef.current.clear();
-    setSearchState({ ...searchState, collectionName: '', title: '', selectedOption: undefined });
+    setSearchState({ ...searchState, collectionName: '', text: '', selectedOption: undefined });
     setFilterState(defaultFilterState);
   };
 
@@ -95,7 +95,7 @@ const ExploreSearch = () => {
         ></AsyncTypeahead>
       </Box>
 
-      {(searchState.collectionName || searchState.title || searchState.selectedOption) && (
+      {(searchState.collectionName || searchState.text || searchState.selectedOption) && (
         <CloseIcon color="gray.400" m="auto" mx="3" cursor="pointer" onClick={handleClickCloseIcon} />
       )}
     </Box>

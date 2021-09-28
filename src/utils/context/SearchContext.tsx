@@ -7,7 +7,7 @@ export type SearchState = {
   options: TypeAheadOption[];
   query: string;
   collectionName: string;
-  title: string;
+  text: string;
   selectedOption: TypeAheadOption | undefined;
 };
 
@@ -24,7 +24,7 @@ export type SearchFilter = {
   tokenId: string;
   tokenAddress: string;
   collectionName: string;
-  title: string;
+  text: string;
   sortByPriceDirection: string;
   startAfterUser: string;
 };
@@ -34,7 +34,7 @@ export const defaultSearchState: SearchState = {
   options: [],
   query: '',
   collectionName: '',
-  title: '',
+  text: '',
   selectedOption: undefined
 };
 
@@ -44,7 +44,7 @@ export const defaultFilterState: SearchFilter = {
   priceMin: '',
   priceMax: '',
   collectionName: '',
-  title: '',
+  text: '',
   limit: '',
   sortByPriceDirection: '',
   startAfterMillis: '',
