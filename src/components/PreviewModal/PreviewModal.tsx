@@ -71,6 +71,10 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     case 'CANCEL_OFFER':
       purchaseButton = <Button onClick={() => setCancelOfferModalShowed(true)}>Cancel Offer</Button>;
 
+      // change to owner of asset
+      owner = data.metadata?.asset.owner ?? '';
+      owner = ellipsisAddress(owner);
+
       break;
     case 'ACCEPT_OFFER':
       offerMaker = data.maker ?? 'unkonwn';
