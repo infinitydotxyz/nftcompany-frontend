@@ -154,11 +154,11 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
             {token === 'ETH' && <div className={styles.space}>Buy this NFT at the fixed price.</div>}
 
             {data.price && (
-              <div className={styles.row}>
+              <div className={styles.priceRow}>
                 <div className={styles.left}>{token === 'WETH' ? 'Minimum Price' : 'Price'}</div>
 
                 <div className={styles.right}>
-                  <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
+                  <PriceBox price={data.price} token={token} expirationTime={data?.expirationTime} />
                 </div>
               </div>
             )}
