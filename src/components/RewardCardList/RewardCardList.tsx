@@ -1,13 +1,13 @@
 import React from 'react';
-import styles from './InfoCardList.module.scss';
-import { CountdownCard, DataItem, InfoCard } from '../InfoCard/InfoCard';
+import styles from './RewardCardList.module.scss';
+import { CountdownCard, DataItem, RewardCard } from '../RewardCard/RewardCard';
 import { UserReward } from 'types/rewardTypes';
 
 type Props = {
   data?: UserReward;
 };
 
-export const InfoCardRow = ({ data }: Props) => {
+export const RewardCardRow = ({ data }: Props) => {
   if (!data) {
     return <div>Nothing found</div>;
   }
@@ -66,8 +66,8 @@ export const InfoCardRow = ({ data }: Props) => {
   return (
     <div className={styles.main}>
       <div className={styles.cardGrid}>
-        <InfoCard items={totalItems} title="Totals" />
-        <InfoCard items={totalRewards} title="Totals" />
+        <RewardCard items={totalItems} title="Totals" />
+        <RewardCard items={totalRewards} title="Totals" />
 
         <CountdownCard expiryTimestamp={expiryTimestamp} title="Time left" />
       </div>
@@ -75,16 +75,16 @@ export const InfoCardRow = ({ data }: Props) => {
       <h3 className={styles.sectionTitle}>💰 My Rewards</h3>
 
       <div className={styles.cardGrid}>
-        <InfoCard items={rewardItems} title="Rewards" />
-        <InfoCard items={listingItems} title="Listing Rewards" />
-        <InfoCard items={salesItems} title="Sales / Purchases" />
+        <RewardCard items={rewardItems} title="Rewards" />
+        <RewardCard items={listingItems} title="Listing Rewards" />
+        <RewardCard items={salesItems} title="Sales / Purchases" />
       </div>
 
       <h3 className={styles.sectionTitle}>Blockchain</h3>
 
       <div className={styles.cardGrid}>
-        <InfoCard items={blockItems} title="Block" />
-        <InfoCard items={notUsed} title="Not used" />
+        <RewardCard items={blockItems} title="Block" />
+        <RewardCard items={notUsed} title="Not used" />
       </div>
     </div>
   );

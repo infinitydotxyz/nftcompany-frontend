@@ -1,6 +1,6 @@
 import React from 'react';
 import { numStr } from 'utils/commonUtil';
-import styles from './InfoCard.module.scss';
+import styles from './RewardCard.module.scss';
 import { Countdown } from 'components/Countdown/Countdown';
 
 export type DataItem = {
@@ -13,7 +13,7 @@ type IProps = {
   items: DataItem[];
 };
 
-export const InfoCard = ({ title, items }: IProps) => {
+export const RewardCard = ({ title, items }: IProps) => {
   if (!items) {
     return <div>Nothing found</div>;
   }
