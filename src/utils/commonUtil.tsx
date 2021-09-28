@@ -52,9 +52,12 @@ export const ellipsisString = (inString?: string, left: number = 6, right: numbe
     // don't do anything if less than a certain length
     if (inString.length > left + right + 5) {
       return `${inString.slice(0, left)}...${inString.slice(-right)}`;
+    } else {
+      return inString;
     }
   }
-  return inString || '';
+
+  return '';
 };
 
 export const getToken = (tokenAddress: string): 'WETH' | 'ETH' => (tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH');
