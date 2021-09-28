@@ -43,6 +43,10 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
   let owner = data.owner ?? '';
   owner = ellipsisAddress(owner);
 
+  if (addressesEqual(data.owner, user?.account)) {
+    owner = 'You';
+  }
+
   let tokenAddress = data.tokenAddress;
   if (tokenAddress) {
     tokenAddress = ellipsisAddress(tokenAddress);
