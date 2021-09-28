@@ -1,6 +1,6 @@
 import { CardData } from 'types/Nft.interface';
 import { useEffect, useState } from 'react';
-import { SearchFilter, useSearchContext } from './useSearch';
+import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
 import { useAppContext } from 'utils/context/AppContext';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { getListings, TypeAheadOption } from 'services/Listings.service';

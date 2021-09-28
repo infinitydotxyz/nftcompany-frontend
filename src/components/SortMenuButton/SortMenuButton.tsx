@@ -1,5 +1,5 @@
 import React from 'react';
-import { SearchFilter, useSearchContext } from 'hooks/useSearch';
+import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import { MenuItem } from '@chakra-ui/react';
 import { SortIcon } from 'components/Icons/Icons';

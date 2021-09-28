@@ -54,15 +54,6 @@ export const defaultFilterState: SearchFilter = {
 
 const SearchContext = React.createContext({} as any);
 
-export function useSearchContext(): {
-  searchState: SearchState;
-  filterState: SearchFilter;
-  setSearchState: (state: SearchState) => void;
-  setFilterState: (state: SearchFilter) => void;
-} {
-  return useContext(SearchContext);
-}
-
 export function SearchContextProvider({ children }: any) {
   const [searchState, setSearchState] = useState<SearchState>(defaultSearchState);
   const [filterState, setFilterState] = useState<SearchFilter>(defaultFilterState);
@@ -70,4 +61,13 @@ export function SearchContextProvider({ children }: any) {
   const value = { searchState, filterState, setSearchState, setFilterState };
 
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;
+}
+
+export function useSearchContext(): {
+  searchState: SearchState;
+  filterState: SearchFilter;
+  setSearchState: (state: SearchState) => void;
+  setFilterState: (state: SearchFilter) => void;
+} {
+  return useContext(SearchContext);
 }

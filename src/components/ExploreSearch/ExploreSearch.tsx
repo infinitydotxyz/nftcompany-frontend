@@ -3,7 +3,7 @@ import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { getTypeAheadOptions, TypeAheadOption } from 'services/Listings.service';
 import { CloseIcon } from '@chakra-ui/icons';
 import { Box } from '@chakra-ui/react';
-import { defaultFilterState, useSearchContext } from 'hooks/useSearch';
+import { defaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import styles from './ExploreSearch.module.scss';

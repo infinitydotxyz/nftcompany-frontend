@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './FilterPanel.module.css';
 import PriceSlider from './PriceSlider';
 import { Box } from '@chakra-ui/react';
-import { SearchFilter, useSearchContext } from 'hooks/useSearch';
+import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
 
 type Props = {
   isExpanded: boolean;
