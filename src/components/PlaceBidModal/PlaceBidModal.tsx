@@ -169,7 +169,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   Purchase
                 </Button>
 
-                {isBuying && <Spinner size="md" color="teal" ml={4} mt={2} />}
+                {isBuying && <Spinner size="md" color="teal" ml={4} />}
               </div>
             )}
 
@@ -227,7 +227,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   Cancel
                 </Button>
 
-                {isSubmitting && <Spinner size="md" color="teal" ml={4} mt={2} />}
+                {isSubmitting && <Spinner size="md" color="teal" ml={4} />}
               </div>
             </form>
           </div>
