@@ -162,7 +162,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   </div>
                 )}
 
-                <div className={styles.footer}>
+                <div className={styles.buttons}>
                   <Button isDisabled={!order} onClick={onClickBuyNow} disabled={isBuying}>
                     Purchase
                   </Button>
@@ -233,11 +233,11 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
               <div style={{ height: 10 }} />
 
-              <div className={styles.footer}>
+              <div className={styles.buttons}>
                 <Button type="submit" disabled={isSubmitting}>
                   Make an Offer
                 </Button>
-                <Button colorScheme="gray" ml={4} disabled={isSubmitting} onClick={() => onClose && onClose()}>
+                <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose && onClose()}>
                   Cancel
                 </Button>
 
