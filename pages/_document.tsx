@@ -12,7 +12,6 @@ export default class Document extends NextDocument {
         <Head>
           {/* Warning: viewport meta tags should not be used in _document.js's <Head>. https://nextjs.org/docs/messages/no-document-viewport-meta */}
           {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
-          <meta name="probely-verification" content="2c96190a-327b-4ea0-b205-59e2b4511817" />
 
           {/* Global Site Tag (gtag.js) - Google Analytics */}
           {isProduction && (
