@@ -13,9 +13,9 @@ a {
   text-decoration: none;
 }
 
-.a-link {
-  color: #9292ff;
-  text-decoration: none;
+.toast-link {
+  color: #eee;
+  text-decoration: underline;
 }
 
 * {
