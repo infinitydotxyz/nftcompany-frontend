@@ -12,6 +12,16 @@ import {
   AnalyticsIcon,
   AwardIcon
 } from 'components/Icons/Icons';
+import {
+  ClockSvg,
+  GiftSvg,
+  GlobeSvg,
+  Graph2Svg,
+  GraphSvg,
+  PuzzleSvg,
+  StarSvg,
+  WalletSvg
+} from 'components/Icons/SvgIcons';
 
 type Props = {
   data?: UserReward;
@@ -80,9 +90,13 @@ export const RewardCardRow = ({ data }: Props) => {
   return (
     <div className={styles.main}>
       <div className={styles.cardGrid3}>
-        <RewardCard lines={false} items={totalItems} title="Stats" icon={<StatsIcon boxSize={8} />} />
+        {/* <RewardCard lines={false} items={totalItems} title="Stats" icon={<StatsIcon boxSize={8} />} />
         <RewardCard lines={false} items={totalRewards} title="NFTS Rewards" icon={<GiftCardIcon boxSize={8} />} />
-        <CountdownCard expiryTimestamp={expiryTimestamp} title="Time left" icon={<PendingIcon boxSize={8} />} />
+        <CountdownCard expiryTimestamp={expiryTimestamp} title="Time left" icon={<PendingIcon boxSize={8} />} /> */}
+
+        <RewardCard lines={false} items={totalItems} title="Stats" icon={GraphSvg} />
+        <RewardCard lines={false} items={totalRewards} title="NFTS Rewards" icon={GiftSvg} />
+        <CountdownCard expiryTimestamp={expiryTimestamp} title="Time left" icon={ClockSvg} />
       </div>
 
       <h3 className={styles.sectionTitle}>
@@ -94,9 +108,13 @@ export const RewardCardRow = ({ data }: Props) => {
       </h3>
 
       <div className={styles.cardGrid3}>
-        <RewardCard items={rewardItems} title="Rewards" icon={<AwardIcon boxSize={8} />} />
+        {/* <RewardCard items={rewardItems} title="Rewards" icon={<AwardIcon boxSize={8} />} />
         <RewardCard items={listingItems} title="Stats" icon={<AnalyticsIcon boxSize={8} />} />
-        <RewardCard items={salesItems} title="Sales / Purchases" icon={<StarCircleIcon boxSize={8} />} />
+        <RewardCard items={salesItems} title="Sales / Purchases" icon={<StarCircleIcon boxSize={8} />} /> */}
+
+        <RewardCard items={rewardItems} title="Rewards" icon={StarSvg} />
+        <RewardCard items={listingItems} title="Stats" icon={Graph2Svg} />
+        <RewardCard items={salesItems} title="Sales / Purchases" icon={WalletSvg} />
       </div>
     </div>
   );

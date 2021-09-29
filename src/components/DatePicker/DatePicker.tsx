@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from './DatePicker.module.scss';
 import Flatpickr from 'react-flatpickr';
+import { CalendarIcon } from '@chakra-ui/icons';
+import { IconButton } from '@chakra-ui/react';
 
 // date picker themes
+// import './theme.css';
 import 'flatpickr/dist/themes/airbnb.css';
-import { IconButton } from '@chakra-ui/react';
-import { CalendarIcon, CopyIcon } from '@chakra-ui/icons';
 // import 'flatpickr/dist/themes/dark.css';
 // import 'flatpickr/dist/themes/light.css';
 // import 'flatpickr/dist/themes/material_blue.css';
