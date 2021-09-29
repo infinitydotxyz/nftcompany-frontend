@@ -3,6 +3,7 @@ import '../styles/grid.css';
 import '../styles/page.scss';
 import '../styles/fonts.css';
 import '../styles/Typeahead.css';
+import '../styles/DatePicker.scss';
 import '../src/components/nft/components.scss';
 
 import type { AppProps } from 'next/app';
