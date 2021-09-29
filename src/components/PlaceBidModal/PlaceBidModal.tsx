@@ -10,13 +10,7 @@ import { Button, Input } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { getToken, stringToFloat } from 'utils/commonUtil';
-import Flatpickr from 'react-flatpickr';
-
-// date picker themes
-import 'flatpickr/dist/themes/airbnb.css';
-// import 'flatpickr/dist/themes/dark.css';
-// import 'flatpickr/dist/themes/light.css';
-// import 'flatpickr/dist/themes/material_blue.css';
+import { DatePicker } from 'components/DatePicker/DatePicker';
 
 const isServer = typeof window === 'undefined';
 
@@ -226,21 +220,11 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   <div>Expiry date</div>
                 </div>
                 <div className={styles.middle}>
-                  <Flatpickr
-                    data-enable-time
-                    options={{
-                      enableTime: true,
-                      altInput: true,
-                      altFormat: 'F j, Y  h:i K'
-                    }}
-                    placeholder="December 31, 2021  12:00 PM"
+                  <DatePicker
                     value={expiryDate}
-                    className={styles.flatpicker}
                     onChange={(date) => {
-                      const newDate = date[0];
-
-                      setExpiryDate(newDate);
-                      setExpiryTimeSeconds(Math.round((newDate || Date.now()).valueOf() / 1000));
+                      setExpiryDate(date);
+                      setExpiryTimeSeconds(Math.round((date || Date.now()).valueOf() / 1000));
                     }}
                   />
                 </div>
