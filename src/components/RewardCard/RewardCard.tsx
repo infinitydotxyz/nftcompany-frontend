@@ -5,8 +5,7 @@ import { Countdown } from 'components/Countdown/Countdown';
 import { AlarmIcon, LeaderboardIcon, StatsIcon } from 'components/Icons/Icons';
 import { LeaderBoard } from 'types/rewardTypes';
 import { LeaderBoardTable } from 'components/LeaderBoard/LeaderBoardTable';
-import graph from './graph.svg';
-import { ClockSvg, GiftSvg } from 'components/Icons/SvgIcons';
+import { ClockSvg, GiftSvg, GlobeSvg } from 'components/Icons/SvgIcons';
 
 export type DataItem = {
   title: string;
@@ -90,7 +89,7 @@ export const LeaderboardCard = ({ data }: XProps) => {
       <div className={styles.title}>
         <div className={styles.icon}>
           {/* <LeaderboardIcon boxSize={8} /> */}
-          {GiftSvg}
+          {GlobeSvg}
         </div>
         <div>Leaderboard</div>
       </div>
