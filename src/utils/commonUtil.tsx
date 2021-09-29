@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { ethers } from 'ethers';
 import { CardData } from 'types/Nft.interface';
 import { WETH_ADDRESS } from './constants';
@@ -107,6 +108,14 @@ export const transformOpenSea = (item: any, owner: string) => {
     owner: owner,
     schemaName: item['asset_contract']['schema_name']
   } as CardData;
+};
+
+export const getCustomExceptionMsg = (msg: ReactNode) => {
+  let customMsg = msg;
+  if (typeof msg === 'string' && msg.indexOf('err: insufficient funds for gas * price + value') > 0) {
+    customMsg = 'Insufficient funds for gas * price + value.';
+  }
+  return customMsg;
 };
 
 export const getCustomMessage = (eventName: string, data: any) => {
