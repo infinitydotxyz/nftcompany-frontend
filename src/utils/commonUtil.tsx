@@ -115,11 +115,22 @@ export const getCustomExceptionMsg = (msg: ReactNode) => {
   if (typeof msg === 'string' && msg.indexOf('err: insufficient funds for gas * price + value') > 0) {
     customMsg = 'Insufficient funds for gas * price + value.';
   }
+  if (typeof msg === 'string' && msg.indexOf('User denied transaction signature.') > 0) {
+    customMsg = 'MetaMask: User denied transaction signature.';
+  }
   return customMsg;
 };
 
 export const getCustomMessage = (eventName: string, data: any) => {
-  let customMsg: JSX.Element | string | null = null;
+  const arr: string[] = [];
+  Object.keys(data).forEach((k: string) => {
+    if (typeof data[k] !== 'object') {
+      arr.push(`${k}: ${data[k]}`);
+    }
+  });
+  const defaultMsg = `${eventName}: ${arr.join(', ')}`;
+  let customMsg: JSX.Element | string | null = defaultMsg;
+
   const ev = data?.event;
   const createLink = (transactionHash: string) => (
     <a className="a-link" href={`https://etherscan.io/tx/${transactionHash}`} target="_blank" rel="noreferrer">
@@ -127,6 +138,15 @@ export const getCustomMessage = (eventName: string, data: any) => {
     </a>
   );
 
+  if (
+    eventName === EventType.MatchOrders ||
+    eventName === EventType.CreateOrder ||
+    eventName === EventType.CancelOrder
+  ) {
+    // for these events, MetaMask pops up, no need to show messages.
+    return null;
+  }
+  // customize OpenSea messages:
   if (eventName === EventType.TransactionCreated) {
     if (ev === EventType.MatchOrders) {
       customMsg = (

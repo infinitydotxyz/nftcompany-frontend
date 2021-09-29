@@ -63,14 +63,10 @@ export function AppContextProvider({ children }: any) {
     // connectMetaMask(); // don't auto connect on page load.
 
     const listener = (eventName: any, data: any) => {
-      const arr: string[] = [];
-      Object.keys(data).forEach((k: string) => {
-        if (typeof data[k] !== 'object') {
-          arr.push(`${k}: ${data[k]}`);
-        }
-      });
-      console.log('eventName, data', eventName, data);
-      const msg = getCustomMessage(eventName, data) || `${eventName}: ${arr.join(', ')}`;
+      const msg = getCustomMessage(eventName, data);
+      if (msg === null) {
+        return;
+      }
       if (lastMsg && msg === lastMsg) {
         // TODO: to avoid show dup messages.
         lastMsg = '';
