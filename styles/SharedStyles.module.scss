@@ -1,6 +1,6 @@
 .boxShadow {
   border: 1px solid #eee;
-  box-shadow: 0 12px 14px -8px #ccc, 0 2px 8px #eee;
+  box-shadow: 0 12px 14px -8px #ffd6d6, 0 2px 8px #a0a4ff;
   overflow: hidden;
   border-radius: 14px;
 }
@@ -13,7 +13,7 @@
   align-items: center;
 
   .icon {
-    color: #171caa; // var(--brand-primary);
+    color: #4047ff; // var(--brand-primary);
     margin-right: 12px;
   }
 }
