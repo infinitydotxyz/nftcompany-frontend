@@ -83,7 +83,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
                           </Tooltip>{' '}
                         </i>
                         <i className={styles.extLink}>
-                          <Tooltip label={'Copy to clipboard'} placement="top" hasArrow>
+                          <Tooltip label={'Copy Txn Hash'} placement="top" hasArrow>
                             <CopyIcon
                               onClick={(e) => {
                                 e.stopPropagation();
