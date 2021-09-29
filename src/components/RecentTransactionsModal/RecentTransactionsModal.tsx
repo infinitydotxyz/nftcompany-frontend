@@ -77,7 +77,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
                           <Tooltip label={'Open Etherscan Link'} placement="top" hasArrow>
                             <ExternalLinkIcon
                               onClick={() => {
-                                window.open(`https://etherscan.io/address/${item.txnHash}`, '_blank');
+                                window.open(`https://etherscan.io/tx/${item.txnHash}`, '_blank');
                               }}
                             />
                           </Tooltip>{' '}
