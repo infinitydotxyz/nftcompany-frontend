@@ -2,10 +2,14 @@
   border: var(--input-border);
   border-radius: var(--input-border-radius);
   display: flex;
+  flex: 1;
 
   .flatpicker {
     display: flex;
     border: none;
+    font-weight: bold;
+    padding: 0 10px;
+    text-align: right;
     &::placeholder {
       color: #ccc;
     }

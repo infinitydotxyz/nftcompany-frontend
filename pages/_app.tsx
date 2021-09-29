@@ -4,7 +4,6 @@ import '../styles/page.scss';
 import '../styles/fonts.css';
 import '../styles/Typeahead.css';
 import '../src/components/nft/components.scss';
-import 'react-widgets/styles.css';
 
 import type { AppProps } from 'next/app';
 import { NextPage } from 'next';

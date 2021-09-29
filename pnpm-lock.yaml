@@ -53,7 +53,6 @@ specifiers:
   react-range: 1.8.11
   react-timer-hook: 3.0.5
   react-toastify: 8.0.3
-  react-widgets: 5.4.0
   recharts: 2.1.4
   sass: 1.42.1
   timeago.js: 4.0.2
@@ -105,7 +104,6 @@ dependencies:
   react-range: 1.8.11_react-dom@17.0.2+react@17.0.2
   react-timer-hook: 3.0.5_react-dom@17.0.2+react@17.0.2
   react-toastify: 8.0.3_react-dom@17.0.2+react@17.0.2
-  react-widgets: 5.4.0_react-dom@17.0.2+react@17.0.2
   recharts: 2.1.4_9bdd65c2b60ce8638444b80b396a481b
   sass: 1.42.1
   timeago.js: 4.0.2
@@ -2007,13 +2005,6 @@ packages:
       '@types/node': 16.9.1
     dev: false
 
-  /@types/classnames/2.3.1:
-    resolution: {integrity: sha512-zeOWb0JGBoVmlQoznvqXbE0tEC/HONsnoUNH19Hc96NFsTAwTXbTqb8FMYkru1F/iqp7a18Ws3nWJvtA1sHD1A==}
-    deprecated: This is a stub types definition. classnames provides its own type definitions, so you do not need this installed.
-    dependencies:
-      classnames: 2.3.1
-    dev: false
-
   /@types/d3-color/2.0.3:
     resolution: {integrity: sha512-+0EtEjBfKEDtH9Rk3u3kLOUXM5F+iZK+WvASPb0MhIZl8J8NUvGeZRwKCXl+P3HkYx5TdU4YtcibpqHkSR9n7w==}
     dev: false
@@ -2105,12 +2096,6 @@ packages:
       '@types/react': 17.0.24
       flatpickr: 4.6.9
     dev: true
-
-  /@types/react-transition-group/4.4.3:
-    resolution: {integrity: sha512-fUx5muOWSYP8Bw2BUQ9M9RK9+W1XBK/7FLJ8PTQpnpTEkn0ccyMffyEQvan4C3h53gHdx7KE5Qrxi/LnUGQtdg==}
-    dependencies:
-      '@types/react': 17.0.24
-    dev: false
 
   /@types/react/17.0.24:
     resolution: {integrity: sha512-eIpyco99gTH+FTI3J7Oi/OH8MZoFMJuztNRimDOJwH4iGIsKV2qkGnk4M9VzlaVWeEEWLWSQRy0FEA0Kz218cg==}
@@ -3946,10 +3931,6 @@ packages:
   /data-uri-to-buffer/3.0.1:
     resolution: {integrity: sha512-WboRycPNsVw3B3TL559F7kuBUM4d8CgMEvk6xEJlOp7OBPjt6G7z8WMWlD2rOFZLk6OYfFIUGsCOWzcQH9K2og==}
     engines: {node: '>= 6'}
-    dev: false
-
-  /date-arithmetic/4.1.0:
-    resolution: {integrity: sha512-QWxYLR5P/6GStZcdem+V1xoto6DMadYWpMXU82ES3/RfR3Wdwr3D0+be7mgOJ+Ov0G9D5Dmb9T17sNLQYj9XOg==}
     dev: false
 
   /debug/2.6.9:
@@ -7227,16 +7208,6 @@ packages:
       asap: 2.0.6
     dev: false
 
-  /prop-types-extra/1.1.1_react@17.0.2:
-    resolution: {integrity: sha512-59+AHNnHYCdiC+vMwY52WmvP5dM3QLeoumYuEyceQDi9aEhtwN9zIQ2ZNo25sMyXnbh32h+P1ezDsUpUH3JAew==}
-    peerDependencies:
-      react: '>=0.14.0'
-    dependencies:
-      react: 17.0.2
-      react-is: 16.13.1
-      warning: 4.0.3
-    dev: false
-
   /prop-types/15.7.2:
     resolution: {integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==}
     dependencies:
@@ -7712,41 +7683,6 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-lifecycles-compat: 3.0.4
-    dev: false
-
-  /react-transition-group/4.4.2_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==}
-    peerDependencies:
-      react: '>=16.6.0'
-      react-dom: '>=16.6.0'
-    dependencies:
-      '@babel/runtime': 7.15.4
-      dom-helpers: 5.2.1
-      loose-envify: 1.4.0
-      prop-types: 15.7.2
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-    dev: false
-
-  /react-widgets/5.4.0_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-SppTp0W2+42p3tU1qOjMHP8xuUHMg90GRbF9B4T1tATsfsDAEv2pnWadaqJDJ1u7jbkkSU4YmVtxnnAzTjJwLA==}
-    peerDependencies:
-      react: '>=0.16.0'
-      react-dom: '>=0.16.0'
-    dependencies:
-      '@restart/hooks': 0.3.27_react@17.0.2
-      '@types/classnames': 2.3.1
-      '@types/react-transition-group': 4.4.3
-      classnames: 2.3.1
-      date-arithmetic: 4.1.0
-      dom-helpers: 5.2.1
-      prop-types-extra: 1.1.1_react@17.0.2
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      react-transition-group: 4.4.2_react-dom@17.0.2+react@17.0.2
-      tiny-warning: 1.0.3
-      uncontrollable: 7.2.1_react@17.0.2
-      warning: 4.0.3
     dev: false
 
   /react/17.0.2:
@@ -8782,10 +8718,6 @@ packages:
 
   /tiny-invariant/1.1.0:
     resolution: {integrity: sha512-ytxQvrb1cPc9WBEI/HSeYYoGD0kWnGEOR8RY6KomWLBVhqz0RgTwVO9dLrGz7dC+nN9llyI7OKAgRq8Vq4ZBSw==}
-    dev: false
-
-  /tiny-warning/1.0.3:
-    resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}
     dev: false
 
   /to-arraybuffer/1.0.1:
