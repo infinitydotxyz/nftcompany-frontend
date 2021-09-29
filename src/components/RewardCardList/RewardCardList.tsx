@@ -2,6 +2,15 @@ import React from 'react';
 import styles from './RewardCardList.module.scss';
 import { CountdownCard, DataItem, RewardCard } from '../RewardCard/RewardCard';
 import { UserReward } from 'types/rewardTypes';
+import {
+  StatsIcon,
+  GiftCardIcon,
+  MovingIcon,
+  PendingIcon,
+  StarCircleIcon,
+  AnalyticsIcon,
+  AwardIcon
+} from 'components/Icons/Icons';
 
 type Props = {
   data?: UserReward;
@@ -70,24 +79,24 @@ export const RewardCardRow = ({ data }: Props) => {
   return (
     <div className={styles.main}>
       <div className={styles.cardGrid3}>
-        <RewardCard lines={false} items={totalItems} title="Stats" />
-        <RewardCard lines={false} items={totalRewards} title="NFTS Rewards" />
-        <CountdownCard expiryTimestamp={expiryTimestamp} title="Time left" />
+        <RewardCard lines={false} items={totalItems} title="Stats" icon={<StatsIcon boxSize={8} />} />
+        <RewardCard lines={false} items={totalRewards} title="NFTS Rewards" icon={<GiftCardIcon boxSize={8} />} />
+        <CountdownCard expiryTimestamp={expiryTimestamp} title="Time left" icon={<PendingIcon boxSize={8} />} />
       </div>
 
-      <h3 className={styles.sectionTitle}>My Stats</h3>
+      <h3 className={styles.sectionTitle}>
+        <div className={styles.icon}>
+          <MovingIcon boxSize={8} />
+        </div>
+
+        <div>My Stats</div>
+      </h3>
 
       <div className={styles.cardGrid3}>
-        <RewardCard items={rewardItems} title="Rewards" />
-        <RewardCard items={listingItems} title="Stats" />
-        <RewardCard items={salesItems} title="Sales / Purchases" />
+        <RewardCard items={rewardItems} title="Rewards" icon={<AwardIcon boxSize={8} />} />
+        <RewardCard items={listingItems} title="Stats" icon={<AnalyticsIcon boxSize={8} />} />
+        <RewardCard items={salesItems} title="Sales / Purchases" icon={<StarCircleIcon boxSize={8} />} />
       </div>
-
-      {/* <h3 className={styles.sectionTitle}>Blockchain</h3>
-
-      <div className={styles.cardGrid1}>
-        <RewardCard items={blockItems} title="Block" />
-      </div> */}
     </div>
   );
 };

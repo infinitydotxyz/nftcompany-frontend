@@ -3,13 +3,12 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import styles from './Rewards.module.scss';
-import sharedStyles from '/styles/SharedStyles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
 import { LeaderBoard, UserReward } from '../../src/types/rewardTypes';
 import { Spinner } from '@chakra-ui/spinner';
 import { RewardCardRow } from 'components/RewardCardList/RewardCardList';
-import { LeaderBoardTable } from 'components/LeaderBoard/LeaderBoardTable';
+import { LeaderboardCard } from 'components/RewardCard/RewardCard';
 
 const Rewards = (): JSX.Element => {
   const { user } = useAppContext();
@@ -91,8 +90,7 @@ const Rewards = (): JSX.Element => {
               </div>
               <RewardCardRow data={userReward} />
               <div className={styles.leaderBox}>
-                <h3 className={sharedStyles.sectionTitle}>Leaderboard</h3>
-                <LeaderBoardTable data={leaderboard} />
+                <LeaderboardCard data={leaderboard} />
               </div>
             </div>
           </div>

@@ -23,17 +23,20 @@
 
   .middle {
     display: flex;
-    max-width: 250px;
+    max-width: 240px;
     flex: 2;
     text-align: right;
     justify-content: flex-end;
     & input {
-      border: var(--input-border);
       font-size: 1rem;
       text-align: right;
-      padding: 0 10px;
 
       font-weight: bold;
+    }
+
+    // need to change the theme, but this is for the Weth input
+    .offerBorder {
+      border: var(--input-border);
     }
   }
   .right {

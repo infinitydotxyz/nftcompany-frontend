@@ -2,6 +2,9 @@ import React from 'react';
 import { numStr } from 'utils/commonUtil';
 import styles from './RewardCard.module.scss';
 import { Countdown } from 'components/Countdown/Countdown';
+import { AlarmIcon, LeaderboardIcon, StatsIcon } from 'components/Icons/Icons';
+import { LeaderBoard } from 'types/rewardTypes';
+import { LeaderBoardTable } from 'components/LeaderBoard/LeaderBoardTable';
 
 export type DataItem = {
   title: string;
@@ -10,11 +13,12 @@ export type DataItem = {
 
 type IProps = {
   title: string;
+  icon?: JSX.Element;
   lines?: boolean;
   items: DataItem[];
 };
 
-export const RewardCard = ({ title, lines = true, items }: IProps) => {
+export const RewardCard = ({ title, icon, lines = true, items }: IProps) => {
   if (!items) {
     return <div>Nothing found</div>;
   }
@@ -38,7 +42,10 @@ export const RewardCard = ({ title, lines = true, items }: IProps) => {
 
   return (
     <div className={styles.card}>
-      <div className={styles.title}>{title}</div>
+      <div className={styles.title}>
+        {icon && <div className={styles.icon}>{icon} </div>}
+        {title}
+      </div>
       <div>{divs}</div>
     </div>
   );
@@ -48,18 +55,45 @@ export const RewardCard = ({ title, lines = true, items }: IProps) => {
 
 type Props = {
   title: string;
+  icon?: JSX.Element;
+
   expiryTimestamp: Date;
 };
 
-export const CountdownCard = ({ expiryTimestamp, title }: Props) => {
+export const CountdownCard = ({ icon, expiryTimestamp, title }: Props) => {
   return (
     <div className={styles.card}>
-      <div className={styles.title}>{title}</div>
+      <div className={styles.title}>
+        {icon && <div className={styles.icon}>{icon} </div>}
+        {title}
+      </div>
       <div className={styles.countdown}>
         <div>
           <Countdown expiryTimestamp={expiryTimestamp} />
 
           <div style={{ marginTop: 4 }}>until next epoch</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+type XProps = {
+  data?: LeaderBoard;
+};
+
+export const LeaderboardCard = ({ data }: XProps) => {
+  return (
+    <div className={styles.card}>
+      <div className={styles.title}>
+        <div className={styles.icon}>
+          <LeaderboardIcon boxSize={8} />
+        </div>
+        <div>Leaderboard</div>
+      </div>
+      <div className={styles.countdown}>
+        <div>
+          <LeaderBoardTable data={data} />
         </div>
       </div>
     </div>
