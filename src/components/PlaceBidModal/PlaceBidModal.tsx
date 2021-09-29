@@ -156,29 +156,31 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       {!isServer && (
         <ModalDialog onClose={onClose}>
           <div style={{ width: 550 }}>
-            <div className={styles.title}>Purchase</div>
-
-            {token === 'ETH' && <div className={styles.space}>Buy this NFT at the fixed price.</div>}
-
-            {data.price && (
-              <div className={styles.priceRow}>
-                <PriceBox price={data.price} token={token} expirationTime={data?.expirationTime} />
-              </div>
-            )}
-
             {token === 'ETH' && (
-              <div className={styles.footer}>
-                <Button isDisabled={!order} onClick={onClickBuyNow} disabled={isBuying}>
-                  Purchase
-                </Button>
+              <>
+                <div className={styles.title}>Purchase</div>
 
-                {isBuying && <Spinner size="md" color="teal" ml={4} />}
-              </div>
+                <div className={styles.space}>Buy this NFT at the fixed price.</div>
+
+                {data.price && (
+                  <div className={styles.priceRow}>
+                    <PriceBox price={data.price} token={token} expirationTime={data?.expirationTime} />
+                  </div>
+                )}
+
+                <div className={styles.footer}>
+                  <Button isDisabled={!order} onClick={onClickBuyNow} disabled={isBuying}>
+                    Purchase
+                  </Button>
+
+                  {isBuying && <Spinner size="md" color="teal" ml={4} />}
+                </div>
+
+                <div className={styles.space}>
+                  <hr />
+                </div>
+              </>
             )}
-
-            <div className={styles.space}>
-              <hr />
-            </div>
 
             <div className={styles.title}>Make an offer</div>
             <div className={styles.space}>Place a bid on this NFT.</div>
@@ -189,6 +191,18 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 makeAnOffer();
               }}
             >
+              {token === 'WETH' && (
+                <div className={styles.row}>
+                  <div className={styles.left}>
+                    <div>Minimum Price</div>
+                  </div>
+                  <div className={styles.middle}>
+                    <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
+                  </div>
+                  <div className={styles.right}>&nbsp;</div>
+                </div>
+              )}
+
               <div className={styles.row}>
                 <div className={styles.left}>
                   <div>Enter offer</div>
