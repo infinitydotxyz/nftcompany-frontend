@@ -4,46 +4,50 @@
 }
 
 .priceRow {
+  margin-top: 16px;
   margin-bottom: 20px;
 }
 
 .row {
   margin-bottom: 20px;
   display: flex;
+  align-items: center;
 
   .left {
     display: flex;
-    align-items: center;
+    flex: 1;
 
     color: var(--text-secondary);
     font-weight: 500;
   }
 
-  .right {
+  .middle {
     display: flex;
-    flex: 1;
+    max-width: 250px;
+    flex: 2;
     text-align: right;
-    align-items: center;
     justify-content: flex-end;
-    & > div > input {
+    & input {
+      border: var(--input-border);
+      font-size: 1rem;
       text-align: right;
       padding: 0 10px;
-      margin: 0 10px;
+
       font-weight: bold;
-      border: var(--input-border);
-      width: 246px !important;
     }
+  }
+  .right {
+    text-align: right;
+    width: 55px;
   }
 }
 
-.token {
-  width: 45px;
-}
-
-.datePicker {
-  border: var(--input-border);
-  border-radius: var(--input-border-radius);
-  min-height: 32px !important;
+.flatpicker {
+  display: flex;
+  min-height: 32px;
+  &::placeholder {
+    color: #ccc;
+  }
 }
 
 .space {

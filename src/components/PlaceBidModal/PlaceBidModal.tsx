@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
 import styles from './PlaceBidModal.module.scss';
-import DatePicker from 'react-widgets/DatePicker';
 import { Spinner } from '@chakra-ui/spinner';
 import { CardData, Order } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
@@ -11,6 +10,13 @@ import { Button, Input } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { getToken, stringToFloat } from 'utils/commonUtil';
+import Flatpickr from 'react-flatpickr';
+
+// date picker themes
+import 'flatpickr/dist/themes/airbnb.css';
+// import 'flatpickr/dist/themes/dark.css';
+// import 'flatpickr/dist/themes/light.css';
+// import 'flatpickr/dist/themes/material_blue.css';
 
 const isServer = typeof window === 'undefined';
 
@@ -24,6 +30,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [isBuying, setIsBuying] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
+  const [expiryDate, setExpiryDate] = React.useState<Date | undefined>();
   const [order, setOrder] = React.useState<Order | undefined>();
   const [offerPrice, setOfferPrice] = React.useState(0);
   const token = getToken(data?.data?.paymentToken);
@@ -186,37 +193,44 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 <div className={styles.left}>
                   <div>Enter offer</div>
                 </div>
-                <div className={styles.right}>
-                  <div>
-                    <Input
-                      style={{ width: 166 }}
-                      required
-                      size={'sm'}
-                      type="number"
-                      step={0.000000001}
-                      onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}
-                    />
-                  </div>
-                  {/*
-                    hardcoded to weth
-                     <div className={styles.token}>{token}</div>
-                   */}
-                  <div className={styles.token}>WETH</div>
+                <div className={styles.middle}>
+                  <Input
+                    className={styles.offerBorder}
+                    required
+                    size={'sm'}
+                    type="number"
+                    step={0.000000001}
+                    onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}
+                  />
                 </div>
+                {/*  hardcoded to weth
+                     <div className={styles.token}>{token}</div>  */}
+                <div className={styles.right}>WETH</div>
               </div>
               <div className={styles.row}>
                 <div className={styles.left}>
                   <div>Expiry date</div>
                 </div>
-                <div className={styles.right}>
-                  <DatePicker
-                    includeTime
-                    onChange={(dt) => setExpiryTimeSeconds(Math.round((dt || Date.now()).valueOf() / 1000))}
-                    style={{ marginRight: 52 }}
-                    containerClassName={styles.datePicker}
+                <div className={styles.middle}>
+                  <Flatpickr
+                    data-enable-time
+                    options={{
+                      enableTime: true,
+                      altInput: true,
+                      altFormat: 'F j, Y  h:i K'
+                    }}
+                    placeholder="December 31, 2021  12:00 PM"
+                    value={expiryDate}
+                    className={styles.flatpicker}
+                    onChange={(date) => {
+                      const newDate = date[0];
+
+                      setExpiryDate(newDate);
+                      setExpiryTimeSeconds(Math.round((newDate || Date.now()).valueOf() / 1000));
+                    }}
                   />
                 </div>
-                <div>&nbsp;</div>
+                <div className={styles.right}></div>
               </div>
 
               <div className={styles.footer}>
