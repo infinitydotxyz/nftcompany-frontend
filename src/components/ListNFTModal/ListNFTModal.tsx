@@ -92,7 +92,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
     <>
       {!isServer() && (
         <ModalDialog onClose={onClose}>
-          <div style={{ width: 550 }}>
+          <div>
             <div className={styles.title}>List NFT</div>
 
             <div className={styles.row}>

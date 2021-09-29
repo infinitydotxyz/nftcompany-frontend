@@ -80,7 +80,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               </ul>
             </div>
 
-            <div className={styles.footer}>
+            <div className={styles.buttons}>
               <Button onClick={acceptOffer}>Accept Offer</Button>
               <Button colorScheme="gray" onClick={() => onClose && onClose()}>
                 Cancel

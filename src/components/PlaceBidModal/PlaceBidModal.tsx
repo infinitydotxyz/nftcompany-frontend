@@ -149,7 +149,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div style={{ width: 550 }}>
+          <div>
             {token === 'ETH' && (
               <>
                 <div className={styles.title}>Purchase</div>
