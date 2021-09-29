@@ -68,16 +68,18 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   <div>
                     <span>{data.price}</span>
                   </div>
-                  <div>ETH</div>
+                  <div>WETH</div>
                 </li>
               </ul>
             </div>
 
             <div className={styles.footer}>
-              <Button onClick={cancelOffer}>Cancel Offer</Button>
+              <Button onClick={cancelOffer} mr={4}>
+                Cancel Offer
+              </Button>
 
               <Button colorScheme="gray" onClick={() => onClose && onClose()}>
-                Cancel
+                Close
               </Button>
             </div>
           </div>
