@@ -233,6 +233,8 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 <div className={styles.right}></div>
               </div>
 
+              <div style={{ height: 10 }} />
+
               <div className={styles.footer}>
                 <Button type="submit" disabled={isSubmitting}>
                   Make an Offer
