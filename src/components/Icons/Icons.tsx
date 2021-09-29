@@ -1,4 +1,6 @@
 import { Icon } from '@chakra-ui/icons';
+import { startsWith } from 'lodash';
+import { startNewSession } from 'logrocket';
 import React from 'react';
 
 // Find icons here (download source is easier to view them all)
@@ -167,6 +169,119 @@ export const SortIcon = (props: Record<string, unknown>): JSX.Element => (
     <g fill="currentColor">
       <path d="M0 0h24v24H0V0z" fill="none" />
       <path d="M4 18h4c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zM3 7c0 .55.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1zm1 6h10c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1z" />
+    </g>
+  </Icon>
+);
+
+// ========================================================================================================
+
+export const LeaderboardIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <rect fill="none" height="24" width="24" />
+      <g>
+        <path d="M6.5,21H3c-0.55,0-1-0.45-1-1V10c0-0.55,0.45-1,1-1h3.5c0.55,0,1,0.45,1,1v10C7.5,20.55,7.05,21,6.5,21z M13.75,3h-3.5 c-0.55,0-1,0.45-1,1v16c0,0.55,0.45,1,1,1h3.5c0.55,0,1-0.45,1-1V4C14.75,3.45,14.3,3,13.75,3z M21,11h-3.5c-0.55,0-1,0.45-1,1v8 c0,0.55,0.45,1,1,1H21c0.55,0,1-0.45,1-1v-8C22,11.45,21.55,11,21,11z" />
+      </g>
+    </g>
+  </Icon>
+);
+
+export const AwardIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <g>
+        <rect fill="none" height="24" width="24" />
+        <rect fill="none" height="24" width="24" />
+      </g>
+
+      <g>
+        <path d="M17,10.43V3c0-0.55-0.45-1-1-1H8C7.45,2,7,2.45,7,3v7.43c0,0.35,0.18,0.68,0.49,0.86l4.18,2.51l-0.99,2.34l-2.22,0.19 C8,16.37,7.82,16.92,8.16,17.21l1.69,1.46l-0.51,2.18c-0.1,0.43,0.37,0.77,0.75,0.54L12,20.23l1.91,1.15 c0.38,0.23,0.85-0.11,0.75-0.54l-0.51-2.18l1.69-1.46c0.33-0.29,0.16-0.84-0.29-0.88l-2.22-0.19l-0.99-2.34l4.18-2.51 C16.82,11.11,17,10.79,17,10.43z M13,12.23l-1,0.6l-1-0.6V3h2V12.23z" />
+      </g>
+    </g>
+  </Icon>
+);
+
+export const AlarmIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <path d="M0 0h24v24H0z" fill="none" />
+      <path d="M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12.5 8H11v6l4.75 2.85.75-1.23-4-2.37V8zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
+    </g>
+  </Icon>
+);
+
+export const AnalyticsIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <rect fill="none" height="24" width="24" />
+      <g>
+        <path d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M19,19H5V5h14V19z" />
+        <rect height="5" width="2" x="7" y="12" />
+        <rect height="10" width="2" x="15" y="7" />
+        <rect height="3" width="2" x="11" y="14" />
+        <rect height="2" width="2" x="11" y="10" />
+      </g>
+    </g>
+  </Icon>
+);
+
+export const StatsIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <rect fill="none" height="24" width="24" />
+      <g>
+        <path d="M19.88,18.47c0.44-0.7,0.7-1.51,0.7-2.39c0-2.49-2.01-4.5-4.5-4.5s-4.5,2.01-4.5,4.5s2.01,4.5,4.49,4.5 c0.88,0,1.7-0.26,2.39-0.7L21.58,23L23,21.58L19.88,18.47z M16.08,18.58c-1.38,0-2.5-1.12-2.5-2.5c0-1.38,1.12-2.5,2.5-2.5 s2.5,1.12,2.5,2.5C18.58,17.46,17.46,18.58,16.08,18.58z M15.72,10.08c-0.74,0.02-1.45,0.18-2.1,0.45l-0.55-0.83l-3.8,6.18 l-3.01-3.52l-3.63,5.81L1,17l5-8l3,3.5L13,6C13,6,15.72,10.08,15.72,10.08z M18.31,10.58c-0.64-0.28-1.33-0.45-2.05-0.49 c0,0,5.12-8.09,5.12-8.09L23,3.18L18.31,10.58z" />
+      </g>
+    </g>
+  </Icon>
+);
+
+export const MovingIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <rect fill="none" height="24" width="24" />
+      <path d="M19.71,9.71L22,12V6h-6l2.29,2.29l-4.17,4.17c-0.39,0.39-1.02,0.39-1.41,0l-1.17-1.17c-1.17-1.17-3.07-1.17-4.24,0L2,16.59 L3.41,18l5.29-5.29c0.39-0.39,1.02-0.39,1.41,0l1.17,1.17c1.17,1.17,3.07,1.17,4.24,0L19.71,9.71z" />
+    </g>
+  </Icon>
+);
+
+export const GiftCardIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <path d="M0 0h24v24H0z" fill="none" />
+      <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z" />
+    </g>
+  </Icon>
+);
+
+export const StarCircleIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <path d="M0 0h24v24H0z" fill="none" />
+      <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z" />
+    </g>
+  </Icon>
+);
+
+export const PendingIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <rect fill="none" height="24" width="24" />
+      <path d="M17,12c-2.76,0-5,2.24-5,5s2.24,5,5,5c2.76,0,5-2.24,5-5S19.76,12,17,12z M18.65,19.35l-2.15-2.15V14h1v2.79l1.85,1.85 L18.65,19.35z M18,3h-3.18C14.4,1.84,13.3,1,12,1S9.6,1.84,9.18,3H6C4.9,3,4,3.9,4,5v15c0,1.1,0.9,2,2,2h6.11 c-0.59-0.57-1.07-1.25-1.42-2H6V5h2v3h8V5h2v5.08c0.71,0.1,1.38,0.31,2,0.6V5C20,3.9,19.1,3,18,3z M12,5c-0.55,0-1-0.45-1-1 c0-0.55,0.45-1,1-1c0.55,0,1,0.45,1,1C13,4.55,12.55,5,12,5z" />
+    </g>
+  </Icon>
+);
+
+export const MeditationIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon boxSize={5} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <g>
+        <rect fill="none" height="24" width="24" />
+      </g>
+      <g>
+        <circle cx="12" cy="6" r="2" />
+        <path d="M21,16v-2c-2.24,0-4.16-0.96-5.6-2.68l-1.34-1.6C13.68,9.26,13.12,9,12.53,9h-1.05c-0.59,0-1.15,0.26-1.53,0.72l-1.34,1.6 C7.16,13.04,5.24,14,3,14v2c2.77,0,5.19-1.17,7-3.25V15l-3.88,1.55C5.45,16.82,5,17.48,5,18.21C5,19.2,5.8,20,6.79,20H9v-0.5 c0-1.38,1.12-2.5,2.5-2.5h3c0.28,0,0.5,0.22,0.5,0.5S14.78,18,14.5,18h-3c-0.83,0-1.5,0.67-1.5,1.5V20h7.21 C18.2,20,19,19.2,19,18.21c0-0.73-0.45-1.39-1.12-1.66L14,15v-2.25C15.81,14.83,18.23,16,21,16z" />
+      </g>
     </g>
   </Icon>
 );

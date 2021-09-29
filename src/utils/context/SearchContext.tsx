@@ -1,12 +1,14 @@
 import { CardData } from 'types/Nft.interface';
 import React, { useContext, useState } from 'react';
 import { TypeAheadOption } from 'services/Listings.service';
+import { string } from 'prop-types';
 
 export type SearchState = {
   isLoading: boolean;
   options: TypeAheadOption[];
   query: string;
   collectionName: string;
+  text: string;
   selectedOption: TypeAheadOption | undefined;
 };
 
@@ -17,12 +19,15 @@ export type SearchFilter = {
   priceMax: string;
   startAfterMillis: string;
   startAfterPrice: string;
+  startAfterSearchTitle: string;
+  startAfterSearchCollectionName: string;
   limit: string;
   user: string;
   id: string;
   tokenId: string;
   tokenAddress: string;
   collectionName: string;
+  text: string;
   sortByPriceDirection: string;
   startAfterUser: string;
 };
@@ -32,6 +37,7 @@ export const defaultSearchState: SearchState = {
   options: [],
   query: '',
   collectionName: '',
+  text: '',
   selectedOption: undefined
 };
 
@@ -41,6 +47,7 @@ export const defaultFilterState: SearchFilter = {
   priceMin: '',
   priceMax: '',
   collectionName: '',
+  text: '',
   limit: '',
   sortByPriceDirection: '',
   startAfterMillis: '',
@@ -49,19 +56,12 @@ export const defaultFilterState: SearchFilter = {
   id: '',
   user: '',
   tokenAddress: '',
-  tokenId: ''
+  tokenId: '',
+  startAfterSearchTitle: '',
+  startAfterSearchCollectionName: ''
 };
 
 const SearchContext = React.createContext({} as any);
-
-export function useSearchContext(): {
-  searchState: SearchState;
-  filterState: SearchFilter;
-  setSearchState: (state: SearchState) => void;
-  setFilterState: (state: SearchFilter) => void;
-} {
-  return useContext(SearchContext);
-}
 
 export function SearchContextProvider({ children }: any) {
   const [searchState, setSearchState] = useState<SearchState>(defaultSearchState);
@@ -70,4 +70,13 @@ export function SearchContextProvider({ children }: any) {
   const value = { searchState, filterState, setSearchState, setFilterState };
 
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;
+}
+
+export function useSearchContext(): {
+  searchState: SearchState;
+  filterState: SearchFilter;
+  setSearchState: (state: SearchState) => void;
+  setFilterState: (state: SearchFilter) => void;
+} {
+  return useContext(SearchContext);
 }

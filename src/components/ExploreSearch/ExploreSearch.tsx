@@ -1,16 +1,18 @@
-import React, { Fragment, useRef } from 'react';
+import React, { Fragment, useRef, KeyboardEvent } from 'react';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { getTypeAheadOptions, TypeAheadOption } from 'services/Listings.service';
 import { CloseIcon } from '@chakra-ui/icons';
 import { Box } from '@chakra-ui/react';
-import { defaultFilterState, useSearchContext } from 'hooks/useSearch';
+import { defaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import styles from './ExploreSearch.module.scss';
 
 const ExploreSearch = () => {
+  const router = useRouter();
   const { searchState, setSearchState, setFilterState } = useSearchContext();
   const typeaheadRef = useRef<any>();
+
   const handleSearch = async (query: string) => {
     const results = await getTypeAheadOptions({ startsWith: query });
     setSearchState({
@@ -20,31 +22,50 @@ const ExploreSearch = () => {
       query
     });
   };
-  const router = useRouter();
+
+  const handleChange = (selectedOptions: TypeAheadOption[]) => {
+    if (selectedOptions[0]?.type === 'Collection') {
+      setSearchState({
+        ...searchState,
+        selectedOption: undefined,
+        collectionName: selectedOptions[0].name
+      });
+    } else {
+      setSearchState({
+        ...searchState,
+        selectedOption: selectedOptions[0],
+        collectionName: ''
+      });
+    }
+    setFilterState(defaultFilterState);
+    if (router.route !== '/explore') {
+      router.push('/explore');
+    }
+  };
+
+  const handleKeyDown = (ev: any) => {
+    if ((ev as KeyboardEvent).code === 'Enter') {
+      setSearchState({
+        ...searchState,
+        selectedOption: undefined,
+        collectionName: '',
+        text: ev?.target?.value || ''
+      });
+    }
+  };
+
+  const handleClickCloseIcon = () => {
+    typeaheadRef.current.clear();
+    setSearchState({ ...searchState, collectionName: '', text: '', selectedOption: undefined });
+    setFilterState(defaultFilterState);
+  };
+
   return (
     <Box display="flex">
       <Box className={styles.typeahead} flex="1">
         <AsyncTypeahead
           id="explore-typeahead"
-          onChange={(selectedOptions: TypeAheadOption[]) => {
-            if (selectedOptions[0]?.type === 'Collection') {
-              setSearchState({
-                ...searchState,
-                selectedOption: undefined,
-                collectionName: selectedOptions[0].name
-              });
-            } else {
-              setSearchState({
-                ...searchState,
-                selectedOption: selectedOptions[0],
-                collectionName: ''
-              });
-            }
-            setFilterState(defaultFilterState);
-            if (router.route !== '/explore') {
-              router.push('/explore');
-            }
-          }}
+          onChange={handleChange}
           ref={typeaheadRef}
           minLength={1}
           filterBy={() => true}
@@ -53,6 +74,7 @@ const ExploreSearch = () => {
           onSearch={handleSearch}
           options={searchState.options}
           placeholder="Search items..."
+          onKeyDown={handleKeyDown}
           renderMenuItemChildren={(option) => (
             <Fragment>
               <Box d="flex" alignItems="flex-start" textAlign="center">
@@ -72,18 +94,9 @@ const ExploreSearch = () => {
           )}
         ></AsyncTypeahead>
       </Box>
-      {(searchState.collectionName || searchState.selectedOption) && (
-        <CloseIcon
-          color="gray.400"
-          m="auto"
-          mx="3"
-          cursor="pointer"
-          onClick={() => {
-            typeaheadRef.current.clear();
-            setSearchState({ ...searchState, collectionName: '', selectedOption: undefined });
-            setFilterState(defaultFilterState);
-          }}
-        />
+
+      {(searchState.collectionName || searchState.text || searchState.selectedOption) && (
+        <CloseIcon color="gray.400" m="auto" mx="3" cursor="pointer" onClick={handleClickCloseIcon} />
       )}
     </Box>
   );

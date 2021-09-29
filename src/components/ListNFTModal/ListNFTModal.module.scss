@@ -6,43 +6,42 @@
 
 .row {
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 
   .fields {
-    list-style: none;
-    li {
-      display: flex;
-      margin: 20px 0;
+    display: flex;
+    margin: 12px 0;
+    align-items: center;
 
-      div:nth-child(1) {
-        color: #888;
-      }
-      div:nth-child(2) {
-        flex: 1;
+    .left {
+      align-items: center;
+      display: flex;
+      flex: 1;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .middle {
+      display: flex;
+      flex: 1;
+      justify-content: flex-end;
+      max-width: 250px;
+
+      & > input {
         text-align: right;
-        & > input {
-          text-align: right;
-          padding: 0 10px;
-          margin: 0 10px;
-          // width: 30%;
-          font-weight: bold;
-        }
-        & > input {
-          padding: 2px 10px;
-          border: var(--input-border);
-          border-radius: var(--input-border-radius);
-        }
-      }
-      div:nth-child(3) {
-        width: 50px;
+        padding: 0 10px;
+        font-weight: bold;
+        padding: 2px 10px;
+        border: var(--input-border);
+        border-radius: var(--input-border-radius);
       }
     }
-  }
-}
+    .right {
+      text-align: right;
 
-.datePicker {
-  border: var(--input-border);
-  border-radius: var(--input-border-radius);
-  min-height: 32px !important;
+      width: 56px;
+    }
+  }
 }
 
 .footer {
@@ -56,18 +55,8 @@
 
 .priceInput {
   text-align: right;
-  padding: 0 10px;
-  margin: 0 10px;
   width: 30%;
   font-weight: bold;
-  padding: 2px 10px;
-  border: var(--input-border);
-  border-radius: var(--input-border-radius);
 
   width: 100px !important;
-}
-
-.dateContainer {
-  display: flex;
-  justify-content: right;
 }

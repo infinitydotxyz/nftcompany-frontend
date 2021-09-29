@@ -5,6 +5,16 @@ import { mode } from '@chakra-ui/theme-tools';
 const colors = {
   brandBlue: 'var(--brand-primary)',
 
+  // custom colors
+  windowBg: '#fcfdfd',
+
+  // unsure how to add opacity on a css var so we have these variants for now
+  headerBg: '#fcfdfdcc',
+  headerBgDark: 'gray.800',
+
+  brandBlueAlpha: '#4047ffaa',
+  brandBlueLight: '#4047ff14',
+
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   blue: {
     50: '#e8e9ff',
@@ -22,6 +32,33 @@ const colors = {
     A400: '#cdcdff',
     A700: '#b3b4ff',
     contrastDefaultColor: 'light'
+  }
+};
+
+const Table = {
+  baseStyle: {
+    table: {
+      // turned this off, it uses an ugly font
+      fontVariantNumeric: 'none'
+      // borderCollapse: 'collapse',
+      // width: 'full'
+    },
+    th: {
+      // fontFamily: 'heading',
+      // fontWeight: 'bold',
+      // textTransform: 'uppercase',
+      // letterSpacing: 'wider',
+      // textAlign: 'start'
+    },
+    td: {
+      // textAlign: 'start'
+    },
+    caption: {
+      // mt: 4,
+      // fontFamily: 'heading',
+      // textAlign: 'center',
+      // fontWeight: 'medium'
+    }
   }
 };
 
@@ -47,6 +84,15 @@ const Menu = {
   }
 };
 
+const Button = {
+  baseStyle: (props: any) => {
+    return {
+      // default is 1.2 and it makes the text a few pixels too high
+      lineHeight: '1.0'
+    };
+  }
+};
+
 const config: ThemeConfig = {
   useSystemColorMode: false,
   initialColorMode: 'light'
@@ -59,7 +105,7 @@ const styles = {
         color: mode('gray.800', 'whiteAlpha.900')(props),
 
         // bg: mode('white', 'gray.800')(props)
-        bg: mode('#fcfdfd', 'gray.800')(props)
+        bg: mode('windowBg', 'gray.800')(props)
       },
       '*::placeholder': {
         color: mode('gray.400', 'whiteAlpha.400')(props)
@@ -78,7 +124,9 @@ export const theme = extendTheme(
     colors,
     styles,
     components: {
-      Menu
+      Menu,
+      Button,
+      Table
     }
   },
   withDefaultColorScheme({ colorScheme: 'blue' }),

@@ -1,4 +1,4 @@
-import { useSearchContext } from 'hooks/useSearch';
+import { useSearchContext } from 'utils/context/SearchContext';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { useEffect, useState } from 'react';

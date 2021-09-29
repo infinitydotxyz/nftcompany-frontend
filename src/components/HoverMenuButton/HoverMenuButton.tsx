@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './HoverMenuButton.module.scss';
-import { Menu, MenuButton, MenuList, useDisclosure } from '@chakra-ui/react';
+import { Menu, MenuButton, MenuList, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 
 type Props = {
@@ -12,6 +12,8 @@ type Props = {
 };
 
 export const HoverMenuButton = ({ shadow = false, arrow = true, buttonTitle, buttonContent, children }: Props) => {
+  const { colorMode } = useColorMode();
+
   let hoverTimer: any;
   let menuListTimer: any;
   const delay = 100;
@@ -42,6 +44,10 @@ export const HoverMenuButton = ({ shadow = false, arrow = true, buttonTitle, but
 
   if (shadow) {
     buttonClass.push(styles.buttonShadow);
+  }
+
+  if (colorMode === 'dark') {
+    buttonClass.push(styles.dark);
   }
 
   return (

@@ -5,7 +5,8 @@ import { apiGet, apiPost } from 'utils/apiUtil';
 import { IconButton, Button, FormControl, Input, Link, Box, FormLabel } from '@chakra-ui/react';
 import { CopyIcon } from '@chakra-ui/icons';
 import validator from 'validator';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
+import { ellipsisAddress } from 'utils/commonUtil';
 
 const isServer = typeof window === 'undefined';
 
@@ -74,12 +75,14 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
   }, [user]);
 
   const toggleSubscribe = async () => {
-    const response = await apiPost(`/u/${user?.account}/subscribeEmail`, null, { subscribe: !subscribed });
+    const { result, error } = await apiPost(`/u/${user?.account}/subscribeEmail`, null, { subscribe: !subscribed });
 
-    if (response.status === 200) {
-      // refresh
-      getEmail();
+    if (error) {
+      showAppError(`${error.message}`);
+      return;
     }
+
+    setSubscribed(result?.subscribed ?? false);
   };
 
   const _subscribeSection = showSubscribeSection ? (
@@ -94,7 +97,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
   ) : null;
 
   let shortAddress = user?.account ?? '';
-  shortAddress = `${shortAddress.slice(0, 8)}...${shortAddress.slice(-8)}`;
+  shortAddress = ellipsisAddress(shortAddress, 8, 8);
 
   const displayUrl = `${window.origin}/${shortAddress}`;
 
@@ -110,9 +113,9 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
             </Link>
             <Box flex={1} />
             <IconButton
-              isActive={false}
+              color="#333"
+              colorScheme="grey"
               aria-label="Copy"
-              className={styles.button}
               icon={<CopyIcon />}
               onClick={(e) => {
                 e.stopPropagation();
@@ -149,18 +152,16 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
-            <div className="modal-body">
-              <div className={styles.main}>
-                <div className={styles.title}>Account</div>
+          <div>
+            <div className={styles.main}>
+              <div className={styles.title}>Account</div>
 
-                {content}
-                <div className={styles.buttons}>
-                  <Button onClick={() => saveEmail()}>Save</Button>
-                  <Button colorScheme="gray" onClick={onClose}>
-                    Cancel
-                  </Button>
-                </div>
+              {content}
+              <div className={styles.buttons}>
+                <Button onClick={() => saveEmail()}>Save</Button>
+                <Button colorScheme="gray" onClick={onClose}>
+                  Cancel
+                </Button>
               </div>
             </div>
           </div>

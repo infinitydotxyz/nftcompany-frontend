@@ -1,0 +1,33 @@
+.wrapper {
+  border: var(--input-border);
+  border-radius: var(--input-border-radius);
+  display: flex;
+  flex: 1;
+  // not sure why this is needed, but without it, it gets too wide
+  // once we get rid of the Typeahead css, this will show
+  width: 100%;
+
+  .flatpicker {
+    display: flex;
+    border: none;
+    font-weight: bold;
+    padding: 0 10px;
+    text-align: right;
+    &::placeholder {
+      color: #ccc;
+    }
+  }
+
+  .calendarButton {
+    // trying to match the size of the input which is 32
+    height: 32px;
+    width: 40px;
+    border-left: var(--input-border);
+
+    .iconButton {
+      // trying to match the size of the input which is 32
+      height: 32px;
+      color: #333;
+    }
+  }
+}

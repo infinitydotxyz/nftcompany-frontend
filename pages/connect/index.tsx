@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { initEthers } from '../src/utils/ethersUtil';
-import styles from '../styles/Connect.module.scss';
-import { saveAuthHeaders } from '../src/utils/apiUtil';
+import { initEthers } from '../../src/utils/ethersUtil';
+import styles from './Connect.module.scss';
+import { saveAuthHeaders } from '../../src/utils/apiUtil';
 
 export default function ConnectWallet() {
   const router = useRouter();
 
   const connectMetaMask = async () => {
-    const res = await initEthers(); // returns provider
+    const res = await initEthers();
+
     if (res && res.getSigner) {
       await saveAuthHeaders(await res.getSigner().getAddress());
       router.push('/explore');

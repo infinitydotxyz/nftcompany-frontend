@@ -1,5 +1,22 @@
+@import '/styles/SharedStyles.module.scss';
+
 .main {
   margin-bottom: 30vh;
+
+  .content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .centered {
+      max-width: 1100px;
+      width: 100%;
+    }
+  }
+}
+
+.leaderBox {
+  margin-top: 50px;
 }
 
 .spinner {

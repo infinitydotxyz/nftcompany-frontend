@@ -73,27 +73,6 @@
   }
 }
 
-.ntfmodal {
-  .label {
-    background-color: var(--brand-color);
-    padding: 0.75rem 1rem;
-    border-radius: 12px;
-    text-align: center;
-    display: inline-flex;
-  }
-
-  .ntfmodalBody {
-    background-color: #fff;
-    margin-top: 0.5rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 16px rgba(black, 0.06);
-    min-height: 400px;
-    height: 30vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-}
-
 .db {
   &-title {
     font-size: 1rem;

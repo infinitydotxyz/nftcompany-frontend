@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
 import styles from './PlaceBidModal.module.scss';
-import DatePicker from 'react-widgets/DatePicker';
 import { Spinner } from '@chakra-ui/spinner';
 import { CardData, Order } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
@@ -9,8 +8,9 @@ import { GenericError } from 'types';
 import { apiPost } from 'utils/apiUtil';
 import { Button, Input } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { getToken, stringToFloat } from 'utils/commonUtil';
+import { DatePicker } from 'components/DatePicker/DatePicker';
 
 const isServer = typeof window === 'undefined';
 
@@ -24,6 +24,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [isBuying, setIsBuying] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
+  const [expiryDate, setExpiryDate] = React.useState<Date | undefined>();
   const [order, setOrder] = React.useState<Order | undefined>();
   const [offerPrice, setOfferPrice] = React.useState(0);
   const token = getToken(data?.data?.paymentToken);
@@ -75,7 +76,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           order: order,
           accountAddress: user!.account
         });
-        console.log('Buy NFT txn hash: ' + txnHash + ' salePriceInEth: ' + salePriceInEth + ' feesInEth: ' + feesInEth);
+        // console.log('Buy NFT txn hash: ' + txnHash + ' salePriceInEth: ' + salePriceInEth + ' feesInEth: ' + feesInEth);
         const payload = {
           actionType: 'fulfill',
           txnHash,
@@ -148,90 +149,101 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white', width: 550 }}>
-            <div className="modal-body">
-              <div className={styles.title}>Buy NFT</div>
+          <div style={{ width: 550 }}>
+            {token === 'ETH' && (
+              <>
+                <div className={styles.title}>Purchase</div>
 
-              <div className={styles.space}>Buy this NFT at the fixed price.</div>
+                <div className={styles.space}>Buy this NFT at the fixed price.</div>
 
-              {data.price && (
-                <div className={styles.row}>
-                  <div className={styles.left}>{token === 'WETH' ? 'Minimum Price' : 'Price'}</div>
-
-                  <div className={styles.right}>
+                {data.price && (
+                  <div className={styles.priceRow}>
                     <PriceBox price={data.price} token={token} expirationTime={data?.expirationTime} />
                   </div>
-                </div>
-              )}
+                )}
 
-              {token === 'ETH' && (
                 <div className={styles.footer}>
                   <Button isDisabled={!order} onClick={onClickBuyNow} disabled={isBuying}>
-                    Buy now
+                    Purchase
                   </Button>
 
-                  {isBuying && <Spinner size="md" color="teal" ml={4} mt={2} />}
+                  {isBuying && <Spinner size="md" color="teal" ml={4} />}
+                </div>
+
+                <div className={styles.space}>
+                  <hr />
+                </div>
+              </>
+            )}
+
+            <div className={styles.title}>Make an offer</div>
+            <div className={styles.space}>Place a bid on this NFT.</div>
+
+            <form
+              onSubmit={(ev) => {
+                ev.preventDefault();
+                makeAnOffer();
+              }}
+            >
+              {token === 'WETH' && (
+                <div className={styles.row}>
+                  <div className={styles.left}>
+                    <div>Minimum Price</div>
+                  </div>
+                  <div className={styles.middle}>
+                    <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
+                  </div>
+                  <div className={styles.right}>&nbsp;</div>
                 </div>
               )}
 
-              <div className={styles.space}>
-                <hr />
+              <div className={styles.row}>
+                <div className={styles.left}>
+                  <div>Enter offer</div>
+                </div>
+                <div className={styles.middle}>
+                  <Input
+                    className={styles.offerBorder}
+                    required
+                    size={'sm'}
+                    type="number"
+                    step={0.000000001}
+                    onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}
+                  />
+                </div>
+                {/*  hardcoded to weth
+                     <div className={styles.token}>{token}</div>  */}
+                <div className={styles.right}>WETH</div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.left}>
+                  <div>Expiry date</div>
+                </div>
+                <div className={styles.middle}>
+                  <DatePicker
+                    value={expiryDate}
+                    onChange={(date) => {
+                      setExpiryDate(date);
+                      setExpiryTimeSeconds(Math.round((date || Date.now()).valueOf() / 1000));
+                    }}
+                  />
+                </div>
+                <div className={styles.right}></div>
               </div>
 
-              <div className={styles.title}>Make an offer</div>
-              <div className={styles.space}>Place a bid on this NFT.</div>
+              <div style={{ height: 10 }} />
 
-              <form
-                onSubmit={(ev) => {
-                  ev.preventDefault();
-                  makeAnOffer();
-                }}
-              >
-                <div className={styles.row}>
-                  <div className={styles.left}>
-                    <div>Enter offer</div>
-                  </div>
-                  <div className={styles.right}>
-                    <div>
-                      <Input
-                        style={{ width: 166 }}
-                        required
-                        size={'sm'}
-                        type="number"
-                        step={0.000000001}
-                        onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}
-                      />
-                    </div>
-                    <div className={styles.token}>{token}</div>
-                  </div>
-                </div>
-                <div className={styles.row}>
-                  <div className={styles.left}>
-                    <div>Expire date</div>
-                  </div>
-                  <div className={styles.right}>
-                    <DatePicker
-                      includeTime
-                      onChange={(dt) => setExpiryTimeSeconds(Math.round((dt || Date.now()).valueOf() / 1000))}
-                      style={{ marginRight: 52 }}
-                      containerClassName={styles.datePicker}
-                    />
-                  </div>
-                  <div>&nbsp;</div>
-                </div>
+              <div className={styles.footer}>
+                <Button type="submit" disabled={isSubmitting}>
+                  Make an Offer
+                </Button>
+                <Button colorScheme="gray" ml={4} disabled={isSubmitting} onClick={() => onClose && onClose()}>
+                  Cancel
+                </Button>
 
-                <div className={styles.footer}>
-                  <Button type="submit" className="action-btn" disabled={isSubmitting}>
-                    Make an offer
-                  </Button>
-                  <Button colorScheme="gray" ml={4} disabled={isSubmitting} onClick={() => onClose && onClose()}>
-                    Cancel
-                  </Button>
-
-                  {isSubmitting && <Spinner size="md" color="teal" ml={4} mt={2} />}
-                </div>
-              </form>
-            </div>
+                {isSubmitting && <Spinner size="md" color="teal" ml={4} />}
+              </div>
+            </form>
           </div>
         </ModalDialog>
       )}

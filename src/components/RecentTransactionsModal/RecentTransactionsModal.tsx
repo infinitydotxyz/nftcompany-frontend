@@ -1,13 +1,15 @@
 import React from 'react';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { Box } from '@chakra-ui/layout';
 
 import styles from './RecentTransactionsModal.module.scss';
 import { Spinner } from '@chakra-ui/spinner';
+import { ellipsisString } from 'utils/commonUtil';
+import { Button } from '@chakra-ui/react';
 
 const isServer = typeof window === 'undefined';
 interface IProps {
@@ -41,66 +43,67 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div
-            className={`modal ${'ntfmodal'} ${styles.modal}`}
-            style={{ background: 'white', borderColor: 'white', width: '60vw' }}
-          >
-            <div className="modal-body">
-              <div className={styles.title}>Transactions</div>
+          <div className={styles.modal}>
+            <div className={styles.title}>Transactions</div>
 
-              {isLoading ? (
-                <Spinner />
-              ) : data?.length === 0 ? (
-                <Box mt={6}>Nothing to show.</Box>
-              ) : (
-                <section className="grid">
-                  <div className={`col-md-12 col-sm-12 ${styles.txnRow}`}>
-                    <span>
-                      <strong>Time</strong>
-                    </span>
-                    <span>
-                      <strong>Txn Hash</strong>
-                    </span>
-                  </div>
+            {isLoading ? (
+              <Spinner />
+            ) : data?.length === 0 ? (
+              <Box mt={6}>Nothing to show.</Box>
+            ) : (
+              <section className="grid">
+                <div className={`col-md-12 col-sm-12 ${styles.txnRow}`}>
+                  <span>
+                    <strong>Time</strong>
+                  </span>
+                  <span>
+                    <strong>Txn Hash</strong>
+                  </span>
+                  <span>
+                    <strong>Action</strong>
+                  </span>
+                  <span>
+                    <strong>Status</strong>
+                  </span>
+                </div>
 
-                  {data.map((item: any) => {
-                    return (
-                      <div key={item.txnHash} className={`col-md-12 col-sm-12 ${styles.txnRow}`}>
-                        <span>{`${new Date(item.createdAt).toLocaleString()}`}</span>
-                        <span>
-                          {item.txnHash}{' '}
-                          <i className={styles.extLink}>
-                            <Tooltip label={'Open Etherscan Link'} placement="top" hasArrow>
-                              <ExternalLinkIcon
-                                onClick={() => {
-                                  window.open(`https://etherscan.io/address/${item.txnHash}`, '_blank');
-                                }}
-                              />
-                            </Tooltip>{' '}
-                          </i>
-                          <i className={styles.extLink}>
-                            <Tooltip label={'Open Etherscan Link'} placement="top" hasArrow>
-                              <CopyIcon
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  navigator.clipboard.writeText(item.txnHash);
-                                  showAppMessage(`Copied to Clipboard.`);
-                                }}
-                              />
-                            </Tooltip>{' '}
-                          </i>
-                        </span>
-                      </div>
-                    );
-                  })}
-                </section>
-              )}
+                {data.map((item: any) => {
+                  return (
+                    <div key={item.txnHash} className={`col-md-12 col-sm-12 ${styles.txnRow}`}>
+                      <span>{`${new Date(item.createdAt).toLocaleString()}`}</span>
+                      <span>
+                        {ellipsisString(item.txnHash)}{' '}
+                        <i className={styles.extLink}>
+                          <Tooltip label={'Open Etherscan Link'} placement="top" hasArrow>
+                            <ExternalLinkIcon
+                              onClick={() => {
+                                window.open(`https://etherscan.io/tx/${item.txnHash}`, '_blank');
+                              }}
+                            />
+                          </Tooltip>{' '}
+                        </i>
+                        <i className={styles.extLink}>
+                          <Tooltip label={'Copy Txn Hash'} placement="top" hasArrow>
+                            <CopyIcon
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigator.clipboard.writeText(item.txnHash);
+                                showAppMessage(`Copied to Clipboard.`);
+                              }}
+                            />
+                          </Tooltip>{' '}
+                        </i>
+                      </span>
+                      <span>{`${item.actionType}`}</span>
+                      <span>{`${item.status}`}</span>
+                    </div>
+                  );
+                })}
+              </section>
+            )}
 
-              <div className={styles.footer}>
-                <a className="action-btn" onClick={() => onClose && onClose()}>
-                  Close
-                </a>
-              </div>
+            <div className={styles.footer}>
+              <Button onClick={() => onClose && onClose()}>Close</Button>
             </div>
           </div>
         </ModalDialog>
