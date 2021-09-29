@@ -10,6 +10,8 @@ const colors = {
 
   // unsure how to add opacity on a css var so we have these variants for now
   headerBg: '#fcfdfdcc',
+  headerBgDark: 'gray.800',
+
   brandBlueAlpha: '#4047ffaa',
   brandBlueLight: '#4047ff14',
 

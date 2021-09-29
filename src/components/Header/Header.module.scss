@@ -8,8 +8,14 @@
     left: 0;
     right: 0;
     top: 0;
-    box-shadow: inset 0px -1px 0px #f3f3f4;
+
+    box-shadow: inset 0px -1px 0px #eaeaea;
     background-color: var(--chakra-colors-headerBg, red);
+
+    &.dark {
+      box-shadow: inset 0px -1px 0px #444;
+      background-color: var(--chakra-colors-headerBgDark, red);
+    }
 
     backdrop-filter: blur(12px);
     z-index: 2;
@@ -54,12 +60,16 @@
 }
 
 .exploreButton {
-  padding: 10px;
+  padding: 8px 14px;
   border-radius: 100px;
   color: #333;
   cursor: pointer;
   transition: 0.1s all ease-in;
   margin-right: 6px;
+
+  .dark & {
+    color: #eee;
+  }
 
   &:hover {
     background-color: #4047ff;

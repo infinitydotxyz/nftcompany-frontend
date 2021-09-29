@@ -32,7 +32,7 @@ const Header = (): JSX.Element => {
   const { user, signIn, signOut } = useAppContext();
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [transactionsModalShowed, setTransactionsModalShowed] = useState(false);
-  const { toggleColorMode } = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   useEffect(() => {
     const handleAccountChange = async (accounts: string[]) => {
@@ -173,9 +173,16 @@ const Header = (): JSX.Element => {
     ...accountItems
   ];
 
+  const dark = colorMode === 'dark';
+  const headerStyles = [styles.hdf];
+
+  if (dark) {
+    headerStyles.push(styles.dark);
+  }
+
   return (
     <header className={styles.header}>
-      <Box className={styles.hdf}>
+      <Box className={headerStyles.join(' ')}>
         <div className="page-container-header">
           <div className={styles.showLargeLogo}>
             <Link href="/explore" passHref>
@@ -183,7 +190,7 @@ const Header = (): JSX.Element => {
                 style={{ flex: '0 1 auto' }}
                 className="can-click"
                 alt="logo"
-                src="/img/nftCompanyBetaTransparentBg.svg"
+                src={dark ? '/img/nftcompanyWhiteBgSvg.svg' : '/img/nftCompanyBetaTransparentBg.svg'}
                 width={200}
               />
             </Link>
