@@ -5,7 +5,7 @@
   cursor: pointer;
   font-weight: bold;
 
-  &.dark {
+  :global(body.chakra-ui-dark) & {
     color: #eee;
   }
 
@@ -24,7 +24,7 @@
   box-shadow: 0px 4px 6px rgba(64, 71, 255, 0.15);
   border: 1px solid #eee;
 
-  &.dark {
+  :global(body.chakra-ui-dark) & {
     box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.15);
     border: 1px solid #000;
   }

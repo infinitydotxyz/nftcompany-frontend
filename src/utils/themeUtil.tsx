@@ -2,15 +2,23 @@ import React from 'react';
 import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefaultColorScheme } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
 
+const brandBlue = '#4047ff';
+const darkGray = '#1A202C'; // Gray.800
+const darkGrayAlpha = '#1A202Ccc';
+
+const lightBg = '#fcfdfd';
+const lightBgAlpha = '#fcfdfdcc';
+
 const colors = {
-  brandBlue: 'var(--brand-primary)',
+  brandBlue: brandBlue,
 
   // custom colors
-  windowBg: '#fcfdfd',
+  windowBg: lightBg,
+  windowBgDark: darkGray,
 
   // unsure how to add opacity on a css var so we have these variants for now
-  headerBg: '#fcfdfdcc',
-  headerBgDark: 'gray.800',
+  headerBg: lightBgAlpha,
+  headerBgDark: darkGrayAlpha,
 
   brandBlueAlpha: '#4047ffaa',
   brandBlueLight: '#4047ff14',
@@ -40,24 +48,6 @@ const Table = {
     table: {
       // turned this off, it uses an ugly font
       fontVariantNumeric: 'none'
-      // borderCollapse: 'collapse',
-      // width: 'full'
-    },
-    th: {
-      // fontFamily: 'heading',
-      // fontWeight: 'bold',
-      // textTransform: 'uppercase',
-      // letterSpacing: 'wider',
-      // textAlign: 'start'
-    },
-    td: {
-      // textAlign: 'start'
-    },
-    caption: {
-      // mt: 4,
-      // fontFamily: 'heading',
-      // textAlign: 'center',
-      // fontWeight: 'medium'
     }
   }
 };
@@ -90,6 +80,19 @@ const Button = {
       // default is 1.2 and it makes the text a few pixels too high
       lineHeight: '1.0'
     };
+  },
+  variants: {
+    solid: (props: any) => {
+      const { colorScheme, colorMode } = props;
+
+      // prevent chakra changing the button colors when in dark mode
+      if (colorMode === 'dark' && colorScheme !== 'gray') {
+        return {
+          bg: brandBlue,
+          color: 'white'
+        };
+      }
+    }
   }
 };
 

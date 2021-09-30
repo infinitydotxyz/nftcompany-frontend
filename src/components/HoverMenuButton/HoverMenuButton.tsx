@@ -20,8 +20,6 @@ export const HoverMenuButton = ({
   buttonContent,
   children
 }: Props) => {
-  const { colorMode } = useColorMode();
-
   let hoverTimer: any;
   let menuListTimer: any;
   const delay = 100;
@@ -52,10 +50,6 @@ export const HoverMenuButton = ({
 
   if (shadow) {
     buttonClass.push(styles.buttonShadow);
-  }
-
-  if (colorMode === 'dark') {
-    buttonClass.push(styles.dark);
   }
 
   if (disabled) {

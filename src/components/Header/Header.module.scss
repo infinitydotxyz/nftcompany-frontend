@@ -38,7 +38,7 @@
     box-shadow: inset 0px -1px 0px #eaeaea;
     background-color: var(--chakra-colors-headerBg, red);
 
-    &.dark {
+    :global(body.chakra-ui-dark) & {
       box-shadow: inset 0px -1px 0px #444;
       background-color: var(--chakra-colors-headerBgDark, red);
     }
@@ -93,7 +93,7 @@
   transition: 0.1s all ease-in;
   margin-right: 6px;
 
-  .dark & {
+  :global(body.chakra-ui-dark) & {
     color: #eee;
   }
 

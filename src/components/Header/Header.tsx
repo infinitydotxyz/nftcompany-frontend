@@ -198,12 +198,6 @@ const Header = (): JSX.Element => {
   ];
 
   const dark = colorMode === 'dark';
-  const headerStyles = [styles.hdf];
-
-  if (dark) {
-    headerStyles.push(styles.dark);
-  }
-
   let lockoutComponent;
 
   if (lockout) {
@@ -219,15 +213,15 @@ const Header = (): JSX.Element => {
 
   return (
     <header className={styles.header}>
-      <Box className={headerStyles.join(' ')}>
+      <Box className={styles.hdf}>
         <div className="page-container-header">
           <div className={styles.showLargeLogo}>
             <Link href="/explore" passHref>
               <img
-                style={{ flex: '0 1 auto' }}
+                style={{ flex: '0 1 auto', minHeight: 68 }}
                 className="can-click"
                 alt="logo"
-                src={dark ? '/img/nftcompanyWhiteBgSvg.svg' : '/img/nftCompanyBetaTransparentBg.svg'}
+                src={dark ? '/img/nttcompanyDarkModeLogo.svg' : '/img/nftCompanyBetaTransparentBg.svg'}
                 width={200}
               />
             </Link>

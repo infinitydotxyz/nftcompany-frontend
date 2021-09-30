@@ -22,6 +22,10 @@
   min-width: 550px;
   box-shadow: 0 2px 90px rgba(0, 0, 0, 0.3);
 
+  :global(body.chakra-ui-dark) & {
+    background-color: var(--chakra-colors-windowBgDark, red);
+  }
+
   border-radius: 20px;
 }
 
