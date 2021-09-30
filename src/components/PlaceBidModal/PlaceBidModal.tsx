@@ -166,7 +166,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
                 <div className={styles.buttons}>
                   <Button isDisabled={!order} onClick={onClickBuyNow} disabled={isBuying}>
-                    Purchase
+                    Buy Now
                   </Button>
 
                   {isBuying && <Spinner size="md" color="teal" ml={4} />}
@@ -223,6 +223,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 </div>
                 <div className={styles.middle}>
                   <DatePicker
+                    placeholder="Optional"
                     value={expiryDate}
                     onChange={(date) => {
                       setExpiryDate(date);
