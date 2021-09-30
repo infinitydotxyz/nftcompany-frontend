@@ -64,17 +64,22 @@ const Header = (): JSX.Element => {
     };
 
     const getChainId = async () => {
-      const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+      try {
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
 
-      if (chainId !== '0x1') {
-        setLockout(true);
+        if (chainId !== '0x1') {
+          setLockout(true);
+        }
+      } catch (err) {
+        console.error('eth_chainId failed', err);
       }
     };
 
-    getChainId();
     signIn();
 
     if (window?.ethereum) {
+      getChainId();
+
       window.ethereum.on('accountsChanged', handleAccountChange);
       window.ethereum.on('chainChanged', handleNetworkChange);
     }
@@ -83,6 +88,7 @@ const Header = (): JSX.Element => {
       // on unmounting
       if (window?.ethereum) {
         window.ethereum.removeListener('accountsChanged', handleAccountChange);
+        window.ethereum.removeListener('chainChanged', handleAccountChange);
       }
     };
   }, []);

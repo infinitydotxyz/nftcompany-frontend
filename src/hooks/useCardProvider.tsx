@@ -90,7 +90,6 @@ export function useCardProvider(): {
     }
 
     setListType(newListType);
-    console.log('searchContext.searchState', newListType, searchContext.searchState);
 
     const result = await fetchData(
       searchContext.filterState,
