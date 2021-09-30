@@ -1158,10 +1158,14 @@ export class OpenSeaPort {
       { from: accountAddress }
     );
 
-    this._confirmTransaction(txnHash.toString(), EventType.CancelOrder, 'Cancelling order', async () => {
-      const isOpen = await this._validateOrder(order);
-      return !isOpen;
-    });
+    try {
+      this._confirmTransaction(txnHash.toString(), EventType.CancelOrder, 'Cancelling order', async () => {
+        const isOpen = await this._validateOrder(order);
+        return !isOpen;
+      });
+    } catch (err) {
+      this._dispatch(EventType.TransactionFailed, { error: err });
+    }
 
     return txnHash;
   }
