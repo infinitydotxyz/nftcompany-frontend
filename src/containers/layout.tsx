@@ -3,7 +3,6 @@ import NextNprogress from 'nextjs-progressbar';
 import { SearchContextProvider } from 'utils/context/SearchContext';
 import { AppContextProvider } from 'utils/context/AppContext';
 import { AppChakraProvider } from 'utils/themeUtil';
-import LandingHeader from 'components/LandingHeader/LandingHeader';
 import LandingFooter from 'components/LandingFooter/LandingFooter';
 import Header from 'components/Header/Header';
 import { isLocalhost } from 'utils/commonUtil';
@@ -25,7 +24,8 @@ const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
       <AppChakraProvider>
         <AppContextProvider>
           <SearchContextProvider>
-            {(landing && <LandingHeader />) || (!connect && <Header />)}
+            {/* No header on connect page */}
+            {!connect && <Header />}
             <main>{children}</main>
             {landing && <LandingFooter />}
 
