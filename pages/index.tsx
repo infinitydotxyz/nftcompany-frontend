@@ -9,6 +9,7 @@ import { NextPage } from 'next';
 import styles from '../styles/Home.module.scss';
 import Questions from 'components/landing/question';
 import router from 'next/router';
+import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 
 export default function Home() {
   return (
@@ -280,6 +281,7 @@ export default function Home() {
             ]}
           />
         </div>
+        {<DarkmodeSwitch />}
       </section>
     </>
   );
