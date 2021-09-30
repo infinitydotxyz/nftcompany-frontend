@@ -289,7 +289,7 @@ const Header = (): JSX.Element => {
       {settingsModalShowed && <SettingsModal onClose={() => setSettingsModalShowed(false)} />}
       {transactionsModalShowed && <RecentTransactionsModal onClose={() => setTransactionsModalShowed(false)} />}
       {lockoutComponent}
-      {/* {<DarkmodeSwitch />} */}
+      {<DarkmodeSwitch />}
     </header>
   );
 };
