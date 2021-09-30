@@ -14,9 +14,10 @@ import 'flatpickr/dist/themes/airbnb.css';
 type Props = {
   value?: Date;
   onChange: (date: Date) => void;
+  placeholder?: string;
 };
 
-export const DatePicker = ({ value, onChange }: Props) => {
+export const DatePicker = ({ placeholder = 'Dec 8, 2021  12:00 PM', value, onChange }: Props) => {
   let myFp: any;
 
   return (
@@ -31,7 +32,7 @@ export const DatePicker = ({ value, onChange }: Props) => {
           altInput: true,
           altFormat: 'M j, Y  h:i K'
         }}
-        placeholder="Dec 8, 2021  12:00 PM"
+        placeholder={placeholder}
         value={value}
         className={styles.flatpicker}
         onChange={(date) => {

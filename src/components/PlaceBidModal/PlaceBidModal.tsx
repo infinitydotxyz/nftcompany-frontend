@@ -89,6 +89,8 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
           showAppError((error as GenericError)?.message);
+        } else {
+          onClose();
         }
       } else {
         // Handle when the order does not exist anymore
@@ -149,7 +151,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div style={{ width: 550 }}>
+          <div>
             {token === 'ETH' && (
               <>
                 <div className={styles.title}>Purchase</div>
@@ -162,15 +164,15 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   </div>
                 )}
 
-                <div className={styles.footer}>
+                <div className={styles.buttons}>
                   <Button isDisabled={!order} onClick={onClickBuyNow} disabled={isBuying}>
-                    Purchase
+                    Buy Now
                   </Button>
 
                   {isBuying && <Spinner size="md" color="teal" ml={4} />}
                 </div>
 
-                <div className={styles.space}>
+                <div className={styles.lineSpace}>
                   <hr />
                 </div>
               </>
@@ -221,6 +223,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 </div>
                 <div className={styles.middle}>
                   <DatePicker
+                    placeholder="Optional"
                     value={expiryDate}
                     onChange={(date) => {
                       setExpiryDate(date);
@@ -233,11 +236,11 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
               <div style={{ height: 10 }} />
 
-              <div className={styles.footer}>
+              <div className={styles.buttons}>
                 <Button type="submit" disabled={isSubmitting}>
                   Make an Offer
                 </Button>
-                <Button colorScheme="gray" ml={4} disabled={isSubmitting} onClick={() => onClose && onClose()}>
+                <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose && onClose()}>
                   Cancel
                 </Button>
 

@@ -37,7 +37,8 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           actionType: 'cancel',
           txnHash,
           side: 0,
-          orderId: data.id
+          orderId: data.id,
+          maker: user?.account
         };
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
@@ -73,10 +74,8 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               </ul>
             </div>
 
-            <div className={styles.footer}>
-              <Button onClick={cancelOffer} mr={4}>
-                Cancel Offer
-              </Button>
+            <div className={styles.buttons}>
+              <Button onClick={cancelOffer}>Cancel Offer</Button>
 
               <Button colorScheme="gray" onClick={() => onClose && onClose()}>
                 Close

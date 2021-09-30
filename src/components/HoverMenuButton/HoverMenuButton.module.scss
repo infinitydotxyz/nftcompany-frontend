@@ -13,6 +13,10 @@
     background-color: #4047ff;
     color: #fff;
   }
+
+  &.disabled {
+    color: #bbb;
+  }
 }
 
 .buttonShadow {

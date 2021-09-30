@@ -49,6 +49,8 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
           showAppError((error as GenericError)?.message);
+        } else {
+          onClose();
         }
       } else {
         // Handle when the order does not exist anymore
@@ -80,7 +82,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               </ul>
             </div>
 
-            <div className={styles.footer}>
+            <div className={styles.buttons}>
               <Button onClick={acceptOffer}>Accept Offer</Button>
               <Button colorScheme="gray" onClick={() => onClose && onClose()}>
                 Cancel

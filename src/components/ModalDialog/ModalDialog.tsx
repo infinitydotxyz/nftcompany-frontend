@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import styles from './ModalDialog.module.scss';
 
 interface Props {
-  children: React.ReactChild;
+  children: React.ReactChild | React.ReactChild[];
   onClose: () => void;
 }
 const ModalDialog = ({ children, onClose }: Props) => {
