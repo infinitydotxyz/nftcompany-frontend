@@ -89,6 +89,8 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
           showAppError((error as GenericError)?.message);
+        } else {
+          onClose();
         }
       } else {
         // Handle when the order does not exist anymore
