@@ -1,32 +1,107 @@
-.intro {
-  position: relative;
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100vw;
-    height: 140vh;
-    background-position: center top;
-    background-repeat: no-repeat;
-    background-size: contain;
-    filter: blur(120px);
-    opacity: 0.4;
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAABPklEQVR42k3KwUrjUBhA4XOTP00TpqXQcSPjwAy4n6UPMDAwK1/Fh3LlK7hwI4gKgjvRhVgpVZva1jS5ubm5v116NmfzmbCNLxkMqEXdChoLXiEYxHcKYDpQz/YmkNYT+vNrmBdQohoSpHIdtaIvnfLQRvrQBHbWc/7MbtifXJFv+hAPkdIFZo2a85Xq8ULN5XsMfpfD7oC/vuXA3+q+mWGeChse196cTVo9naqZlkIihrthRIimHJWn+k/vESHQd57vy4rfbw1FrdSS8suOWOR7nLT/uWiXSKzK0DbsLddMX0seK89lkrKTBtL+iMLs8ux/IlHbMaocP5aWpy0cF5aR9CgHQpYn5BLTQ5HEdQw2nfoNjD9UBy+Wb+6DzTBgxluYC04yJLWetFYyF5G1QlZF9BYNrArwGTLOMFnMJziKroaiR95JAAAAAElFTkSuQmCC);
+.baseContainer {
+  width: 100%;
+  max-width: 80rem;
+  padding: 0 2rem;
+  margin: 0 auto;
+}
 
-    z-index: -1;
+.containerAvg {
+  @extend .baseContainer;
+  max-width: 72rem;
+}
+
+.titleSection {
+  margin: 5rem 0;
+
+  .bigTitle {
+    font-size: 3rem;
+    line-height: 1.2;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.01em;
   }
+
+  .subTitle {
+    margin-top: 1rem;
+    line-height: 1.5;
+    font-size: 1.35rem;
+  }
+
+  .bigTitleBlue {
+    display: inline-block;
+    color: var(--chakra-colors-brandBlue, red);
+  }
+
+  .alignCenter {
+    display: flex;
+    align-items: center;
+  }
+
+  .topCol {
+    display: flex;
+
+    .left {
+      flex: 4;
+    }
+    .right {
+      flex: 3;
+    }
+  }
+
+  .buttons {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .stadiumButton {
+      border-radius: 100px;
+      min-width: 160px;
+
+      box-shadow: 0 16px 28px var(--chakra-colors-brandBlueShadow, red);
+    }
+  }
+
+  .checklistRow {
+    display: flex;
+    margin-top: 0.5rem;
+    align-items: center;
+    font-size: 1.25rem;
+    .icon {
+      margin-right: 0.7rem;
+      color: var(--chakra-colors-brandBlue, red);
+    }
+  }
+
+  .fineprint {
+    margin-top: 1rem;
+
+    font-size: 0.7rem;
+  }
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 140vh;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: contain;
+  filter: blur(120px);
+  opacity: 0.4;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAABPklEQVR42k3KwUrjUBhA4XOTP00TpqXQcSPjwAy4n6UPMDAwK1/Fh3LlK7hwI4gKgjvRhVgpVZva1jS5ubm5v116NmfzmbCNLxkMqEXdChoLXiEYxHcKYDpQz/YmkNYT+vNrmBdQohoSpHIdtaIvnfLQRvrQBHbWc/7MbtifXJFv+hAPkdIFZo2a85Xq8ULN5XsMfpfD7oC/vuXA3+q+mWGeChse196cTVo9naqZlkIihrthRIimHJWn+k/vESHQd57vy4rfbw1FrdSS8suOWOR7nLT/uWiXSKzK0DbsLddMX0seK89lkrKTBtL+iMLs8ux/IlHbMaocP5aWpy0cF5aR9CgHQpYn5BLTQ5HEdQw2nfoNjD9UBy+Wb+6DzTBgxluYC04yJLWetFYyF5G1QlZF9BYNrArwGTLOMFnMJziKroaiR95JAAAAAElFTkSuQmCC);
+
+  z-index: -1;
+}
+
+// =================================================================
+
+.intro {
   .tg-hero-title {
     margin-top: 0.5em;
   }
-
-  // .cover {
-  // 	display: block;
-  // 	margin: 0 auto;
-  // 	height: auto;
-  // 	width: 100%;
-  // 	object-fit: cover;
-  // }
 
   .tg-paragraph {
     width: 42rem;
@@ -44,13 +119,7 @@
 }
 
 .about {
-  margin-top: 12rem;
-
-  .tick svg {
-    position: relative;
-    top: -5px;
-    display: inline-block;
-  }
+  margin-top: 6rem;
 
   @media (max-width: 500px) {
     margin-top: 7rem;
@@ -223,62 +292,6 @@
 
 .faq {
   margin-top: 7rem;
-  .question {
-    margin: 0;
-    border-bottom: 1px solid #eee;
-
-    :global(body.chakra-ui-dark) & {
-      border-bottom: 1px solid #333;
-    }
-
-    &__headline {
-      padding: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-radius: 10px;
-      margin: 1rem 0;
-      // background-color: #fff;
-      transition: 0.4s ease;
-      cursor: pointer;
-
-      .icon {
-        width: 36px;
-        height: 36px;
-
-        transition: 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-
-        &.is-open {
-          transform: rotate(180deg);
-        }
-      }
-
-      .tg-desc {
-        color: #071013;
-
-        :global(body.chakra-ui-dark) & {
-          color: #eee;
-        }
-
-        font-weight: 700;
-      }
-
-      &:hover {
-        box-shadow: 0px 0px 44px -7px rgba(0, 0, 0, 0.12);
-      }
-    }
-    &__answer {
-      padding: 0 1rem 1rem;
-      color: #071013;
-      font-size: 1.2rem;
-
-      :global(body.chakra-ui-dark) & {
-        color: #eee;
-      }
-
-      user-select: none;
-    }
-  }
 }
 
 .link {

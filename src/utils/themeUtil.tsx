@@ -22,6 +22,7 @@ const colors = {
 
   brandBlueAlpha: '#4047ffaa',
   brandBlueLight: '#4047ff14',
+  brandBlueShadow: '#4047ff44',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   blue: {

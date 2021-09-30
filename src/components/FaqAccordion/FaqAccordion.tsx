@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import styles from '../../../styles/Home.module.scss';
+import styles from './FaqAccordion.module.scss';
 
 interface Q {
   question: string;
@@ -70,14 +70,14 @@ const Accordion = ({ i, expanded, setExpanded, q, a }: IProps2) => {
   );
 };
 
-const Questions: React.FC<IProps> = ({ questions }: IProps) => {
+const FaqAccordian: React.FC<IProps> = ({ questions }: IProps) => {
   const [expanded, setExpanded] = useState<false | number>(-1);
 
   const ques = questions.map(({ answer, question }, i) => (
     <Accordion q={question} a={answer} key={i} i={i} expanded={expanded} setExpanded={setExpanded} />
   ));
 
-  return <React.Fragment>{ques}</React.Fragment>;
+  return <div className={styles.main}>{ques}</div>;
 };
 
-export default Questions;
+export default FaqAccordian;
