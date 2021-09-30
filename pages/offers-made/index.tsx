@@ -45,7 +45,6 @@ export default function OffersMade() {
   };
 
   React.useEffect(() => {
-    console.log('- Offers Made - user:', user);
     fetchData();
   }, [user]);
 
