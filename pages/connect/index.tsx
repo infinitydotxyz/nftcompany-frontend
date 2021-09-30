@@ -6,9 +6,13 @@ import { useRouter } from 'next/router';
 import { initEthers } from '../../src/utils/ethersUtil';
 import styles from './Connect.module.scss';
 import { saveAuthHeaders } from '../../src/utils/apiUtil';
+import { NextPage } from 'next';
+import Layout from 'containers/layout';
+import { useColorMode } from '@chakra-ui/react';
 
 export default function ConnectWallet() {
   const router = useRouter();
+  const { colorMode } = useColorMode();
 
   const connectMetaMask = async () => {
     const res = await initEthers();
@@ -21,6 +25,8 @@ export default function ConnectWallet() {
     }
   };
 
+  const dark = colorMode === 'dark';
+
   return (
     <>
       <Head>
@@ -31,7 +37,12 @@ export default function ConnectWallet() {
           <div className={styles.center}>
             <Link href="/">
               <a>
-                <Image alt="NFT Company" src="/img/nftcompanyTransparentBgSvg.svg" width={240} height={80} />
+                <Image
+                  alt="NFT Company"
+                  src={dark ? '/img/nttcompanyDarkModeLogo.svg' : '/img/nftcompanyTransparentBgSvg.svg'}
+                  width={240}
+                  height={80}
+                />
               </a>
             </Link>
 
@@ -148,4 +159,4 @@ export default function ConnectWallet() {
 }
 
 // eslint-disable-next-line react/display-name
-// ConnectWallet.getLayout = (page: NextPage) => <Layout landing>{page}</Layout>;
+ConnectWallet.getLayout = (page: NextPage) => <Layout connect>{page}</Layout>;

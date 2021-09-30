@@ -16,15 +16,16 @@ if (!isLocalhost()) {
 interface IProps {
   children: any;
   landing?: boolean;
+  connect?: boolean;
 }
 
-const Layout: React.FC<IProps> = ({ landing, children }: IProps) => {
+const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
   return (
     <>
       <AppChakraProvider>
         <AppContextProvider>
           <SearchContextProvider>
-            {(landing && <LandingHeader />) || <Header />}
+            {(landing && <LandingHeader />) || (!connect && <Header />)}
             <main>{children}</main>
             {landing && <LandingFooter />}
 
