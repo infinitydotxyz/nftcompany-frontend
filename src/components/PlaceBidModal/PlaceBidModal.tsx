@@ -154,7 +154,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           <div>
             {token === 'ETH' && (
               <>
-                <div className={styles.title}>Purchase</div>
+                <div className={styles.title}>Buy Now</div>
 
                 <div className={styles.space}>Buy this NFT at the fixed price.</div>
 
