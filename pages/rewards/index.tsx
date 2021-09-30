@@ -26,8 +26,6 @@ const Rewards = (): JSX.Element => {
       const { result, error } = await apiGet(`/u/${user?.account}/reward`);
 
       setUserReward(result);
-
-      // console.log(JSON.stringify(result, null, '  '));
     } catch (e) {
       console.error(e);
     } finally {
@@ -40,8 +38,6 @@ const Rewards = (): JSX.Element => {
       const { result, error } = await apiGet(`/rewards/leaderboard`);
 
       setLeaderBoard(result);
-
-      // console.log(JSON.stringify(result, null, '  '));
     } catch (e) {
       console.error(e);
     }

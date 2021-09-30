@@ -35,7 +35,6 @@ const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
           order: order,
           accountAddress: user?.account
         });
-        console.log('Cancel listing txn hash: ' + txnHash);
         const payload = {
           actionType: 'cancel',
           txnHash,

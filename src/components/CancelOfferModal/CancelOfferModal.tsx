@@ -32,7 +32,7 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           accountAddress: user!.account
         });
         onClose();
-        console.log('Cancel offer txn hash: ' + txnHash);
+
         const payload = {
           actionType: 'cancel',
           txnHash,

@@ -222,8 +222,6 @@ export function useCardProvider(): {
 
   const loadNext = () => {
     if (hasData() && hasMore) {
-      console.log('loadNext');
-
       fetchList(listType);
     } else {
       if (!hasData()) {
