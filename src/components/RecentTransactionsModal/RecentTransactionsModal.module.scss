@@ -55,8 +55,14 @@
   width: 50vw;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 850px) and (max-width: 1600px) {
   .modal {
-    width: 92vw !important;
+    width: 70vw !important;
+  }
+}
+
+@media (max-width: 850px) {
+  .modal {
+    width: 85vw !important;
   }
 }
