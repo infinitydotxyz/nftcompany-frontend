@@ -1109,7 +1109,7 @@ export class OpenSeaPort {
         return !isOpen;
       });
     } catch (err) {
-      this._dispatch(EventType.TransactionFailed, { error: err });
+      console.error(err);
     }
 
     return { txnHash, salePriceInEth, feesInEth };
@@ -1164,7 +1164,7 @@ export class OpenSeaPort {
         return !isOpen;
       });
     } catch (err) {
-      this._dispatch(EventType.TransactionFailed, { error: err });
+      console.error(err);
     }
 
     return txnHash;
