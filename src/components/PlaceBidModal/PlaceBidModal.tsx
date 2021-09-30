@@ -170,7 +170,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   {isBuying && <Spinner size="md" color="teal" ml={4} />}
                 </div>
 
-                <div className={styles.space}>
+                <div className={styles.lineSpace}>
                   <hr />
                 </div>
               </>

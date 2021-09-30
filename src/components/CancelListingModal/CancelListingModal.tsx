@@ -67,7 +67,7 @@ const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
 
             <div className={styles.row}>Cancel this listing?</div>
 
-            <div className={styles.footer}>
+            <div className={styles.buttons}>
               <Button
                 disabled={isSubmitting}
                 onClick={async () => {
@@ -78,7 +78,7 @@ const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 Confirm
               </Button>
 
-              <Button colorScheme="gray" disabled={isSubmitting} ml={4} onClick={() => onClose()}>
+              <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose()}>
                 Close
               </Button>
             </div>
