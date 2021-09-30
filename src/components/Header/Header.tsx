@@ -88,7 +88,7 @@ const Header = (): JSX.Element => {
       // on unmounting
       if (window?.ethereum) {
         window.ethereum.removeListener('accountsChanged', handleAccountChange);
-        window.ethereum.removeListener('chainChanged', handleAccountChange);
+        window.ethereum.removeListener('chainChanged', handleNetworkChange);
       }
     };
   }, []);
