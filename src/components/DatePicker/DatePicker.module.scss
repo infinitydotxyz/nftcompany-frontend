@@ -12,6 +12,13 @@
     border: none;
     font-weight: bold;
     padding: 0 10px;
+
+    // remove when the Typeahead css is fixed
+    background-color: transparent;
+    :global(body.chakra-ui-dark) & {
+      color: #eee;
+    }
+
     text-align: right;
     &::placeholder {
       color: #ccc;
