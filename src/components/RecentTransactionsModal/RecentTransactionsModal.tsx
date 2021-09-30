@@ -51,7 +51,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
             ) : data?.length === 0 ? (
               <Box mt={6}>Nothing to show.</Box>
             ) : (
-              <section className="grid">
+              <section className={styles.tableGrid}>
                 <div className={`col-md-12 col-sm-12 ${styles.txnRow}`}>
                   <span>
                     <strong>Time</strong>
@@ -102,7 +102,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
               </section>
             )}
 
-            <div className={styles.footer}>
+            <div className={styles.buttons}>
               <Button onClick={() => onClose && onClose()}>Close</Button>
             </div>
           </div>
