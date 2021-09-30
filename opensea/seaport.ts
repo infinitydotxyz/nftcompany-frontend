@@ -1103,10 +1103,14 @@ export class OpenSeaPort {
     const metadata = this._getMetadata(order, referrerAddress);
     const { txnHash, salePriceInEth, feesInEth } = await this._atomicMatch({ buy, sell, accountAddress, metadata });
 
-    this._confirmTransaction(txnHash, EventType.MatchOrders, 'Fulfilling order', async () => {
-      const isOpen = await this._validateOrder(order);
-      return !isOpen;
-    });
+    try {
+      this._confirmTransaction(txnHash, EventType.MatchOrders, 'Fulfilling order', async () => {
+        const isOpen = await this._validateOrder(order);
+        return !isOpen;
+      });
+    } catch (err) {
+      console.error(err);
+    }
 
     return { txnHash, salePriceInEth, feesInEth };
   }
@@ -1154,10 +1158,14 @@ export class OpenSeaPort {
       { from: accountAddress }
     );
 
-    this._confirmTransaction(txnHash.toString(), EventType.CancelOrder, 'Cancelling order', async () => {
-      const isOpen = await this._validateOrder(order);
-      return !isOpen;
-    });
+    try {
+      this._confirmTransaction(txnHash.toString(), EventType.CancelOrder, 'Cancelling order', async () => {
+        const isOpen = await this._validateOrder(order);
+        return !isOpen;
+      });
+    } catch (err) {
+      console.error(err);
+    }
 
     return txnHash;
   }

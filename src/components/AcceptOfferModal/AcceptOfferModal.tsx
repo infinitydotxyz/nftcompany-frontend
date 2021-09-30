@@ -54,7 +54,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         }
       } else {
         // Handle when the order does not exist anymore
-        showAppError('Offer no longer exists');
+        showAppError('Offer no longer exists.');
       }
     } catch (err) {
       showAppError((err as GenericError)?.message);
