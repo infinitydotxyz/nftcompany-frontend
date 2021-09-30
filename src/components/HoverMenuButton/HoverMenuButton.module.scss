@@ -17,6 +17,10 @@
   &.disabled {
     color: #bbb;
     cursor: auto;
+
+    :global(body.chakra-ui-dark) & {
+      color: #777;
+    }
   }
 }
 
