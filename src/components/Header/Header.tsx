@@ -16,6 +16,7 @@ import {
   ListIcon,
   AddCartIcon,
   MoneyIcon,
+  EthToken,
   OfferIcon,
   ImageSearchIcon,
   ImageIcon,
@@ -31,6 +32,7 @@ const Header = (): JSX.Element => {
   const router = useRouter();
   const { user, signIn, signOut } = useAppContext();
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
+  const [lockout, setLockout] = useState(false);
   const [transactionsModalShowed, setTransactionsModalShowed] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -57,16 +59,36 @@ const Header = (): JSX.Element => {
       };
     };
 
+    const handleNetworkChange = (chainId: string) => {
+      window.location.reload();
+    };
+
+    const getChainId = async () => {
+      try {
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+
+        if (chainId !== '0x1') {
+          setLockout(true);
+        }
+      } catch (err) {
+        console.error('eth_chainId failed', err);
+      }
+    };
+
     signIn();
 
     if (window?.ethereum) {
+      getChainId();
+
       window.ethereum.on('accountsChanged', handleAccountChange);
+      window.ethereum.on('chainChanged', handleNetworkChange);
     }
 
     return () => {
       // on unmounting
       if (window?.ethereum) {
         window.ethereum.removeListener('accountsChanged', handleAccountChange);
+        window.ethereum.removeListener('chainChanged', handleAccountChange);
       }
     };
   }, []);
@@ -182,6 +204,19 @@ const Header = (): JSX.Element => {
     headerStyles.push(styles.dark);
   }
 
+  let lockoutComponent;
+
+  if (lockout) {
+    lockoutComponent = (
+      <div className={styles.lockout}>
+        <div className={styles.message}>
+          {<EthToken boxSize={52} />}
+          <div>You must be on Ethereum Mainnet</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <header className={styles.header}>
       <Box className={headerStyles.join(' ')}>
@@ -261,6 +296,7 @@ const Header = (): JSX.Element => {
 
       {settingsModalShowed && <SettingsModal onClose={() => setSettingsModalShowed(false)} />}
       {transactionsModalShowed && <RecentTransactionsModal onClose={() => setTransactionsModalShowed(false)} />}
+      {lockoutComponent}
     </header>
   );
 };
