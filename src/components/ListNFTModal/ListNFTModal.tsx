@@ -223,16 +223,16 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
               </div>
             )}
 
-            <div className={styles.footer}>
-              <Button size="md" disabled={isSubmitting} onClick={onClickListNft}>
+            <div className={styles.buttons}>
+              <Button disabled={isSubmitting} onClick={onClickListNft}>
                 List NFT
               </Button>
 
-              <Button colorScheme="gray" size="md" ml={4} disabled={isSubmitting} onClick={() => onClose && onClose()}>
+              <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose && onClose()}>
                 Cancel
               </Button>
 
-              {isSubmitting && <Spinner size="md" color="teal" ml={4} mt={2} />}
+              {isSubmitting && <Spinner size="md" color="teal" ml={4} />}
             </div>
           </div>
         </ModalDialog>
