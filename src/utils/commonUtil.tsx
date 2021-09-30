@@ -113,10 +113,10 @@ export const transformOpenSea = (item: any, owner: string) => {
 export const getCustomExceptionMsg = (msg: ReactNode) => {
   let customMsg = msg;
   if (typeof msg === 'string' && msg.indexOf('err: insufficient funds for gas * price + value') > 0) {
-    customMsg = 'Insufficient funds for gas * price + value.';
+    customMsg = 'Insufficient funds for gas * price + value';
   }
   if (typeof msg === 'string' && msg.indexOf('User denied transaction signature.') > 0) {
-    customMsg = 'MetaMask: User denied transaction signature.';
+    customMsg = 'MetaMask: User denied transaction signature';
   }
   return customMsg;
 };
@@ -141,37 +141,26 @@ export const getCustomMessage = (eventName: string, data: any) => {
   if (
     eventName === EventType.MatchOrders ||
     eventName === EventType.CreateOrder ||
-    eventName === EventType.CancelOrder
+    eventName === EventType.CancelOrder ||
+    eventName === EventType.TransactionDenied
   ) {
     // for these events, MetaMask pops up, no need to show messages.
     return null;
   }
   // customize OpenSea messages:
   if (eventName === EventType.TransactionCreated) {
-    if (ev === EventType.MatchOrders) {
       customMsg = (
-        <span>MatchOrders: Your transaction has been sent to chain. {createLink(data?.transactionHash)}</span>
+        <span>Your transaction has been sent to chain: {createLink(data?.transactionHash)}</span>
       );
-    }
-    if (ev === EventType.CancelOrder) {
-      customMsg = (
-        <span>CancelOrder: Your transaction has been sent to chain. {createLink(data?.transactionHash)}</span>
-      );
-    }
-  }
-  if (eventName === EventType.TransactionDenied) {
-    customMsg = 'Transaction denied.';
   }
   if (eventName === EventType.TransactionConfirmed) {
-    if (ev === EventType.CancelOrder) {
-      customMsg = 'CancelOrder: Transaction confirmed.';
-    }
+      customMsg = 'Transaction confirmed';
   }
-  if (eventName === EventType.MatchOrders) {
-    customMsg = <span>MatchOrders: Your transaction has been sent to chain. {createLink(data?.transactionHash)}</span>;
+  if (eventName === EventType.TransactionFailed) {
+    customMsg = 'Transaction failed';
   }
   if (eventName === EventType.ApproveCurrency) {
-    customMsg = 'Approving currency for trading.';
+    customMsg = 'Approving currency for trading';
   }
   return customMsg;
 };
