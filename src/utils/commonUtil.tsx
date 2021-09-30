@@ -141,7 +141,8 @@ export const getCustomMessage = (eventName: string, data: any) => {
   if (
     eventName === EventType.MatchOrders ||
     eventName === EventType.CreateOrder ||
-    eventName === EventType.CancelOrder
+    eventName === EventType.CancelOrder ||
+    eventName === EventType.TransactionDenied
   ) {
     // for these events, MetaMask pops up, no need to show messages.
     return null;
@@ -158,9 +159,6 @@ export const getCustomMessage = (eventName: string, data: any) => {
         <span>CancelOrder: Your transaction has been sent to chain. {createLink(data?.transactionHash)}</span>
       );
     }
-  }
-  if (eventName === EventType.TransactionDenied) {
-    customMsg = 'Transaction denied.';
   }
   if (eventName === EventType.TransactionConfirmed) {
     if (ev === EventType.CancelOrder) {
