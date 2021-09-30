@@ -25,6 +25,7 @@ import {
 } from 'components/Icons/Icons';
 
 import styles from './Header.module.scss';
+import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 
 let isChangingAccount = false;
 
@@ -34,7 +35,7 @@ const Header = (): JSX.Element => {
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [lockout, setLockout] = useState(false);
   const [transactionsModalShowed, setTransactionsModalShowed] = useState(false);
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   const signedIn = !!user?.account;
 
@@ -282,15 +283,13 @@ const Header = (): JSX.Element => {
               </HoverMenuButton>
             </div>
           </div>
-
-          {/* Work in progress, button hidden until working */}
-          <div style={{ display: 'none', cursor: 'pointer', height: 10, width: 10 }} onClick={toggleColorMode}></div>
         </div>
       </Box>
 
       {settingsModalShowed && <SettingsModal onClose={() => setSettingsModalShowed(false)} />}
       {transactionsModalShowed && <RecentTransactionsModal onClose={() => setTransactionsModalShowed(false)} />}
       {lockoutComponent}
+      {/* {<DarkmodeSwitch />} */}
     </header>
   );
 };

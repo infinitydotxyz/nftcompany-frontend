@@ -1,0 +1,25 @@
+.darkMode {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  padding: 10px;
+  transition: all 0.82s;
+  border-radius: 12px;
+
+  color: rgba(0, 0, 0, 0.1);
+  background-color: #0000000a;
+  &:hover {
+    background-color: #00000022;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  :global(body.chakra-ui-dark) & {
+    color: rgba(255, 255, 255, 0.1);
+
+    background-color: #ffffff0a;
+    &:hover {
+      background-color: #ffffff22;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
