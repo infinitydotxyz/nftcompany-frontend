@@ -205,6 +205,11 @@
   }
   p {
     color: rgba(#071013, 0.6);
+
+    :global(body.chakra-ui-dark) & {
+      color: #eee;
+    }
+
     margin-bottom: 1em;
   }
 
@@ -221,6 +226,11 @@
   .question {
     margin: 0;
     border-bottom: 1px solid #eee;
+
+    :global(body.chakra-ui-dark) & {
+      border-bottom: 1px solid #333;
+    }
+
     &__headline {
       padding: 1rem;
       display: flex;
@@ -245,6 +255,11 @@
 
       .tg-desc {
         color: #071013;
+
+        :global(body.chakra-ui-dark) & {
+          color: #eee;
+        }
+
         font-weight: 700;
       }
 
@@ -256,7 +271,10 @@
       padding: 0 1rem 1rem;
       color: #071013;
       font-size: 1.2rem;
-      // display: none;
+
+      :global(body.chakra-ui-dark) & {
+        color: #eee;
+      }
 
       user-select: none;
     }
