@@ -1,3 +1,5 @@
+@import 'styles/_mixins.scss';
+
 .overlay {
   position: fixed;
   z-index: 2;
@@ -24,6 +26,7 @@
 
   :global(body.chakra-ui-dark) & {
     background-color: var(--chakra-colors-windowBgDark, red);
+    @include darkShadow();
   }
 
   border-radius: 20px;
