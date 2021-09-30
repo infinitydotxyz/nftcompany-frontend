@@ -34,6 +34,8 @@ const Header = (): JSX.Element => {
   const [transactionsModalShowed, setTransactionsModalShowed] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
 
+  const signedIn = !!user?.account;
+
   useEffect(() => {
     const handleAccountChange = async (accounts: string[]) => {
       isChangingAccount = true;
@@ -100,7 +102,7 @@ const Header = (): JSX.Element => {
   ];
 
   let accountItems: JSX.Element[] = [];
-  if (user?.account) {
+  if (signedIn) {
     accountItems = [
       <AddressMenuItem key="AddressMenuItem" user={user} />,
       <MenuDivider key="kdd" />,
@@ -127,7 +129,7 @@ const Header = (): JSX.Element => {
 
   let accountButton;
 
-  if (user?.account) {
+  if (signedIn) {
     accountButton = (
       <div style={{ marginLeft: 6 }}>
         <HoverMenuButton buttonTitle={ellipsisAddress(user?.account)} shadow={true} arrow={false}>
@@ -222,11 +224,17 @@ const Header = (): JSX.Element => {
 
             <div className={styles.showLargeNav}>
               <div className={styles.linksButtons}>
-                <HoverMenuButton buttonTitle="My NFTs">{ntfItems}</HoverMenuButton>
+                <HoverMenuButton disabled={!signedIn} buttonTitle="My NFTs">
+                  {ntfItems}
+                </HoverMenuButton>
 
-                <HoverMenuButton buttonTitle="Offers">{offerItems}</HoverMenuButton>
+                <HoverMenuButton disabled={!signedIn} buttonTitle="Offers">
+                  {offerItems}
+                </HoverMenuButton>
 
-                <HoverMenuButton buttonTitle="Activity">{transactionItems}</HoverMenuButton>
+                <HoverMenuButton disabled={!signedIn} buttonTitle="Activity">
+                  {transactionItems}
+                </HoverMenuButton>
               </div>
             </div>
 

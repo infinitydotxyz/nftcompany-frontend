@@ -9,9 +9,17 @@ type Props = {
   children: JSX.Element[] | JSX.Element;
   shadow?: boolean;
   arrow?: boolean;
+  disabled?: boolean;
 };
 
-export const HoverMenuButton = ({ shadow = false, arrow = true, buttonTitle, buttonContent, children }: Props) => {
+export const HoverMenuButton = ({
+  disabled = false,
+  shadow = false,
+  arrow = true,
+  buttonTitle,
+  buttonContent,
+  children
+}: Props) => {
   const { colorMode } = useColorMode();
 
   let hoverTimer: any;
@@ -50,11 +58,16 @@ export const HoverMenuButton = ({ shadow = false, arrow = true, buttonTitle, but
     buttonClass.push(styles.dark);
   }
 
+  if (disabled) {
+    buttonClass.push(styles.disabled);
+  }
+
   return (
     <div className={styles.main}>
       {/* setting an id on menu prevents a console warning about non matching ids */}
       <Menu isLazy isOpen={isOpen} id="hover-menu">
         <MenuButton
+          disabled={disabled}
           className={buttonClass.join(' ')}
           onMouseEnter={() => {
             clearTimeout(menuListTimer);
