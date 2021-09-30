@@ -142,7 +142,8 @@ export const getCustomMessage = (eventName: string, data: any) => {
     eventName === EventType.MatchOrders ||
     eventName === EventType.CreateOrder ||
     eventName === EventType.CancelOrder ||
-    eventName === EventType.TransactionDenied
+    eventName === EventType.TransactionDenied ||
+    eventName === EventType.TransactionFailed
   ) {
     // for these events, MetaMask pops up, no need to show messages.
     return null;
