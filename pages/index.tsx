@@ -53,7 +53,7 @@ export default function Home() {
     <section className={styles.titleSection}>
       <div className={styles.containerAvg}>
         <div className={styles.topCol}>
-          <div className={styles.left}>
+          <div className={styles.textCol}>
             <div className={styles.bigTitle}>
               Automate DeFi with your NFTs. Track all your investments in one place.
               <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
@@ -95,10 +95,8 @@ export default function Home() {
               <div>- List your NFTs without re-initiating your wallet (if they are already listed on OpenSea)</div>
             </div>
           </div>
-          <div className={styles.right}>
-            <div className={styles.image}>
-              <Image alt="NFT Company" src="/img/artwork-2.png" width={488} height={488} />
-            </div>
+          <div className={styles.imageCol}>
+            <Image alt="NFT Company" src="/img/artwork-2.png" width={488} height={488} />
           </div>
         </div>
       </div>
@@ -110,10 +108,10 @@ export default function Home() {
     <section className={styles.titleSection}>
       <div className={styles.containerAvg}>
         <div className={styles.topCol}>
-          <div className={styles.right}>
+          <div className={styles.imageCol}>
             <Image alt="NFT Company" src="/img/developer.png" width={500} height={488} />
           </div>
-          <div className={styles.left}>
+          <div className={styles.textCol}>
             <div className={styles.bigTitle}>
               Developers: build DeFi, game, social media or any NFT you dream of.
               <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
@@ -153,7 +151,7 @@ export default function Home() {
     <section className={styles.titleSection}>
       <div className={styles.containerAvg}>
         <div className={styles.topCol}>
-          <div className={styles.left}>
+          <div className={styles.textCol}>
             <div className={styles.bigTitle}>
               Creators: make NFTs that do more than simply represent your creations.
               <br />
@@ -178,10 +176,8 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className={styles.right}>
-            <div className={styles.image}>
-              <Image alt="NFT Company" src="/img/artists.png" width={500} height={480} />
-            </div>
+          <div className={styles.imageCol}>
+            <Image alt="NFT Company" src="/img/artists.png" width={500} height={480} />
           </div>
         </div>
       </div>
@@ -210,7 +206,7 @@ export default function Home() {
               </p>
             </Box>
           </div>
-          <Image className={styles.cover} alt="NFT Company" src="/img/artwork-3.png" width={770} height={512} />
+          <Image alt="NFT Company" src="/img/artwork-3.png" width={770} height={512} />
         </div>
       </div>
     </section>
@@ -222,7 +218,7 @@ export default function Home() {
       <div className={styles.background} />
       <div className={styles.containerAvg}>
         <div className={styles.topCol}>
-          <div className={styles.left}>
+          <div className={styles.textCol}>
             <div className={styles.bigTitle}>Investors</div>
 
             <div className={styles.subTitle}>
@@ -234,10 +230,8 @@ export default function Home() {
               <Image alt="ETH Global HackMoney" src="/img/ethGlobal.svg" width={200} height={200} layout="fixed" />
             </div>
           </div>
-          <div className={styles.right}>
-            <div className={styles.image}>
-              <Image alt="NFT Company" src="/img/artwork-4.png" width={488} height={400} />
-            </div>
+          <div className={styles.imageCol}>
+            <Image alt="NFT Company" src="/img/artwork-4.png" width={488} height={400} />
           </div>
         </div>
       </div>
@@ -250,7 +244,7 @@ export default function Home() {
       <div className={styles.background} />
       <div className={styles.containerAvg}>
         <div className={styles.topCol}>
-          <div className={styles.left}>
+          <div className={styles.textCol}>
             <div className={styles.bigTitle}>FAQs</div>
             <div className={styles.subTitle}>
               We are backed by investors that believe in the long term potential of crypto.

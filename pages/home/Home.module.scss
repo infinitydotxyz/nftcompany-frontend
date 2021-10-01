@@ -49,11 +49,16 @@
     display: flex;
     gap: 40px;
 
-    .left {
+    .textCol {
       flex: 4;
     }
-    .right {
+    .imageCol {
       flex: 3;
+
+      @media (max-width: 800px) {
+        display: none;
+        flex: none;
+      }
     }
   }
 
@@ -137,10 +142,6 @@
   gap: 50px;
 }
 
-// @media (max-width: 500px) {
-
-// }
-
 .worldBox {
   max-width: 920px;
   background-color: #dbe3fe;
@@ -154,5 +155,6 @@
 }
 
 .link {
-  color: #4047ff;
+  font-weight: bold;
+  color: var(--chakra-colors-brandBlue, red);
 }

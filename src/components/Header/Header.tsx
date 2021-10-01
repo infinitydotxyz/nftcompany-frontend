@@ -233,7 +233,7 @@ const Header = (): JSX.Element => {
                 style={{ flex: '0 1 auto' }}
                 className="can-click"
                 alt="logo"
-                src="/img/ncBetaTransparentBgSvg.svg"
+                src={dark ? '/img/ncDarkMode.svg' : '/img/ncBetaTransparentBgSvg.svg'}
                 width={60}
               />
             </Link>
