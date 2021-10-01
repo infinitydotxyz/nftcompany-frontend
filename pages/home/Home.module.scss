@@ -13,20 +13,25 @@
 .titleSection {
   // for the background
   position: relative;
-  padding: 4rem 0;
+  padding: 6rem 0;
 
   .bigTitle {
-    font-size: 3rem;
+    // em on purpose, we set a larger font in the parent to boost this
+    font-size: 3em;
     line-height: 1.2;
     font-weight: 800;
     margin: 0;
     letter-spacing: -0.01em;
   }
 
-  .subTitle {
-    margin-top: 1rem;
+  .subHeader {
     line-height: 1.5;
     font-size: 1.35rem;
+  }
+
+  .subTitle {
+    @extend .subHeader;
+    margin-top: 1rem;
   }
 
   .bigTitleBlue {
@@ -52,11 +57,23 @@
     }
   }
 
+  .topHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+
+    // boosts bigTitle em
+    font-size: 1.3em;
+
+    margin-bottom: 4rem;
+  }
+
   .buttons {
-    margin-top: 4rem;
+    margin-top: 1rem;
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 40px;
 
     .stadiumButton {
       border-radius: 100px;

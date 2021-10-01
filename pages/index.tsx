@@ -19,31 +19,29 @@ export default function Home() {
     <section className={styles.titleSection}>
       <div className={styles.background} />
       <div className={styles.containerAvg}>
-        <div className={styles.topCol}>
-          <div className={styles.left}>
-            <div className={styles.bigTitle}>
-              The most <br />
-              decentralized NFT marketplace. <div className={styles.bigTitleBlue}>Ever.</div>
-            </div>
-
-            <div className={styles.subTitle}>
-              Earn rewards for your activity, list without <br />
-              re-initating your wallet, and low fees when sold.
-            </div>
-
-            <div className={styles.buttons}>
-              <Button className={styles.stadiumButton} type="submit" onClick={() => router.push('/explore')}>
-                Explore
-              </Button>
-              <Button className={styles.stadiumButton} colorScheme="gray" onClick={() => router.push('/my-nfts')}>
-                List NFTs
-              </Button>
-            </div>
+        <div className={styles.topHeader}>
+          <div className={styles.bigTitle}>
+            The most decentralized <br />
+            NFT marketplace. <div className={styles.bigTitleBlue}>Ever.</div>
           </div>
-          <div className={styles.right}>
-            <div className={styles.image}>
-              <Image alt="NFT Company" src="/img/artwork-1.png" width={488} height={488} />
-            </div>
+
+          <div className={styles.subHeader}>
+            Earn rewards for your activity, list without <br />
+            re-initating your wallet, and low fees when sold.
+          </div>
+
+          <div className={styles.buttons}>
+            <Button size="lg" className={styles.stadiumButton} type="submit" onClick={() => router.push('/explore')}>
+              Explore
+            </Button>
+            <Button
+              size="lg"
+              className={styles.stadiumButton}
+              colorScheme="gray"
+              onClick={() => router.push('/my-nfts')}
+            >
+              List NFTs
+            </Button>
           </div>
         </div>
       </div>
@@ -107,6 +105,7 @@ export default function Home() {
     </section>
   );
 
+  // -------------------------------
   const developersSection = (
     <section className={styles.titleSection}>
       <div className={styles.containerAvg}>
@@ -149,6 +148,7 @@ export default function Home() {
     </section>
   );
 
+  // -------------------------------
   const artistsSections = (
     <section className={styles.titleSection}>
       <div className={styles.containerAvg}>
@@ -188,6 +188,7 @@ export default function Home() {
     </section>
   );
 
+  // -------------------------------
   const worldSection = (
     <section id="world" className={styles.titleSection}>
       <div className={styles.backgroundTwo} />
@@ -215,6 +216,7 @@ export default function Home() {
     </section>
   );
 
+  // -------------------------------
   const investorsSection = (
     <section className={styles.titleSection}>
       <div className={styles.background} />
@@ -242,6 +244,7 @@ export default function Home() {
     </section>
   );
 
+  // -------------------------------
   const faqSection = (
     <section className={styles.titleSection}>
       <div className={styles.background} />
@@ -291,7 +294,6 @@ export default function Home() {
                 }
               ]}
             />
-            ;
           </div>
         </div>
       </div>
@@ -310,7 +312,6 @@ export default function Home() {
       {artistsSections}
       {worldSection}
       {investorsSection}
-
       {faqSection}
 
       {<DarkmodeSwitch />}
