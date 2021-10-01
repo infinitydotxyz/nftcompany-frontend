@@ -133,6 +133,10 @@
 
 .showMobileMenu {
   display: none;
+
+  :global(body.chakra-ui-dark) & {
+    color: white;
+  }
 }
 
 .showExplore {

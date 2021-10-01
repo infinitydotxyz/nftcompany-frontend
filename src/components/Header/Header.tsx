@@ -9,7 +9,6 @@ import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import SettingsModal from 'components/SettingsModal/SettingsModal';
-import MoreVert from './more_vert.svg';
 import RecentTransactionsModal from 'components/RecentTransactionsModal/RecentTransactionsModal';
 import { ellipsisAddress } from 'utils/commonUtil';
 import {
@@ -21,7 +20,8 @@ import {
   ImageSearchIcon,
   ImageIcon,
   CartIcon,
-  ShoppingBagIcon
+  ShoppingBagIcon,
+  MoreVertIcon
 } from 'components/Icons/Icons';
 
 import styles from './Header.module.scss';
@@ -278,9 +278,7 @@ const Header = (): JSX.Element => {
 
             <div className={styles.showMobileMenu}>
               {/* using Image() put space at the bottom */}
-              <HoverMenuButton buttonContent={<img alt="menu" src={MoreVert.src} height={32} width={32} />}>
-                {mobileNavMenu}
-              </HoverMenuButton>
+              <HoverMenuButton buttonContent={<MoreVertIcon />}>{mobileNavMenu}</HoverMenuButton>
             </div>
           </div>
         </div>

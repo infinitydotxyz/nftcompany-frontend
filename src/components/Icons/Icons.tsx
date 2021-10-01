@@ -320,7 +320,16 @@ export const CheckShieldIcon = (props: Record<string, unknown>): JSX.Element => 
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-      ></path>{' '}
+      ></path>
+    </g>
+  </Icon>
+);
+
+export const MoreVertIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon boxSize={8} viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <path d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
     </g>
   </Icon>
 );

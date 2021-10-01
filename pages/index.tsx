@@ -189,8 +189,8 @@ export default function Home() {
     <section id="world" className={styles.titleSection}>
       <div className={styles.backgroundTwo} />
 
-      <div className={[styles.containerAvg, styles.worldBox].join(' ')}>
-        <div className={`${styles.box}`}>
+      <div className={styles.containerAvg}>
+        <div className={styles.worldBox}>
           <div className="grid">
             <div className="col-sm-8 col-md-5">
               <h2 className="tg-hero-title">
