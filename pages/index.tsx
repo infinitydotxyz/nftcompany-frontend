@@ -17,6 +17,7 @@ export default function Home() {
   // -------------------------------
   const topSection = (
     <section className={styles.titleSection}>
+      <div className={styles.background} />
       <div className={styles.containerAvg}>
         <div className={styles.topCol}>
           <div className={styles.left}>
@@ -149,24 +150,38 @@ export default function Home() {
   );
 
   const artistsSections = (
-    <section className={`${styles.artists} section`}>
-      <div className="container container-avg">
-        <div className="grid">
-          <div className="col-sm-12 col-md-6">
-            <h3 className="tg-title">
+    <section className={styles.titleSection}>
+      <div className={styles.containerAvg}>
+        <div className={styles.topCol}>
+          <div className={styles.left}>
+            <div className={styles.bigTitle}>
               Creators: make NFTs that do more than simply represent your creations.
               <br />
-              <span className="brand-color">Make the really special ones. {<CheckShieldIcon />}</span>
-            </h3>
+              <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
+                <div>Make the really special ones.</div>
+                <CheckShieldIcon />
+              </div>
+            </div>
 
-            <ul>
-              <li>Make an NFT from your creation.</li>
-              <li>Tell us what new capabilities you wish to impart to your NFTs. We will help you program them.</li>
-              <li>Launch your supercharged NFTs into the world.</li>
-            </ul>
+            <div className={styles.checklist}>
+              <div className={styles.checklistRow}>
+                <CheckCircleIcon className={styles.icon} />
+                <div>Make an NFT from your creation</div>
+              </div>
+              <div className={styles.checklistRow}>
+                <CheckCircleIcon className={styles.icon} />
+                <div>Tell us what new capabilities you wish to impart to your NFTs. We will help you program them</div>
+              </div>
+              <div className={styles.checklistRow}>
+                <CheckCircleIcon className={styles.icon} />
+                <div>Launch your supercharged NFTs into the world</div>
+              </div>
+            </div>
           </div>
-          <div className="col-sm-12 col-md-6">
-            <Image alt="NFT Company" src="/img/artists.png" width={500} height={480} />
+          <div className={styles.right}>
+            <div className={styles.image}>
+              <Image alt="NFT Company" src="/img/artists.png" width={500} height={480} />
+            </div>
           </div>
         </div>
       </div>
@@ -174,8 +189,10 @@ export default function Home() {
   );
 
   const worldSection = (
-    <section id="world" className={`${styles.world} section`}>
-      <div className="container container-avg">
+    <section id="world" className={styles.titleSection}>
+      <div className={styles.backgroundTwo} />
+
+      <div className={[styles.containerAvg, styles.worldBox].join(' ')}>
         <div className={`${styles.box}`}>
           <div className="grid">
             <div className="col-sm-8 col-md-5">
@@ -281,8 +298,6 @@ export default function Home() {
       <Head>
         <title>NFT Company</title>
       </Head>
-
-      <div className={styles.background} />
 
       {topSection}
       {automateSection}
