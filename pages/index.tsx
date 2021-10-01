@@ -41,7 +41,7 @@ export default function Home() {
           </div>
           <div className={styles.right}>
             <div className={styles.image}>
-              <Image alt="NFT Company" src="/img/artwork-2.png" width={488} height={488} />
+              <Image alt="NFT Company" src="/img/artwork-1.png" width={488} height={488} />
             </div>
           </div>
         </div>
@@ -107,32 +107,41 @@ export default function Home() {
   );
 
   const developersSection = (
-    <section className={`${styles.developers} section`}>
-      <div className="container container-avg">
-        <div className="grid">
-          <div className="col-sm-12 col-md-6">
+    <section className={styles.titleSection}>
+      <div className={styles.containerAvg}>
+        <div className={styles.topCol}>
+          <div className={styles.right}>
             <Image alt="NFT Company" src="/img/developer.png" width={500} height={488} />
           </div>
-
-          <div className="col-sm-12 col-md-6">
-            <h3 className="tg-title">
+          <div className={styles.left}>
+            <div className={styles.bigTitle}>
               Developers: build DeFi, game, social media or any NFT you dream of.
-              <br />
-              <span className="brand-color">
-                Possibilities are endless. <CheckShieldIcon />
-              </span>
-            </h3>
+              <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
+                <div>Possibilities are endless.</div>
+                <CheckShieldIcon />
+              </div>
+            </div>
 
-            <ul>
-              <li>Extend our base contracts to create new NFTs.</li>
-              <li>Get design, UI, smart contract and backend help from us.</li>
-              <li>Publish them on our marketplace and earn revenue.</li>
-              <li>
+            <div className={styles.checklist}>
+              <div className={styles.checklistRow}>
+                <CheckCircleIcon className={styles.icon} />
+                <div>Extend our base contracts to create new NFTs</div>
+              </div>
+              <div className={styles.checklistRow}>
+                <CheckCircleIcon className={styles.icon} />
+                <div>Get design, UI, smart contract and backend help from us</div>
+              </div>
+              <div className={styles.checklistRow}>
+                <CheckCircleIcon className={styles.icon} />
+                <div>Publish them on our marketplace and earn revenue</div>
+              </div>
+              <div className={styles.checklistRow}>
+                <CheckCircleIcon className={styles.icon} />
                 <a href="https://docs.nftcompany.com/all/architecture/overview" className={styles.link}>
                   And more.
                 </a>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>

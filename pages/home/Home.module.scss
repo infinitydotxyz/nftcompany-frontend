@@ -11,7 +11,7 @@
 }
 
 .titleSection {
-  margin: 5rem 0;
+  padding: 4rem 0;
 
   .bigTitle {
     font-size: 3rem;
@@ -40,6 +40,7 @@
 
   .topCol {
     display: flex;
+    gap: 40px;
 
     .left {
       flex: 4;
