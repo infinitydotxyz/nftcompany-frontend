@@ -35,6 +35,7 @@
   .alignCenter {
     display: flex;
     align-items: center;
+    gap: 10px;
   }
 
   .topCol {
@@ -49,7 +50,7 @@
   }
 
   .buttons {
-    margin-top: 3rem;
+    margin-top: 4rem;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -62,21 +63,24 @@
     }
   }
 
-  .checklistRow {
-    display: flex;
-    margin-top: 0.5rem;
-    align-items: center;
-    font-size: 1.25rem;
-    .icon {
-      margin-right: 0.7rem;
-      color: var(--chakra-colors-brandBlue, red);
+  .checklist {
+    margin-top: 1.5rem;
+    .checklistRow {
+      display: flex;
+      margin-top: 0.5rem;
+      align-items: center;
+      font-size: 1.25rem;
+      .icon {
+        margin-right: 0.7rem;
+        color: var(--chakra-colors-brandBlue, red);
+      }
     }
   }
 
   .fineprint {
     margin-top: 1rem;
 
-    font-size: 0.7rem;
+    font-size: 0.8rem;
   }
 }
 

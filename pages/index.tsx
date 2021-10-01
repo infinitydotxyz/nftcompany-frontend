@@ -7,7 +7,7 @@ import Layout from 'containers/layout';
 import { Box, Button } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import styles from './home/Home.module.scss';
-import Questions from 'components/FaqAccordion/FaqAccordion';
+import FaqAccordian from 'components/FaqAccordion/FaqAccordion';
 import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import { CheckShieldIcon } from 'components/Icons/Icons';
@@ -57,8 +57,8 @@ export default function Home() {
           <div className={styles.left}>
             <div className={styles.bigTitle}>
               Automate DeFi with your NFTs. Track all your investments in one place.
-              <div className={styles.bigTitleBlue}>
-                Let NFTs do the work.
+              <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
+                <div>Let NFTs do the work.</div>
                 <CheckShieldIcon />
               </div>
             </div>
@@ -89,10 +89,9 @@ export default function Home() {
             <div className={styles.fineprint}>
               <div>- Lower fees (for example, we charge a 1.5% transaction fee when others charge 2.5% or higher)</div>
 
-              <div>
-                - Earn tokens for activity on the marketplace - Governance tokens control all aspects of the marketplace
-                and fees
-              </div>
+              <div>- Earn tokens for activity on the marketplace</div>
+
+              <div>- Governance tokens control all aspects of the marketplace and fees</div>
 
               <div>- List your NFTs without re-initiating your wallet (if they are already listed on OpenSea)</div>
             </div>
@@ -226,7 +225,7 @@ export default function Home() {
     <section id="faq" className={`${styles.faq} section`}>
       <div className="container container-avg">
         <h2 className="text-center tg-title">FAQs</h2>
-        <Questions
+        <FaqAccordian
           questions={[
             {
               question: 'What is a programmable NFT?',
