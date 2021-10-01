@@ -26,8 +26,8 @@ export default function Home() {
           </div>
 
           <div className={styles.subHeader}>
-            Earn rewards for your activity, list without <br />
-            re-initating your wallet, and low fees when sold.
+            Earn rewards for your activity, list without re-initating <br />
+            your wallet, and low fees when sold.
           </div>
 
           <div className={styles.buttons}>
