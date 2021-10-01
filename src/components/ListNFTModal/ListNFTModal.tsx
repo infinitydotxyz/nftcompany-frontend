@@ -111,7 +111,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
 
             {activeTab === 'SET_PRICE' ? (
               <div className={styles.row}>
-                <div>Sell at a fixed or declining price.</div>
+                <div className={styles.fields}>Sell at a fixed or declining price.</div>
                 <div className={styles.fields}>
                   <div className={styles.left}>{endPriceShowed ? 'Starting price' : 'Price'}</div>
                   <div className={styles.middle}>
@@ -174,7 +174,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
             ) : (
               <div className={styles.row}>
                 {/* ------ English Auction (Highest Bid) ------ */}
-                <div>Auction to the highest bidder.</div>
+                <div className={styles.fields}>Auction to the highest bidder.</div>
                 <div className={styles.fields}>
                   <div className={styles.left}>
                     <div>Minimum bid</div>
