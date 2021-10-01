@@ -82,7 +82,6 @@ export default function ListNFTs() {
               data={data}
               action="CANCEL_LISTING"
               onClickAction={async (item, action) => {
-                console.log('item, action', item, action);
                 setDeleteModalItem(item);
               }}
             />

@@ -38,7 +38,7 @@
     box-shadow: inset 0px -1px 0px #eaeaea;
     background-color: var(--chakra-colors-headerBg, red);
 
-    &.dark {
+    :global(body.chakra-ui-dark) & {
       box-shadow: inset 0px -1px 0px #444;
       background-color: var(--chakra-colors-headerBgDark, red);
     }
@@ -67,15 +67,26 @@
     display: flex;
     align-items: center;
     padding: 8px 16px;
-    color: #333;
-    box-shadow: 0px 6px 6px rgba(64, 71, 255, 0.15);
-    border: 1px solid #eee;
     border-radius: 60px;
     cursor: pointer;
     transition: 0.2s ease-in-out;
 
+    color: #333;
+    box-shadow: 0px 6px 6px rgba(64, 71, 255, 0.15);
+    border: 1px solid #eee;
+
+    :global(body.chakra-ui-dark) & {
+      color: #eee;
+      box-shadow: 0px 6px 6px rgba(64, 71, 255, 0.15);
+      border: 1px solid #333;
+    }
+
     &:hover {
       background-color: #eee;
+
+      :global(body.chakra-ui-dark) & {
+        background-color: #333;
+      }
     }
 
     & svg {
@@ -93,7 +104,7 @@
   transition: 0.1s all ease-in;
   margin-right: 6px;
 
-  .dark & {
+  :global(body.chakra-ui-dark) & {
     color: #eee;
   }
 
@@ -122,6 +133,10 @@
 
 .showMobileMenu {
   display: none;
+
+  :global(body.chakra-ui-dark) & {
+    color: white;
+  }
 }
 
 .showExplore {

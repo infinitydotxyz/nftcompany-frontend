@@ -45,7 +45,6 @@ export default function OffersReceived() {
   };
 
   React.useEffect(() => {
-    console.log('- Offers Received - user:', user);
     fetchData();
   }, [user]);
 

@@ -45,7 +45,6 @@ export default function Sales() {
   };
 
   React.useEffect(() => {
-    console.log('- Sales - user:', user);
     fetchData();
   }, [user]);
 

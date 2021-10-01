@@ -41,7 +41,6 @@ export default function Preview() {
   const idNum = parseInt(`${id}` ?? '0');
   const data = sampleData[idNum];
   const [tabIndex, setTabIndex] = useState(1);
-  console.log('view', view);
 
   const title = React.useMemo(() => {
     switch (tabIndex) {

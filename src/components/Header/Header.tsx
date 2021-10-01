@@ -9,7 +9,6 @@ import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import SettingsModal from 'components/SettingsModal/SettingsModal';
-import MoreVert from './more_vert.svg';
 import RecentTransactionsModal from 'components/RecentTransactionsModal/RecentTransactionsModal';
 import { ellipsisAddress } from 'utils/commonUtil';
 import {
@@ -21,10 +20,12 @@ import {
   ImageSearchIcon,
   ImageIcon,
   CartIcon,
-  ShoppingBagIcon
+  ShoppingBagIcon,
+  MoreVertIcon
 } from 'components/Icons/Icons';
 
 import styles from './Header.module.scss';
+import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 
 let isChangingAccount = false;
 
@@ -34,7 +35,7 @@ const Header = (): JSX.Element => {
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [lockout, setLockout] = useState(false);
   const [transactionsModalShowed, setTransactionsModalShowed] = useState(false);
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   const signedIn = !!user?.account;
 
@@ -88,7 +89,7 @@ const Header = (): JSX.Element => {
       // on unmounting
       if (window?.ethereum) {
         window.ethereum.removeListener('accountsChanged', handleAccountChange);
-        window.ethereum.removeListener('chainChanged', handleAccountChange);
+        window.ethereum.removeListener('chainChanged', handleNetworkChange);
       }
     };
   }, []);
@@ -198,12 +199,6 @@ const Header = (): JSX.Element => {
   ];
 
   const dark = colorMode === 'dark';
-  const headerStyles = [styles.hdf];
-
-  if (dark) {
-    headerStyles.push(styles.dark);
-  }
-
   let lockoutComponent;
 
   if (lockout) {
@@ -219,26 +214,26 @@ const Header = (): JSX.Element => {
 
   return (
     <header className={styles.header}>
-      <Box className={headerStyles.join(' ')}>
+      <Box className={styles.hdf}>
         <div className="page-container-header">
           <div className={styles.showLargeLogo}>
-            <Link href="/explore" passHref>
+            <Link href="/" passHref>
               <img
-                style={{ flex: '0 1 auto' }}
+                style={{ flex: '0 1 auto', minHeight: 68 }}
                 className="can-click"
                 alt="logo"
-                src={dark ? '/img/nftcompanyWhiteBgSvg.svg' : '/img/nftCompanyBetaTransparentBg.svg'}
+                src={dark ? '/img/nttcompanyDarkModeLogo.svg' : '/img/nftCompanyBetaTransparentBg.svg'}
                 width={200}
               />
             </Link>
           </div>
           <div className={styles.showSmallLogo}>
-            <Link href="/explore" passHref>
+            <Link href="/" passHref>
               <img
                 style={{ flex: '0 1 auto' }}
                 className="can-click"
                 alt="logo"
-                src="/img/ncBetaTransparentBgSvg.svg"
+                src={dark ? '/img/ncDarkMode.svg' : '/img/ncBetaTransparentBgSvg.svg'}
                 width={60}
               />
             </Link>
@@ -283,20 +278,16 @@ const Header = (): JSX.Element => {
 
             <div className={styles.showMobileMenu}>
               {/* using Image() put space at the bottom */}
-              <HoverMenuButton buttonContent={<img alt="menu" src={MoreVert.src} height={32} width={32} />}>
-                {mobileNavMenu}
-              </HoverMenuButton>
+              <HoverMenuButton buttonContent={<MoreVertIcon />}>{mobileNavMenu}</HoverMenuButton>
             </div>
           </div>
-
-          {/* Work in progress, button hidden until working */}
-          <div style={{ display: 'none', cursor: 'pointer', height: 10, width: 10 }} onClick={toggleColorMode}></div>
         </div>
       </Box>
 
       {settingsModalShowed && <SettingsModal onClose={() => setSettingsModalShowed(false)} />}
       {transactionsModalShowed && <RecentTransactionsModal onClose={() => setTransactionsModalShowed(false)} />}
       {lockoutComponent}
+      {<DarkmodeSwitch />}
     </header>
   );
 };

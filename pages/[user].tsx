@@ -83,12 +83,12 @@ export default function UserPage() {
   return (
     <>
       <Head>
-        <title>Users NFTs</title>
+        <title>{"User's NFTs"}</title>
       </Head>
       <div>
         <div className="page-container">
           <div className="section-bar">
-            <div className="tg-title">Users NFTs</div>
+            <div className="tg-title">{"User's NFTs"}</div>
           </div>
 
           <div>

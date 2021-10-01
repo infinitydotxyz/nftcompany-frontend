@@ -5,6 +5,10 @@
   background-color: white;
   padding-bottom: 4px;
 
+  :global(body.chakra-ui-dark) & {
+    background-color: #151515;
+  }
+
   .title {
     display: flex;
     align-items: center;
@@ -16,6 +20,10 @@
     // color: #777;
     color: var(--brand-primary);
 
+    :global(body.chakra-ui-dark) & {
+      background-color: #222;
+    }
+
     .icon {
       color: var(--brand-primary);
       margin-right: 12px;
@@ -25,6 +33,10 @@
 
 .topBorder {
   border-top: 1px solid #ddd;
+
+  :global(body.chakra-ui-dark) & {
+    border-top: 1px solid #333;
+  }
 }
 
 .infoRow {
@@ -45,6 +57,10 @@
     font-weight: bold;
     font-size: 1.5rem;
     color: #333;
+
+    :global(body.chakra-ui-dark) & {
+      color: #eee;
+    }
   }
 }
 
