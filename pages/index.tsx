@@ -216,30 +216,25 @@ export default function Home() {
   );
 
   const investorsSection = (
-    <section id="investors" className={`${styles.investors} section`}>
-      <div className="container container-avg">
-        <div className="grid">
-          <div className={`${styles.image} col-sm-12 col-md-6`}>
-            <Image alt="NFT Company" src="/img/artwork-4.png" width={488} height={400} />
-          </div>
+    <section className={styles.titleSection}>
+      <div className={styles.background} />
+      <div className={styles.containerAvg}>
+        <div className={styles.topCol}>
+          <div className={styles.left}>
+            <div className={styles.bigTitle}>Investors</div>
 
-          <div className="col-sm-12 col-md-6">
-            <h3 className="tg-title">Investors</h3>
-            <p>We are backed by investors that believe in the long term potential of crypto.</p>
+            <div className={styles.subTitle}>
+              We are backed by investors that believe in the long term potential of crypto.
+            </div>
 
-            <div className="grid">
-              <div className="col-sm-6 col-md-3 col-lg-6">
-                <Image alt="Binance" src="/img/binanceLabs.png" width={500} height={300} />
-              </div>
-              <div className="col-sm-6 col-md-3 col-lg-6">
-                <Image alt="ETH Global HackMoney" src="/img/ethGlobal.svg" width={500} height={300} />
-              </div>
-              {/* <div className="col-sm-6 col-md-3">
-            <Image alt="NFT Company" src="/logo-investor.png" width={100} height={100} />
+            <div className={styles.investorLogos}>
+              <Image alt="Binance" src="/img/binanceLabs.png" width={200} height={200} layout="fixed" />
+              <Image alt="ETH Global HackMoney" src="/img/ethGlobal.svg" width={200} height={200} layout="fixed" />
+            </div>
           </div>
-          <div className="col-sm-6 col-md-3">
-            <Image alt="NFT Company" src="/logo-investor.png" width={100} height={100} />
-          </div> */}
+          <div className={styles.right}>
+            <div className={styles.image}>
+              <Image alt="NFT Company" src="/img/artwork-4.png" width={488} height={400} />
             </div>
           </div>
         </div>
@@ -248,47 +243,57 @@ export default function Home() {
   );
 
   const faqSection = (
-    <section id="faq" className={`${styles.faq} section`}>
-      <div className="container container-avg">
-        <h2 className="text-center tg-title">FAQs</h2>
-        <FaqAccordian
-          questions={[
-            {
-              question: 'What is a programmable NFT?',
-              answer:
-                'A programmable NFT is a smart contract that is minted by an NFT factory.' +
-                ' Since the NFT is a smart contract, it can be programmed to do anything.' +
-                ' For example, it can be programmed to manage Uniswap V3 positions automatically.'
-            },
-            {
-              question: 'Why programmable NFTs?',
-              answer: 'Because they are cooler than jpeg NFTs and regular smart contracts with regular front-ends.'
-            },
-            {
-              question: 'What can be built with this primitive?',
-              answer: 'P2P exchanges, P2P loans, games, smart wallets, frontends to any DeFi protocol/blockchain app.'
-            },
-            {
-              question: 'Are you live?',
-              answer:
-                'Our base contracts are ready and can be found on our Github. We are planning to release the first application of a programmable NFT in the coming weeks.'
-            },
-            {
-              question: 'When can I mint these NFTs?',
-              answer:
-                'In the coming weeks once we launch our first NFT. Stay tuned by following us on Twitter and joining our Discord.'
-            },
-            {
-              question: 'Is there a token?',
-              answer: 'No, currently there is no token.'
-            },
-            {
-              question: 'Is this a DAO?',
-              answer:
-                'We plan to build this as a DAO and are currently looking for members that will become part of the genesis squad. If you are developer, designer, marketer, memer or possess any valuable skill, reach out to us.'
-            }
-          ]}
-        />
+    <section className={styles.titleSection}>
+      <div className={styles.background} />
+      <div className={styles.containerAvg}>
+        <div className={styles.topCol}>
+          <div className={styles.left}>
+            <div className={styles.bigTitle}>FAQs</div>
+            <div className={styles.subTitle}>
+              We are backed by investors that believe in the long term potential of crypto.
+            </div>
+            <FaqAccordian
+              questions={[
+                {
+                  question: 'What is a programmable NFT?',
+                  answer:
+                    'A programmable NFT is a smart contract that is minted by an NFT factory.' +
+                    ' Since the NFT is a smart contract, it can be programmed to do anything.' +
+                    ' For example, it can be programmed to manage Uniswap V3 positions automatically.'
+                },
+                {
+                  question: 'Why programmable NFTs?',
+                  answer: 'Because they are cooler than jpeg NFTs and regular smart contracts with regular front-ends.'
+                },
+                {
+                  question: 'What can be built with this primitive?',
+                  answer:
+                    'P2P exchanges, P2P loans, games, smart wallets, frontends to any DeFi protocol/blockchain app.'
+                },
+                {
+                  question: 'Are you live?',
+                  answer:
+                    'Our base contracts are ready and can be found on our Github. We are planning to release the first application of a programmable NFT in the coming weeks.'
+                },
+                {
+                  question: 'When can I mint these NFTs?',
+                  answer:
+                    'In the coming weeks once we launch our first NFT. Stay tuned by following us on Twitter and joining our Discord.'
+                },
+                {
+                  question: 'Is there a token?',
+                  answer: 'No, currently there is no token.'
+                },
+                {
+                  question: 'Is this a DAO?',
+                  answer:
+                    'We plan to build this as a DAO and are currently looking for members that will become part of the genesis squad. If you are developer, designer, marketer, memer or possess any valuable skill, reach out to us.'
+                }
+              ]}
+            />
+            ;
+          </div>
+        </div>
       </div>
     </section>
   );
