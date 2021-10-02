@@ -5,7 +5,6 @@ import { deleteAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
 
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { ReactNode } from '.pnpm/@types+react@17.0.24/node_modules/@types/react';
 
 export type User = {
@@ -32,7 +31,7 @@ export function AppContextProvider({ children }: any) {
   const [userReady, setUserReady] = React.useState(false);
 
   const showAppError = (message: ReactNode) => {
-    let msg = getCustomExceptionMsg(message);
+    const msg = getCustomExceptionMsg(message);
     toast.error(msg, { position: 'bottom-center' });
   };
   const showAppMessage = (message: ReactNode) => toast.info(message, { position: 'bottom-center' });

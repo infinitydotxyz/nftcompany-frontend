@@ -69,7 +69,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
 
   return (
     <div>
-      <div className={styles.header}>Place a bid on this NFT</div>
+      <div className={styles.header}>Make an offer on this NFT</div>
 
       <form
         onSubmit={(ev) => {
@@ -92,7 +92,6 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
             className={styles.offerBorder}
             required
             placeholder="WETH" // {token}
-            size={'sm'}
             type="number"
             step={0.000000001}
             onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}

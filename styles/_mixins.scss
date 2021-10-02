@@ -3,3 +3,8 @@
 
   // box-shadow: 0 4px 40px #f333, 0 4px 30px -4px var(--chakra-colors-brandBlue, red);
 }
+
+@mixin inputBorder() {
+  border: 1px solid #aaa;
+  border-radius: 6px;
+}

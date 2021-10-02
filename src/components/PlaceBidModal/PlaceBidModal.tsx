@@ -207,7 +207,6 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   <Input
                     className={styles.offerBorder}
                     required
-                    size={'sm'}
                     type="number"
                     step={0.000000001}
                     onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}

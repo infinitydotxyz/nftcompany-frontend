@@ -106,6 +106,9 @@ const styles = {
   global: (props: any) => {
     return {
       body: {
+        fontFamily:
+          'Greycliff, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif',
+
         color: mode('gray.800', 'whiteAlpha.900')(props),
 
         // bg: mode('white', 'gray.800')(props)
