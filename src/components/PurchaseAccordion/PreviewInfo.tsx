@@ -173,7 +173,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
 
   const paymentToken = getToken(data?.order?.paymentToken);
   const _priceSection = data.price ? (
-    <div className={styles.addressRow}>
+    <div className={styles.priceRow}>
       <div className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price:' : 'Price:'}</div>
 
       <div style={{ flex: 1 }} />

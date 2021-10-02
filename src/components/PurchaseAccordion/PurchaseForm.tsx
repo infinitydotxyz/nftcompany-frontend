@@ -67,7 +67,7 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
   if (token === 'ETH') {
     return (
       <div>
-        <div>Buy this NFT at the fixed price.</div>
+        <div className={styles.header}>Buy this NFT at the fixed price</div>
 
         {data.price && (
           <div className={styles.priceRow}>

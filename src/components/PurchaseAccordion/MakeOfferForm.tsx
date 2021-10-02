@@ -69,7 +69,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
 
   return (
     <div>
-      <div>Place a bid on this NFT.</div>
+      <div className={styles.header}>Place a bid on this NFT</div>
 
       <form
         onSubmit={(ev) => {
