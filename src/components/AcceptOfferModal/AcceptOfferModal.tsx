@@ -5,7 +5,8 @@ import { getOpenSeaport } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
+import { Button } from '@chakra-ui/react';
 
 const isServer = typeof window === 'undefined';
 
@@ -48,10 +49,12 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
           showAppError((error as GenericError)?.message);
+        } else {
+          onClose();
         }
       } else {
         // Handle when the order does not exist anymore
-        showAppError('Offer no longer exists');
+        showAppError('Offer no longer exists.');
       }
     } catch (err) {
       showAppError((err as GenericError)?.message);
@@ -62,32 +65,28 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
-            <div className="modal-body">
-              <div className={styles.title}>Accept Offer</div>
+          <div>
+            <div className={styles.title}>Accept Offer</div>
 
-              <div className={styles.space}>You are about to sell this NFT.</div>
+            <div className={styles.space}>You are about to sell this NFT.</div>
 
-              <div className={styles.row}>
-                <ul>
-                  <li>
-                    <div>Price</div>
-                    <div>
-                      <span>{data.price}</span>
-                    </div>
-                    <div>ETH</div>
-                  </li>
-                </ul>
-              </div>
+            <div className={styles.row}>
+              <ul>
+                <li>
+                  <div>Price</div>
+                  <div>
+                    <span>{data.price}</span>
+                  </div>
+                  <div>ETH</div>
+                </li>
+              </ul>
+            </div>
 
-              <div className={styles.footer}>
-                <a className="action-btn" onClick={acceptOffer}>
-                  Accept Offer
-                </a>
-                <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
-                  Cancel
-                </a>
-              </div>
+            <div className={styles.buttons}>
+              <Button onClick={acceptOffer}>Accept Offer</Button>
+              <Button colorScheme="gray" onClick={() => onClose && onClose()}>
+                Cancel
+              </Button>
             </div>
           </div>
         </ModalDialog>

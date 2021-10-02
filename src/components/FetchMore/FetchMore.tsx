@@ -5,7 +5,6 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { CardData } from 'types/Nft.interface';
 
 const FetchMoreElement = ({ inView, ref, onFetchMore, data, currentPage }: any) => {
-  // console.log('inView', ' ', inView);
   React.useEffect(() => {
     if (inView === true && onFetchMore) {
       if (currentPage === 0 && data?.length < ITEMS_PER_PAGE) {
@@ -27,7 +26,6 @@ export const FetchMore = ({ onFetchMore, data, currentPage }: FetchMoreProps) =>
   return (
     <InView>
       {({ inView, ref }) => {
-        // console.log('FetchMore inView:', inView);
         return (
           <div ref={ref}>
             <FetchMoreElement inView={inView} onFetchMore={onFetchMore} data={data} currentPage={currentPage} />
@@ -37,6 +35,12 @@ export const FetchMore = ({ onFetchMore, data, currentPage }: FetchMoreProps) =>
     </InView>
   );
 };
+
+export const getLastItemSearchTitle = (data: CardData[]): string =>
+  data?.length > 0 ? data[data.length - 1]?.metadata?.searchTitle ?? '' : '';
+
+export const getLastItemSearchCollectionName = (data: CardData[]): string =>
+  data?.length > 0 ? data[data.length - 1]?.metadata?.searchCollectionName ?? '' : '';
 
 export const getLastItemMaker = (data: CardData[]): string =>
   data?.length > 0 ? data[data.length - 1]?.maker ?? '' : '';

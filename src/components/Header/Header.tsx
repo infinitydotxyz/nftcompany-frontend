@@ -9,21 +9,23 @@ import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import SettingsModal from 'components/SettingsModal/SettingsModal';
-import MoreVert from './more_vert.svg';
 import RecentTransactionsModal from 'components/RecentTransactionsModal/RecentTransactionsModal';
 import { ellipsisAddress } from 'utils/commonUtil';
 import {
   ListIcon,
   AddCartIcon,
   MoneyIcon,
+  EthToken,
   OfferIcon,
   ImageSearchIcon,
   ImageIcon,
   CartIcon,
-  ShoppingBagIcon
+  ShoppingBagIcon,
+  MoreVertIcon
 } from 'components/Icons/Icons';
 
 import styles from './Header.module.scss';
+import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 
 let isChangingAccount = false;
 
@@ -31,8 +33,11 @@ const Header = (): JSX.Element => {
   const router = useRouter();
   const { user, signIn, signOut } = useAppContext();
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
+  const [lockout, setLockout] = useState(false);
   const [transactionsModalShowed, setTransactionsModalShowed] = useState(false);
-  const { toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
+
+  const signedIn = !!user?.account;
 
   useEffect(() => {
     const handleAccountChange = async (accounts: string[]) => {
@@ -55,16 +60,36 @@ const Header = (): JSX.Element => {
       };
     };
 
+    const handleNetworkChange = (chainId: string) => {
+      window.location.reload();
+    };
+
+    const getChainId = async () => {
+      try {
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+
+        if (chainId !== '0x1') {
+          setLockout(true);
+        }
+      } catch (err) {
+        console.error('eth_chainId failed', err);
+      }
+    };
+
     signIn();
 
     if (window?.ethereum) {
+      getChainId();
+
       window.ethereum.on('accountsChanged', handleAccountChange);
+      window.ethereum.on('chainChanged', handleNetworkChange);
     }
 
     return () => {
       // on unmounting
       if (window?.ethereum) {
         window.ethereum.removeListener('accountsChanged', handleAccountChange);
+        window.ethereum.removeListener('chainChanged', handleNetworkChange);
       }
     };
   }, []);
@@ -100,7 +125,7 @@ const Header = (): JSX.Element => {
   ];
 
   let accountItems: JSX.Element[] = [];
-  if (user?.account) {
+  if (signedIn) {
     accountItems = [
       <AddressMenuItem key="AddressMenuItem" user={user} />,
       <MenuDivider key="kdd" />,
@@ -127,7 +152,7 @@ const Header = (): JSX.Element => {
 
   let accountButton;
 
-  if (user?.account) {
+  if (signedIn) {
     accountButton = (
       <div style={{ marginLeft: 6 }}>
         <HoverMenuButton buttonTitle={ellipsisAddress(user?.account)} shadow={true} arrow={false}>
@@ -173,28 +198,42 @@ const Header = (): JSX.Element => {
     ...accountItems
   ];
 
+  const dark = colorMode === 'dark';
+  let lockoutComponent;
+
+  if (lockout) {
+    lockoutComponent = (
+      <div className={styles.lockout}>
+        <div className={styles.message}>
+          {<EthToken boxSize={52} />}
+          <div>You must be on Ethereum Mainnet</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <header className={styles.header}>
       <Box className={styles.hdf}>
         <div className="page-container-header">
           <div className={styles.showLargeLogo}>
-            <Link href="/explore" passHref>
+            <Link href="/" passHref>
               <img
-                style={{ flex: '0 1 auto' }}
+                style={{ flex: '0 1 auto', minHeight: 68 }}
                 className="can-click"
                 alt="logo"
-                src="/img/nftCompanyBetaTransparentBg.svg"
+                src={dark ? '/img/nttcompanyDarkModeLogo.svg' : '/img/nftCompanyBetaTransparentBg.svg'}
                 width={200}
               />
             </Link>
           </div>
           <div className={styles.showSmallLogo}>
-            <Link href="/explore" passHref>
+            <Link href="/" passHref>
               <img
                 style={{ flex: '0 1 auto' }}
                 className="can-click"
                 alt="logo"
-                src="/img/ncBetaTransparentBgSvg.svg"
+                src={dark ? '/img/ncDarkMode.svg' : '/img/ncBetaTransparentBgSvg.svg'}
                 width={60}
               />
             </Link>
@@ -215,11 +254,17 @@ const Header = (): JSX.Element => {
 
             <div className={styles.showLargeNav}>
               <div className={styles.linksButtons}>
-                <HoverMenuButton buttonTitle="My NFTs">{ntfItems}</HoverMenuButton>
+                <HoverMenuButton disabled={!signedIn} buttonTitle="My NFTs">
+                  {ntfItems}
+                </HoverMenuButton>
 
-                <HoverMenuButton buttonTitle="Offers">{offerItems}</HoverMenuButton>
+                <HoverMenuButton disabled={!signedIn} buttonTitle="Offers">
+                  {offerItems}
+                </HoverMenuButton>
 
-                <HoverMenuButton buttonTitle="Activity">{transactionItems}</HoverMenuButton>
+                <HoverMenuButton disabled={!signedIn} buttonTitle="Activity">
+                  {transactionItems}
+                </HoverMenuButton>
               </div>
             </div>
 
@@ -233,19 +278,16 @@ const Header = (): JSX.Element => {
 
             <div className={styles.showMobileMenu}>
               {/* using Image() put space at the bottom */}
-              <HoverMenuButton buttonContent={<img alt="menu" src={MoreVert.src} height={32} width={32} />}>
-                {mobileNavMenu}
-              </HoverMenuButton>
+              <HoverMenuButton buttonContent={<MoreVertIcon />}>{mobileNavMenu}</HoverMenuButton>
             </div>
           </div>
-
-          {/* Work in progress, button hidden until working */}
-          <div style={{ display: 'none', cursor: 'pointer', height: 10, width: 10 }} onClick={toggleColorMode}></div>
         </div>
       </Box>
 
       {settingsModalShowed && <SettingsModal onClose={() => setSettingsModalShowed(false)} />}
       {transactionsModalShowed && <RecentTransactionsModal onClose={() => setTransactionsModalShowed(false)} />}
+      {lockoutComponent}
+      {<DarkmodeSwitch />}
     </header>
   );
 };

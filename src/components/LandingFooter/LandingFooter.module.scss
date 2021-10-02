@@ -1,0 +1,57 @@
+.footer {
+  background-color: #e4e9ee;
+  padding: 4rem 0;
+
+  .paragraph {
+    line-height: 1.5;
+    margin: 0;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+    width: 24rem;
+    padding-left: 0.25rem;
+    font-size: 16px;
+    max-width: 100%;
+
+    :global(body.chakra-ui-dark) & {
+      color: black;
+    }
+  }
+
+  .tg-desc {
+    font-size: clamp(1rem, 1.2vw + 1rem, 1.25rem);
+    line-height: 1.618;
+    margin-top: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    word-spacing: -0.02em;
+  }
+
+  .second {
+    margin-top: 4rem;
+    color: #071013;
+  }
+
+  .socials a {
+    display: inline-block;
+    margin: 0 8px;
+  }
+
+  @media (max-width: 500px) {
+    width: 105%;
+  }
+
+  .links {
+    list-style-type: none;
+  }
+
+  .links li a {
+    display: block;
+    padding: 0.25em 0;
+    color: rgba(#071013, 0.5);
+    transition: 0.2s ease-in-out;
+  }
+
+  .links li a:hover {
+    color: rgba(#071013, 0.9);
+  }
+}

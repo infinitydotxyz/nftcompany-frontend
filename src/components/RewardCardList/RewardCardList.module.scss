@@ -1,0 +1,36 @@
+@import '/styles/SharedStyles.module.scss';
+
+@mixin ajustableGrid($columns, $rows) {
+  display: grid;
+
+  grid-template-columns: repeat($columns, 1fr);
+  grid-gap: 30px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    grid-gap: 24px;
+
+    grid-template-rows: repeat($rows, 1fr);
+  }
+}
+
+.main {
+  display: flex;
+  // align-items: center;
+  flex-direction: column;
+
+  .cardGrid3 {
+    @include ajustableGrid(3, 3);
+  }
+
+  .cardGrid1 {
+    @include ajustableGrid(3, 1);
+  }
+
+  .infoRow {
+    display: grid;
+    border-top: 1px solid #ddd;
+    grid-template-columns: 2fr 1fr;
+    width: 100%;
+  }
+}

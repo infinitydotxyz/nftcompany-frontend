@@ -2,9 +2,6 @@
 
 .main {
   width: 100%;
-  background-color: white;
-  padding: 0 20px;
-  padding-bottom: 40px;
-
-  @extend .boxShadow;
+  padding-bottom: 20px;
+  overflow-x: auto;
 }

@@ -5,7 +5,8 @@ import { useAppContext } from 'utils/context/AppContext';
 import { getOpenSeaport } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
 import { GenericError } from 'types';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
+import { Button } from '@chakra-ui/react';
 
 const isServer = typeof window === 'undefined';
 interface IProps {
@@ -26,24 +27,18 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       });
 
       if (order) {
-        const txnHash = await seaport
-          .cancelOrder({
-            order: order,
-            accountAddress: user!.account
-          })
-          .then(() => {
-            onClose();
-          })
-          .catch((err: GenericError) => {
-            console.error('ERROR:', err);
-            showAppError(err?.message);
-          });
-        console.log('Cancel offer txn hash: ' + txnHash);
+        const txnHash = await seaport.cancelOrder({
+          order: order,
+          accountAddress: user!.account
+        });
+        onClose();
+
         const payload = {
           actionType: 'cancel',
           txnHash,
           side: 0,
-          orderId: data.id
+          orderId: data.id,
+          maker: user?.account
         };
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
@@ -62,33 +57,29 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
-            <div className="modal-body">
-              <div className={styles.title}>Cancel Offer</div>
+          <div>
+            <div className={styles.title}>Cancel Offer</div>
 
-              <div className={styles.space}>Your offer on this NFT.</div>
+            <div className={styles.space}>Your offer on this NFT.</div>
 
-              <div className={styles.row}>
-                <ul>
-                  <li>
-                    <div>Price</div>
-                    <div>
-                      <span>{data.price}</span>
-                    </div>
-                    <div>ETH</div>
-                  </li>
-                </ul>
-              </div>
+            <div className={styles.row}>
+              <ul>
+                <li>
+                  <div>Price</div>
+                  <div>
+                    <span>{data.price}</span>
+                  </div>
+                  <div>WETH</div>
+                </li>
+              </ul>
+            </div>
 
-              <div className={styles.footer}>
-                <a className="action-btn" onClick={cancelOffer}>
-                  Cancel Offer
-                </a>
+            <div className={styles.buttons}>
+              <Button onClick={cancelOffer}>Cancel Offer</Button>
 
-                <a className="action-btn action-2nd" onClick={() => onClose && onClose()}>
-                  Cancel
-                </a>
-              </div>
+              <Button colorScheme="gray" onClick={() => onClose && onClose()}>
+                Close
+              </Button>
             </div>
           </div>
         </ModalDialog>

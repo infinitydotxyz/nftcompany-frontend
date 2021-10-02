@@ -36,7 +36,7 @@ export const PriceBox = ({ justifyRight = false, price, expirationTime = '', tok
           </div>
           {expDate && (
             <div className={styles.expTime} title={expDate.toLocaleString()}>
-              end {format(expDate?.getTime())}
+              ends {format(expDate?.getTime())}
             </div>
           )}
         </div>

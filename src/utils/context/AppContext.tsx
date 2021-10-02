@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { getAccount, getOpenSeaport } from 'utils/ethersUtil';
-import { getCustomMessage } from 'utils/commonUtil';
+import { getCustomMessage, getCustomExceptionMsg } from 'utils/commonUtil';
 import { deleteAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
 
@@ -31,7 +31,10 @@ export function AppContextProvider({ children }: any) {
   const [user, setUser] = React.useState<User | null>(null);
   const [userReady, setUserReady] = React.useState(false);
 
-  const showAppError = (message: ReactNode) => toast.error(message, { position: 'bottom-center' });
+  const showAppError = (message: ReactNode) => {
+    let msg = getCustomExceptionMsg(message);
+    toast.error(msg, { position: 'bottom-center' });
+  };
   const showAppMessage = (message: ReactNode) => toast.info(message, { position: 'bottom-center' });
 
   // const connectMetaMask = async () => {
@@ -60,14 +63,10 @@ export function AppContextProvider({ children }: any) {
     // connectMetaMask(); // don't auto connect on page load.
 
     const listener = (eventName: any, data: any) => {
-      const arr: string[] = [];
-      Object.keys(data).forEach((k: string) => {
-        if (typeof data[k] !== 'object') {
-          arr.push(`${k}: ${data[k]}`);
-        }
-      });
-      console.log('eventName, data', eventName, data);
-      const msg = getCustomMessage(eventName, data) || `${eventName}: ${arr.join(', ')}`;
+      const msg = getCustomMessage(eventName, data);
+      if (msg === null) {
+        return;
+      }
       if (lastMsg && msg === lastMsg) {
         // TODO: to avoid show dup messages.
         lastMsg = '';
@@ -116,7 +115,6 @@ export function AppContextProvider({ children }: any) {
     signIn,
     signOut,
     userReady,
-
     showAppError,
     showAppMessage
   };

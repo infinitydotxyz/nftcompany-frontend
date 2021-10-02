@@ -1,17 +1,11 @@
 @import './vars.css';
-@import './ReactDatetime.css';
 @import './toastify.css';
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Greycliff', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
-    Droid Sans, Helvetica Neue, sans-serif !important;
-}
-
-.cpointer {
-  cursor: pointer;
+  font-family: var(--font-family) !important;
 }
 
 a {
@@ -19,19 +13,13 @@ a {
   text-decoration: none;
 }
 
-.a-link {
-  color: #9292ff;
-  text-decoration: none;
+.toast-link {
+  color: #eee;
+  text-decoration: underline;
 }
 
 * {
   box-sizing: border-box;
-}
-
-@media (max-width: 500px) {
-  main {
-    /* width: 120%; */
-  }
 }
 
 .d-flex {
@@ -70,34 +58,6 @@ svg {
   margin-bottom: 1rem;
 }
 
-.action-btn {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 8px 16px;
-
-  background: #4047ff;
-  border-radius: 6px;
-
-  cursor: pointer;
-
-  color: #ffffff;
-
-  font-weight: bold;
-
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  margin: 0;
-
-  transition: 0.2s ease-in-out;
-}
-.action-btn:hover {
-  background-color: #2429ad;
-  color: #ffffff;
-}
-
 .homepage-connect {
   margin: 0 auto;
 }
@@ -105,23 +65,7 @@ svg {
   margin-right: 5px;
 }
 
-.action-2nd {
-  background: #fff;
-  color: #333;
-  border: 2px solid #eee;
-}
-
-.input-box {
-  width: 100%;
-  margin: 0;
-  padding: 5px 10px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-}
 @media (max-width: 767px) {
-  .logo-link img {
-    margin-top: 10px !important;
-  }
   .header-links-wrapper {
     display: none;
   }
@@ -153,7 +97,6 @@ svg {
 .header-links li a {
   display: block;
   padding: 1em;
-  color: black;
   transition: 0.2s ease-in-out;
   cursor: pointer;
   font-size: 1.1rem;
@@ -258,48 +201,6 @@ svg {
 .footer .socials a {
   display: inline-block;
   margin: 0 8px;
-}
-
-.overlay {
-  position: fixed;
-  z-index: 2;
-  background: rgba(0, 0, 0, 0.5);
-  will-change: opacity;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-.modal--body {
-  position: fixed;
-  top: 35%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 5;
-}
-
-.modal {
-  width: 30rem;
-  background-color: #fff;
-  padding: 1rem 2rem;
-  max-width: 100%;
-  box-shadow: 0 2px 90px rgba(0, 0, 0, 0.3);
-
-  border: 2px solid;
-  border-radius: 20px;
-}
-/* @media (min-width: 1600px) {
-	.modal {
-		width: 48rem;
-		font-size: 1.25em;
-	}
-} */
-.modal-close {
-  position: fixed;
-  z-index: 4;
-  top: 1rem;
-  right: 1rem;
 }
 
 .icon {

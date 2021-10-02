@@ -2,25 +2,32 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import MenuToggler from 'components/MenuToggler/MenuToggler';
-
 import { scrollTo } from 'utils/scroll';
+import { useColorMode } from '@chakra-ui/react';
 
 const LandingHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { colorMode } = useColorMode();
 
   const toggleMenu = () => {
     setMobileMenuOpen((state) => !state);
   };
 
+  const dark = colorMode === 'dark';
+
   return (
-    // <Box as="header" background="#E4E9EE" paddingY={8}>
     <header className="header header-l">
       <div className="container">
         <div className="grid align-items-center">
           <div className="col-sm-8 col-md-3">
             <Link href="/">
               <a>
-                <Image alt="NFT Company" src="/img/nftcompanyTransparentBgSvg.svg" width={270} height={90} />
+                <Image
+                  alt="NFT Company"
+                  src={dark ? '/img/nttcompanyDarkModeLogo.svg' : '/img/nftcompanyTransparentBgSvg.svg'}
+                  width={270}
+                  height={90}
+                />
               </a>
             </Link>
           </div>

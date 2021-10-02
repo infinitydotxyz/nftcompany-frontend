@@ -3,13 +3,12 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import styles from './Rewards.module.scss';
-import sharedStyles from '/styles/SharedStyles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
 import { LeaderBoard, UserReward } from '../../src/types/rewardTypes';
 import { Spinner } from '@chakra-ui/spinner';
-import { InfoCardRow } from 'components/InfoCard List/InfoCardList';
-import { LeaderBoardTable } from 'components/LeaderBoard/LeaderBoardTable';
+import { RewardCardRow } from 'components/RewardCardList/RewardCardList';
+import { LeaderboardCard } from 'components/RewardCard/RewardCard';
 
 const Rewards = (): JSX.Element => {
   const { user } = useAppContext();
@@ -59,14 +58,9 @@ const Rewards = (): JSX.Element => {
           <title>Rewards</title>
         </Head>
         <div className={styles.main}>
-          <div className="page-container">
-            <div className="section-bar">
-              <div className="tg-title">Rewards</div>
-            </div>
-          </div>
           <div className={styles.spinner}>
             <div>
-              <Spinner color="brandBlue" thickness="8px" height={100} width={100} emptyColor="gray.200" speed=".8s" />
+              <Spinner color="brandBlue" thickness="4px" height={26} width={26} emptyColor="gray.200" speed=".8s" />
             </div>
           </div>
         </div>
@@ -85,16 +79,15 @@ const Rewards = (): JSX.Element => {
       </Head>
       <div className={styles.main}>
         <div className="page-container">
-          <div className="section-bar">
-            <div className="tg-title">Rewards</div>
-          </div>
-
-          <div>
-            <InfoCardRow data={userReward} />
-
-            <div className={styles.leaderBox}>
-              <h3 className={sharedStyles.sectionTitle}>🏆 Leaderboard</h3>
-              <LeaderBoardTable data={leaderboard} />
+          <div className={styles.content}>
+            <div className={styles.centered}>
+              <div className="section-bar" style={{ marginBottom: 30 }}>
+                <div className="tg-title">Rewards</div>
+              </div>
+              <RewardCardRow data={userReward} />
+              <div className={styles.leaderBox}>
+                <LeaderboardCard data={leaderboard} />
+              </div>
             </div>
           </div>
         </div>

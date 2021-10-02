@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+import { ethers } from 'ethers';
 import { CardData } from 'types/Nft.interface';
 import { WETH_ADDRESS } from './constants';
 
@@ -15,7 +17,9 @@ export enum EventType {
   ApproveOrder = 'ApproveOrder',
   CreateOrder = 'CreateOrder',
   // When the signature request for an order is denied
-  OrderDenied = 'OrderDenied'
+  OrderDenied = 'OrderDenied',
+
+  ApproveCurrency = 'ApproveCurrency'
 }
 
 export const isServer = () => typeof window === 'undefined';
@@ -23,7 +27,39 @@ export const isServer = () => typeof window === 'undefined';
 export const isLocalhost = () =>
   typeof window !== 'undefined' && (window?.location?.host || '').indexOf('localhost') >= 0;
 
-export const ellipsisAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
+export const toChecksumAddress = (address?: string): string => {
+  if (address) {
+    return ethers.utils.getAddress(address);
+  }
+
+  return '';
+};
+
+// use ellipsisString for non-address numbers, this gets the checksum address
+export const ellipsisAddress = (address: string, left: number = 6, right: number = 4) => {
+  return ellipsisString(toChecksumAddress(address), left, right);
+};
+
+export const addressesEqual = (left?: string, right?: string): boolean => {
+  if (left && right) {
+    return left.toLowerCase() === right.toLowerCase();
+  }
+
+  return left === right;
+};
+
+export const ellipsisString = (inString?: string, left: number = 6, right: number = 4): string => {
+  if (inString) {
+    // don't do anything if less than a certain length
+    if (inString.length > left + right + 5) {
+      return `${inString.slice(0, left)}...${inString.slice(-right)}`;
+    } else {
+      return inString;
+    }
+  }
+
+  return '';
+};
 
 export const getToken = (tokenAddress: string): 'WETH' | 'ETH' => (tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH');
 
@@ -74,34 +110,58 @@ export const transformOpenSea = (item: any, owner: string) => {
   } as CardData;
 };
 
+export const getCustomExceptionMsg = (msg: ReactNode) => {
+  let customMsg = msg;
+  if (typeof msg === 'string' && msg.indexOf('err: insufficient funds for gas * price + value') > 0) {
+    customMsg = 'Insufficient funds for gas * price + value';
+  }
+  if (typeof msg === 'string' && msg.indexOf('User denied transaction signature.') > 0) {
+    customMsg = 'MetaMask: User denied transaction signature';
+  }
+  return customMsg;
+};
+
 export const getCustomMessage = (eventName: string, data: any) => {
-  let customMsg: JSX.Element | string | null = null;
+  const arr: string[] = [];
+  Object.keys(data).forEach((k: string) => {
+    if (typeof data[k] !== 'object') {
+      arr.push(`${k}: ${data[k]}`);
+    }
+  });
+  const defaultMsg = `${eventName}: ${arr.join(', ')}`;
+  let customMsg: JSX.Element | string | null = defaultMsg;
+
   const ev = data?.event;
   const createLink = (transactionHash: string) => (
-    <a className="a-link" href={`https://etherscan.io/tx/${transactionHash}`} target="_blank" rel="noreferrer">
+    <a className="toast-link" href={`https://etherscan.io/tx/${transactionHash}`} target="_blank" rel="noreferrer">
       {data?.transactionHash}
     </a>
   );
 
+  if (
+    eventName === EventType.MatchOrders ||
+    eventName === EventType.CreateOrder ||
+    eventName === EventType.CancelOrder ||
+    eventName === EventType.OrderDenied ||
+    eventName === EventType.TransactionDenied
+  ) {
+    // for these events, MetaMask pops up, no need to show messages.
+    return null;
+  }
+  // customize OpenSea messages:
   if (eventName === EventType.TransactionCreated) {
-    if (ev === EventType.MatchOrders) {
       customMsg = (
-        <span>MatchOrders: Your transaction has been sent to chain. {createLink(data?.transactionHash)}</span>
+        <span>Your transaction has been sent to chain: {createLink(data?.transactionHash)}</span>
       );
-    }
-    if (ev === EventType.CancelOrder) {
-      customMsg = (
-        <span>CancelOrder: Your transaction has been sent to chain. {createLink(data?.transactionHash)}</span>
-      );
-    }
   }
   if (eventName === EventType.TransactionConfirmed) {
-    if (ev === EventType.CancelOrder) {
-      customMsg = 'CancelOrder: Transaction confirmed.';
-    }
+      customMsg = 'Transaction confirmed';
   }
-  if (eventName === EventType.MatchOrders) {
-    customMsg = <span>MatchOrders: Your transaction has been sent to chain. {createLink(data?.transactionHash)}</span>;
+  if (eventName === EventType.TransactionFailed) {
+    customMsg = 'Transaction failed';
+  }
+  if (eventName === EventType.ApproveCurrency) {
+    customMsg = 'Approving currency for trading';
   }
   return customMsg;
 };

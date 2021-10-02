@@ -1,0 +1,24 @@
+.main {
+  display: flex;
+  font-weight: bold;
+  font-size: 1.5rem;
+  font-family: monospace;
+
+  .digit {
+    display: flex;
+    margin-right: 10px;
+    align-items: flex-end;
+    line-height: 1;
+
+    .unit {
+      margin-left: 1px;
+      font-size: 0.8em;
+
+      color: rgba(0, 0, 0, 0.4);
+
+      :global(body.chakra-ui-dark) & {
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+}

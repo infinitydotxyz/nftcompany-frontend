@@ -8,6 +8,7 @@ import PreviewModal from 'components/PreviewModal/PreviewModal';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { WETH_ADDRESS } from 'utils/constants';
+import { addressesEqual } from 'utils/commonUtil';
 
 type Props = {
   data: CardData;
@@ -30,8 +31,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
 
   let ownedByYou = false;
   if (userAccount) {
-    // opensea lowercases their account strings, so compare to lower
-    ownedByYou = data.owner?.toLowerCase() === userAccount.toLowerCase();
+    ownedByYou = addressesEqual(data.owner, userAccount);
   }
 
   const collectionName = data.collectionName;
@@ -74,7 +74,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
                   setPlaceBidModalShowed(true);
                 }}
               >
-                <span>Buy NFT</span>
+                <span>Purchase</span>
               </a>
             )}
             {action === 'CANCEL_LISTING' && (
@@ -142,7 +142,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
               <div>{data.title}</div>
             </div>
             <PriceBox
-              justifyRight={true}
+              justifyRight
               price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
               token={data?.data?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
               expirationTime={data?.expirationTime}

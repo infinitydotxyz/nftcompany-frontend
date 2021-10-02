@@ -4,13 +4,13 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import { sampleData, sampleUserLists } from '../../src/utils/apiUtil';
-import pageStyles from '../../styles/Dashboard.module.scss';
 import styles from './Preview.module.scss';
 import TabBar from 'components/TabBar/TabBar';
 import UserList from 'components/UserList/UserList';
 import BidBox from 'components/BidBox/BidBox';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import { PriceBox } from 'components/PriceBox/PriceBox';
+import { Button } from '@chakra-ui/react';
 
 const Tabs = [
   {
@@ -41,7 +41,6 @@ export default function Preview() {
   const idNum = parseInt(`${id}` ?? '0');
   const data = sampleData[idNum];
   const [tabIndex, setTabIndex] = useState(1);
-  console.log('view', view);
 
   const title = React.useMemo(() => {
     switch (tabIndex) {
@@ -57,7 +56,7 @@ export default function Preview() {
       <Head>
         <title>Preview page</title>
       </Head>
-      <div className={pageStyles.dashboard}>
+      <div>
         <div className="page-container">
           <div className="section-bar">
             <div className="right">{/* <div className="tg-title">{title}</div> */}</div>
@@ -101,9 +100,9 @@ export default function Preview() {
                   <UserList data={sampleUserLists[parseInt(activeTab)]} />
 
                   <BidBox user={sampleUserLists[0][0]}>
-                    <a className="action-btn action-2nd" onClick={() => setPlaceBidShowed(true)}>
+                    <Button colorScheme="gray" onClick={() => setPlaceBidShowed(true)}>
                       Purchase now
-                    </a>
+                    </Button>
                   </BidBox>
                 </>
               )}

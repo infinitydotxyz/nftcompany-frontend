@@ -1,13 +1,21 @@
 import { CardData } from 'types/Nft.interface';
 import { useEffect, useState } from 'react';
-import { SearchFilter, useSearchContext } from './useSearch';
+import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
 import { useAppContext } from 'utils/context/AppContext';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { getListings, TypeAheadOption } from 'services/Listings.service';
-import { getLastItemBasePrice, getLastItemCreatedAt, getLastItemMaker } from 'components/FetchMore/FetchMore';
+import {
+  getLastItemBasePrice,
+  getLastItemCreatedAt,
+  getLastItemMaker,
+  getLastItemSearchCollectionName,
+  getLastItemSearchTitle
+} from 'components/FetchMore/FetchMore';
 
 const PAGE_SIZE = ITEMS_PER_PAGE;
 // const PAGE_SIZE = 7;
+
+// ==================================================================
 
 const hashString = (s: string) => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
 
@@ -17,24 +25,32 @@ const fetchData = async (
   startAfterUser: string,
   startAfterMillis: string,
   startAfterPrice: string,
+  startAfterSearchTitle: string,
+  startAfterSearchCollectionName: string,
   collectionName: string,
+  text: string,
   typeAhead: TypeAheadOption | undefined
 ): Promise<CardData[]> => {
   const result = await getListings({
     ...filter,
-    user: user,
+    user,
     startAfterUser: user ? startAfterUser : '',
-    startAfterMillis: startAfterMillis,
-    startAfterPrice: startAfterPrice,
+    startAfterMillis,
+    startAfterPrice,
+    startAfterSearchTitle,
+    startAfterSearchCollectionName,
     limit: PAGE_SIZE.toString(),
     tokenId: typeAhead?.id ?? '',
     tokenAddress: typeAhead?.address ?? '',
-    collectionName: collectionName,
+    collectionName,
+    text,
     priceMax: collectionName?.length > 0 ? '1000000' : '' // SNG
   });
 
   return result;
 };
+
+// ==================================================================
 
 export function useCardProvider(): {
   list: CardData[];
@@ -56,6 +72,8 @@ export function useCardProvider(): {
     let startAfterUser = '';
     let startAfterMillis = '';
     let startAfterPrice = '';
+    let startAfterSearchCollectionName = '';
+    let startAfterSearchTitle = '';
     let previousList: CardData[] = [];
 
     // always get a fresh search
@@ -64,6 +82,8 @@ export function useCardProvider(): {
     // are we getting the next page?
     if (!isTokenIdSearch && listType === newListType && list?.length > 0) {
       previousList = list;
+      startAfterSearchTitle = getLastItemSearchTitle(list);
+      startAfterSearchCollectionName = getLastItemSearchCollectionName(list);
       startAfterUser = getLastItemMaker(list);
       startAfterMillis = getLastItemCreatedAt(list);
       startAfterPrice = getLastItemBasePrice(list);
@@ -77,7 +97,10 @@ export function useCardProvider(): {
       startAfterUser,
       startAfterMillis,
       startAfterPrice,
+      startAfterSearchTitle,
+      startAfterSearchCollectionName,
       searchContext.searchState.collectionName,
+      searchContext.searchState.text,
       searchContext.searchState.selectedOption
     );
 
@@ -94,6 +117,7 @@ export function useCardProvider(): {
   useEffect(() => {
     const loadData = async () => {
       let hash = searchContext.searchState.collectionName;
+      hash += JSON.stringify(searchContext.searchState.text);
       hash += JSON.stringify(searchContext.filterState);
       hash += JSON.stringify(searchContext.searchState.selectedOption);
       hash += JSON.stringify(userAccount);
@@ -101,6 +125,9 @@ export function useCardProvider(): {
 
       if (searchContext.searchState.collectionName) {
         fetchList('collection-name:' + hash);
+      }
+      if (searchContext.searchState.text) {
+        fetchList('text:' + hash);
       } else if (searchContext.searchState.selectedOption) {
         fetchList('token-id:' + hash);
       } else {
@@ -144,6 +171,12 @@ export function useCardProvider(): {
       }
     }
 
+    let showLowest = true;
+    // if this is blank, we also show only the lowest
+    if (searchContext.filterState.sortByPrice === 'DESC') {
+      showLowest = false;
+    }
+
     if (dupsIds.size > 0) {
       const result: CardData[] = [];
 
@@ -151,21 +184,24 @@ export function useCardProvider(): {
         if (dupsIds.has(item.tokenId!)) {
           if (!replacedIds.has(item.tokenId!)) {
             replacedIds.add(item.tokenId!);
-
             // find lowest price and add that one
             const choices = dupMap.get(item.tokenId!);
-
             if (choices!.length > 1) {
               let lowestItem = choices![0];
               let minPrice = lowestItem.price ?? 0;
-
               for (const c of choices!) {
-                if (c.price! < minPrice) {
-                  lowestItem = c;
-                  minPrice = c.price ?? 0;
+                if (showLowest) {
+                  if (c.price! < minPrice) {
+                    lowestItem = c;
+                    minPrice = c.price ?? 0;
+                  }
+                } else {
+                  if (c.price! > minPrice) {
+                    lowestItem = c;
+                    minPrice = c.price ?? 0;
+                  }
                 }
               }
-
               result.push(lowestItem);
             } else {
               console.log('this should be 2 or more');
@@ -186,8 +222,6 @@ export function useCardProvider(): {
 
   const loadNext = () => {
     if (hasData() && hasMore) {
-      console.log('loadNext');
-
       fetchList(listType);
     } else {
       if (!hasData()) {
@@ -205,7 +239,7 @@ export function useCardProvider(): {
   //   if (userAccount && list && list.length > 0) {
   //     filteredList = list.filter((item) => {
   //       // opensea lowercases their account strings, so compare to lower
-  //       return item.owner?.toLowerCase() !== userAccount.toLowerCase();
+  //       return addressesEqual(item.owner, userAccount);
   //     });
   //   }
   // }

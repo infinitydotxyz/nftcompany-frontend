@@ -8,7 +8,6 @@ import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-import styles from '../../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { transformOpenSea } from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
@@ -63,13 +62,13 @@ export default function MyNFTs() {
       <Head>
         <title>My NFTs</title>
       </Head>
-      <div className={styles.dashboard}>
+      <div>
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">My NFTs</div>
           </div>
 
-          <div className={styles.main}>
+          <div>
             <PleaseConnectWallet account={user?.account} />
             <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}

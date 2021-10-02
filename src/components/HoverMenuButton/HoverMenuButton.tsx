@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './HoverMenuButton.module.scss';
-import { Menu, MenuButton, MenuList, useDisclosure } from '@chakra-ui/react';
+import { Menu, MenuButton, MenuList, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 
 type Props = {
@@ -9,9 +9,17 @@ type Props = {
   children: JSX.Element[] | JSX.Element;
   shadow?: boolean;
   arrow?: boolean;
+  disabled?: boolean;
 };
 
-export const HoverMenuButton = ({ shadow = false, arrow = true, buttonTitle, buttonContent, children }: Props) => {
+export const HoverMenuButton = ({
+  disabled = false,
+  shadow = false,
+  arrow = true,
+  buttonTitle,
+  buttonContent,
+  children
+}: Props) => {
   let hoverTimer: any;
   let menuListTimer: any;
   const delay = 100;
@@ -44,11 +52,16 @@ export const HoverMenuButton = ({ shadow = false, arrow = true, buttonTitle, but
     buttonClass.push(styles.buttonShadow);
   }
 
+  if (disabled) {
+    buttonClass.push(styles.disabled);
+  }
+
   return (
     <div className={styles.main}>
       {/* setting an id on menu prevents a console warning about non matching ids */}
       <Menu isLazy isOpen={isOpen} id="hover-menu">
         <MenuButton
+          disabled={disabled}
           className={buttonClass.join(' ')}
           onMouseEnter={() => {
             clearTimeout(menuListTimer);

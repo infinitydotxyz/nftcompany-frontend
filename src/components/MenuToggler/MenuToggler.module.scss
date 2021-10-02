@@ -23,6 +23,10 @@
 .hamburger.isActive .hamburgerInner::before,
 .hamburger.isActive .hamburgerInner::after {
   background-color: #000;
+
+  :global(body.chakra-ui-dark) & {
+    background-color: #eee;
+  }
 }
 
 .hamburgerBox {
@@ -48,6 +52,10 @@
   transition-property: transform;
   transition-duration: 0.15s;
   transition-timing-function: ease;
+
+  :global(body.chakra-ui-dark) & {
+    background-color: #eee;
+  }
 }
 .hamburgerInner::before,
 .hamburgerInner::after {

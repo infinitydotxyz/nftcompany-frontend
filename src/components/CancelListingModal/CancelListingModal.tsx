@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './CancelListingModal.module.scss';
-import ModalDialog from 'hooks/ModalDialog';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { CardData } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
@@ -35,12 +35,12 @@ const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
           order: order,
           accountAddress: user?.account
         });
-        console.log('Cancel listing txn hash: ' + txnHash);
         const payload = {
           actionType: 'cancel',
           txnHash,
           side: 1,
-          orderId: data?.id
+          orderId: data?.id,
+          maker: user?.account
         };
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
@@ -61,27 +61,25 @@ const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div className={`modal ${'ntfmodal'}`} style={{ background: 'white', borderColor: 'white' }}>
-            <div className="modal-body">
-              <div className={styles.title}>&nbsp;</div>
+          <div>
+            <div className={styles.title}>&nbsp;</div>
 
-              <div className={styles.row}>Cancel this listing?</div>
+            <div className={styles.row}>Cancel this listing?</div>
 
-              <div className={styles.footer}>
-                <Button
-                  disabled={isSubmitting}
-                  onClick={async () => {
-                    await cancelListing();
-                    onClose();
-                  }}
-                >
-                  Confirm
-                </Button>
+            <div className={styles.buttons}>
+              <Button
+                disabled={isSubmitting}
+                onClick={async () => {
+                  await cancelListing();
+                  onClose();
+                }}
+              >
+                Confirm
+              </Button>
 
-                <Button colorScheme="gray" disabled={isSubmitting} ml={4} onClick={() => onClose()}>
-                  Cancel
-                </Button>
-              </div>
+              <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose()}>
+                Close
+              </Button>
             </div>
           </div>
         </ModalDialog>

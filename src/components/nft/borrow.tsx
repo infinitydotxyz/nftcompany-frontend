@@ -121,7 +121,7 @@ function Borrow() {
               onChange={(e: any) => setValue(e.target.value)}
             />
             <InputRightElement>
-              <Button mr={1} colorScheme="blue" onClick={() => setValue(123.4)} h="1.75rem" size="sm">
+              <Button mr={1} onClick={() => setValue(123.4)} h="1.75rem" size="sm">
                 Max
               </Button>
             </InputRightElement>

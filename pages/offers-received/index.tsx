@@ -7,7 +7,6 @@ import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-import styles from '../../styles/Dashboard.module.scss';
 import { ordersToCardData } from 'services/Listings.service';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 
@@ -46,7 +45,6 @@ export default function OffersReceived() {
   };
 
   React.useEffect(() => {
-    console.log('- Offers Received - user:', user);
     fetchData();
   }, [user]);
 
@@ -61,13 +59,13 @@ export default function OffersReceived() {
       <Head>
         <title>Offers Received</title>
       </Head>
-      <div className={styles.dashboard}>
+      <div>
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Offers Received</div>
           </div>
 
-          <div className={styles.main}>
+          <div>
             <PleaseConnectWallet account={user?.account} />
             <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}

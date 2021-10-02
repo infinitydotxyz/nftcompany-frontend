@@ -1,0 +1,40 @@
+@import 'styles/_mixins.scss';
+
+.overlay {
+  position: fixed;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.5);
+  will-change: opacity;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.modalBody {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+
+  background-color: #fff;
+  padding: 1rem 2rem;
+  max-width: 100%;
+  min-width: 550px;
+  box-shadow: 0 2px 90px rgba(0, 0, 0, 0.3);
+
+  :global(body.chakra-ui-dark) & {
+    background-color: var(--chakra-colors-windowBgDark, red);
+    @include darkShadow();
+  }
+
+  border-radius: 20px;
+}
+
+.modalClose {
+  position: fixed;
+  z-index: 4;
+  top: 1rem;
+  right: 1rem;
+}

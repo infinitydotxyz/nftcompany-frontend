@@ -4,10 +4,10 @@ import styles from './PreviewModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { Link, Tooltip } from '@chakra-ui/react';
+import { Button, Link, Tooltip } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import ModalDialog from 'hooks/ModalDialog';
-import { ellipsisAddress, getToken } from 'utils/commonUtil';
+import ModalDialog from 'components/ModalDialog/ModalDialog';
+import { addressesEqual, ellipsisAddress, ellipsisString, getToken, toChecksumAddress } from 'utils/commonUtil';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
@@ -33,9 +33,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
   let showPurchase = true;
 
-  // show purchase with no price, we can look up any offers and buy and make offers
-  //  || data.price == undefined) {
-  if (!data.owner || data.owner === user?.account) {
+  if (!data.owner || addressesEqual(data.owner, user?.account)) {
     showPurchase = false;
   }
 
@@ -43,22 +41,20 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
   let offerMakerShort = '';
 
   let owner = data.owner ?? '';
-  if (owner.length > 16) {
-    owner = ellipsisAddress(owner);
+  owner = ellipsisAddress(owner);
+
+  if (addressesEqual(data.owner, user?.account)) {
+    owner = 'You';
   }
 
   let tokenAddress = data.tokenAddress;
   if (tokenAddress) {
-    if (tokenAddress.length > 16) {
-      tokenAddress = ellipsisAddress(tokenAddress);
-    }
+    tokenAddress = ellipsisAddress(tokenAddress);
   }
 
   let tokenId = data.tokenId;
   if (tokenId) {
-    if (tokenId?.length > 16) {
-      tokenId = ellipsisAddress(tokenId);
-    }
+    tokenId = ellipsisString(tokenId);
   }
 
   let description = data.description;
@@ -70,19 +66,18 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
   let purchaseButton;
   switch (action) {
     case 'CANCEL_LISTING':
-      purchaseButton = (
-        <a className="action-btn" onClick={() => setDeleteListingModalShowed(true)}>
-          Cancel Listing
-        </a>
-      );
+      purchaseButton = <Button onClick={() => setDeleteListingModalShowed(true)}>Cancel Listing</Button>;
+
+      // hide the owner
+      owner = '';
 
       break;
     case 'CANCEL_OFFER':
-      purchaseButton = (
-        <a className="action-btn" onClick={() => setCancelOfferModalShowed(true)}>
-          Cancel Offer
-        </a>
-      );
+      purchaseButton = <Button onClick={() => setCancelOfferModalShowed(true)}>Cancel Offer</Button>;
+
+      // change to owner of asset
+      owner = data.metadata?.asset.owner ?? '';
+      owner = ellipsisAddress(owner);
 
       break;
     case 'ACCEPT_OFFER':
@@ -94,30 +89,21 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
       // hide the owner
       owner = '';
 
-      purchaseButton = (
-        <a className="action-btn" onClick={() => setAcceptOfferModalShowed(true)}>
-          Accept Offer
-        </a>
-      );
+      purchaseButton = <Button onClick={() => setAcceptOfferModalShowed(true)}>Accept Offer</Button>;
       break;
     case 'LIST_NFT':
-      purchaseButton = (
-        <a className="action-btn" onClick={() => setListNFTModalShowed(true)}>
-          List NFT
-        </a>
-      );
+      purchaseButton = <Button onClick={() => setListNFTModalShowed(true)}>List NFT</Button>;
       break;
     case 'VIEW_ORDER':
+      // hide the owner
+      owner = '';
+
       break;
     case 'BUY_NFT':
     default:
       // not even sure I need this if statement, SNG remove later
       if (showPurchase) {
-        purchaseButton = (
-          <a className="action-btn" onClick={() => setPlaceBidShowed(true)}>
-            Purchase
-          </a>
-        );
+        purchaseButton = <Button onClick={() => setPlaceBidShowed(true)}>Purchase</Button>;
       }
       break;
   }
@@ -126,7 +112,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     owner?.length > 0 ? (
       <>
         <div className={styles.label}>Owner</div>
-        <Tooltip label={data.owner} hasArrow openDelay={1000}>
+        <Tooltip label={toChecksumAddress(data.owner)} hasArrow openDelay={1000}>
           <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
             {owner}
           </Link>
@@ -138,7 +124,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     offerMaker?.length > 0 ? (
       <>
         <div className={styles.label}>Offer Maker</div>
-        <Tooltip label={offerMaker} hasArrow openDelay={1000}>
+        <Tooltip label={toChecksumAddress(offerMaker)} hasArrow openDelay={1000}>
           <Link color="brandBlue" href={`${window.origin}/${offerMaker}`} target="_blank" rel="noreferrer">
             {offerMakerShort}
           </Link>
@@ -151,70 +137,65 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div
-            className={`modal ${'ntfmodal'}`}
-            style={{ width: '80vw', maxWidth: 1000, background: 'white', borderColor: 'white' }}
-          >
-            <div className="modal-body">
-              <div className={styles.main}>
-                <div className={styles.nftContent}>
-                  <div className={styles.imgBox}>
-                    <img
-                      alt="not available"
-                      src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
-                    />
+          <div style={{ width: '80vw', maxWidth: 1000 }}>
+            <div className={styles.main}>
+              <div className={styles.nftContent}>
+                <div className={styles.imgBox}>
+                  <img
+                    alt="not available"
+                    src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
+                  />
+                </div>
+
+                <div className={styles.infoBox}>
+                  <div className={styles.collectionRow}>
+                    <div className={styles.collection}>{data?.collectionName}</div>
+
+                    <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
                   </div>
 
-                  <div className={styles.infoBox}>
-                    <div className={styles.collectionRow}>
-                      <div className={styles.collection}>{data?.collectionName}</div>
+                  <div className={styles.title}>{data?.title}</div>
 
-                      <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
-                    </div>
+                  {data.price && (
+                    <>
+                      <span className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price' : 'Price'}</span>
 
-                    <div className={styles.title}>{data?.title}</div>
+                      <PriceBox price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
+                    </>
+                  )}
 
-                    {data.price && (
-                      <>
-                        <span className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price' : 'Price'}</span>
+                  <div className={styles.label}>Token Address</div>
+                  <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
+                    <Link
+                      color="brandBlue"
+                      href={`https://etherscan.io/token/${data.tokenAddress}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {tokenAddress}
+                    </Link>
+                  </Tooltip>
 
-                        <PriceBox price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
-                      </>
-                    )}
+                  <div className={styles.label}>Token Id</div>
 
-                    <div className={styles.label}>Token Address</div>
-                    <Tooltip label={data.tokenAddress} hasArrow openDelay={1000}>
-                      <Link
-                        color="brandBlue"
-                        href={`https://etherscan.io/token/${data.tokenAddress}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {tokenAddress}
-                      </Link>
-                    </Tooltip>
+                  <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
+                    <Link
+                      color="brandBlue"
+                      href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {tokenId}
+                    </Link>
+                  </Tooltip>
 
-                    <div className={styles.label}>Token Id</div>
+                  {_ownerSection}
+                  {_offerMakerSection}
 
-                    <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
-                      <Link
-                        color="brandBlue"
-                        href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {tokenId}
-                      </Link>
-                    </Tooltip>
+                  <span className={styles.label}>Description</span>
+                  <div className={styles.description}>{description}</div>
 
-                    {_ownerSection}
-                    {_offerMakerSection}
-
-                    <span className={styles.label}>Description</span>
-                    <div className={styles.description}>{description}</div>
-
-                    <div className={styles.buttons}>{purchaseButton}</div>
-                  </div>
+                  <div className={styles.buttons}>{purchaseButton}</div>
                 </div>
               </div>
             </div>

@@ -7,7 +7,6 @@ import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-import styles from '../styles/Dashboard.module.scss';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useRouter } from 'next/router';
 import { transformOpenSea } from 'utils/commonUtil';
@@ -84,15 +83,15 @@ export default function UserPage() {
   return (
     <>
       <Head>
-        <title>Users NFTs</title>
+        <title>{"User's NFTs"}</title>
       </Head>
-      <div className={styles.dashboard}>
+      <div>
         <div className="page-container">
           <div className="section-bar">
-            <div className="tg-title">Users NFTs</div>
+            <div className="tg-title">{"User's NFTs"}</div>
           </div>
 
-          <div className={styles.main}>
+          <div>
             <PleaseConnectWallet account={user?.account} />
             <NoData isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}

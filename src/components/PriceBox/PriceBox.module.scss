@@ -20,6 +20,11 @@
     cursor: default;
     font-size: 1.1rem;
 
+    :global(body.chakra-ui-dark) & {
+      color: #ddd;
+      border: 2px solid #aaa;
+    }
+
     svg {
       margin-left: 4px;
       margin-bottom: 3px;
