@@ -8,53 +8,23 @@
   margin-bottom: 20px;
 }
 
-.row {
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-
-  .left {
-    display: flex;
-    flex: 1;
-
-    color: var(--text-secondary);
-    font-weight: 500;
-  }
-
-  .middle {
-    display: flex;
-    max-width: 240px;
-    flex: 2;
+.col {
+  margin-top: 20px;
+  & input {
+    font-size: 1rem;
     text-align: right;
-    justify-content: flex-end;
-    & input {
-      font-size: 1rem;
-      text-align: right;
 
-      font-weight: bold;
-    }
-
-    // need to change the theme, but this is for the Weth input
-    .offerBorder {
-      border: var(--input-border);
-    }
+    font-weight: bold;
   }
-  .right {
-    text-align: right;
-    width: 55px;
+
+  // need to change the theme, but this is for the Weth input
+  .offerBorder {
+    border: var(--input-border);
   }
-}
-
-.space {
-  margin-bottom: 10px;
-}
-
-.lineSpace {
-  margin: 20px 0;
 }
 
 .buttons {
-  margin-bottom: 10px;
+  margin-top: 20px;
   display: flex;
   align-items: center;
   gap: 16px;

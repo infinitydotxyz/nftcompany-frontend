@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import styles from './PreviewModal.module.scss';
-import { CardData, Order } from 'types/Nft.interface';
+import styles from './scss/PreviewInfo.module.scss';
+import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { Button, Link, Tooltip } from '@chakra-ui/react';
@@ -11,7 +11,6 @@ import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
-import { PurchaseAccordion } from 'components/PurchaseAccordion/PurchaseAccordion';
 
 interface Props {
   data: CardData;
@@ -98,50 +97,40 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
       break;
     case 'BUY_NFT':
     default:
-      // not even sure I need this if statement, SNG remove later
-      if (showPurchase) {
-        purchaseButton = (
-          <PurchaseAccordion
-            data={data}
-            action={action}
-            onComplete={() => {
-              console.log('done');
-            }}
-          />
-        );
-
-        // purchaseButton = <Button onClick={() => setPlaceBidShowed(true)}>Purchase</Button>;
-      }
+      // handled in the accordion
       break;
   }
 
   const _ownerSection =
     owner?.length > 0 ? (
-      <>
-        <div className={styles.label}>Owner</div>
+      <div className={styles.addressRow}>
+        <div className={styles.label}>Owner:</div>
+        <div style={{ flex: 1 }} />
         <Tooltip label={toChecksumAddress(data.owner)} hasArrow openDelay={1000}>
           <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
             {owner}
           </Link>
         </Tooltip>
-      </>
+      </div>
     ) : null;
 
   const _offerMakerSection =
     offerMaker?.length > 0 ? (
-      <>
-        <div className={styles.label}>Offer Maker</div>
+      <div className={styles.addressRow}>
+        <div className={styles.label}>Offer Maker:</div>
+        <div style={{ flex: 1 }} />
         <Tooltip label={toChecksumAddress(offerMaker)} hasArrow openDelay={1000}>
           <Link color="brandBlue" href={`${window.origin}/${offerMaker}`} target="_blank" rel="noreferrer">
             {offerMakerShort}
           </Link>
         </Tooltip>
-      </>
+      </div>
     ) : null;
 
   const _tokenAddressSection = (
-    <>
-      <div className={styles.label}>Token Address</div>
+    <div className={styles.addressRow}>
+      <div className={styles.label}>Token Address:</div>
+      <div style={{ flex: 1 }} />
       <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
         <Link
           color="brandBlue"
@@ -152,12 +141,13 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
           {tokenAddress}
         </Link>
       </Tooltip>
-    </>
+    </div>
   );
 
   const _tokenIdSection = (
-    <>
-      <div className={styles.label}>Token Id</div>
+    <div className={styles.addressRow}>
+      <div className={styles.label}>Token Id:</div>
+      <div style={{ flex: 1 }} />
 
       <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
         <Link
@@ -169,38 +159,34 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
           {tokenId}
         </Link>
       </Tooltip>
-    </>
+    </div>
   );
 
   const paymentToken = getToken(data?.order?.paymentToken);
   const _priceSection = data.price ? (
-    <>
-      <span className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price' : 'Price'}</span>
+    <div className={styles.addressRow}>
+      <div className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price:' : 'Price:'}</div>
 
+      <div style={{ flex: 1 }} />
       <PriceBox price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
-    </>
+    </div>
   ) : null;
 
   return (
     <div>
       <div className={styles.infoBox}>
-        <div className={styles.collectionRow}>
-          <div className={styles.collection}>{data?.collectionName}</div>
-          <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
-        </div>
-
-        <div className={styles.title}>{data?.title}</div>
-
         {_priceSection}
         {_tokenAddressSection}
         {_tokenIdSection}
         {_ownerSection}
         {_offerMakerSection}
 
-        <span className={styles.label}>Description</span>
+        <div className={styles.addressRow}>
+          <span className={styles.label}>Description</span>
+        </div>
         <div className={styles.description}>{description}</div>
 
-        <div className={styles.buttons}>{purchaseButton}</div>
+        {purchaseButton && <div className={styles.buttons}>{purchaseButton}</div>}
       </div>
 
       {deleteListingModalShowed && (

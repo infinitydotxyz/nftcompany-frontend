@@ -5,6 +5,9 @@ import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPane
 import { PurchaseForm } from './PurchaseForm';
 import { MakeOfferForm } from './MakeOfferForm';
 import { PreviewInfo } from './PreviewInfo';
+import { addressesEqual } from 'utils/commonUtil';
+import { useAppContext } from 'utils/context/AppContext';
+import styles from './scss/PurchaseAccordion.module.scss';
 
 interface Props {
   data: CardData;
@@ -14,7 +17,9 @@ interface Props {
 
 export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
   const [order, setOrder] = React.useState<Order | undefined>();
-  const { data } = props;
+  const [addPurchase, setAddPurchase] = React.useState(false);
+  const { data, action } = props;
+  const { user } = useAppContext();
 
   const loadOrder = useCallback(async () => {
     // card data already has the order, no reason to get it again
@@ -53,46 +58,68 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
     loadOrder();
   }, [loadOrder]);
 
+  let showPurchase = false;
+
+  switch (action) {
+    case 'CANCEL_LISTING':
+    case 'CANCEL_OFFER':
+    case 'ACCEPT_OFFER':
+    case 'LIST_NFT':
+    case 'VIEW_ORDER':
+      break;
+    case 'BUY_NFT':
+    default:
+      if (data.owner && !addressesEqual(data.owner, user?.account)) {
+        showPurchase = true;
+      }
+
+      break;
+  }
+
   return (
-    <div>
+    <div className={styles.main}>
       <Accordion defaultIndex={[0]} allowToggle>
         <AccordionItem>
           <h2>
             <AccordionButton>
               <Box flex="1" textAlign="left">
-                Buy Now
+                NFT Information
               </Box>
               <AccordionIcon />
             </AccordionButton>
           </h2>
-          <AccordionPanel pb={4}>
+          <AccordionPanel>
             <PreviewInfo {...props} />
           </AccordionPanel>
         </AccordionItem>
 
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box flex="1" textAlign="left">
-                Buy Now
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>{order && <PurchaseForm order={order} {...props} />}</AccordionPanel>
-        </AccordionItem>
+        {showPurchase && order && (
+          <>
+            <AccordionItem>
+              <AccordionButton>
+                <Box flex="1" textAlign="left">
+                  Buy Now
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel>
+                <PurchaseForm order={order} {...props} />
+              </AccordionPanel>
+            </AccordionItem>
 
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box flex="1" textAlign="left">
-                Make Offer
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>{order && <MakeOfferForm order={order} {...props} />}</AccordionPanel>
-        </AccordionItem>
+            <AccordionItem>
+              <AccordionButton>
+                <Box flex="1" textAlign="left">
+                  Make Offer
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel>
+                <MakeOfferForm order={order} {...props} />
+              </AccordionPanel>
+            </AccordionItem>
+          </>
+        )}
       </Accordion>
     </div>
   );

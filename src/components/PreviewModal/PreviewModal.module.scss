@@ -4,10 +4,10 @@
 
   .nftContent {
     display: flex;
-    margin: 20px 0;
+    gap: 30px;
 
-    .imgBox {
-      flex: 65;
+    .left {
+      flex: 1;
       img {
         width: 100%;
         height: auto;
@@ -15,38 +15,28 @@
         border-radius: 16px;
       }
     }
+  }
 
-    .infoBox {
-      flex: 35;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin-left: 20px;
+  .title {
+    font-size: 1.2rem;
 
-      .description {
-        color: #777e90;
-      }
+    margin-bottom: 20px;
+  }
 
-      .title {
-        font-size: 1.2rem;
-      }
+  .collection {
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-right: 6px;
+  }
 
-      .collectionRow {
-        display: flex;
-        align-items: center;
-      }
+  .collectionRow {
+    display: flex;
+    align-items: center;
+  }
 
-      .collection {
-        font-weight: bold;
-        font-size: 1.3rem;
-        margin-right: 6px;
-      }
-
-      .label {
-        margin-top: 10px;
-        font-weight: bold;
-      }
-    }
+  .header {
+    display: flex;
+    flex-direction: column;
   }
 
   .buttons {

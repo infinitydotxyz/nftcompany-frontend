@@ -1,21 +1,11 @@
-import React, { useCallback, useEffect } from 'react';
-import styles from './MakeOfferForm.module.scss';
+import React, { useState } from 'react';
+import styles from './scss/MakeOfferForm.module.scss';
 import { Spinner } from '@chakra-ui/spinner';
 import { CardData, Order } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
-import { apiPost } from 'utils/apiUtil';
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
-  Button,
-  Input
-} from '@chakra-ui/react';
+import { Button, Input } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { getToken, stringToFloat } from 'utils/commonUtil';
 import { DatePicker } from 'components/DatePicker/DatePicker';
@@ -28,11 +18,10 @@ interface IProps {
 
 export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IProps) => {
   const { user, showAppError, showAppMessage } = useAppContext();
-  const [isBuying, setIsBuying] = React.useState(false);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
-  const [expiryDate, setExpiryDate] = React.useState<Date | undefined>();
-  const [offerPrice, setOfferPrice] = React.useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [expiryTimeSeconds, setExpiryTimeSeconds] = useState(0);
+  const [expiryDate, setExpiryDate] = useState<Date | undefined>();
+  const [offerPrice, setOfferPrice] = useState(0);
   const token = getToken(order.paymentToken);
 
   const makeAnOffer = () => {
@@ -80,7 +69,6 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
 
   return (
     <div>
-      <div className={styles.title}>Make an offer</div>
       <div className={styles.space}>Place a bid on this NFT.</div>
 
       <form
@@ -101,42 +89,29 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
           </div>
         )}
 
-        <div className={styles.row}>
-          <div className={styles.left}>
-            <div>Enter offer</div>
-          </div>
-          <div className={styles.middle}>
-            <Input
-              className={styles.offerBorder}
-              required
-              size={'sm'}
-              type="number"
-              step={0.000000001}
-              onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}
-            />
-          </div>
-          {/*  hardcoded to weth
-                     <div className={styles.token}>{token}</div>  */}
-          <div className={styles.right}>WETH</div>
+        <div className={styles.col}>
+          <div>Enter offer</div>
+          <Input
+            className={styles.offerBorder}
+            required
+            placeholder="WETH" // {token}
+            size={'sm'}
+            type="number"
+            step={0.000000001}
+            onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}
+          />
         </div>
-        <div className={styles.row}>
-          <div className={styles.left}>
-            <div>Expiry date</div>
-          </div>
-          <div className={styles.middle}>
-            <DatePicker
-              placeholder="Optional"
-              value={expiryDate}
-              onChange={(date) => {
-                setExpiryDate(date);
-                setExpiryTimeSeconds(Math.round((date || Date.now()).valueOf() / 1000));
-              }}
-            />
-          </div>
-          <div className={styles.right}></div>
+        <div className={styles.col}>
+          <div>Expiry date</div>
+          <DatePicker
+            placeholder="Optional"
+            value={expiryDate}
+            onChange={(date) => {
+              setExpiryDate(date);
+              setExpiryTimeSeconds(Math.round((date || Date.now()).valueOf() / 1000));
+            }}
+          />
         </div>
-
-        <div style={{ height: 10 }} />
 
         <div className={styles.buttons}>
           <Button type="submit" disabled={isSubmitting}>
