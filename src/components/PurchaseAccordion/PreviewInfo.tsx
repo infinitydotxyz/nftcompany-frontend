@@ -55,8 +55,8 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
 
   let description = data.description;
 
-  if (!description || description?.length === 0) {
-    description = 'none';
+  if (description && description.length > 300) {
+    description = `${description.slice(0, 300)}...`;
   }
 
   let purchaseButton;
@@ -162,13 +162,22 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
     </div>
   );
 
+  const _descriptionSection = description ? (
+    <>
+      <div className={styles.addressRow}>
+        <span className={styles.label}>Description</span>
+      </div>
+      <div className={styles.description}>{description}</div>
+    </>
+  ) : null;
+
   const paymentToken = getToken(data?.order?.paymentToken);
   const _priceSection = data.price ? (
     <div className={styles.addressRow}>
       <div className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price:' : 'Price:'}</div>
 
       <div style={{ flex: 1 }} />
-      <PriceBox price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
+      <PriceBox justifyRight price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
     </div>
   ) : null;
 
@@ -181,10 +190,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
         {_ownerSection}
         {_offerMakerSection}
 
-        <div className={styles.addressRow}>
-          <span className={styles.label}>Description</span>
-        </div>
-        <div className={styles.description}>{description}</div>
+        {_descriptionSection}
 
         {purchaseButton && <div className={styles.buttons}>{purchaseButton}</div>}
       </div>

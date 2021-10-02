@@ -67,14 +67,14 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
   if (token === 'ETH') {
     return (
       <div>
-        <div className={styles.space}>Buy this NFT at the fixed price.</div>
+        <div>Buy this NFT at the fixed price.</div>
 
         {data.price && (
           <div className={styles.priceRow}>
             <div>Price</div>
             <div style={{ flex: 1 }} />
 
-            <PriceBox price={data.price} token={token} expirationTime={data?.expirationTime} />
+            <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
           </div>
         )}
 
@@ -89,5 +89,5 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
     );
   }
 
-  return <div>{"Items in {token} can't be purchased. Make an offer instead."}</div>;
+  return <div>{`Items offered in ${token} can't be purchased. Make an offer instead.`}</div>;
 };

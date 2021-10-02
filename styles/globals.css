@@ -8,6 +8,12 @@ body {
   font-family: var(--font-family) !important;
 }
 
+/* Remove focus border on buttons */
+button:focus:not(.focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
 a {
   color: inherit;
   text-decoration: none;

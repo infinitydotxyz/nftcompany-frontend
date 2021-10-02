@@ -69,7 +69,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
 
   return (
     <div>
-      <div className={styles.space}>Place a bid on this NFT.</div>
+      <div>Place a bid on this NFT.</div>
 
       <form
         onSubmit={(ev) => {
@@ -78,19 +78,16 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
         }}
       >
         {token === 'WETH' && (
-          <div className={styles.row}>
-            <div className={styles.left}>
-              <div>Minimum Price</div>
-            </div>
-            <div className={styles.middle}>
-              <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
-            </div>
-            <div className={styles.right}>&nbsp;</div>
+          <div className={styles.priceRow}>
+            <div>Minimum Price</div>
+
+            <div style={{ flex: 1 }} />
+            <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
           </div>
         )}
 
         <div className={styles.col}>
-          <div>Enter offer</div>
+          <div className={styles.colTitle}>Enter offer</div>
           <Input
             className={styles.offerBorder}
             required
@@ -102,7 +99,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
           />
         </div>
         <div className={styles.col}>
-          <div>Expiry date</div>
+          <div className={styles.colTitle}>Expiry date</div>
           <DatePicker
             placeholder="Optional"
             value={expiryDate}

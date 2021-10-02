@@ -6,6 +6,12 @@
 .priceRow {
   margin-top: 16px;
   margin-bottom: 20px;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  width: 100%;
+  display: flex;
+  gap: 10px;
 }
 
 .col {
@@ -20,6 +26,10 @@
   // need to change the theme, but this is for the Weth input
   .offerBorder {
     border: var(--input-border);
+  }
+
+  .colTitle {
+    margin-bottom: 4px;
   }
 }
 

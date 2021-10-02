@@ -52,7 +52,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                     data={data}
                     action={action}
                     onComplete={() => {
-                      console.log('done');
+                      onClose();
                     }}
                   />
                 </div>
