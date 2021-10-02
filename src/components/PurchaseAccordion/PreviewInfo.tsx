@@ -1,28 +1,25 @@
 import React, { useState } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './PreviewModal.module.scss';
-import { CardData } from 'types/Nft.interface';
+import { CardData, Order } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { Button, Link, Tooltip } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { addressesEqual, ellipsisAddress, ellipsisString, getToken, toChecksumAddress } from 'utils/commonUtil';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
-import { WETH_ADDRESS } from 'utils/constants';
-
-const isServer = typeof window === 'undefined';
+import { PurchaseAccordion } from 'components/PurchaseAccordion/PurchaseAccordion';
 
 interface Props {
   data: CardData;
-  action: string; // 'purchase', 'accept-offer', 'cancel-offer'
-  onClose: () => void;
+  action: string;
+  onComplete: () => void;
 }
 
-const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
+export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
   const [placeBidShowed, setPlaceBidShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
@@ -103,7 +100,17 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     default:
       // not even sure I need this if statement, SNG remove later
       if (showPurchase) {
-        purchaseButton = <Button onClick={() => setPlaceBidShowed(true)}>Purchase</Button>;
+        purchaseButton = (
+          <PurchaseAccordion
+            data={data}
+            action={action}
+            onComplete={() => {
+              console.log('done');
+            }}
+          />
+        );
+
+        // purchaseButton = <Button onClick={() => setPlaceBidShowed(true)}>Purchase</Button>;
       }
       break;
   }
@@ -132,91 +139,78 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
       </>
     ) : null;
 
-  const paymentToken = getToken(data?.order?.paymentToken);
-  return (
+  const _tokenAddressSection = (
     <>
-      {!isServer && (
-        <ModalDialog onClose={onClose}>
-          <div style={{ width: '80vw', maxWidth: 1000 }}>
-            <div className={styles.main}>
-              <div className={styles.nftContent}>
-                <div className={styles.imgBox}>
-                  <img
-                    alt="not available"
-                    src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
-                  />
-                </div>
-
-                <div className={styles.infoBox}>
-                  <div className={styles.collectionRow}>
-                    <div className={styles.collection}>{data?.collectionName}</div>
-
-                    <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
-                  </div>
-
-                  <div className={styles.title}>{data?.title}</div>
-
-                  {data.price && (
-                    <>
-                      <span className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price' : 'Price'}</span>
-
-                      <PriceBox price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
-                    </>
-                  )}
-
-                  <div className={styles.label}>Token Address</div>
-                  <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
-                    <Link
-                      color="brandBlue"
-                      href={`https://etherscan.io/token/${data.tokenAddress}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {tokenAddress}
-                    </Link>
-                  </Tooltip>
-
-                  <div className={styles.label}>Token Id</div>
-
-                  <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
-                    <Link
-                      color="brandBlue"
-                      href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {tokenId}
-                    </Link>
-                  </Tooltip>
-
-                  {_ownerSection}
-                  {_offerMakerSection}
-
-                  <span className={styles.label}>Description</span>
-                  <div className={styles.description}>{description}</div>
-
-                  <div className={styles.buttons}>{purchaseButton}</div>
-                </div>
-              </div>
-            </div>
-
-            {deleteListingModalShowed && (
-              <CancelListingModal data={data} onClose={() => setDeleteListingModalShowed(false)} />
-            )}
-
-            {placeBidShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidShowed(false)} />}
-            {cancelOfferModalShowed && (
-              <CancelOfferModal data={data} onClose={() => setCancelOfferModalShowed(false)} />
-            )}
-            {listNFTModalShowed && <ListNFTModal data={data} onClose={() => setListNFTModalShowed(false)} />}
-            {acceptOfferModalShowed && (
-              <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />
-            )}
-          </div>
-        </ModalDialog>
-      )}
+      <div className={styles.label}>Token Address</div>
+      <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
+        <Link
+          color="brandBlue"
+          href={`https://etherscan.io/token/${data.tokenAddress}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {tokenAddress}
+        </Link>
+      </Tooltip>
     </>
   );
-};
 
-export default PreviewModal;
+  const _tokenIdSection = (
+    <>
+      <div className={styles.label}>Token Id</div>
+
+      <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
+        <Link
+          color="brandBlue"
+          href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {tokenId}
+        </Link>
+      </Tooltip>
+    </>
+  );
+
+  const paymentToken = getToken(data?.order?.paymentToken);
+  const _priceSection = data.price ? (
+    <>
+      <span className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price' : 'Price'}</span>
+
+      <PriceBox price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
+    </>
+  ) : null;
+
+  return (
+    <div>
+      <div className={styles.infoBox}>
+        <div className={styles.collectionRow}>
+          <div className={styles.collection}>{data?.collectionName}</div>
+          <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
+        </div>
+
+        <div className={styles.title}>{data?.title}</div>
+
+        {_priceSection}
+        {_tokenAddressSection}
+        {_tokenIdSection}
+        {_ownerSection}
+        {_offerMakerSection}
+
+        <span className={styles.label}>Description</span>
+        <div className={styles.description}>{description}</div>
+
+        <div className={styles.buttons}>{purchaseButton}</div>
+      </div>
+
+      {deleteListingModalShowed && (
+        <CancelListingModal data={data} onClose={() => setDeleteListingModalShowed(false)} />
+      )}
+
+      {placeBidShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidShowed(false)} />}
+      {cancelOfferModalShowed && <CancelOfferModal data={data} onClose={() => setCancelOfferModalShowed(false)} />}
+      {listNFTModalShowed && <ListNFTModal data={data} onClose={() => setListNFTModalShowed(false)} />}
+      {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
+    </div>
+  );
+};

@@ -61,7 +61,13 @@ export const ellipsisString = (inString?: string, left: number = 6, right: numbe
   return '';
 };
 
-export const getToken = (tokenAddress: string): 'WETH' | 'ETH' => (tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH');
+export const getToken = (tokenAddress?: string): 'WETH' | 'ETH' | '' => {
+  if (tokenAddress) {
+    return tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH';
+  }
+
+  return '';
+};
 
 // parse a Timestamp string (in millis or secs)
 export const parseTimestampString = (dt: string, inSecond: boolean = false): Date | null => {
@@ -150,12 +156,10 @@ export const getCustomMessage = (eventName: string, data: any) => {
   }
   // customize OpenSea messages:
   if (eventName === EventType.TransactionCreated) {
-      customMsg = (
-        <span>Your transaction has been sent to chain: {createLink(data?.transactionHash)}</span>
-      );
+    customMsg = <span>Your transaction has been sent to chain: {createLink(data?.transactionHash)}</span>;
   }
   if (eventName === EventType.TransactionConfirmed) {
-      customMsg = 'Transaction confirmed';
+    customMsg = 'Transaction confirmed';
   }
   if (eventName === EventType.TransactionFailed) {
     customMsg = 'Transaction failed';

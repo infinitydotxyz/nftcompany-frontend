@@ -69,7 +69,7 @@ export type CardData = {
   imagePreview?: string;
   price?: number;
   inStock?: number;
-  data?: any;
+  order?: Order;
   tokenAddress?: string;
   tokenId?: string;
   collectionName?: string;

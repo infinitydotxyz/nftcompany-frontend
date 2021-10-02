@@ -1,0 +1,45 @@
+.main {
+  display: flex;
+  flex-direction: column;
+
+  .infoBox {
+    flex: 35;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 20px;
+
+    .description {
+      color: #777e90;
+    }
+
+    .title {
+      font-size: 1.2rem;
+    }
+
+    .collectionRow {
+      display: flex;
+      align-items: center;
+    }
+
+    .collection {
+      font-weight: bold;
+      font-size: 1.3rem;
+      margin-right: 6px;
+    }
+
+    .label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+
+    gap: 12px;
+  }
+}

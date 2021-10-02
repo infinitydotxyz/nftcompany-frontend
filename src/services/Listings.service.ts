@@ -122,7 +122,7 @@ export const orderToCardData = (order: Order): CardData => {
     tokenAddress: order.metadata.asset.address,
     tokenId: order.metadata.asset.id,
     maker: order.maker,
-    data: order,
+    order: order,
     hasBonusReward: order.metadata.hasBonusReward,
     hasBlueCheck: order.metadata.hasBlueCheck,
     collectionName: order.metadata.asset.collectionName,
