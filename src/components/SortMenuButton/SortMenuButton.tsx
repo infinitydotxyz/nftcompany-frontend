@@ -40,7 +40,7 @@ const SortMenuButton = () => {
       <MenuDivider />
 
       <MenuItem
-        icon={<CloseIcon />}
+        icon={<CloseIcon boxSize={5} padding={1} />}
         onClick={() => {
           setButtonTitle('Sort by price');
 
