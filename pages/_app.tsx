@@ -5,7 +5,6 @@ import '../styles/fonts.css';
 import '../styles/Typeahead.css';
 import '../styles/DatePicker.scss';
 import '../src/components/nft/components.scss';
-import 'react-toastify/dist/ReactToastify.css';
 
 import type { AppProps } from 'next/app';
 import { NextPage } from 'next';

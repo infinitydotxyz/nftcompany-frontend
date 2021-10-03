@@ -1,4 +1,7 @@
 @import './vars.css';
+
+/* toast with override css */
+@import 'react-toastify/dist/ReactToastify.css';
 @import './toastify.css';
 
 html,
