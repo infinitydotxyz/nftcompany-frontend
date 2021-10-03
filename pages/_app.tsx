@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import '../styles/confetti.css';
 import '../styles/grid.css';
 import '../styles/page.scss';
 import '../styles/fonts.css';
