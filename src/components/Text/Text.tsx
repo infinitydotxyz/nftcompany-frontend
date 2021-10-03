@@ -70,7 +70,12 @@ export const Label = (props: Props) => {
 };
 
 export const Title = (props: Props) => {
-  const { size, shade } = props;
+  const { size, shade, className } = props;
 
-  return <Text {...props} size={size ?? 'lg'} shade={shade ?? 'med'} />;
+  let classes = className ?? '';
+
+  // add bottom margin
+  classes += `${classes} ${styles.bottomMargin}`;
+
+  return <Text {...props} size={size ?? 'lg'} shade={shade ?? 'med'} className={classes} />;
 };
