@@ -75,6 +75,25 @@ const Menu = {
   }
 };
 
+const Input = {
+  variants: {
+    outline: (props: any) => {
+      return {
+        field: {
+          border: '1px solid',
+
+          // not sure why you have to set this
+          borderColor: '#aaa',
+
+          _hover: {
+            border: '1px solid #aaa'
+          }
+        }
+      };
+    }
+  }
+};
+
 const Button = {
   baseStyle: (props: any) => {
     return {
@@ -133,7 +152,8 @@ export const theme = extendTheme(
     components: {
       Menu,
       Button,
-      Table
+      Table,
+      Input
     }
   },
   withDefaultColorScheme({ colorScheme: 'blue' }),
