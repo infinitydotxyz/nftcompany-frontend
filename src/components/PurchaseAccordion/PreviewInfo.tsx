@@ -11,6 +11,7 @@ import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
+import { Label } from 'components/Text/Text';
 
 interface Props {
   data: CardData;
@@ -104,7 +105,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
   const _ownerSection =
     owner?.length > 0 ? (
       <div className={styles.addressRow}>
-        <div className={styles.label}>Owner:</div>
+        <Label text="Owner:" />
         <div style={{ flex: 1 }} />
         <Tooltip label={toChecksumAddress(data.owner)} hasArrow openDelay={1000}>
           <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
@@ -117,7 +118,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
   const _offerMakerSection =
     offerMaker?.length > 0 ? (
       <div className={styles.addressRow}>
-        <div className={styles.label}>Offer Maker:</div>
+        <Label text="Offer Maker:" />
         <div style={{ flex: 1 }} />
         <Tooltip label={toChecksumAddress(offerMaker)} hasArrow openDelay={1000}>
           <Link color="brandBlue" href={`${window.origin}/${offerMaker}`} target="_blank" rel="noreferrer">
@@ -129,7 +130,8 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
 
   const _tokenAddressSection = (
     <div className={styles.addressRow}>
-      <div className={styles.label}>Token Address:</div>
+      <Label text="Token Address:" />
+
       <div style={{ flex: 1 }} />
       <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
         <Link
@@ -146,7 +148,8 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
 
   const _tokenIdSection = (
     <div className={styles.addressRow}>
-      <div className={styles.label}>Token Id:</div>
+      <Label text="Token Id:" />
+
       <div style={{ flex: 1 }} />
 
       <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
@@ -165,7 +168,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
   const _descriptionSection = description ? (
     <>
       <div className={styles.addressRow}>
-        <span className={styles.label}>Description</span>
+        <Label text="Description" />
       </div>
       <div className={styles.description}>{description}</div>
     </>
@@ -174,7 +177,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
   const paymentToken = getToken(data?.order?.paymentToken);
   const _priceSection = data.price ? (
     <div className={styles.priceRow}>
-      <div className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price:' : 'Price:'}</div>
+      <Label text={paymentToken === 'WETH' ? 'Minimum Price:' : 'Price:'} />
 
       <div style={{ flex: 1 }} />
       <PriceBox justifyRight price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />

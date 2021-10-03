@@ -8,6 +8,7 @@ import { apiPost } from 'utils/apiUtil';
 import { Button } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { getToken } from 'utils/commonUtil';
+import { Label, Title } from 'components/Text/Text';
 
 interface IProps {
   data: CardData;
@@ -66,11 +67,11 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
   if (token === 'ETH') {
     return (
       <div>
-        <div className={styles.header}>Buy this NFT</div>
+        <Title text="Buy this NFT" />
 
         {data.price && (
           <div className={styles.priceRow}>
-            <div>Price</div>
+            <Label text="Price" />
             <div style={{ flex: 1 }} />
 
             <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />

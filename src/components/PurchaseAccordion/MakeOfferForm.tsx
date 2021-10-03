@@ -8,6 +8,7 @@ import { Button, Input } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { getToken, stringToFloat } from 'utils/commonUtil';
 import { DatePicker } from 'components/DatePicker/DatePicker';
+import { Label, Title } from 'components/Text/Text';
 
 interface IProps {
   data: CardData;
@@ -68,7 +69,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
 
   return (
     <div>
-      <div className={styles.header}>Make an offer on this NFT</div>
+      <Title text="Make an offer on this NFT" />
 
       <form
         onSubmit={(ev) => {
@@ -78,7 +79,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
       >
         {token === 'WETH' && (
           <div className={styles.priceRow}>
-            <div>Minimum Price</div>
+            <Label text="Minimum Price" />
 
             <div style={{ flex: 1 }} />
             <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
@@ -86,7 +87,8 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
         )}
 
         <div className={styles.col}>
-          <div className={styles.colTitle}>Enter offer</div>
+          <Label text="Enter offer" className={styles.colTitle} />
+
           <Input
             className={styles.offerBorder}
             required
@@ -97,7 +99,8 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
           />
         </div>
         <div className={styles.col}>
-          <div className={styles.colTitle}>Expiry date</div>
+          <Label text="Expiry date" className={styles.colTitle} />
+
           <DatePicker
             placeholder="Optional"
             value={expiryDate}
