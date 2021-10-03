@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styles from './scss/MakeOfferForm.module.scss';
-import { Spinner } from '@chakra-ui/spinner';
 import { CardData, Order } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
@@ -109,12 +108,10 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
           />
         </div>
 
-        <div className={styles.buttons}>
-          <Button type="submit" disabled={isSubmitting}>
+        <div className={styles.wideButton}>
+          <Button type="submit" loadingText="Making Offer" isLoading={isSubmitting} spinnerPlacement="end">
             Make an Offer
           </Button>
-
-          {isSubmitting && <Spinner size="md" color="teal" ml={4} />}
         </div>
       </form>
     </div>

@@ -1,7 +1,7 @@
-@import 'styles/_mixins.scss';
-
 .wrapper {
-  @include inputBorder();
+  // match the Input theme settings
+  border: 1px solid #aaa;
+  border-radius: 6px;
 
   display: flex;
   flex: 1;

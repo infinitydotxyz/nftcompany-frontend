@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styles from './scss/PurchaseForm.module.scss';
-import { Spinner } from '@chakra-ui/spinner';
 import { CardData, Order } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
@@ -67,7 +66,7 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
   if (token === 'ETH') {
     return (
       <div>
-        <div className={styles.header}>Buy this NFT at the fixed price</div>
+        <div className={styles.header}>Buy this NFT</div>
 
         {data.price && (
           <div className={styles.priceRow}>
@@ -78,12 +77,16 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
           </div>
         )}
 
-        <div className={styles.buttons}>
-          <Button isDisabled={!order} onClick={onClickBuyNow} disabled={isBuying}>
+        <div className={styles.wideButton}>
+          <Button
+            isDisabled={!order}
+            onClick={onClickBuyNow}
+            loadingText="Buying"
+            isLoading={isBuying}
+            spinnerPlacement="end"
+          >
             Buy Now
           </Button>
-
-          {isBuying && <Spinner size="md" color="teal" ml={4} />}
         </div>
       </div>
     );
