@@ -136,7 +136,6 @@ svg {
   font-size: clamp(0.875rem, 0.7813rem + 0.4167vw, 1.25rem);
   line-height: 1.5;
   margin: 0;
-  font-weight: normal;
   letter-spacing: -0.01em;
 }
 
