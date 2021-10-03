@@ -151,7 +151,7 @@ export function useCardProvider(): {
     const replacedIds = new Set<string>();
 
     for (const item of srcList) {
-      const itemId = `${item.tokenId} ${item.tokenAddress}`;
+      const itemId = `${item.tokenId}${item.tokenAddress}`;
 
       // don't think this could be blank, but being safe
       if (itemId) {
@@ -181,7 +181,7 @@ export function useCardProvider(): {
       const result: CardData[] = [];
 
       for (const item of srcList) {
-        const itemId = `${item.tokenId} ${item.tokenAddress}`;
+        const itemId = `${item.tokenId}${item.tokenAddress}`;
 
         if (dupsIds.has(itemId)) {
           if (!replacedIds.has(itemId)) {
