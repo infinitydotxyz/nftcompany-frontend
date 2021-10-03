@@ -13,8 +13,8 @@ const LandingFooter = () => {
           </Link>
 
           <p className={styles.paragraph}>
-            Infinity is a product of Mavrik Labs Inc. Mavrik labs has a grand vision of making crypto a part of a
-            billion people’s daily lives.
+            Infinity is built by an A-team of crypto devs and operators. Join us on discord to find out more and
+            contribute. We are on our way to becoming the largest DAO in the world.
           </p>
         </Box>
         {/* <div className="col-sm-12 col-md-3">
@@ -48,23 +48,23 @@ const LandingFooter = () => {
       </div>
 
       <div className={'grid ' + styles.second}>
-        <div className="col-sm-12 col-md-7">
+        {/* <div className="col-sm-12 col-md-7">
           <p>
             Copyright © 2021 Mavrik labs Inc, All rights reserved | <a href="https://mavrik.co">mavrik.co</a>
           </p>
-        </div>
-        <div className={'col-sm-12 col-md-5 justify-self-end ' + styles.socials}>
-          <a href="https://medium.com/@mavriklabs">
-            <Image alt="Infinity" src="/img/medium.svg" width={30} height={30} />
+        </div> */}
+        <div className={'col-sm-12 col-md-5 justify-self-start ' + styles.socials}>
+          <a href="https://medium.com/@infinitydotxyz" target="_blank" rel="noreferrer">
+            <Image alt="Medium" src="/img/medium.svg" width={30} height={30} />
           </a>
-          <a href="https://discord.gg/SefzVZU72S">
-            <Image alt="Infinity" src="/img/discord.svg" width={30} height={30} />
+          <a href="https://discord.gg/SefzVZU72S" target="_blank" rel="noreferrer">
+            <Image alt="Discord" src="/img/discord.svg" width={30} height={30} />
           </a>
-          <a href="https://twitter.com/mavriklabs">
-            <Image alt="Infinity" src="/img/twitter.svg" width={30} height={30} />
+          <a href="https://twitter.com/infinitydotxyz" target="_blank" rel="noreferrer">
+            <Image alt="Twitter" src="/img/twitter.svg" width={30} height={30} />
           </a>
-          <a href="https://www.instagram.com/mavriklabs/">
-            <Image alt="Infinity" src="/img/instagram.svg" width={30} height={30} />
+          <a href="https://www.instagram.com/infinitydotxyz/" target="_blank" rel="noreferrer">
+            <Image alt="Instagram" src="/img/instagram.svg" width={30} height={30} />
           </a>
         </div>
       </div>
