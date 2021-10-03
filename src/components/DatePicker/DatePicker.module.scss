@@ -12,7 +12,8 @@
   .flatpicker {
     display: flex;
     border: none;
-    font-weight: bold;
+    border-radius: 5px;
+    font-weight: normal;
     padding: 0 10px;
 
     // remove when the Typeahead css is fixed
