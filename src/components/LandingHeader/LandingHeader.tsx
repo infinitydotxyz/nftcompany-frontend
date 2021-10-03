@@ -23,7 +23,7 @@ const LandingHeader = () => {
             <Link href="/">
               <a>
                 <Image
-                  alt="NFT Company"
+                  alt="Infinity"
                   src={dark ? '/img/nttcompanyDarkModeLogo.svg' : '/img/nftcompanyTransparentBgSvg.svg'}
                   width={270}
                   height={90}

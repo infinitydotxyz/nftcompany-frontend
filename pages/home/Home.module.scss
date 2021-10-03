@@ -81,9 +81,13 @@
     .stadiumButton {
       border-radius: 100px;
       min-width: 160px;
-
       box-shadow: 0 16px 28px var(--chakra-colors-brandBlueShadow, red);
+      &:hover {
+        background-color: var(--chakra-colors-brandBlue, red);
+        color: white;
+      }
     }
+
   }
 
   .checklist {

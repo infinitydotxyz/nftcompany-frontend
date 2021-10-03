@@ -31,7 +31,12 @@ export default function Home() {
           </div>
 
           <div className={styles.buttons}>
-            <Button size="lg" className={styles.stadiumButton} type="submit" onClick={() => router.push('/explore')}>
+            <Button
+              size="lg"
+              className={styles.stadiumButton}
+              colorScheme="gray"
+              onClick={() => router.push('/explore')}
+            >
               Explore
             </Button>
             <Button
@@ -55,9 +60,9 @@ export default function Home() {
         <div className={styles.topCol}>
           <div className={styles.textCol}>
             <div className={styles.bigTitle}>
-              Automate DeFi with your NFTs. Track all your investments in one place.
+              Infinity is fully compatible with Opensea. It uses the same exchange contract as Opensea. Not a fork.
               <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
-                <div>Let NFTs do the work.</div>
+                <div>No new smart contract bugs.</div>
                 <CheckShieldIcon />
               </div>
             </div>
@@ -65,7 +70,7 @@ export default function Home() {
             <div className={styles.checklist}>
               <div className={styles.checklistRow}>
                 <CheckCircleIcon className={styles.icon} />
-                <div>Lower fees</div>
+                <div>Lower fees of 1.5%</div>
               </div>
               <div className={styles.checklistRow}>
                 <CheckCircleIcon className={styles.icon} />
@@ -73,30 +78,16 @@ export default function Home() {
               </div>
               <div className={styles.checklistRow}>
                 <CheckCircleIcon className={styles.icon} />
-                <div>Governance tokens control all aspects of the ???.</div>
+                <div>Governance tokens control all aspects of the marketplace and fee treasury</div>
               </div>
               <div className={styles.checklistRow}>
                 <CheckCircleIcon className={styles.icon} />
-                <div>Only NFT owners can perform DeFi transactions</div>
+                <div>List your NFTs without re-initiating your wallet (if they are already listed on OpenSea)</div>
               </div>
-              <div className={styles.checklistRow}>
-                <CheckCircleIcon className={styles.icon} />
-                <div>Assets from the NFT can be withdrawn anytime</div>
-              </div>
-            </div>
-
-            <div className={styles.fineprint}>
-              <div>- Lower fees (for example, we charge a 1.5% transaction fee when others charge 2.5% or higher)</div>
-
-              <div>- Earn tokens for activity on the marketplace</div>
-
-              <div>- Governance tokens control all aspects of the marketplace and fees</div>
-
-              <div>- List your NFTs without re-initiating your wallet (if they are already listed on OpenSea)</div>
             </div>
           </div>
           <div className={styles.imageCol}>
-            <Image alt="NFT Company" src="/img/artwork-2.png" width={488} height={488} />
+            <Image alt="Infinity" src="/img/artwork-2.png" width={488} height={488} />
           </div>
         </div>
       </div>
@@ -109,7 +100,7 @@ export default function Home() {
       <div className={styles.containerAvg}>
         <div className={styles.topCol}>
           <div className={styles.imageCol}>
-            <Image alt="NFT Company" src="/img/developer.png" width={500} height={488} />
+            <Image alt="Infinity" src="/img/developer.png" width={500} height={488} />
           </div>
           <div className={styles.textCol}>
             <div className={styles.bigTitle}>
@@ -177,7 +168,7 @@ export default function Home() {
             </div>
           </div>
           <div className={styles.imageCol}>
-            <Image alt="NFT Company" src="/img/artists.png" width={500} height={480} />
+            <Image alt="Infinity" src="/img/artists.png" width={500} height={480} />
           </div>
         </div>
       </div>
@@ -206,7 +197,7 @@ export default function Home() {
               </p>
             </Box>
           </div>
-          <Image alt="NFT Company" src="/img/artwork-3.png" width={770} height={512} />
+          <Image alt="Infinity" src="/img/artwork-3.png" width={770} height={512} />
         </div>
       </div>
     </section>
@@ -231,7 +222,7 @@ export default function Home() {
             </div>
           </div>
           <div className={styles.imageCol}>
-            <Image alt="NFT Company" src="/img/artwork-4.png" width={488} height={400} />
+            <Image alt="Infinity" src="/img/artwork-4.png" width={488} height={400} />
           </div>
         </div>
       </div>
@@ -297,15 +288,11 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>NFT Company</title>
+        <title>Infinity</title>
       </Head>
 
       {topSection}
       {automateSection}
-      {developersSection}
-      {artistsSections}
-      {worldSection}
-      {investorsSection}
       {faqSection}
 
       {<DarkmodeSwitch />}
