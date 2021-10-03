@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { CardData, Order } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
 import {
@@ -29,6 +29,7 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
   const { data, action } = props;
   const { user } = useAppContext();
   const { colorMode } = useColorMode();
+  const [expandedIndex, setExpandedIndex] = useState<number[]>([0, 1]);
 
   const loadOrder = useCallback(async () => {
     // card data already has the order, no reason to get it again
@@ -92,7 +93,28 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
 
   return (
     <div className={styles.main}>
-      <Accordion defaultIndex={[0, 1]} allowMultiple>
+      <Accordion
+        defaultIndex={[0, 1]}
+        index={expandedIndex}
+        allowMultiple
+        onChange={(index) => {
+          if (Array.isArray(index)) {
+            let newIndex = [...index];
+
+            if (index.includes(1) && index.includes(2)) {
+              if (expandedIndex.includes(1)) {
+                newIndex = newIndex.filter((e) => e !== 1);
+              } else {
+                newIndex = newIndex.filter((e) => e !== 2);
+              }
+            }
+
+            setExpandedIndex(newIndex);
+          } else {
+            setExpandedIndex([index]);
+          }
+        }}
+      >
         <AccordionItem style={{ border: 'none' }}>
           <AccordionButton className={styles.accordionButton} _expanded={expandedStyle}>
             <Box flex="1" textAlign="left">
