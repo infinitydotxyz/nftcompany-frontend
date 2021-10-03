@@ -9,9 +9,11 @@ import { saveAuthHeaders } from '../../src/utils/apiUtil';
 import { NextPage } from 'next';
 import Layout from 'containers/layout';
 import { useColorMode } from '@chakra-ui/react';
+import { useAppContext } from 'utils/context/AppContext';
 
 export default function ConnectWallet() {
   const router = useRouter();
+  const { showAppError } = useAppContext();
   const { colorMode } = useColorMode();
 
   const connectMetaMask = async () => {
@@ -21,7 +23,7 @@ export default function ConnectWallet() {
       await saveAuthHeaders(await res.getSigner().getAddress());
       router.push('/explore');
     } else {
-      alert('Failed to connect'); // TODO: use toast
+      showAppError('Failed to connect');
     }
   };
 
