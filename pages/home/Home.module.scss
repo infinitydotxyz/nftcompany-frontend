@@ -65,6 +65,15 @@
   .info {
     display: flex;
     align-items: center;
+
+    .bigTitle {
+      font-size: 2.2em;
+      line-height: 1.2;
+      font-weight: 800;
+      margin: 0;
+      letter-spacing: -0.01em;
+      flex: 1 1 0;
+    }
   }
 
   .topHeader {
@@ -72,7 +81,7 @@
     flex-direction: column;
     align-items: center;
     gap: 20px;
-
+    text-align: center;
     // boosts bigTitle em
     font-size: 1.3em;
   }
@@ -93,10 +102,22 @@
       }
     }
 
+    .stadiumButtonBlue {
+      background-color: var(--chakra-colors-brandBlue, red);
+      color: white;
+      border-radius: 100px;
+      min-width: 160px;
+      box-shadow: 0 16px 28px var(--chakra-colors-brandBlueShadow, red);
+      &:hover {
+        background-color: blue;
+        color: white;
+      }
+    }
   }
 
   .checklist {
     margin-top: 1.5rem;
+    flex: 1 1 0;
     .checklistRow {
       display: flex;
       margin-top: 0.5rem;
