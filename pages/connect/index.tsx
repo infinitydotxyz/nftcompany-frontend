@@ -9,9 +9,11 @@ import { saveAuthHeaders } from '../../src/utils/apiUtil';
 import { NextPage } from 'next';
 import Layout from 'containers/layout';
 import { useColorMode } from '@chakra-ui/react';
+import { useAppContext } from 'utils/context/AppContext';
 
 export default function ConnectWallet() {
   const router = useRouter();
+  const { showAppError } = useAppContext();
   const { colorMode } = useColorMode();
 
   const connectMetaMask = async () => {
@@ -21,7 +23,7 @@ export default function ConnectWallet() {
       await saveAuthHeaders(await res.getSigner().getAddress());
       router.push('/explore');
     } else {
-      alert('Failed to connect'); // TODO: use toast
+      showAppError('Failed to connect');
     }
   };
 
@@ -38,7 +40,7 @@ export default function ConnectWallet() {
             <Link href="/">
               <a>
                 <Image
-                  alt="NFT Company"
+                  alt="Infinity"
                   src={dark ? '/img/nttcompanyDarkModeLogo.svg' : '/img/nftcompanyTransparentBgSvg.svg'}
                   width={240}
                   height={80}
@@ -77,13 +79,7 @@ export default function ConnectWallet() {
 
               <div className={styles.item} onClick={connectMetaMask}>
                 <div className="logo-metamask d-flex align-self-center">
-                  <Image
-                    alt="NFT Company"
-                    src="/img/metamask.svg"
-                    width={56}
-                    height={56}
-                    className="align-self-center"
-                  />
+                  <Image alt="Infinity" src="/img/metamask.svg" width={56} height={56} className="align-self-center" />
                 </div>
                 <div className="d-flex flex-column text-left align-self-center pl-20">
                   <p className="tg-desc">Metamask</p>
@@ -103,7 +99,7 @@ export default function ConnectWallet() {
               {/* <div className={styles.item}>
                 <div className="logo-metamask d-flex align-self-center">
                   <Image
-                    alt="NFT Company"
+                    alt="Infinity"
                     src="/img/walletConnect.svg"
                     width={56}
                     height={56}
@@ -128,7 +124,7 @@ export default function ConnectWallet() {
               <div className={styles.item}>
                 <div className="logo-metamask d-flex align-self-center">
                   <Image
-                    alt="NFT Company"
+                    alt="Infinity"
                     src="/img/coinbase.svg"
                     width={56}
                     height={56}

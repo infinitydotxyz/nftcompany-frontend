@@ -151,21 +151,21 @@ export function useCardProvider(): {
     const replacedIds = new Set<string>();
 
     for (const item of srcList) {
-      const tokenId = item.tokenId;
+      const itemId = `${item.tokenId}${item.tokenAddress}`;
 
       // don't think this could be blank, but being safe
-      if (tokenId) {
-        let a = dupMap.get(tokenId);
+      if (itemId) {
+        let a = dupMap.get(itemId);
 
         if (!a) {
           a = [item];
         } else {
           a.push(item);
 
-          dupsIds.add(tokenId);
+          dupsIds.add(itemId);
         }
 
-        dupMap.set(tokenId, a);
+        dupMap.set(itemId, a);
       } else {
         console.log('no token id?');
       }
@@ -181,11 +181,13 @@ export function useCardProvider(): {
       const result: CardData[] = [];
 
       for (const item of srcList) {
-        if (dupsIds.has(item.tokenId!)) {
-          if (!replacedIds.has(item.tokenId!)) {
-            replacedIds.add(item.tokenId!);
+        const itemId = `${item.tokenId}${item.tokenAddress}`;
+
+        if (dupsIds.has(itemId)) {
+          if (!replacedIds.has(itemId)) {
+            replacedIds.add(itemId);
             // find lowest price and add that one
-            const choices = dupMap.get(item.tokenId!);
+            const choices = dupMap.get(itemId);
             if (choices!.length > 1) {
               let lowestItem = choices![0];
               let minPrice = lowestItem.price ?? 0;

@@ -21,17 +21,21 @@ export default function Home() {
       <div className={styles.containerAvg}>
         <div className={styles.topHeader}>
           <div className={styles.bigTitle}>
-            The most decentralized <br />
-            NFT marketplace. <div className={styles.bigTitleBlue}>Ever.</div>
+            The NFT marketplace <br /> crypto needs is <div className={styles.bigTitleBlue}>here.</div>
           </div>
 
           <div className={styles.subHeader}>
-            Earn rewards for your activity, list without re-initating <br />
-            your wallet, and low fees when sold.
+            Earn rewards for your activity, list NFTs for free <br />
+            and pay low fees on sales.
           </div>
 
           <div className={styles.buttons}>
-            <Button size="lg" className={styles.stadiumButton} type="submit" onClick={() => router.push('/explore')}>
+            <Button
+              size="lg"
+              className={styles.stadiumButton}
+              colorScheme="gray"
+              onClick={() => router.push('/explore')}
+            >
               Explore
             </Button>
             <Button
@@ -52,53 +56,37 @@ export default function Home() {
   const automateSection = (
     <section className={styles.titleSection}>
       <div className={styles.containerAvg}>
-        <div className={styles.topCol}>
-          <div className={styles.textCol}>
+          <div className={styles.info}>
             <div className={styles.bigTitle}>
-              Automate DeFi with your NFTs. Track all your investments in one place.
+              Infinity is fully compatible with OpenSea. It uses the same contracts, not forks.
               <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
-                <div>Let NFTs do the work.</div>
-                <CheckShieldIcon />
+                <div>
+                  No new smart contract risks. <CheckShieldIcon />
+                </div>
               </div>
             </div>
 
             <div className={styles.checklist}>
               <div className={styles.checklistRow}>
                 <CheckCircleIcon className={styles.icon} />
-                <div>Lower fees</div>
+                <div>Low fees of 1.5%, go to a community controlled treasury</div>
               </div>
               <div className={styles.checklistRow}>
                 <CheckCircleIcon className={styles.icon} />
-                <div>Earn tokens for activity on the marketplace</div>
+                <div>
+                  List your NFTs without re-initiating your wallet or re-appproving tokens (if already done on OpenSea)
+                </div>
               </div>
               <div className={styles.checklistRow}>
                 <CheckCircleIcon className={styles.icon} />
-                <div>Governance tokens control all aspects of the ???.</div>
+                <div>Earn governance tokens for activity on the marketplace</div>
               </div>
               <div className={styles.checklistRow}>
                 <CheckCircleIcon className={styles.icon} />
-                <div>Only NFT owners can perform DeFi transactions</div>
-              </div>
-              <div className={styles.checklistRow}>
-                <CheckCircleIcon className={styles.icon} />
-                <div>Assets from the NFT can be withdrawn anytime</div>
+                <div>Vote on all aspects of the marketplace and fee treasury as the token holder</div>
               </div>
             </div>
-
-            <div className={styles.fineprint}>
-              <div>- Lower fees (for example, we charge a 1.5% transaction fee when others charge 2.5% or higher)</div>
-
-              <div>- Earn tokens for activity on the marketplace</div>
-
-              <div>- Governance tokens control all aspects of the marketplace and fees</div>
-
-              <div>- List your NFTs without re-initiating your wallet (if they are already listed on OpenSea)</div>
-            </div>
           </div>
-          <div className={styles.imageCol}>
-            <Image alt="NFT Company" src="/img/artwork-2.png" width={488} height={488} />
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -109,7 +97,7 @@ export default function Home() {
       <div className={styles.containerAvg}>
         <div className={styles.topCol}>
           <div className={styles.imageCol}>
-            <Image alt="NFT Company" src="/img/developer.png" width={500} height={488} />
+            <Image alt="Infinity" src="/img/developer.png" width={500} height={488} />
           </div>
           <div className={styles.textCol}>
             <div className={styles.bigTitle}>
@@ -177,7 +165,7 @@ export default function Home() {
             </div>
           </div>
           <div className={styles.imageCol}>
-            <Image alt="NFT Company" src="/img/artists.png" width={500} height={480} />
+            <Image alt="Infinity" src="/img/artists.png" width={500} height={480} />
           </div>
         </div>
       </div>
@@ -206,7 +194,7 @@ export default function Home() {
               </p>
             </Box>
           </div>
-          <Image alt="NFT Company" src="/img/artwork-3.png" width={770} height={512} />
+          <Image alt="Infinity" src="/img/artwork-3.png" width={770} height={512} />
         </div>
       </div>
     </section>
@@ -231,7 +219,7 @@ export default function Home() {
             </div>
           </div>
           <div className={styles.imageCol}>
-            <Image alt="NFT Company" src="/img/artwork-4.png" width={488} height={400} />
+            <Image alt="Infinity" src="/img/artwork-4.png" width={488} height={400} />
           </div>
         </div>
       </div>
@@ -246,45 +234,37 @@ export default function Home() {
         <div className={styles.topCol}>
           <div className={styles.textCol}>
             <div className={styles.bigTitle}>FAQs</div>
-            <div className={styles.subTitle}>
-              We are backed by investors that believe in the long term potential of crypto.
-            </div>
             <FaqAccordian
               questions={[
                 {
-                  question: 'What is a programmable NFT?',
+                  question: 'What is Infinity?',
                   answer:
-                    'A programmable NFT is a smart contract that is minted by an NFT factory.' +
-                    ' Since the NFT is a smart contract, it can be programmed to do anything.' +
-                    ' For example, it can be programmed to manage Uniswap V3 positions automatically.'
+                    'Infinity is the “FTX of NFTs” - a community driven, decentralized NFT super app that enables discovering, developing, trading and managing NFTs.'
                 },
                 {
-                  question: 'Why programmable NFTs?',
-                  answer: 'Because they are cooler than jpeg NFTs and regular smart contracts with regular front-ends.'
-                },
-                {
-                  question: 'What can be built with this primitive?',
+                  question: 'Is Infinity live?',
                   answer:
-                    'P2P exchanges, P2P loans, games, smart wallets, frontends to any DeFi protocol/blockchain app.'
+                    'Yes. Go to the Explore tab to see listed NFTs. You can also connect your Metamask to list, buy, sell NFTs and earn tokens.'
                 },
                 {
-                  question: 'Are you live?',
+                  question: 'Is Infinity a DAO?',
                   answer:
-                    'Our base contracts are ready and can be found on our Github. We are planning to release the first application of a programmable NFT in the coming weeks.'
+                    'Yes, Infinity is a DAO. If you are a developer, designer, marketer, memer or possess any valuable skill, come join us. Find our discord and twitter links at the bottom of this page.'
                 },
                 {
-                  question: 'When can I mint these NFTs?',
+                  question: 'How does Infinity governance work?',
                   answer:
-                    'In the coming weeks once we launch our first NFT. Stay tuned by following us on Twitter and joining our Discord.'
+                    'The marketplace and fee treasury is governed by a community of $NFT token holders and their delegates. They propose and vote on upgrades and on the use of funds in fee treasury.'
                 },
                 {
-                  question: 'Is there a token?',
-                  answer: 'No, currently there is no token.'
-                },
-                {
-                  question: 'Is this a DAO?',
+                  question: 'How do I earn $NFT tokens?',
                   answer:
-                    'We plan to build this as a DAO and are currently looking for members that will become part of the genesis squad. If you are developer, designer, marketer, memer or possess any valuable skill, reach out to us.'
+                    'We are airdropping $NFT tokens to OpenSea users. We have different sales volume tiers to ensure a wide distribution. The airdropped $NFT tokens become claimable after performing some activity on the Infinity marketplace - listing/selling/buying/making offers. Head over to the rewards page to check out how many tokens you are eligible to earn.'
+                },
+                {
+                  question: 'How is Infinity different from other NFT marketplaces?',
+                  answer:
+                    'Infinity is community owned and governed through a DAO. Infinity has the lowest fees and gives direct control of the fee treasury to $NFT holders. Infinity is builing the marketplace into a super app that allows for effective discovery, valuation, development, trading, and management of NFTs.'
                 }
               ]}
             />
@@ -297,15 +277,11 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>NFT Company</title>
+        <title>Infinity</title>
       </Head>
 
       {topSection}
       {automateSection}
-      {developersSection}
-      {artistsSections}
-      {worldSection}
-      {investorsSection}
       {faqSection}
 
       {<DarkmodeSwitch />}
