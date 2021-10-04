@@ -32,7 +32,7 @@ export default function Home() {
           <div className={styles.buttons}>
             <Button
               size="lg"
-              className={styles.stadiumButton}
+              className={styles.stadiumButtonBlue}
               colorScheme="gray"
               onClick={() => router.push('/explore')}
             >
