@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './AcceptOfferModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
@@ -17,8 +17,11 @@ interface IProps {
 
 const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const { user, showAppError } = useAppContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const acceptOffer = async () => {
+    setIsSubmitting(true);
+
     try {
       const seaport = getOpenSeaport();
       const order = await seaport.api.getOrder({
@@ -58,6 +61,8 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       }
     } catch (err) {
       showAppError((err as GenericError)?.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -83,8 +88,10 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
             </div>
 
             <div className={styles.buttons}>
-              <Button onClick={acceptOffer}>Accept Offer</Button>
-              <Button colorScheme="gray" onClick={() => onClose && onClose()}>
+              <Button onClick={acceptOffer} disabled={isSubmitting}>
+                Accept Offer
+              </Button>
+              <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose && onClose()}>
                 Cancel
               </Button>
             </div>
