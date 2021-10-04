@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './FaqAccordion.module.scss';
+import { duration } from 'moment';
 
 interface Q {
   question: string;
@@ -55,12 +56,13 @@ const Accordion = ({ i, expanded, setExpanded, q, a }: IProps2) => {
             animate="open"
             exit="collapsed"
             className={styles.question__answer}
+            transition={{duration: 0.1}}
             variants={{
               open: { opacity: 1, display: 'block' },
               collapsed: { opacity: 0, display: 'none' }
             }}
           >
-            <motion.p variants={{ collapsed: { y: 10 }, open: { y: 0 } }} transition={{ duration: 0.2 }}>
+            <motion.p variants={{ collapsed: { y: 10 }, open: { y: 0 } }}>
               {a}
             </motion.p>
           </motion.section>
