@@ -17,7 +17,7 @@ export const Background = (props: any) => {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
 
-        context.filter = 'blur(100px) opacity(0.3)';
+        context.filter = 'blur(100px) opacity(0.44)';
 
         const insetH = canvas.width * 0.05;
 
