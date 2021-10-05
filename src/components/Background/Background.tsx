@@ -17,7 +17,7 @@ export const Background = (props: any) => {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
 
-        context.filter = 'blur(66px) opacity(0.5)';
+        context.filter = 'blur(100px) opacity(0.3)';
 
         const insetH = canvas.width * 0.05;
 
@@ -45,8 +45,4 @@ export const Background = (props: any) => {
       <canvas ref={canvasRef} {...props} />;
     </div>
   );
-};
-
-export const SvgBackground = (props: any) => {
-  return <div className={styles.svgBg} />;
 };

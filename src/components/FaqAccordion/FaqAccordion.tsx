@@ -56,7 +56,6 @@ const Accordion = ({ i, expanded, setExpanded, q, a }: IProps2) => {
             animate="open"
             exit="collapsed"
             className={styles.question__answer}
-            transition={{duration: 0.1}}
             variants={{
               open: { opacity: 1, display: 'block' },
               collapsed: { opacity: 0, display: 'none' }
