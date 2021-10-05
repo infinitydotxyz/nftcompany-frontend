@@ -16,6 +16,9 @@ const colors = {
   windowBg: lightBg,
   windowBgDark: darkGray,
 
+  cardBgLight: '#f3f3f3',
+  cardBgDark: 'black',
+
   // unsure how to add opacity on a css var so we have these variants for now
   headerBg: lightBgAlpha,
   headerBgDark: darkGrayAlpha,
