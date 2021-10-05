@@ -51,6 +51,10 @@ const ExploreSearch = () => {
         collectionName: '',
         text: ev?.target?.value || ''
       });
+      setFilterState(defaultFilterState);
+      if (router.route !== '/explore') {
+        router.push('/explore');
+      }
     }
   };
 
