@@ -1,0 +1,23 @@
+.commonBg {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+
+  pointer-events: none;
+}
+
+.svgBg {
+  @extend .commonBg;
+
+  background-color: #330000;
+  background-image: url('./background.svg');
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.canvasBg {
+  @extend .commonBg;
+}

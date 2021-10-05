@@ -15,23 +15,6 @@
   }
 }
 
-.page-container::before {
-  content: '';
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAABPklEQVR42k3KwUrjUBhA4XOTP00TpqXQcSPjwAy4n6UPMDAwK1/Fh3LlK7hwI4gKgjvRhVgpVZva1jS5ubm5v116NmfzmbCNLxkMqEXdChoLXiEYxHcKYDpQz/YmkNYT+vNrmBdQohoSpHIdtaIvnfLQRvrQBHbWc/7MbtifXJFv+hAPkdIFZo2a85Xq8ULN5XsMfpfD7oC/vuXA3+q+mWGeChse196cTVo9naqZlkIihrthRIimHJWn+k/vESHQd57vy4rfbw1FrdSS8suOWOR7nLT/uWiXSKzK0DbsLddMX0seK89lkrKTBtL+iMLs8ux/IlHbMaocP5aWpy0cF5aR9CgHQpYn5BLTQ5HEdQw2nfoNjD9UBy+Wb+6DzTBgxluYC04yJLWetFYyF5G1QlZF9BYNrArwGTLOMFnMJziKroaiR95JAAAAAElFTkSuQmCC);
-  background-attachment: fixed;
-  filter: blur(66px);
-  opacity: 0.4;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  z-index: -1;
-}
-
 .page-container-header {
   @extend .page-container;
   display: flex;

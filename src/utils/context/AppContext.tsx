@@ -24,7 +24,6 @@ export type AppContextType = {
 const AppContext = React.createContext<AppContextType | null>(null);
 
 // let lastError = '';
-let lastMsg = '';
 let isListenerAdded = false; // set up event listeners once.
 
 export function AppContextProvider({ children }: any) {
@@ -32,7 +31,7 @@ export function AppContextProvider({ children }: any) {
   const [userReady, setUserReady] = React.useState(false);
 
   const showAppError = (message: ReactNode) => {
-    let msg = getCustomExceptionMsg(message);
+    const msg = getCustomExceptionMsg(message);
     toast.error(msg, { position: 'bottom-center' });
   };
   const showAppMessage = (message: ReactNode) => toast.info(message, { position: 'bottom-center' });
@@ -67,12 +66,6 @@ export function AppContextProvider({ children }: any) {
       if (msg === null) {
         return;
       }
-      if (lastMsg && msg === lastMsg) {
-        // TODO: to avoid show dup messages.
-        lastMsg = '';
-        return;
-      }
-      lastMsg = `${msg}`;
       showAppMessage(msg);
     };
 
