@@ -17,7 +17,6 @@ export default function Home() {
   // -------------------------------
   const topSection = (
     <section className={styles.titleSection}>
-      <div className={styles.background} />
       <div className={styles.containerAvg}>
         <div className={styles.topHeader}>
           <div className={styles.bigTitle}>
@@ -56,37 +55,37 @@ export default function Home() {
   const automateSection = (
     <section className={styles.titleSection}>
       <div className={styles.containerAvg}>
-          <div className={styles.info}>
-            <div className={styles.bigTitle}>
-              Infinity is fully compatible with OpenSea. It uses the same contracts, not forks.
-              <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
-                <div>
-                  No new smart contract risks. <CheckShieldIcon />
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.checklist}>
-              <div className={styles.checklistRow}>
-                <CheckCircleIcon className={styles.icon} />
-                <div>Low fees of 1.5%, go to a community controlled treasury</div>
-              </div>
-              <div className={styles.checklistRow}>
-                <CheckCircleIcon className={styles.icon} />
-                <div>
-                  List your NFTs without re-initiating your wallet or re-appproving tokens (if already done on OpenSea)
-                </div>
-              </div>
-              <div className={styles.checklistRow}>
-                <CheckCircleIcon className={styles.icon} />
-                <div>Earn governance tokens for activity on the marketplace</div>
-              </div>
-              <div className={styles.checklistRow}>
-                <CheckCircleIcon className={styles.icon} />
-                <div>Vote on all aspects of the marketplace and fee treasury as the token holder</div>
+        <div className={styles.info}>
+          <div className={styles.bigTitle}>
+            Infinity is fully compatible with OpenSea. It uses the same contracts, not forks.
+            <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
+              <div>
+                No new smart contract risks. <CheckShieldIcon />
               </div>
             </div>
           </div>
+
+          <div className={styles.checklist}>
+            <div className={styles.checklistRow}>
+              <CheckCircleIcon className={styles.icon} />
+              <div>Low fees of 1.5%, go to a community controlled treasury</div>
+            </div>
+            <div className={styles.checklistRow}>
+              <CheckCircleIcon className={styles.icon} />
+              <div>
+                List your NFTs without re-initiating your wallet or re-appproving tokens (if already done on OpenSea)
+              </div>
+            </div>
+            <div className={styles.checklistRow}>
+              <CheckCircleIcon className={styles.icon} />
+              <div>Earn governance tokens for activity on the marketplace</div>
+            </div>
+            <div className={styles.checklistRow}>
+              <CheckCircleIcon className={styles.icon} />
+              <div>Vote on all aspects of the marketplace and fee treasury as the token holder</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -175,8 +174,6 @@ export default function Home() {
   // -------------------------------
   const worldSection = (
     <section id="world" className={styles.titleSection}>
-      <div className={styles.backgroundTwo} />
-
       <div className={styles.containerAvg}>
         <div className={styles.worldBox}>
           <div className="grid">
@@ -203,7 +200,6 @@ export default function Home() {
   // -------------------------------
   const investorsSection = (
     <section className={styles.titleSection}>
-      <div className={styles.background} />
       <div className={styles.containerAvg}>
         <div className={styles.topCol}>
           <div className={styles.textCol}>
@@ -229,7 +225,6 @@ export default function Home() {
   // -------------------------------
   const faqSection = (
     <section className={styles.titleSection}>
-      <div className={styles.background} />
       <div className={styles.containerAvg}>
         <div className={styles.topCol}>
           <div className={styles.textCol}>

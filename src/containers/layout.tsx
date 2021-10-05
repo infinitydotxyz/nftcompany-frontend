@@ -8,6 +8,7 @@ import Header from 'components/Header/Header';
 import { isLocalhost } from 'utils/commonUtil';
 
 import LogRocket from 'logrocket';
+import { Background } from 'components/Background/Background';
 if (!isLocalhost()) {
   LogRocket.init('0pu9ak/nftco');
 }
@@ -21,6 +22,7 @@ interface IProps {
 const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
   return (
     <>
+      <Background />
       <AppChakraProvider>
         <AppContextProvider>
           <SearchContextProvider>

@@ -14,14 +14,14 @@
       justify-content: space-between;
       border-radius: 10px;
       margin: 1rem 0;
-      transition: 0.01s ease;
+      transition: 0.3s ease;
       cursor: pointer;
 
       .icon {
         width: 36px;
         height: 36px;
 
-        transition: 0.01s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        transition: 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 
         &.is-open {
           transform: rotate(180deg);

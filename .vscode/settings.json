@@ -1,4 +1,10 @@
 {
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // fixes auto format when editing svgs
+  "files.associations": {
+    "*.xml": "html",
+    "*.svg": "html"
+  }
 }
