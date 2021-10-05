@@ -41,7 +41,7 @@ export default function ConnectWallet() {
               <a>
                 <Image
                   alt="Infinity"
-                  src={dark ? '/img/nttcompanyDarkModeLogo.svg' : '/img/nftcompanyTransparentBgSvg.svg'}
+                  src={dark ? '/img/nftcompanyDarkModeLogo.svg' : '/img/infinity.svg'}
                   width={240}
                   height={80}
                 />

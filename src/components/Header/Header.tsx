@@ -222,8 +222,8 @@ const Header = (): JSX.Element => {
                 style={{ flex: '0 1 auto', minHeight: 68 }}
                 className="can-click"
                 alt="logo"
-                src={dark ? '/img/nttcompanyDarkModeLogo.svg' : '/img/nftCompanyBetaTransparentBg.svg'}
-                width={200}
+                src={dark ? '/img/nftcompanyDarkModeLogo.svg' : '/img/infinity.svg'}
+                width={130}
               />
             </Link>
           </div>
@@ -233,8 +233,8 @@ const Header = (): JSX.Element => {
                 style={{ flex: '0 1 auto' }}
                 className="can-click"
                 alt="logo"
-                src={dark ? '/img/ncDarkMode.svg' : '/img/ncBetaTransparentBgSvg.svg'}
-                width={60}
+                src={dark ? '/img/ncDarkMode.svg' : '/img/infinitySmall.svg'}
+                width={13}
               />
             </Link>
           </div>
