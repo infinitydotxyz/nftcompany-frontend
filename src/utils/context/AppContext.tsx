@@ -31,7 +31,7 @@ export function AppContextProvider({ children }: any) {
   const [userReady, setUserReady] = React.useState(false);
 
   const showAppError = (message: ReactNode) => {
-    let msg = getCustomExceptionMsg(message);
+    const msg = getCustomExceptionMsg(message);
     toast.error(msg, { position: 'bottom-center' });
   };
   const showAppMessage = (message: ReactNode) => toast.info(message, { position: 'bottom-center' });

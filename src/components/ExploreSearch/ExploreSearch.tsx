@@ -44,15 +44,23 @@ const ExploreSearch = () => {
   };
 
   const handleKeyDown = (ev: any) => {
-    if ((ev as KeyboardEvent).code === 'Enter') {
+    if (router.route === '/explore') {
+      setFilterState(defaultFilterState);
       setSearchState({
         ...searchState,
         selectedOption: undefined,
         collectionName: '',
         text: ev?.target?.value || ''
       });
-      setFilterState(defaultFilterState);
-      if (router.route !== '/explore') {
+    } else {
+      if ((ev as KeyboardEvent).code === 'Enter') {
+        setFilterState(defaultFilterState);
+        setSearchState({
+          ...searchState,
+          selectedOption: undefined,
+          collectionName: '',
+          text: ev?.target?.value || ''
+        });
         router.push('/explore');
       }
     }
