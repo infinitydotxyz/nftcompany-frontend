@@ -40,6 +40,7 @@
 }
 
 .infoRow {
+  position: relative;
   display: flex;
   align-items: center;
 
@@ -61,6 +62,15 @@
     :global(body.chakra-ui-dark) & {
       color: #eee;
     }
+  }
+
+  .subtitle {
+    position: absolute;
+    bottom: -2px;
+    right: 30px;
+    text-transform: uppercase;
+    display: flex;
+    font-size: 0.68rem;
   }
 }
 

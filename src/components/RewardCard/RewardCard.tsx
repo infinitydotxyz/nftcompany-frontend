@@ -8,6 +8,7 @@ import { LeaderBoardTable } from 'components/LeaderBoard/LeaderBoardTable';
 
 export type DataItem = {
   title: string;
+  subtitle?: string;
   value: any;
 };
 
@@ -36,6 +37,8 @@ export const RewardCard = ({ title, icon, lines = true, items }: IProps) => {
       <div key={i.title + i.value} className={classes.join(' ')}>
         <div className={styles.left}>{i.title}</div>
         <div className={styles.right}>{val}</div>
+
+        {i.subtitle && <div className={styles.subtitle}>{i.subtitle}</div>}
       </div>
     );
   });
@@ -71,7 +74,7 @@ export const CountdownCard = ({ icon, expiryTimestamp, title }: Props) => {
         <div>
           <Countdown expiryTimestamp={expiryTimestamp} />
 
-          <div style={{ marginTop: 4 }}>until next epoch</div>
+          <div style={{ marginTop: 4 }}>Until rewards end</div>
         </div>
       </div>
     </div>

@@ -36,8 +36,8 @@ export const RewardCardRow = ({ data }: Props) => {
   ];
 
   const totalRewards: DataItem[] = [
-    { title: 'Rewards Paid', value: data.totalRewardPaid },
-    { title: 'out of', value: '2000000000' }
+    // { title: 'Rewards Paid', value: data.totalRewardPaid },
+    { title: 'Rewards Available', value: '1000000000', subtitle: '10% of total supply' }
   ];
 
   const rewardItems: DataItem[] = [
@@ -80,7 +80,7 @@ export const RewardCardRow = ({ data }: Props) => {
     <div className={styles.main}>
       <div className={styles.cardGrid3}>
         <RewardCard lines={false} items={totalItems} title="Stats" icon={<StatsIcon boxSize={8} />} />
-        <RewardCard lines={false} items={totalRewards} title="NFTS Rewards" icon={<GiftCardIcon boxSize={8} />} />
+        <RewardCard lines={false} items={totalRewards} title="$NFT Rewards" icon={<GiftCardIcon boxSize={8} />} />
         <CountdownCard expiryTimestamp={expiryTimestamp} title="Time left" icon={<PendingIcon boxSize={8} />} />
       </div>
 
