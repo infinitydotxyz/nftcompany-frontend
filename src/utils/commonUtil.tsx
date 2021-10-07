@@ -150,12 +150,10 @@ export const getCustomMessage = (eventName: string, data: any) => {
   }
   // customize OpenSea messages:
   if (eventName === EventType.TransactionCreated) {
-      customMsg = (
-        <span>Your transaction has been sent to chain: {createLink(data?.transactionHash)}</span>
-      );
+    customMsg = <span>Your transaction has been sent to chain: {createLink(data?.transactionHash)}</span>;
   }
   if (eventName === EventType.TransactionConfirmed) {
-      customMsg = 'Transaction confirmed';
+    customMsg = 'Transaction confirmed';
   }
   if (eventName === EventType.TransactionFailed) {
     customMsg = 'Transaction failed';
@@ -215,6 +213,6 @@ export const numStr = (value: any): string => {
     // this adds commas
     return p.toLocaleString();
   }
-  
+
   return short;
 };

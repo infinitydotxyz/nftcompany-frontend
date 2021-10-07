@@ -117,6 +117,7 @@ export const orderToCardData = (order: Order): CardData => {
     id: order.id,
     image: order.metadata.asset.image,
     title: order.metadata.asset.title,
+    description: order.metadata.asset.description,
     inStock: +order.metadata.asset.quantity,
     price: weiToEther(order.basePrice),
     tokenAddress: order.metadata.asset.address,

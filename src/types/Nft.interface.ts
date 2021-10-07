@@ -51,6 +51,7 @@ export interface Asset {
   quantity: string;
   imagePreview: string;
   title: string;
+  description: string;
   image: string;
   owner: string;
   collectionName: string;
