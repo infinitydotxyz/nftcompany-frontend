@@ -5,6 +5,7 @@ import { ellipsisAddress, numStr } from 'utils/commonUtil';
 import { LeaderBoard } from 'types/rewardTypes';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { useAppContext } from 'utils/context/AppContext';
+import { Tooltip } from '@chakra-ui/tooltip';
 
 type Props = {
   data?: LeaderBoard;
@@ -26,32 +27,37 @@ export const LeaderBoardTable = ({ data }: Props) => {
         <Td textAlign="center" isNumeric={false}>
           <div className={styles.addressRow}>
             <div>{ellipsisAddress(item.id, 10, 10)}</div>
-            <CopyIcon
-              size="sm"
-              color="blue"
-              variant="unstyled"
-              aria-label="Copy"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (item.id) {
-                  navigator.clipboard.writeText(item.id);
-
-                  showAppMessage(`Copied to Clipboard.`);
-                }
-              }}
-            />
-            <ExternalLinkIcon
-              size="sm"
-              color="blue"
-              aria-label="Copy"
-              variant="unstyled"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (item.id) {
-                  window.open(`https://etherscan.io/address/${item.id}`, '_blank');
-                }
-              }}
-            />
+            <i className={styles.copyIcon}>
+              <Tooltip label={'Copy Address'} placement="top" hasArrow>
+                <CopyIcon
+                  size="sm"
+                  color="blue"
+                  aria-label="Copy"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (item.id) {
+                      navigator.clipboard.writeText(item.id);
+                      showAppMessage(`Copied to Clipboard.`);
+                    }
+                  }}
+                />
+              </Tooltip>{' '}
+            </i>
+            <i className={styles.linkIcon}>
+              <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
+                <ExternalLinkIcon
+                  size="sm"
+                  color="blue"
+                  aria-label="Go to link"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (item.id) {
+                      window.open(`https://etherscan.io/address/${item.id}`, '_blank');
+                    }
+                  }}
+                />
+              </Tooltip>{' '}
+            </i>
           </div>
         </Td>
 
