@@ -25,6 +25,7 @@ export type UserReward = {
 
   purchasesFeesTotalNumeric: number;
   purchasesTotalNumeric: number;
+  hasAirdrop: boolean;
   openseaVol: number;
   salesFeesTotalNumeric: number;
   salesTotalNumeric: number;

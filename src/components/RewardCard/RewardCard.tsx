@@ -129,15 +129,25 @@ export const AirdropCard = ({ reward }: AProps) => {
   classes.push(styles.topBorder);
 
   const items: DataItem[] = [];
+  let activity = 0;
+  let percentage = '';
 
-  const eligible = reward.rewardTier.eligible;
-  const ratio = reward.doneSoFar / reward.rewardTier.threshold;
+  const hasAirdrop = reward.hasAirdrop;
+  if (hasAirdrop) {
+    const eligible = reward.rewardTier.eligible;
+    const ratio = reward.doneSoFar / reward.rewardTier.threshold;
 
-  const activity = ratio * 100;
-  const percentage = activity.toFixed(2);
+    activity = ratio * 100;
+    percentage = activity.toFixed(2);
 
-  items.push({ title: 'Eligible tokens', value: eligible });
-  items.push({ title: 'Transacted', value: +reward.doneSoFar.toFixed(3) + ' / ' + reward.rewardTier.threshold + ' ETH' });
+    items.push({ title: 'Eligible tokens', value: eligible });
+    items.push({
+      title: 'Transacted',
+      value: +reward.doneSoFar.toFixed(3) + ' / ' + reward.rewardTier.threshold + ' ETH'
+    });
+  } else {
+    items.push({ title: 'Not eligible for Airdrop', value: '' });
+  }
 
   const divs = items.map((i) => {
     const val = i.value;
@@ -150,6 +160,15 @@ export const AirdropCard = ({ reward }: AProps) => {
     );
   });
 
+  if (hasAirdrop) {
+    divs.push(
+      <div key='progressBar'>
+        <Progress className={styles.progress} size="md" colorScheme="blue" value={activity} />
+        <div className={styles.percentage}> {percentage}%</div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.card}>
       <div className={styles.title}>
@@ -159,9 +178,6 @@ export const AirdropCard = ({ reward }: AProps) => {
         <div>Airdrop</div>
       </div>
       <div>{divs}</div>
-      <Progress className={styles.progress} size="md" colorScheme="blue" value={activity} />
-
-      <div className={styles.percentage}> {percentage}%</div>
     </div>
   );
 };

@@ -10,5 +10,14 @@
     gap: 4px;
     align-items: center;
     justify-content: center;
+    letter-spacing: 0.68rem;
+
+    .copyIcon {
+      cursor: pointer;
+    }
+
+    .linkIcon {
+      cursor: pointer;
+    }
   }
 }
