@@ -130,9 +130,18 @@ const Header = (): JSX.Element => {
       <AddressMenuItem key="AddressMenuItem" user={user} />,
       <MenuDivider key="kdd" />,
 
-      <MenuItem key="Rewards" icon={<StarIcon boxSize={4} />} onClick={() => router.push('/rewards')}>
-        Rewards
+      <MenuItem key="Purchases" icon={<ShoppingBagIcon boxSize={4} />} onClick={() => router.push('/purchases')}>
+        Purchases
       </MenuItem>,
+
+      <MenuItem key="Sales" icon={<MoneyIcon boxSize={4} />} onClick={() => router.push('/sales')}>
+        Sales
+      </MenuItem>,
+
+      <MenuItem key="Transactions" icon={<ListIcon boxSize={4} />} onClick={() => setTransactionsModalShowed(true)}>
+        Transactions
+      </MenuItem>,
+
       <MenuItem key="Settings" icon={<SettingsIcon boxSize={4} />} onClick={() => setSettingsModalShowed(true)}>
         Account
       </MenuItem>,
@@ -261,10 +270,12 @@ const Header = (): JSX.Element => {
                 <HoverMenuButton disabled={!signedIn} buttonTitle="Offers">
                   {offerItems}
                 </HoverMenuButton>
+              </div>
+            </div>
 
-                <HoverMenuButton disabled={!signedIn} buttonTitle="Activity">
-                  {transactionItems}
-                </HoverMenuButton>
+            <div className={styles.showExplore}>
+              <div key="Rewards" className={styles.exploreButton} onClick={() => router.push('/rewards')}>
+                Rewards
               </div>
             </div>
 
