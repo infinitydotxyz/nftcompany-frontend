@@ -211,7 +211,7 @@ export const numStr = (value: any): string => {
   const p = parseFloat(short);
   if (!isNaN(p)) {
     // this adds commas
-    return p.toLocaleString();
+    short = p.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 4 });
   }
 
   return short;
