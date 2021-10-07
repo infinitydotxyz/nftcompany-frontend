@@ -85,7 +85,7 @@ export const CountdownCard = ({ icon, expiryTimestamp, title }: Props) => {
         <div className={styles.fatCard}>
           <Countdown expiryTimestamp={expiryTimestamp} />
 
-          <div style={{ marginTop: 4 }}>Until rewards end</div>
+          <div className={styles.message}>Until rewards end</div>
         </div>
       </div>
     </div>
@@ -159,7 +159,7 @@ export const AirdropCard = ({ reward }: AProps) => {
         <div>Airdrop</div>
       </div>
       <div>{divs}</div>
-      <Progress className={styles.progress} size="sm" colorScheme="blue" value={activity} />
+      <Progress className={styles.progress} size="md" colorScheme="blue" value={activity} />
 
       <div className={styles.percentage}> {percentage}%</div>
     </div>
