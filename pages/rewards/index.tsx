@@ -85,9 +85,9 @@ const Rewards = (): JSX.Element => {
                 <div className="tg-title">Rewards</div>
               </div>
               <RewardCardRow data={userReward} />
-              {/* <div className={styles.leaderBox}>
+              <div className={styles.leaderBox}>
                 <LeaderboardCard data={leaderboard} />
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
