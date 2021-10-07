@@ -34,9 +34,9 @@ export const RewardCardRow = ({ data }: Props) => {
   ];
 
   const transactionItems: DataItem[] = [
-    { title: 'Sale volume', value: data.salesTotalNumeric },
-    { title: 'Purchase volume ', value: data.purchasesTotalNumeric },
-    { title: 'Fees', value: data.salesFeesTotalNumeric }
+    { title: 'Sale volume (ETH)', value: data.salesTotalNumeric },
+    { title: 'Purchase volume (ETH)', value: data.purchasesTotalNumeric },
+    { title: 'Fees (ETH)', value: data.salesFeesTotalNumeric }
   ];
 
   const expiryTimestamp = new Date(Date.parse('11/07/21'));
