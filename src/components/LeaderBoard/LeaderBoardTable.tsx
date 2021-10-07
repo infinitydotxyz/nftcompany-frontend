@@ -75,7 +75,7 @@ export const LeaderBoardTable = ({ data }: Props) => {
           <Tr>
             <Th textAlign="center">Rank</Th>
             <Th textAlign="center">Address</Th>
-            <Th textAlign="center">Volume</Th>
+            <Th textAlign="center">Volume (ETH)</Th>
           </Tr>
         </Thead>
         <Tbody>{rows}</Tbody>

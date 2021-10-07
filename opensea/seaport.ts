@@ -662,6 +662,7 @@ export class OpenSeaPort {
     (order.metadata as any).basePriceInEth = startAmount;
     (order.metadata as any).asset.image = assetDetails?.image;
     (order.metadata as any).asset.imagePreview = assetDetails?.imagePreview;
+    (order.metadata as any).asset.description = assetDetails?.description;
     (order.metadata as any).asset.title = assetDetails?.title;
     (order.metadata as any).asset.collectionName = assetDetails?.collectionName;
     (order.metadata as any).asset.searchTitle = searchTitle;
@@ -782,6 +783,7 @@ export class OpenSeaPort {
     (order.metadata as any).basePriceInEth = startAmount;
     (order.metadata as any).asset.image = assetDetails?.image;
     (order.metadata as any).asset.imagePreview = assetDetails?.imagePreview;
+    (order.metadata as any).asset.description = assetDetails?.description;
     (order.metadata as any).asset.title = assetDetails?.title;
     (order.metadata as any).asset.collectionName = assetDetails?.collectionName;
     (order.metadata as any).asset.searchTitle = searchTitle;
