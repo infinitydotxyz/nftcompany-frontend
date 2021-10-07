@@ -189,7 +189,6 @@ export const numStr = (value: any): string => {
         short = f.toFixed(4);
       }
     }
-
     short = value;
   } else if (typeof value === 'number') {
     short = value.toFixed(4);
@@ -216,6 +215,6 @@ export const numStr = (value: any): string => {
     // this adds commas
     return p.toLocaleString();
   }
-
+  
   return short;
 };
