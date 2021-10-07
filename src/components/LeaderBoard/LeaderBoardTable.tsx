@@ -62,7 +62,7 @@ export const LeaderBoardTable = ({ data }: Props) => {
         </Td>
 
         <Td textAlign="center" isNumeric={false}>
-          {numStr(item.total)}
+          {item.total}
         </Td>
       </Tr>
     );
