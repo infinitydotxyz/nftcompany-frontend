@@ -4,4 +4,11 @@
   width: 100%;
   padding-bottom: 20px;
   overflow-x: auto;
+
+  .addressRow {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+  }
 }

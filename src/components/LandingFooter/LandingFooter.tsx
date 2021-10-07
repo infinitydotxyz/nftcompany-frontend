@@ -9,7 +9,7 @@ const LandingFooter = () => {
       <div className="grid">
         <Box className="col-sm-12 col-md-6">
           <Link href="/">
-            <Image alt="Infinity" src="/img/nftcompanyTransparentBgSvg.svg" width={180} height={60} />
+            <Image alt="Infinity" src="/img/infinity.svg" width={120} height={40} />
           </Link>
 
           <p className={styles.paragraph}>

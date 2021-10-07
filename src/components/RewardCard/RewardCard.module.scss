@@ -9,10 +9,21 @@
     background-color: #151515;
   }
 
+  .fatCard {
+    padding: 20px 0 30px 0;
+  }
+
+  .message {
+    margin-top: 8px;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02rem;
+  }
+
   .title {
     display: flex;
     align-items: center;
-    padding: 25px 25px;
+    padding: 18px 25px;
     text-transform: uppercase;
     font-size: 0.9em;
     background-color: #f5f5f5;
@@ -29,6 +40,18 @@
       margin-right: 12px;
     }
   }
+
+  .progress {
+    margin: 5px 25px;
+    border-radius: 10px;
+    height: 0.6rem;
+  }
+
+  .percentage {
+    margin: 6px 30px;
+    font-size: 0.8rem;
+    color: #555;
+  }
 }
 
 .topBorder {
@@ -40,6 +63,7 @@
 }
 
 .infoRow {
+  position: relative;
   display: flex;
   align-items: center;
 
@@ -48,6 +72,7 @@
     padding: 8px 0px 8px 30px;
     font-size: 0.68rem;
     flex: 0 1 auto;
+    letter-spacing: 0.02rem;
   }
 
   .right {
@@ -61,6 +86,16 @@
     :global(body.chakra-ui-dark) & {
       color: #eee;
     }
+  }
+
+  .subtitle {
+    position: absolute;
+    bottom: -10px;
+    right: 30px;
+    text-transform: uppercase;
+    display: flex;
+    font-size: 0.68rem;
+    letter-spacing: 0.02rem;
   }
 }
 
