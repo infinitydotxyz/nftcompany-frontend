@@ -15,8 +15,9 @@
 
   .message {
     margin-top: 8px;
-    font-size: 0.8em;
+    font-size: 0.68rem;
     text-transform: uppercase;
+    letter-spacing: 0.02rem;
   }
 
   .title {
@@ -41,8 +42,9 @@
   }
 
   .progress {
-    margin: 2px 25px;
-    border-radius: 20px;
+    margin: 5px 25px;
+    border-radius: 10px;
+    height: 0.6rem;
   }
 
   .percentage {
@@ -70,6 +72,7 @@
     padding: 8px 0px 8px 30px;
     font-size: 0.68rem;
     flex: 0 1 auto;
+    letter-spacing: 0.02rem;
   }
 
   .right {
@@ -91,7 +94,8 @@
     right: 30px;
     text-transform: uppercase;
     display: flex;
-    font-size: 0.8rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.02rem;
   }
 }
 

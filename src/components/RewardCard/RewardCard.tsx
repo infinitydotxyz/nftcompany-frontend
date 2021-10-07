@@ -137,7 +137,7 @@ export const AirdropCard = ({ reward }: AProps) => {
   const percentage = activity.toFixed(2);
 
   items.push({ title: 'Eligible tokens', value: eligible });
-  items.push({ title: 'Earned', value: reward.doneSoFar + ' / ' + reward.rewardTier.threshold });
+  items.push({ title: 'Transacted', value: +reward.doneSoFar.toFixed(3) + ' / ' + reward.rewardTier.threshold + ' ETH' });
 
   const divs = items.map((i) => {
     const val = i.value;

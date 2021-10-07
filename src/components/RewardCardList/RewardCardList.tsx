@@ -30,16 +30,16 @@ export const RewardCardRow = ({ data }: Props) => {
 
   const totalRewards: DataItem[] = [
     // { title: 'Rewards Paid', value: data.totalRewardPaid },
-    { title: 'Rewards Available', value: '1000000000', subtitle: '10% of total supply' }
+    { title: 'Available', value: '1000000000', subtitle: '10% of total supply' }
   ];
 
   const transactionItems: DataItem[] = [
-    { title: 'Sales volume', value: data.salesTotalNumeric },
+    { title: 'Sale volume', value: data.salesTotalNumeric },
     { title: 'Purchase volume ', value: data.purchasesTotalNumeric },
-    { title: 'Fees', value: data.salesFeesTotalNumeric + data.purchasesFeesTotalNumeric }
+    { title: 'Fees', value: data.salesFeesTotalNumeric }
   ];
 
-  const expiryTimestamp = new Date(Date.parse('10/21/21'));
+  const expiryTimestamp = new Date(Date.parse('11/07/21'));
 
   return (
     <div className={styles.main}>
