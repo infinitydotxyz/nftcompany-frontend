@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { MenuItem, MenuDivider, Box, useColorMode } from '@chakra-ui/react';
-import { ExternalLinkIcon, SettingsIcon, StarIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { saveAuthHeaders } from '../../../src/utils/apiUtil';
@@ -11,21 +10,11 @@ import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import SettingsModal from 'components/SettingsModal/SettingsModal';
 import RecentTransactionsModal from 'components/RecentTransactionsModal/RecentTransactionsModal';
 import { ellipsisAddress } from 'utils/commonUtil';
-import {
-  ListIcon,
-  AddCartIcon,
-  MoneyIcon,
-  EthToken,
-  OfferIcon,
-  ImageSearchIcon,
-  ImageIcon,
-  CartIcon,
-  ShoppingBagIcon,
-  MoreVertIcon
-} from 'components/Icons/Icons';
+import { EthToken, MoreVertIcon } from 'components/Icons/Icons';
 
 import styles from './Header.module.scss';
 import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
+import { MenuIcons } from 'components/Icons/MenuIcons';
 
 let isChangingAccount = false;
 
@@ -95,31 +84,31 @@ const Header = (): JSX.Element => {
   }, []);
 
   const ntfItems = [
-    <MenuItem key="nfts" icon={<ImageIcon />} onClick={() => router.push('/my-nfts')}>
+    <MenuItem key="nfts" icon={MenuIcons.imageIcon} onClick={() => router.push('/my-nfts')}>
       All NFTs
     </MenuItem>,
-    <MenuItem key="listed" icon={<CartIcon />} onClick={() => router.push('/listed-nfts')}>
+    <MenuItem key="listed" icon={MenuIcons.cartIcon} onClick={() => router.push('/listed-nfts')}>
       Listed for sale
     </MenuItem>
   ];
 
   const offerItems = [
-    <MenuItem key="made" icon={<OfferIcon />} onClick={() => router.push('/offers-made')}>
+    <MenuItem key="made" icon={MenuIcons.offerIcon} onClick={() => router.push('/offers-made')}>
       Offers Made
     </MenuItem>,
-    <MenuItem key="received" icon={<AddCartIcon />} onClick={() => router.push('/offers-received')}>
+    <MenuItem key="received" icon={MenuIcons.addCartIcon} onClick={() => router.push('/offers-received')}>
       Offers Received
     </MenuItem>
   ];
 
   const transactionItems = [
-    <MenuItem key="purchases" icon={<ShoppingBagIcon />} onClick={() => router.push('/purchases')}>
+    <MenuItem key="purchases" icon={MenuIcons.shoppingBagIcon} onClick={() => router.push('/purchases')}>
       Purchases
     </MenuItem>,
-    <MenuItem key="sales" icon={<MoneyIcon />} onClick={() => router.push('/sales')}>
+    <MenuItem key="sales" icon={MenuIcons.moneyIcon} onClick={() => router.push('/sales')}>
       Sales
     </MenuItem>,
-    <MenuItem key="transactions" icon={<ListIcon />} onClick={() => setTransactionsModalShowed(true)}>
+    <MenuItem key="transactions" icon={MenuIcons.listIcon} onClick={() => setTransactionsModalShowed(true)}>
       Transactions
     </MenuItem>
   ];
@@ -133,14 +122,14 @@ const Header = (): JSX.Element => {
       ...transactionItems,
       <MenuDivider key="ggdd" />,
 
-      <MenuItem key="Settings" icon={<SettingsIcon boxSize={4} />} onClick={() => setSettingsModalShowed(true)}>
+      <MenuItem key="Settings" icon={MenuIcons.settings} onClick={() => setSettingsModalShowed(true)}>
         Account
       </MenuItem>,
 
       <MenuDivider key="dd1" />,
       <MenuItem
         key="Sign out"
-        icon={<ExternalLinkIcon boxSize={4} />}
+        icon={MenuIcons.externalLinkIcon}
         onClick={() => {
           signOut();
         }}
@@ -178,19 +167,31 @@ const Header = (): JSX.Element => {
 
   const medNavMenu = [...ntfItems, <MenuDivider key="d1" />, ...offerItems];
 
-  const mobileNavMenu = [
-    <MenuItem key="explore-menu" icon={<ImageSearchIcon />} onClick={() => router.push('/explore')}>
-      Explore
-    </MenuItem>,
-    <MenuItem key="Rewards" icon={<StarIcon boxSize={4} />} onClick={() => router.push('/rewards')}>
-      Rewards
-    </MenuItem>,
+  const mobileNavMenu = () => {
+    let result = [
+      <MenuItem key="explore-menu" icon={MenuIcons.imageSearchIcon} onClick={() => router.push('/explore')}>
+        Explore
+      </MenuItem>
+    ];
 
-    <MenuDivider key="m2" />,
-    ...medNavMenu,
-    <MenuDivider key="m1" />,
-    ...accountItems
-  ];
+    if (signedIn) {
+      result.push(
+        <MenuItem key="Rewards" icon={MenuIcons.starIcon} onClick={() => router.push('/rewards')}>
+          Rewards
+        </MenuItem>
+      );
+
+      result = result.concat([<MenuDivider key="m2" />, ...medNavMenu, <MenuDivider key="m1" />, ...accountItems]);
+    } else {
+      result.push(
+        <MenuItem key="Connect" icon={MenuIcons.signInIcon} onClick={() => router.push('/connect')}>
+          Connect
+        </MenuItem>
+      );
+    }
+
+    return result;
+  };
 
   const dark = colorMode === 'dark';
   let lockoutComponent;
@@ -258,21 +259,25 @@ const Header = (): JSX.Element => {
               </div>
             </div>
 
-            <div className={styles.showExplore}>
-              <div key="Rewards" className={styles.exploreButton} onClick={() => router.push('/rewards')}>
-                Rewards
+            {signedIn && (
+              <div className={styles.showExplore}>
+                <div key="Rewards" className={styles.exploreButton} onClick={() => router.push('/rewards')}>
+                  Rewards
+                </div>
               </div>
-            </div>
+            )}
 
             <div className={styles.showMediumNav}>
-              <HoverMenuButton buttonTitle="My NFTs">{medNavMenu}</HoverMenuButton>
+              <HoverMenuButton disabled={!signedIn} buttonTitle="My NFTs">
+                {medNavMenu}
+              </HoverMenuButton>
             </div>
 
             <div className={styles.showConnectButton}>{accountButton}</div>
 
             <div className={styles.showMobileMenu}>
               {/* using Image() put space at the bottom */}
-              <HoverMenuButton buttonContent={<MoreVertIcon />}>{mobileNavMenu}</HoverMenuButton>
+              <HoverMenuButton buttonContent={<MoreVertIcon />}>{mobileNavMenu()}</HoverMenuButton>
             </div>
           </div>
         </div>
