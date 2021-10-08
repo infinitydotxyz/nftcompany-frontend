@@ -134,14 +134,14 @@ const Header = (): JSX.Element => {
       ...transactionItems,
       <MenuDivider key="ggdd" />,
 
-      <MenuItem key="Settings" icon={<SettingsIcon boxSize={4} />} onClick={() => setSettingsModalShowed(true)}>
+      <MenuItem key="Settings" icon={<SettingsIcon boxSize={5} />} onClick={() => setSettingsModalShowed(true)}>
         Account
       </MenuItem>,
 
       <MenuDivider key="dd1" />,
       <MenuItem
         key="Sign out"
-        icon={<ExternalLinkIcon boxSize={4} />}
+        icon={<ExternalLinkIcon boxSize={5} />}
         onClick={() => {
           signOut();
         }}
