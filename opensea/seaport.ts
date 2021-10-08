@@ -671,6 +671,7 @@ export class OpenSeaPort {
     (order.metadata as any).asset.schemaName = asset.schemaName;
     (order as any).metadata.hasBonusReward = hasBonusReward;
     (order as any).metadata.hasBlueCheck = hasBlueCheck;
+    (order.metadata as any).asset.rawData = assetDetails?.data;
 
     if (typeof hasBonusReward === 'undefined') {
       (order as any).metadata.checkBonusReward = true;
@@ -790,6 +791,7 @@ export class OpenSeaPort {
     (order.metadata as any).asset.searchCollectionName = searchCollectionName;
     (order as any).metadata.hasBonusReward = hasBonusReward;
     (order as any).metadata.hasBlueCheck = hasBlueCheck;
+    (order.metadata as any).asset.rawData = assetDetails?.data;
 
     if (typeof hasBonusReward === 'undefined') {
       (order as any).metadata.checkBonusReward = true;

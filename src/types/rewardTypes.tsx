@@ -30,4 +30,5 @@ export type UserReward = {
   salesFeesTotalNumeric: number;
   salesTotalNumeric: number;
   doneSoFar: number;
+  usPerson: 'YES' | 'NO' | 'NONE';
 };
