@@ -25,6 +25,8 @@
 
       .description {
         color: black;
+        max-height: 15rem;
+        overflow-y: auto;
       }
 
       .title {
