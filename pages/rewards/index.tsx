@@ -13,7 +13,7 @@ import CountryConfirmModal from 'components/CountryConfirmModal/CountryConfirmMo
 
 const Rewards = (): JSX.Element => {
   const { user, showAppError } = useAppContext();
-  const [countryConfirmShowed, setCountryConfirmShowed] = useState(true);
+  const [countryConfirmShowed, setCountryConfirmShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [userReward, setUserReward] = useState<UserReward | undefined>();
   const [leaderboard, setLeaderBoard] = useState<LeaderBoard | undefined>();
@@ -28,8 +28,14 @@ const Rewards = (): JSX.Element => {
       const { result, error } = await apiGet(`/u/${user?.account}/reward`);
       if (error) {
         showAppError('Failed to fetch rewards.');
+      } else {
+        const userReward = result as UserReward;
+        setUserReward(userReward);
+        if (userReward.usPerson === 'NONE') {
+          // user has not confirmed eligibility: show Confirm modal
+          setCountryConfirmShowed(true);
+        }
       }
-      setUserReward(result);
     } catch (e) {
       console.error(e);
     } finally {
@@ -101,6 +107,7 @@ const Rewards = (): JSX.Element => {
         <CountryConfirmModal
           onSubmit={() => {
             setCountryConfirmShowed(false);
+            fetchUserReward();
           }}
           onClose={() => setCountryConfirmShowed(false)}
         />
