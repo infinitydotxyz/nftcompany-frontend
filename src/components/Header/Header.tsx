@@ -21,7 +21,8 @@ import {
   ImageIcon,
   CartIcon,
   ShoppingBagIcon,
-  MoreVertIcon
+  MoreVertIcon,
+  SignInIcon
 } from 'components/Icons/Icons';
 
 import styles from './Header.module.scss';
@@ -178,19 +179,31 @@ const Header = (): JSX.Element => {
 
   const medNavMenu = [...ntfItems, <MenuDivider key="d1" />, ...offerItems];
 
-  const mobileNavMenu = [
-    <MenuItem key="explore-menu" icon={<ImageSearchIcon />} onClick={() => router.push('/explore')}>
-      Explore
-    </MenuItem>,
-    <MenuItem key="Rewards" icon={<StarIcon boxSize={4} />} onClick={() => router.push('/rewards')}>
-      Rewards
-    </MenuItem>,
+  const mobileNavMenu = () => {
+    let result = [
+      <MenuItem key="explore-menu" icon={<ImageSearchIcon />} onClick={() => router.push('/explore')}>
+        Explore
+      </MenuItem>
+    ];
 
-    <MenuDivider key="m2" />,
-    ...medNavMenu,
-    <MenuDivider key="m1" />,
-    ...accountItems
-  ];
+    if (signedIn) {
+      result.push(
+        <MenuItem key="Rewards" icon={<StarIcon boxSize={4} />} onClick={() => router.push('/rewards')}>
+          Rewards
+        </MenuItem>
+      );
+
+      result = result.concat([<MenuDivider key="m2" />, ...medNavMenu, <MenuDivider key="m1" />, ...accountItems]);
+    } else {
+      result.push(
+        <MenuItem key="Connect" icon={<SignInIcon boxSize={4} />} onClick={() => router.push('/connect')}>
+          Connect
+        </MenuItem>
+      );
+    }
+
+    return result;
+  };
 
   const dark = colorMode === 'dark';
   let lockoutComponent;
@@ -258,21 +271,25 @@ const Header = (): JSX.Element => {
               </div>
             </div>
 
-            <div className={styles.showExplore}>
-              <div key="Rewards" className={styles.exploreButton} onClick={() => router.push('/rewards')}>
-                Rewards
+            {signedIn && (
+              <div className={styles.showExplore}>
+                <div key="Rewards" className={styles.exploreButton} onClick={() => router.push('/rewards')}>
+                  Rewards
+                </div>
               </div>
-            </div>
+            )}
 
             <div className={styles.showMediumNav}>
-              <HoverMenuButton buttonTitle="My NFTs">{medNavMenu}</HoverMenuButton>
+              <HoverMenuButton disabled={!signedIn} buttonTitle="My NFTs">
+                {medNavMenu}
+              </HoverMenuButton>
             </div>
 
             <div className={styles.showConnectButton}>{accountButton}</div>
 
             <div className={styles.showMobileMenu}>
               {/* using Image() put space at the bottom */}
-              <HoverMenuButton buttonContent={<MoreVertIcon />}>{mobileNavMenu}</HoverMenuButton>
+              <HoverMenuButton buttonContent={<MoreVertIcon />}>{mobileNavMenu()}</HoverMenuButton>
             </div>
           </div>
         </div>
