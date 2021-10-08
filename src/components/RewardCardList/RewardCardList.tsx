@@ -41,17 +41,17 @@ export const RewardCardRow = ({ data }: Props) => {
 
   const expiryTimestamp = new Date(Date.parse('11/07/21'));
 
-  // if (data.usPerson === 'YES' || data.usPerson === 'NONE') {
-  //   // user is an U.S. person: show "Not eligible" card
-  //   return (
-  //     <RewardCard
-  //       lines={false}
-  //       items={[{ title: 'Not eligible for Airdrop', value: '' }]}
-  //       title="Not Eligible"
-  //       icon={<GiftCardIcon boxSize={8} />}
-  //     />
-  //   );
-  // }
+  if (data.usPerson === 'YES' || data.usPerson === 'NONE') {
+    // user is an U.S. person: show "Not eligible" card
+    return (
+      <RewardCard
+        lines={false}
+        items={[{ title: 'Not eligible for Airdrop', value: '' }]}
+        title="Not Eligible"
+        icon={<GiftCardIcon boxSize={8} />}
+      />
+    );
+  }
 
   return (
     <div className={styles.main}>
