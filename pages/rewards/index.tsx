@@ -12,7 +12,7 @@ import { LeaderboardCard } from 'components/RewardCard/RewardCard';
 import CountryConfirmModal from 'components/CountryConfirmModal/CountryConfirmModal';
 
 const Rewards = (): JSX.Element => {
-  const { user } = useAppContext();
+  const { user, showAppError } = useAppContext();
   const [countryConfirmShowed, setCountryConfirmShowed] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
   const [userReward, setUserReward] = useState<UserReward | undefined>();
@@ -26,7 +26,9 @@ const Rewards = (): JSX.Element => {
     setIsFetching(true);
     try {
       const { result, error } = await apiGet(`/u/${user?.account}/reward`);
-
+      if (error) {
+        showAppError('Failed to fetch rewards.');
+      }
       setUserReward(result);
     } catch (e) {
       console.error(e);
@@ -95,7 +97,14 @@ const Rewards = (): JSX.Element => {
         </div>
       </div>
 
-      {countryConfirmShowed && <CountryConfirmModal onClose={() => setCountryConfirmShowed(false)} />}
+      {countryConfirmShowed && (
+        <CountryConfirmModal
+          onSubmit={() => {
+            setCountryConfirmShowed(false);
+          }}
+          onClose={() => setCountryConfirmShowed(false)}
+        />
+      )}
     </>
   );
 };

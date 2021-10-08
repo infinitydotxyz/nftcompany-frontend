@@ -10,14 +10,22 @@ import styles from './CountryConfirmModal.module.scss';
 
 const isServer = typeof window === 'undefined';
 interface IProps {
+  onSubmit: () => void;
   onClose: () => void;
 }
 
-const CountryConfirmModal: React.FC<IProps> = ({ onClose }: IProps) => {
-  // const { user, showAppError } = useAppContext();
+const CountryConfirmModal: React.FC<IProps> = ({ onSubmit, onClose }: IProps) => {
+  const { user, showAppError } = useAppContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleClickConfirm = async () => {};
+  const handleClickConfirm = async () => {
+    const { error } = await apiPost(`/u/${user?.account}/usperson`, null, { usPerson: 'no' });
+    if (error) {
+      showAppError('Failed to update country origin.');
+    } else {
+      onSubmit();
+    }
+  };
 
   return (
     <>

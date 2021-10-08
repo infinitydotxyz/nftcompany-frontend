@@ -149,7 +149,7 @@ export const AirdropCard = ({ reward }: AProps) => {
     items.push({ title: 'Not eligible for Airdrop', value: '' });
   }
 
-  const divs = items.map((i) => {
+  const contentEl = items.map((i) => {
     const val = i.value;
 
     return (
@@ -161,8 +161,8 @@ export const AirdropCard = ({ reward }: AProps) => {
   });
 
   if (hasAirdrop) {
-    divs.push(
-      <div key='progressBar'>
+    contentEl.push(
+      <div key="progressBar">
         <Progress className={styles.progress} size="md" colorScheme="blue" value={activity} />
         <div className={styles.percentage}> {percentage}%</div>
       </div>
@@ -177,7 +177,7 @@ export const AirdropCard = ({ reward }: AProps) => {
         </div>
         <div>Airdrop</div>
       </div>
-      <div>{divs}</div>
+      <div>{contentEl}</div>
     </div>
   );
 };
