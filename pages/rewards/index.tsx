@@ -9,9 +9,11 @@ import { LeaderBoard, UserReward } from '../../src/types/rewardTypes';
 import { Spinner } from '@chakra-ui/spinner';
 import { RewardCardRow } from 'components/RewardCardList/RewardCardList';
 import { LeaderboardCard } from 'components/RewardCard/RewardCard';
+import CountryConfirmModal from 'components/CountryConfirmModal/CountryConfirmModal';
 
 const Rewards = (): JSX.Element => {
   const { user } = useAppContext();
+  const [countryConfirmShowed, setCountryConfirmShowed] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
   const [userReward, setUserReward] = useState<UserReward | undefined>();
   const [leaderboard, setLeaderBoard] = useState<LeaderBoard | undefined>();
@@ -92,6 +94,8 @@ const Rewards = (): JSX.Element => {
           </div>
         </div>
       </div>
+
+      {countryConfirmShowed && <CountryConfirmModal onClose={() => setCountryConfirmShowed(false)} />}
     </>
   );
 };
