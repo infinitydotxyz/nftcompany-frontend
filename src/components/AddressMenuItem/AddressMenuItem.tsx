@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './AddressMenuItem.module.scss';
 import { Tooltip, MenuItem } from '@chakra-ui/react';
-import { ExternalLinkIcon, CopyIcon } from '@chakra-ui/icons';
 import { useAppContext, User } from 'utils/context/AppContext';
+import { MenuIcons } from 'components/Icons/MenuIcons';
 
 type Props = {
   user: User;
@@ -15,7 +15,7 @@ export const AddressMenuItem = ({ user }: Props) => {
     <div className={styles.main}>
       <div className={styles.left}>
         <MenuItem
-          icon={<ExternalLinkIcon boxSize={5} />}
+          icon={MenuIcons.externalLinkIcon}
           onClick={() => {
             window.open(`https://etherscan.io/address/${user.account}`, '_blank');
           }}
@@ -35,7 +35,7 @@ export const AddressMenuItem = ({ user }: Props) => {
               showAppMessage(`Copied to Clipboard.`);
             }}
           >
-            <CopyIcon boxSize={5} />
+            {MenuIcons.copyIcon}
           </MenuItem>
         </Tooltip>
       </div>
