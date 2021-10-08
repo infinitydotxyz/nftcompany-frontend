@@ -19,11 +19,15 @@ const CountryConfirmModal: React.FC<IProps> = ({ onSubmit, onClose }: IProps) =>
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleClickConfirm = async () => {
-    const { error } = await apiPost(`/u/${user?.account}/usperson`, null, { usPerson: 'no' });
+    const { result, error } = await apiPost(`/u/${user?.account}/usperson`, null, { usPerson: 'no' });
     if (error) {
       showAppError('Failed to update country origin.');
     } else {
-      onSubmit();
+      if (result.usPerson === 'NO') {
+        onSubmit(); // confirmed successfully => close modal
+      } else {
+        onClose();
+      }
     }
   };
 

@@ -106,8 +106,8 @@ const Rewards = (): JSX.Element => {
       {countryConfirmShowed && (
         <CountryConfirmModal
           onSubmit={() => {
+            // user confirmed eligibility
             setCountryConfirmShowed(false);
-            fetchUserReward();
           }}
           onClose={() => setCountryConfirmShowed(false)}
         />
