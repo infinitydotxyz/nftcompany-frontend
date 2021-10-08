@@ -41,7 +41,7 @@ export const RewardCardRow = ({ data }: Props) => {
 
   const expiryTimestamp = new Date(Date.parse('11/07/21'));
 
-  if (data.usPerson === 'YES') {
+  if (data.usPerson === 'YES' || data.usPerson === 'NONE') {
     // user is an U.S. person: show "Not eligible" card
     return (
       <RewardCard
