@@ -41,8 +41,6 @@ export interface Metadata {
   hasBlueCheck: boolean;
   createdAt: string;
   basePriceInEth: string;
-  searchCollectionName?: string;
-  searchTitle?: string;
 }
 
 export interface Asset {
@@ -55,6 +53,8 @@ export interface Asset {
   image: string;
   owner: string;
   collectionName: string;
+  searchCollectionName?: string;
+  searchTitle?: string;
 }
 
 export interface Orders {
