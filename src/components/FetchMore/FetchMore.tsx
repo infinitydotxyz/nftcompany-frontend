@@ -37,10 +37,10 @@ export const FetchMore = ({ onFetchMore, data, currentPage }: FetchMoreProps) =>
 };
 
 export const getLastItemSearchTitle = (data: CardData[]): string =>
-  data?.length > 0 ? data[data.length - 1]?.metadata?.searchTitle ?? '' : '';
+  data?.length > 0 ? data[data.length - 1]?.metadata?.asset?.searchTitle ?? '' : '';
 
 export const getLastItemSearchCollectionName = (data: CardData[]): string =>
-  data?.length > 0 ? data[data.length - 1]?.metadata?.searchCollectionName ?? '' : '';
+  data?.length > 0 ? data[data.length - 1]?.metadata?.asset?.searchCollectionName ?? '' : '';
 
 export const getLastItemMaker = (data: CardData[]): string =>
   data?.length > 0 ? data[data.length - 1]?.maker ?? '' : '';

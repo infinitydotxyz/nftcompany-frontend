@@ -110,7 +110,7 @@ export function useCardProvider(): {
       searchContext.searchState.selectedOption
     );
 
-    if (result.length < PAGE_SIZE) {
+    if (result.length === 0) {
       setHasMore(false);
     } else {
       setHasMore(true);
