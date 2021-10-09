@@ -21,6 +21,7 @@ export type SearchFilter = {
   startAfterPrice: string;
   startAfterSearchTitle: string;
   startAfterSearchCollectionName: string;
+  startAfterBlueCheck: boolean | undefined;
   limit: string;
   user: string;
   id: string;
@@ -58,7 +59,8 @@ export const defaultFilterState: SearchFilter = {
   tokenAddress: '',
   tokenId: '',
   startAfterSearchTitle: '',
-  startAfterSearchCollectionName: ''
+  startAfterSearchCollectionName: '',
+  startAfterBlueCheck: undefined
 };
 
 const SearchContext = React.createContext({} as any);
