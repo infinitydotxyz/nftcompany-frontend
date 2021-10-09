@@ -7,10 +7,14 @@
 
   .addressRow {
     display: flex;
-    gap: 4px;
+    gap: 6px;
     align-items: center;
     justify-content: center;
     letter-spacing: 0.1rem;
+
+    .address {
+      width: 23ch;
+    }
 
     .copyIcon {
       cursor: pointer;

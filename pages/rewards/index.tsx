@@ -8,7 +8,7 @@ import { apiGet } from 'utils/apiUtil';
 import { LeaderBoard, UserReward } from '../../src/types/rewardTypes';
 import { Spinner } from '@chakra-ui/spinner';
 import { RewardCardRow } from 'components/RewardCardList/RewardCardList';
-import { LeaderboardCard } from 'components/RewardCard/RewardCard';
+import { SaleLeaderboardCard, BuyLeaderboardCard } from 'components/RewardCard/RewardCard';
 import CountryConfirmModal from 'components/CountryConfirmModal/CountryConfirmModal';
 
 const Rewards = (): JSX.Element => {
@@ -96,7 +96,10 @@ const Rewards = (): JSX.Element => {
               </div>
               <RewardCardRow data={userReward} />
               <div className={styles.leaderBox}>
-                <LeaderboardCard data={leaderboard} />
+                <BuyLeaderboardCard data={leaderboard} />
+              </div>
+              <div className={styles.leaderBox}>
+                <SaleLeaderboardCard data={leaderboard} />
               </div>
             </div>
           </div>
