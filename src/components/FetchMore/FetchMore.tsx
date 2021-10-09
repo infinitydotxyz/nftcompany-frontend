@@ -51,6 +51,9 @@ export const getLastItemCreatedAt = (data: CardData[]): string =>
 export const getLastItemBasePrice = (data: CardData[]): string =>
   data?.length > 0 ? data[data.length - 1]?.metadata?.basePriceInEth ?? '' : '';
 
+export const getLastItemBlueCheck = (data: CardData[]): boolean =>
+  data?.length > 0 ? data[data.length - 1]?.metadata?.hasBlueCheck ?? false : false;
+
 export const NoData = ({
   isFetching,
   data,

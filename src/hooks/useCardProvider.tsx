@@ -6,6 +6,7 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { getListings, TypeAheadOption } from 'services/Listings.service';
 import {
   getLastItemBasePrice,
+  getLastItemBlueCheck,
   getLastItemCreatedAt,
   getLastItemMaker,
   getLastItemSearchCollectionName,
@@ -27,6 +28,7 @@ const fetchData = async (
   startAfterPrice: string,
   startAfterSearchTitle: string,
   startAfterSearchCollectionName: string,
+  startAfterBlueCheck: boolean | undefined,
   collectionName: string,
   text: string,
   typeAhead: TypeAheadOption | undefined
@@ -39,6 +41,7 @@ const fetchData = async (
     startAfterPrice,
     startAfterSearchTitle,
     startAfterSearchCollectionName,
+    startAfterBlueCheck,
     limit: PAGE_SIZE.toString(),
     tokenId: typeAhead?.id ?? '',
     tokenAddress: typeAhead?.address ?? '',
@@ -73,6 +76,7 @@ export function useCardProvider(): {
     let startAfterMillis = '';
     let startAfterPrice = '';
     let startAfterSearchCollectionName = '';
+    let startAfterBlueCheck;
     let startAfterSearchTitle = '';
     let previousList: CardData[] = [];
 
@@ -87,6 +91,7 @@ export function useCardProvider(): {
       startAfterUser = getLastItemMaker(list);
       startAfterMillis = getLastItemCreatedAt(list);
       startAfterPrice = getLastItemBasePrice(list);
+      startAfterBlueCheck = getLastItemBlueCheck(list);
     }
 
     setListType(newListType);
@@ -99,6 +104,7 @@ export function useCardProvider(): {
       startAfterPrice,
       startAfterSearchTitle,
       startAfterSearchCollectionName,
+      startAfterBlueCheck,
       searchContext.searchState.collectionName,
       searchContext.searchState.text,
       searchContext.searchState.selectedOption
