@@ -20,7 +20,8 @@ const ExploreSearch = () => {
       ...searchState,
       isLoading: false,
       options: [...results.collectionNames, ...results.nftNames],
-      query
+      query,
+      text: query
     });
   };
 
@@ -44,16 +45,16 @@ const ExploreSearch = () => {
     }
   };
 
-  const searchByText = (text: string) => {
-    setFilterState(defaultFilterState);
-    setSearchState({
-      ...searchState,
-      selectedOption: undefined,
-      collectionName: '',
-      text
-    });
-  };
-  const searchByTextDebounced = debounce(searchByText, 200);
+  // const searchByText = (text: string) => {
+  //   setFilterState(defaultFilterState);
+  //   setSearchState({
+  //     ...searchState,
+  //     selectedOption: undefined,
+  //     collectionName: '',
+  //     text
+  //   });
+  // };
+  // const searchByTextDebounced = debounce(searchByText, 200);
 
   const clearSearch = () => {
     typeaheadRef.current.clear();
@@ -61,17 +62,17 @@ const ExploreSearch = () => {
     setFilterState(defaultFilterState);
   };
 
-  const handleKeyDown = (ev: any) => {
-    const text = ev?.target?.value || '';
-    if (text === '') {
-      clearSearch();
-      return;
-    }
-    if (router.route !== '/explore') {
-      router.push('/explore');
-    }
-    searchByTextDebounced(text);
-  };
+  // const handleKeyDown = (ev: any) => {
+  //   const text = ev?.target?.value || '';
+  //   if (text === '') {
+  //     clearSearch();
+  //     return;
+  //   }
+  //   if (router.route !== '/explore') {
+  //     router.push('/explore');
+  //   }
+  //   searchByTextDebounced(text);
+  // };
 
   const handleClickCloseIcon = () => {
     clearSearch();
@@ -91,7 +92,7 @@ const ExploreSearch = () => {
           onSearch={handleSearch}
           options={searchState.options}
           placeholder="Search items..."
-          onKeyDown={handleKeyDown}
+          onKeyDown={() => {}}
           renderMenuItemChildren={(option) => (
             <Fragment>
               <Box d="flex" alignItems="flex-start" textAlign="center">
