@@ -55,7 +55,7 @@ export const RewardCardRow = ({ data }: Props) => {
 
   return (
     <div className={styles.main}>
-      <div className={styles.cardGrid3}>
+      <div className={styles.cardGrid2}>
         <RewardCard lines={false} items={totalRewards} title="$NFT Rewards" icon={<GiftCardIcon boxSize={8} />} />
         <CountdownCard expiryTimestamp={expiryTimestamp} title="Time left" icon={<PendingIcon boxSize={8} />} />
       </div>
