@@ -37,3 +37,15 @@ export type UserReward = {
   doneSoFar: number;
   usPerson: 'YES' | 'NO' | 'NONE';
 };
+
+// ===========================================================
+
+export type Collections = {
+  count: number;
+  results: CollectionEntry[];
+};
+
+export type CollectionEntry = {
+  id: string;
+  name: string;
+};
