@@ -1,6 +1,11 @@
 export type LeaderBoard = {
   count: number;
-  results: LeaderBoardEntry[];
+  results: LeaderBoardEntries;
+};
+
+export type LeaderBoardEntries = {
+  saleLeaders: LeaderBoardEntry[];
+  buyLeaders: LeaderBoardEntry[];
 };
 
 export type LeaderBoardEntry = {

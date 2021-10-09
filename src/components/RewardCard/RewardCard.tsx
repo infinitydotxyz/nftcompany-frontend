@@ -4,7 +4,7 @@ import styles from './RewardCard.module.scss';
 import { Countdown } from 'components/Countdown/Countdown';
 import { AlarmIcon, AwardIcon, LeaderboardIcon, StatsIcon } from 'components/Icons/Icons';
 import { LeaderBoard, UserReward } from 'types/rewardTypes';
-import { LeaderBoardTable } from 'components/LeaderBoard/LeaderBoardTable';
+import { SaleLeaderBoardTable, BuyLeaderBoardTable } from 'components/LeaderBoard/LeaderBoardTable';
 import { Progress } from '@chakra-ui/react';
 import { values } from 'lodash';
 
@@ -99,18 +99,36 @@ type XProps = {
   data?: LeaderBoard;
 };
 
-export const LeaderboardCard = ({ data }: XProps) => {
+export const SaleLeaderboardCard = ({ data }: XProps) => {
   return (
     <div className={styles.card}>
       <div className={styles.title}>
         <div className={styles.icon}>
           <LeaderboardIcon boxSize={8} />
         </div>
-        <div>Leaderboard</div>
+        <div>Top Sellers</div>
       </div>
       <div className={styles.countdown}>
         <div>
-          <LeaderBoardTable data={data} />
+          <SaleLeaderBoardTable data={data} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const BuyLeaderboardCard = ({ data }: XProps) => {
+  return (
+    <div className={styles.card}>
+      <div className={styles.title}>
+        <div className={styles.icon}>
+          <LeaderboardIcon boxSize={8} />
+        </div>
+        <div>Top Buyers</div>
+      </div>
+      <div className={styles.countdown}>
+        <div>
+          <BuyLeaderBoardTable data={data} />
         </div>
       </div>
     </div>
