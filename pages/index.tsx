@@ -73,7 +73,7 @@ export default function Home() {
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
               <div>
-                List your NFTs without re-initiating your wallet or re-appproving tokens (if already done on OpenSea)
+                List your NFTs without re-initiating your wallet or re-approving tokens (if already done on OpenSea)
               </div>
             </div>
             <div className={styles.checklistRow}>
