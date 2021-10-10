@@ -25,13 +25,13 @@ export const CollectionsTable = ({ entries }: Props) => {
         <Td textAlign="center" isNumeric={false}>
           {index + 1}
         </Td>
-        <Td textAlign="left" isNumeric={false}>
+        <Td textAlign="center" isNumeric={false}>
           <div className={styles.collectionRow}>
             <BlueCheckIcon hasBlueCheck={true} />
             {item.name}
           </div>
         </Td>
-        <Td textAlign="left" isNumeric={false}>
+        <Td textAlign="center" isNumeric={false}>
           <div className={styles.addressRow}>
             <div>{ellipsisAddress(item.id, 10, 10)}</div>
             <div className={styles.copyIcon}>
@@ -78,7 +78,7 @@ export const CollectionsTable = ({ entries }: Props) => {
           <Tr>
             <Th textAlign="center">#</Th>
             <Th textAlign="left">Collection</Th>
-            <Th textAlign="left">Address</Th>
+            <Th textAlign="center">Address</Th>
           </Tr>
         </Thead>
         <Tbody>{rows}</Tbody>

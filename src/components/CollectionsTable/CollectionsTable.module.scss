@@ -24,9 +24,12 @@
 
   .addressRow {
     display: flex;
-    gap: 4px;
+    gap: 5px;
     align-items: center;
     letter-spacing: 0.1rem;
+    font-family: monospace;
+    justify-content: center;
+    font-size: 1rem;
 
     .copyIcon {
       cursor: pointer;

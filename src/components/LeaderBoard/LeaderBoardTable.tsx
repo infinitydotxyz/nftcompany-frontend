@@ -19,7 +19,7 @@ const getRows = (data: LeaderBoardEntry[]) => {
         </Td>
         <Td textAlign="center" isNumeric={false}>
           <div className={styles.addressRow}>
-            <div className={styles.address}>{ellipsisAddress(item.id, 10, 10)}</div>
+            <div>{ellipsisAddress(item.id, 10, 10)}</div>
             <i className={styles.copyIcon}>
               <Tooltip label={'Copy Address'} placement="top" hasArrow>
                 <CopyIcon

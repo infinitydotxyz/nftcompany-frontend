@@ -94,7 +94,7 @@ const Collections = (): JSX.Element => {
           <div className={styles.content}>
             <div className={styles.centered}>
               <div className="section-bar" style={{ marginBottom: 30 }}>
-                <div className="tg-title">NFT Collections</div>
+                <div className="tg-title">Verified Collections</div>
               </div>
               <div className={styles.leaderBox}>
                 <CollectionsTable entries={collections} />
