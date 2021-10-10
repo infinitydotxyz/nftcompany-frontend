@@ -110,7 +110,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       return;
     }
     if (token === 'WETH') {
-      const basePriceInEthNum = stringToFloat(data.metadata?.basePriceInEth); // validate: offer price must be >= min price:
+      const basePriceInEthNum = data.metadata?.basePriceInEth ?? 0; // validate: offer price must be >= min price:
       if (offerPrice < basePriceInEthNum) {
         showAppError(`Offer Price must be greater than Minimum Price ${basePriceInEthNum} WETH.`);
         return;
@@ -158,9 +158,13 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
                 <div className={styles.space}>Buy this NFT at the fixed price.</div>
 
-                {data.price && (
+                {data.metadata?.basePriceInEth && (
                   <div className={styles.priceRow}>
-                    <PriceBox price={data.price} token={token} expirationTime={data?.expirationTime} />
+                    <PriceBox
+                      price={data.metadata?.basePriceInEth}
+                      token={token}
+                      expirationTime={data?.expirationTime}
+                    />
                   </div>
                 )}
 
@@ -193,7 +197,12 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                     <div>Minimum Price</div>
                   </div>
                   <div className={styles.middle}>
-                    <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
+                    <PriceBox
+                      justifyRight
+                      price={data.metadata?.basePriceInEth}
+                      token={token}
+                      expirationTime={data?.expirationTime}
+                    />
                   </div>
                   <div className={styles.right}>&nbsp;</div>
                 </div>

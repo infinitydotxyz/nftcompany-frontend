@@ -102,13 +102,12 @@ export function useCardProvider(inCollectionName?: string): {
 
     setListType(newListType);
 
-    let filterState = searchContext.filterState;
+    const filterState = searchContext.filterState;
     let collectionName = searchContext.searchState.collectionName;
     let text = searchContext.searchState.text;
     let selectedOption = searchContext.searchState.selectedOption;
 
     if (inCollectionName) {
-      filterState = defaultFilterState;
       collectionName = inCollectionName;
       text = '';
       selectedOption = undefined;
@@ -196,8 +195,10 @@ export function useCardProvider(inCollectionName?: string): {
     }
 
     let showLowest = true;
+
     // if this is blank, we also show only the lowest
-    if (searchContext.filterState.sortByPrice === 'DESC') {
+    // default sort is highest->lowest, so we must check for undefined sortByPrice too
+    if (searchContext.filterState.sortByPrice === 'DESC' || !searchContext.filterState.sortByPrice) {
       showLowest = false;
     }
 

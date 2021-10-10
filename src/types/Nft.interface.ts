@@ -40,7 +40,7 @@ export interface Metadata {
   schema: string;
   hasBlueCheck: boolean;
   createdAt: string;
-  basePriceInEth: string;
+  basePriceInEth: number;
 }
 
 export interface Asset {

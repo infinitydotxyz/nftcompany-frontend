@@ -80,7 +80,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 <li>
                   <div>Price</div>
                   <div>
-                    <span>{data.price}</span>
+                    <span>{data.metadata?.basePriceInEth}</span>
                   </div>
                   <div>ETH</div>
                 </li>

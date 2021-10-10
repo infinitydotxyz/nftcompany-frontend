@@ -9,6 +9,7 @@ import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
 import { useRouter } from 'next/router';
+import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -28,6 +29,8 @@ const Collection = (): JSX.Element => {
             <div className="tg-title">{title || name}</div>
 
             <div style={{ flex: 1 }} />
+
+            <SortMenuButton />
           </div>
 
           {name && (
