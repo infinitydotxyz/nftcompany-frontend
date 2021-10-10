@@ -1,0 +1,39 @@
+@import '/styles/SharedStyles.module.scss';
+@import 'styles/_mixins.scss';
+
+.main {
+  @include lightShadow();
+  background-color: white;
+
+  :global(body.chakra-ui-dark) & {
+    @include darkShadow();
+    background-color: #151515;
+  }
+
+  border-radius: 20px;
+  width: 100%;
+  padding-bottom: 20px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+
+  .collectionRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .addressRow {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    letter-spacing: 0.1rem;
+
+    .copyIcon {
+      cursor: pointer;
+    }
+
+    .linkIcon {
+      cursor: pointer;
+    }
+  }
+}
