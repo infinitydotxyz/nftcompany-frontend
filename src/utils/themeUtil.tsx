@@ -48,6 +48,16 @@ const colors = {
 };
 
 const Table = {
+  sizes: {
+    md: {
+      th: {
+        px: '6',
+        py: '5',
+        lineHeight: '4',
+        fontSize: 'md'
+      }
+    }
+  },
   baseStyle: {
     table: {
       // turned this off, it uses an ugly font
