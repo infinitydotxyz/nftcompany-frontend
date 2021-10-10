@@ -16,9 +16,6 @@ const Collection = (): JSX.Element => {
     query: { name }
   } = router;
 
-  const cardProvider = useCardProvider(name as string);
-  const { user } = useAppContext();
-
   return (
     <>
       <Head>
@@ -32,19 +29,7 @@ const Collection = (): JSX.Element => {
             <div style={{ flex: 1 }} />
           </div>
 
-          <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
-
-          {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
-
-          <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
-
-          {cardProvider.hasData() && (
-            <ScrollLoader
-              onFetchMore={async () => {
-                cardProvider.loadNext();
-              }}
-            />
-          )}
+          {name && <CollectionContents name={name as string} />}
         </div>
       </div>
     </>
@@ -54,3 +39,32 @@ const Collection = (): JSX.Element => {
 // eslint-disable-next-line react/display-name
 Collection.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
 export default Collection;
+
+// =============================================================
+
+type Props = {
+  name: string;
+};
+
+const CollectionContents = ({ name }: Props): JSX.Element => {
+  const cardProvider = useCardProvider(name as string);
+  const { user } = useAppContext();
+
+  return (
+    <>
+      <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
+
+      {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
+
+      <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
+
+      {cardProvider.hasData() && (
+        <ScrollLoader
+          onFetchMore={async () => {
+            cardProvider.loadNext();
+          }}
+        />
+      )}
+    </>
+  );
+};
