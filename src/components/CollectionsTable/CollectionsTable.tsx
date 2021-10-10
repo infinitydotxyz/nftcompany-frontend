@@ -20,6 +20,9 @@ export const CollectionsTable = ({ entries }: Props) => {
   }
 
   const rows = entries.map((item, index) => {
+    let name = item.name.replace(/\s/g, '');
+    name = name.toLowerCase();
+
     return (
       <Tr key={item.id}>
         <Td textAlign="center" isNumeric={false}>
@@ -28,8 +31,7 @@ export const CollectionsTable = ({ entries }: Props) => {
         <Td textAlign="center" isNumeric={false}>
           <div className={styles.collectionRow}>
             <BlueCheckIcon hasBlueCheck={true} />
-
-            <Link href={`${window.origin}/collection/${item.name}`}> {item.name}</Link>
+            <Link href={`${window.origin}/collection/${name}`}>{item.name}</Link>
           </div>
         </Td>
         <Td textAlign="center" isNumeric={false}>
