@@ -92,7 +92,7 @@ const ExploreSearch = () => {
           onSearch={handleSearch}
           options={searchState.options}
           placeholder="Search items..."
-          onKeyDown={() => {}}
+          // onKeyDown={() => {}}
           renderMenuItemChildren={(option) => (
             <Fragment>
               <Box d="flex" alignItems="flex-start" textAlign="center">
