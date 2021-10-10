@@ -6,7 +6,6 @@ import { Box } from '@chakra-ui/react';
 import { defaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { debounce } from 'lodash';
 import styles from './ExploreSearch.module.scss';
 
 const ExploreSearch = () => {
@@ -45,34 +44,11 @@ const ExploreSearch = () => {
     }
   };
 
-  // const searchByText = (text: string) => {
-  //   setFilterState(defaultFilterState);
-  //   setSearchState({
-  //     ...searchState,
-  //     selectedOption: undefined,
-  //     collectionName: '',
-  //     text
-  //   });
-  // };
-  // const searchByTextDebounced = debounce(searchByText, 200);
-
   const clearSearch = () => {
     typeaheadRef.current.clear();
     setSearchState({ ...searchState, collectionName: '', text: '', selectedOption: undefined });
     setFilterState(defaultFilterState);
   };
-
-  // const handleKeyDown = (ev: any) => {
-  //   const text = ev?.target?.value || '';
-  //   if (text === '') {
-  //     clearSearch();
-  //     return;
-  //   }
-  //   if (router.route !== '/explore') {
-  //     router.push('/explore');
-  //   }
-  //   searchByTextDebounced(text);
-  // };
 
   const handleClickCloseIcon = () => {
     clearSearch();
@@ -92,7 +68,6 @@ const ExploreSearch = () => {
           onSearch={handleSearch}
           options={searchState.options}
           placeholder="Search items..."
-          onKeyDown={() => {}}
           renderMenuItemChildren={(option) => (
             <Fragment>
               <Box d="flex" alignItems="flex-start" textAlign="center">
