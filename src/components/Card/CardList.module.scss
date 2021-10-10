@@ -34,7 +34,10 @@
 
 .cardList {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+
+  // the minmax(0, 1fr) rather than 1fr keeps the cards from growing past their initial width
+  // https://stackoverflow.com/questions/43311943/prevent-content-from-expanding-grid-items?rq=1
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-gap: 56px;
 
   margin: 40px 0;
@@ -43,14 +46,14 @@
 .card {
   position: relative;
   padding: 12px;
-  box-shadow: 0px 0px 32px rgba(31, 47, 70, 0.05), 0px 12px 14px rgba(31, 47, 70, 0.12);
   border-radius: 20px;
+
+  @include lightShadow();
   background-color: var(--chakra-colors-cardBgLight, red);
 
   :global(body.chakra-ui-dark) & {
-    background-color: var(--chakra-colors-cardBgDark, red);
-
     @include darkShadow();
+    background-color: var(--chakra-colors-cardBgDark, red);
   }
 
   &:hover {
@@ -121,12 +124,25 @@
     .collectionName {
       color: var(--text-secondary);
       font-size: 0.9em;
-      padding-right: 6px;
+
+      // keeps long titles from flowing outside the card bounds
+      white-space: nowrap;
+      max-width: 30ch;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
     .cardTitle {
       font-size: 16px;
       line-height: 1.5;
       font-weight: 500;
+
+      .title {
+        // keeps long titles from flowing outside the card bounds
+        white-space: nowrap;
+        max-width: 30ch;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
     }
   }
 }
@@ -134,7 +150,7 @@
 @media only screen and (min-width: 1000px) and (max-width: 1400px) {
   .cardList {
     grid-gap: 36px;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 
     .card {
       .cardPreview {
@@ -147,7 +163,7 @@
 @media only screen and (min-width: 700px) and (max-width: 1000px) {
   .cardList {
     grid-gap: 36px;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
     .card {
       .cardPreview {
@@ -160,7 +176,7 @@
 @media only screen and (max-width: 700px) {
   .cardList {
     grid-gap: 36px;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
 
     .card {
       .cardPreview {

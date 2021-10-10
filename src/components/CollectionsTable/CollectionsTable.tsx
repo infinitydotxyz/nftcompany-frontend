@@ -1,26 +1,41 @@
 import React from 'react';
-import styles from './LeaderBoardTable.module.scss';
-import { Table, Thead, Tbody, Tr, Th, Td, IconButton, Icon } from '@chakra-ui/react';
+import styles from './CollectionsTable.module.scss';
+import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
 import { ellipsisAddress, numStr } from 'utils/commonUtil';
-import { LeaderBoard, LeaderBoardEntry } from 'types/rewardTypes';
+import { CollectionEntry, Collections } from 'types/rewardTypes';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
+import { useAppContext } from 'utils/context/AppContext';
 import { Tooltip } from '@chakra-ui/tooltip';
+import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 
 type Props = {
-  data?: LeaderBoard;
+  entries?: CollectionEntry[];
 };
 
-const getRows = (data: LeaderBoardEntry[]) => {
-  return data.map((item, index) => {
+export const CollectionsTable = ({ entries }: Props) => {
+  const { showAppMessage } = useAppContext();
+
+  if (!entries) {
+    return <div>Nothing found</div>;
+  }
+
+  const rows = entries.map((item, index) => {
+    let name = item.name.replace(/\s/g, '');
+    name = name.toLowerCase();
+
     return (
       <Tr key={item.id}>
         <Td textAlign="center" isNumeric={false}>
-          #{index + 1}
+          <div className={styles.collectionRow}>
+            <div className={styles.leftSpace}>{index + 1}.</div>
+            <BlueCheckIcon hasBlueCheck={true} />
+            <Link href={`${window.origin}/collection/${name}`}>{item.name}</Link>
+          </div>
         </Td>
         <Td textAlign="center" isNumeric={false}>
           <div className={styles.addressRow}>
             <div>{ellipsisAddress(item.id, 10, 10)}</div>
-            <i className={styles.copyIcon}>
+            <div className={styles.copyIcon}>
               <Tooltip label={'Copy Address'} placement="top" hasArrow>
                 <CopyIcon
                   size="sm"
@@ -30,12 +45,13 @@ const getRows = (data: LeaderBoardEntry[]) => {
                     e.stopPropagation();
                     if (item.id) {
                       navigator.clipboard.writeText(item.id);
+                      showAppMessage(`Copied to Clipboard.`);
                     }
                   }}
                 />
-              </Tooltip>{' '}
-            </i>
-            <i className={styles.linkIcon}>
+              </Tooltip>
+            </div>
+            <div className={styles.linkIcon}>
               <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
                 <ExternalLinkIcon
                   size="sm"
@@ -48,60 +64,24 @@ const getRows = (data: LeaderBoardEntry[]) => {
                     }
                   }}
                 />
-              </Tooltip>{' '}
-            </i>
+              </Tooltip>
+            </div>
           </div>
-        </Td>
-
-        <Td textAlign="center" isNumeric={false}>
-          {numStr(item.total)}
         </Td>
       </Tr>
     );
   });
-};
-
-export const SaleLeaderBoardTable = ({ data }: Props) => {
-  if (!data) {
-    return <div>Nothing found</div>;
-  }
-
-  const saleRows = getRows(data.results.saleLeaders);
 
   return (
     <div className={styles.main}>
       <Table colorScheme="gray">
         <Thead>
           <Tr>
-            <Th textAlign="center">Rank</Th>
+            <Th textAlign="center">Collection</Th>
             <Th textAlign="center">Address</Th>
-            <Th textAlign="center">Sale Volume (ETH)</Th>
           </Tr>
         </Thead>
-        <Tbody>{saleRows}</Tbody>
-      </Table>
-    </div>
-  );
-};
-
-export const BuyLeaderBoardTable = ({ data }: Props) => {
-  if (!data) {
-    return <div>Nothing found</div>;
-  }
-
-  const buyRows = getRows(data.results.buyLeaders);
-
-  return (
-    <div className={styles.main}>
-      <Table colorScheme="gray">
-        <Thead>
-          <Tr>
-            <Th textAlign="center">Rank</Th>
-            <Th textAlign="center">Address</Th>
-            <Th textAlign="center">Buy Volume (ETH)</Th>
-          </Tr>
-        </Thead>
-        <Tbody>{buyRows}</Tbody>
+        <Tbody>{rows}</Tbody>
       </Table>
     </div>
   );

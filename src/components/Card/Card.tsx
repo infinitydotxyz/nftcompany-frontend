@@ -136,14 +136,16 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
                 <div className={styles.collectionRow}>
                   <div className={styles.collectionName}>{collectionName}</div>
 
-                  <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
+                  <div style={{ paddingLeft: 6 }}>
+                    <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
+                  </div>
                 </div>
               )}
-              <div>{data.title}</div>
+              <div className={styles.title}>{data.title}</div>
             </div>
             <PriceBox
               justifyRight
-              price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
+              price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
               token={data?.data?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
               expirationTime={data?.expirationTime}
             />

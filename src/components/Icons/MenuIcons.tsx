@@ -4,16 +4,16 @@ import {
   ListIcon,
   AddCartIcon,
   MoneyIcon,
-  EthToken,
   OfferIcon,
   ImageSearchIcon,
   ImageIcon,
   StarIcon,
   AccountIcon,
   CartIcon,
+  CollectionsIcon,
   ShoppingBagIcon,
-  MoreVertIcon,
   SignInIcon,
+  ExploreIcon,
   SortIcon
 } from 'components/Icons/Icons';
 
@@ -42,6 +42,8 @@ export class MenuIcons {
   static signInIcon = MenuIcons.wrap(<SignInIcon boxSize={bs} />);
   static copyIcon = MenuIcons.wrap(<CopyIcon boxSize={bs} />);
   static sortIcon = MenuIcons.wrap(<SortIcon boxSize={bs} />);
+  static collectionsIcon = MenuIcons.wrap(<CollectionsIcon boxSize={bs} />);
+  static exploreIcon = MenuIcons.wrap(<ExploreIcon boxSize={bs} />);
 
   // these are too large at bs, so use sbs
   static closeIcon = MenuIcons.wrap(<CloseIcon boxSize={sbs} />);

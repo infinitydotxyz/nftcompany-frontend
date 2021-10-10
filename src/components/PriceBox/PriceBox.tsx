@@ -13,7 +13,15 @@ type Props = {
 };
 
 export const PriceBox = ({ justifyRight = false, price, expirationTime = '', token = '' }: Props) => {
+  let priceStr = '0';
+
   if (price) {
+    if (price > 10000) {
+      priceStr = price.toExponential();
+    } else {
+      priceStr = price.toString();
+    }
+
     const priceStyle = [styles.priceBox];
 
     if (justifyRight) {
@@ -32,7 +40,7 @@ export const PriceBox = ({ justifyRight = false, price, expirationTime = '', tok
       >
         <div className={priceStyle.join(' ')}>
           <div className={styles.price}>
-            {price} {token === 'ETH' ? <EthToken /> : <WEthToken />}
+            {priceStr} {token === 'ETH' ? <EthToken /> : <WEthToken />}
           </div>
           {expDate && (
             <div className={styles.expTime} title={expDate.toLocaleString()}>

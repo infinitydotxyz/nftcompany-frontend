@@ -72,7 +72,7 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 <li>
                   <div>Price</div>
                   <div>
-                    <span>{data.price}</span>
+                    <span>{data.metadata?.basePriceInEth}</span>
                   </div>
                   <div>WETH</div>
                 </li>

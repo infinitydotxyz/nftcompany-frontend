@@ -9,10 +9,14 @@ import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
+import { Link } from '@chakra-ui/layout';
+import { useRouter } from 'next/router';
+import styles from './Explore.module.scss';
 
 export default function ExplorePage() {
   const cardProvider = useCardProvider();
   const { user } = useAppContext();
+  const router = useRouter();
 
   return (
     <>

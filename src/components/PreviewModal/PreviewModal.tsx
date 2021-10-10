@@ -156,11 +156,15 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
                   <div className={styles.title}>{data?.title}</div>
 
-                  {data.price && (
+                  {data.metadata?.basePriceInEth && (
                     <>
                       <span className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price' : 'Price'}</span>
 
-                      <PriceBox price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
+                      <PriceBox
+                        price={data.metadata?.basePriceInEth}
+                        token={paymentToken}
+                        expirationTime={data?.expirationTime}
+                      />
                     </>
                   )}
 
