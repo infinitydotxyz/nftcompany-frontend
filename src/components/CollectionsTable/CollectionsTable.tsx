@@ -29,7 +29,7 @@ export const CollectionsTable = ({ entries }: Props) => {
           <div className={styles.collectionRow}>
             <BlueCheckIcon hasBlueCheck={true} />
 
-            <Link href={`${window.origin}/collection/${item.id}`}> {item.name}</Link>
+            <Link href={`${window.origin}/collection/${item.name}`}> {item.name}</Link>
           </div>
         </Td>
         <Td textAlign="center" isNumeric={false}>

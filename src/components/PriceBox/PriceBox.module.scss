@@ -3,6 +3,9 @@
   align-items: flex-start;
   flex-direction: column;
 
+  // keeps long prices from flowing outside the card bounds
+  overflow: hidden;
+
   &.onRight {
     align-items: flex-end;
   }

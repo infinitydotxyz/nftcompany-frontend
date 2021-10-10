@@ -1,0 +1,26 @@
+@import '/styles/SharedStyles.module.scss';
+
+.main {
+  margin-bottom: 30vh;
+
+  .content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .centered {
+      max-width: 1100px;
+      width: 100%;
+    }
+  }
+}
+
+.spinner {
+  display: flex;
+  height: 400px;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  flex-direction: center;
+}
