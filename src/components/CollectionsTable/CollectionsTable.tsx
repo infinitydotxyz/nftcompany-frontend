@@ -25,8 +25,8 @@ export const CollectionsTable = ({ entries }: Props) => {
 
     return (
       <Tr key={item.id}>
-        <Td textAlign="center" isNumeric={false}>
-          {index + 1}
+        <Td className={styles.indexTd} textAlign="center" isNumeric={false}>
+          {index + 1}.
         </Td>
         <Td textAlign="center" isNumeric={false}>
           <div className={styles.collectionRow}>
@@ -79,7 +79,7 @@ export const CollectionsTable = ({ entries }: Props) => {
       <Table colorScheme="gray">
         <Thead>
           <Tr>
-            <Th textAlign="center">#</Th>
+            <Th textAlign="center">Index</Th>
             <Th textAlign="left">Collection</Th>
             <Th textAlign="center">Address</Th>
           </Tr>
