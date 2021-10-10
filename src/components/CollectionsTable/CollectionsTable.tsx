@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './CollectionsTable.module.scss';
-import { Table, Thead, Tbody, Tr, Th, Td, IconButton, Icon } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
 import { ellipsisAddress, numStr } from 'utils/commonUtil';
 import { CollectionEntry, Collections } from 'types/rewardTypes';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
@@ -28,7 +28,8 @@ export const CollectionsTable = ({ entries }: Props) => {
         <Td textAlign="center" isNumeric={false}>
           <div className={styles.collectionRow}>
             <BlueCheckIcon hasBlueCheck={true} />
-            {item.name}
+
+            <Link href={`${window.origin}/collection/${item.id}`}> {item.name}</Link>
           </div>
         </Td>
         <Td textAlign="center" isNumeric={false}>
@@ -59,7 +60,7 @@ export const CollectionsTable = ({ entries }: Props) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (item.id) {
-                      window.open(`${window.origin}/${item.id}`, '_blank');
+                      window.open(`https://etherscan.io/address/${item.id}`, '_blank');
                     }
                   }}
                 />
