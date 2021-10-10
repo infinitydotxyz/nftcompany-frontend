@@ -119,11 +119,6 @@ const Header = (): JSX.Element => {
       <AddressMenuItem key="AddressMenuItem" user={user} />,
       <MenuDivider key="kdd" />,
 
-      <MenuItem key="collections" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
-        Collections
-      </MenuItem>,
-      <MenuDivider key="ggdddd" />,
-
       ...transactionItems,
       <MenuDivider key="ggdd" />,
 

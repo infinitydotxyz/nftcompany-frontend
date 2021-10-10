@@ -9,10 +9,14 @@ import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
+import { Link } from '@chakra-ui/layout';
+import { useRouter } from 'next/router';
+import styles from './Explore.module.scss';
 
 export default function ExplorePage() {
   const cardProvider = useCardProvider();
   const { user } = useAppContext();
+  const router = useRouter();
 
   return (
     <>
@@ -22,7 +26,17 @@ export default function ExplorePage() {
       <div>
         <div className="page-container">
           <div className="section-bar">
-            <div className="tg-title">Explore</div>
+            <div className={styles.titleAndLink}>
+              <div className="tg-title">Explore</div>
+              <Link
+                color="blue"
+                onClick={() => {
+                  router.push('/collections');
+                }}
+              >
+                Verified Collections
+              </Link>
+            </div>
 
             <div style={{ flex: 1 }} />
             <SortMenuButton />
