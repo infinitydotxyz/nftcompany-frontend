@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
@@ -11,6 +11,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import { useRouter } from 'next/router';
 
 const Collection = (): JSX.Element => {
+  const [title, setTitle] = useState<string | undefined>();
   const router = useRouter();
   const {
     query: { name }
@@ -24,12 +25,21 @@ const Collection = (): JSX.Element => {
       <div>
         <div className="page-container">
           <div className="section-bar">
-            <div className="tg-title">{name}</div>
+            <div className="tg-title">{title || name}</div>
 
             <div style={{ flex: 1 }} />
           </div>
 
-          {name && <CollectionContents name={name as string} />}
+          {name && (
+            <CollectionContents
+              name={name as string}
+              onTitle={(newTitle) => {
+                if (!title) {
+                  setTitle(newTitle);
+                }
+              }}
+            />
+          )}
         </div>
       </div>
     </>
@@ -44,11 +54,22 @@ export default Collection;
 
 type Props = {
   name: string;
+  onTitle: (title: string) => void;
 };
 
-const CollectionContents = ({ name }: Props): JSX.Element => {
+const CollectionContents = ({ name, onTitle }: Props): JSX.Element => {
   const cardProvider = useCardProvider(name as string);
   const { user } = useAppContext();
+
+  if (cardProvider.hasLoaded) {
+    if (cardProvider.list.length > 0) {
+      const title = cardProvider.list[0].collectionName;
+
+      if (title) {
+        onTitle(title);
+      }
+    }
+  }
 
   return (
     <>
