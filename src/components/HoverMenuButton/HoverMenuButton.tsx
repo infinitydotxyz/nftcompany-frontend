@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import styles from './HoverMenuButton.module.scss';
 import { Menu, MenuButton, MenuList, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
@@ -10,6 +10,7 @@ type Props = {
   shadow?: boolean;
   arrow?: boolean;
   disabled?: boolean;
+  onClick?: MouseEventHandler<any>;
 };
 
 export const HoverMenuButton = ({
@@ -18,7 +19,8 @@ export const HoverMenuButton = ({
   arrow = true,
   buttonTitle,
   buttonContent,
-  children
+  children,
+  onClick
 }: Props) => {
   let hoverTimer: any;
   let menuListTimer: any;
@@ -61,6 +63,7 @@ export const HoverMenuButton = ({
       {/* setting an id on menu prevents a console warning about non matching ids */}
       <Menu isLazy isOpen={isOpen} id="hover-menu">
         <MenuButton
+          onClick={onClick}
           disabled={disabled}
           className={buttonClass.join(' ')}
           onMouseEnter={() => {

@@ -26,17 +26,7 @@ export default function ExplorePage() {
       <div>
         <div className="page-container">
           <div className="section-bar">
-            <div className={styles.titleAndLink}>
-              <div className="tg-title">Explore</div>
-              <Link
-                color="blue"
-                onClick={() => {
-                  router.push('/collections');
-                }}
-              >
-                Verified Collections
-              </Link>
-            </div>
+            <div className="tg-title">Explore</div>
 
             <div style={{ flex: 1 }} />
             <SortMenuButton />
