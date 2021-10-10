@@ -4,36 +4,67 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import styles from './Collections.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
-import { apiGet } from 'utils/apiUtil';
+import { apiPost } from 'utils/apiUtil';
 import { Spinner } from '@chakra-ui/spinner';
 import { CollectionEntry } from 'types/rewardTypes';
 import { CollectionsTable } from 'components/CollectionsTable/CollectionsTable';
+import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 
 const Collections = (): JSX.Element => {
   const { showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [collections, setCollections] = useState<CollectionEntry[]>([]);
 
-  const fetchUserReward = async () => {
-    setIsFetching(true);
+  let insideFetch = false;
+
+  const fetchCollections = async () => {
+    let startAfterName;
+    const limit = 50;
+
+    if (insideFetch) {
+      // console.log('too soon');
+      return;
+    }
+
+    insideFetch = true;
+
+    // only spin on first load
+    if (collections.length === 0) {
+      setIsFetching(true);
+    } else {
+      startAfterName = collections[collections.length - 1].name;
+    }
+
     try {
-      const { result, error } = await apiGet('/verified');
+      const body = { startAfterName, limit };
+
+      const { result, error } = await apiPost('/verifiedTokens', {}, body);
       if (error) {
         showAppError('Failed to fetch rewards.');
+        setHasMore(false);
       } else {
         if (result.collections) {
-          setCollections(result.collections as CollectionEntry[]);
+          const newCols = result.collections as CollectionEntry[];
+
+          setCollections([...collections, ...newCols]);
+        }
+
+        if ((result.collections?.length ?? 0) === 0) {
+          setHasMore(false);
         }
       }
     } catch (e) {
       console.error(e);
+      setHasMore(false);
     } finally {
       setIsFetching(false);
+      insideFetch = false;
     }
   };
 
   React.useEffect(() => {
-    fetchUserReward();
+    fetchCollections();
   }, []);
 
   if (isFetching) {
@@ -67,6 +98,14 @@ const Collections = (): JSX.Element => {
               </div>
               <div className={styles.leaderBox}>
                 <CollectionsTable entries={collections} />
+
+                {hasMore && (
+                  <ScrollLoader
+                    onFetchMore={async () => {
+                      fetchCollections();
+                    }}
+                  />
+                )}
               </div>
             </div>
           </div>
