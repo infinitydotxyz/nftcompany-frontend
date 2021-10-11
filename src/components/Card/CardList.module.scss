@@ -127,7 +127,7 @@
 
       // keeps long titles from flowing outside the card bounds
       white-space: nowrap;
-      max-width: 30ch;
+      max-width: 25ch;
       text-overflow: ellipsis;
       overflow: hidden;
     }
@@ -139,7 +139,7 @@
       .title {
         // keeps long titles from flowing outside the card bounds
         white-space: nowrap;
-        max-width: 30ch;
+        max-width: 25ch;
         text-overflow: ellipsis;
         overflow: hidden;
       }
