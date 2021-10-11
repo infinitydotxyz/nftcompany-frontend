@@ -8,7 +8,7 @@ type Props = {
 export const BlueCheckIcon = ({ hasBlueCheck }: Props): JSX.Element => {
   if (hasBlueCheck === true) {
     return (
-      <div style={{ width: 18, height: 18 }}>
+      <div style={{ width: 16, height: 16 }}>
         <Tooltip label={'Verified'} placement="top" hasArrow>
           <img alt="Blue Check" src="/img/blue-check.png" />
         </Tooltip>
