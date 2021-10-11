@@ -5,6 +5,7 @@ import { ellipsisAddress, numStr } from 'utils/commonUtil';
 import { LeaderBoard, LeaderBoardEntry } from 'types/rewardTypes';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
+import { CopyButton } from 'components/CopyButton/CopyButton';
 
 type Props = {
   data?: LeaderBoard;
@@ -20,21 +21,9 @@ const getRows = (data: LeaderBoardEntry[]) => {
         <Td textAlign="center" isNumeric={false}>
           <div className={styles.addressRow}>
             <div>{ellipsisAddress(item.id, 10, 10)}</div>
-            <i className={styles.copyIcon}>
-              <Tooltip label={'Copy Address'} placement="top" hasArrow>
-                <CopyIcon
-                  size="sm"
-                  color="blue"
-                  aria-label="Copy"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (item.id) {
-                      navigator.clipboard.writeText(item.id);
-                    }
-                  }}
-                />
-              </Tooltip>{' '}
-            </i>
+
+            <CopyButton copyText={item.id} tooltip="Copy Address" />
+
             <i className={styles.linkIcon}>
               <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
                 <ExternalLinkIcon

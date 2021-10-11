@@ -127,19 +127,22 @@
 
       // keeps long titles from flowing outside the card bounds
       white-space: nowrap;
-      max-width: 30ch;
+      max-width: 25ch;
       text-overflow: ellipsis;
       overflow: hidden;
     }
     .cardTitle {
       font-size: 16px;
-      line-height: 1.5;
+      line-height: 1;
       font-weight: 500;
+      display: flex;
+      gap: 7px;
+      flex-direction: column;
 
       .title {
         // keeps long titles from flowing outside the card bounds
         white-space: nowrap;
-        max-width: 30ch;
+        max-width: 25ch;
         text-overflow: ellipsis;
         overflow: hidden;
       }

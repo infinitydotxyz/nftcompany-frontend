@@ -41,7 +41,7 @@ const Collections = (): JSX.Element => {
 
       const { result, error } = await apiPost('/verifiedTokens', {}, body);
       if (error) {
-        showAppError('Failed to fetch rewards.');
+        showAppError('Failed to fetch verified collections.');
         setHasMore(false);
       } else {
         if (result.collections) {
