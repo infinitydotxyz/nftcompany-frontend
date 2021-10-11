@@ -7,6 +7,7 @@ import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { useAppContext } from 'utils/context/AppContext';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
+import { CopyButton } from 'components/CopyButton/CopyButton';
 
 type Props = {
   entries?: CollectionEntry[];
@@ -35,22 +36,7 @@ export const CollectionsTable = ({ entries }: Props) => {
         <Td textAlign="center" isNumeric={false}>
           <div className={styles.addressRow}>
             <div>{ellipsisAddress(item.id, 10, 10)}</div>
-            <div className={styles.copyIcon}>
-              <Tooltip label={'Copy Address'} placement="top" hasArrow>
-                <CopyIcon
-                  size="sm"
-                  color="blue"
-                  aria-label="Copy"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (item.id) {
-                      navigator.clipboard.writeText(item.id);
-                      showAppMessage(`Copied to Clipboard.`);
-                    }
-                  }}
-                />
-              </Tooltip>
-            </div>
+            <CopyButton copyText={item.id} tooltip="Copy Address" />
             <div className={styles.linkIcon}>
               <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
                 <ExternalLinkIcon
