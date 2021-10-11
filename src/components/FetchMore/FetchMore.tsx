@@ -49,7 +49,7 @@ export const getLastItemCreatedAt = (data: CardData[]): string =>
   data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt ?? '' : '';
 
 export const getLastItemBasePrice = (data: CardData[]): string =>
-  data?.length > 0 ? data[data.length - 1]?.metadata?.basePriceInEth ?? '' : '';
+  data?.length > 0 ? data[data.length - 1]?.metadata?.basePriceInEth?.toString() ?? '' : '';
 
 export const getLastItemBlueCheck = (data: CardData[]): boolean =>
   data?.length > 0 ? data[data.length - 1]?.metadata?.hasBlueCheck ?? false : false;

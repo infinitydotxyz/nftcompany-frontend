@@ -1,12 +1,13 @@
 import React from 'react';
 import styles from './CollectionsTable.module.scss';
-import { Table, Thead, Tbody, Tr, Th, Td, IconButton, Icon } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
 import { ellipsisAddress, numStr } from 'utils/commonUtil';
 import { CollectionEntry, Collections } from 'types/rewardTypes';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { useAppContext } from 'utils/context/AppContext';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
+import { CopyButton } from 'components/CopyButton/CopyButton';
 
 type Props = {
   entries?: CollectionEntry[];
@@ -20,36 +21,22 @@ export const CollectionsTable = ({ entries }: Props) => {
   }
 
   const rows = entries.map((item, index) => {
+    let name = item.name.replace(/\s/g, '');
+    name = name.toLowerCase();
+
     return (
       <Tr key={item.id}>
         <Td textAlign="center" isNumeric={false}>
-          {index + 1}
-        </Td>
-        <Td textAlign="left" isNumeric={false}>
           <div className={styles.collectionRow}>
+            <div className={styles.leftSpace}>{index + 1}.</div>
             <BlueCheckIcon hasBlueCheck={true} />
-            {item.name}
+            <Link href={`${window.origin}/collection/${name}`}>{item.name}</Link>
           </div>
         </Td>
-        <Td textAlign="left" isNumeric={false}>
+        <Td textAlign="center" isNumeric={false}>
           <div className={styles.addressRow}>
             <div>{ellipsisAddress(item.id, 10, 10)}</div>
-            <div className={styles.copyIcon}>
-              <Tooltip label={'Copy Address'} placement="top" hasArrow>
-                <CopyIcon
-                  size="sm"
-                  color="blue"
-                  aria-label="Copy"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (item.id) {
-                      navigator.clipboard.writeText(item.id);
-                      showAppMessage(`Copied to Clipboard.`);
-                    }
-                  }}
-                />
-              </Tooltip>
-            </div>
+            <CopyButton copyText={item.id} tooltip="Copy Address" />
             <div className={styles.linkIcon}>
               <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
                 <ExternalLinkIcon
@@ -59,7 +46,7 @@ export const CollectionsTable = ({ entries }: Props) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (item.id) {
-                      window.open(`${window.origin}/${item.id}`, '_blank');
+                      window.open(`https://etherscan.io/address/${item.id}`, '_blank');
                     }
                   }}
                 />
@@ -76,9 +63,8 @@ export const CollectionsTable = ({ entries }: Props) => {
       <Table colorScheme="gray">
         <Thead>
           <Tr>
-            <Th textAlign="center">#</Th>
-            <Th textAlign="left">Collection</Th>
-            <Th textAlign="left">Address</Th>
+            <Th textAlign="center">Collection</Th>
+            <Th textAlign="center">Address</Th>
           </Tr>
         </Thead>
         <Tbody>{rows}</Tbody>

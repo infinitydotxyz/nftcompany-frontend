@@ -13,6 +13,7 @@ import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
 import { WETH_ADDRESS } from 'utils/constants';
+import { CopyButton } from 'components/CopyButton/CopyButton';
 
 const isServer = typeof window === 'undefined';
 
@@ -112,11 +113,14 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     owner?.length > 0 ? (
       <>
         <div className={styles.label}>Owner</div>
-        <Tooltip label={toChecksumAddress(data.owner)} hasArrow openDelay={1000}>
-          <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
-            {owner}
-          </Link>
-        </Tooltip>
+        <div className={styles.addressAndCopy}>
+          <Tooltip label={toChecksumAddress(data.owner)} hasArrow openDelay={1000}>
+            <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
+              {owner}
+            </Link>
+          </Tooltip>
+          <CopyButton copyText={data.owner} />
+        </div>
       </>
     ) : null;
 
@@ -124,11 +128,14 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
     offerMaker?.length > 0 ? (
       <>
         <div className={styles.label}>Offer Maker</div>
-        <Tooltip label={toChecksumAddress(offerMaker)} hasArrow openDelay={1000}>
-          <Link color="brandBlue" href={`${window.origin}/${offerMaker}`} target="_blank" rel="noreferrer">
-            {offerMakerShort}
-          </Link>
-        </Tooltip>
+        <div className={styles.addressAndCopy}>
+          <Tooltip label={toChecksumAddress(offerMaker)} hasArrow openDelay={1000}>
+            <Link color="brandBlue" href={`${window.origin}/${offerMaker}`} target="_blank" rel="noreferrer">
+              {offerMakerShort}
+            </Link>
+          </Tooltip>
+          <CopyButton copyText={offerMaker} />
+        </div>
       </>
     ) : null;
 
@@ -156,38 +163,47 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
                   <div className={styles.title}>{data?.title}</div>
 
-                  {data.price && (
+                  {data.metadata?.basePriceInEth && (
                     <>
                       <span className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price' : 'Price'}</span>
 
-                      <PriceBox price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
+                      <PriceBox
+                        price={data.metadata?.basePriceInEth}
+                        token={paymentToken}
+                        expirationTime={data?.expirationTime}
+                      />
                     </>
                   )}
 
                   <div className={styles.label}>Token Address</div>
-                  <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
-                    <Link
-                      color="brandBlue"
-                      href={`https://etherscan.io/token/${data.tokenAddress}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {tokenAddress}
-                    </Link>
-                  </Tooltip>
+                  <div className={styles.addressAndCopy}>
+                    <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
+                      <Link
+                        color="brandBlue"
+                        href={`https://etherscan.io/token/${data.tokenAddress}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {tokenAddress}
+                      </Link>
+                    </Tooltip>
+                    <CopyButton copyText={data.tokenAddress} />
+                  </div>
 
                   <div className={styles.label}>Token Id</div>
-
-                  <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
-                    <Link
-                      color="brandBlue"
-                      href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {tokenId}
-                    </Link>
-                  </Tooltip>
+                  <div className={styles.addressAndCopy}>
+                    <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
+                      <Link
+                        color="brandBlue"
+                        href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {tokenId}
+                      </Link>
+                    </Tooltip>
+                    <CopyButton copyText={data.tokenId} />
+                  </div>
 
                   {_ownerSection}
                   {_offerMakerSection}

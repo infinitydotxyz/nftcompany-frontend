@@ -54,7 +54,7 @@ const Table = {
         px: '6',
         py: '5',
         lineHeight: '4',
-        fontSize: 'md'
+        fontSize: 'sm'
       }
     }
   },

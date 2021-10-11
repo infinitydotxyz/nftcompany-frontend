@@ -10,6 +10,7 @@ import styles from './RecentTransactionsModal.module.scss';
 import { Spinner } from '@chakra-ui/spinner';
 import { ellipsisString } from 'utils/commonUtil';
 import { Button } from '@chakra-ui/react';
+import { CopyButton } from 'components/CopyButton/CopyButton';
 
 const isServer = typeof window === 'undefined';
 interface IProps {
@@ -74,24 +75,17 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
                       <span>
                         {ellipsisString(item.txnHash)}{' '}
                         <i className={styles.extLink}>
+                          <CopyButton copyText={item.txnHash} tooltip="Copy Txn Hash" />
+                        </i>
+                        <i className={styles.extLink}>
                           <Tooltip label={'Open Etherscan Link'} placement="top" hasArrow>
                             <ExternalLinkIcon
+                              color="blue"
                               onClick={() => {
                                 window.open(`https://etherscan.io/tx/${item.txnHash}`, '_blank');
                               }}
                             />
-                          </Tooltip>{' '}
-                        </i>
-                        <i className={styles.extLink}>
-                          <Tooltip label={'Copy Txn Hash'} placement="top" hasArrow>
-                            <CopyIcon
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                navigator.clipboard.writeText(item.txnHash);
-                                showAppMessage(`Copied to Clipboard.`);
-                              }}
-                            />
-                          </Tooltip>{' '}
+                          </Tooltip>
                         </i>
                       </span>
                       <span>{`${item.actionType}`}</span>

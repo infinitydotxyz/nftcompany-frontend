@@ -101,6 +101,15 @@ const Header = (): JSX.Element => {
     </MenuItem>
   ];
 
+  const exploreItems = [
+    <MenuItem key="made" icon={MenuIcons.exploreIcon} onClick={() => router.push('/explore')}>
+      Explore
+    </MenuItem>,
+    <MenuItem key="received" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
+      Verified Collections
+    </MenuItem>
+  ];
+
   const transactionItems = [
     <MenuItem key="purchases" icon={MenuIcons.shoppingBagIcon} onClick={() => router.push('/purchases')}>
       Purchases
@@ -118,11 +127,6 @@ const Header = (): JSX.Element => {
     accountItems = [
       <AddressMenuItem key="AddressMenuItem" user={user} />,
       <MenuDivider key="kdd" />,
-
-      <MenuItem key="collections" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
-        Collections
-      </MenuItem>,
-      <MenuDivider key="ggdddd" />,
 
       ...transactionItems,
       <MenuDivider key="ggdd" />,
@@ -176,6 +180,9 @@ const Header = (): JSX.Element => {
     let result = [
       <MenuItem key="explore-menu" icon={MenuIcons.imageSearchIcon} onClick={() => router.push('/explore')}>
         Explore
+      </MenuItem>,
+      <MenuItem key="collections" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
+        Collections
       </MenuItem>
     ];
 
@@ -247,21 +254,21 @@ const Header = (): JSX.Element => {
 
           <div className={styles.links}>
             <div className={styles.showExplore}>
-              <div key="Explore" className={styles.exploreButton} onClick={() => router.push('/explore')}>
-                Explore
-              </div>
+              <HoverMenuButton disabled={!signedIn} buttonTitle="Explore" onClick={() => router.push('/explore')}>
+                {exploreItems}
+              </HoverMenuButton>
             </div>
 
             <div className={styles.showLargeNav}>
-              <div className={styles.linksButtons}>
-                <HoverMenuButton disabled={!signedIn} buttonTitle="My NFTs">
-                  {ntfItems}
-                </HoverMenuButton>
+              <HoverMenuButton disabled={!signedIn} buttonTitle="My NFTs" onClick={() => router.push('/my-nfts')}>
+                {medNavMenu}
+              </HoverMenuButton>
+            </div>
 
-                <HoverMenuButton disabled={!signedIn} buttonTitle="Offers">
-                  {offerItems}
-                </HoverMenuButton>
-              </div>
+            <div className={styles.showMediumNav}>
+              <HoverMenuButton disabled={!signedIn} buttonTitle="My NFTs" onClick={() => router.push('/my-nfts')}>
+                {medNavMenu}
+              </HoverMenuButton>
             </div>
 
             {signedIn && (
@@ -271,12 +278,6 @@ const Header = (): JSX.Element => {
                 </div>
               </div>
             )}
-
-            <div className={styles.showMediumNav}>
-              <HoverMenuButton disabled={!signedIn} buttonTitle="My NFTs">
-                {medNavMenu}
-              </HoverMenuButton>
-            </div>
 
             <div className={styles.showConnectButton}>{accountButton}</div>
 

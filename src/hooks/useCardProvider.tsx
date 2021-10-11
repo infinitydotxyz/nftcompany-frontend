@@ -1,6 +1,6 @@
 import { CardData } from 'types/Nft.interface';
 import { useEffect, useState } from 'react';
-import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
+import { defaultFilterState, SearchFilter, useSearchContext } from 'utils/context/SearchContext';
 import { useAppContext } from 'utils/context/AppContext';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { getListings, TypeAheadOption } from 'services/Listings.service';
@@ -55,7 +55,7 @@ const fetchData = async (
 
 // ==================================================================
 
-export function useCardProvider(): {
+export function useCardProvider(inCollectionName?: string): {
   list: CardData[];
   loadNext: () => void;
   hasData: () => boolean;
@@ -65,9 +65,15 @@ export function useCardProvider(): {
   const [listType, setListType] = useState('');
   const [hasMore, setHasMore] = useState(true);
   const [hasLoaded, setHasLoaded] = useState(false);
-
+  const [savedCollectionName, setSavedCollectionName] = useState<string | undefined>();
   const searchContext = useSearchContext();
   const { user, userReady } = useAppContext();
+
+  // if collection name changes, dump list
+  if (savedCollectionName !== inCollectionName) {
+    setSavedCollectionName(inCollectionName);
+    setList([]);
+  }
 
   const userAccount = user?.account;
 
@@ -96,8 +102,19 @@ export function useCardProvider(): {
 
     setListType(newListType);
 
+    const filterState = searchContext.filterState;
+    let collectionName = searchContext.searchState.collectionName;
+    let text = searchContext.searchState.text;
+    let selectedOption = searchContext.searchState.selectedOption;
+
+    if (inCollectionName) {
+      collectionName = inCollectionName;
+      text = '';
+      selectedOption = undefined;
+    }
+
     const result = await fetchData(
-      searchContext.filterState,
+      filterState,
       userAccount ?? '',
       startAfterUser,
       startAfterMillis,
@@ -105,9 +122,9 @@ export function useCardProvider(): {
       startAfterSearchTitle,
       startAfterSearchCollectionName,
       startAfterBlueCheck,
-      searchContext.searchState.collectionName,
-      searchContext.searchState.text,
-      searchContext.searchState.selectedOption
+      collectionName,
+      text,
+      selectedOption
     );
 
     if (result.length === 0) {
@@ -178,8 +195,10 @@ export function useCardProvider(): {
     }
 
     let showLowest = true;
+
     // if this is blank, we also show only the lowest
-    if (searchContext.filterState.sortByPrice === 'DESC') {
+    // default sort is highest->lowest, so we must check for undefined sortByPrice too
+    if (searchContext.filterState.sortByPrice === 'DESC' || !searchContext.filterState.sortByPrice) {
       showLowest = false;
     }
 
