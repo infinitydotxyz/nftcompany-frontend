@@ -1,0 +1,57 @@
+.main {
+  display: flex;
+  flex-direction: column;
+
+  .nftContent {
+    display: flex;
+    gap: 30px;
+
+    .left {
+      flex: 1;
+      img {
+        width: 100%;
+        height: auto;
+        max-height: 80vh; /* for img that too tall */
+        border-radius: 16px;
+      }
+    }
+  }
+
+  .title {
+    font-size: 1.2rem;
+
+    margin-bottom: 10px;
+  }
+
+  .collection {
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-right: 6px;
+  }
+
+  .collectionRow {
+    display: flex;
+    align-items: center;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    justify-content: center;
+    flex-direction: column;
+  }
+}

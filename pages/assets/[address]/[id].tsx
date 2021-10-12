@@ -4,8 +4,9 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { useRouter } from 'next/router';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
+import { NFTPreview } from './NFTPreview';
 
-const Collection = (): JSX.Element => {
+const AssetsPage = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
   const router = useRouter();
   const {
@@ -28,9 +29,9 @@ const Collection = (): JSX.Element => {
           </div>
 
           {id && (
-            <CollectionContents
-              id={id as string}
-              address={address as string}
+            <NFTPreview
+              tokenId={id as string}
+              tokenAddress={address as string}
               onTitle={(newTitle) => {
                 if (!title) {
                   setTitle(newTitle);
@@ -44,21 +45,5 @@ const Collection = (): JSX.Element => {
   );
 };
 
-Collection.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
-export default Collection;
-
-// =============================================================
-
-type Props = {
-  id: string;
-  address: string;
-  onTitle: (title: string) => void;
-};
-
-const CollectionContents = ({ id, address, onTitle }: Props): JSX.Element => {
-  return (
-    <>
-      <div>hello</div>
-    </>
-  );
-};
+AssetsPage.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
+export default AssetsPage;

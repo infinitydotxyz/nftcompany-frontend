@@ -61,7 +61,7 @@ export const ellipsisString = (inString?: string, left: number = 6, right: numbe
   return '';
 };
 
-export const getToken = (tokenAddress: string): 'WETH' | 'ETH' => (tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH');
+export const getToken = (tokenAddress?: string): 'WETH' | 'ETH' => (tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH');
 
 // parse a Timestamp string (in millis or secs)
 export const parseTimestampString = (dt: string, inSecond: boolean = false): Date | null => {
@@ -78,7 +78,7 @@ export const parseTimestampString = (dt: string, inSecond: boolean = false): Dat
   return dateObj;
 };
 
-export const stringToFloat = (numStr: string | undefined, defaultValue = 0) => {
+export const stringToFloat = (numStr?: string, defaultValue = 0) => {
   let num = defaultValue;
   if (!numStr) {
     return num;
