@@ -3821,6 +3821,9 @@ export class OpenSeaPort {
   }
 
   private _getSearchFriendlyString(input: string) {
+    if (!input) {
+      return '';
+    }
     const noSpace = input.replace(/\s/g, '');
     return noSpace.toLowerCase();
   }
