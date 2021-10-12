@@ -1,9 +1,11 @@
 import React from 'react';
 import Downshift from 'downshift';
 import styles from './SearchBox.module.scss';
+import { Box } from '@chakra-ui/react';
 import { getTypeAheadOptions } from 'services/Listings.service';
 import { defaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import { CloseIcon } from '@chakra-ui/icons';
+import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { useRouter } from 'next/router';
 
 const data: any = [
@@ -13,6 +15,7 @@ const data: any = [
 export default function SearchBox() {
   const router = useRouter();
   const [options, setOptions] = React.useState<any[]>([]);
+  const [isSelecting, setIsSelecting] = React.useState(false); // user pressed Enter or selected a dropdown item.
   const [selectedValue, setSelectedValue] = React.useState('');
   const { searchState, setSearchState, setFilterState } = useSearchContext();
   const timeoutId = React.useRef<any>(0);
@@ -23,6 +26,7 @@ export default function SearchBox() {
 
   const clearSearch = () => {
     setSelectedValue('');
+    setIsSelecting(true);
     setSearchState({ ...searchState, collectionName: '', text: '', selectedOption: undefined });
     setFilterState(defaultFilterState);
   };
@@ -54,6 +58,7 @@ export default function SearchBox() {
           }
 
           setSelectedValue(val);
+          setIsSelecting(true);
           setOptions([]); // after selecting an option, reset the dropdown options
         }}
         itemToString={(item: string[] | null) => `${item}`}
@@ -75,7 +80,6 @@ export default function SearchBox() {
             if (router.route !== '/explore') {
               router.push('/explore');
             }
-
             const { collectionNames, nftNames } = (await getTypeAheadOptions({ startsWith: text })) || [];
             // console.log('collectionNames, nftNames', collectionNames, nftNames);
             const arr: any[] = [];
@@ -83,10 +87,19 @@ export default function SearchBox() {
               // item = {name: 'Posh Pandas', type: 'Collection', hasBlueCheck: true}
               arr.push({
                 label: (
-                  <div>
-                    <strong>Collection:</strong>
-                    {` ${item.name}`}
-                  </div>
+                  <Box d="flex" alignItems="flex-start" textAlign="center">
+                    <Box my="auto" mx="1" fontSize="lg" fontWeight="medium">
+                      <Box d="inline" fontWeight="bold">
+                        Collection:{' '}
+                      </Box>
+                      {item.name}
+                    </Box>
+                    {item.hasBlueCheck && (
+                      <Box m="1" ml="0">
+                        <BlueCheckIcon hasBlueCheck={item.hasBlueCheck} />
+                      </Box>
+                    )}
+                  </Box>
                 ),
                 value: `Collection: ${item.name}`,
                 type: 'Collection'
@@ -95,10 +108,19 @@ export default function SearchBox() {
             nftNames.forEach((item: any) => {
               arr.push({
                 label: (
-                  <div>
-                    <strong>Asset:</strong>
-                    {` ${item.name} #${item.id.length > 4 ? item.id.slice(-4) : item.id}`}
-                  </div>
+                  <Box d="flex" alignItems="flex-start" textAlign="center">
+                    <Box my="auto" mx="1" fontSize="lg" fontWeight="medium">
+                      <Box d="inline" fontWeight="bold">
+                        Asset:{' '}
+                      </Box>
+                      {` ${item.name}`}
+                    </Box>
+                    {item.hasBlueCheck && (
+                      <Box m="1" ml="0">
+                        <BlueCheckIcon hasBlueCheck={item.hasBlueCheck} />
+                      </Box>
+                    )}
+                  </Box>
                 ),
                 value: item.name,
                 type: 'Asset'
@@ -117,14 +139,20 @@ export default function SearchBox() {
               text: text.toLowerCase()
             });
           };
+          const inputProps = { ...getInputProps() };
 
+          const moreProps: any = {};
+          if (isSelecting) {
+            moreProps.value = selectedValue; // only set value to the Input when user Enter or Select an item. (to avoid flickering)
+            setIsSelecting(false);
+          }
           return (
             <div className={styles.container}>
               <div className="m-auto w-1/2 mt-6">
                 <input
                   placeholder="Search..."
                   className="w-full"
-                  value={`${inputValue}`}
+                  {...moreProps}
                   onKeyUp={async (ev: any) => {
                     if (ev.keyCode === 13) {
                       closeMenu(); // if 'Enter', close menu.
@@ -142,7 +170,13 @@ export default function SearchBox() {
                     }
                     timeoutId.current = setTimeout(() => searchByText(text), 200);
                   }}
-                  {...getInputProps({ onFocus: openMenu })}
+                  onFocus={() => openMenu()}
+                  onKeyDown={inputProps.onKeyDown}
+                  onChange={inputProps.onChange}
+                  onBlur={inputProps.onBlur}
+                  // {...getInputProps({
+                  //   onFocus: openMenu
+                  // })}
                 />
                 {isOpen ? (
                   <ul
@@ -165,15 +199,17 @@ export default function SearchBox() {
                   </ul>
                 ) : null}
               </div>
-              <button
-                className={styles.clearButton}
-                onClick={() => {
-                  clearSearch();
-                  closeMenu();
-                }}
-              >
-                <CloseIcon height={3} />
-              </button>
+              {inputValue && (
+                <button
+                  className={styles.clearButton}
+                  onClick={() => {
+                    clearSearch();
+                    closeMenu();
+                  }}
+                >
+                  <CloseIcon height={3} />
+                </button>
+              )}
             </div>
           );
         }}
