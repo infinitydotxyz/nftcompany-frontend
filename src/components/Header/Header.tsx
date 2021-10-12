@@ -11,6 +11,7 @@ import SettingsModal from 'components/SettingsModal/SettingsModal';
 import RecentTransactionsModal from 'components/RecentTransactionsModal/RecentTransactionsModal';
 import { ellipsisAddress } from 'utils/commonUtil';
 import { EthToken, MoreVertIcon } from 'components/Icons/Icons';
+import SearchBox from '../SearchBox/SearchBox';
 
 import styles from './Header.module.scss';
 import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
@@ -242,7 +243,8 @@ const Header = (): JSX.Element => {
           <Box flex={1} />
 
           <Box flex={10} pr="2" maxW="400px" minW="100px">
-            <ExploreSearch />
+            {/* <ExploreSearch /> */}
+            <SearchBox />
           </Box>
 
           <div className={styles.links}>

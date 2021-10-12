@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+
+  & > div {
+    flex: 1;
+  }
+  & > div > input {
+    border: 1px solid #ccc;
+    border-radius: 24px;
+    padding: 6px 10px;
+    width: 100%;
+  }
+}
+
+.dropPanel {
+  position: absolute;
+  margin-top: 3px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  list-style: none;
+
+  li {
+    padding: 6px;
+    cursor: pointer;
+  }
+  li[aria-selected='true'] {
+    background-color: blue;
+    color: #eee;
+  }
+}
+
+.bold {
+  font-weight: bold;
+}
