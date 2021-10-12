@@ -151,6 +151,7 @@ export default function SearchBox() {
                   {isOpen
                     ? options.map((item: any, index) => (
                         <li
+                          key={item.value + index}
                           {...getItemProps({
                             key: item.value + index,
                             index,
