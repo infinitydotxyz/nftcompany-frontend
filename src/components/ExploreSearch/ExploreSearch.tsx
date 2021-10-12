@@ -24,6 +24,7 @@ const ExploreSearch = () => {
     });
   };
 
+  // on clicking on a dropdown match:
   const handleChange = (selectedOptions: TypeAheadOption[]) => {
     if (selectedOptions[0]?.type === 'Collection') {
       setSearchState({
