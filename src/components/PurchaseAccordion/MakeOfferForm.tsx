@@ -30,7 +30,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
       return;
     }
     if (token === 'WETH') {
-      const basePriceInEthNum = stringToFloat(data.metadata?.basePriceInEth); // validate: offer price must be >= min price:
+      const basePriceInEthNum = data.metadata?.basePriceInEth ?? 0; // validate: offer price must be >= min price:
       if (offerPrice < basePriceInEthNum) {
         showAppError(`Offer Price must be greater than Minimum Price ${basePriceInEthNum} WETH.`);
         return;

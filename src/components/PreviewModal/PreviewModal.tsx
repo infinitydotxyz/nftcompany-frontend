@@ -141,7 +141,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
       </>
     ) : null;
 
-  const paymentToken = getToken(data?.data?.paymentToken);
+  const paymentToken = getToken(data?.order?.paymentToken);
   return (
     <>
       {!isServer && (
