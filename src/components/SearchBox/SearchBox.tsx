@@ -52,12 +52,7 @@ export default function SearchBox() {
               text: val
             });
           }
-          // setFilterState(defaultFilterState);
-          // if (router.route !== '/explore') {
-          //   router.push('/explore');
-          // }
 
-          // const foundItem = options.find((item) => item.value === value);
           setSelectedValue(val);
           setOptions([]); // after selecting an option, reset the dropdown options
         }}
@@ -67,10 +62,10 @@ export default function SearchBox() {
         {({
           getInputProps,
           getItemProps,
-          getLabelProps,
           getMenuProps,
           isOpen,
           openMenu,
+          closeMenu,
           inputValue,
           highlightedIndex,
           selectedItem
@@ -98,7 +93,6 @@ export default function SearchBox() {
               });
             });
             nftNames.forEach((item: any) => {
-              // item = {name: 'Posh Pandas', type: 'Collection', hasBlueCheck: true}
               arr.push({
                 label: (
                   <div>
@@ -132,6 +126,9 @@ export default function SearchBox() {
                   className="w-full"
                   value={`${inputValue}`}
                   onKeyUp={async (ev: any) => {
+                    if (ev.keyCode === 13) {
+                      closeMenu(); // if 'Enter', close menu.
+                    }
                     const text = ev.target.value;
                     if (text === selectedValue) {
                       return;
@@ -147,26 +144,35 @@ export default function SearchBox() {
                   }}
                   {...getInputProps({ onFocus: openMenu })}
                 />
-                <ul className={styles.dropPanel} {...getMenuProps()}>
-                  {isOpen
-                    ? options.map((item: any, index) => (
-                        <li
-                          key={item.value + index}
-                          {...getItemProps({
-                            key: item.value + index,
-                            index,
-                            item: item.value,
-                            className: `py-2 px-2 ${highlightedIndex === index ? styles.bold : 'bg-gray-100'}`
-                          })}
-                        >
-                          {item.label}
-                        </li>
-                      ))
-                    : null}
-                </ul>
+                {isOpen ? (
+                  <ul
+                    className={styles.dropPanel + ' ' + (options.length > 0 && styles.dropPanelOpened)}
+                    {...getMenuProps()}
+                  >
+                    {options.map((item: any, index) => (
+                      <li
+                        key={item.value + index}
+                        {...getItemProps({
+                          key: item.value + index,
+                          index,
+                          item: item.value,
+                          className: `py-2 px-2 ${highlightedIndex === index ? styles.bold : 'bg-gray-100'}`
+                        })}
+                      >
+                        {item.label}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </div>
-              <button onClick={() => clearSearch()}>
-                <CloseIcon color="#aaa" ml={-10} height={3} />
+              <button
+                className={styles.clearButton}
+                onClick={() => {
+                  clearSearch();
+                  closeMenu();
+                }}
+              >
+                <CloseIcon height={3} />
               </button>
             </div>
           );

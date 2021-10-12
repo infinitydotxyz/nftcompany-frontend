@@ -1,8 +1,10 @@
 .container {
   display: flex;
+  position: relative;
 
   & > div {
     flex: 1;
+    position: relative;
   }
   & > div > input {
     border: 1px solid #ccc;
@@ -10,15 +12,23 @@
     padding: 6px 10px;
     width: 100%;
   }
+
+  .clearButton {
+    position: absolute;
+    color: #aaa;
+    right: 12px;
+    height: 100%;
+  }
 }
 
 .dropPanel {
   position: absolute;
   margin-top: 3px;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 4px;
   list-style: none;
+  width: 100%;
 
   li {
     padding: 6px;
@@ -32,4 +42,8 @@
 
 .bold {
   font-weight: bold;
+}
+
+.dropPanelOpened {
+  border: 1px solid #ccc;
 }
