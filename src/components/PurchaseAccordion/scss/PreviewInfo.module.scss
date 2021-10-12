@@ -1,0 +1,35 @@
+.infoBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .description {
+    color: #777e90;
+  }
+
+  .addressRow {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+  }
+}
+
+.priceRow {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  margin-bottom: 6px;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+
+  gap: 12px;
+}

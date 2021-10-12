@@ -1,0 +1,25 @@
+.priceRow {
+  margin-top: 16px;
+  margin-bottom: 20px;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.space {
+  margin-bottom: 10px;
+}
+
+.header {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.wideButton {
+  display: flex;
+  flex-direction: column;
+}
