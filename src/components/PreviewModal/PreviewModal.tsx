@@ -4,7 +4,7 @@ import styles from './PreviewModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { Button, Link, Tooltip } from '@chakra-ui/react';
+import { Button, IconButton, Link, Tooltip } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { addressesEqual, ellipsisAddress, ellipsisString, getToken, toChecksumAddress } from 'utils/commonUtil';
@@ -14,6 +14,8 @@ import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
 import { WETH_ADDRESS } from 'utils/constants';
 import { CopyButton } from 'components/CopyButton/CopyButton';
+import router from 'next/router';
+import { ShareIcon } from 'components/Icons/Icons';
 
 const isServer = typeof window === 'undefined';
 
@@ -210,6 +212,15 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
                   <span className={styles.label}>Description</span>
                   <div className={styles.description}>{description}</div>
+
+                  <IconButton
+                    variant="ghost"
+                    aria-label=""
+                    icon={<ShareIcon boxSize={7} />}
+                    onClick={() => {
+                      router.push(`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`);
+                    }}
+                  />
 
                   <div className={styles.buttons}>{purchaseButton}</div>
                 </div>
