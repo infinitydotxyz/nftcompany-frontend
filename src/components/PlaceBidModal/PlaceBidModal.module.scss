@@ -6,6 +6,7 @@
 .priceRow {
   margin-top: 16px;
   margin-bottom: 20px;
+  display: inline-block;
 }
 
 .row {
@@ -18,7 +19,6 @@
     flex: 1;
 
     color: var(--text-secondary);
-    font-weight: 500;
   }
 
   .middle {
