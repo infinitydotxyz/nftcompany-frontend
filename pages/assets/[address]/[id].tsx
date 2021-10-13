@@ -16,7 +16,7 @@ const AssetsPage = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>{`NFT: ${title}`}</title>
+        <title>{`NFT: ${title ?? ''}`}</title>
       </Head>
       <div>
         <div className="page-container">

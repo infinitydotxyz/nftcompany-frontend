@@ -4,7 +4,7 @@ import styles from './PreviewModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { Button, IconButton, Link, Tooltip } from '@chakra-ui/react';
+import { Button, Link, Tooltip } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { addressesEqual, ellipsisAddress, ellipsisString, getToken, toChecksumAddress } from 'utils/commonUtil';
@@ -12,11 +12,8 @@ import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
-import { WETH_ADDRESS } from 'utils/constants';
 import { CopyButton } from 'components/CopyButton/CopyButton';
-import router from 'next/router';
-import { ShareIcon } from 'components/Icons/Icons';
-import { ShareButton } from 'components/ShareButton/ShareButton';
+import { ExternalLinkIconButton, ShareIconButton } from 'components/ShareButton/ShareButton';
 
 const isServer = typeof window === 'undefined';
 
@@ -142,6 +139,14 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
       </>
     ) : null;
 
+  const _buttonBar = (
+    <div className={styles.buttonBar}>
+      <ShareIconButton copyText={`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`} tooltip="Share" />
+
+      <ExternalLinkIconButton url={`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`} tooltip="Share" />
+    </div>
+  );
+
   const paymentToken = getToken(data?.order?.paymentToken);
   return (
     <>
@@ -158,10 +163,8 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                 </div>
 
                 <div className={styles.infoBox}>
-                  <ShareButton
-                    copyText={`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`}
-                    tooltip="Share"
-                  />
+                  {_buttonBar}
+
                   <div className={styles.collectionRow}>
                     <div className={styles.collection}>{data?.collectionName}</div>
 
