@@ -21,7 +21,7 @@ const AssetsPage = (): JSX.Element => {
       <div>
         <div className="page-container">
           <div className="section-bar">
-            <div className="tg-title">{title || id}</div>
+            <div className="tg-title">{title ?? ''}</div>
           </div>
 
           {id && (
