@@ -14,10 +14,6 @@ type SearchMatch = {
   type: 'Asset' | 'Collection';
 };
 
-const data: SearchMatch[] = [
-  // { value: 'name', label: 'name', type: 'Asset' }
-];
-
 export default function SearchBox() {
   const router = useRouter();
   const [options, setOptions] = React.useState<SearchMatch[]>([]);
@@ -25,10 +21,6 @@ export default function SearchBox() {
   const [selectedValue, setSelectedValue] = React.useState('');
   const { searchState, setSearchState, setFilterState } = useSearchContext();
   const timeoutId = React.useRef<any>(0);
-
-  React.useEffect(() => {
-    setOptions(data);
-  }, []);
 
   const clearSearch = () => {
     setSelectedValue('');
@@ -40,6 +32,7 @@ export default function SearchBox() {
   return (
     <div>
       <Downshift
+        id="app-search-box"
         onChange={(value) => {
           // user selected a matched from the dropdown
 
