@@ -1,5 +1,8 @@
 :root {
   --toastify-icon-color-info: #eee !important;
+
+  --toastify-font-family: 'Greycliff', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif !important;
 }
 
 .Toastify__toast-container {
@@ -11,12 +14,10 @@
   word-break: break-all !important;
   background-color: var(--brand-primary) !important;
   color: #eee !important;
-  font-family: var(--font-family) !important;
 }
 
 .Toastify__toast--error {
   word-break: break-all !important;
-  font-family: var(--font-family) !important;
 }
 
 .Toastify__close-button {

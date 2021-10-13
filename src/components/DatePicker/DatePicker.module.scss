@@ -1,6 +1,8 @@
 .wrapper {
-  border: var(--input-border);
-  border-radius: var(--input-border-radius);
+  // match the Input theme settings
+  border: 1px solid #aaa;
+  border-radius: 6px;
+
   display: flex;
   flex: 1;
   // not sure why this is needed, but without it, it gets too wide
@@ -21,23 +23,6 @@
     text-align: right;
     &::placeholder {
       color: #ccc;
-    }
-  }
-
-  .calendarButton {
-    // trying to match the size of the input which is 32
-    height: 32px;
-    width: 40px;
-
-    .iconButton {
-      // trying to match the size of the input which is 32
-      height: 32px;
-      color: #333;
-      border-radius: 5px !important;
-
-      :global(body.chakra-ui-dark) & {
-        color: #eee;
-      }
     }
   }
 }

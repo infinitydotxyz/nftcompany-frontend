@@ -40,27 +40,25 @@ export const DatePicker = ({ placeholder = 'Dec 8, 2021  12:00 PM', value, onCha
         }}
       />
 
-      <div className={styles.calendarButton}>
-        <IconButton
-          className={styles.iconButton}
-          colorScheme="gray"
-          aria-label="Expiry date"
-          icon={<CalendarIcon />}
-          onClick={(e) => {
-            // not sure if these are needed, being safe?
-            e.preventDefault();
-            e.stopPropagation();
+      <IconButton
+        className={styles.iconButton}
+        colorScheme="gray"
+        aria-label="Expiry date"
+        icon={<CalendarIcon />}
+        onClick={(e) => {
+          // not sure if these are needed, being safe?
+          e.preventDefault();
+          e.stopPropagation();
 
-            // at this point it's always closed since any click closes the existing popup
-            // tried to get it to toggle properly, but will fix later if possible
-            if (myFp) {
-              if (!myFp.isOpen) {
-                myFp.flatpickr.toggle();
-              }
+          // at this point it's always closed since any click closes the existing popup
+          // tried to get it to toggle properly, but will fix later if possible
+          if (myFp) {
+            if (!myFp.isOpen) {
+              myFp.flatpickr.toggle();
             }
-          }}
-        />
-      </div>
+          }
+        }}
+      />
     </div>
   );
 };
