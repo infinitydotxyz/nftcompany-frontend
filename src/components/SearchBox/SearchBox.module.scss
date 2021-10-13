@@ -36,7 +36,7 @@
     cursor: pointer;
   }
   li[aria-selected='true'] {
-    background-color: blue;
+    background-color: var(--brand-primary);
     color: #eee;
   }
 }
