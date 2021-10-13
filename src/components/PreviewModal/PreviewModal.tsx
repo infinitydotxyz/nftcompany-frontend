@@ -12,8 +12,8 @@ import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
-import { WETH_ADDRESS } from 'utils/constants';
 import { CopyButton } from 'components/CopyButton/CopyButton';
+import { ExternalLinkIconButton, ShareIconButton } from 'components/ShareButton/ShareButton';
 
 const isServer = typeof window === 'undefined';
 
@@ -139,7 +139,18 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
       </>
     ) : null;
 
-  const paymentToken = getToken(data?.data?.paymentToken);
+  const _buttonBar = (
+    <div className={styles.buttonBar}>
+      <ShareIconButton copyText={`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`} tooltip="Copy Link" />
+
+      <ExternalLinkIconButton
+        url={`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`}
+        tooltip="Open Link"
+      />
+    </div>
+  );
+
+  const paymentToken = getToken(data?.order?.paymentToken);
   return (
     <>
       {!isServer && (
@@ -155,6 +166,8 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                 </div>
 
                 <div className={styles.infoBox}>
+                  {_buttonBar}
+
                   <div className={styles.collectionRow}>
                     <div className={styles.collection}>{data?.collectionName}</div>
 
