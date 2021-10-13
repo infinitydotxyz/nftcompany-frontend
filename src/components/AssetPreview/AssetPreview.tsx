@@ -39,7 +39,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
   };
 
   if (!data) {
-    return <div>no data</div>;
+    return <div />;
   }
 
   return (
