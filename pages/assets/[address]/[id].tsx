@@ -22,10 +22,6 @@ const AssetsPage = (): JSX.Element => {
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">{title || id}</div>
-
-            <div style={{ flex: 1 }} />
-
-            <SortMenuButton />
           </div>
 
           {id && (
