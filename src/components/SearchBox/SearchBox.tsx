@@ -8,13 +8,19 @@ import { CloseIcon } from '@chakra-ui/icons';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { useRouter } from 'next/router';
 
-const data: any = [
-  // { value: 'name', label: 'name' }
+type SearchMatch = {
+  value: string;
+  label: string;
+  type: 'Asset' | 'Collection';
+};
+
+const data: SearchMatch[] = [
+  // { value: 'name', label: 'name', type: 'Asset' }
 ];
 
 export default function SearchBox() {
   const router = useRouter();
-  const [options, setOptions] = React.useState<any[]>([]);
+  const [options, setOptions] = React.useState<SearchMatch[]>([]);
   const [isSelecting, setIsSelecting] = React.useState(false); // user pressed Enter or selected a dropdown item.
   const [selectedValue, setSelectedValue] = React.useState('');
   const { searchState, setSearchState, setFilterState } = useSearchContext();
@@ -34,13 +40,13 @@ export default function SearchBox() {
   return (
     <div>
       <Downshift
-        onChange={(value: any, b: any) => {
+        onChange={(value) => {
           // user selected a matched from the dropdown
 
           // console.log('value', value, typeof value, b);
-          let val = value;
+          let val = `${value || ''}`;
 
-          if (value.indexOf('Collection:') === 0) {
+          if (val.indexOf('Collection:') === 0) {
             val = val.slice(12); // remove "Collection: " in the front.
             setSearchState({
               ...searchState,
@@ -83,7 +89,7 @@ export default function SearchBox() {
             const { collectionNames, nftNames } = (await getTypeAheadOptions({ startsWith: text })) || [];
             // console.log('collectionNames, nftNames', collectionNames, nftNames);
             const arr: any[] = [];
-            collectionNames.forEach((item: any) => {
+            collectionNames.forEach((item) => {
               // item = {name: 'Posh Pandas', type: 'Collection', hasBlueCheck: true}
               arr.push({
                 label: (
@@ -105,7 +111,7 @@ export default function SearchBox() {
                 type: 'Collection'
               });
             });
-            nftNames.forEach((item: any) => {
+            nftNames.forEach((item) => {
               arr.push({
                 label: (
                   <Box d="flex" alignItems="flex-start" textAlign="center">
@@ -127,7 +133,9 @@ export default function SearchBox() {
               });
             });
 
-            const matches: any[] = arr.filter((item: any) => item.value.toLowerCase().indexOf(text.toLowerCase()) >= 0);
+            const matches: SearchMatch[] = arr.filter(
+              (item) => item.value.toLowerCase().indexOf(text.toLowerCase()) >= 0
+            );
             // console.log('matches', matches);
             setOptions(matches);
             setSelectedValue(text);
@@ -153,11 +161,11 @@ export default function SearchBox() {
                   placeholder="Search..."
                   className="w-full"
                   {...moreProps}
-                  onKeyUp={async (ev: any) => {
-                    if (ev.keyCode === 13) {
+                  onKeyUp={async (ev) => {
+                    if (ev.key === 'Enter') {
                       closeMenu(); // if 'Enter', close menu.
                     }
-                    const text = ev.target.value;
+                    const text = (ev.target as HTMLInputElement).value;
                     if (text === selectedValue) {
                       return;
                     }
@@ -183,13 +191,13 @@ export default function SearchBox() {
                     className={styles.dropPanel + ' ' + (options.length > 0 && styles.dropPanelOpened)}
                     {...getMenuProps()}
                   >
-                    {options.map((item: any, index) => (
+                    {options.map((item, index) => (
                       <li
                         key={item.value + index}
                         {...getItemProps({
                           key: item.value + index,
                           index,
-                          item: item.value,
+                          item: [item.value],
                           className: `py-2 px-2 ${highlightedIndex === index ? styles.bold : 'bg-gray-100'}`
                         })}
                       >
