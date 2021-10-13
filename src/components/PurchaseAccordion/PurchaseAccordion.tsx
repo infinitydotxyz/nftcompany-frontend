@@ -29,7 +29,7 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
   const { data, action } = props;
   const { user } = useAppContext();
   const { colorMode } = useColorMode();
-  const [expandedIndex, setExpandedIndex] = useState<number[]>([0, 1]);
+  const [expandedIndex, setExpandedIndex] = useState<number[]>([0, 1, 2]);
 
   const loadOrder = useCallback(async () => {
     // card data already has the order, no reason to get it again
@@ -99,15 +99,15 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
         allowMultiple
         onChange={(index) => {
           if (Array.isArray(index)) {
-            let newIndex = [...index];
+            const newIndex = [...index];
 
-            if (index.includes(1) && index.includes(2)) {
-              if (expandedIndex.includes(1)) {
-                newIndex = newIndex.filter((e) => e !== 1);
-              } else {
-                newIndex = newIndex.filter((e) => e !== 2);
-              }
-            }
+            // if (index.includes(1) && index.includes(2)) {
+            //   if (expandedIndex.includes(1)) {
+            //     newIndex = newIndex.filter((e) => e !== 1);
+            //   } else {
+            //     newIndex = newIndex.filter((e) => e !== 2);
+            //   }
+            // }
 
             setExpandedIndex(newIndex);
           } else {
