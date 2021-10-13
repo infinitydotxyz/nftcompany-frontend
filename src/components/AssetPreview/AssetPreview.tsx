@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './NFTPreview.module.scss';
+import styles from './AssetPreview.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
@@ -13,7 +13,7 @@ type Props = {
   onTitle: (title: string) => void;
 };
 
-export const NFTPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Element => {
+export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Element => {
   const [data, setData] = useState<CardData | undefined>();
   const { user } = useAppContext();
 

@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { useRouter } from 'next/router';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
-import { NFTPreview } from './NFTPreview';
+import { AssetPreview } from 'components/AssetPreview/AssetPreview';
 
 const AssetsPage = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -29,7 +29,7 @@ const AssetsPage = (): JSX.Element => {
           </div>
 
           {id && (
-            <NFTPreview
+            <AssetPreview
               tokenId={id as string}
               tokenAddress={address as string}
               onTitle={(newTitle) => {
