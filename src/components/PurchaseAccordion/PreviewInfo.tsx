@@ -12,6 +12,7 @@ import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
 import { Label } from 'components/Text/Text';
+import { CopyButton } from 'components/CopyButton/CopyButton';
 
 interface Props {
   data: CardData;
@@ -112,6 +113,8 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
             {owner}
           </Link>
         </Tooltip>
+
+        <CopyButton copyText={data.owner} />
       </div>
     ) : null;
 
@@ -125,6 +128,8 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
             {offerMakerShort}
           </Link>
         </Tooltip>
+
+        <CopyButton copyText={offerMaker} />
       </div>
     ) : null;
 
@@ -143,6 +148,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
           {tokenAddress}
         </Link>
       </Tooltip>
+      <CopyButton copyText={data.tokenAddress} />
     </div>
   );
 
@@ -162,6 +168,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
           {tokenId}
         </Link>
       </Tooltip>
+      <CopyButton copyText={data.tokenId} />
     </div>
   );
 
