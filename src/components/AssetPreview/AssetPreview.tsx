@@ -32,9 +32,19 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
     const result = await getListings(filter);
 
     if (result && result.length > 0) {
-      setData(result[0]);
+      let theData = result[0];
+      let createdAt = theData.metadata?.createdAt ?? 0;
 
-      onTitle(result[0].title);
+      // get the latest one if more than 1
+      result.forEach((x) => {
+        if ((x.metadata?.createdAt ?? 0) > createdAt) {
+          theData = x;
+          createdAt = x.metadata?.createdAt ?? 0;
+        }
+      });
+
+      setData(theData);
+      onTitle(theData.title);
     }
   };
 

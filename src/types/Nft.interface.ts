@@ -39,7 +39,7 @@ export interface Metadata {
   hasBonusReward: boolean;
   schema: string;
   hasBlueCheck: boolean;
-  createdAt: string;
+  createdAt: number;
   basePriceInEth: number;
 }
 
