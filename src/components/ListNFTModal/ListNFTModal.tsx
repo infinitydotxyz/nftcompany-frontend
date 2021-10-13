@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from '@chakra-ui/react';
+import { Input, Switch } from '@chakra-ui/react';
 import TabBar from 'components/TabBar/TabBar';
 import { Button } from '@chakra-ui/button';
 import { Spinner } from '@chakra-ui/spinner';
@@ -115,7 +115,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 <div className={styles.fields}>
                   <div className={styles.left}>{endPriceShowed ? 'Starting price' : 'Price'}</div>
                   <div className={styles.middle}>
-                    <input
+                    <Input
                       className={styles.priceInput}
                       type="number"
                       autoFocus
@@ -131,7 +131,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       <HelpTooltip text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found." />
                     </div>
                     <div className={styles.middle}>
-                      <input
+                      <Input
                         className={styles.priceInput}
                         type="number"
                         onChange={(ev) => setEndPrice(parseFloat(ev.target.value))}
@@ -181,7 +181,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     <HelpTooltip text="Set your starting bid price. This starting bid price will be publicly visible. If you receive a bid above this starting value but below your reserve price, you can accept it at any time." />
                   </div>
                   <div className={styles.middle}>
-                    <input
+                    <Input
                       type="number"
                       className={styles.priceInput}
                       autoFocus
@@ -196,7 +196,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     <HelpTooltip text="Create a hidden limit by setting a reserve price. If you don’t receive any bids equal to or greater than your reserve, the auction will end without a sale. We require a minimum reserve price of ㆔1 or the equivalent value in your selected token." />
                   </div>
                   <div className={styles.middle}>
-                    <input
+                    <Input
                       type="number"
                       className={styles.priceInput}
                       onChange={(ev) => setReservePrice(parseFloat(ev.target.value))}

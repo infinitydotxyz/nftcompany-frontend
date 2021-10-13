@@ -3,9 +3,7 @@ import { getAccount, getOpenSeaport } from 'utils/ethersUtil';
 import { getCustomMessage, getCustomExceptionMsg } from 'utils/commonUtil';
 import { deleteAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
-
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { ReactNode } from '.pnpm/@types+react@17.0.24/node_modules/@types/react';
 
 export type User = {

@@ -29,10 +29,6 @@
 
       & > input {
         text-align: right;
-        padding: 0 10px;
-        padding: 2px 10px;
-        border: var(--input-border);
-        border-radius: var(--input-border-radius);
       }
     }
     .right {
@@ -45,17 +41,13 @@
 
 .buttons {
   display: flex;
-  margin-bottom: 10px;
   align-items: center;
   gap: 16px;
 }
 
 .priceInput {
   text-align: right;
-  width: 30%;
 
   // not sure why white in dark mode
   background-color: transparent;
-
-  width: 100px !important;
 }
