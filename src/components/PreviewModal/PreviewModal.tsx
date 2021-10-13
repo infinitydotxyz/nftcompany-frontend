@@ -16,6 +16,7 @@ import { WETH_ADDRESS } from 'utils/constants';
 import { CopyButton } from 'components/CopyButton/CopyButton';
 import router from 'next/router';
 import { ShareIcon } from 'components/Icons/Icons';
+import { ShareButton } from 'components/ShareButton/ShareButton';
 
 const isServer = typeof window === 'undefined';
 
@@ -157,6 +158,10 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                 </div>
 
                 <div className={styles.infoBox}>
+                  <ShareButton
+                    copyText={`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`}
+                    tooltip="Share"
+                  />
                   <div className={styles.collectionRow}>
                     <div className={styles.collection}>{data?.collectionName}</div>
 
@@ -212,15 +217,6 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
                   <span className={styles.label}>Description</span>
                   <div className={styles.description}>{description}</div>
-
-                  <IconButton
-                    variant="ghost"
-                    aria-label=""
-                    icon={<ShareIcon boxSize={7} />}
-                    onClick={() => {
-                      router.push(`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`);
-                    }}
-                  />
 
                   <div className={styles.buttons}>{purchaseButton}</div>
                 </div>
