@@ -3,7 +3,7 @@ import { getAccount, getOpenSeaport } from 'utils/ethersUtil';
 import { getCustomMessage, getCustomExceptionMsg } from 'utils/commonUtil';
 import { deleteAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
-import { ToastContainer, toast } from 'react-toastify';
+import { errorToast, infoToast, Toast } from 'components/Toast/Toast';
 import { ReactNode } from '.pnpm/@types+react@17.0.24/node_modules/@types/react';
 
 export type User = {
@@ -30,9 +30,9 @@ export function AppContextProvider({ children }: any) {
 
   const showAppError = (message: ReactNode) => {
     const msg = getCustomExceptionMsg(message);
-    toast.error(msg, { position: 'bottom-center' });
+    errorToast(msg);
   };
-  const showAppMessage = (message: ReactNode) => toast.info(message, { position: 'bottom-center' });
+  const showAppMessage = (message: ReactNode) => infoToast(message);
 
   // const connectMetaMask = async () => {
   //   // show MetaMask's errors:
@@ -112,7 +112,7 @@ export function AppContextProvider({ children }: any) {
 
   return (
     <AppContext.Provider value={value}>
-      {children} <ToastContainer position="bottom-right" />
+      {children} <Toast />
     </AppContext.Provider>
   );
 }
