@@ -31,7 +31,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
 
     const result = await getListings(filter);
 
-    if (result && result.length === 1) {
+    if (result && result.length > 0) {
       setData(result[0]);
 
       onTitle(result[0].title);
