@@ -1,7 +1,7 @@
 import React from 'react';
 import Downshift from 'downshift';
 import styles from './SearchBox.module.scss';
-import { Box } from '@chakra-ui/react';
+import { Box, Input } from '@chakra-ui/react';
 import { getTypeAheadOptions } from 'services/Listings.service';
 import { defaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import { CloseIcon } from '@chakra-ui/icons';
@@ -150,7 +150,7 @@ export default function SearchBox() {
           return (
             <div className={styles.container}>
               <div className="m-auto w-1/2 mt-6">
-                <input
+                <Input
                   placeholder="Search..."
                   className="w-full"
                   {...moreProps}
