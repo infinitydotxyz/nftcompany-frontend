@@ -33,6 +33,8 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
 
     if (result && result.length === 1) {
       setData(result[0]);
+
+      onTitle(result[0].title);
     }
   };
 
