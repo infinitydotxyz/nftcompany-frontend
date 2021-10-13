@@ -16,7 +16,7 @@ const AssetsPage = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>NFT</title>
+        <title>{`NFT: ${title}`}</title>
       </Head>
       <div>
         <div className="page-container">
@@ -25,15 +25,17 @@ const AssetsPage = (): JSX.Element => {
           </div>
 
           {id && (
-            <AssetPreview
-              tokenId={id as string}
-              tokenAddress={address as string}
-              onTitle={(newTitle) => {
-                if (!title) {
-                  setTitle(newTitle);
-                }
-              }}
-            />
+            <div style={{ marginTop: 20 }}>
+              <AssetPreview
+                tokenId={id as string}
+                tokenAddress={address as string}
+                onTitle={(newTitle) => {
+                  if (!title) {
+                    setTitle(newTitle);
+                  }
+                }}
+              />
+            </div>
           )}
         </div>
       </div>
