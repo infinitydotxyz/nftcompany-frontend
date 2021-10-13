@@ -141,9 +141,12 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
   const _buttonBar = (
     <div className={styles.buttonBar}>
-      <ShareIconButton copyText={`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`} tooltip="Share" />
+      <ShareIconButton copyText={`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`} tooltip="Copy Link" />
 
-      <ExternalLinkIconButton url={`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`} tooltip="Share" />
+      <ExternalLinkIconButton
+        url={`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`}
+        tooltip="Open Link"
+      />
     </div>
   );
 
