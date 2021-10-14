@@ -4,25 +4,36 @@ import styles from './ShortAddress.module.scss';
 import { CopyButton } from 'components/CopyButton/CopyButton';
 import { Link, Spacer } from '@chakra-ui/react';
 import { Label } from 'components/Text/Text';
-import { ellipsisAddress } from 'utils/commonUtil';
+import { addressesEqual, ellipsisAddress, ellipsisString } from 'utils/commonUtil';
+import { useAppContext } from 'utils/context/AppContext';
 
 type Props = {
   address?: string;
   label: string;
-  tooltip: string;
+  tooltip?: string;
   href: string;
   newTab?: boolean;
   vertical?: boolean;
 };
 
-export const ShortAddress = ({ vertical, href, newTab = true, address, label, tooltip }: Props) => {
+export const ShortAddress = ({ vertical, href, newTab = true, address, label, tooltip = '' }: Props) => {
+  const { user } = useAppContext();
+
   if (!address) {
     return <div />;
   }
 
   let shortAddress = address;
   if (shortAddress) {
-    shortAddress = ellipsisAddress(address);
+    if (addressesEqual(address, user?.account)) {
+      shortAddress = 'You';
+    } else {
+      if (shortAddress.startsWith('0x')) {
+        shortAddress = ellipsisAddress(address);
+      } else {
+        shortAddress = ellipsisString(address);
+      }
+    }
   }
 
   return (
