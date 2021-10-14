@@ -2,4 +2,13 @@
   display: flex;
   width: 100%;
   flex-direction: column;
+
+  .showMore {
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--chakra-colors-brandBlue);
+  }
 }
