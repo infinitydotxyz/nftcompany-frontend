@@ -61,9 +61,9 @@ export async function getAuthHeaders() {
   };
 }
 
-export async function dummyFetch() {
+export async function dummyFetch(mockData = []) {
   await sleep(1000);
-  return sampleData;
+  return mockData;
 }
 
 const catchError = (err: any) => {
