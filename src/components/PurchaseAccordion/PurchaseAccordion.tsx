@@ -81,9 +81,6 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
 
   const dark = colorMode === 'dark';
 
-  // I wish this could go in the scss file, but not sure how
-  const expandedStyle = { bg: dark ? 'rgba(25, 255, 255, .41)' : 'rgba(255, 255, 255, .7)' };
-
   return (
     <div className={styles.main}>
       <SingleAccordion>
