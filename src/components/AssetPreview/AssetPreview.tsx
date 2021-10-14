@@ -55,6 +55,9 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
     return <div />;
   }
 
+  let name = data?.collectionName?.replace(/\s/g, '');
+  name = name?.toLowerCase();
+
   return (
     <>
       <div className={styles.main}>
@@ -65,11 +68,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
                 <div className={styles.imgTitle}>{title}</div>
                 <Spacer />
                 <div className={styles.collectionRow}>
-                  <Link
-                    color="brandBlue"
-                    className={styles.collection}
-                    href={`${window.origin}/collection/${data?.collectionName}`}
-                  >
+                  <Link color="brandBlue" className={styles.collection} href={`${window.origin}/collection/${name}`}>
                     {data?.collectionName}
                   </Link>
 
