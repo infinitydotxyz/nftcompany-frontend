@@ -87,7 +87,7 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
   return (
     <div className={styles.main}>
       <SingleAccordion>
-        <PurchaseAccordionItem dark={dark} title="NFT Information" icon={LargeIcons.starIcon}>
+        <PurchaseAccordionItem dark={dark} title="NFT Information" icon={LargeIcons.imageIcon}>
           <PreviewInfo {...props} />
         </PurchaseAccordionItem>
       </SingleAccordion>

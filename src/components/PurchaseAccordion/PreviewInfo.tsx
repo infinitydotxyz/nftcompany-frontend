@@ -16,7 +16,7 @@ import { CopyButton } from 'components/CopyButton/CopyButton';
 interface Props {
   data: CardData;
   action: string;
-  showDescription: boolean;
+  showDescription?: boolean;
   onComplete: () => void;
 }
 
