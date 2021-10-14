@@ -6,7 +6,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 import { Button, Input, Spacer } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import { getToken, stringToFloat } from 'utils/commonUtil';
+import { getToken } from 'utils/commonUtil';
 import { DatePicker } from 'components/DatePicker/DatePicker';
 import { Label, Title } from 'components/Text/Text';
 
@@ -112,7 +112,13 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
         </div>
 
         <div className={styles.wideButton}>
-          <Button type="submit" loadingText="Making Offer" isLoading={isSubmitting} spinnerPlacement="end">
+          <Button
+            style={{ minWidth: 160 }}
+            type="submit"
+            loadingText="Making Offer"
+            isLoading={isSubmitting}
+            spinnerPlacement="end"
+          >
             Make an Offer
           </Button>
         </div>

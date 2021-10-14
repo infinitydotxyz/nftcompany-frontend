@@ -16,8 +16,8 @@ export const DescriptionBox: React.FC<Props> = ({ data }: Props) => {
 
   let description = data.description;
 
-  if (description && description.length > 300) {
-    description = `${description.slice(0, 300)}...`;
+  if (description && description.length > 5000) {
+    description = `${description.slice(0, 5000)}...`;
   }
 
   const _descriptionSection = description ? <div className={styles.description}>{description}</div> : <div>none</div>;

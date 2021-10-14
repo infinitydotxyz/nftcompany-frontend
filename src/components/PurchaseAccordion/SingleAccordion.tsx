@@ -11,11 +11,12 @@ interface IProps {
 
 export const PurchaseAccordionItem: React.FC<IProps> = ({ dark, icon, title, children }: IProps) => {
   // I wish this could go in the scss file, but not sure how
-  const expandedStyle = { bg: dark ? 'rgba(25, 255, 255, .41)' : 'rgba(255, 255, 255, .5)' };
+  // const expandedStyle = { bg: dark ? 'rgba(25, 255, 255, .41)' : 'rgba(255, 255, 255, .5)' };
 
   return (
     <AccordionItem style={{ border: 'none' }}>
-      <AccordionButton className={styles.accordionButton} _expanded={expandedStyle}>
+      {/* <AccordionButton className={styles.accordionButton} _expanded={expandedStyle}> */}
+      <AccordionButton className={styles.accordionButton}>
         {icon}
         <div className={styles.title}>{title}</div>
         <AccordionIcon />

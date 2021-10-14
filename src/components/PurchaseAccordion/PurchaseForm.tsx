@@ -67,7 +67,7 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
   if (token === 'ETH') {
     return (
       <div>
-        <Title text="Buy this NFT" />
+        <Title text="Buy this NFT for the price shown" />
 
         {data.price && (
           <div className={styles.priceRow}>
@@ -80,6 +80,7 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
 
         <div className={styles.wideButton}>
           <Button
+            style={{ minWidth: 160 }}
             isDisabled={!order}
             onClick={onClickBuyNow}
             loadingText="Buying"

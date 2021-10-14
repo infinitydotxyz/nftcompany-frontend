@@ -1,5 +1,5 @@
 .accordionButton {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.7);
   border-bottom: solid 1px #ddd;
   padding: 10px;
 
@@ -15,10 +15,10 @@
   }
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.9) !important;
 
     :global(body.chakra-ui-dark) & {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.1) !important;
     }
   }
 }

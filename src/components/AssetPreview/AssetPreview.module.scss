@@ -15,8 +15,23 @@
         overflow: hidden;
         background-color: rgba(255, 255, 255, 0.5);
 
-        .imgTitle {
-          padding: 10px;
+        .imgHeader {
+          padding: 10px 20px;
+
+          display: flex;
+          align-items: center;
+          .imgTitle {
+            font-weight: bold;
+            font-size: 1.4rem;
+          }
+          .collection {
+            margin-right: 6px;
+          }
+
+          .collectionRow {
+            display: flex;
+            align-items: center;
+          }
         }
 
         img {
@@ -29,27 +44,12 @@
 
     .right {
       flex: 1;
+      max-width: 500px;
 
       // background-color: var(--chakra-colors-windowBg);
       // padding: 20px;
       // border-radius: 20px;
     }
-  }
-
-  .title {
-    font-weight: bold;
-    font-size: 1.5rem;
-
-    margin: 20px 0;
-  }
-
-  .collection {
-    margin-right: 6px;
-  }
-
-  .collectionRow {
-    display: flex;
-    align-items: center;
   }
 
   .header {

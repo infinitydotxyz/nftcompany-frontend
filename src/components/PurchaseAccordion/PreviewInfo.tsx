@@ -16,10 +16,11 @@ import { CopyButton } from 'components/CopyButton/CopyButton';
 interface Props {
   data: CardData;
   action: string;
+  showDescription: boolean;
   onComplete: () => void;
 }
 
-export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
+export const PreviewInfo: React.FC<Props> = ({ showDescription = false, action, data }: Props) => {
   const [placeBidShowed, setPlaceBidShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
@@ -108,7 +109,13 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
         <Label text="Owner:" />
         <Spacer />
         <Tooltip label={toChecksumAddress(data.owner)} hasArrow openDelay={1000}>
-          <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
+          <Link
+            className={styles.link}
+            color="brandBlue"
+            href={`${window.origin}/${data.owner}`}
+            target="_blank"
+            rel="noreferrer"
+          >
             {owner}
           </Link>
         </Tooltip>
@@ -123,7 +130,13 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
         <Label text="Offer Maker:" />
         <Spacer />
         <Tooltip label={toChecksumAddress(offerMaker)} hasArrow openDelay={1000}>
-          <Link color="brandBlue" href={`${window.origin}/${offerMaker}`} target="_blank" rel="noreferrer">
+          <Link
+            className={styles.link}
+            color="brandBlue"
+            href={`${window.origin}/${offerMaker}`}
+            target="_blank"
+            rel="noreferrer"
+          >
             {offerMakerShort}
           </Link>
         </Tooltip>
@@ -139,6 +152,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
       <Spacer />
       <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
         <Link
+          className={styles.link}
           color="brandBlue"
           href={`https://etherscan.io/token/${data.tokenAddress}`}
           target="_blank"
@@ -159,6 +173,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
 
       <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
         <Link
+          className={styles.link}
           color="brandBlue"
           href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
           target="_blank"
@@ -199,7 +214,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
         {_ownerSection}
         {_offerMakerSection}
 
-        {_descriptionSection}
+        {showDescription && _descriptionSection}
 
         {purchaseButton && <div className={styles.buttons}>{purchaseButton}</div>}
       </div>
