@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import { useRouter } from 'next/router';
-import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
+import styles from './AssetsPage.module.scss';
 import { AssetPreview } from 'components/AssetPreview/AssetPreview';
 
 const AssetsPage = (): JSX.Element => {
@@ -20,23 +20,21 @@ const AssetsPage = (): JSX.Element => {
       </Head>
       <div>
         <div className="page-container">
-          {/* <div className="section-bar">
-            <div className="tg-title">{title ?? ''}</div>
-          </div> */}
-
-          {id && (
-            <div style={{ marginTop: 20 }}>
-              <AssetPreview
-                tokenId={id as string}
-                tokenAddress={address as string}
-                onTitle={(newTitle) => {
-                  if (!title) {
-                    setTitle(newTitle);
-                  }
-                }}
-              />
-            </div>
-          )}
+          <div className={styles.insetPage}>
+            {id && (
+              <div style={{ marginTop: 20 }}>
+                <AssetPreview
+                  tokenId={id as string}
+                  tokenAddress={address as string}
+                  onTitle={(newTitle) => {
+                    if (!title) {
+                      setTitle(newTitle);
+                    }
+                  }}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </>
