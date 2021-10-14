@@ -3,15 +3,15 @@ import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './scss/PreviewInfo.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
-import { Button, Link, Spacer, Tooltip } from '@chakra-ui/react';
+import { Button, Spacer } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import { addressesEqual, ellipsisAddress, ellipsisString, getToken, toChecksumAddress } from 'utils/commonUtil';
+import { addressesEqual, getToken, toChecksumAddress } from 'utils/commonUtil';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
 import { Label } from 'components/Text/Text';
-import { CopyButton } from 'components/CopyButton/CopyButton';
+import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 
 interface Props {
   data: CardData;
@@ -36,25 +36,7 @@ export const PreviewInfo: React.FC<Props> = ({ showDescription = false, action, 
   }
 
   let offerMaker = '';
-  let offerMakerShort = '';
-
   let owner = data.owner ?? '';
-  owner = ellipsisAddress(owner);
-
-  if (addressesEqual(data.owner, user?.account)) {
-    owner = 'You';
-  }
-
-  let tokenAddress = data.tokenAddress;
-  if (tokenAddress) {
-    tokenAddress = ellipsisAddress(tokenAddress);
-  }
-
-  let tokenId = data.tokenId;
-  if (tokenId) {
-    tokenId = ellipsisString(tokenId);
-  }
-
   let description = data.description;
 
   if (description && description.length > 300) {
@@ -75,14 +57,9 @@ export const PreviewInfo: React.FC<Props> = ({ showDescription = false, action, 
 
       // change to owner of asset
       owner = data.metadata?.asset.owner ?? '';
-      owner = ellipsisAddress(owner);
-
       break;
     case 'ACCEPT_OFFER':
       offerMaker = data.maker ?? 'unkonwn';
-      if (offerMaker.length > 16) {
-        offerMakerShort = ellipsisAddress(offerMaker);
-      }
 
       // hide the owner
       owner = '';
@@ -105,85 +82,40 @@ export const PreviewInfo: React.FC<Props> = ({ showDescription = false, action, 
 
   const _ownerSection =
     owner?.length > 0 ? (
-      <div className={styles.addressRow}>
-        <Label text="Owner:" />
-        <Spacer />
-        <Tooltip label={toChecksumAddress(data.owner)} hasArrow openDelay={1000}>
-          <Link
-            className={styles.link}
-            color="brandBlue"
-            href={`${window.origin}/${data.owner}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {owner}
-          </Link>
-        </Tooltip>
-
-        <CopyButton copyText={data.owner} />
-      </div>
+      <ShortAddress
+        address={owner}
+        href={`${window.origin}/${owner}`}
+        label="Owner:"
+        tooltip={toChecksumAddress(owner)}
+      />
     ) : null;
 
   const _offerMakerSection =
     offerMaker?.length > 0 ? (
-      <div className={styles.addressRow}>
-        <Label text="Offer Maker:" />
-        <Spacer />
-        <Tooltip label={toChecksumAddress(offerMaker)} hasArrow openDelay={1000}>
-          <Link
-            className={styles.link}
-            color="brandBlue"
-            href={`${window.origin}/${offerMaker}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {offerMakerShort}
-          </Link>
-        </Tooltip>
-
-        <CopyButton copyText={offerMaker} />
-      </div>
+      <ShortAddress
+        address={offerMaker}
+        href={`${window.origin}/${offerMaker}`}
+        label="Offer Maker:"
+        tooltip={toChecksumAddress(offerMaker)}
+      />
     ) : null;
 
   const _tokenAddressSection = (
-    <div className={styles.addressRow}>
-      <Label text="Token Address:" />
-
-      <Spacer />
-      <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
-        <Link
-          className={styles.link}
-          color="brandBlue"
-          href={`https://etherscan.io/token/${data.tokenAddress}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {tokenAddress}
-        </Link>
-      </Tooltip>
-      <CopyButton copyText={data.tokenAddress} />
-    </div>
+    <ShortAddress
+      address={data.tokenAddress}
+      href={`https://etherscan.io/token/${data.tokenAddress}`}
+      label="Token Address:"
+      tooltip={toChecksumAddress(data.tokenAddress)}
+    />
   );
 
   const _tokenIdSection = (
-    <div className={styles.addressRow}>
-      <Label text="Token Id:" />
-
-      <Spacer />
-
-      <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
-        <Link
-          className={styles.link}
-          color="brandBlue"
-          href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {tokenId}
-        </Link>
-      </Tooltip>
-      <CopyButton copyText={data.tokenId} />
-    </div>
+    <ShortAddress
+      address={data.tokenId}
+      href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
+      label="Token Id:"
+      tooltip={data.tokenId}
+    />
   );
 
   const _descriptionSection = description ? (
