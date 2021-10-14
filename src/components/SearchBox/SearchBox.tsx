@@ -125,12 +125,7 @@ export default function SearchBox() {
                 type: 'Asset'
               });
             });
-
-            const matches: SearchMatch[] = arr.filter(
-              (item) => item.value.toLowerCase().indexOf(text.toLowerCase()) >= 0
-            );
-            // console.log('matches', matches);
-            setOptions(matches);
+            setOptions(arr);
             setSelectedValue(text);
 
             setSearchState({
