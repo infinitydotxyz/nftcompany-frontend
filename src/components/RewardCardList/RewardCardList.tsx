@@ -30,7 +30,7 @@ export const RewardCardRow = ({ data }: Props) => {
 
   const totalRewards: DataItem[] = [
     // { title: 'Rewards Paid', value: data.totalRewardPaid },
-    { title: 'Available', value: '600000000', subtitle: '60% of initial supply' }
+    { title: 'Available', value: '1000000000', subtitle: '10% of total supply' }
   ];
 
   const transactionItems: DataItem[] = [
@@ -39,7 +39,7 @@ export const RewardCardRow = ({ data }: Props) => {
     { title: 'Fees (ETH)', value: data.salesFeesTotalNumeric }
   ];
 
-  const expiryTimestamp = new Date(Date.parse('12/07/21'));
+  const expiryTimestamp = new Date(Date.parse('11/07/21'));
 
   if (data.usPerson === 'YES' || data.usPerson === 'NONE') {
     // user is an U.S. person: show "Not eligible" card
