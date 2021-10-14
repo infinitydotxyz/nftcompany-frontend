@@ -27,7 +27,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [expiryDate, setExpiryDate] = React.useState<Date | undefined>();
   const [order, setOrder] = React.useState<Order | undefined>();
   const [offerPrice, setOfferPrice] = React.useState(0);
-  const token = getToken(data?.data?.paymentToken);
+  const token = getToken(data.order?.paymentToken);
 
   const loadOrder = useCallback(async () => {
     let orderParams: any;
@@ -216,7 +216,6 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   <Input
                     className={styles.offerBorder}
                     required
-                    size={'sm'}
                     type="number"
                     step={0.000000001}
                     onChange={(ev) => setOfferPrice(parseFloat(ev.target.value))}

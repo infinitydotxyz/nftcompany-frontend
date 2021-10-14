@@ -39,7 +39,7 @@ export interface Metadata {
   hasBonusReward: boolean;
   schema: string;
   hasBlueCheck: boolean;
-  createdAt: string;
+  createdAt: number;
   basePriceInEth: number;
 }
 
@@ -70,7 +70,7 @@ export type CardData = {
   imagePreview?: string;
   price?: number;
   inStock?: number;
-  data?: any;
+  order?: Order;
   tokenAddress?: string;
   tokenId?: string;
   collectionName?: string;

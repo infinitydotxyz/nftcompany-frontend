@@ -110,6 +110,25 @@ const Button = {
   }
 };
 
+const Input = {
+  variants: {
+    outline: (props: any) => {
+      return {
+        field: {
+          border: '1px solid',
+
+          // not sure why you have to set this
+          borderColor: '#aaa',
+
+          _hover: {
+            border: '1px solid #aaa'
+          }
+        }
+      };
+    }
+  }
+};
+
 const config: ThemeConfig = {
   useSystemColorMode: false,
   initialColorMode: 'light'
@@ -119,6 +138,9 @@ const styles = {
   global: (props: any) => {
     return {
       body: {
+        fontFamily:
+          'Greycliff, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif',
+
         color: mode('gray.800', 'whiteAlpha.900')(props),
 
         // bg: mode('white', 'gray.800')(props)
@@ -143,7 +165,8 @@ export const theme = extendTheme(
     components: {
       Menu,
       Button,
-      Table
+      Table,
+      Input
     }
   },
   withDefaultColorScheme({ colorScheme: 'blue' }),

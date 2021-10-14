@@ -86,12 +86,12 @@ export default function SearchBox() {
               // item = {name: 'Posh Pandas', type: 'Collection', hasBlueCheck: true}
               arr.push({
                 label: (
-                  <Box d="flex" alignItems="flex-start" textAlign="center">
+                  <Box d="flex" alignItems="flex-start" textAlign="left">
                     <Box my="auto" mx="1" fontSize="lg" fontWeight="medium">
                       <Box d="inline" fontWeight="bold">
                         Collection:{' '}
                       </Box>
-                      {item.name}
+                      {item.name.slice(0, 100)}
                     </Box>
                     {item.hasBlueCheck && (
                       <Box m="1" ml="0">
@@ -107,12 +107,12 @@ export default function SearchBox() {
             nftNames.forEach((item) => {
               arr.push({
                 label: (
-                  <Box d="flex" alignItems="flex-start" textAlign="center">
+                  <Box d="flex" alignItems="flex-start" textAlign="left">
                     <Box my="auto" mx="1" fontSize="lg" fontWeight="medium">
                       <Box d="inline" fontWeight="bold">
                         Asset:{' '}
                       </Box>
-                      {` ${item.name}`}
+                      {` ${item.name.slice(0, 100)}`}
                     </Box>
                     {item.hasBlueCheck && (
                       <Box m="1" ml="0">
@@ -125,12 +125,7 @@ export default function SearchBox() {
                 type: 'Asset'
               });
             });
-
-            const matches: SearchMatch[] = arr.filter(
-              (item) => item.value.toLowerCase().indexOf(text.toLowerCase()) >= 0
-            );
-            // console.log('matches', matches);
-            setOptions(matches);
+            setOptions(arr);
             setSelectedValue(text);
 
             setSearchState({

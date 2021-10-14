@@ -4,7 +4,6 @@
 
   .nftContent {
     display: flex;
-    margin: 20px 0;
 
     .imgBox {
       flex: 65;
@@ -21,7 +20,15 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      margin-left: 20px;
+      margin-left: 40px;
+
+      .buttonBar {
+        display: flex;
+        gap: 6px;
+
+        align-items: center;
+        margin: 10px 0 0px 0;
+      }
 
       .description {
         color: black;
@@ -49,11 +56,6 @@
         font-weight: bold;
       }
     }
-  }
-
-  .addressAndCopy {
-    display: flex;
-    gap: 6px;
   }
 
   .buttons {

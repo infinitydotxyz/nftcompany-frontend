@@ -66,32 +66,6 @@ export const getCollectionNamesOfListings = async (collectionQuery: TypeaheadQue
   return result;
 };
 
-export const getListingById = async (id?: string, address?: string): Promise<Order | null> => {
-  const path = `/listingById/`;
-  const { result, error }: { result: Order; error: any } = (await apiGet(path, { id, address })) as any;
-  if (error !== undefined) {
-    return null;
-  }
-  return result;
-};
-
-export const getListingsByCollectionName = async (
-  collectionName: string,
-  listingFilter?: SearchFilter
-): Promise<CardData[]> => {
-  const path = `/listingsByCollectionName/`;
-  const { result, error }: { result: Order[]; error: any } = (await apiGet(path, {
-    ...listingFilter,
-    collectionName
-  })) as any;
-
-  if (error !== undefined) {
-    return [];
-  }
-
-  return result.map(orderToCardData);
-};
-
 export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAheadOptions> => {
   if (query?.startsWith) {
     query.startsWith = query.startsWith.replace(/ /g, '');
@@ -123,7 +97,7 @@ export const orderToCardData = (order: Order): CardData => {
     tokenAddress: order.metadata.asset.address,
     tokenId: order.metadata.asset.id,
     maker: order.maker,
-    data: order,
+    order: order,
     hasBonusReward: order.metadata.hasBonusReward,
     hasBlueCheck: order.metadata.hasBlueCheck,
     collectionName: order.metadata.asset.collectionName,

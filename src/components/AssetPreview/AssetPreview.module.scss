@@ -1,0 +1,78 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 100px;
+
+  .nftContent {
+    display: flex;
+    gap: 40px;
+
+    .left {
+      flex: 1;
+
+      .imageFrame {
+        border: solid 1px #ddd;
+        border-radius: 16px;
+        overflow: hidden;
+        background-color: rgba(255, 255, 255, 0.5);
+        padding: 0 16px 16px 16px;
+
+        .imgHeader {
+          padding: 10px 5px;
+
+          display: flex;
+          align-items: center;
+          .imgTitle {
+            font-weight: bold;
+            font-size: 1.4rem;
+          }
+          .collection {
+            margin-right: 6px;
+          }
+
+          .collectionRow {
+            display: flex;
+            align-items: center;
+          }
+        }
+
+        img {
+          border-radius: 16px;
+          width: 100%;
+          height: auto;
+          max-height: 80vh; /* for img that too tall */
+        }
+      }
+    }
+
+    .right {
+      flex: 1;
+      max-width: 500px;
+
+      // background-color: var(--chakra-colors-windowBg);
+      // padding: 20px;
+      // border-radius: 20px;
+    }
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    justify-content: center;
+    flex-direction: column;
+  }
+}

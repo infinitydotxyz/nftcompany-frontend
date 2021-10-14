@@ -4,16 +4,16 @@ import styles from './PreviewModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { Button, Link, Tooltip } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
-import { addressesEqual, ellipsisAddress, ellipsisString, getToken, toChecksumAddress } from 'utils/commonUtil';
+import { addressesEqual, getToken, toChecksumAddress } from 'utils/commonUtil';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
-import { WETH_ADDRESS } from 'utils/constants';
-import { CopyButton } from 'components/CopyButton/CopyButton';
+import { ExternalLinkIconButton, ShareIconButton } from 'components/ShareButton/ShareButton';
+import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 
 const isServer = typeof window === 'undefined';
 
@@ -39,24 +39,8 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
   }
 
   let offerMaker = '';
-  let offerMakerShort = '';
 
   let owner = data.owner ?? '';
-  owner = ellipsisAddress(owner);
-
-  if (addressesEqual(data.owner, user?.account)) {
-    owner = 'You';
-  }
-
-  let tokenAddress = data.tokenAddress;
-  if (tokenAddress) {
-    tokenAddress = ellipsisAddress(tokenAddress);
-  }
-
-  let tokenId = data.tokenId;
-  if (tokenId) {
-    tokenId = ellipsisString(tokenId);
-  }
 
   let description = data.description;
 
@@ -78,14 +62,10 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
       // change to owner of asset
       owner = data.metadata?.asset.owner ?? '';
-      owner = ellipsisAddress(owner);
 
       break;
     case 'ACCEPT_OFFER':
       offerMaker = data.maker ?? 'unkonwn';
-      if (offerMaker.length > 16) {
-        offerMakerShort = ellipsisAddress(offerMaker);
-      }
 
       // hide the owner
       owner = '';
@@ -111,35 +91,38 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
   const _ownerSection =
     owner?.length > 0 ? (
-      <>
-        <div className={styles.label}>Owner</div>
-        <div className={styles.addressAndCopy}>
-          <Tooltip label={toChecksumAddress(data.owner)} hasArrow openDelay={1000}>
-            <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
-              {owner}
-            </Link>
-          </Tooltip>
-          <CopyButton copyText={data.owner} />
-        </div>
-      </>
+      <ShortAddress
+        vertical={true}
+        address={owner}
+        href={`${window.origin}/${owner}`}
+        label="Owner"
+        tooltip={toChecksumAddress(owner)}
+      />
     ) : null;
 
   const _offerMakerSection =
     offerMaker?.length > 0 ? (
-      <>
-        <div className={styles.label}>Offer Maker</div>
-        <div className={styles.addressAndCopy}>
-          <Tooltip label={toChecksumAddress(offerMaker)} hasArrow openDelay={1000}>
-            <Link color="brandBlue" href={`${window.origin}/${offerMaker}`} target="_blank" rel="noreferrer">
-              {offerMakerShort}
-            </Link>
-          </Tooltip>
-          <CopyButton copyText={offerMaker} />
-        </div>
-      </>
+      <ShortAddress
+        vertical={true}
+        address={offerMaker}
+        href={`${window.origin}/${offerMaker}`}
+        label="Offer Maker"
+        tooltip={toChecksumAddress(offerMaker)}
+      />
     ) : null;
 
-  const paymentToken = getToken(data?.data?.paymentToken);
+  const _buttonBar = (
+    <div className={styles.buttonBar}>
+      <ShareIconButton copyText={`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`} tooltip="Copy Link" />
+
+      <ExternalLinkIconButton
+        url={`${window.origin}/assets/${data.tokenAddress}/${data.tokenId}`}
+        tooltip="Open Link"
+      />
+    </div>
+  );
+
+  const paymentToken = getToken(data?.order?.paymentToken);
   return (
     <>
       {!isServer && (
@@ -163,6 +146,8 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
                   <div className={styles.title}>{data?.title}</div>
 
+                  {_buttonBar}
+
                   {data.metadata?.basePriceInEth && (
                     <>
                       <span className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price' : 'Price'}</span>
@@ -175,35 +160,21 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                     </>
                   )}
 
-                  <div className={styles.label}>Token Address</div>
-                  <div className={styles.addressAndCopy}>
-                    <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
-                      <Link
-                        color="brandBlue"
-                        href={`https://etherscan.io/token/${data.tokenAddress}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {tokenAddress}
-                      </Link>
-                    </Tooltip>
-                    <CopyButton copyText={data.tokenAddress} />
-                  </div>
+                  <ShortAddress
+                    vertical={true}
+                    address={data.tokenAddress}
+                    href={`https://etherscan.io/token/${data.tokenAddress}`}
+                    label="Token Address"
+                    tooltip={toChecksumAddress(data.tokenAddress)}
+                  />
 
-                  <div className={styles.label}>Token Id</div>
-                  <div className={styles.addressAndCopy}>
-                    <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
-                      <Link
-                        color="brandBlue"
-                        href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {tokenId}
-                      </Link>
-                    </Tooltip>
-                    <CopyButton copyText={data.tokenId} />
-                  </div>
+                  <ShortAddress
+                    vertical={true}
+                    address={data.tokenId}
+                    href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
+                    label="Token Id"
+                    tooltip={data.tokenId}
+                  />
 
                   {_ownerSection}
                   {_offerMakerSection}

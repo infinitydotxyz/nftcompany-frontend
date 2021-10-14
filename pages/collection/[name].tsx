@@ -10,6 +10,7 @@ import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
 import { useRouter } from 'next/router';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
+import { Spacer } from '@chakra-ui/react';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -28,7 +29,7 @@ const Collection = (): JSX.Element => {
           <div className="section-bar">
             <div className="tg-title">{title || name}</div>
 
-            <div style={{ flex: 1 }} />
+            <Spacer />
 
             <SortMenuButton />
           </div>
