@@ -166,8 +166,6 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                 </div>
 
                 <div className={styles.infoBox}>
-                  {_buttonBar}
-
                   <div className={styles.collectionRow}>
                     <div className={styles.collection}>{data?.collectionName}</div>
 
@@ -175,6 +173,8 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                   </div>
 
                   <div className={styles.title}>{data?.title}</div>
+
+                  {_buttonBar}
 
                   {data.metadata?.basePriceInEth && (
                     <>
