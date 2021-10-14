@@ -28,7 +28,7 @@ const getRows = (data: LeaderBoardEntry[]) => {
               <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
                 <ExternalLinkIcon
                   size="sm"
-                  color="blue"
+                  color="brandBlue"
                   aria-label="Go to link"
                   onClick={(e) => {
                     e.stopPropagation();

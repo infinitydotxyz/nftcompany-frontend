@@ -4,7 +4,7 @@ import { CardData, Order } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
-import { Button, Input } from '@chakra-ui/react';
+import { Button, Input, Spacer } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { getToken, stringToFloat } from 'utils/commonUtil';
 import { DatePicker } from 'components/DatePicker/DatePicker';
@@ -81,7 +81,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
           <div className={styles.priceRow}>
             <Label text="Minimum Price" />
 
-            <div style={{ flex: 1 }} />
+            <Spacer />
             <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
           </div>
         )}

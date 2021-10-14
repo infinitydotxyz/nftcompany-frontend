@@ -9,9 +9,8 @@ import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
-import { Link } from '@chakra-ui/layout';
+import { Spacer } from '@chakra-ui/layout';
 import { useRouter } from 'next/router';
-import styles from './Explore.module.scss';
 
 export default function ExplorePage() {
   const cardProvider = useCardProvider();
@@ -28,7 +27,7 @@ export default function ExplorePage() {
           <div className="section-bar">
             <div className="tg-title">Explore</div>
 
-            <div style={{ flex: 1 }} />
+            <Spacer />
             <SortMenuButton />
           </div>
 

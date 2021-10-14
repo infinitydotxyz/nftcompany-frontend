@@ -25,7 +25,7 @@ export const ShareButton = ({ copyText, tooltip = 'Copy to Clipboard' }: Props) 
         <Box>
           <ShareIcon
             size="sm"
-            color="blue"
+            color="brandBlue"
             aria-label="Share"
             onClick={(e: any) => {
               e.stopPropagation();
@@ -90,7 +90,7 @@ export const ExternalLinkButton = ({ url, tooltip = 'Open Link' }: EProps) => {
         <Box>
           <ExternalLinkIcon
             size="sm"
-            color="blue"
+            color="brandBlue"
             aria-label="Share"
             onClick={(e: any) => {
               e.stopPropagation();

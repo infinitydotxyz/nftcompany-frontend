@@ -5,7 +5,7 @@ import { getOpenSeaport } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 import { apiPost } from 'utils/apiUtil';
-import { Button } from '@chakra-ui/react';
+import { Button, Spacer } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { getToken } from 'utils/commonUtil';
 import { Label, Title } from 'components/Text/Text';
@@ -72,7 +72,7 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
         {data.price && (
           <div className={styles.priceRow}>
             <Label text="Price" />
-            <div style={{ flex: 1 }} />
+            <Spacer />
 
             <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
           </div>

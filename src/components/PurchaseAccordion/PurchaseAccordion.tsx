@@ -1,22 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { CardData, Order } from 'types/Nft.interface';
 import { getOpenSeaport } from 'utils/ethersUtil';
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
-  useColorMode
-} from '@chakra-ui/react';
+import { useColorMode } from '@chakra-ui/react';
 import { PurchaseForm } from './PurchaseForm';
 import { MakeOfferForm } from './MakeOfferForm';
 import { PreviewInfo } from './PreviewInfo';
 import { addressesEqual } from 'utils/commonUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from './scss/PurchaseAccordion.module.scss';
-import { whiten } from '@chakra-ui/theme-tools';
+import { LargeIcons } from 'components/Icons/MenuIcons';
+import { PurchaseAccordionItem, SingleAccordion } from './SingleAccordion';
+import { ExtraSpace } from 'components/Spacer/Spacer';
 
 interface Props {
   data: CardData;
@@ -29,7 +23,6 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
   const { data, action } = props;
   const { user } = useAppContext();
   const { colorMode } = useColorMode();
-  const [expandedIndex, setExpandedIndex] = useState<number[]>([0, 1, 2]);
 
   const loadOrder = useCallback(async () => {
     // card data already has the order, no reason to get it again
@@ -89,72 +82,35 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
   const dark = colorMode === 'dark';
 
   // I wish this could go in the scss file, but not sure how
-  const expandedStyle = { bg: dark ? 'rgba(255, 255, 255, .41)' : 'rgba(0, 0, 0, .05)' };
+  const expandedStyle = { bg: dark ? 'rgba(25, 255, 255, .41)' : 'rgba(255, 255, 255, .7)' };
 
   return (
     <div className={styles.main}>
-      <Accordion
-        defaultIndex={[0, 1]}
-        index={expandedIndex}
-        allowMultiple
-        onChange={(index) => {
-          if (Array.isArray(index)) {
-            const newIndex = [...index];
+      <SingleAccordion>
+        <PurchaseAccordionItem dark={dark} title="NFT Information" icon={LargeIcons.starIcon}>
+          <PreviewInfo {...props} />
+        </PurchaseAccordionItem>
+      </SingleAccordion>
 
-            // if (index.includes(1) && index.includes(2)) {
-            //   if (expandedIndex.includes(1)) {
-            //     newIndex = newIndex.filter((e) => e !== 1);
-            //   } else {
-            //     newIndex = newIndex.filter((e) => e !== 2);
-            //   }
-            // }
+      {showPurchase && order && (
+        <>
+          <ExtraSpace />
 
-            setExpandedIndex(newIndex);
-          } else {
-            setExpandedIndex([index]);
-          }
-        }}
-      >
-        <AccordionItem style={{ border: 'none' }}>
-          <AccordionButton className={styles.accordionButton} _expanded={expandedStyle}>
-            <Box flex="1" textAlign="left">
-              NFT Information
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel className={styles.accordionPanel}>
-            <PreviewInfo {...props} />
-          </AccordionPanel>
-        </AccordionItem>
+          <SingleAccordion>
+            <PurchaseAccordionItem dark={dark} title="Buy Now" icon={LargeIcons.moneyIcon}>
+              <PurchaseForm order={order} {...props} />
+            </PurchaseAccordionItem>
+          </SingleAccordion>
 
-        {showPurchase && order && (
-          <>
-            <AccordionItem style={{ border: 'none' }}>
-              <AccordionButton className={styles.accordionButton} _expanded={expandedStyle}>
-                <Box flex="1" textAlign="left">
-                  Buy Now
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel className={styles.accordionPanel}>
-                <PurchaseForm order={order} {...props} />
-              </AccordionPanel>
-            </AccordionItem>
+          <ExtraSpace />
 
-            <AccordionItem style={{ border: 'none' }}>
-              <AccordionButton className={styles.accordionButton} _expanded={expandedStyle}>
-                <Box flex="1" textAlign="left">
-                  Make Offer
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel className={styles.accordionPanel}>
-                <MakeOfferForm order={order} {...props} />
-              </AccordionPanel>
-            </AccordionItem>
-          </>
-        )}
-      </Accordion>
+          <SingleAccordion>
+            <PurchaseAccordionItem dark={dark} title="Make Offer" icon={LargeIcons.offerIcon}>
+              <MakeOfferForm order={order} {...props} />
+            </PurchaseAccordionItem>
+          </SingleAccordion>
+        </>
+      )}
     </div>
   );
 };

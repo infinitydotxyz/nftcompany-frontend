@@ -3,8 +3,7 @@ import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './scss/PreviewInfo.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
-import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { Button, Link, Tooltip } from '@chakra-ui/react';
+import { Button, Link, Spacer, Tooltip } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { addressesEqual, ellipsisAddress, ellipsisString, getToken, toChecksumAddress } from 'utils/commonUtil';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
@@ -107,7 +106,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
     owner?.length > 0 ? (
       <div className={styles.addressRow}>
         <Label text="Owner:" />
-        <div style={{ flex: 1 }} />
+        <Spacer />
         <Tooltip label={toChecksumAddress(data.owner)} hasArrow openDelay={1000}>
           <Link color="brandBlue" href={`${window.origin}/${data.owner}`} target="_blank" rel="noreferrer">
             {owner}
@@ -122,7 +121,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
     offerMaker?.length > 0 ? (
       <div className={styles.addressRow}>
         <Label text="Offer Maker:" />
-        <div style={{ flex: 1 }} />
+        <Spacer />
         <Tooltip label={toChecksumAddress(offerMaker)} hasArrow openDelay={1000}>
           <Link color="brandBlue" href={`${window.origin}/${offerMaker}`} target="_blank" rel="noreferrer">
             {offerMakerShort}
@@ -137,7 +136,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
     <div className={styles.addressRow}>
       <Label text="Token Address:" />
 
-      <div style={{ flex: 1 }} />
+      <Spacer />
       <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
         <Link
           color="brandBlue"
@@ -156,7 +155,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
     <div className={styles.addressRow}>
       <Label text="Token Id:" />
 
-      <div style={{ flex: 1 }} />
+      <Spacer />
 
       <Tooltip label={data.tokenId} hasArrow openDelay={1000}>
         <Link
@@ -186,7 +185,7 @@ export const PreviewInfo: React.FC<Props> = ({ action, data }: Props) => {
     <div className={styles.priceRow}>
       <Label text={paymentToken === 'WETH' ? 'Minimum Price:' : 'Price:'} />
 
-      <div style={{ flex: 1 }} />
+      <Spacer />
       <PriceBox justifyRight price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
     </div>
   ) : null;

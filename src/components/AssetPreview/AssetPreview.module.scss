@@ -8,30 +8,42 @@
 
     .left {
       flex: 1;
-      img {
-        width: 100%;
-        height: auto;
-        max-height: 80vh; /* for img that too tall */
+
+      .imageFrame {
+        border: solid 1px #ddd;
         border-radius: 16px;
+        overflow: hidden;
+        background-color: rgba(255, 255, 255, 0.5);
+
+        .imgTitle {
+          padding: 10px;
+        }
+
+        img {
+          width: 100%;
+          height: auto;
+          max-height: 80vh; /* for img that too tall */
+        }
       }
     }
 
     .right {
-      background-color: var(--chakra-colors-windowBg);
-      padding: 20px;
-      border-radius: 20px;
+      flex: 1;
+
+      // background-color: var(--chakra-colors-windowBg);
+      // padding: 20px;
+      // border-radius: 20px;
     }
   }
 
   .title {
-    font-size: 1.2rem;
+    font-weight: bold;
+    font-size: 1.5rem;
 
-    margin-bottom: 10px;
+    margin: 20px 0;
   }
 
   .collection {
-    font-weight: bold;
-    font-size: 1.3rem;
     margin-right: 6px;
   }
 

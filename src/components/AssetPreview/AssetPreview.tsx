@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styles from './AssetPreview.module.scss';
 import { CardData } from 'types/Nft.interface';
-import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PurchaseAccordion } from 'components/PurchaseAccordion/PurchaseAccordion';
 import { getListings } from 'services/Listings.service';
 import { defaultFilterState } from 'utils/context/SearchContext';
+import { Link } from '@chakra-ui/react';
+import { DescriptionBox } from 'components/PurchaseAccordion/DescriptionBox';
+import { ExtraSpace } from 'components/Spacer/Spacer';
 
 type Props = {
   tokenId: string;
@@ -15,7 +17,7 @@ type Props = {
 
 export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Element => {
   const [data, setData] = useState<CardData | undefined>();
-  const { user } = useAppContext();
+  const [title, setTitle] = useState('');
 
   const action = 'BUY-NFT';
 
@@ -44,6 +46,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
       });
 
       setData(theData);
+      setTitle(theData.title);
       onTitle(theData.title);
     }
   };
@@ -57,16 +60,29 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
       <div className={styles.main}>
         <div className={styles.nftContent}>
           <div className={styles.left}>
-            <img
-              alt="not available"
-              src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
-            />
+            <div className={styles.imageFrame}>
+              <div className={styles.imgTitle}>{title}</div>
+              <img
+                alt="not available"
+                src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
+              />
+            </div>
+
+            <ExtraSpace />
+            <DescriptionBox data={data} />
           </div>
 
           <div className={styles.right}>
             <div className={styles.collectionRow}>
-              <div className={styles.collection}>{data?.collectionName}</div>
-              <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
+              <Link
+                color="brandBlue"
+                className={styles.collection}
+                href={`${window.origin}/collection/${data?.collectionName}`}
+              >
+                {data?.collectionName}
+              </Link>
+
+              <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
             </div>
 
             <div className={styles.title}>{data?.title}</div>

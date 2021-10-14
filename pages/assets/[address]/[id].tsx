@@ -20,9 +20,9 @@ const AssetsPage = (): JSX.Element => {
       </Head>
       <div>
         <div className="page-container">
-          <div className="section-bar">
+          {/* <div className="section-bar">
             <div className="tg-title">{title ?? ''}</div>
-          </div>
+          </div> */}
 
           {id && (
             <div style={{ marginTop: 20 }}>
