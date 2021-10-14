@@ -256,7 +256,7 @@ const Header = (): JSX.Element => {
 
           <div className={styles.links}>
             <div className={styles.showExplore}>
-              <HoverMenuButton disabled={!signedIn} buttonTitle="Explore" onClick={() => router.push('/explore')}>
+              <HoverMenuButton buttonTitle="Explore" onClick={() => router.push('/explore')}>
                 {exploreItems}
               </HoverMenuButton>
             </div>
