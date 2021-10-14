@@ -38,7 +38,7 @@ export const ShortAddress = ({ vertical, href, newTab = true, address, label, to
 
   return (
     <div className={vertical ? styles.mainVertical : styles.main}>
-      <Label bold text={label} />
+      <Label bold={vertical} text={label} />
 
       <Spacer />
 
