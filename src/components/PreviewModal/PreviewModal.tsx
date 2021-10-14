@@ -14,6 +14,7 @@ import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
 import { CopyButton } from 'components/CopyButton/CopyButton';
 import { ExternalLinkIconButton, ShareIconButton } from 'components/ShareButton/ShareButton';
+import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 
 const isServer = typeof window === 'undefined';
 
@@ -188,20 +189,13 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                     </>
                   )}
 
-                  <div className={styles.label}>Token Address</div>
-                  <div className={styles.addressAndCopy}>
-                    <Tooltip label={toChecksumAddress(data.tokenAddress)} hasArrow openDelay={1000}>
-                      <Link
-                        color="brandBlue"
-                        href={`https://etherscan.io/token/${data.tokenAddress}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {tokenAddress}
-                      </Link>
-                    </Tooltip>
-                    <CopyButton copyText={data.tokenAddress} />
-                  </div>
+                  <ShortAddress
+                    vertical={true}
+                    address={data.tokenAddress}
+                    href={`https://etherscan.io/token/${data.tokenAddress}`}
+                    label="Token Address"
+                    tooltip={toChecksumAddress(data.tokenAddress)}
+                  />
 
                   <div className={styles.label}>Token Id</div>
                   <div className={styles.addressAndCopy}>

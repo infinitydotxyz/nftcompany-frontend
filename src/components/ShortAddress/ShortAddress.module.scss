@@ -1,0 +1,21 @@
+.main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.mainVertical {
+  @extend .main;
+
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.link {
+  font-family: monospace;
+  font-size: 1.1rem;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
