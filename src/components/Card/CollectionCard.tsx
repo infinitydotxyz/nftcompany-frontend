@@ -12,6 +12,7 @@ export type CollectionCardData = {
   name: string;
   image: string;
   hasBlueCheck: boolean;
+  title: string;
 };
 
 type Props = {
@@ -31,15 +32,16 @@ function getSearchFriendlyString(input: string) {
   return noSpace.toLowerCase();
 }
 
-function CollectionCard({ data, onClickAction, userAccount, showItems = ['PRICE'], action = '' }: Props) {
+function CollectionCard({ data, onClickAction, action = '' }: Props) {
   const router = useRouter();
   const [previewModalShowed, setPreviewModalShowed] = useState(false);
 
   if (!data) {
     return null;
   }
-
   const collectionName = data.name;
+  data.title = data.name;
+
   const hasBlueCheck = data.hasBlueCheck;
   return (
     <div id={`id_${data.id}`} className={styles.card}>
