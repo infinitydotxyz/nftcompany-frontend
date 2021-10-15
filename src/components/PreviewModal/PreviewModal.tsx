@@ -20,10 +20,11 @@ const isServer = typeof window === 'undefined';
 interface Props {
   data: CardData;
   action: string; // 'purchase', 'accept-offer', 'cancel-offer'
+  hideButtonBar?: boolean;
   onClose: () => void;
 }
 
-const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
+const PreviewModal: React.FC<Props> = ({ action, onClose, data, hideButtonBar }: Props) => {
   const [placeBidShowed, setPlaceBidShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
@@ -139,14 +140,14 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
 
                 <div className={styles.infoBox}>
                   <div className={styles.collectionRow}>
-                    <div className={styles.collection}>{data?.collectionName}</div>
+                    <div className={styles.collection}>{data?.collectionName || data?.name}</div>
 
                     <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
                   </div>
 
                   <div className={styles.title}>{data?.title}</div>
 
-                  {_buttonBar}
+                  {hideButtonBar === true ? null : _buttonBar}
 
                   {data.metadata?.basePriceInEth && (
                     <>
