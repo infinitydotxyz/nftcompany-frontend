@@ -23,10 +23,7 @@ export default function FeaturedPage() {
       return;
     }
     setIsFetching(true);
-    const { result, error } = await apiGet(`/featured-collections`, {
-      startAfter: getLastItemCreatedAt(data),
-      limit: ITEMS_PER_PAGE
-    });
+    const { result, error } = await apiGet(`/featured-collections`, {});
     setIsFetching(false);
 
     setData(result.collections);
