@@ -9,10 +9,10 @@ import { useRouter } from 'next/router';
 export const loadingCardData = {
   id: 'loading-card-id',
   address: '',
-  name: '⠀',
-  image: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
+  name: '⠀', // placeholder char to avoid jumpy layout.
+  image: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==', // blank image
   hasBlueCheck: false,
-  title: '⠀'
+  title: '⠀' // placeholder char to avoid jumpy layout.
 };
 
 export type CollectionCardData = {
