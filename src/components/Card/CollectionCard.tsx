@@ -6,6 +6,15 @@ import { PriceBox } from 'components/PriceBox/PriceBox';
 import { WETH_ADDRESS } from 'utils/constants';
 import { useRouter } from 'next/router';
 
+export const loadingCardData = {
+  id: 'loading-card-id',
+  address: '',
+  name: '⠀',
+  image: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
+  hasBlueCheck: false,
+  title: '⠀'
+};
+
 export type CollectionCardData = {
   id: string;
   address: string;
@@ -17,6 +26,7 @@ export type CollectionCardData = {
 
 type Props = {
   data: CollectionCardData;
+  isLoadingCard?: boolean;
   onClickAction?: (item: any, action: string) => any;
   showItems?: string[];
   action?: string;
@@ -32,7 +42,7 @@ function getSearchFriendlyString(input: string) {
   return noSpace.toLowerCase();
 }
 
-function CollectionCard({ data, onClickAction, action = '' }: Props) {
+function CollectionCard({ data, isLoadingCard, onClickAction, action = '' }: Props) {
   const router = useRouter();
   const [previewModalShowed, setPreviewModalShowed] = useState(false);
 
@@ -45,7 +55,7 @@ function CollectionCard({ data, onClickAction, action = '' }: Props) {
   const hasBlueCheck = data.hasBlueCheck;
   return (
     <div id={`id_${data.id}`} className={styles.card}>
-      <div className={styles.featured}>🔥</div>
+      {isLoadingCard !== true && <div className={styles.featured}>🔥</div>}
 
       <div
         onClick={() => {

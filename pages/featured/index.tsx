@@ -8,9 +8,13 @@ import { FetchMore, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'co
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import cardListStyles from '../../src/components/Card/CardList.module.scss';
-import CollectionCard, { CollectionCardData } from 'components/Card/CollectionCard';
+import CollectionCard, { CollectionCardData, loadingCardData } from 'components/Card/CollectionCard';
 
-export default function FeaturedPage() {
+type FeaturedPageProps = {
+  asSection?: boolean;
+};
+
+export default function FeaturedPage({ asSection }: FeaturedPageProps) {
   const { user, showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<CollectionCardData[]>([]);
@@ -44,24 +48,43 @@ export default function FeaturedPage() {
     }
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
+
+  const Container: React.FC<{}> = ({ children }) => {
+    if (asSection === true) {
+      return <>{children}</>;
+    }
+    return (
+      <>
+        <Head>
+          <title>Featured</title>
+        </Head>
+        <div>
+          <div className="page-container">{children}</div>
+        </div>
+      </>
+    );
+  };
+
   return (
-    <>
-      <Head>
-        <title>Featured</title>
-      </Head>
-      <div>
-        <div className="page-container">
-          <div className="section-bar">
-            <div className="tg-title">Featured</div>
-          </div>
+    <Container>
+      <div className="section-bar">
+        <div className="tg-title">Featured</div>
+      </div>
 
-          <div className={cardListStyles.cardList}>
-            {data.map((item) => {
-              return <CollectionCard data={item} />;
-            })}
-          </div>
+      <div className={cardListStyles.cardList}>
+        {data?.length === 0 && isFetching ? (
+          <>
+            <CollectionCard key={'loading---1'} data={loadingCardData} isLoadingCard={true} />
+            <CollectionCard key={'loading---2'} data={loadingCardData} isLoadingCard={true} />
+          </>
+        ) : null}
 
-          {/* <div>
+        {data.map((item) => {
+          return <CollectionCard key={item.id} data={item} />;
+        })}
+      </div>
+
+      {/* <div>
             <PleaseConnectWallet account={user?.account} />
             <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
@@ -79,9 +102,7 @@ export default function FeaturedPage() {
               }}
             />
           )} */}
-        </div>
-      </div>
-    </>
+    </Container>
   );
 }
 

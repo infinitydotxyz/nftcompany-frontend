@@ -13,8 +13,11 @@ import { CardGrid } from 'components/CollectionCards/CollectionCard';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import { useSearchContext } from 'utils/context/SearchContext';
 import CardList from 'components/Card/CardList';
+import { useRouter } from 'next/router';
+import FeaturedPage from '../featured';
 
 export default function ExplorePage() {
+  const searchContext = useSearchContext();
   const cardProvider = useCardProvider();
   const { searchState, filterState } = useSearchContext();
   const { user } = useAppContext();
@@ -49,6 +52,8 @@ export default function ExplorePage() {
       </Head>
       <div>
         <div className="page-container">
+          {!searchContext.searchState.text && <FeaturedPage asSection={true} />}
+
           <div className="section-bar">
             <div className="tg-title">Explore</div>
 
