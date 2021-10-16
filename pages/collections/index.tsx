@@ -71,7 +71,7 @@ const Collections = (): JSX.Element => {
     return (
       <>
         <Head>
-          <title>Rewards</title>
+          <title>NFT Collections</title>
         </Head>
         <div className={styles.main}>
           <div className={styles.spinner}>
