@@ -10,7 +10,7 @@ export const loadingCardData = {
   id: 'loading-card-id',
   address: '',
   name: '⠀', // placeholder char to avoid jumpy layout.
-  image: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==', // blank image
+  cardImage: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==', // blank image
   hasBlueCheck: false,
   title: '⠀' // placeholder char to avoid jumpy layout.
 };
@@ -19,7 +19,7 @@ export type CollectionCardData = {
   id: string;
   address: string;
   name: string;
-  image: string;
+  cardImage: string;
   hasBlueCheck: boolean;
   title: string;
 };
@@ -63,7 +63,7 @@ function CollectionCard({ data, isLoadingCard, onClickAction, action = '' }: Pro
         }}
       >
         <div className={styles.cardPreview}>
-          <img src={data.image} alt="Card preview" />
+          <img src={data.cardImage} alt="Card preview" />
 
           <div className={styles.cardControls}>
             <a
@@ -110,7 +110,7 @@ function CollectionCard({ data, isLoadingCard, onClickAction, action = '' }: Pro
         <PreviewModal
           action={action}
           data={data}
-          hideButtonBar={true}
+          previewCollection={true}
           onClose={() => {
             setPreviewModalShowed(false);
           }}

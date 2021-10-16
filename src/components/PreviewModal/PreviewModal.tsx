@@ -20,11 +20,11 @@ const isServer = typeof window === 'undefined';
 interface Props {
   data: CardData;
   action: string; // 'purchase', 'accept-offer', 'cancel-offer'
-  hideButtonBar?: boolean;
+  previewCollection?: boolean;
   onClose: () => void;
 }
 
-const PreviewModal: React.FC<Props> = ({ action, onClose, data, hideButtonBar }: Props) => {
+const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollection }: Props) => {
   const [placeBidShowed, setPlaceBidShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
@@ -134,7 +134,11 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, hideButtonBar }:
                 <div className={styles.imgBox}>
                   <img
                     alt="not available"
-                    src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
+                    src={
+                      data.image ||
+                      data.cardImage ||
+                      'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'
+                    }
                   />
                 </div>
 
@@ -145,9 +149,9 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, hideButtonBar }:
                     <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
                   </div>
 
-                  <div className={styles.title}>{data?.title}</div>
+                  {previewCollection !== true && <div className={styles.title}>{data?.title}</div>}
 
-                  {hideButtonBar === true ? null : _buttonBar}
+                  {previewCollection === true ? null : _buttonBar}
 
                   {data.metadata?.basePriceInEth && (
                     <>
@@ -180,7 +184,8 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, hideButtonBar }:
                   {_ownerSection}
                   {_offerMakerSection}
 
-                  <span className={styles.label}>Description</span>
+                  {previewCollection === true ? <span>&nbsp;</span> : <span className={styles.label}>Description</span>}
+
                   <div className={styles.description}>{description}</div>
 
                   <div className={styles.buttons}>{purchaseButton}</div>

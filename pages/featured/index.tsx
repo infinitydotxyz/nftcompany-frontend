@@ -29,13 +29,14 @@ export default function FeaturedPage({ asSection }: FeaturedPageProps) {
     setIsFetching(true);
     const { result, error } = await apiGet(`/featured-collections`, {});
     setIsFetching(false);
-
-    setData(result.collections);
-
     if (error) {
       showAppError(`${error?.message}`);
       return;
     }
+    const collections = result.collections.map((item: CollectionCardData) => {
+      return { ...item, hasBlueCheck: true }; // default: feature verified collections only.
+    });
+    setData(collections);
   };
 
   React.useEffect(() => {
