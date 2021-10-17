@@ -4,16 +4,18 @@ import { useAppContext } from 'utils/context/AppContext';
 import { apiPost } from 'utils/apiUtil';
 import { Spinner } from '@chakra-ui/spinner';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
-import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { CollectionsTable } from 'components/CollectionsTable/CollectionsTable';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import useResizeObserver from 'use-resize-observer';
+import { CardGrid } from './CollectionCard';
+import { max } from 'lodash';
 
 type MProps = {
   listMode?: boolean;
+  rows?: number;
 };
 
-export const CollectionCards = ({ listMode = false }: MProps): JSX.Element => {
+export const CollectionCards = ({ rows = 0, listMode = false }: MProps): JSX.Element => {
   const { showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -21,11 +23,32 @@ export const CollectionCards = ({ listMode = false }: MProps): JSX.Element => {
 
   const { ref, width = 1 } = useResizeObserver<HTMLDivElement>();
 
+  let maxCards = 0;
+  let colsPerRow = 4;
+  if (rows > 0) {
+    if (width > 1245) {
+      colsPerRow = 4;
+    } else if (width > 925) {
+      colsPerRow = 3;
+    } else if (width > 650) {
+      colsPerRow = 2;
+    } else {
+      colsPerRow = 1;
+    }
+
+    maxCards = rows * colsPerRow;
+  }
+
   let insideFetch = false;
 
   const fetchCollections = async () => {
     let startAfterName;
-    const limit = 50;
+    let limit = 50;
+
+    if (rows !== 0) {
+      // maxCards won't be set the first call, but just get a resonable amount
+      limit = rows * 4;
+    }
 
     if (insideFetch) {
       // console.log('too soon');
@@ -57,6 +80,9 @@ export const CollectionCards = ({ listMode = false }: MProps): JSX.Element => {
 
         if ((result.collections?.length ?? 0) === 0) {
           setHasMore(false);
+        } else if (rows !== 0) {
+          // only get one time if rows set
+          setHasMore(false);
         }
       }
     } catch (e) {
@@ -84,13 +110,19 @@ export const CollectionCards = ({ listMode = false }: MProps): JSX.Element => {
     );
   }
 
+  let collectionData = collections;
+
+  if (rows !== 0 && collectionData.length > maxCards) {
+    collectionData = collectionData.slice(0, maxCards);
+  }
+
   let contents;
 
   if (listMode) {
     contents = (
       <div className={styles.main}>
-        <CollectionsTable entries={collections} />
-        {hasMore && (
+        <CollectionsTable entries={collectionData} />
+        {hasMore && rows === 0 && (
           <ScrollLoader
             onFetchMore={async () => {
               fetchCollections();
@@ -102,7 +134,7 @@ export const CollectionCards = ({ listMode = false }: MProps): JSX.Element => {
   } else {
     contents = (
       <div className={styles.main}>
-        <CardGrid data={collections} />;
+        <CardGrid data={collectionData} />;
         {hasMore && (
           <ScrollLoader
             onFetchMore={async () => {
@@ -115,69 +147,4 @@ export const CollectionCards = ({ listMode = false }: MProps): JSX.Element => {
   }
 
   return <div ref={ref}>{contents}</div>;
-};
-
-// =============================================================
-
-type Props = {
-  entry: CollectionCardEntry;
-};
-
-export const CollectionCard = ({ entry }: Props) => {
-  if (!entry) {
-    return <div>Nothing found</div>;
-  }
-
-  let name = entry.name.replace(/\s/g, '');
-  name = name.toLowerCase();
-
-  return (
-    <div
-      className={styles.tripleCard}
-      onClick={() => {
-        window.open(`${window.origin}/collection/${name}`, '_blank');
-      }}
-    >
-      <div className={styles.card1}></div>
-      <div className={styles.card2}></div>
-
-      <div className={styles.card3}>
-        <div className={styles.top}>
-          <img className={styles.cardImage} src={entry.cardImage} alt="Card preview" />
-        </div>
-        <div className={styles.bottom}>
-          <div>{entry.name}</div>
-
-          <ShortAddress
-            vertical={true}
-            href={`https://etherscan.io/address/${entry.address}`}
-            address={entry.address}
-            label=""
-            isEthAddress={false}
-            tooltip={entry.address}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// =============================================================
-
-type xProps = {
-  data: CollectionCardEntry[];
-};
-
-export const CardGrid = ({ data }: xProps): JSX.Element => {
-  return (
-    <div className={`${styles.cardList}`}>
-      {(data || []).map((item) => {
-        if (!item) {
-          return null;
-        }
-
-        return <CollectionCard key={item?.id} entry={item} />;
-      })}
-    </div>
-  );
 };
