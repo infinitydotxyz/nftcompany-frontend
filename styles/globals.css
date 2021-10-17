@@ -16,6 +16,12 @@ button:focus:not(.focus-visible) {
   box-shadow: none;
 }
 
+/* remove focus border on Link */
+a:focus:not(.focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
 a {
   color: inherit;
   text-decoration: none;

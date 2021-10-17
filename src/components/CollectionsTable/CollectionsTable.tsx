@@ -1,21 +1,18 @@
 import React from 'react';
 import styles from './CollectionsTable.module.scss';
 import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
-import { ellipsisAddress, numStr } from 'utils/commonUtil';
-import { CollectionEntry, Collections } from 'types/rewardTypes';
-import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
-import { useAppContext } from 'utils/context/AppContext';
+import { ellipsisAddress, ellipsisString } from 'utils/commonUtil';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { CopyButton } from 'components/CopyButton/CopyButton';
+import { CollectionCardEntry } from 'types/rewardTypes';
 
 type Props = {
-  entries?: CollectionEntry[];
+  entries?: CollectionCardEntry[];
 };
 
 export const CollectionsTable = ({ entries }: Props) => {
-  const { showAppMessage } = useAppContext();
-
   if (!entries) {
     return <div>Nothing found</div>;
   }
@@ -35,7 +32,11 @@ export const CollectionsTable = ({ entries }: Props) => {
         </Td>
         <Td textAlign="center" isNumeric={false}>
           <div className={styles.addressRow}>
-            <div>{ellipsisAddress(item.id, 10, 10)}</div>
+            {/*
+              bad addresses crash?
+              <div>{ellipsisAddress(item.id, 10, 10)}</div>
+           */}
+            <div>{ellipsisString(item.id, 10, 10)}</div>
             <CopyButton copyText={item.id} tooltip="Copy Address" />
             <div className={styles.linkIcon}>
               <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>

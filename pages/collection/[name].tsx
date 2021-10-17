@@ -22,7 +22,7 @@ const Collection = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Explore</title>
+        <title>{title || name}</title>
       </Head>
       <div>
         <div className="page-container">
