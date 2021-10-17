@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './CollectionCards.module.scss';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { CollectionCardEntry } from 'types/rewardTypes';
+import router from 'next/router';
 
 type Props = {
   entry: CollectionCardEntry;
@@ -19,7 +20,7 @@ export const CollectionCard = ({ entry }: Props) => {
     <div
       className={styles.tripleCard}
       onClick={() => {
-        window.open(`${window.origin}/collection/${name}`, '_blank');
+        router.push(`/collection/${name}`);
       }}
     >
       <div className={styles.card1}></div>
