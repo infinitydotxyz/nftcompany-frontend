@@ -48,7 +48,6 @@ export const CollectionCards = ({ listMode = false }: MProps): JSX.Element => {
         showAppError('Failed to fetch verified collections.');
         setHasMore(false);
       } else {
-        console.log(result);
         if (result.collections) {
           const newCols = result.collections as CollectionCardEntry[];
 
