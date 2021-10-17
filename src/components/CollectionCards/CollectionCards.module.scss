@@ -17,8 +17,8 @@
   flex-direction: center;
 }
 
-$innerHeight: 430px;
-$outerHeight: 450px;
+$innerHeight: 410px;
+$outerHeight: 425px;
 
 .card {
   position: absolute;
@@ -26,7 +26,7 @@ $outerHeight: 450px;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 95%;
   height: $innerHeight;
   cursor: pointer;
 
@@ -88,21 +88,22 @@ $outerHeight: 450px;
 
   .card1 {
     @extend .card;
+    border: 1px solid #eee;
   }
 
   .card2 {
     @extend .card;
     border: 1px solid #ddd;
 
-    top: 5px;
-    left: 10px;
+    top: 4px;
+    left: 8px;
   }
 
   .card3 {
     @extend .card;
     border: 1px solid #ddd;
 
-    top: 10px;
-    left: 20px;
+    top: 8px;
+    left: 16px;
   }
 }
