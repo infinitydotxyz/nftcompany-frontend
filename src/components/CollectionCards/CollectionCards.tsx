@@ -4,11 +4,10 @@ import { useAppContext } from 'utils/context/AppContext';
 import { apiPost } from 'utils/apiUtil';
 import { Spinner } from '@chakra-ui/spinner';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
-import { Link } from '@chakra-ui/react';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
-import { toChecksumAddress } from 'utils/commonUtil';
 import { CollectionsTable } from 'components/CollectionsTable/CollectionsTable';
 import { CollectionCardEntry } from 'types/rewardTypes';
+import useResizeObserver from 'use-resize-observer';
 
 type MProps = {
   listMode?: boolean;
@@ -19,6 +18,8 @@ export const CollectionCards = ({ listMode = false }: MProps): JSX.Element => {
   const [isFetching, setIsFetching] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [collections, setCollections] = useState<CollectionCardEntry[]>([]);
+
+  const { ref, width = 1 } = useResizeObserver<HTMLDivElement>();
 
   let insideFetch = false;
 
@@ -83,8 +84,10 @@ export const CollectionCards = ({ listMode = false }: MProps): JSX.Element => {
     );
   }
 
+  let contents;
+
   if (listMode) {
-    return (
+    contents = (
       <div className={styles.main}>
         <CollectionsTable entries={collections} />
         {hasMore && (
@@ -96,20 +99,22 @@ export const CollectionCards = ({ listMode = false }: MProps): JSX.Element => {
         )}
       </div>
     );
+  } else {
+    contents = (
+      <div className={styles.main}>
+        <CardGrid data={collections} />;
+        {hasMore && (
+          <ScrollLoader
+            onFetchMore={async () => {
+              fetchCollections();
+            }}
+          />
+        )}
+      </div>
+    );
   }
 
-  return (
-    <div className={styles.main}>
-      <CardGrid data={collections} />;
-      {hasMore && (
-        <ScrollLoader
-          onFetchMore={async () => {
-            fetchCollections();
-          }}
-        />
-      )}
-    </div>
-  );
+  return <div ref={ref}>{contents}</div>;
 };
 
 // =============================================================
