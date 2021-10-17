@@ -29,7 +29,16 @@ export const isLocalhost = () =>
 
 export const toChecksumAddress = (address?: string): string => {
   if (address) {
-    return ethers.utils.getAddress(address);
+    let result = address;
+
+    try {
+      // this crashes if the address isn't valid
+      result = ethers.utils.getAddress(address);
+    } catch (err) {
+      console.log(`toChecksumAddress failed: ${address}`);
+    }
+
+    return result;
   }
 
   return '';
