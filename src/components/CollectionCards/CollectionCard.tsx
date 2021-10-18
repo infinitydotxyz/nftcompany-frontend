@@ -4,6 +4,7 @@ import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import router from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
+import { uuidv4 } from 'utils/commonUtil';
 
 type Props = {
   entry: CollectionCardEntry;
@@ -67,7 +68,7 @@ export const CardGrid = ({ data }: xProps): JSX.Element => {
           return null;
         }
 
-        return <CollectionCard key={item?.id} entry={item} />;
+        return <CollectionCard key={item?.id || uuidv4()} entry={item} />;
       })}
     </div>
   );
