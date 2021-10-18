@@ -69,12 +69,17 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
       <div>
         <Title text="Buy this NFT for the price shown" />
 
-        {data.price && (
+        {data.metadata?.basePriceInEth && (
           <div className={styles.priceRow}>
             <Label text="Price" />
             <Spacer />
 
-            <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
+            <PriceBox
+              justifyRight
+              price={data.metadata?.basePriceInEth}
+              token={token}
+              expirationTime={data?.expirationTime}
+            />
           </div>
         )}
 

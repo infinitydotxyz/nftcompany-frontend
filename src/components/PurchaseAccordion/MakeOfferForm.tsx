@@ -82,7 +82,12 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
             <Label text="Minimum Price" />
 
             <Spacer />
-            <PriceBox justifyRight price={data.price} token={token} expirationTime={data?.expirationTime} />
+            <PriceBox
+              justifyRight
+              price={data.metadata?.basePriceInEth}
+              token={token}
+              expirationTime={data?.expirationTime}
+            />
           </div>
         )}
 
