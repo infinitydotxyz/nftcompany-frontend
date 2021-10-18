@@ -169,3 +169,46 @@ $cardHeight: 391px;
     }
   }
 }
+
+.featuredCard {
+  background-image: linear-gradient(140deg, #ffffff 0%, #ffffff 50%, #fffad2 75%);
+}
+
+@media only screen and (min-width: 1000px) and (max-width: 1400px) {
+  .cardList {
+    grid-gap: 36px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    .card {
+      .cardPreview {
+        max-height: inherit;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 700px) and (max-width: 1000px) {
+  .cardList {
+    grid-gap: 36px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    .card {
+      .cardPreview {
+        max-height: inherit;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .cardList {
+    grid-gap: 36px;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+
+    .card {
+      .cardPreview {
+        max-height: inherit;
+      }
+    }
+  }
+}

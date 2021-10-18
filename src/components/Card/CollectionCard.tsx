@@ -55,7 +55,7 @@ function CollectionCard({ data, isLoadingCard, onClickAction, action = '' }: Pro
 
   const hasBlueCheck = data.hasBlueCheck;
   return (
-    <div id={`id_${data.id}`} className={styles.card}>
+    <div id={`id_${data.id}`} className={`${styles.card} ${styles.featuredCard}`}>
       {isLoadingCard !== true && <div className={styles.featured}>🔥</div>}
 
       <div
