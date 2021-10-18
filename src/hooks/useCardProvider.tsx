@@ -13,7 +13,7 @@ import {
   getLastItemSearchTitle
 } from 'components/FetchMore/FetchMore';
 
-const PAGE_SIZE = ITEMS_PER_PAGE * 4;
+const PAGE_SIZE = ITEMS_PER_PAGE;
 // const PAGE_SIZE = 7;
 
 // ==================================================================
