@@ -11,7 +11,6 @@ import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
 import { Spacer } from '@chakra-ui/layout';
 import { useRouter } from 'next/router';
-import { CollectionCards } from 'components/CollectionCards/CollectionCards';
 
 export default function ExplorePage() {
   const cardProvider = useCardProvider();
@@ -36,7 +35,7 @@ export default function ExplorePage() {
 
           {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
-          <CollectionCards rows={1} />
+          {/* <CollectionCards rows={1} /> */}
 
           <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
 
