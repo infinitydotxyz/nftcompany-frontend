@@ -13,7 +13,7 @@ import { CardGrid } from 'components/CollectionCards/CollectionCard';
 import { CollectionCardEntry } from 'types/rewardTypes';
 
 export default function ExplorePage() {
-  const cardProvider = useCardProvider(undefined, true);
+  const cardProvider = useCardProvider();
 
   const collectionCards = cardProvider.list.map((x) => {
     return {

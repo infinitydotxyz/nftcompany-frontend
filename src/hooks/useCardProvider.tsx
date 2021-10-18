@@ -55,10 +55,7 @@ const fetchData = async (
 
 // ==================================================================
 
-export function useCardProvider(
-  inCollectionName?: string,
-  oneCardPerCollection: boolean = false
-): {
+export function useCardProvider(inCollectionName?: string): {
   list: CardData[];
   loadNext: () => void;
   hasData: () => boolean;
@@ -171,23 +168,6 @@ export function useCardProvider(
     return list.length > 0;
   };
 
-  const onePerCollectionName = (srcList: CardData[]): CardData[] => {
-    const onePerMap = new Set<string>();
-    const result: CardData[] = [];
-
-    for (const item of srcList) {
-      if (item.collectionName) {
-        if (!onePerMap.has(item.collectionName)) {
-          onePerMap.add(item.collectionName);
-
-          result.push(item);
-        }
-      }
-    }
-
-    return result;
-  };
-
   const removeDuplicates = (srcList: CardData[]): CardData[] => {
     const dupMap = new Map<string, CardData[]>();
     const dupsIds = new Set<string>();
@@ -274,12 +254,7 @@ export function useCardProvider(
     }
   };
 
-  let filteredList;
-  if (oneCardPerCollection) {
-    filteredList = onePerCollectionName(list);
-  } else {
-    filteredList = removeDuplicates(list);
-  }
+  const filteredList = removeDuplicates(list);
 
   // don't filter if we search for that name that you might own
   // if (!listType.startsWith('token-id')) {
