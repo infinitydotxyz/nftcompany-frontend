@@ -14,17 +14,13 @@ type FeaturedPageProps = {
 };
 
 export default function FeaturedPage({ asSection }: FeaturedPageProps) {
-  const { user, showAppError } = useAppContext();
+  const { showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<CollectionCardData[]>([]);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const fetchData = async () => {
-    if (!user?.account) {
-      setData([]);
-      return;
-    }
     setIsFetching(true);
     const { result, error } = await apiGet(`/featured-collections`, {});
     setIsFetching(false);
@@ -40,7 +36,7 @@ export default function FeaturedPage({ asSection }: FeaturedPageProps) {
 
   React.useEffect(() => {
     fetchData();
-  }, [user]);
+  }, []);
 
   React.useEffect(() => {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
