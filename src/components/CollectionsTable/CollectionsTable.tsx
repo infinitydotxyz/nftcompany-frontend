@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './CollectionsTable.module.scss';
 import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
-import { ellipsisAddress, ellipsisString } from 'utils/commonUtil';
+import { ellipsisAddress } from 'utils/commonUtil';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
@@ -32,11 +32,7 @@ export const CollectionsTable = ({ entries }: Props) => {
         </Td>
         <Td textAlign="center" isNumeric={false}>
           <div className={styles.addressRow}>
-            {/*
-              bad addresses crash?
-              <div>{ellipsisAddress(item.id, 10, 10)}</div>
-           */}
-            <div>{ellipsisString(item.id, 10, 10)}</div>
+            <div>{ellipsisAddress(item.id, 10, 10)}</div>
             <CopyButton copyText={item.id} tooltip="Copy Address" />
             <div className={styles.linkIcon}>
               <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>

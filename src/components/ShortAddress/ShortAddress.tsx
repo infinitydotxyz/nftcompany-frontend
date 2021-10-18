@@ -14,18 +14,9 @@ type Props = {
   href: string;
   newTab?: boolean;
   vertical?: boolean;
-  isEthAddress?: boolean;
 };
 
-export const ShortAddress = ({
-  isEthAddress = true,
-  vertical,
-  href,
-  newTab = true,
-  address,
-  label,
-  tooltip = ''
-}: Props) => {
+export const ShortAddress = ({ vertical, href, newTab = true, address, label, tooltip = '' }: Props) => {
   const { user } = useAppContext();
 
   if (!address) {
@@ -38,7 +29,7 @@ export const ShortAddress = ({
       shortAddress = 'You';
     } else {
       // only some addresses are valid for ellipsisAddress even if 0x
-      if (isEthAddress && shortAddress.startsWith('0x')) {
+      if (shortAddress.startsWith('0x')) {
         shortAddress = ellipsisAddress(address);
       } else {
         shortAddress = ellipsisString(address);

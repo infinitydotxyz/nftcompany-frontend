@@ -45,7 +45,6 @@ export const CollectionCard = ({ entry }: Props) => {
             href={`https://etherscan.io/address/${entry.address}`}
             address={entry.address}
             label=""
-            isEthAddress={false}
             tooltip={entry.address}
           />
         </div>
