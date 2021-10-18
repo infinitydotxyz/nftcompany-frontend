@@ -7,12 +7,14 @@ import styles from './ViewControl.module.scss';
 type Props = {
   mode: 'list' | 'icon';
   onClick: (mode: 'list' | 'icon') => void;
+  disabled?: boolean;
 };
 
-export const ViewControl = ({ onClick, mode }: Props) => {
+export const ViewControl = ({ disabled = false, onClick, mode }: Props) => {
   return (
     <div className={styles.main}>
       <IconViewButton
+        disabled={disabled}
         tooltip="List View"
         onClick={() => onClick('list')}
         selected={mode === 'list'}
@@ -20,6 +22,7 @@ export const ViewControl = ({ onClick, mode }: Props) => {
       />
       <div className={styles.divider} />
       <IconViewButton
+        disabled={disabled}
         tooltip="Icon View"
         onClick={() => onClick('icon')}
         selected={mode === 'icon'}
@@ -36,13 +39,15 @@ type FProps = {
   selected: boolean;
   onClick: () => void;
   tooltip: string;
+  disabled?: boolean;
 };
 
-export const IconViewButton = ({ tooltip, onClick, selected, icon }: FProps) => {
+export const IconViewButton = ({ disabled = false, tooltip, onClick, selected, icon }: FProps) => {
   return (
     <div className={styles.shareIcon}>
       <Tooltip label={tooltip} placement="top" hasArrow>
         <IconButton
+          disabled={disabled}
           size="md"
           variant="ghost"
           color={selected ? 'blue' : 'gray'}

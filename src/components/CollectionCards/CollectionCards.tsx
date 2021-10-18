@@ -8,7 +8,7 @@ import { CollectionsTable } from 'components/CollectionsTable/CollectionsTable';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import useResizeObserver from 'use-resize-observer';
 import { CardGrid } from './CollectionCard';
-import { max } from 'lodash';
+import { ITEMS_PER_PAGE } from 'utils/constants';
 
 type MProps = {
   listMode?: boolean;
@@ -43,11 +43,11 @@ export const CollectionCards = ({ rows = 0, listMode = false }: MProps): JSX.Ele
 
   const fetchCollections = async () => {
     let startAfterName;
-    let limit = 50;
+    let limit = ITEMS_PER_PAGE;
 
     if (rows !== 0) {
       // maxCards won't be set the first call, but just get a resonable amount
-      limit = rows * 4;
+      limit = rows * 5;
     }
 
     if (insideFetch) {
@@ -67,7 +67,11 @@ export const CollectionCards = ({ rows = 0, listMode = false }: MProps): JSX.Ele
     try {
       const body = { startAfterName, limit };
 
-      const { result, error } = await apiPost('/verifiedCollections', {}, body);
+      const { result, error } = await apiPost(`/verifiedTokens`, {}, body);
+
+      // not ready yet
+      // const { result, error } = await apiPost('/verifiedCollections', {}, body);
+
       if (error) {
         showAppError('Failed to fetch verified collections.');
         setHasMore(false);
@@ -118,7 +122,9 @@ export const CollectionCards = ({ rows = 0, listMode = false }: MProps): JSX.Ele
 
   let contents;
 
-  if (listMode) {
+  // force list view for now
+  // if (listMode) {
+  if (true) {
     contents = (
       <div className={styles.main}>
         <CollectionsTable entries={collectionData} />

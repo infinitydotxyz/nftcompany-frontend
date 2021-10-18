@@ -21,6 +21,7 @@ const Collections = (): JSX.Element => {
 
             <div className={styles.row}>
               <ViewControl
+                disabled={true} // disabled for now
                 mode={mode}
                 onClick={(m) => {
                   setMode(m);
