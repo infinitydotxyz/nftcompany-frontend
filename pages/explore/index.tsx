@@ -3,19 +3,28 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import { NoData } from 'components/FetchMore/FetchMore';
-import CardList from 'components/Card/CardList';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
 import { Spacer } from '@chakra-ui/layout';
-import { useRouter } from 'next/router';
+import { CardGrid } from 'components/CollectionCards/CollectionCard';
+import { CollectionCardEntry } from 'types/rewardTypes';
 
 export default function ExplorePage() {
-  const cardProvider = useCardProvider();
+  const cardProvider = useCardProvider(undefined, true);
   const { user } = useAppContext();
-  const router = useRouter();
+
+  const collectionCards = cardProvider.list.map((x) => {
+    return {
+      id: x.id,
+      name: x.collectionName,
+      address: x.tokenAddress,
+      cardImage: x.image,
+      description: x.description
+    } as CollectionCardEntry;
+  });
 
   return (
     <>
@@ -30,15 +39,11 @@ export default function ExplorePage() {
             <Spacer />
             <SortMenuButton />
           </div>
-
           <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
-
           {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
-
           {/* <CollectionCards rows={1} /> */}
-
-          <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
-
+          {/* <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" /> */}
+          <CardGrid data={collectionCards} />;
           {cardProvider.hasData() && (
             <ScrollLoader
               onFetchMore={async () => {

@@ -25,7 +25,7 @@ export const CollectionCards = ({ rows = 0, listMode = false }: MProps): JSX.Ele
 
   let maxCards = 0;
   let colsPerRow = 4;
-  if (rows > 0) {
+  if (rows !== 0) {
     if (width > 1245) {
       colsPerRow = 4;
     } else if (width > 925) {

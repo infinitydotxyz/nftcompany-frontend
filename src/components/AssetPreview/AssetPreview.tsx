@@ -19,7 +19,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
   const [data, setData] = useState<CardData | undefined>();
   const [title, setTitle] = useState('');
 
-  const action = 'BUY-NFT';
+  const action = 'BUY_NFT';
 
   useEffect(() => {
     getCardData();

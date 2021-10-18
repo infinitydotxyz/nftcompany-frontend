@@ -3,9 +3,9 @@
 
 .main {
   width: 100%;
-
-  @include cardList();
 }
+
+@include cardList();
 
 .spinner {
   display: flex;

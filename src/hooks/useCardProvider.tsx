@@ -13,7 +13,7 @@ import {
   getLastItemSearchTitle
 } from 'components/FetchMore/FetchMore';
 
-const PAGE_SIZE = ITEMS_PER_PAGE;
+const PAGE_SIZE = ITEMS_PER_PAGE * 4;
 // const PAGE_SIZE = 7;
 
 // ==================================================================
@@ -55,7 +55,10 @@ const fetchData = async (
 
 // ==================================================================
 
-export function useCardProvider(inCollectionName?: string): {
+export function useCardProvider(
+  inCollectionName?: string,
+  oneCardPerCollection: boolean = false
+): {
   list: CardData[];
   loadNext: () => void;
   hasData: () => boolean;
@@ -168,6 +171,23 @@ export function useCardProvider(inCollectionName?: string): {
     return list.length > 0;
   };
 
+  const onePerCollectionName = (srcList: CardData[]): CardData[] => {
+    const onePerMap = new Set<string>();
+    const result: CardData[] = [];
+
+    for (const item of srcList) {
+      if (item.collectionName) {
+        if (!onePerMap.has(item.collectionName)) {
+          onePerMap.add(item.collectionName);
+
+          result.push(item);
+        }
+      }
+    }
+
+    return result;
+  };
+
   const removeDuplicates = (srcList: CardData[]): CardData[] => {
     const dupMap = new Map<string, CardData[]>();
     const dupsIds = new Set<string>();
@@ -176,22 +196,17 @@ export function useCardProvider(inCollectionName?: string): {
     for (const item of srcList) {
       const itemId = `${item.tokenId}${item.tokenAddress}`;
 
-      // don't think this could be blank, but being safe
-      if (itemId) {
-        let a = dupMap.get(itemId);
+      let a = dupMap.get(itemId);
 
-        if (!a) {
-          a = [item];
-        } else {
-          a.push(item);
-
-          dupsIds.add(itemId);
-        }
-
-        dupMap.set(itemId, a);
+      if (!a) {
+        a = [item];
       } else {
-        console.log('no token id?');
+        a.push(item);
+
+        dupsIds.add(itemId);
       }
+
+      dupMap.set(itemId, a);
     }
 
     let showLowest = true;
@@ -259,7 +274,12 @@ export function useCardProvider(inCollectionName?: string): {
     }
   };
 
-  const filteredList = removeDuplicates(list);
+  let filteredList;
+  if (oneCardPerCollection) {
+    filteredList = onePerCollectionName(list);
+  } else {
+    filteredList = removeDuplicates(list);
+  }
 
   // don't filter if we search for that name that you might own
   // if (!listType.startsWith('token-id')) {
