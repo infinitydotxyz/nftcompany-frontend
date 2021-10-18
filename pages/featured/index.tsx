@@ -6,7 +6,6 @@ import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import cardListStyles from '../../src/components/Card/CardList.module.scss';
 import CollectionCard, { CollectionCardData, loadingCardData } from 'components/Card/CollectionCard';
 

@@ -20,6 +20,7 @@ export type CollectionCardData = {
   address: string;
   name: string;
   cardImage: string;
+  image?: string;
   hasBlueCheck: boolean;
   title: string;
 };
@@ -38,7 +39,7 @@ function getSearchFriendlyString(input: string) {
   if (!input) {
     return '';
   }
-  const noSpace = input.replace(/\s/g, '');
+  const noSpace = input.replace(/[\s-]/g, '');
   return noSpace.toLowerCase();
 }
 
