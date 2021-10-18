@@ -77,6 +77,11 @@ $outerHeight: 405px;
     gap: 6px;
     line-height: 1.2;
     text-align: center;
+
+    .collectionRow {
+      display: flex;
+      align-items: center;
+    }
   }
 }
 

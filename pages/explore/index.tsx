@@ -22,7 +22,8 @@ export default function ExplorePage() {
       name: x.collectionName,
       address: x.tokenAddress,
       cardImage: x.image,
-      description: x.description
+      description: x.description,
+      hasBlueCheck: x.hasBlueCheck
     } as CollectionCardEntry;
   });
 

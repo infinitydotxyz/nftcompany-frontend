@@ -48,4 +48,5 @@ export type CollectionCardEntry = {
   id: string;
   name: string;
   openseaUrl: string;
+  hasBlueCheck: boolean;
 };

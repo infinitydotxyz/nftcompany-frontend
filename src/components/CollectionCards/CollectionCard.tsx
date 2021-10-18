@@ -3,6 +3,7 @@ import styles from './CollectionCards.module.scss';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import router from 'next/router';
+import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 
 type Props = {
   entry: CollectionCardEntry;
@@ -31,7 +32,13 @@ export const CollectionCard = ({ entry }: Props) => {
           <img className={styles.cardImage} src={entry.cardImage} alt="Card preview" />
         </div>
         <div className={styles.bottom}>
-          <div>{entry.name}</div>
+          <div className={styles.collectionRow}>
+            <div>{entry.name}</div>
+
+            <div style={{ paddingLeft: 6 }}>
+              <BlueCheckIcon hasBlueCheck={entry.hasBlueCheck} />
+            </div>
+          </div>
 
           <ShortAddress
             vertical={true}
