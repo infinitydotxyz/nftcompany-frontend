@@ -14,7 +14,6 @@ import { CollectionCardEntry } from 'types/rewardTypes';
 
 export default function ExplorePage() {
   const cardProvider = useCardProvider(undefined, true);
-  const { user } = useAppContext();
 
   const collectionCards = cardProvider.list.map((x) => {
     return {
