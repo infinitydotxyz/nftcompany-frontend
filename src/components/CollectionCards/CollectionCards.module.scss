@@ -17,8 +17,8 @@
   flex-direction: center;
 }
 
-$innerHeight: 410px;
-$outerHeight: 425px;
+$innerHeight: 390px;
+$outerHeight: 405px;
 
 .card {
   position: absolute;
@@ -46,7 +46,7 @@ $outerHeight: 425px;
   }
 
   .top {
-    flex: 3;
+    flex: 5;
     overflow: hidden;
     border-radius: 16px;
 
@@ -71,8 +71,9 @@ $outerHeight: 425px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
-    font-weight: 500;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding-top: 10px;
     gap: 6px;
     line-height: 1.2;
     text-align: center;
