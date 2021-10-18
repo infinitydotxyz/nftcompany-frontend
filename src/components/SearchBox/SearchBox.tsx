@@ -28,6 +28,9 @@ export default function SearchBox() {
     setIsSelecting(true);
     setSearchState({ ...searchState, collectionName: '', text: '', selectedOption: undefined });
     setFilterState(defaultFilterState);
+    if (inputRef && inputRef.current) {
+      inputRef.current.value = '';
+    }
   };
 
   return (
