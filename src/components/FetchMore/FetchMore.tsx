@@ -36,6 +36,14 @@ export const FetchMore = ({ onFetchMore, data, currentPage }: FetchMoreProps) =>
   );
 };
 
+export const getLastItemPageNum = (data: CardData[]): number => {
+  const pageNum = data?.length > 0 ? data[data.length - 1]?.pageNum : 0;
+  if (typeof pageNum === 'number') {
+    return pageNum;
+  }
+  return 0;
+};
+
 export const getLastItemSearchTitle = (data: CardData[]): string =>
   data?.length > 0 ? data[data.length - 1]?.metadata?.asset?.searchTitle ?? '' : '';
 

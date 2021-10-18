@@ -31,6 +31,7 @@ export type SearchFilter = {
   text: string;
   sortByPriceDirection: string;
   startAfterUser: string;
+  lastItemPageNum: number;
 };
 
 export const defaultSearchState: SearchState = {
@@ -60,7 +61,8 @@ export const defaultFilterState: SearchFilter = {
   tokenId: '',
   startAfterSearchTitle: '',
   startAfterSearchCollectionName: '',
-  startAfterBlueCheck: undefined
+  startAfterBlueCheck: undefined,
+  lastItemPageNum: 0
 };
 
 const SearchContext = React.createContext({} as any);
