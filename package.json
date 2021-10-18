@@ -54,6 +54,7 @@
     "sass": "1.42.1",
     "timeago.js": "4.0.2",
     "validator": "13.6.0",
+    "use-resize-observer": "8.0.0",
     "web3": "0.20.7",
     "wyvern-js": "git+https://github.com/ProjectOpenSea/wyvern-js.git#v3.2.1",
     "wyvern-schemas": "git+https://github.com/ProjectOpenSea/wyvern-schemas.git#v0.11.1"

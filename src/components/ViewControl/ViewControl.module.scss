@@ -1,0 +1,11 @@
+.main {
+  display: flex;
+  gap: 4px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+
+  .divider {
+    width: 1px;
+    background-color: #ccc;
+  }
+}

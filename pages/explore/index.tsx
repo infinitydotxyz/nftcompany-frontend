@@ -35,6 +35,8 @@ export default function ExplorePage() {
 
           {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
+          {/* <CollectionCards rows={1} /> */}
+
           <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
 
           {cardProvider.hasData() && (
