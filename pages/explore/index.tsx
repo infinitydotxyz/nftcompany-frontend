@@ -12,10 +12,12 @@ import { Spacer } from '@chakra-ui/layout';
 import { CardGrid } from 'components/CollectionCards/CollectionCard';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import { useSearchContext } from 'utils/context/SearchContext';
+import CardList from 'components/Card/CardList';
 
 export default function ExplorePage() {
   const cardProvider = useCardProvider();
   const searchContext = useSearchContext();
+  const { user } = useAppContext();
 
   const collectionCards = cardProvider.list.map((x) => {
     return {
@@ -29,7 +31,15 @@ export default function ExplorePage() {
   });
 
   const text = searchContext.searchState.text;
-  const enableSort = text?.length > 0;
+  const cn = searchContext.searchState.collectionName;
+  const searchMode = text?.length > 0 || cn?.length > 0;
+
+  let contents;
+  if (searchMode) {
+    contents = <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />;
+  } else {
+    contents = <CardGrid data={collectionCards} />;
+  }
 
   return (
     <>
@@ -42,13 +52,13 @@ export default function ExplorePage() {
             <div className="tg-title">Explore</div>
 
             <Spacer />
-            <SortMenuButton disabled={!enableSort} />
+            <SortMenuButton disabled={!searchMode} />
           </div>
           <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
           {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
-          {/* <CollectionCards rows={1} /> */}
-          {/* <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" /> */}
-          <CardGrid data={collectionCards} />;
+
+          {contents}
+
           {cardProvider.hasData() && (
             <ScrollLoader
               onFetchMore={async () => {
