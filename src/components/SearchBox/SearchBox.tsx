@@ -21,6 +21,7 @@ export default function SearchBox() {
   const [selectedValue, setSelectedValue] = React.useState('');
   const { searchState, setSearchState, setFilterState } = useSearchContext();
   const timeoutId = React.useRef<any>(0);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const clearSearch = () => {
     setSelectedValue('');
@@ -59,6 +60,10 @@ export default function SearchBox() {
           setSelectedValue(val);
           setIsSelecting(true);
           setOptions([]); // after selecting an option, reset the dropdown options
+
+          if (inputRef && inputRef.current) {
+            inputRef.current.value = val;
+          }
         }}
         itemToString={(item: string[] | null) => `${item}`}
         selectedItem={[selectedValue]}
@@ -137,21 +142,17 @@ export default function SearchBox() {
           };
           const inputProps = { ...getInputProps() };
 
-          const moreProps: any = {};
-          if (isSelecting) {
-            moreProps.value = selectedValue; // only set value to the Input when user Enter or Select an item. (to avoid flickering)
-            setIsSelecting(false);
-          }
           return (
             <div className={styles.container}>
               <div className="m-auto w-1/2 mt-6">
                 <Input
+                  ref={inputRef}
                   placeholder="Search..."
                   className="w-full"
-                  {...moreProps}
                   onKeyUp={async (ev) => {
                     if (ev.key === 'Enter') {
                       closeMenu(); // if 'Enter', close menu.
+                      return;
                     }
                     const text = (ev.target as HTMLInputElement).value;
                     if (text === selectedValue) {
@@ -160,7 +161,6 @@ export default function SearchBox() {
                     if (text === '') {
                       clearSearch();
                     }
-                    // setText(val);
                     if (timeoutId.current) {
                       clearTimeout(timeoutId.current);
                     }
