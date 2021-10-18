@@ -11,9 +11,11 @@ import { useAppContext } from 'utils/context/AppContext';
 import { Spacer } from '@chakra-ui/layout';
 import { CardGrid } from 'components/CollectionCards/CollectionCard';
 import { CollectionCardEntry } from 'types/rewardTypes';
+import { useSearchContext } from 'utils/context/SearchContext';
 
 export default function ExplorePage() {
   const cardProvider = useCardProvider();
+  const searchContext = useSearchContext();
 
   const collectionCards = cardProvider.list.map((x) => {
     return {
@@ -26,6 +28,9 @@ export default function ExplorePage() {
     } as CollectionCardEntry;
   });
 
+  const text = searchContext.searchState.text;
+  const enableSort = text?.length > 0;
+
   return (
     <>
       <Head>
@@ -37,7 +42,7 @@ export default function ExplorePage() {
             <div className="tg-title">Explore</div>
 
             <Spacer />
-            <SortMenuButton />
+            <SortMenuButton disabled={!enableSort} />
           </div>
           <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
           {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}

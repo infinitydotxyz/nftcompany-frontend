@@ -4,7 +4,11 @@ import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import { MenuDivider, MenuItem } from '@chakra-ui/react';
 import { MenuIcons } from 'components/Icons/MenuIcons';
 
-const SortMenuButton = () => {
+type Props = {
+  disabled?: boolean;
+};
+
+const SortMenuButton = ({ disabled = false }: Props) => {
   const { setFilterState, filterState } = useSearchContext();
   const [buttonTitle, setButtonTitle] = useState('Sort by price');
 
@@ -14,7 +18,7 @@ const SortMenuButton = () => {
   };
 
   return (
-    <HoverMenuButton buttonTitle={buttonTitle}>
+    <HoverMenuButton buttonTitle={buttonTitle} disabled={disabled}>
       <MenuItem
         icon={<div style={{ transform: 'scaleX(-1)' }}>{MenuIcons.sortIcon}</div>}
         onClick={() => {
