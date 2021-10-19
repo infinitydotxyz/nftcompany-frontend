@@ -34,7 +34,7 @@ const CheckTransactionModal: React.FC<IProps> = ({ onClose }: IProps) => {
       if (error) {
         showAppError('Transaction not found');
       } else {
-        showAppMessage('Transaction queued');
+        showAppMessage('Transaction queued. Check back in a minute.');
       }
     } catch (err) {
       showAppError((err as GenericError)?.message);
