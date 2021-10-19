@@ -50,3 +50,14 @@ export type CollectionCardEntry = {
   openseaUrl: string;
   hasBlueCheck: boolean;
 };
+
+// ===========================================================
+
+export type TransactionCardEntry = {
+  txnHash: string;
+  createdAt: number;
+  actionType: string;
+  status: string;
+  feesInEth: number;
+  salePriceInEth: number;
+};

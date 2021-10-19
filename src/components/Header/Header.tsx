@@ -4,11 +4,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { saveAuthHeaders } from '../../../src/utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
-import ExploreSearch from 'components/ExploreSearch/ExploreSearch';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import SettingsModal from 'components/SettingsModal/SettingsModal';
-import RecentTransactionsModal from 'components/RecentTransactionsModal/RecentTransactionsModal';
 import { ellipsisAddress } from 'utils/commonUtil';
 import { EthToken, MoreVertIcon } from 'components/Icons/Icons';
 import SearchBox from '../SearchBox/SearchBox';
@@ -24,7 +22,6 @@ const Header = (): JSX.Element => {
   const { user, signIn, signOut } = useAppContext();
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [lockout, setLockout] = useState(false);
-  const [transactionsModalShowed, setTransactionsModalShowed] = useState(false);
   const { colorMode } = useColorMode();
 
   const signedIn = !!user?.account;
@@ -118,7 +115,7 @@ const Header = (): JSX.Element => {
     <MenuItem key="sales" icon={MenuIcons.moneyIcon} onClick={() => router.push('/sales')}>
       Sales
     </MenuItem>,
-    <MenuItem key="transactions" icon={MenuIcons.listIcon} onClick={() => setTransactionsModalShowed(true)}>
+    <MenuItem key="transactions" icon={MenuIcons.listIcon} onClick={() => router.push('/transactions')}>
       Transactions
     </MenuItem>
   ];
@@ -292,7 +289,6 @@ const Header = (): JSX.Element => {
       </Box>
 
       {settingsModalShowed && <SettingsModal onClose={() => setSettingsModalShowed(false)} />}
-      {transactionsModalShowed && <RecentTransactionsModal onClose={() => setTransactionsModalShowed(false)} />}
       {lockoutComponent}
       {<DarkmodeSwitch />}
     </header>
