@@ -49,7 +49,7 @@ const Transactions = (): JSX.Element => {
             <div className="tg-title">Transactions</div>
 
             <Button variant="outline" onClick={() => setTransactionsModalShowed(true)} disabled={isLoading}>
-              Not seeing a transaction?
+              Don't see your txn?
             </Button>
           </div>
           {isLoading && <LoadingCardList />}

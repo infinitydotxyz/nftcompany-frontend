@@ -20,7 +20,7 @@ const CheckTransactionModal: React.FC<IProps> = ({ onClose }: IProps) => {
 
   const checkTransaction = async () => {
     if (!txnHash) {
-      showAppError('Transaction has is missing');
+      showAppError('Transaction hash is missing');
       return;
     }
 
@@ -34,7 +34,7 @@ const CheckTransactionModal: React.FC<IProps> = ({ onClose }: IProps) => {
       if (error) {
         showAppError('Transaction not found');
       } else {
-        showAppMessage(result);
+        showAppMessage('Transaction queued');
       }
     } catch (err) {
       showAppError((err as GenericError)?.message);
