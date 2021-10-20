@@ -41,7 +41,6 @@ export interface Metadata {
   hasBlueCheck: boolean;
   createdAt: number;
   basePriceInEth: number;
-  pageNum: number;
 }
 
 export interface Asset {
@@ -82,5 +81,4 @@ export type CardData = {
   metadata?: Metadata;
   schemaName?: string;
   expirationTime?: string;
-  pageNum? : number;
 };

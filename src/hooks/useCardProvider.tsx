@@ -11,7 +11,6 @@ import {
   getLastItemMaker,
   getLastItemSearchCollectionName,
   getLastItemSearchTitle,
-  getLastItemPageNum
 } from 'components/FetchMore/FetchMore';
 
 const PAGE_SIZE = ITEMS_PER_PAGE;
@@ -32,8 +31,7 @@ const fetchData = async (
   startAfterBlueCheck: boolean | undefined,
   collectionName: string,
   text: string,
-  typeAhead: TypeAheadOption | undefined,
-  lastItemPageNum: number
+  typeAhead: TypeAheadOption | undefined
 ): Promise<CardData[]> => {
   const result = await getListings({
     ...filter,
@@ -49,8 +47,7 @@ const fetchData = async (
     tokenAddress: typeAhead?.address ?? '',
     collectionName,
     text,
-    priceMax: collectionName?.length > 0 ? '1000000' : '', // SNG
-    lastItemPageNum
+    priceMax: collectionName?.length > 0 ? '1000000' : '' // SNG
   });
 
   return result;
@@ -87,7 +84,6 @@ export function useCardProvider(inCollectionName?: string): {
     let startAfterSearchCollectionName = '';
     let startAfterBlueCheck;
     let startAfterSearchTitle = '';
-    let lastItemPageNum = 0;
     let previousList: CardData[] = [];
 
     // always get a fresh search
@@ -102,7 +98,6 @@ export function useCardProvider(inCollectionName?: string): {
       startAfterMillis = getLastItemCreatedAt(list);
       startAfterPrice = getLastItemBasePrice(list);
       startAfterBlueCheck = getLastItemBlueCheck(list);
-      lastItemPageNum = getLastItemPageNum(list);
     }
 
     setListType(newListType);
@@ -129,8 +124,7 @@ export function useCardProvider(inCollectionName?: string): {
       startAfterBlueCheck,
       collectionName,
       text,
-      selectedOption,
-      lastItemPageNum
+      selectedOption
     );
 
     if (result.length === 0) {
