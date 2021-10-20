@@ -109,14 +109,8 @@ const Header = (): JSX.Element => {
   ];
 
   const transactionItems = [
-    <MenuItem key="purchases" icon={MenuIcons.shoppingBagIcon} onClick={() => router.push('/purchases')}>
-      Purchases
-    </MenuItem>,
-    <MenuItem key="sales" icon={MenuIcons.moneyIcon} onClick={() => router.push('/sales')}>
-      Sales
-    </MenuItem>,
-    <MenuItem key="transactions" icon={MenuIcons.listIcon} onClick={() => router.push('/transactions')}>
-      Transactions
+    <MenuItem key="activity" icon={MenuIcons.listIcon} onClick={() => router.push('/activity')}>
+      Activity
     </MenuItem>
   ];
 
