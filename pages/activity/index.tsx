@@ -41,12 +41,12 @@ const Transactions = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Transactions</title>
+        <title>Activity</title>
       </Head>
       <div className={styles.main}>
         <div className="page-container">
           <div className="section-bar">
-            <div className="tg-title">Transactions</div>
+            <div className="tg-title">Activity</div>
 
             <Button variant="outline" onClick={() => setTransactionsModalShowed(true)} disabled={isLoading}>
               Missing txn?
