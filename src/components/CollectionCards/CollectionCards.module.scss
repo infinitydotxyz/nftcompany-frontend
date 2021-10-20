@@ -1,0 +1,115 @@
+@import '/styles/SharedStyles.module.scss';
+@import 'styles/_mixins.scss';
+
+.main {
+  width: 100%;
+}
+
+@include cardList();
+
+.spinner {
+  display: flex;
+  height: 400px;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  flex-direction: center;
+}
+
+$innerHeight: 390px;
+$outerHeight: 405px;
+
+.card {
+  position: absolute;
+  padding: 12px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  height: $innerHeight;
+  cursor: pointer;
+
+  @include lightShadow();
+  background-color: var(--chakra-colors-cardBgLight, red);
+
+  :global(body.chakra-ui-dark) & {
+    @include darkShadow();
+    background-color: var(--chakra-colors-cardBgDark, red);
+  }
+
+  &:hover {
+    .cardControls {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  .top {
+    flex: 5;
+    overflow: hidden;
+    border-radius: 16px;
+
+    img {
+      border-radius: 16px;
+      min-width: 100%;
+      min-height: 100%;
+      overflow: hidden;
+      transition: transform 1s;
+      object-fit: cover;
+    }
+
+    &:hover img {
+      transform: scale(1.1);
+    }
+  }
+
+  .bottom {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding-top: 10px;
+    gap: 6px;
+    line-height: 1.2;
+    text-align: center;
+
+    .collectionRow {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.tripleCard {
+  // debug
+  // border: 1px solid red;
+
+  height: $outerHeight;
+  position: relative;
+
+  .card1 {
+    @extend .card;
+    border: 1px solid #eee;
+  }
+
+  .card2 {
+    @extend .card;
+    border: 1px solid #ddd;
+
+    top: 4px;
+    left: 8px;
+  }
+
+  .card3 {
+    @extend .card;
+    border: 1px solid #ddd;
+
+    top: 8px;
+    left: 16px;
+  }
+}

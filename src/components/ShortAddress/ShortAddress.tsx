@@ -28,6 +28,7 @@ export const ShortAddress = ({ vertical, href, newTab = true, address, label, to
     if (addressesEqual(address, user?.account)) {
       shortAddress = 'You';
     } else {
+      // only some addresses are valid for ellipsisAddress even if 0x
       if (shortAddress.startsWith('0x')) {
         shortAddress = ellipsisAddress(address);
       } else {
@@ -36,20 +37,37 @@ export const ShortAddress = ({ vertical, href, newTab = true, address, label, to
     }
   }
 
-  return (
-    <div className={vertical ? styles.mainVertical : styles.main}>
-      <Label bold={vertical} text={label} />
-
-      <Spacer />
-
-      <div className={styles.link}>
-        <Tooltip label={tooltip} hasArrow openDelay={1000}>
-          <Link color="brandBlue" href={href} target={newTab ? '_blank' : ''} rel="noreferrer">
-            {shortAddress}
-          </Link>
-        </Tooltip>
-        <CopyButton copyText={address} />
-      </div>
+  const link = (
+    <div className={styles.link}>
+      <Tooltip label={tooltip} hasArrow openDelay={1000}>
+        <Link
+          color="brandBlue"
+          href={href}
+          target={newTab ? '_blank' : ''}
+          rel="noreferrer"
+          onClick={(e) => {
+            // without this the parent will get the click (if clickable)
+            e.stopPropagation();
+          }}
+        >
+          {shortAddress}
+        </Link>
+      </Tooltip>
+      <CopyButton copyText={address} />
     </div>
   );
+
+  if (label) {
+    return (
+      <div className={vertical ? styles.mainVertical : styles.main}>
+        <Label bold={vertical} text={label} />
+
+        <Spacer />
+
+        {link}
+      </div>
+    );
+  } else {
+    return <div>{link}</div>;
+  }
 };

@@ -40,12 +40,24 @@ export type UserReward = {
 
 // ===========================================================
 
-export type Collections = {
-  count: number;
-  results: CollectionEntry[];
-};
-
-export type CollectionEntry = {
+export type CollectionCardEntry = {
+  address: string;
+  bannerImage: string;
+  cardImage: string;
+  description: string;
   id: string;
   name: string;
+  openseaUrl: string;
+  hasBlueCheck: boolean;
+};
+
+// ===========================================================
+
+export type TransactionCardEntry = {
+  txnHash: string;
+  createdAt: number;
+  actionType: string;
+  status: string;
+  feesInEth: number;
+  salePriceInEth: number;
 };

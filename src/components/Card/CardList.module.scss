@@ -1,5 +1,7 @@
 @import 'styles/_mixins.scss';
 
+@include cardList();
+
 .button {
   display: inline-flex;
   justify-content: center;
@@ -30,17 +32,6 @@
   text-transform: uppercase;
   font-weight: bold;
   z-index: 1;
-}
-
-.cardList {
-  display: grid;
-
-  // the minmax(0, 1fr) rather than 1fr keeps the cards from growing past their initial width
-  // https://stackoverflow.com/questions/43311943/prevent-content-from-expanding-grid-items?rq=1
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-gap: 56px;
-
-  margin: 40px 0;
 }
 
 .card {
@@ -145,45 +136,6 @@
         max-width: 25ch;
         text-overflow: ellipsis;
         overflow: hidden;
-      }
-    }
-  }
-}
-
-@media only screen and (min-width: 1000px) and (max-width: 1400px) {
-  .cardList {
-    grid-gap: 36px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-
-    .card {
-      .cardPreview {
-        max-height: inherit;
-      }
-    }
-  }
-}
-
-@media only screen and (min-width: 700px) and (max-width: 1000px) {
-  .cardList {
-    grid-gap: 36px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    .card {
-      .cardPreview {
-        max-height: inherit;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 700px) {
-  .cardList {
-    grid-gap: 36px;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-
-    .card {
-      .cardPreview {
-        max-height: inherit;
       }
     }
   }

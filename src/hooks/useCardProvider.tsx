@@ -10,7 +10,7 @@ import {
   getLastItemCreatedAt,
   getLastItemMaker,
   getLastItemSearchCollectionName,
-  getLastItemSearchTitle
+  getLastItemSearchTitle,
 } from 'components/FetchMore/FetchMore';
 
 const PAGE_SIZE = ITEMS_PER_PAGE;
@@ -176,22 +176,17 @@ export function useCardProvider(inCollectionName?: string): {
     for (const item of srcList) {
       const itemId = `${item.tokenId}${item.tokenAddress}`;
 
-      // don't think this could be blank, but being safe
-      if (itemId) {
-        let a = dupMap.get(itemId);
+      let a = dupMap.get(itemId);
 
-        if (!a) {
-          a = [item];
-        } else {
-          a.push(item);
-
-          dupsIds.add(itemId);
-        }
-
-        dupMap.set(itemId, a);
+      if (!a) {
+        a = [item];
       } else {
-        console.log('no token id?');
+        a.push(item);
+
+        dupsIds.add(itemId);
       }
+
+      dupMap.set(itemId, a);
     }
 
     let showLowest = true;

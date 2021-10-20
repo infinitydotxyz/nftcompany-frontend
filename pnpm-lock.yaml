@@ -57,6 +57,7 @@ specifiers:
   sass: 1.42.1
   timeago.js: 4.0.2
   typescript: 4.4.3
+  use-resize-observer: 8.0.0
   validator: 13.6.0
   web3: 0.20.7
   web3-typescript-typings: 0.9.3
@@ -107,6 +108,7 @@ dependencies:
   recharts: 2.1.4_9bdd65c2b60ce8638444b80b396a481b
   sass: 1.42.1
   timeago.js: 4.0.2
+  use-resize-observer: 8.0.0_react-dom@17.0.2+react@17.0.2
   validator: 13.6.0
   web3: 0.20.7
   wyvern-js: github.com/ProjectOpenSea/wyvern-js/fabb7660f23f2252c141077e32193d281036299e
@@ -1808,6 +1810,10 @@ packages:
       prop-types: 15.7.2
       react: 17.0.2
       warning: 4.0.3
+    dev: false
+
+  /@juggle/resize-observer/3.3.1:
+    resolution: {integrity: sha512-zMM9Ds+SawiUkakS7y94Ymqx+S0ORzpG3frZirN3l+UlXUmSUR7hF4wxCVqW+ei94JzV5kt0uXBcoOEAuiydrw==}
     dev: false
 
   /@napi-rs/triples/1.0.3:
@@ -9140,6 +9146,17 @@ packages:
     dependencies:
       '@types/react': 17.0.24
       react: 17.0.2
+    dev: false
+
+  /use-resize-observer/8.0.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-n0iKSeiQpJCyaFh5JA0qsVLBIovsF4EIIR1G6XiBwKJN66ZrD4Oj62bjcuTAATPKiSp6an/2UZZxCf/67fk3sQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@juggle/resize-observer': 3.3.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /use-sidecar/1.0.5_react@17.0.2:

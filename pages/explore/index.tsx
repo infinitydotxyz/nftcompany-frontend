@@ -3,19 +3,43 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import { NoData } from 'components/FetchMore/FetchMore';
-import CardList from 'components/Card/CardList';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
 import { Spacer } from '@chakra-ui/layout';
-import { useRouter } from 'next/router';
+import { CardGrid } from 'components/CollectionCards/CollectionCard';
+import { CollectionCardEntry } from 'types/rewardTypes';
+import { useSearchContext } from 'utils/context/SearchContext';
+import CardList from 'components/Card/CardList';
 
 export default function ExplorePage() {
   const cardProvider = useCardProvider();
+  const searchContext = useSearchContext();
   const { user } = useAppContext();
-  const router = useRouter();
+
+  const collectionCards = cardProvider.list.map((x) => {
+    return {
+      id: x.id,
+      name: x.collectionName,
+      address: x.tokenAddress,
+      cardImage: x.image,
+      description: x.description,
+      hasBlueCheck: x.hasBlueCheck
+    } as CollectionCardEntry;
+  });
+
+  const text = searchContext.searchState.text;
+  const cn = searchContext.searchState.collectionName;
+  const searchMode = text?.length > 0 || cn?.length > 0;
+
+  let contents;
+  if (searchMode) {
+    contents = <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />;
+  } else {
+    contents = <CardGrid data={collectionCards} />;
+  }
 
   return (
     <>
@@ -28,14 +52,12 @@ export default function ExplorePage() {
             <div className="tg-title">Explore</div>
 
             <Spacer />
-            <SortMenuButton />
+            <SortMenuButton disabled={!searchMode} />
           </div>
-
           <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
-
           {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
-          <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
+          {contents}
 
           {cardProvider.hasData() && (
             <ScrollLoader

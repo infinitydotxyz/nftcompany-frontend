@@ -16,10 +16,20 @@ export const PriceBox = ({ justifyRight = false, price, expirationTime = '', tok
   let priceStr = '0';
 
   if (price) {
-    if (price > 10000) {
-      priceStr = price.toExponential();
+    let newPrice: number;
+
+    if (typeof price === 'string') {
+      console.log('PriceBox: price is a string');
+
+      newPrice = parseFloat(price);
     } else {
-      priceStr = price.toString();
+      newPrice = price;
+    }
+
+    if (newPrice > 10000) {
+      priceStr = newPrice.toExponential();
+    } else {
+      priceStr = newPrice.toString();
     }
 
     const priceStyle = [styles.priceBox];

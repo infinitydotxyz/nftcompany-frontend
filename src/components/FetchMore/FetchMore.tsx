@@ -46,7 +46,7 @@ export const getLastItemMaker = (data: CardData[]): string =>
   data?.length > 0 ? data[data.length - 1]?.maker ?? '' : '';
 
 export const getLastItemCreatedAt = (data: CardData[]): string =>
-  data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt.toString() ?? '' : '';
+  data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt?.toString() ?? '' : '';
 
 export const getLastItemBasePrice = (data: CardData[]): string =>
   data?.length > 0 ? data[data.length - 1]?.metadata?.basePriceInEth?.toString() ?? '' : '';

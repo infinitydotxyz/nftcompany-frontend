@@ -392,3 +392,30 @@ export const ShareIcon = (props: Record<string, unknown>): JSX.Element => (
     </g>
   </Icon>
 );
+
+export const ListViewIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <path d="M0 0h24v24H0V0z" fill="none" />
+      <path d="M4 15h16v-2H4v2zm0 4h16v-2H4v2zm0-8h16V9H4v2zm0-6v2h16V5H4z" />
+    </g>
+  </Icon>
+);
+
+export const IconViewIcon = (props: Record<string, unknown>): JSX.Element => (
+  <Icon viewBox="0 0 24 24" {...props}>
+    <g fill="currentColor">
+      <g>
+        <rect fill="none" height="24" width="24" />
+      </g>
+      <g>
+        <g>
+          <rect height="8" width="8" x="3" y="3" />
+          <rect height="8" width="8" x="3" y="13" />
+          <rect height="8" width="8" x="13" y="3" />
+          <rect height="8" width="8" x="13" y="13" />
+        </g>
+      </g>
+    </g>
+  </Icon>
+);

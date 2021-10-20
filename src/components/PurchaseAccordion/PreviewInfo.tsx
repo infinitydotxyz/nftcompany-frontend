@@ -128,12 +128,17 @@ export const PreviewInfo: React.FC<Props> = ({ showDescription = false, action, 
   ) : null;
 
   const paymentToken = getToken(data?.order?.paymentToken);
-  const _priceSection = data.price ? (
+  const _priceSection = data.metadata?.basePriceInEth ? (
     <div className={styles.priceRow}>
       <Label text={paymentToken === 'WETH' ? 'Minimum Price:' : 'Price:'} />
 
       <Spacer />
-      <PriceBox justifyRight price={data?.price} token={paymentToken} expirationTime={data?.expirationTime} />
+      <PriceBox
+        justifyRight
+        price={data.metadata?.basePriceInEth}
+        token={paymentToken}
+        expirationTime={data?.expirationTime}
+      />
     </div>
   ) : null;
 
