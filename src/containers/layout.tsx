@@ -36,7 +36,7 @@ const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
         <AppContextProvider>
           <SearchContextProvider>
             {/* No header on connect page */}
-            {!connect && <Header />}
+            {!connect && <Header onLockout={() => setIsOpen(false)} />}
 
             {router.pathname === '/explore' && (
               <>
