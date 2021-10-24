@@ -9,6 +9,10 @@ import { isLocalhost } from 'utils/commonUtil';
 
 import LogRocket from 'logrocket';
 import { Background } from 'components/Background/Background';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
+import { Button } from '@chakra-ui/react';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
+
 if (!isLocalhost()) {
   LogRocket.init('0pu9ak/nftco');
 }
@@ -20,6 +24,8 @@ interface IProps {
 }
 
 const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
+  const [isOpen, setIsOpen] = React.useState(true);
+
   return (
     <>
       <Background />
@@ -28,7 +34,14 @@ const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
           <SearchContextProvider>
             {/* No header on connect page */}
             {!connect && <Header />}
+
+            <FilterDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
+
+            <Button position="fixed" top={100} variant="ghost" color="gray.700" onClick={() => setIsOpen(!isOpen)}>
+              <ArrowForwardIcon />
+            </Button>
             <main>{children}</main>
+
             {landing && <LandingFooter />}
 
             <NextNprogress

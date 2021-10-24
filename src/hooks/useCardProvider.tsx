@@ -10,7 +10,7 @@ import {
   getLastItemCreatedAt,
   getLastItemMaker,
   getLastItemSearchCollectionName,
-  getLastItemSearchTitle,
+  getLastItemSearchTitle
 } from 'components/FetchMore/FetchMore';
 
 const PAGE_SIZE = ITEMS_PER_PAGE;
@@ -47,7 +47,7 @@ const fetchData = async (
     tokenAddress: typeAhead?.address ?? '',
     collectionName,
     text,
-    priceMax: collectionName?.length > 0 ? '1000000' : '' // SNG
+    priceMax: collectionName?.length > 0 ? '1000000' : filter.priceMax // SNG
   });
 
   return result;
