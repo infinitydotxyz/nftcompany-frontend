@@ -20,7 +20,7 @@ const listTypeButtonProps = {
   color: 'gray.400',
   fontWeight: 'normal',
   width: 120,
-  _active: { backgroundColor: 'gray.500', color: 'white' }
+  _active: { backgroundColor: 'blue.500', color: 'white' }
 };
 
 const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
