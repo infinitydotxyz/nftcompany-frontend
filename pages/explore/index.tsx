@@ -33,10 +33,10 @@ export default function ExplorePage() {
   const searchText = searchState.text;
   const searchCollName = searchState.collectionName;
   const searchMode =
-    searchText?.length > 0 || searchCollName?.length > 0 || filterState.priceMin != '' || filterState.priceMax != '';
+    searchText?.length > 0 || searchCollName?.length > 0 || filterState.priceMin !== '' || filterState.priceMax !== '';
 
   let contents;
-  if (searchMode || filterState.listType != '') {
+  if (searchMode || filterState.listType !== '') {
     contents = <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />;
   } else {
     contents = <CardGrid data={collectionCards} />;
