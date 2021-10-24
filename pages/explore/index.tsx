@@ -16,7 +16,7 @@ import CardList from 'components/Card/CardList';
 
 export default function ExplorePage() {
   const cardProvider = useCardProvider();
-  const searchContext = useSearchContext();
+  const { searchState, filterState } = useSearchContext();
   const { user } = useAppContext();
 
   const collectionCards = cardProvider.list.map((x) => {
@@ -30,12 +30,13 @@ export default function ExplorePage() {
     } as CollectionCardEntry;
   });
 
-  const text = searchContext.searchState.text;
-  const cn = searchContext.searchState.collectionName;
-  const searchMode = text?.length > 0 || cn?.length > 0;
+  const searchText = searchState.text;
+  const searchCollName = searchState.collectionName;
+  const searchMode =
+    searchText?.length > 0 || searchCollName?.length > 0 || filterState.priceMin != '' || filterState.priceMax != '';
 
   let contents;
-  if (searchMode) {
+  if (searchMode || filterState.listType != '') {
     contents = <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />;
   } else {
     contents = <CardGrid data={collectionCards} />;
