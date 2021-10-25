@@ -7,9 +7,9 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import cardListStyles from '../../src/components/Card/CardList.module.scss';
-import { CollectionCardData, loadingCardData } from 'components/Card/CollectionCard';
-import { CollectionCard } from 'components/CollectionCards/CollectionCard';
+import { CollectionCard, loadingCardData } from 'components/CollectionCards/CollectionCard';
 import { Box } from '@chakra-ui/layout';
+import { CollectionCardEntry } from 'types/rewardTypes';
 
 type FeaturedPageProps = {
   asSection?: boolean;
@@ -18,7 +18,7 @@ type FeaturedPageProps = {
 export default function FeaturedPage({ asSection }: FeaturedPageProps) {
   const { showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
-  const [data, setData] = useState<CollectionCardData[]>([]);
+  const [data, setData] = useState<CollectionCardEntry[]>([]);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -30,7 +30,7 @@ export default function FeaturedPage({ asSection }: FeaturedPageProps) {
       showAppError(`${error?.message}`);
       return;
     }
-    const collections = result.collections.map((item: CollectionCardData) => {
+    const collections = result.collections.map((item: CollectionCardEntry) => {
       return { ...item, hasBlueCheck: true }; // default: feature verified collections only.
     });
     setData(collections);

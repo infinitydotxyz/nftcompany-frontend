@@ -8,6 +8,18 @@ import { uuidv4 } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 
+export const loadingCardData: CollectionCardEntry = {
+  id: 'loading-card-id',
+  address: '',
+  name: '⠀', // placeholder char to avoid jumpy layout.
+  description: '',
+  cardImage: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==', // blank image
+  bannerImage: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==', // blank image
+  hasBlueCheck: false,
+  openseaUrl: '',
+  title: ''
+};
+
 type Props = {
   entry: CollectionCardEntry;
   isFeatured?: boolean;
