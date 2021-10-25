@@ -7,7 +7,9 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import cardListStyles from '../../src/components/Card/CardList.module.scss';
-import CollectionCard, { CollectionCardData, loadingCardData } from 'components/Card/CollectionCard';
+import { CollectionCardData, loadingCardData } from 'components/Card/CollectionCard';
+import { CollectionCard } from 'components/CollectionCards/CollectionCard';
+import { Box } from '@chakra-ui/layout';
 
 type FeaturedPageProps = {
   asSection?: boolean;
@@ -67,37 +69,18 @@ export default function FeaturedPage({ asSection }: FeaturedPageProps) {
         <div className="tg-title">Featured</div>
       </div>
 
-      <div className={cardListStyles.cardList}>
+      <Box mt={4} className={cardListStyles.cardList}>
         {data?.length === 0 && isFetching ? (
           <>
-            <CollectionCard key={'loading---1'} data={loadingCardData} isLoadingCard={true} />
-            <CollectionCard key={'loading---2'} data={loadingCardData} isLoadingCard={true} />
+            <CollectionCard key={'loading---1'} entry={loadingCardData} isFeatured={true} />
+            <CollectionCard key={'loading---2'} entry={loadingCardData} isFeatured={true} />
           </>
         ) : null}
 
         {data.map((item) => {
-          return <CollectionCard key={item.id} data={item} />;
+          return <CollectionCard key={item.id} entry={item} isFeatured={true} />;
         })}
-      </div>
-
-      {/* <div>
-            <PleaseConnectWallet account={user?.account} />
-            <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
-            {data?.length === 0 && isFetching && <LoadingCardList />}
-
-            <CardList data={data} action="CANCEL_OFFER" />
-          </div>
-
-          {dataLoaded && (
-            <FetchMore
-              currentPage={currentPage}
-              data={data}
-              onFetchMore={async () => {
-                setDataLoaded(false);
-                await fetchData();
-              }}
-            />
-          )} */}
+      </Box>
     </Container>
   );
 }

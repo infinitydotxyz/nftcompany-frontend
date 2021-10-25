@@ -35,11 +35,12 @@ export default function ExplorePage() {
 
   const searchText = searchState.text;
   const searchCollName = searchState.collectionName;
-  const searchMode =
+  let searchMode =
     searchText?.length > 0 || searchCollName?.length > 0 || filterState.priceMin !== '' || filterState.priceMax !== '';
+  searchMode = searchMode || filterState.listType !== '';
 
   let contents;
-  if (searchMode || filterState.listType !== '') {
+  if (searchMode) {
     contents = <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />;
   } else {
     contents = <CardGrid data={collectionCards} />;
@@ -52,7 +53,7 @@ export default function ExplorePage() {
       </Head>
       <div>
         <div className="page-container">
-          {!searchContext.searchState.text && <FeaturedPage asSection={true} />}
+          {!searchMode && <FeaturedPage asSection={true} />}
 
           <div className="section-bar">
             <div className="tg-title">Explore</div>
