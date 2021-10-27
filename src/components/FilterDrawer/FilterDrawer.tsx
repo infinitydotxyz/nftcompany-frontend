@@ -31,8 +31,13 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
   const btnRef: any = React.useRef();
 
   const handleClickStatus = (listType: '' | 'BUY_NOW' | 'AUCTION') => {
+    let newListType = listType;
+    if (listType === filterState.listType) {
+      newListType = '';
+    }
+
     const newFilter = { ...filterState };
-    newFilter.listType = listType;
+    newFilter.listType = newListType;
     if (newFilter) {
       newFilter.priceMin = newFilter.priceMin || DEFAULT_MIN_PRICE.toString();
     }
@@ -84,14 +89,6 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
             <Heading size="md" mb={4}>
               Status
             </Heading>
-            <Button
-              {...listTypeButtonProps}
-              mb={2}
-              isActive={filterState.listType === ''}
-              onClick={() => handleClickStatus('')}
-            >
-              Show All
-            </Button>
             <p />
             <Button
               {...listTypeButtonProps}
