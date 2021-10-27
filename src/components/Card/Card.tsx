@@ -9,6 +9,7 @@ import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { WETH_ADDRESS } from 'utils/constants';
 import { addressesEqual } from 'utils/commonUtil';
+import { useInView } from 'react-intersection-observer';
 
 type Props = {
   data: CardData;
@@ -24,6 +25,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
   const [previewModalShowed, setPreviewModalShowed] = useState(false);
+  const { ref, inView } = useInView({ threshold: 0 });
 
   if (!data) {
     return null;
@@ -36,8 +38,12 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
 
   const collectionName = data.collectionName;
   const hasBlueCheck = data.hasBlueCheck;
+
+  if (inView === false) {
+    return <div ref={ref} id={`id_${data.id}`} className={styles.card}></div>;
+  }
   return (
-    <div id={`id_${data.id}`} className={styles.card}>
+    <div ref={ref} id={`id_${data.id}`} className={styles.card}>
       {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
 
       <div onClick={() => setPreviewModalShowed(true)}>
