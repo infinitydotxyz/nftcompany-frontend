@@ -68,7 +68,7 @@ export default function Home() {
           <div className={styles.checklist}>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>Low fees of 1.5%, go to a community controlled treasury</div>
+              <div>Low fees of 1.5%, go to a community-controlled treasury</div>
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
@@ -234,7 +234,7 @@ export default function Home() {
                 {
                   question: 'What is Infinity?',
                   answer:
-                    'Infinity is the “FTX of NFTs” - a community driven, decentralized NFT super app that enables discovering, developing, trading and managing NFTs.'
+                    'Infinity is the “FTX of NFTs” - a community-driven, decentralized NFT super app that enables discovering, developing, trading, and managing NFTs.'
                 },
                 {
                   question: 'Is Infinity live?',
@@ -244,7 +244,7 @@ export default function Home() {
                 {
                   question: 'Is Infinity a DAO?',
                   answer:
-                    'Yes, Infinity is a DAO. If you are a developer, designer, marketer, memer or possess any valuable skill, come join us. Find our discord and twitter links at the bottom of this page.'
+                    'Yes, Infinity is a DAO. If you are a developer, designer, marketer, memer, or possess any valuable skill, come join us. Find our discord and twitter links at the bottom of this page.'
                 },
                 {
                   question: 'How does Infinity governance work?',
@@ -259,7 +259,7 @@ export default function Home() {
                 {
                   question: 'How is Infinity different from other NFT marketplaces?',
                   answer:
-                    'Infinity is community owned and governed through a DAO. Infinity has the lowest fees and gives direct control of the fee treasury to $NFT holders. Infinity is builing the marketplace into a super app that allows for effective discovery, valuation, development, trading, and management of NFTs.'
+                    'Infinity is community-owned and governed through a DAO. Infinity has the lowest fees and gives direct control of the fee treasury to $NFT holders. Infinity is building the marketplace into a super app that allows for effective discovery, valuation, development, trading, and management of NFTs.'
                 }
               ]}
             />
