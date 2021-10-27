@@ -244,7 +244,7 @@ export default function Home() {
                 {
                   question: 'Is Infinity a DAO?',
                   answer:
-                    'Yes, Infinity is a DAO. If you are a developer, designer, marketer, memer, or possess any valuable skill, come join us. Find our discord and twitter links at the bottom of this page.'
+                    'Yes, Infinity is a DAO. If you are a developer, designer, marketer, memer or possess any valuable skill, come join us. Find our discord and twitter links at the bottom of this page.'
                 },
                 {
                   question: 'How does Infinity governance work?',
