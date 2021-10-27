@@ -22,7 +22,9 @@ export const CollectionCard = ({ entry }: Props) => {
     <div
       className={styles.tripleCard}
       onClick={() => {
-        router.push(`/collection/${name}`);
+        // name could have # and other url reseved characters
+        // must encodeURIComponent()
+        router.push(`/collection/${encodeURIComponent(name)}`);
       }}
     >
       <div className={styles.card1}></div>
