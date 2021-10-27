@@ -12,10 +12,10 @@ type Props = {
 };
 
 export const CollectionCard = ({ entry }: Props) => {
+  const { ref, inView } = useInView({ threshold: 0 });
   if (!entry) {
     return <div>Nothing found</div>;
   }
-  const { ref, inView } = useInView({ threshold: 0 });
 
   let name = entry.name.replace(/\s/g, '');
   name = name.toLowerCase();
