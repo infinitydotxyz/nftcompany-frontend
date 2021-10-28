@@ -31,8 +31,13 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
   const btnRef: any = React.useRef();
 
   const handleClickStatus = (listType: '' | 'BUY_NOW' | 'AUCTION') => {
+    let newListType = listType;
+    if (listType === filterState.listType) {
+      newListType = '';
+    }
+
     const newFilter = { ...filterState };
-    newFilter.listType = listType;
+    newFilter.listType = newListType;
     if (newFilter) {
       newFilter.priceMin = newFilter.priceMin || DEFAULT_MIN_PRICE.toString();
     }
@@ -72,7 +77,7 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
       >
         <DrawerContent shadow="sm" mt={85}>
           <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
-            <Heading size="md">Filter</Heading>
+            <Heading size="sm">Filter</Heading>
             <Button variant="ghost" size="lg" color="gray.700" onClick={() => setIsOpen(false)}>
               <ArrowBackIcon />
             </Button>
@@ -81,17 +86,9 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
           <DrawerBody>
             {/* <Divider /> */}
 
-            <Heading size="md" mb={4}>
-              Status
+            <Heading size="sm" mb={4}>
+              Sale Type
             </Heading>
-            <Button
-              {...listTypeButtonProps}
-              mb={2}
-              isActive={filterState.listType === ''}
-              onClick={() => handleClickStatus('')}
-            >
-              Show All
-            </Button>
             <p />
             <Button
               {...listTypeButtonProps}
@@ -109,7 +106,7 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
               On Auction
             </Button>
 
-            <Heading size="md" mt={8} mb={4}>
+            <Heading size="sm" mt={8} mb={4}>
               Price (ETH)
             </Heading>
             <Box>
