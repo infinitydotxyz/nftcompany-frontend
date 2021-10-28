@@ -166,7 +166,21 @@ export const theme = extendTheme(
       Menu,
       Button,
       Table,
-      Input
+      Input,
+      Drawer: {
+        variants: {
+          // custom theme for Filter Drawer to allow scrolling/interaction on the main body.
+          alwaysOpen: {
+            parts: ['dialog, dialogContainer'],
+            dialog: {
+              pointerEvents: 'auto'
+            },
+            dialogContainer: {
+              pointerEvents: 'none'
+            }
+          }
+        }
+      }
     }
   },
   withDefaultColorScheme({ colorScheme: 'blue' }),

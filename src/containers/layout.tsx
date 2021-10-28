@@ -9,6 +9,12 @@ import { isLocalhost } from 'utils/commonUtil';
 
 import LogRocket from 'logrocket';
 import { Background } from 'components/Background/Background';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
+import { Button } from '@chakra-ui/react';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { useRouter } from 'next/router';
+import { route } from 'next/dist/server/router';
+
 if (!isLocalhost()) {
   LogRocket.init('0pu9ak/nftco');
 }
@@ -20,6 +26,14 @@ interface IProps {
 }
 
 const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
+  const router = useRouter();
+  const [isFilterOpen, setIsFilterOpen] = React.useState(true);
+
+  const handlePageClick = () => {
+    if (isFilterOpen) {
+      setIsFilterOpen(false);
+    }
+  };
   return (
     <>
       <Background />
@@ -27,8 +41,25 @@ const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
         <AppContextProvider>
           <SearchContextProvider>
             {/* No header on connect page */}
-            {!connect && <Header />}
-            <main>{children}</main>
+            {!connect && <Header onLockout={() => setIsFilterOpen(false)} />}
+
+            {router.pathname === '/explore' && (
+              <>
+                <FilterDrawer isOpen={isFilterOpen} setIsOpen={setIsFilterOpen} />
+                <Button
+                  position="fixed"
+                  top={100}
+                  variant="ghost"
+                  color="gray.700"
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                >
+                  <ArrowForwardIcon />
+                </Button>
+              </>
+            )}
+
+            <main onClick={handlePageClick}>{children}</main>
+
             {landing && <LandingFooter />}
 
             <NextNprogress

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MenuItem, MenuDivider, Box, useColorMode } from '@chakra-ui/react';
+import { MenuItem, MenuDivider, Box, useColorMode, Alert, AlertIcon, CloseButton } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { saveAuthHeaders } from '../../../src/utils/apiUtil';
@@ -17,11 +17,17 @@ import { MenuIcons } from 'components/Icons/MenuIcons';
 
 let isChangingAccount = false;
 
-const Header = (): JSX.Element => {
+type HeaderProps = {
+  onLockout: () => void;
+};
+
+const Header = ({ onLockout }: HeaderProps): JSX.Element => {
   const router = useRouter();
   const { user, signIn, signOut } = useAppContext();
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [lockout, setLockout] = useState(false);
+  const [closedLockout, setClosedLockout] = useState(false);
+
   const { colorMode } = useColorMode();
 
   const signedIn = !!user?.account;
@@ -57,6 +63,7 @@ const Header = (): JSX.Element => {
 
         if (chainId !== '0x1') {
           setLockout(true);
+          onLockout();
         }
       } catch (err) {
         console.error('eth_chainId failed', err);
@@ -200,14 +207,20 @@ const Header = (): JSX.Element => {
   const dark = colorMode === 'dark';
   let lockoutComponent;
 
-  if (lockout) {
+  if (lockout && !closedLockout) {
     lockoutComponent = (
-      <div className={styles.lockout}>
-        <div className={styles.message}>
-          {<EthToken boxSize={52} />}
-          <div>You must be on Ethereum Mainnet</div>
-        </div>
-      </div>
+      <Alert className={styles.lockout} status="error">
+        <AlertIcon />
+        You must be on Ethereum Mainnet
+        <CloseButton
+          position="absolute"
+          right="8px"
+          top="8px"
+          onClick={() => {
+            setClosedLockout(true);
+          }}
+        />
+      </Alert>
     );
   }
 
