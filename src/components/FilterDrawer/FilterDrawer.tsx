@@ -77,7 +77,7 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
       >
         <DrawerContent shadow="sm" mt={85}>
           <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
-            <Heading size="md">Filter</Heading>
+            <Heading size="sm">Filter</Heading>
             <Button variant="ghost" size="lg" color="gray.700" onClick={() => setIsOpen(false)}>
               <ArrowBackIcon />
             </Button>
@@ -86,8 +86,8 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
           <DrawerBody>
             {/* <Divider /> */}
 
-            <Heading size="md" mb={4}>
-              Status
+            <Heading size="sm" mb={4}>
+              Sale Type
             </Heading>
             <p />
             <Button
@@ -106,7 +106,7 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
               On Auction
             </Button>
 
-            <Heading size="md" mt={8} mb={4}>
+            <Heading size="sm" mt={8} mb={4}>
               Price (ETH)
             </Heading>
             <Box>
