@@ -47,24 +47,8 @@ export default function FeaturedPage({ asSection }: FeaturedPageProps) {
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
 
-  const Container: React.FC<{}> = ({ children }) => {
-    if (asSection === true) {
-      return <>{children}</>;
-    }
-    return (
-      <>
-        <Head>
-          <title>Featured</title>
-        </Head>
-        <div>
-          <div className="page-container">{children}</div>
-        </div>
-      </>
-    );
-  };
-
   return (
-    <Container>
+    <>
       <div className="section-bar">
         <div className="tg-title">Featured</div>
       </div>
@@ -81,7 +65,7 @@ export default function FeaturedPage({ asSection }: FeaturedPageProps) {
           return <CollectionCard key={item.id} entry={item} isFeatured={true} />;
         })}
       </Box>
-    </Container>
+    </>
   );
 }
 
