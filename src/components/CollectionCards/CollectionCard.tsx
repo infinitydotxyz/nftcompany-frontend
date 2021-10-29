@@ -56,8 +56,7 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
           return;
         }
         // name could have # and other url reseved characters
-        // must encodeURIComponent()
-        router.push(`/collection/${encodeURIComponent(name)}`);
+        router.push(`/collection/${getSearchFriendlyString(entry.name)}`);
       }}
     >
       <div className={styles.card1}></div>
