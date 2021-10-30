@@ -65,8 +65,10 @@ export interface Orders {
 export type CardData = {
   id: string;
   title: string;
+  name?: string;
   description?: string;
-  image: string;
+  image?: string;
+  cardImage?: string;
   imagePreview?: string;
   price?: number;
   inStock?: number;

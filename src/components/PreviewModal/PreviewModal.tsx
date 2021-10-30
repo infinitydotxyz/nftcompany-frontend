@@ -20,10 +20,11 @@ const isServer = typeof window === 'undefined';
 interface Props {
   data: CardData;
   action: string; // 'purchase', 'accept-offer', 'cancel-offer'
+  previewCollection?: boolean;
   onClose: () => void;
 }
 
-const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
+const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollection }: Props) => {
   const [placeBidShowed, setPlaceBidShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
@@ -133,20 +134,24 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                 <div className={styles.imgBox}>
                   <img
                     alt="not available"
-                    src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
+                    src={
+                      data.image ||
+                      data.cardImage ||
+                      'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'
+                    }
                   />
                 </div>
 
                 <div className={styles.infoBox}>
                   <div className={styles.collectionRow}>
-                    <div className={styles.collection}>{data?.collectionName}</div>
+                    <div className={styles.collection}>{data?.collectionName || data?.name}</div>
 
                     <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
                   </div>
 
-                  <div className={styles.title}>{data?.title}</div>
+                  {previewCollection !== true && <div className={styles.title}>{data?.title}</div>}
 
-                  {_buttonBar}
+                  {previewCollection === true ? null : _buttonBar}
 
                   {data.metadata?.basePriceInEth && (
                     <>
@@ -179,7 +184,8 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data }: Props) => {
                   {_ownerSection}
                   {_offerMakerSection}
 
-                  <span className={styles.label}>Description</span>
+                  {previewCollection === true ? <span>&nbsp;</span> : <span className={styles.label}>Description</span>}
+
                   <div className={styles.description}>{description}</div>
 
                   <div className={styles.buttons}>{purchaseButton}</div>
