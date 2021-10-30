@@ -1,0 +1,21 @@
+{
+  "count": 50,
+  "collections": [
+    {
+      "id": "1",
+      "address": "0xc8bcbe0e8ae36d8f9238cd320ef6de88784b1734",
+      "name": "WinterBears",
+      "image": "https://lh3.googleusercontent.com/Gxu51q5bpzW7GyTPpEpdicodSWW0UY7deHzBW409nq9yoXebeyCINXx2CCY0QJxwvSboq5LanqImAArL8cBUvQwN5pGX3Yd_lAFs=s250",
+      "hasBlueCheck": true,
+      "description": "Winter Bears is a collection of 10,000 adorable and unique polar bear NFTs available on the Ethereum blockchain. Join the community today:  https://discord.gg/F68xh5ZtzG"
+    },
+    {
+      "id": "2",
+      "address": "0xc92ceddfb8dd984a89fb494c376f9a48b999aafc",
+      "name": "creatureworld",
+      "image": "https://lh3.googleusercontent.com/2kLUQnHeSFXv-UKAJK3CWSao1pcbzrvGIfcyXlKCx5cYOfM3wB8dTrka81_EsxCWHOWIyGSn9JkNB-7ef4WLMU9BpgDLENaN_nAJUw=s250",
+      "hasBlueCheck": true,
+      "description": "Welcome to The Creature World. You have arrived in a nearby magical dimension of love, divine intervention, and possibility. 10,000 unique Creatures are here to guide you on this journey. Follow their lead. Created with love by NYC-based artist Danny Cole. www.creature.world."
+    }
+  ]
+}
