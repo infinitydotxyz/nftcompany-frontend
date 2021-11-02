@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
@@ -65,15 +65,17 @@ const CollectionContents = ({ name, onTitle }: Props): JSX.Element => {
   const cardProvider = useCardProvider(name as string);
   const { user } = useAppContext();
 
-  if (cardProvider.hasLoaded) {
-    if (cardProvider.list.length > 0) {
-      const title = cardProvider.list[0].collectionName;
+  useEffect(() => {
+    if (cardProvider.hasLoaded) {
+      if (cardProvider.list.length > 0) {
+        const title = cardProvider.list[0].collectionName;
 
-      if (title) {
-        onTitle(title);
+        if (title) {
+          onTitle(title);
+        }
       }
     }
-  }
+  }, [cardProvider]);
 
   return (
     <>
