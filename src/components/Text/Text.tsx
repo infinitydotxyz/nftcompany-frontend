@@ -7,10 +7,21 @@ type Props = {
   align?: 'start' | 'end' | 'center';
   shade?: 'light' | 'med' | 'full';
   bold?: boolean;
+  mt?: boolean;
+  mb?: boolean;
   className?: string;
 };
 
-export const Text = ({ className, size = 'med', align = 'start', shade = 'med', text, bold = false }: Props) => {
+export const Text = ({
+  className,
+  size = 'med',
+  align = 'start',
+  shade = 'med',
+  text,
+  bold = false,
+  mt = false,
+  mb = false
+}: Props) => {
   const classes: string[] = [];
 
   if (className) {
@@ -19,6 +30,14 @@ export const Text = ({ className, size = 'med', align = 'start', shade = 'med', 
 
   if (bold) {
     classes.push(styles.bold);
+  }
+
+  if (mt) {
+    classes.push(styles.topMargin);
+  }
+
+  if (mb) {
+    classes.push(styles.bottomMargin);
   }
 
   switch (size) {
@@ -64,18 +83,15 @@ export const Text = ({ className, size = 'med', align = 'start', shade = 'med', 
 };
 
 export const Label = (props: Props) => {
-  const { size, shade } = props;
+  const { size, shade, mt = false, mb = false } = props;
 
-  return <Text {...props} size={size ?? 'sm'} shade={shade ?? 'light'} />;
+  return <Text {...props} size={size ?? 'sm'} mt={mt} mb={mb} shade={shade ?? 'light'} />;
 };
 
 export const Title = (props: Props) => {
-  const { size, shade, className } = props;
+  const { size, shade, className, mt = false, mb = true } = props;
 
-  let classes = className ?? '';
+  const classes = className ?? '';
 
-  // add bottom margin
-  classes += `${classes} ${styles.bottomMargin}`;
-
-  return <Text {...props} size={size ?? 'lg'} shade={shade ?? 'med'} className={classes} />;
+  return <Text {...props} mt={mt} mb={mb} size={size ?? 'lg'} shade={shade ?? 'med'} className={classes} />;
 };

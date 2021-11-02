@@ -14,6 +14,7 @@ import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
 import { ExternalLinkIconButton, ShareIconButton } from 'components/ShareButton/ShareButton';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
+import { Label } from 'components/Text/Text';
 
 const isServer = typeof window === 'undefined';
 
@@ -155,7 +156,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
 
                   {data.metadata?.basePriceInEth && (
                     <>
-                      <span className={styles.label}>{paymentToken === 'WETH' ? 'Minimum Price' : 'Price'}</span>
+                      <Label bold mt text={paymentToken === 'WETH' ? 'Minimum Price' : 'Price'} />
 
                       <PriceBox
                         price={data.metadata?.basePriceInEth}
@@ -184,9 +185,9 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                   {_ownerSection}
                   {_offerMakerSection}
 
-                  {previewCollection === true ? <span>&nbsp;</span> : <span className={styles.label}>Description</span>}
+                  {previewCollection === true ? <span>&nbsp;</span> : <Label bold mt text="Description" />}
 
-                  <div className={styles.description}>{description}</div>
+                  <Label text={description} />
 
                   <div className={styles.buttons}>{purchaseButton}</div>
                 </div>
