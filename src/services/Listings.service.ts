@@ -66,7 +66,11 @@ export const getCollectionNamesOfListings = async (collectionQuery: TypeaheadQue
   return result;
 };
 
-export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAheadOptions> => {
+// search by both collection name and listing title (2 api calls)
+export const getTypeAheadOptions = async (
+  query: TypeaheadQuery,
+  searchCollectionsOnly: boolean = false
+): Promise<TypeAheadOptions> => {
   if (query?.startsWith) {
     query.startsWith = query.startsWith.replace(/ /g, '');
   }
@@ -74,6 +78,10 @@ export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAh
   const collectionNames: TypeAheadOption[] = (await getCollectionNamesOfListings(query)).map((collectionInfo) => {
     return { name: collectionInfo.collectionName, type: 'Collection', hasBlueCheck: collectionInfo.hasBlueCheck };
   });
+  if (searchCollectionsOnly) {
+    return { collectionNames, nftNames: [] };
+  }
+
   const nftNames: TypeAheadOption[] = (await getTitlesOfListings(query)).map((listing) => {
     return {
       name: listing.title,

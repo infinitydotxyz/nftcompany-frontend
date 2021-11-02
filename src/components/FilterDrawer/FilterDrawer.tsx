@@ -11,11 +11,23 @@ import {
   Heading,
   IconButton,
   DrawerOverlay
+  Table,
+  Th,
+  Tr,
+  Td,
+  Tbody,
+  Tfoot,
+  Thead,
+  HStack,
+  Tag,
+  TagLabel,
+  TagCloseButton
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import * as React from 'react';
 import { useSearchContext } from 'utils/context/SearchContext';
 import { useEffect } from 'react';
+import CollectionNameFilter from './CollectionNameFilter';
 
 const DEFAULT_MIN_PRICE = 0.0000000001;
 
@@ -163,6 +175,63 @@ const FilterDrawer = () => {
                 }}
               />
             </Box>
+
+            <Heading size="sm" mt={8} mb={4}>
+              Collections
+            </Heading>
+            <Box>
+              <CollectionNameFilter />
+
+              {/* <Input placeholder="Search by name..." /> */}
+
+              <Table size="sm" mt={4}>
+                <Thead>
+                  <Tr>
+                    <Th>Attributes</Th>
+                    <Th>Values</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  <Tr>
+                    <Td>Face</Td>
+                    <Td>
+                      <HStack spacing={4}>
+                        {['sm'].map((size) => (
+                          <Tag size={size} key={size} borderRadius="full" variant="solid" colorScheme="gray">
+                            <TagLabel>Happy</TagLabel>
+                            <TagCloseButton />
+                          </Tag>
+                        ))}
+                        {['sm'].map((size) => (
+                          <Tag size={size} key={size} borderRadius="full" variant="solid" colorScheme="gray">
+                            <TagLabel>Sad</TagLabel>
+                            <TagCloseButton />
+                          </Tag>
+                        ))}
+                      </HStack>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Hair</Td>
+                    <Td>
+                      <HStack spacing={4}>
+                        {['sm'].map((size) => (
+                          <Tag size={size} key={size} borderRadius="full" variant="solid" colorScheme="gray">
+                            <TagLabel>Black</TagLabel>
+                            <TagCloseButton />
+                          </Tag>
+                        ))}
+                      </HStack>
+                    </Td>
+                  </Tr>
+                  <Tr color="gray.400">
+                    <Td>Name ▼</Td>
+                    <Td>Values ▼</Td>
+                  </Tr>
+                </Tbody>
+              </Table>
+            </Box>
+
             <Box mt={8}>
               <Button variant="outline" onClick={handleClickApply}>
                 Apply
