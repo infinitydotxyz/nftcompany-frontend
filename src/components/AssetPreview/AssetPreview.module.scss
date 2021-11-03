@@ -11,11 +11,17 @@
       flex: 1;
 
       .imageFrame {
-        border: solid 1px #ddd;
         border-radius: 16px;
         overflow: hidden;
-        background-color: rgba(255, 255, 255, 0.5);
         padding: 0 16px 16px 16px;
+
+        background-color: white; // var(--chakra-colors-cardBgLight, red);
+        border: solid 1px #ddd;
+
+        :global(body.chakra-ui-dark) & {
+          background-color: var(--chakra-colors-cardBgDark, red);
+          border: solid 1px #333;
+        }
 
         .imgHeader {
           padding: 10px 5px;
