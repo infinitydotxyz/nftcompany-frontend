@@ -89,6 +89,10 @@ $outerHeight: 405px;
   }
 }
 
+.outOfViewCard {
+  height: $outerHeight;
+}
+
 .tripleCard {
   // debug
   // border: 1px solid red;
