@@ -51,7 +51,7 @@ const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
                   position="fixed"
                   top={100}
                   variant="ghost"
-                  color="gray.700"
+                  colorScheme="gray"
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
                 >
                   <ArrowForwardIcon />
