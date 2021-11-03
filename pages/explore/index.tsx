@@ -52,7 +52,7 @@ export default function ExplorePage() {
       </Head>
       <div>
         <div className="page-container">
-          {!searchMode && <FeaturedCollections asSection={true} />}
+          {!searchMode && <FeaturedCollections />}
 
           <div className="section-bar">
             <div className="tg-title">Explore</div>

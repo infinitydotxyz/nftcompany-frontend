@@ -145,9 +145,8 @@ $outerHeight: 405px;
 
     .cardButton {
       min-width: 140px;
-      margin-bottom: 10px;
       margin: 0 10px 10px 10px;
-      background-color: blue;
+      background-color: var(--chakra-colors-brandBlue, red);
       padding: 10px 20px;
       text-align: center;
       border-radius: 24px;
