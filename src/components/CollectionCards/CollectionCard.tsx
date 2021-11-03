@@ -5,7 +5,6 @@ import { CollectionCardEntry } from 'types/rewardTypes';
 import router from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { uuidv4 } from 'utils/commonUtil';
-import { useInView } from 'react-intersection-observer';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 
 type Props = {
@@ -14,7 +13,6 @@ type Props = {
 };
 
 export const CollectionCard = ({ entry, isFeatured }: Props) => {
-  const { ref, inView } = useInView({ threshold: 0 });
   const [previewModalShowed, setPreviewModalShowed] = useState(false);
 
   if (!entry) {
@@ -35,12 +33,8 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
     return encodeURIComponent(result);
   };
 
-  if (inView === false) {
-    return <div ref={ref} className={styles.outOfViewCard}></div>;
-  }
   return (
     <div
-      ref={ref}
       className={styles.tripleCard}
       onClick={() => {
         if (previewModalShowed) {
