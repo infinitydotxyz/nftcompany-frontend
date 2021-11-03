@@ -15,7 +15,11 @@ type SearchMatch = {
   type: 'Asset' | 'Collection';
 };
 
-export default function CollectionNameFilter() {
+type CollectionNameFilterProps = {
+  onChange: (value: string) => void;
+};
+
+export default function CollectionNameFilter({ onChange }: CollectionNameFilterProps) {
   const router = useRouter();
   const [options, setOptions] = React.useState<SearchMatch[]>([]);
   const [isSelecting, setIsSelecting] = React.useState(false); // user pressed Enter or selected a dropdown item.
@@ -27,10 +31,11 @@ export default function CollectionNameFilter() {
   const clearSearch = () => {
     setSelectedValue('');
     setIsSelecting(true);
-    setSearchState({ ...searchState, collectionName: '', text: '', selectedOption: undefined });
-    setFilterState(defaultFilterState);
     if (inputRef && inputRef.current) {
       inputRef.current.value = '';
+      if (onChange) {
+        onChange('');
+      }
     }
   };
 
@@ -48,6 +53,9 @@ export default function CollectionNameFilter() {
 
           if (inputRef && inputRef.current) {
             inputRef.current.value = val;
+            if (onChange) {
+              onChange(val);
+            }
           }
         }}
         itemToString={(item: string[] | null) => `${item}`}
@@ -89,6 +97,9 @@ export default function CollectionNameFilter() {
             });
             setOptions(arr);
             setSelectedValue(text);
+            if (onChange) {
+              onChange(text);
+            }
           };
           const inputProps = { ...getInputProps() };
 

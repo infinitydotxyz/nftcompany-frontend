@@ -10,7 +10,7 @@ import {
   ButtonProps,
   Heading,
   IconButton,
-  DrawerOverlay
+  DrawerOverlay,
   Table,
   Th,
   Tr,
@@ -48,6 +48,7 @@ const FilterDrawer = () => {
   const { filterState, setFilterState } = useSearchContext();
   const [minPriceVal, setMinPriceVal] = React.useState('');
   const [maxPriceVal, setMaxPriceVal] = React.useState('');
+  const [collectionName, setCollectionName] = React.useState('');
   const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
 
@@ -61,25 +62,27 @@ const FilterDrawer = () => {
     }
   }, []);
 
-  const handleClickStatus = (listType: '' | 'BUY_NOW' | 'AUCTION') => {
-    let newListType = listType;
-    if (listType === filterState.listType) {
-      newListType = '';
-    }
-
-    const newFilter = { ...filterState };
-    newFilter.listType = newListType;
-    if (newFilter) {
-      newFilter.priceMin = newFilter.priceMin || DEFAULT_MIN_PRICE.toString();
-    }
-    setFilterState(newFilter);
-  };
-
-  const handleClickApply = () => {
+  const getNewFilterState = () => {
     const newFilter = { ...filterState };
     if (newFilter.priceMax) {
       newFilter.priceMin = newFilter.priceMin || DEFAULT_MIN_PRICE.toString();
     }
+    newFilter.collectionName = collectionName;
+    return newFilter;
+  };
+
+  const handleClickListType = (listType: '' | 'BUY_NOW' | 'AUCTION') => {
+    let newListType = listType;
+    if (listType === filterState.listType) {
+      newListType = '';
+    }
+    const newFilter = getNewFilterState();
+    newFilter.listType = newListType;
+    setFilterState(newFilter);
+  };
+
+  const handleClickApply = () => {
+    const newFilter = getNewFilterState();
     setFilterState(newFilter);
   };
 
@@ -91,6 +94,7 @@ const FilterDrawer = () => {
     setFilterState(newFilter);
     setMinPriceVal('');
     setMaxPriceVal('');
+    setCollectionName('');
   };
 
   const buttonProps = filterState.listType === 'BUY_NOW' ? activeButtonProps : normalButtonProps;
@@ -136,7 +140,7 @@ const FilterDrawer = () => {
             <Button
               {...buttonProps}
               isActive={filterState.listType === 'BUY_NOW'}
-              onClick={() => handleClickStatus('BUY_NOW')}
+              onClick={() => handleClickListType('BUY_NOW')}
             >
               Buy Now
             </Button>
@@ -144,7 +148,7 @@ const FilterDrawer = () => {
               {...buttonProps2}
               ml={4}
               isActive={filterState.listType === 'AUCTION'}
-              onClick={() => handleClickStatus('AUCTION')}
+              onClick={() => handleClickListType('AUCTION')}
             >
               On Auction
             </Button>
@@ -180,7 +184,7 @@ const FilterDrawer = () => {
               Collections
             </Heading>
             <Box>
-              <CollectionNameFilter />
+              <CollectionNameFilter onChange={(val) => setCollectionName(val)} />
 
               {/* <Input placeholder="Search by name..." /> */}
 

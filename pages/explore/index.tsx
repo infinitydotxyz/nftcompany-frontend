@@ -36,7 +36,11 @@ export default function ExplorePage() {
   const searchText = searchState.text;
   const searchCollName = searchState.collectionName;
   let searchMode =
-    searchText?.length > 0 || searchCollName?.length > 0 || filterState.priceMin !== '' || filterState.priceMax !== '';
+    searchText?.length > 0 ||
+    searchCollName?.length > 0 ||
+    filterState?.collectionName?.length > 0 ||
+    filterState.priceMin !== '' ||
+    filterState.priceMax !== '';
   searchMode = searchMode || filterState.listType !== '';
 
   let contents;
