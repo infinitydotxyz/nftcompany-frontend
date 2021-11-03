@@ -108,7 +108,7 @@ const FilterDrawer = () => {
       >
         <DrawerOverlay backgroundColor="rgba(0,0,0,0)" />
 
-        <DrawerContent shadow="med" mt={85}>
+        <DrawerContent shadow="lg" mt={88}>
           <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
             <Heading size="sm">Filter</Heading>
             <IconButton aria-label="" variant="ghost" size="lg" colorScheme="gray" onClick={() => setIsOpen(false)}>
