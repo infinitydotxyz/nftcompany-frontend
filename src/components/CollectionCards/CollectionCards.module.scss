@@ -29,6 +29,7 @@ $outerHeight: 405px;
   width: 95%;
   height: $innerHeight;
   cursor: pointer;
+  border: 1px solid #ddd;
 
   @include lightShadow();
   background-color: var(--chakra-colors-cardBgLight, red);
@@ -36,6 +37,8 @@ $outerHeight: 405px;
   :global(body.chakra-ui-dark) & {
     @include darkShadow();
     background-color: var(--chakra-colors-cardBgDark, red);
+
+    border: 1px solid #333;
   }
 
   &:hover {
@@ -99,12 +102,10 @@ $outerHeight: 405px;
 
   .card1 {
     @extend .card;
-    border: 1px solid #eee;
   }
 
   .card2 {
     @extend .card;
-    border: 1px solid #ddd;
 
     top: 4px;
     left: 8px;
@@ -112,7 +113,6 @@ $outerHeight: 405px;
 
   .card3 {
     @extend .card;
-    border: 1px solid #ddd;
 
     top: 8px;
     left: 16px;
