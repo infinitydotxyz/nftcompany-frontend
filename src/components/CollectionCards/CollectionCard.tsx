@@ -25,14 +25,6 @@ type Props = {
   isFeatured?: boolean;
 };
 
-function getSearchFriendlyString(input: string) {
-  if (!input) {
-    return '';
-  }
-  const noSpace = input.replace(/[\s-]/g, '');
-  return noSpace.toLowerCase();
-}
-
 export const CollectionCard = ({ entry, isFeatured }: Props) => {
   const { ref, inView } = useInView({ threshold: 0 });
   const [previewModalShowed, setPreviewModalShowed] = useState(false);
@@ -41,8 +33,19 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
     return <div>Nothing found</div>;
   }
 
-  let name = entry.name.replace(/\s/g, '');
-  name = name.toLowerCase();
+  const cleanCollectionName = (input: string) => {
+    if (!input) {
+      return '';
+    }
+
+    // remove spaces and dashes
+    let result = input.replace(/[\s-]/g, '');
+    result = result.toLowerCase();
+
+    // name could have # and other url reseved characters
+    // must encodeURIComponent()
+    return encodeURIComponent(result);
+  };
 
   if (inView === false) {
     return <div ref={ref} className={styles.outOfViewCard}></div>;
@@ -56,7 +59,7 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
           return;
         }
         // name could have # and other url reseved characters
-        router.push(`/collection/${getSearchFriendlyString(entry.name)}`);
+        router.push(`/collection/${cleanCollectionName(entry.name)}`);
       }}
     >
       <div className={styles.card1}></div>

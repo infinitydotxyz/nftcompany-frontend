@@ -4,11 +4,9 @@ import { useColorMode } from '@chakra-ui/react';
 
 export const Background = (props: any) => {
   const canvasRef = useRef<any>(null);
-
   const { colorMode } = useColorMode();
 
   const dark = colorMode === 'dark';
-  console.log(colorMode);
 
   useEffect(() => {
     const canvas = canvasRef.current;
