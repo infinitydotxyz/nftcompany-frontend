@@ -1,21 +1,17 @@
 import React, { useState } from 'react';
-import { NextPage } from 'next';
-import Head from 'next/head';
-import Layout from 'containers/layout';
 import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-import cardListStyles from '../../src/components/Card/CardList.module.scss';
+import cardListStyles from '../Card/CardList.module.scss';
 import { CollectionCard, loadingCardData } from 'components/CollectionCards/CollectionCard';
 import { Box } from '@chakra-ui/layout';
 import { CollectionCardEntry } from 'types/rewardTypes';
 
-type FeaturedPageProps = {
+type Props = {
   asSection?: boolean;
 };
 
-export default function FeaturedPage({ asSection }: FeaturedPageProps) {
+export default function FeaturedCollections({ asSection }: Props) {
   const { showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<CollectionCardEntry[]>([]);
@@ -68,6 +64,3 @@ export default function FeaturedPage({ asSection }: FeaturedPageProps) {
     </>
   );
 }
-
-// eslint-disable-next-line react/display-name
-FeaturedPage.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
