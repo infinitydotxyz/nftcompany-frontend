@@ -96,6 +96,11 @@ const Button = {
     };
   },
   variants: {
+    outline: (props: any) => {
+      return {
+        border: '2px solid'
+      };
+    },
     solid: (props: any) => {
       const { colorScheme, colorMode } = props;
 
