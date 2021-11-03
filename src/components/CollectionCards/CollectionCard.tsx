@@ -110,9 +110,10 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
 
 type xProps = {
   data: CollectionCardEntry[];
+  isFeatured?: boolean;
 };
 
-export const CardGrid = ({ data }: xProps): JSX.Element => {
+export const CardGrid = ({ data, isFeatured = false }: xProps): JSX.Element => {
   return (
     <div className={`${styles.cardList}`}>
       {(data || []).map((item) => {
@@ -120,7 +121,7 @@ export const CardGrid = ({ data }: xProps): JSX.Element => {
           return null;
         }
 
-        return <CollectionCard key={item?.id || uuidv4()} entry={item} />;
+        return <CollectionCard key={item?.id || uuidv4()} entry={item} isFeatured={isFeatured} />;
       })}
     </div>
   );

@@ -152,7 +152,7 @@ export const CollectionCards = ({ rows = 0, featuredCollections = false, listMod
   } else {
     contents = (
       <div className={styles.main}>
-        <CardGrid data={collectionData} />
+        <CardGrid data={collectionData} isFeatured={featuredCollections} />
         {hasMore && (
           <ScrollLoader
             onFetchMore={async () => {
