@@ -36,8 +36,9 @@ const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
   };
   return (
     <>
-      <Background />
       <AppChakraProvider>
+        <Background />
+
         <AppContextProvider>
           <SearchContextProvider>
             {/* No header on connect page */}
