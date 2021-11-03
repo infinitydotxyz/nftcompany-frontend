@@ -144,7 +144,7 @@ const styles = {
         color: mode('gray.800', 'whiteAlpha.900')(props),
 
         // bg: mode('white', 'gray.800')(props)
-        bg: mode('windowBg', 'gray.800')(props)
+        bg: mode('windowBg', 'windowBgDark')(props)
       },
       '*::placeholder': {
         color: mode('gray.400', 'whiteAlpha.400')(props)

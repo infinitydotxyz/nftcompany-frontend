@@ -6,14 +6,12 @@ import { AppChakraProvider } from 'utils/themeUtil';
 import LandingFooter from 'components/LandingFooter/LandingFooter';
 import Header from 'components/Header/Header';
 import { isLocalhost } from 'utils/commonUtil';
-
 import LogRocket from 'logrocket';
 import { Background } from 'components/Background/Background';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
-import { Button } from '@chakra-ui/react';
+import { IconButton } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
-import { route } from 'next/dist/server/router';
 
 if (!isLocalhost()) {
   LogRocket.init('0pu9ak/nftco');
@@ -34,10 +32,12 @@ const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
       setIsFilterOpen(false);
     }
   };
+
   return (
     <>
-      <Background />
       <AppChakraProvider>
+        <Background />
+
         <AppContextProvider>
           <SearchContextProvider>
             {/* No header on connect page */}
@@ -46,7 +46,8 @@ const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
             {router.pathname === '/explore' && (
               <>
                 <FilterDrawer isOpen={isFilterOpen} setIsOpen={setIsFilterOpen} />
-                <Button
+                <IconButton
+                  aria-label=""
                   position="fixed"
                   top={100}
                   variant="ghost"
@@ -54,7 +55,7 @@ const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
                 >
                   <ArrowForwardIcon />
-                </Button>
+                </IconButton>
               </>
             )}
 

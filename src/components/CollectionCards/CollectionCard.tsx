@@ -8,30 +8,10 @@ import { uuidv4 } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 
-export const loadingCardData: CollectionCardEntry = {
-  id: 'loading-card-id',
-  address: '',
-  name: '⠀', // placeholder char to avoid jumpy layout.
-  description: '',
-  cardImage: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==', // blank image
-  bannerImage: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==', // blank image
-  hasBlueCheck: false,
-  openseaUrl: '',
-  title: ''
-};
-
 type Props = {
   entry: CollectionCardEntry;
   isFeatured?: boolean;
 };
-
-function getSearchFriendlyString(input: string) {
-  if (!input) {
-    return '';
-  }
-  const noSpace = input.replace(/[\s-]/g, '');
-  return noSpace.toLowerCase();
-}
 
 export const CollectionCard = ({ entry, isFeatured }: Props) => {
   const { ref, inView } = useInView({ threshold: 0 });
@@ -41,8 +21,19 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
     return <div>Nothing found</div>;
   }
 
-  let name = entry.name.replace(/\s/g, '');
-  name = name.toLowerCase();
+  const cleanCollectionName = (input: string) => {
+    if (!input) {
+      return '';
+    }
+
+    // remove spaces and dashes
+    let result = input.replace(/[\s-]/g, '');
+    result = result.toLowerCase();
+
+    // name could have # and other url reseved characters
+    // must encodeURIComponent()
+    return encodeURIComponent(result);
+  };
 
   if (inView === false) {
     return <div ref={ref} className={styles.outOfViewCard}></div>;
@@ -56,7 +47,7 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
           return;
         }
         // name could have # and other url reseved characters
-        router.push(`/collection/${getSearchFriendlyString(entry.name)}`);
+        router.push(`/collection/${cleanCollectionName(entry.name)}`);
       }}
     >
       <div className={styles.card1}></div>
@@ -119,9 +110,10 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
 
 type xProps = {
   data: CollectionCardEntry[];
+  isFeatured?: boolean;
 };
 
-export const CardGrid = ({ data }: xProps): JSX.Element => {
+export const CardGrid = ({ data, isFeatured = false }: xProps): JSX.Element => {
   return (
     <div className={`${styles.cardList}`}>
       {(data || []).map((item) => {
@@ -129,7 +121,7 @@ export const CardGrid = ({ data }: xProps): JSX.Element => {
           return null;
         }
 
-        return <CollectionCard key={item?.id || uuidv4()} entry={item} />;
+        return <CollectionCard key={item?.id || uuidv4()} entry={item} isFeatured={isFeatured} />;
       })}
     </div>
   );

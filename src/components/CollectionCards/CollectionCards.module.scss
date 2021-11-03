@@ -127,7 +127,7 @@ $outerHeight: 405px;
   }
 
   .featuredCard {
-    background-image: linear-gradient(140deg, #ffffff 0%, #ffffff 50%, #d2fffb 75%);
+    background-image: linear-gradient(140deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(45, 185, 255, 0.2) 75%);
   }
 
   .cardControls {
@@ -145,9 +145,8 @@ $outerHeight: 405px;
 
     .cardButton {
       min-width: 140px;
-      margin-bottom: 10px;
       margin: 0 10px 10px 10px;
-      background-color: blue;
+      background-color: var(--chakra-colors-brandBlue, red);
       padding: 10px 20px;
       text-align: center;
       border-radius: 24px;
