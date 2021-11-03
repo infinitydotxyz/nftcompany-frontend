@@ -7,6 +7,7 @@ import {
   DrawerContent,
   DrawerHeader,
   useMediaQuery,
+  ButtonProps,
   Heading
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
@@ -15,12 +16,17 @@ import { useSearchContext } from 'utils/context/SearchContext';
 
 const DEFAULT_MIN_PRICE = 0.0000000001;
 
-const listTypeButtonProps = {
+const normalButtonProps: ButtonProps = {
+  colorScheme: 'gray',
   variant: 'outline',
-  color: 'gray.400',
   fontWeight: 'normal',
-  width: 120,
-  _active: { backgroundColor: 'blue.500', color: 'white' }
+  width: 120
+};
+
+const activeButtonProps: ButtonProps = {
+  colorScheme: 'blue',
+  fontWeight: 'normal',
+  width: 120
 };
 
 const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
@@ -62,6 +68,9 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
     setMaxPriceVal('');
   };
 
+  const buttonProps = filterState.listType === 'BUY_NOW' ? activeButtonProps : normalButtonProps;
+  const buttonProps2 = filterState.listType === 'AUCTION' ? activeButtonProps : normalButtonProps;
+
   return (
     <React.Fragment>
       <Drawer
@@ -91,14 +100,14 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
             </Heading>
             <p />
             <Button
-              {...listTypeButtonProps}
+              {...buttonProps}
               isActive={filterState.listType === 'BUY_NOW'}
               onClick={() => handleClickStatus('BUY_NOW')}
             >
               Buy Now
             </Button>
             <Button
-              {...listTypeButtonProps}
+              {...buttonProps2}
               ml={4}
               isActive={filterState.listType === 'AUCTION'}
               onClick={() => handleClickStatus('AUCTION')}
