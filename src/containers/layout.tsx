@@ -9,8 +9,6 @@ import { isLocalhost } from 'utils/commonUtil';
 import LogRocket from 'logrocket';
 import { Background } from 'components/Background/Background';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
-import { IconButton } from '@chakra-ui/react';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
 
 if (!isLocalhost()) {
@@ -25,13 +23,6 @@ interface IProps {
 
 const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
   const router = useRouter();
-  const [isFilterOpen, setIsFilterOpen] = React.useState(true);
-
-  const handlePageClick = () => {
-    if (isFilterOpen) {
-      setIsFilterOpen(false);
-    }
-  };
 
   return (
     <>
@@ -41,25 +32,9 @@ const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
         <AppContextProvider>
           <SearchContextProvider>
             {/* No header on connect page */}
-            {!connect && <Header onLockout={() => setIsFilterOpen(false)} />}
+            {!connect && <Header />}
 
-            {router.pathname === '/explore' && (
-              <>
-                <FilterDrawer isOpen={isFilterOpen} setIsOpen={setIsFilterOpen} />
-                <IconButton
-                  aria-label=""
-                  position="fixed"
-                  top={100}
-                  variant="ghost"
-                  colorScheme="gray"
-                  onClick={() => setIsFilterOpen(!isFilterOpen)}
-                >
-                  <ArrowForwardIcon />
-                </IconButton>
-              </>
-            )}
-
-            <main onClick={handlePageClick}>{children}</main>
+            <main>{children}</main>
 
             {landing && <LandingFooter />}
 

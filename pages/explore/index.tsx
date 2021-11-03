@@ -14,6 +14,7 @@ import { CollectionCardEntry } from 'types/rewardTypes';
 import { useSearchContext } from 'utils/context/SearchContext';
 import CardList from 'components/Card/CardList';
 import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollections';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 
 export default function ExplorePage() {
   const searchContext = useSearchContext();
@@ -74,6 +75,8 @@ export default function ExplorePage() {
           )}
         </div>
       </div>
+
+      <FilterDrawer />
     </>
   );
 }

@@ -8,11 +8,14 @@ import {
   DrawerHeader,
   useMediaQuery,
   ButtonProps,
-  Heading
+  Heading,
+  IconButton,
+  DrawerOverlay
 } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import * as React from 'react';
 import { useSearchContext } from 'utils/context/SearchContext';
+import { useEffect } from 'react';
 
 const DEFAULT_MIN_PRICE = 0.0000000001;
 
@@ -29,12 +32,22 @@ const activeButtonProps: ButtonProps = {
   width: 120
 };
 
-const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
+const FilterDrawer = () => {
   const { filterState, setFilterState } = useSearchContext();
   const [minPriceVal, setMinPriceVal] = React.useState('');
   const [maxPriceVal, setMaxPriceVal] = React.useState('');
+  const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
-  const btnRef: any = React.useRef();
+
+  useEffect(() => {
+    const showDrawer = localStorage.getItem('didShowDrawerFirstTime');
+
+    if (showDrawer !== 'true') {
+      setIsOpen(true);
+
+      localStorage.setItem('didShowDrawerFirstTime', 'true');
+    }
+  }, []);
 
   const handleClickStatus = (listType: '' | 'BUY_NOW' | 'AUCTION') => {
     let newListType = listType;
@@ -72,29 +85,38 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
   const buttonProps2 = filterState.listType === 'AUCTION' ? activeButtonProps : normalButtonProps;
 
   return (
-    <React.Fragment>
+    <>
+      <IconButton
+        aria-label=""
+        position="fixed"
+        size="lg"
+        top={100}
+        variant="ghost"
+        colorScheme="gray"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <ArrowForwardIcon />
+      </IconButton>
+
       <Drawer
-        variant="alwaysOpen"
         isOpen={isOpen}
         placement="left"
         onClose={() => setIsOpen(!isOpen)}
-        finalFocusRef={btnRef}
         size={isMobile ? 'full' : 'xs'}
-        closeOnOverlayClick={false}
         blockScrollOnMount={false}
         trapFocus={false}
       >
-        <DrawerContent shadow="sm" mt={85}>
+        <DrawerOverlay backgroundColor="rgba(0,0,0,0)" />
+
+        <DrawerContent shadow="med" mt={85}>
           <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
             <Heading size="sm">Filter</Heading>
-            <Button variant="ghost" size="lg" color="gray.700" onClick={() => setIsOpen(false)}>
+            <IconButton aria-label="" variant="ghost" size="lg" colorScheme="gray" onClick={() => setIsOpen(false)}>
               <ArrowBackIcon />
-            </Button>
+            </IconButton>
           </DrawerHeader>
 
           <DrawerBody>
-            {/* <Divider /> */}
-
             <Heading size="sm" mb={4}>
               Sale Type
             </Heading>
@@ -152,7 +174,7 @@ const FilterDrawer = ({ isOpen, setIsOpen }: any) => {
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-    </React.Fragment>
+    </>
   );
 };
 

@@ -17,11 +17,7 @@ import { MenuIcons } from 'components/Icons/MenuIcons';
 
 let isChangingAccount = false;
 
-type HeaderProps = {
-  onLockout: () => void;
-};
-
-const Header = ({ onLockout }: HeaderProps): JSX.Element => {
+const Header = (): JSX.Element => {
   const router = useRouter();
   const { user, signIn, signOut } = useAppContext();
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
@@ -63,7 +59,6 @@ const Header = ({ onLockout }: HeaderProps): JSX.Element => {
 
         if (chainId !== '0x1') {
           setLockout(true);
-          onLockout();
         }
       } catch (err) {
         console.error('eth_chainId failed', err);
