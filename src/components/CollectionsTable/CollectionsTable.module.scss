@@ -11,11 +11,6 @@
   padding: 0 60px 20px 60px;
   overflow-x: auto;
 
-  :global(body.chakra-ui-dark) & {
-    @include darkShadow();
-    background-color: #151515;
-  }
-
   .leftSpace {
     width: auto;
 
