@@ -34,6 +34,7 @@
   li {
     padding: 10px;
     cursor: pointer;
+    color: var(--text-primary);
   }
   li[aria-selected='true'] {
     background-color: var(--brand-primary);

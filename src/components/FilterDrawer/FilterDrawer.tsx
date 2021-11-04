@@ -28,6 +28,7 @@ import * as React from 'react';
 import { useSearchContext } from 'utils/context/SearchContext';
 import { useEffect } from 'react';
 import CollectionNameFilter from './CollectionNameFilter';
+import { apiGet } from 'utils/apiUtil';
 
 const DEFAULT_MIN_PRICE = 0.0000000001;
 
@@ -49,6 +50,7 @@ const FilterDrawer = () => {
   const [minPriceVal, setMinPriceVal] = React.useState('');
   const [maxPriceVal, setMaxPriceVal] = React.useState('');
   const [collectionName, setCollectionName] = React.useState('');
+  const [collectionAddress, setCollectionAddress] = React.useState('');
   const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
 
@@ -184,7 +186,19 @@ const FilterDrawer = () => {
               Collections
             </Heading>
             <Box>
-              <CollectionNameFilter onChange={(val) => setCollectionName(val)} />
+              <CollectionNameFilter
+                onChange={async (val, address) => {
+                  setCollectionName(val);
+                  setCollectionName(address);
+                  const { result, error } = await apiGet(`/collections/${address}/traits`);
+                  if (error) {
+                    // showAppError(error?.message);
+                  } else {
+                    // setData(result?.listings || []);
+                    console.log('traits', result);
+                  }
+                }}
+              />
 
               {/* <Input placeholder="Search by name..." /> */}
 

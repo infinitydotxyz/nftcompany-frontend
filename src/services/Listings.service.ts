@@ -55,6 +55,7 @@ export const getTitlesOfListings = async (titleQuery: TypeaheadQuery): Promise<T
 export interface CollectionResponse {
   collectionName: string;
   hasBlueCheck: boolean;
+  address?: string;
 }
 
 export const getCollectionNamesOfListings = async (collectionQuery: TypeaheadQuery): Promise<CollectionResponse[]> => {
@@ -75,8 +76,8 @@ export const getTypeAheadOptions = async (
     query.startsWith = query.startsWith.replace(/ /g, '');
   }
 
-  const collectionNames: TypeAheadOption[] = (await getCollectionNamesOfListings(query)).map((collectionInfo) => {
-    return { name: collectionInfo.collectionName, type: 'Collection', hasBlueCheck: collectionInfo.hasBlueCheck };
+  const collectionNames: TypeAheadOption[] = (await getCollectionNamesOfListings(query)).map((item) => {
+    return { address: item.address, name: item.collectionName, type: 'Collection', hasBlueCheck: item.hasBlueCheck };
   });
   if (searchCollectionsOnly) {
     return { collectionNames, nftNames: [] };

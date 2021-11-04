@@ -13,10 +13,11 @@ type SearchMatch = {
   value: string;
   label: string;
   type: 'Asset' | 'Collection';
+  address?: string;
 };
 
 type CollectionNameFilterProps = {
-  onChange: (value: string) => void;
+  onChange: (value: string, address: string) => void;
 };
 
 export default function CollectionNameFilter({ onChange }: CollectionNameFilterProps) {
@@ -34,7 +35,7 @@ export default function CollectionNameFilter({ onChange }: CollectionNameFilterP
     if (inputRef && inputRef.current) {
       inputRef.current.value = '';
       if (onChange) {
-        onChange('');
+        onChange('', '');
       }
     }
   };
@@ -54,7 +55,8 @@ export default function CollectionNameFilter({ onChange }: CollectionNameFilterP
           if (inputRef && inputRef.current) {
             inputRef.current.value = val;
             if (onChange) {
-              onChange(val);
+              const found = options.find((item) => item.value === val);
+              onChange(val, found?.address || '');
             }
           }
         }}
@@ -92,13 +94,15 @@ export default function CollectionNameFilter({ onChange }: CollectionNameFilterP
                   </Box>
                 ),
                 value: item.name, // `Collection: ${item.name}`,
-                type: 'Collection'
+                type: 'Collection',
+                address: item.address
               });
             });
             setOptions(arr);
             setSelectedValue(text);
             if (onChange) {
-              onChange(text);
+              const found = options.find((item) => item.value === text);
+              onChange(text, found?.address || '');
             }
           };
           const inputProps = { ...getInputProps() };
