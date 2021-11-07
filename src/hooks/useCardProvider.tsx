@@ -103,7 +103,7 @@ export function useCardProvider(inCollectionName?: string): {
     setListType(newListType);
 
     const filterState = searchContext.filterState;
-    let collectionName = searchContext.searchState.collectionName;
+    let collectionName = searchContext.searchState.collectionName || searchContext.filterState.collectionName;
     let text = searchContext.searchState.text;
     let selectedOption = searchContext.searchState.selectedOption;
 
