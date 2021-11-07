@@ -55,7 +55,7 @@ export default function CollectionNameFilter({ value, onClear, onChange }: Colle
         id="app-search-box"
         onChange={(value) => {
           // user selected a matched from the dropdown
-          let val = `${value || ''}`;
+          const val = `${value || ''}`;
 
           setSelectedValue(val);
           setIsSelecting(true);
