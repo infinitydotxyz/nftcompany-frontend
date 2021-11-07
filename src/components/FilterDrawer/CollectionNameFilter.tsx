@@ -17,10 +17,12 @@ type SearchMatch = {
 };
 
 type CollectionNameFilterProps = {
+  value: string;
+  onClear: () => void;
   onChange: (value: string, address: string) => void;
 };
 
-export default function CollectionNameFilter({ onChange }: CollectionNameFilterProps) {
+export default function CollectionNameFilter({ value, onClear, onChange }: CollectionNameFilterProps) {
   const router = useRouter();
   const [options, setOptions] = React.useState<SearchMatch[]>([]);
   const [isSelecting, setIsSelecting] = React.useState(false); // user pressed Enter or selected a dropdown item.
@@ -28,6 +30,12 @@ export default function CollectionNameFilter({ onChange }: CollectionNameFilterP
   const { searchState, setSearchState, setFilterState } = useSearchContext();
   const timeoutId = React.useRef<any>(0);
   const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (inputRef && inputRef.current && value === '') {
+      inputRef.current.value = '';
+    }
+  }, [value]);
 
   const clearSearch = () => {
     setSelectedValue('');
@@ -37,6 +45,7 @@ export default function CollectionNameFilter({ onChange }: CollectionNameFilterP
       if (onChange) {
         onChange('', '');
       }
+      onClear();
     }
   };
 

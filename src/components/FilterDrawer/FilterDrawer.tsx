@@ -16,12 +16,7 @@ import {
   Tr,
   Td,
   Tbody,
-  Tfoot,
-  Thead,
-  HStack,
-  Tag,
-  TagLabel,
-  TagCloseButton
+  Thead
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import * as React from 'react';
@@ -45,12 +40,21 @@ const activeButtonProps: ButtonProps = {
   width: 120
 };
 
+type Trait = {
+  trait_count: number;
+  trait_type: string;
+  value: string;
+  values: string[];
+};
+
 const FilterDrawer = () => {
   const { filterState, setFilterState } = useSearchContext();
   const [minPriceVal, setMinPriceVal] = React.useState('');
   const [maxPriceVal, setMaxPriceVal] = React.useState('');
   const [collectionName, setCollectionName] = React.useState('');
   const [collectionAddress, setCollectionAddress] = React.useState('');
+  const [traits, setTraits] = React.useState<Trait[]>([]);
+  const [selectedTrait, setSelectedTrait] = React.useState<Trait | undefined>(undefined);
   const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
 
@@ -93,10 +97,13 @@ const FilterDrawer = () => {
     newFilter.listType = '';
     newFilter.priceMin = '';
     newFilter.priceMax = '';
-    setFilterState(newFilter);
+    newFilter.collectionName = '';
     setMinPriceVal('');
     setMaxPriceVal('');
     setCollectionName('');
+    setTraits([]);
+    setSelectedTrait(undefined);
+    setFilterState(newFilter);
   };
 
   const buttonProps = filterState.listType === 'BUY_NOW' ? activeButtonProps : normalButtonProps;
@@ -187,67 +194,109 @@ const FilterDrawer = () => {
             </Heading>
             <Box>
               <CollectionNameFilter
+                value={collectionName}
+                onClear={() => {
+                  setCollectionName('');
+                  setTraits([]);
+                  setSelectedTrait(undefined);
+                }}
                 onChange={async (val, address) => {
                   setCollectionName(val);
-                  setCollectionName(address);
-                  const { result, error } = await apiGet(`/collections/${address}/traits`);
-                  if (error) {
-                    // showAppError(error?.message);
-                  } else {
-                    // setData(result?.listings || []);
-                    console.log('traits', result);
-                  }
+                  setCollectionAddress(address);
+                  // fetch collection traits
+                  // if (address) {
+                  //   const { result, error } = await apiGet(`/collections/${address}/traits`);
+                  //   if (error) {
+                  //     // showAppError(error?.message);
+                  //   } else {
+                  //     console.log('traits', result);
+                  //     setTraits(result.traits);
+                  //   }
+                  // }
                 }}
               />
 
-              {/* <Input placeholder="Search by name..." /> */}
+              {/* {traits.length > 0 && (
+                <Table size="sm" mt={4}>
+                  <Thead>
+                    <Tr>
+                      <Th>Attribute</Th>
+                      <Th>Value</Th>
+                    </Tr>
+                  </Thead>
 
-              <Table size="sm" mt={4}>
-                <Thead>
-                  <Tr>
-                    <Th>Attributes</Th>
-                    <Th>Values</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  <Tr>
-                    <Td>Face</Td>
-                    <Td>
-                      <HStack spacing={4}>
-                        {['sm'].map((size) => (
-                          <Tag size={size} key={size} borderRadius="full" variant="solid" colorScheme="gray">
-                            <TagLabel>Happy</TagLabel>
-                            <TagCloseButton />
-                          </Tag>
-                        ))}
-                        {['sm'].map((size) => (
-                          <Tag size={size} key={size} borderRadius="full" variant="solid" colorScheme="gray">
-                            <TagLabel>Sad</TagLabel>
-                            <TagCloseButton />
-                          </Tag>
-                        ))}
-                      </HStack>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>Hair</Td>
-                    <Td>
-                      <HStack spacing={4}>
-                        {['sm'].map((size) => (
-                          <Tag size={size} key={size} borderRadius="full" variant="solid" colorScheme="gray">
-                            <TagLabel>Black</TagLabel>
-                            <TagCloseButton />
-                          </Tag>
-                        ))}
-                      </HStack>
-                    </Td>
-                  </Tr>
-                  <Tr color="gray.400">
-                    <Td>Name ▼</Td>
-                    <Td>Values ▼</Td>
-                  </Tr>
-                </Tbody>
-              </Table>
+                  <Tbody>
+                    <Tr>
+                      <Td>Face</Td>
+                      <Td>
+                        <HStack spacing={4}>
+                          {['sm'].map((size) => (
+                            <Tag size={size} key={size} borderRadius="full" variant="solid" colorScheme="gray">
+                              <TagLabel>Happy</TagLabel>
+                              <TagCloseButton />
+                            </Tag>
+                          ))}
+                          {['sm'].map((size) => (
+                            <Tag size={size} key={size} borderRadius="full" variant="solid" colorScheme="gray">
+                              <TagLabel>Sad</TagLabel>
+                              <TagCloseButton />
+                            </Tag>
+                          ))}
+                        </HStack>
+                      </Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Hair</Td>
+                      <Td>
+                        <HStack spacing={4}>
+                          {['sm'].map((size) => (
+                            <Tag size={size} key={size} borderRadius="full" variant="solid" colorScheme="gray">
+                              <TagLabel>Black</TagLabel>
+                              <TagCloseButton />
+                            </Tag>
+                          ))}
+                        </HStack>
+                      </Td>
+                    </Tr>
+
+                    <Tr>
+                      <Td>
+                        <Select
+                          size="sm"
+                          onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                            const traitType = event.target.value;
+                            const trait = traits.find((t: Trait) => t.trait_type === traitType);
+                            setSelectedTrait(trait);
+                          }}
+                        >
+                          <option value=""></option>
+                          {traits.map((item: any) => {
+                            return <option value={item.trait_type}>{item.trait_type}</option>;
+                          })}
+                        </Select>
+                      </Td>
+
+                      <Td>
+                        {selectedTrait && (
+                          <Select
+                            size="sm"
+                            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                              // const traitType = event.target.value;
+                              // const trait = traits.find((t: any) => t.trait_type === traitType);
+                              // setSelectedTrait(trait);
+                            }}
+                          >
+                            <option value=""></option>
+                            {selectedTrait.values.map((val: string) => {
+                              return <option value={val}>{val}</option>;
+                            })}
+                          </Select>
+                        )}
+                      </Td>
+                    </Tr>
+                  </Tbody>
+                </Table>
+              )} */}
             </Box>
 
             <Box mt={8}>
