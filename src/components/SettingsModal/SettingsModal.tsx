@@ -119,7 +119,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
               onClick={(e) => {
                 e.stopPropagation();
                 if (user?.account) {
-                  navigator.clipboard.writeText(user!.account);
+                  navigator.clipboard.writeText(`${window.origin}/` + user!.account);
 
                   showAppMessage(`Copied to Clipboard.`);
                 }

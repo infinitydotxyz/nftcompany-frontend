@@ -39,12 +39,7 @@ export default function ConnectWallet() {
           <div className={styles.center}>
             <Link href="/">
               <a>
-                <Image
-                  alt="Infinity"
-                  src={dark ? '/img/nttcompanyDarkModeLogo.svg' : '/img/nftcompanyTransparentBgSvg.svg'}
-                  width={240}
-                  height={80}
-                />
+                <img alt="Infinity" src={dark ? '/img/logo-dark-mode.svg' : '/img/logo-light-mode.svg'} width={240} />
               </a>
             </Link>
 

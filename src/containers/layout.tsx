@@ -6,8 +6,11 @@ import { AppChakraProvider } from 'utils/themeUtil';
 import LandingFooter from 'components/LandingFooter/LandingFooter';
 import Header from 'components/Header/Header';
 import { isLocalhost } from 'utils/commonUtil';
-
 import LogRocket from 'logrocket';
+import { Background } from 'components/Background/Background';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
+import { useRouter } from 'next/router';
+
 if (!isLocalhost()) {
   LogRocket.init('0pu9ak/nftco');
 }
@@ -19,14 +22,20 @@ interface IProps {
 }
 
 const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
+  const router = useRouter();
+
   return (
     <>
       <AppChakraProvider>
+        <Background />
+
         <AppContextProvider>
           <SearchContextProvider>
             {/* No header on connect page */}
             {!connect && <Header />}
+
             <main>{children}</main>
+
             {landing && <LandingFooter />}
 
             <NextNprogress

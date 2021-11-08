@@ -1,51 +1,96 @@
 import React from 'react';
 import styles from './LeaderBoardTable.module.scss';
-import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, IconButton, Icon } from '@chakra-ui/react';
 import { ellipsisAddress, numStr } from 'utils/commonUtil';
-import { LeaderBoard } from 'types/rewardTypes';
+import { LeaderBoard, LeaderBoardEntry } from 'types/rewardTypes';
+import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
+import { Tooltip } from '@chakra-ui/tooltip';
+import { CopyButton } from 'components/CopyButton/CopyButton';
 
 type Props = {
   data?: LeaderBoard;
 };
 
-export const LeaderBoardTable = ({ data }: Props) => {
-  if (!data) {
-    return <div>Nothing found</div>;
-  }
-
-  const rows = data.results.map((item, index) => {
+const getRows = (data: LeaderBoardEntry[]) => {
+  return data.map((item, index) => {
     return (
       <Tr key={item.id}>
-        <Td textAlign="left" isNumeric={false}>
+        <Td textAlign="center" isNumeric={false}>
           #{index + 1}
         </Td>
-        <Td textAlign="left" isNumeric={false}>
-          {ellipsisAddress(item.id)}
+        <Td textAlign="center" isNumeric={false}>
+          <div className={styles.addressRow}>
+            <div>{ellipsisAddress(item.id, 10, 10)}</div>
+
+            <CopyButton copyText={item.id} tooltip="Copy Address" />
+
+            <i className={styles.linkIcon}>
+              <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
+                <ExternalLinkIcon
+                  size="sm"
+                  color="brandBlue"
+                  aria-label="Go to link"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (item.id) {
+                      window.open(`https://etherscan.io/address/${item.id}`, '_blank');
+                    }
+                  }}
+                />
+              </Tooltip>{' '}
+            </i>
+          </div>
         </Td>
 
         <Td textAlign="center" isNumeric={false}>
-          {numStr((item.salesTotalNumeric ?? 0) + (item.purchasesTotalNumeric ?? 0))}
-        </Td>
-
-        <Td textAlign="right" isNumeric={false}>
-          {numStr(item.rewardsInfo.netRewardNumeric)}
+          {numStr(item.total)}
         </Td>
       </Tr>
     );
   });
+};
+
+export const SaleLeaderBoardTable = ({ data }: Props) => {
+  if (!data) {
+    return <div>Nothing found</div>;
+  }
+
+  const saleRows = getRows(data.results.saleLeaders);
 
   return (
     <div className={styles.main}>
       <Table colorScheme="gray">
         <Thead>
           <Tr>
-            <Th textAlign="left">Rank</Th>
-            <Th textAlign="left">Address</Th>
-            <Th textAlign="center">Volume Traded</Th>
-            <Th textAlign="right">Rewards</Th>
+            <Th textAlign="center">Rank</Th>
+            <Th textAlign="center">Address</Th>
+            <Th textAlign="center">Sale Volume (ETH)</Th>
           </Tr>
         </Thead>
-        <Tbody>{rows}</Tbody>
+        <Tbody>{saleRows}</Tbody>
+      </Table>
+    </div>
+  );
+};
+
+export const BuyLeaderBoardTable = ({ data }: Props) => {
+  if (!data) {
+    return <div>Nothing found</div>;
+  }
+
+  const buyRows = getRows(data.results.buyLeaders);
+
+  return (
+    <div className={styles.main}>
+      <Table colorScheme="gray">
+        <Thead>
+          <Tr>
+            <Th textAlign="center">Rank</Th>
+            <Th textAlign="center">Address</Th>
+            <Th textAlign="center">Buy Volume (ETH)</Th>
+          </Tr>
+        </Thead>
+        <Tbody>{buyRows}</Tbody>
       </Table>
     </div>
   );

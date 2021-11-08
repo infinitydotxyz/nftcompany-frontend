@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './CancelOfferModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
@@ -16,8 +16,11 @@ interface IProps {
 
 const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const { user, showAppError } = useAppContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const cancelOffer = async () => {
+    setIsSubmitting(true);
+
     try {
       const seaport = getOpenSeaport();
       const order = await seaport.api.getOrder({
@@ -50,6 +53,8 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       }
     } catch (err) {
       showAppError((err as GenericError)?.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -67,7 +72,7 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 <li>
                   <div>Price</div>
                   <div>
-                    <span>{data.price}</span>
+                    <span>{data.metadata?.basePriceInEth}</span>
                   </div>
                   <div>WETH</div>
                 </li>
@@ -75,9 +80,11 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
             </div>
 
             <div className={styles.buttons}>
-              <Button onClick={cancelOffer}>Cancel Offer</Button>
+              <Button onClick={cancelOffer} disabled={isSubmitting}>
+                Cancel Offer
+              </Button>
 
-              <Button colorScheme="gray" onClick={() => onClose && onClose()}>
+              <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose && onClose()}>
                 Close
               </Button>
             </div>

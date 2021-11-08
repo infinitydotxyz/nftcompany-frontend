@@ -48,23 +48,7 @@ export default function UserPage() {
       return newItem;
     });
     setIsFetching(false);
-
-    const sortedData = [...data, ...moreData];
-    sortedData.sort((a, b) => {
-      const fa = a.title.toLowerCase();
-      const fb = b.title.toLowerCase();
-
-      if (fa < fb) {
-        return -1;
-      }
-      if (fa > fb) {
-        return 1;
-      }
-      return 0;
-    });
-
-    setData(sortedData);
-
+    setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);
   };
 

@@ -9,7 +9,6 @@ specifiers:
   '@chakra-ui/spinner': 1.1.12
   '@chakra-ui/system': 1.7.3
   '@chakra-ui/theme-tools': 1.2.1
-  '@chakra-ui/toast': 1.3.0
   '@chakra-ui/tooltip': 1.3.11
   '@emotion/react': '11'
   '@emotion/styled': '11'
@@ -24,6 +23,7 @@ specifiers:
   bignumber.js: 4.1.0
   chart.js: 3.5.1
   cross-env: 7.0.3
+  downshift: 6.1.7
   eslint: 7.32.0
   eslint-config-next: 11.1.2
   eslint-config-prettier: 8.3.0
@@ -57,6 +57,7 @@ specifiers:
   sass: 1.42.1
   timeago.js: 4.0.2
   typescript: 4.4.3
+  use-resize-observer: 8.0.0
   validator: 13.6.0
   web3: 0.20.7
   web3-typescript-typings: 0.9.3
@@ -72,7 +73,6 @@ dependencies:
   '@chakra-ui/spinner': 1.1.12_beb3eeb2d477ea47016f511436674e29
   '@chakra-ui/system': 1.7.3_2305e84770652125202aaa4817ae97a9
   '@chakra-ui/theme-tools': 1.2.1_@chakra-ui+system@1.7.3
-  '@chakra-ui/toast': 1.3.0_24332c47a350833870bea213fd3659eb
   '@chakra-ui/tooltip': 1.3.11_24332c47a350833870bea213fd3659eb
   '@emotion/react': 11.4.1_7d120459bc49ec1f7e6eba73754045f3
   '@emotion/styled': 11.3.0_a661e66cf90fd1accef1d0016fe8ab8b
@@ -80,6 +80,7 @@ dependencies:
   bignumber.js: 4.1.0
   chart.js: 3.5.1
   cross-env: 7.0.3
+  downshift: 6.1.7_react@17.0.2
   ethereumjs-abi: github.com/ProjectWyvern/ethereumjs-abi/3d2d89641a6ad5984929b6ca4b646452ec74f73d
   ethereumjs-util: 7.1.0
   ethers: 5.4.7
@@ -107,6 +108,7 @@ dependencies:
   recharts: 2.1.4_9bdd65c2b60ce8638444b80b396a481b
   sass: 1.42.1
   timeago.js: 4.0.2
+  use-resize-observer: 8.0.0_react-dom@17.0.2+react@17.0.2
   validator: 13.6.0
   web3: 0.20.7
   wyvern-js: github.com/ProjectOpenSea/wyvern-js/fabb7660f23f2252c141077e32193d281036299e
@@ -1808,6 +1810,10 @@ packages:
       prop-types: 15.7.2
       react: 17.0.2
       warning: 4.0.3
+    dev: false
+
+  /@juggle/resize-observer/3.3.1:
+    resolution: {integrity: sha512-zMM9Ds+SawiUkakS7y94Ymqx+S0ORzpG3frZirN3l+UlXUmSUR7hF4wxCVqW+ei94JzV5kt0uXBcoOEAuiydrw==}
     dev: false
 
   /@napi-rs/triples/1.0.3:
@@ -4138,6 +4144,19 @@ packages:
     hasBin: true
     dependencies:
       minimatch: 3.0.4
+    dev: false
+
+  /downshift/6.1.7_react@17.0.2:
+    resolution: {integrity: sha512-cVprZg/9Lvj/uhYRxELzlu1aezRcgPWBjTvspiGTVEU64gF5pRdSRKFVLcxqsZC637cLAGMbL40JavEfWnqgNg==}
+    peerDependencies:
+      react: '>=16.12.0'
+    dependencies:
+      '@babel/runtime': 7.15.4
+      compute-scroll-into-view: 1.0.17
+      prop-types: 15.7.2
+      react: 17.0.2
+      react-is: 17.0.2
+      tslib: 2.3.1
     dev: false
 
   /ecc-jsbn/0.1.2:
@@ -9127,6 +9146,17 @@ packages:
     dependencies:
       '@types/react': 17.0.24
       react: 17.0.2
+    dev: false
+
+  /use-resize-observer/8.0.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-n0iKSeiQpJCyaFh5JA0qsVLBIovsF4EIIR1G6XiBwKJN66ZrD4Oj62bjcuTAATPKiSp6an/2UZZxCf/67fk3sQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@juggle/resize-observer': 3.3.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /use-sidecar/1.0.5_react@17.0.2:

@@ -1,15 +1,18 @@
 import React from 'react';
 import Image from 'next/image';
-import { Box, Link } from '@chakra-ui/react';
+import { Box, Link, useColorMode } from '@chakra-ui/react';
 import styles from './LandingFooter.module.scss';
 
 const LandingFooter = () => {
+  const { colorMode } = useColorMode();
+  const dark = colorMode === 'dark';
+
   return (
     <div className={styles.footer}>
       <div className="grid">
         <Box className="col-sm-12 col-md-6">
           <Link href="/">
-            <Image alt="Infinity" src="/img/nftcompanyTransparentBgSvg.svg" width={180} height={60} />
+            <img alt="Infinity" src={dark ? '/img/logo-dark-mode.svg' : '/img/logo-light-mode.svg'} width={160} />
           </Link>
 
           <p className={styles.paragraph}>

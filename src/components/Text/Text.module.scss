@@ -1,0 +1,59 @@
+.sm {
+  font-size: 1rem;
+}
+
+.lg {
+  font-size: 1.2rem;
+}
+
+.med {
+  font-size: 1.1rem;
+}
+
+.light {
+  color: #555;
+
+  :global(body.chakra-ui-dark) & {
+    color: #bbb;
+  }
+}
+
+.med {
+  color: #333;
+
+  :global(body.chakra-ui-dark) & {
+    color: #ddd;
+  }
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.full {
+  color: #000;
+
+  :global(body.chakra-ui-dark) & {
+    color: #eee;
+  }
+}
+
+.start {
+  text-align: start;
+}
+
+.end {
+  text-align: end;
+}
+
+.center {
+  text-align: center;
+}
+
+.bottomMargin {
+  margin-bottom: 0.8rem;
+}
+
+.topMargin {
+  margin-top: 0.8rem;
+}

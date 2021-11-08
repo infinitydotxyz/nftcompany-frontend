@@ -1,11 +1,25 @@
 @import './vars.css';
+
+/* toast with override css */
+@import 'react-toastify/dist/ReactToastify.css';
 @import './toastify.css';
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: var(--font-family) !important;
+}
+
+/* Remove focus border on buttons */
+button:focus:not(.focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+/* remove focus border on Link */
+a:focus:not(.focus-visible) {
+  outline: none;
+  box-shadow: none;
 }
 
 a {
@@ -58,13 +72,6 @@ svg {
   margin-bottom: 1rem;
 }
 
-.homepage-connect {
-  margin: 0 auto;
-}
-.homepage-connect svg {
-  margin-right: 5px;
-}
-
 @media (max-width: 767px) {
   .header-links-wrapper {
     display: none;
@@ -115,11 +122,12 @@ svg {
 }
 
 .tg-title {
-  font-size: clamp(1.75rem, 1.5vw + 1.1rem, 2.25rem);
+  font-size: 1.2rem;
   line-height: 1.25;
-  font-weight: 800;
+  font-weight: 500;
   margin: 0;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .tg-desc {
@@ -135,7 +143,6 @@ svg {
   font-size: clamp(0.875rem, 0.7813rem + 0.4167vw, 1.25rem);
   line-height: 1.5;
   margin: 0;
-  font-weight: normal;
   letter-spacing: -0.01em;
 }
 

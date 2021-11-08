@@ -4,4 +4,18 @@
   width: 100%;
   padding-bottom: 20px;
   overflow-x: auto;
+
+  .addressRow {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.1rem;
+    font-size: 1rem;
+    font-family: monospace;
+
+    .linkIcon {
+      cursor: pointer;
+    }
+  }
 }

@@ -6,6 +6,7 @@
 .priceRow {
   margin-top: 16px;
   margin-bottom: 20px;
+  display: inline-block;
 }
 
 .row {
@@ -18,7 +19,6 @@
     flex: 1;
 
     color: var(--text-secondary);
-    font-weight: 500;
   }
 
   .middle {
@@ -30,12 +30,6 @@
     & input {
       font-size: 1rem;
       text-align: right;
-    }
-
-    // need to change the theme, but this is for the Weth input
-    .offerBorder {
-      border: var(--input-border);
-      border-radius: var(--input-border-radius);
     }
   }
   .right {

@@ -1,0 +1,19 @@
+.main {
+  display: flex;
+  gap: 4px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+
+  .divider {
+    width: 1px;
+    background-color: #ccc;
+
+    :global(body.chakra-ui-dark) & {
+      background-color: #555;
+    }
+  }
+
+  :global(body.chakra-ui-dark) & {
+    border: 1px solid #555;
+  }
+}

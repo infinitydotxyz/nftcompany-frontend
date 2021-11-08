@@ -13,7 +13,25 @@ type Props = {
 };
 
 export const PriceBox = ({ justifyRight = false, price, expirationTime = '', token = '' }: Props) => {
+  let priceStr = '0';
+
   if (price) {
+    let newPrice: number;
+
+    if (typeof price === 'string') {
+      console.log('PriceBox: price is a string');
+
+      newPrice = parseFloat(price);
+    } else {
+      newPrice = price;
+    }
+
+    if (newPrice > 10000) {
+      priceStr = newPrice.toExponential();
+    } else {
+      priceStr = newPrice.toString();
+    }
+
     const priceStyle = [styles.priceBox];
 
     if (justifyRight) {
@@ -32,7 +50,7 @@ export const PriceBox = ({ justifyRight = false, price, expirationTime = '', tok
       >
         <div className={priceStyle.join(' ')}>
           <div className={styles.price}>
-            {price} {token === 'ETH' ? <EthToken /> : <WEthToken />}
+            {priceStr} {token === 'ETH' ? <EthToken /> : <WEthToken />}
           </div>
           {expDate && (
             <div className={styles.expTime} title={expDate.toLocaleString()}>

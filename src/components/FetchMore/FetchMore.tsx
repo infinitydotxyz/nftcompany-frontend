@@ -37,19 +37,22 @@ export const FetchMore = ({ onFetchMore, data, currentPage }: FetchMoreProps) =>
 };
 
 export const getLastItemSearchTitle = (data: CardData[]): string =>
-  data?.length > 0 ? data[data.length - 1]?.metadata?.searchTitle ?? '' : '';
+  data?.length > 0 ? data[data.length - 1]?.metadata?.asset?.searchTitle ?? '' : '';
 
 export const getLastItemSearchCollectionName = (data: CardData[]): string =>
-  data?.length > 0 ? data[data.length - 1]?.metadata?.searchCollectionName ?? '' : '';
+  data?.length > 0 ? data[data.length - 1]?.metadata?.asset?.searchCollectionName ?? '' : '';
 
 export const getLastItemMaker = (data: CardData[]): string =>
   data?.length > 0 ? data[data.length - 1]?.maker ?? '' : '';
 
 export const getLastItemCreatedAt = (data: CardData[]): string =>
-  data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt ?? '' : '';
+  data?.length > 0 ? data[data.length - 1]?.metadata?.createdAt?.toString() ?? '' : '';
 
 export const getLastItemBasePrice = (data: CardData[]): string =>
-  data?.length > 0 ? data[data.length - 1]?.metadata?.basePriceInEth ?? '' : '';
+  data?.length > 0 ? data[data.length - 1]?.metadata?.basePriceInEth?.toString() ?? '' : '';
+
+export const getLastItemBlueCheck = (data: CardData[]): boolean =>
+  data?.length > 0 ? data[data.length - 1]?.metadata?.hasBlueCheck ?? false : false;
 
 export const NoData = ({
   isFetching,

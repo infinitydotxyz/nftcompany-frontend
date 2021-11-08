@@ -9,6 +9,7 @@ import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { WETH_ADDRESS } from 'utils/constants';
 import { addressesEqual } from 'utils/commonUtil';
+import { useInView } from 'react-intersection-observer';
 
 type Props = {
   data: CardData;
@@ -24,6 +25,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
   const [previewModalShowed, setPreviewModalShowed] = useState(false);
+  const { ref, inView } = useInView({ threshold: 0 });
 
   if (!data) {
     return null;
@@ -36,8 +38,12 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
 
   const collectionName = data.collectionName;
   const hasBlueCheck = data.hasBlueCheck;
+
+  if (inView === false) {
+    return <div ref={ref} id={`id_${data.id}`} className={styles.card}></div>;
+  }
   return (
-    <div id={`id_${data.id}`} className={styles.card}>
+    <div ref={ref} id={`id_${data.id}`} className={styles.card}>
       {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
 
       <div onClick={() => setPreviewModalShowed(true)}>
@@ -136,15 +142,17 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
                 <div className={styles.collectionRow}>
                   <div className={styles.collectionName}>{collectionName}</div>
 
-                  <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
+                  <div style={{ paddingLeft: 6 }}>
+                    <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
+                  </div>
                 </div>
               )}
-              <div>{data.title}</div>
+              <div className={styles.title}>{data.title}</div>
             </div>
             <PriceBox
               justifyRight
-              price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
-              token={data?.data?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
+              price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
+              token={data?.order?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
               expirationTime={data?.expirationTime}
             />
           </div>

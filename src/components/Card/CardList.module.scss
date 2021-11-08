@@ -1,5 +1,9 @@
 @import 'styles/_mixins.scss';
 
+@include cardList();
+
+$cardHeight: 391px;
+
 .button {
   display: inline-flex;
   justify-content: center;
@@ -32,24 +36,44 @@
   z-index: 1;
 }
 
+.featured {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+
+  background-color: rgba(240, 240, 240, 0.6);
+  color: white;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: bold;
+  z-index: 1;
+}
+
 .cardList {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+
+  // the minmax(0, 1fr) rather than 1fr keeps the cards from growing past their initial width
+  // https://stackoverflow.com/questions/43311943/prevent-content-from-expanding-grid-items?rq=1
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-gap: 56px;
 
-  margin: 40px 0;
+  margin: 10px 0 40px 0;
 }
 
 .card {
   position: relative;
   padding: 12px;
-  box-shadow: 0px 0px 32px rgba(31, 47, 70, 0.05), 0px 12px 14px rgba(31, 47, 70, 0.12);
   border-radius: 20px;
+  height: $cardHeight;
+
+  @include lightShadow();
+  background-color: var(--chakra-colors-cardBgLight, red);
 
   :global(body.chakra-ui-dark) & {
-    background-color: black;
-
     @include darkShadow();
+    background-color: var(--chakra-colors-cardBgDark, red);
   }
 
   &:hover {
@@ -120,20 +144,40 @@
     .collectionName {
       color: var(--text-secondary);
       font-size: 0.9em;
-      padding-right: 6px;
+
+      // keeps long titles from flowing outside the card bounds
+      white-space: nowrap;
+      max-width: 25ch;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
     .cardTitle {
       font-size: 16px;
-      line-height: 1.5;
+      line-height: 1;
       font-weight: 500;
+      display: flex;
+      gap: 7px;
+      flex-direction: column;
+
+      .title {
+        // keeps long titles from flowing outside the card bounds
+        white-space: nowrap;
+        max-width: 25ch;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
     }
   }
+}
+
+.featuredCard {
+  background-image: linear-gradient(140deg, #ffffff 0%, #ffffff 50%, #d2fffb 75%);
 }
 
 @media only screen and (min-width: 1000px) and (max-width: 1400px) {
   .cardList {
     grid-gap: 36px;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 
     .card {
       .cardPreview {
@@ -146,7 +190,7 @@
 @media only screen and (min-width: 700px) and (max-width: 1000px) {
   .cardList {
     grid-gap: 36px;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
     .card {
       .cardPreview {
@@ -159,7 +203,7 @@
 @media only screen and (max-width: 700px) {
   .cardList {
     grid-gap: 36px;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
 
     .card {
       .cardPreview {

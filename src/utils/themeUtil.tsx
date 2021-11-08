@@ -16,6 +16,9 @@ const colors = {
   windowBg: lightBg,
   windowBgDark: darkGray,
 
+  cardBgLight: '#f3f3f3',
+  cardBgDark: '#111',
+
   // unsure how to add opacity on a css var so we have these variants for now
   headerBg: lightBgAlpha,
   headerBgDark: darkGrayAlpha,
@@ -45,6 +48,16 @@ const colors = {
 };
 
 const Table = {
+  sizes: {
+    md: {
+      th: {
+        px: '6',
+        py: '5',
+        lineHeight: '4',
+        fontSize: 'sm'
+      }
+    }
+  },
   baseStyle: {
     table: {
       // turned this off, it uses an ugly font
@@ -83,6 +96,11 @@ const Button = {
     };
   },
   variants: {
+    outline: (props: any) => {
+      return {
+        border: '2px solid'
+      };
+    },
     solid: (props: any) => {
       const { colorScheme, colorMode } = props;
 
@@ -97,6 +115,25 @@ const Button = {
   }
 };
 
+const Input = {
+  variants: {
+    outline: (props: any) => {
+      return {
+        field: {
+          border: '1px solid',
+
+          // not sure why you have to set this
+          borderColor: '#aaa',
+
+          _hover: {
+            border: '1px solid #aaa'
+          }
+        }
+      };
+    }
+  }
+};
+
 const config: ThemeConfig = {
   useSystemColorMode: false,
   initialColorMode: 'light'
@@ -106,10 +143,13 @@ const styles = {
   global: (props: any) => {
     return {
       body: {
+        fontFamily:
+          'Greycliff, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif',
+
         color: mode('gray.800', 'whiteAlpha.900')(props),
 
         // bg: mode('white', 'gray.800')(props)
-        bg: mode('windowBg', 'gray.800')(props)
+        bg: mode('windowBg', 'windowBgDark')(props)
       },
       '*::placeholder': {
         color: mode('gray.400', 'whiteAlpha.400')(props)
@@ -130,7 +170,22 @@ export const theme = extendTheme(
     components: {
       Menu,
       Button,
-      Table
+      Table,
+      Input,
+      Drawer: {
+        variants: {
+          // custom theme for Filter Drawer to allow scrolling/interaction on the main body.
+          alwaysOpen: {
+            parts: ['dialog, dialogContainer'],
+            dialog: {
+              pointerEvents: 'auto'
+            },
+            dialogContainer: {
+              pointerEvents: 'none'
+            }
+          }
+        }
+      }
     }
   },
   withDefaultColorScheme({ colorScheme: 'blue' }),

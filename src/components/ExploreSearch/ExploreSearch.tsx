@@ -19,10 +19,12 @@ const ExploreSearch = () => {
       ...searchState,
       isLoading: false,
       options: [...results.collectionNames, ...results.nftNames],
-      query
+      query,
+      text: query
     });
   };
 
+  // on clicking on a dropdown match:
   const handleChange = (selectedOptions: TypeAheadOption[]) => {
     if (selectedOptions[0]?.type === 'Collection') {
       setSearchState({
@@ -43,21 +45,14 @@ const ExploreSearch = () => {
     }
   };
 
-  const handleKeyDown = (ev: any) => {
-    if ((ev as KeyboardEvent).code === 'Enter') {
-      setSearchState({
-        ...searchState,
-        selectedOption: undefined,
-        collectionName: '',
-        text: ev?.target?.value || ''
-      });
-    }
-  };
-
-  const handleClickCloseIcon = () => {
+  const clearSearch = () => {
     typeaheadRef.current.clear();
     setSearchState({ ...searchState, collectionName: '', text: '', selectedOption: undefined });
     setFilterState(defaultFilterState);
+  };
+
+  const handleClickCloseIcon = () => {
+    clearSearch();
   };
 
   return (
@@ -74,7 +69,6 @@ const ExploreSearch = () => {
           onSearch={handleSearch}
           options={searchState.options}
           placeholder="Search items..."
-          onKeyDown={handleKeyDown}
           renderMenuItemChildren={(option) => (
             <Fragment>
               <Box d="flex" alignItems="flex-start" textAlign="center">

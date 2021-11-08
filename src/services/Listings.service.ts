@@ -55,6 +55,7 @@ export const getTitlesOfListings = async (titleQuery: TypeaheadQuery): Promise<T
 export interface CollectionResponse {
   collectionName: string;
   hasBlueCheck: boolean;
+  address?: string;
 }
 
 export const getCollectionNamesOfListings = async (collectionQuery: TypeaheadQuery): Promise<CollectionResponse[]> => {
@@ -66,40 +67,22 @@ export const getCollectionNamesOfListings = async (collectionQuery: TypeaheadQue
   return result;
 };
 
-export const getListingById = async (id?: string, address?: string): Promise<Order | null> => {
-  const path = `/listingById/`;
-  const { result, error }: { result: Order; error: any } = (await apiGet(path, { id, address })) as any;
-  if (error !== undefined) {
-    return null;
-  }
-  return result;
-};
-
-export const getListingsByCollectionName = async (
-  collectionName: string,
-  listingFilter?: SearchFilter
-): Promise<CardData[]> => {
-  const path = `/listingsByCollectionName/`;
-  const { result, error }: { result: Order[]; error: any } = (await apiGet(path, {
-    ...listingFilter,
-    collectionName
-  })) as any;
-
-  if (error !== undefined) {
-    return [];
-  }
-
-  return result.map(orderToCardData);
-};
-
-export const getTypeAheadOptions = async (query: TypeaheadQuery): Promise<TypeAheadOptions> => {
+// search by both collection name and listing title (2 api calls)
+export const getTypeAheadOptions = async (
+  query: TypeaheadQuery,
+  searchCollectionsOnly: boolean = false
+): Promise<TypeAheadOptions> => {
   if (query?.startsWith) {
     query.startsWith = query.startsWith.replace(/ /g, '');
   }
 
-  const collectionNames: TypeAheadOption[] = (await getCollectionNamesOfListings(query)).map((collectionInfo) => {
-    return { name: collectionInfo.collectionName, type: 'Collection', hasBlueCheck: collectionInfo.hasBlueCheck };
+  const collectionNames: TypeAheadOption[] = (await getCollectionNamesOfListings(query)).map((item) => {
+    return { address: item.address, name: item.collectionName, type: 'Collection', hasBlueCheck: item.hasBlueCheck };
   });
+  if (searchCollectionsOnly) {
+    return { collectionNames, nftNames: [] };
+  }
+
   const nftNames: TypeAheadOption[] = (await getTitlesOfListings(query)).map((listing) => {
     return {
       name: listing.title,
@@ -117,12 +100,13 @@ export const orderToCardData = (order: Order): CardData => {
     id: order.id,
     image: order.metadata.asset.image,
     title: order.metadata.asset.title,
+    description: order.metadata.asset.description,
     inStock: +order.metadata.asset.quantity,
-    price: weiToEther(order.basePrice),
+    price: weiToEther(order.basePrice || 0),
     tokenAddress: order.metadata.asset.address,
     tokenId: order.metadata.asset.id,
     maker: order.maker,
-    data: order,
+    order: order,
     hasBonusReward: order.metadata.hasBonusReward,
     hasBlueCheck: order.metadata.hasBlueCheck,
     collectionName: order.metadata.asset.collectionName,

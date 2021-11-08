@@ -8,10 +8,12 @@ import { apiGet } from 'utils/apiUtil';
 import { LeaderBoard, UserReward } from '../../src/types/rewardTypes';
 import { Spinner } from '@chakra-ui/spinner';
 import { RewardCardRow } from 'components/RewardCardList/RewardCardList';
-import { LeaderboardCard } from 'components/RewardCard/RewardCard';
+import { SaleLeaderboardCard, BuyLeaderboardCard } from 'components/RewardCard/RewardCard';
+import CountryConfirmModal from 'components/CountryConfirmModal/CountryConfirmModal';
 
 const Rewards = (): JSX.Element => {
-  const { user } = useAppContext();
+  const { user, showAppError } = useAppContext();
+  const [countryConfirmShowed, setCountryConfirmShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [userReward, setUserReward] = useState<UserReward | undefined>();
   const [leaderboard, setLeaderBoard] = useState<LeaderBoard | undefined>();
@@ -24,8 +26,16 @@ const Rewards = (): JSX.Element => {
     setIsFetching(true);
     try {
       const { result, error } = await apiGet(`/u/${user?.account}/reward`);
-
-      setUserReward(result);
+      if (error) {
+        showAppError('Failed to fetch rewards.');
+      } else {
+        const userReward = result as UserReward;
+        setUserReward(userReward);
+        if (userReward.usPerson === 'NONE') {
+          // user has not confirmed eligibility: show Confirm modal
+          setCountryConfirmShowed(true);
+        }
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -86,12 +96,26 @@ const Rewards = (): JSX.Element => {
               </div>
               <RewardCardRow data={userReward} />
               <div className={styles.leaderBox}>
-                <LeaderboardCard data={leaderboard} />
+                <BuyLeaderboardCard data={leaderboard} />
+              </div>
+              <div className={styles.leaderBox}>
+                <SaleLeaderboardCard data={leaderboard} />
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {countryConfirmShowed && (
+        <CountryConfirmModal
+          onSubmit={() => {
+            // user confirmed eligibility: refresh data
+            setCountryConfirmShowed(false);
+            fetchUserReward();
+          }}
+          onClose={() => setCountryConfirmShowed(false)}
+        />
+      )}
     </>
   );
 };

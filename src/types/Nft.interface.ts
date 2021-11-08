@@ -39,10 +39,8 @@ export interface Metadata {
   hasBonusReward: boolean;
   schema: string;
   hasBlueCheck: boolean;
-  createdAt: string;
-  basePriceInEth: string;
-  searchCollectionName?: string;
-  searchTitle?: string;
+  createdAt: number;
+  basePriceInEth: number;
 }
 
 export interface Asset {
@@ -51,9 +49,12 @@ export interface Asset {
   quantity: string;
   imagePreview: string;
   title: string;
+  description: string;
   image: string;
   owner: string;
   collectionName: string;
+  searchCollectionName?: string;
+  searchTitle?: string;
 }
 
 export interface Orders {
@@ -64,12 +65,14 @@ export interface Orders {
 export type CardData = {
   id: string;
   title: string;
+  name?: string;
   description?: string;
-  image: string;
+  image?: string;
+  cardImage?: string;
   imagePreview?: string;
   price?: number;
   inStock?: number;
-  data?: any;
+  order?: Order;
   tokenAddress?: string;
   tokenId?: string;
   collectionName?: string;

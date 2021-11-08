@@ -17,7 +17,6 @@ export default function Home() {
   // -------------------------------
   const topSection = (
     <section className={styles.titleSection}>
-      <div className={styles.background} />
       <div className={styles.containerAvg}>
         <div className={styles.topHeader}>
           <div className={styles.bigTitle}>
@@ -32,7 +31,7 @@ export default function Home() {
           <div className={styles.buttons}>
             <Button
               size="lg"
-              className={styles.stadiumButton}
+              className={styles.stadiumButtonBlue}
               colorScheme="gray"
               onClick={() => router.push('/explore')}
             >
@@ -56,37 +55,37 @@ export default function Home() {
   const automateSection = (
     <section className={styles.titleSection}>
       <div className={styles.containerAvg}>
-          <div className={styles.info}>
-            <div className={styles.bigTitle}>
-              Infinity is fully compatible with OpenSea. It uses the same contracts, not forks.
-              <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
-                <div>
-                  No new smart contract risks. <CheckShieldIcon />
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.checklist}>
-              <div className={styles.checklistRow}>
-                <CheckCircleIcon className={styles.icon} />
-                <div>Low fees of 1.5%, go to a community controlled treasury</div>
-              </div>
-              <div className={styles.checklistRow}>
-                <CheckCircleIcon className={styles.icon} />
-                <div>
-                  List your NFTs without re-initiating your wallet or re-appproving tokens (if already done on OpenSea)
-                </div>
-              </div>
-              <div className={styles.checklistRow}>
-                <CheckCircleIcon className={styles.icon} />
-                <div>Earn governance tokens for activity on the marketplace</div>
-              </div>
-              <div className={styles.checklistRow}>
-                <CheckCircleIcon className={styles.icon} />
-                <div>Vote on all aspects of the marketplace and fee treasury as the token holder</div>
+        <div className={styles.info}>
+          <div className={styles.bigTitle}>
+            Infinity is fully compatible with OpenSea. It uses the same contracts, not forks.
+            <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
+              <div>
+                No new smart contract risks. <CheckShieldIcon />
               </div>
             </div>
           </div>
+
+          <div className={styles.checklist}>
+            <div className={styles.checklistRow}>
+              <CheckCircleIcon className={styles.icon} />
+              <div>Low fees of 1.5%, go to a community-controlled treasury</div>
+            </div>
+            <div className={styles.checklistRow}>
+              <CheckCircleIcon className={styles.icon} />
+              <div>
+                List your NFTs without re-initiating your wallet or re-approving tokens (if already done on OpenSea)
+              </div>
+            </div>
+            <div className={styles.checklistRow}>
+              <CheckCircleIcon className={styles.icon} />
+              <div>Earn governance tokens for activity on the marketplace</div>
+            </div>
+            <div className={styles.checklistRow}>
+              <CheckCircleIcon className={styles.icon} />
+              <div>Vote on all aspects of the marketplace and fee treasury as the token holder</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -175,8 +174,6 @@ export default function Home() {
   // -------------------------------
   const worldSection = (
     <section id="world" className={styles.titleSection}>
-      <div className={styles.backgroundTwo} />
-
       <div className={styles.containerAvg}>
         <div className={styles.worldBox}>
           <div className="grid">
@@ -203,7 +200,6 @@ export default function Home() {
   // -------------------------------
   const investorsSection = (
     <section className={styles.titleSection}>
-      <div className={styles.background} />
       <div className={styles.containerAvg}>
         <div className={styles.topCol}>
           <div className={styles.textCol}>
@@ -229,7 +225,6 @@ export default function Home() {
   // -------------------------------
   const faqSection = (
     <section className={styles.titleSection}>
-      <div className={styles.background} />
       <div className={styles.containerAvg}>
         <div className={styles.topCol}>
           <div className={styles.textCol}>
@@ -239,7 +234,7 @@ export default function Home() {
                 {
                   question: 'What is Infinity?',
                   answer:
-                    'Infinity is the “FTX of NFTs” - a community driven, decentralized NFT super app that enables discovering, developing, trading and managing NFTs.'
+                    'Infinity is a decentralized NFT super app that enables discovering, developing, trading, and managing NFTs.'
                 },
                 {
                   question: 'Is Infinity live?',
@@ -259,12 +254,12 @@ export default function Home() {
                 {
                   question: 'How do I earn $NFT tokens?',
                   answer:
-                    'We are airdropping $NFT tokens to OpenSea users. We have different sales volume tiers to ensure a wide distribution. The airdropped $NFT tokens become claimable after performing some activity on the Infinity marketplace - listing/selling/buying/making offers. Head over to the rewards page to check out how many tokens you are eligible to earn.'
+                    'We are airdropping $NFT tokens to OpenSea users. We have different volume tiers to ensure a wide distribution. The airdropped $NFT tokens become claimable after performing some activity on the Infinity marketplace - selling/buying. Head over to the rewards page to check out how many tokens you are eligible to earn.'
                 },
                 {
                   question: 'How is Infinity different from other NFT marketplaces?',
                   answer:
-                    'Infinity is community owned and governed through a DAO. Infinity has the lowest fees and gives direct control of the fee treasury to $NFT holders. Infinity is builing the marketplace into a super app that allows for effective discovery, valuation, development, trading, and management of NFTs.'
+                    'Infinity is community-owned and governed through a DAO. Infinity has the lowest fees and gives direct control of the fee treasury to $NFT holders. Infinity is building the marketplace into a super app that allows for effective discovery, valuation, development, trading, and management of NFTs.'
                 }
               ]}
             />

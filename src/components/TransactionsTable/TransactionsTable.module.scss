@@ -1,0 +1,41 @@
+@import '/styles/SharedStyles.module.scss';
+@import 'styles/_mixins.scss';
+
+.main {
+  margin: 20px 0;
+  // @include lightShadow();
+  // background-color: white;
+
+  border-radius: 20px;
+  width: 100%;
+  overflow-x: auto;
+
+  .leftSpace {
+    width: auto;
+
+    @media (min-width: 850px) {
+      width: 80px;
+    }
+  }
+
+  .collectionRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3em;
+  }
+
+  .addressRow {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    letter-spacing: 0.1rem;
+    font-family: monospace;
+    justify-content: center;
+    font-size: 1rem;
+
+    .linkIcon {
+      cursor: pointer;
+    }
+  }
+}

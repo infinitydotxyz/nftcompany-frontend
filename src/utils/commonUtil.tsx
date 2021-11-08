@@ -29,7 +29,16 @@ export const isLocalhost = () =>
 
 export const toChecksumAddress = (address?: string): string => {
   if (address) {
-    return ethers.utils.getAddress(address);
+    let result = address;
+
+    try {
+      // this crashes if the address isn't valid
+      result = ethers.utils.getAddress(address);
+    } catch (err) {
+      console.log(`toChecksumAddress failed: ${address}`);
+    }
+
+    return result;
   }
 
   return '';
@@ -61,7 +70,13 @@ export const ellipsisString = (inString?: string, left: number = 6, right: numbe
   return '';
 };
 
-export const getToken = (tokenAddress: string): 'WETH' | 'ETH' => (tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH');
+export const getToken = (tokenAddress?: string): 'WETH' | 'ETH' | '' => {
+  if (tokenAddress) {
+    return tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH';
+  }
+
+  return '';
+};
 
 // parse a Timestamp string (in millis or secs)
 export const parseTimestampString = (dt: string, inSecond: boolean = false): Date | null => {
@@ -78,7 +93,7 @@ export const parseTimestampString = (dt: string, inSecond: boolean = false): Dat
   return dateObj;
 };
 
-export const stringToFloat = (numStr: string | undefined, defaultValue = 0) => {
+export const stringToFloat = (numStr?: string, defaultValue = 0) => {
   let num = defaultValue;
   if (!numStr) {
     return num;
@@ -106,7 +121,8 @@ export const transformOpenSea = (item: any, owner: string) => {
     tokenId: item.token_id,
     collectionName: item.asset_contract.name,
     owner: owner,
-    schemaName: item['asset_contract']['schema_name']
+    schemaName: item['asset_contract']['schema_name'],
+    data: item
   } as CardData;
 };
 
@@ -150,12 +166,10 @@ export const getCustomMessage = (eventName: string, data: any) => {
   }
   // customize OpenSea messages:
   if (eventName === EventType.TransactionCreated) {
-      customMsg = (
-        <span>Your transaction has been sent to chain: {createLink(data?.transactionHash)}</span>
-      );
+    customMsg = <span>Your transaction has been sent to chain: {createLink(data?.transactionHash)}</span>;
   }
   if (eventName === EventType.TransactionConfirmed) {
-      customMsg = 'Transaction confirmed';
+    customMsg = 'Transaction confirmed';
   }
   if (eventName === EventType.TransactionFailed) {
     customMsg = 'Transaction failed';
@@ -189,7 +203,6 @@ export const numStr = (value: any): string => {
         short = f.toFixed(4);
       }
     }
-
     short = value;
   } else if (typeof value === 'number') {
     short = value.toFixed(4);
@@ -214,7 +227,7 @@ export const numStr = (value: any): string => {
   const p = parseFloat(short);
   if (!isNaN(p)) {
     // this adds commas
-    return p.toLocaleString();
+    short = p.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 4 });
   }
 
   return short;

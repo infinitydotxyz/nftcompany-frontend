@@ -3,9 +3,7 @@ import { getAccount, getOpenSeaport } from 'utils/ethersUtil';
 import { getCustomMessage, getCustomExceptionMsg } from 'utils/commonUtil';
 import { deleteAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
-
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { errorToast, infoToast, Toast } from 'components/Toast/Toast';
 import { ReactNode } from '.pnpm/@types+react@17.0.24/node_modules/@types/react';
 
 export type User = {
@@ -24,7 +22,6 @@ export type AppContextType = {
 const AppContext = React.createContext<AppContextType | null>(null);
 
 // let lastError = '';
-let lastMsg = '';
 let isListenerAdded = false; // set up event listeners once.
 
 export function AppContextProvider({ children }: any) {
@@ -32,10 +29,10 @@ export function AppContextProvider({ children }: any) {
   const [userReady, setUserReady] = React.useState(false);
 
   const showAppError = (message: ReactNode) => {
-    let msg = getCustomExceptionMsg(message);
-    toast.error(msg, { position: 'bottom-center' });
+    const msg = getCustomExceptionMsg(message);
+    errorToast(msg);
   };
-  const showAppMessage = (message: ReactNode) => toast.info(message, { position: 'bottom-center' });
+  const showAppMessage = (message: ReactNode) => infoToast(message);
 
   // const connectMetaMask = async () => {
   //   // show MetaMask's errors:
@@ -67,12 +64,6 @@ export function AppContextProvider({ children }: any) {
       if (msg === null) {
         return;
       }
-      if (lastMsg && msg === lastMsg) {
-        // TODO: to avoid show dup messages.
-        lastMsg = '';
-        return;
-      }
-      lastMsg = `${msg}`;
       showAppMessage(msg);
     };
 
@@ -121,7 +112,7 @@ export function AppContextProvider({ children }: any) {
 
   return (
     <AppContext.Provider value={value}>
-      {children} <ToastContainer position="bottom-right" />
+      {children} <Toast />
     </AppContext.Provider>
   );
 }

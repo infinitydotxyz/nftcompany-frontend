@@ -1,0 +1,19 @@
+@import '/styles/SharedStyles.module.scss';
+
+.main {
+  margin-bottom: 30vh;
+}
+
+.leaderBox {
+  margin-top: 50px;
+}
+
+.spinner {
+  display: flex;
+  height: 400px;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  flex-direction: center;
+}

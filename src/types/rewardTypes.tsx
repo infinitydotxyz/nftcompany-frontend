@@ -1,94 +1,64 @@
 export type LeaderBoard = {
   count: number;
-  results: LeaderBoardEntry[];
+  results: LeaderBoardEntries;
+};
+
+export type LeaderBoardEntries = {
+  saleLeaders: LeaderBoardEntry[];
+  buyLeaders: LeaderBoardEntry[];
 };
 
 export type LeaderBoardEntry = {
-  numListings: number;
-  numPurchases?: number;
-  salesFeesTotal?: string;
-  numBonusListings: number;
-  purchasesFeesTotal?: string;
-  salesTotal?: string;
-  rewardsInfo: LeaderBoardRewardsInfo;
-  purchasesTotal?: string;
-  purchasesFeesTotalNumeric?: number;
-  purchasesTotalNumeric?: number;
-  salesTotalNumeric?: number;
-  numSales?: number;
-  salesFeesTotalNumeric?: number;
-  updatedAt: number;
   id: string;
-  profileInfo?: LeaderBoardProfileInfo;
-  numBonusOffers?: number;
-  numOffers?: number;
-};
-
-export type LeaderBoardProfileInfo = {
-  email: LeaderBoardEmail;
-};
-
-export type LeaderBoardEmail = {
-  subscribed?: boolean;
-  verificationGuid: string;
-  address: string;
-};
-
-export type LeaderBoardRewardsInfo = {
-  grossReward: string;
-  bonusRewardDebt: string;
-  rewardDebt: string;
-  pending: string;
-  purchasePending: string;
-  netRewardNumeric: number;
-  rewardCalculatedAt: number;
-  saleRewardDebt: string;
-  bonusPending: string;
-  salePending: string;
-  purchaseRewardDebt: string;
-  grossRewardNumeric: number;
-  netReward: string;
+  total: number;
 };
 
 // ===========================================================
 
 export type UserReward = {
-  currentBlock: string;
-  totalListings: string;
-  totalBonusListings: string;
-  totalOffers: string;
-  totalBonusOffers: string;
-  totalFees: string;
-  totalVolume: string;
-  totalSales: string;
-  reward: string;
-  bonusReward: string;
-  saleReward: string;
-  purchaseReward: string;
-  grossReward: string;
-  grossRewardNumeric: number;
-  penaltyActivated: boolean;
-  penaltyRatio: string;
-  rewardPerBlock: string;
-  bonusRewardPerBlock: string;
-  saleRewardPerBlock: string;
-  purchaseRewardPerBlock: string;
-  numSales: string;
-  numPurchases: string;
-  salesTotal: string;
-  salesFeesTotal: string;
-  salesTotalNumeric: number;
-  salesFeesTotalNumeric: number;
-  purchasesTotal: string;
-  purchasesFeesTotal: string;
-  totalRewardPaid: string;
-  purchasesTotalNumeric: number;
-  purchasesFeesTotalNumeric: number;
-  numListings: string;
   numBonusListings: string;
-  numOffers: string;
   numBonusOffers: string;
-  penalty: string;
-  netReward: string;
-  netRewardNumeric: number;
+  numListings: string;
+  numOffers: string;
+  numPurchases: string;
+  numSales: string;
+  purchasesFeesTotal: string;
+  purchasesTotal: string;
+  rewardTier: { min: number; max: number; eligible: number; threshold: number };
+  salesFeesTotal: string;
+  salesTotal: string;
+
+  purchasesFeesTotalNumeric: number;
+  purchasesTotalNumeric: number;
+  hasAirdrop: boolean;
+  openseaVol: number;
+  salesFeesTotalNumeric: number;
+  salesTotalNumeric: number;
+  doneSoFar: number;
+  usPerson: 'YES' | 'NO' | 'NONE';
+};
+
+// ===========================================================
+
+export type CollectionCardEntry = {
+  address: string;
+  bannerImage: string;
+  cardImage: string;
+  description: string;
+  id: string;
+  name: string;
+  openseaUrl: string;
+  hasBlueCheck: boolean;
+  title: string; // for <PreviewModal>
+};
+
+// ===========================================================
+
+export type TransactionCardEntry = {
+  txnHash: string;
+  createdAt: number;
+  actionType: string;
+  status: string;
+  feesInEth: number;
+  salePriceInEth: number;
 };

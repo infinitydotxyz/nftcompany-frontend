@@ -1,11 +1,12 @@
 import { CardData } from 'types/Nft.interface';
 import { useEffect, useState } from 'react';
-import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
+import { defaultFilterState, SearchFilter, useSearchContext } from 'utils/context/SearchContext';
 import { useAppContext } from 'utils/context/AppContext';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { getListings, TypeAheadOption } from 'services/Listings.service';
 import {
   getLastItemBasePrice,
+  getLastItemBlueCheck,
   getLastItemCreatedAt,
   getLastItemMaker,
   getLastItemSearchCollectionName,
@@ -27,6 +28,7 @@ const fetchData = async (
   startAfterPrice: string,
   startAfterSearchTitle: string,
   startAfterSearchCollectionName: string,
+  startAfterBlueCheck: boolean | undefined,
   collectionName: string,
   text: string,
   typeAhead: TypeAheadOption | undefined
@@ -39,12 +41,13 @@ const fetchData = async (
     startAfterPrice,
     startAfterSearchTitle,
     startAfterSearchCollectionName,
+    startAfterBlueCheck,
     limit: PAGE_SIZE.toString(),
     tokenId: typeAhead?.id ?? '',
     tokenAddress: typeAhead?.address ?? '',
     collectionName,
     text,
-    priceMax: collectionName?.length > 0 ? '1000000' : '' // SNG
+    priceMax: collectionName?.length > 0 ? '1000000' : filter.priceMax // SNG
   });
 
   return result;
@@ -52,7 +55,7 @@ const fetchData = async (
 
 // ==================================================================
 
-export function useCardProvider(): {
+export function useCardProvider(inCollectionName?: string): {
   list: CardData[];
   loadNext: () => void;
   hasData: () => boolean;
@@ -62,9 +65,15 @@ export function useCardProvider(): {
   const [listType, setListType] = useState('');
   const [hasMore, setHasMore] = useState(true);
   const [hasLoaded, setHasLoaded] = useState(false);
-
+  const [savedCollectionName, setSavedCollectionName] = useState<string | undefined>();
   const searchContext = useSearchContext();
   const { user, userReady } = useAppContext();
+
+  // if collection name changes, dump list
+  if (savedCollectionName !== inCollectionName) {
+    setSavedCollectionName(inCollectionName);
+    setList([]);
+  }
 
   const userAccount = user?.account;
 
@@ -73,6 +82,7 @@ export function useCardProvider(): {
     let startAfterMillis = '';
     let startAfterPrice = '';
     let startAfterSearchCollectionName = '';
+    let startAfterBlueCheck;
     let startAfterSearchTitle = '';
     let previousList: CardData[] = [];
 
@@ -87,24 +97,37 @@ export function useCardProvider(): {
       startAfterUser = getLastItemMaker(list);
       startAfterMillis = getLastItemCreatedAt(list);
       startAfterPrice = getLastItemBasePrice(list);
+      startAfterBlueCheck = getLastItemBlueCheck(list);
     }
 
     setListType(newListType);
 
+    const filterState = searchContext.filterState;
+    let collectionName = searchContext.searchState.collectionName || searchContext.filterState.collectionName;
+    let text = searchContext.searchState.text;
+    let selectedOption = searchContext.searchState.selectedOption;
+
+    if (inCollectionName) {
+      collectionName = inCollectionName;
+      text = '';
+      selectedOption = undefined;
+    }
+
     const result = await fetchData(
-      searchContext.filterState,
+      filterState,
       userAccount ?? '',
       startAfterUser,
       startAfterMillis,
       startAfterPrice,
       startAfterSearchTitle,
       startAfterSearchCollectionName,
-      searchContext.searchState.collectionName,
-      searchContext.searchState.text,
-      searchContext.searchState.selectedOption
+      startAfterBlueCheck,
+      collectionName,
+      text,
+      selectedOption
     );
 
-    if (result.length < PAGE_SIZE) {
+    if (result.length === 0) {
       setHasMore(false);
     } else {
       setHasMore(true);
@@ -153,27 +176,24 @@ export function useCardProvider(): {
     for (const item of srcList) {
       const itemId = `${item.tokenId}${item.tokenAddress}`;
 
-      // don't think this could be blank, but being safe
-      if (itemId) {
-        let a = dupMap.get(itemId);
+      let a = dupMap.get(itemId);
 
-        if (!a) {
-          a = [item];
-        } else {
-          a.push(item);
-
-          dupsIds.add(itemId);
-        }
-
-        dupMap.set(itemId, a);
+      if (!a) {
+        a = [item];
       } else {
-        console.log('no token id?');
+        a.push(item);
+
+        dupsIds.add(itemId);
       }
+
+      dupMap.set(itemId, a);
     }
 
     let showLowest = true;
+
     // if this is blank, we also show only the lowest
-    if (searchContext.filterState.sortByPrice === 'DESC') {
+    // default sort is highest->lowest, so we must check for undefined sortByPrice too
+    if (searchContext.filterState.sortByPrice === 'DESC' || !searchContext.filterState.sortByPrice) {
       showLowest = false;
     }
 
