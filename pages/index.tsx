@@ -234,7 +234,7 @@ export default function Home() {
                 {
                   question: 'What is Infinity?',
                   answer:
-                    'Infinity is the “FTX of NFTs” - a community-driven, decentralized NFT super app that enables discovering, developing, trading, and managing NFTs.'
+                    'Infinity is a decentralized NFT super app that enables discovering, developing, trading, and managing NFTs.'
                 },
                 {
                   question: 'Is Infinity live?',
