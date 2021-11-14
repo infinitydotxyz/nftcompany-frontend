@@ -40,9 +40,15 @@ function CollectionEvents({ address, eventType }: Props) {
         <Tbody>
           {events.map((item: any) => {
             return (
-              <Tr key={`${address}_${item.asset.token_id}_${item.created_date}`}>
+              <Tr key={`${address}_${item?.asset?.token_id}_${item.created_date}`}>
                 <Td>
-                  <img src={`${item.asset.image_thumbnail_url}`} alt={item.asset.token_id} className={styles.thumb} />
+                  {item?.asset?.image_thumbnail_url && (
+                    <img
+                      src={`${item.asset.image_thumbnail_url}`}
+                      alt={item?.asset?.token_id}
+                      className={styles.thumb}
+                    />
+                  )}
                 </Td>
                 {eventType === 'successful' && (
                   <Td>
