@@ -10,7 +10,7 @@ import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
 import { useRouter } from 'next/router';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
-import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab } from '@chakra-ui/react';
+import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box } from '@chakra-ui/react';
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 import styles from './Collection.module.scss';
 
@@ -35,7 +35,7 @@ const Collection = (): JSX.Element => {
 
             <Spacer />
 
-            <SortMenuButton />
+            {tabIndex === 0 ? <SortMenuButton /> : <Box height={10}>&nbsp;</Box>}
           </div>
 
           <div className="center">
