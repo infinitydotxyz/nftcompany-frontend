@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { apiGet } from 'utils/apiUtil';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import { weiToEther } from 'utils/ethersUtil';
 import { ellipsisAddress } from 'utils/commonUtil';
 import styles from './CollectionEvents.module.scss';
+import { FetchMore } from 'components/FetchMore/FetchMore';
+import { ITEMS_PER_PAGE } from 'utils/constants';
 
 interface Props {
   address: string;
@@ -11,19 +13,36 @@ interface Props {
 }
 
 function CollectionEvents({ address, eventType }: Props) {
-  const [events, setEvents] = React.useState([]);
+  const [currentPage, setCurrentPage] = useState(-1);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [data, setData] = useState<any>([]);
 
   const fetchData = async () => {
-    const { result, error } = await apiGet(
-      `https://api.opensea.io/api/v1/events?asset_contract_address=${address}&event_type=${eventType}&only_opensea=false&offset=0&limit=30`,
+    setIsFetching(true);
+    const newCurrentPage = currentPage + 1;
+    const offset = newCurrentPage * ITEMS_PER_PAGE;
+    const { result } = await apiGet(
+      `https://api.opensea.io/api/v1/events?asset_contract_address=${address}&event_type=${eventType}&only_opensea=false&offset=${offset}&limit=${ITEMS_PER_PAGE}`,
       {}
     );
-    setEvents(result.asset_events);
+    const moreData = result.asset_events || [];
+
+    setIsFetching(false);
+    setData([...data, ...moreData]);
+    setCurrentPage(newCurrentPage);
   };
 
   React.useEffect(() => {
     fetchData();
   }, []);
+
+  React.useEffect(() => {
+    if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
+      return;
+    }
+    setDataLoaded(true); // current page's data loaded & rendered.
+  }, [currentPage]);
 
   return (
     <div>
@@ -38,7 +57,7 @@ function CollectionEvents({ address, eventType }: Props) {
           </Tr>
         </Thead>
         <Tbody>
-          {events.map((item: any) => {
+          {data.map((item: any) => {
             return (
               <Tr key={`${address}_${item?.asset?.token_id}_${item.created_date}`}>
                 <Td>
@@ -94,6 +113,17 @@ function CollectionEvents({ address, eventType }: Props) {
               </Tr>
             );
           })}
+
+          {dataLoaded && (
+            <FetchMore
+              currentPage={currentPage}
+              data={data}
+              onFetchMore={async () => {
+                setDataLoaded(false);
+                await fetchData();
+              }}
+            />
+          )}
         </Tbody>
       </Table>
     </div>
