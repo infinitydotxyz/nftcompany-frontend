@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab } from '@chakra-ui/react';
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
+import styles from './Collection.module.scss';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -39,7 +40,7 @@ const Collection = (): JSX.Element => {
 
           <div className="center">
             <Tabs onChange={(index) => setTabIndex(index)}>
-              <TabList>
+              <TabList className={styles.tabList}>
                 <Tab>NFTs</Tab>
                 <Tab isDisabled={!address}>Sales</Tab>
                 <Tab isDisabled={!address}>Transfers</Tab>
