@@ -75,7 +75,7 @@ export const apiGet = async (path: string, query?: any) => {
   const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
     const { data, status } = await axiosApi({
-      url: `${API_BASE}${path}${queryStr}`,
+      url: path.startsWith('http') ? path : `${API_BASE}${path}${queryStr}`,
       method: 'GET',
       headers: path.indexOf('/u/') >= 0 ? await getAuthHeaders() : {}
     });
