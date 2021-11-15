@@ -9,6 +9,9 @@ body {
   padding: 0;
   margin: 0;
 }
+html {
+  overflow-y: scroll;
+}
 
 /* Remove focus border on buttons */
 button:focus:not(.focus-visible) {
