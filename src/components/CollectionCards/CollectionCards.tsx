@@ -72,10 +72,7 @@ export const CollectionCards = ({ rows = 0, featuredCollections = false, listMod
       if (featuredCollections) {
         response = await apiGet(`/featured-collections`, {});
       } else {
-        response = await apiPost(`/verifiedTokens`, {}, body);
-
-        // not ready yet
-        // const { result, error } = await apiPost('/verifiedCollections', {}, body);
+        response = await apiGet('/verifiedCollections', body);
       }
 
       const { result, error } = response;

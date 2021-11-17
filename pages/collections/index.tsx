@@ -21,7 +21,7 @@ const Collections = (): JSX.Element => {
 
             <div className={styles.row}>
               <ViewControl
-                disabled={true} // disabled for now, data doesn't have images
+                disabled={false} // disabled for now, data doesn't have images
                 mode={mode}
                 onClick={(m) => {
                   setMode(m);
