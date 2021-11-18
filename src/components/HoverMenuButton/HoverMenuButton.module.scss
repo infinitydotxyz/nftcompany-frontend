@@ -10,7 +10,7 @@
   }
 
   &.menuOpen {
-    background-color: #4047ff;
+    background-color: var(--chakra-colors-brandBlue, red);
     color: #fff;
   }
 

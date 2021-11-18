@@ -2,14 +2,14 @@ import React from 'react';
 import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefaultColorScheme } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
 
-const brandBlue = '#4047ff';
+const brandBlue = '#0000ff'; // #4047ff';
 const darkGray = '#1A202C'; // Gray.800
 const darkGrayAlpha = '#1A202Ccc';
 
 const lightBg = '#fcfdfd';
 const lightBgAlpha = '#fcfdfdcc';
 
-const colors = {
+export const colors = {
   brandBlue: brandBlue,
 
   // custom colors
@@ -23,28 +23,28 @@ const colors = {
   headerBg: lightBgAlpha,
   headerBgDark: darkGrayAlpha,
 
-  brandBlueAlpha: '#4047ffaa',
-  brandBlueLight: '#4047ff14',
-  brandBlueShadow: '#4047ff44',
+  brandBlueAlpha: '#0000ffaa',
+  brandBlueLight: '#0000ff14',
+  brandBlueShadow: '#0000ff44'
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
-  blue: {
-    50: '#e8e9ff',
-    100: '#c6c8ff',
-    200: '#a0a3ff',
-    300: '#797eff',
-    400: '#5d63ff',
-    500: '#4047ff',
-    600: '#3a40ff',
-    700: '#3237ff',
-    800: '#2a2fff',
-    900: '#1c20ff',
-    A100: '#ffffff',
-    A200: '#ffffff',
-    A400: '#cdcdff',
-    A700: '#b3b4ff',
-    contrastDefaultColor: 'light'
-  }
+  // blue: {
+  //   50: '#e8e9ff',
+  //   100: '#c6c8ff',
+  //   200: '#a0a3ff',
+  //   300: '#797eff',
+  //   400: '#5d63ff',
+  //   500: '#4047ff',
+  //   600: '#3a40ff',
+  //   700: '#3237ff',
+  //   800: '#2a2fff',
+  //   900: '#1c20ff',
+  //   A100: '#ffffff',
+  //   A200: '#ffffff',
+  //   A400: '#cdcdff',
+  //   A700: '#b3b4ff',
+  //   contrastDefaultColor: 'light'
+  // }
 };
 
 const Table = {

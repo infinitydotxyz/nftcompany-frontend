@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './FaqAccordion.module.scss';
 import { duration } from 'moment';
+import { colors } from 'utils/themeUtil';
 
 interface Q {
   question: string;
@@ -38,7 +39,13 @@ const Accordion = ({ i, expanded, setExpanded, q, a }: IProps2) => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <circle cx={18} cy={18} r={18} fill="url(#paint0_linear)" />
-          <path d="M23 16.5l-5 5-5-5" stroke="#4047FF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            d="M23 16.5l-5 5-5-5"
+            stroke={colors.brandBlue}
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
           <defs>
             <linearGradient id="paint0_linear" x1={18} y1={0} x2={18} y2={36} gradientUnits="userSpaceOnUse">
               <stop stopColor="#F8F8F8" stopOpacity=".6" />
@@ -61,9 +68,7 @@ const Accordion = ({ i, expanded, setExpanded, q, a }: IProps2) => {
               collapsed: { opacity: 0, display: 'none' }
             }}
           >
-            <motion.p variants={{ collapsed: { y: 10 }, open: { y: 0 } }}>
-              {a}
-            </motion.p>
+            <motion.p variants={{ collapsed: { y: 10 }, open: { y: 0 } }}>{a}</motion.p>
           </motion.section>
         )}
       </AnimatePresence>

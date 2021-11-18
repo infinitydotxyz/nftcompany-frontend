@@ -92,12 +92,12 @@
   }
 
   &:hover {
-    background-color: #4047ff;
+    background-color: var(--chakra-colors-brandBlue, red);
     color: #fff;
   }
 
   &.active {
-    background-color: #4047ff;
+    background-color: var(--chakra-colors-brandBlue, red);
     color: #fff !important;
   }
 }
