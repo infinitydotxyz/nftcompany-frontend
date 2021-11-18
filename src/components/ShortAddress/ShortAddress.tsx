@@ -2,7 +2,7 @@ import React from 'react';
 import { Tooltip } from '@chakra-ui/tooltip';
 import styles from './ShortAddress.module.scss';
 import { CopyButton } from 'components/CopyButton/CopyButton';
-import { Link, Spacer } from '@chakra-ui/react';
+import { Link, Spacer, useColorMode } from '@chakra-ui/react';
 import { Label } from 'components/Text/Text';
 import { addressesEqual, ellipsisAddress, ellipsisString } from 'utils/commonUtil';
 import { useAppContext } from 'utils/context/AppContext';
@@ -18,6 +18,9 @@ type Props = {
 
 export const ShortAddress = ({ vertical, href, newTab = true, address, label, tooltip = '' }: Props) => {
   const { user } = useAppContext();
+  const { colorMode } = useColorMode();
+
+  const dark = colorMode === 'dark';
 
   if (!address) {
     return <div />;
@@ -41,7 +44,7 @@ export const ShortAddress = ({ vertical, href, newTab = true, address, label, to
     <div className={styles.link}>
       <Tooltip label={tooltip} hasArrow openDelay={1000}>
         <Link
-          color="brandBlue"
+          color={dark ? 'white' : 'brandBlue'}
           href={href}
           target={newTab ? '_blank' : ''}
           rel="noreferrer"
