@@ -29,8 +29,15 @@
   border: 1px solid #eee;
 
   :global(body.chakra-ui-dark) & {
-    box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.15);
     border: 1px solid #333;
+
+    &.menuOpen {
+      background-color: var(--chakra-colors-brandBlue, red);
+      color: #fff;
+    }
+
+    background-color: var(--chakra-colors-brandGray, red);
+    color: #333;
   }
 }
 

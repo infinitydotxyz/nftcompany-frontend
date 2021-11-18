@@ -40,7 +40,7 @@ export default function Home() {
             <Button
               size="lg"
               className={styles.stadiumButton}
-              colorScheme="gray"
+              colorScheme="grayish"
               onClick={() => router.push('/my-nfts')}
             >
               List NFTs

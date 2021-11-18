@@ -60,8 +60,11 @@
     border: 1px solid #eee;
 
     :global(body.chakra-ui-dark) & {
-      color: #eee;
-      box-shadow: 0px 6px 6px rgba(64, 71, 255, 0.15);
+      background-color: var(--chakra-colors-brandGray, red);
+      color: #333;
+
+      // box-shadow: 0px 6px 6px rgba(64, 71, 255, 0.15);
+      box-shadow: none;
       border: 1px solid #333;
     }
 
@@ -70,6 +73,9 @@
 
       :global(body.chakra-ui-dark) & {
         background-color: #333;
+
+        background-color: var(--chakra-colors-brandBlue, red);
+        color: #fff;
       }
     }
 

@@ -3,6 +3,7 @@ import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefau
 import { mode } from '@chakra-ui/theme-tools';
 
 const brandBlue = '#0000ff'; // #4047ff';
+const brandGray = '#888A8C'; // #4047ff';
 const darkGray = '#1A202C'; // Gray.800
 const darkGrayAlpha = '#1A202Ccc';
 
@@ -11,6 +12,7 @@ const lightBgAlpha = '#fcfdfdcc';
 
 export const colors = {
   brandBlue: brandBlue,
+  brandGray: brandGray,
 
   // custom colors
   windowBg: lightBg,
@@ -25,7 +27,7 @@ export const colors = {
 
   brandBlueAlpha: '#0000ffaa',
   brandBlueLight: '#0000ff14',
-  brandBlueShadow: '#0000ff44'
+  brandBlueShadow: '#0000ff44',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   // blue: {
@@ -45,6 +47,23 @@ export const colors = {
   //   A700: '#b3b4ff',
   //   contrastDefaultColor: 'light'
   // }
+
+  grayish: {
+    50: brandGray,
+    100: brandGray,
+    200: brandGray,
+    300: brandGray,
+    400: brandGray,
+    500: brandGray,
+    600: brandGray,
+    700: brandGray,
+    800: brandGray,
+    900: brandGray,
+    A100: brandGray,
+    A200: brandGray,
+    A400: brandGray,
+    A700: brandGray
+  }
 };
 
 const Table = {
@@ -105,7 +124,7 @@ const Button = {
       const { colorScheme, colorMode } = props;
 
       // prevent chakra changing the button colors when in dark mode
-      if (colorMode === 'dark' && colorScheme !== 'gray') {
+      if (colorMode === 'dark' && colorScheme !== 'gray' && colorScheme !== 'grayish') {
         return {
           bg: brandBlue,
           color: 'white'
