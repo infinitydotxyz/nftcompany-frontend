@@ -5,7 +5,7 @@ import { weiToEther } from 'utils/ethersUtil';
 import { ellipsisAddress } from 'utils/commonUtil';
 import styles from './CollectionEvents.module.scss';
 import { FetchMore } from 'components/FetchMore/FetchMore';
-import { ITEMS_PER_PAGE } from 'utils/constants';
+import { ITEMS_PER_PAGE, CHAIN_SCANNER_BASE } from 'utils/constants';
 
 interface Props {
   address: string;
@@ -72,7 +72,7 @@ function CollectionEvents({ address, eventType }: Props) {
                 {eventType === 'successful' && (
                   <Td>
                     <a
-                      href={`https://etherscan.io/address/${item?.seller?.address}`}
+                      href={`${CHAIN_SCANNER_BASE}/address/${item?.seller?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -80,7 +80,7 @@ function CollectionEvents({ address, eventType }: Props) {
                     </a>{' '}
                     🡒{' '}
                     <a
-                      href={`https://etherscan.io/address/${item?.winner_account?.address}`}
+                      href={`${CHAIN_SCANNER_BASE}/address/${item?.winner_account?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -91,7 +91,7 @@ function CollectionEvents({ address, eventType }: Props) {
                 {(eventType === 'transfer' || eventType === 'bid_entered') && (
                   <Td>
                     <a
-                      href={`https://etherscan.io/address/${item?.from_account?.address}`}
+                      href={`${CHAIN_SCANNER_BASE}/address/${item?.from_account?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -99,7 +99,7 @@ function CollectionEvents({ address, eventType }: Props) {
                     </a>{' '}
                     {item?.to_account ? '🡒 ' : ''}
                     <a
-                      href={`https://etherscan.io/address/${item?.to_account?.address}`}
+                      href={`${CHAIN_SCANNER_BASE}/address/${item?.to_account?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

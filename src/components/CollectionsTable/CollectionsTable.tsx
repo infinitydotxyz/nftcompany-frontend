@@ -7,6 +7,7 @@ import { Tooltip } from '@chakra-ui/tooltip';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { CopyButton } from 'components/CopyButton/CopyButton';
 import { CollectionCardEntry } from 'types/rewardTypes';
+import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 type Props = {
   entries?: CollectionCardEntry[];
@@ -43,7 +44,7 @@ export const CollectionsTable = ({ entries }: Props) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (item.id) {
-                      window.open(`https://etherscan.io/address/${item.id}`, '_blank');
+                      window.open(`${CHAIN_SCANNER_BASE}/address/${item.id}`, '_blank');
                     }
                   }}
                 />

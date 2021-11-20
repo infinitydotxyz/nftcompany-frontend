@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { ethers } from 'ethers';
 import { CardData } from 'types/Nft.interface';
-import { WETH_ADDRESS } from './constants';
+import { WETH_ADDRESS, CHAIN_SCANNER_BASE } from './constants';
 
 // OpenSea's EventType
 export enum EventType {
@@ -149,7 +149,7 @@ export const getCustomMessage = (eventName: string, data: any) => {
 
   const ev = data?.event;
   const createLink = (transactionHash: string) => (
-    <a className="toast-link" href={`https://etherscan.io/tx/${transactionHash}`} target="_blank" rel="noreferrer">
+    <a className="toast-link" href={`${CHAIN_SCANNER_BASE}/tx/${transactionHash}`} target="_blank" rel="noreferrer">
       {data?.transactionHash}
     </a>
   );

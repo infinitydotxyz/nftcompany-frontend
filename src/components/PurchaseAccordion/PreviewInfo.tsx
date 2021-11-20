@@ -12,6 +12,7 @@ import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
 import { Label } from 'components/Text/Text';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
+import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 interface Props {
   data: CardData;
@@ -103,7 +104,7 @@ export const PreviewInfo: React.FC<Props> = ({ showDescription = false, action, 
   const _tokenAddressSection = (
     <ShortAddress
       address={data.tokenAddress}
-      href={`https://etherscan.io/token/${data.tokenAddress}`}
+      href={`${CHAIN_SCANNER_BASE}/token/${data.tokenAddress}`}
       label="Token Address:"
       tooltip={toChecksumAddress(data.tokenAddress)}
     />
@@ -112,7 +113,7 @@ export const PreviewInfo: React.FC<Props> = ({ showDescription = false, action, 
   const _tokenIdSection = (
     <ShortAddress
       address={data.tokenId}
-      href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
+      href={`${CHAIN_SCANNER_BASE}/token/${data.tokenAddress}?a=${data.tokenId}`}
       label="Token Id:"
       tooltip={data.tokenId}
     />

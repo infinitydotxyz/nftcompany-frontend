@@ -7,6 +7,7 @@ import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { uuidv4 } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import { Button } from '@chakra-ui/react';
+import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 type Props = {
   entry: CollectionCardEntry;
@@ -59,7 +60,7 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
 
         <ShortAddress
           vertical={true}
-          href={`https://etherscan.io/address/${entry.address}`}
+          href={`${CHAIN_SCANNER_BASE}/address/${entry.address}`}
           address={entry.address}
           label=""
           tooltip={entry.address}
