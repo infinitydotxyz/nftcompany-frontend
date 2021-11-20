@@ -2,24 +2,7 @@
 
 @include cardList();
 
-$cardHeight: 391px;
-
-.button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  height: 48px;
-  padding: 0 24px;
-  background: var(--chakra-colors-brandBlue, red);
-  border-radius: 24px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
-  color: #fcfcfd;
-  transition: all 0.2s;
-}
+$cardHeight: 440px;
 
 .ownedTag {
   position: absolute;
@@ -64,35 +47,26 @@ $cardHeight: 391px;
 
 .card {
   position: relative;
-  padding: 12px;
-  border-radius: 20px;
+  border-radius: 16px;
   height: $cardHeight;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
-  @include lightShadow();
   background-color: var(--chakra-colors-cardBgLight, red);
 
   :global(body.chakra-ui-dark) & {
-    @include darkShadow();
     background-color: var(--chakra-colors-cardBgDark, red);
-  }
-
-  &:hover {
-    .cardControls {
-      visibility: visible;
-      opacity: 1;
-    }
   }
 
   .cardPreview {
     position: relative;
-    border-radius: 16px;
     cursor: pointer;
     overflow: hidden;
-    height: 280px;
+    flex: 5;
 
     img {
       min-width: 100%;
-      min-height: 280px;
       transition: transform 1s;
       object-fit: cover;
     }
@@ -101,24 +75,41 @@ $cardHeight: 391px;
     }
   }
 
-  .cardControls {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(35, 38, 47, 0.2);
-    visibility: hidden;
-    border-radius: 16px;
-    opacity: 0;
-    transition: all 0.3s;
+  .buttons {
     display: flex;
-    flex-flow: column-reverse;
+    gap: 10px;
+    padding: 0px 20px 20px 20px;
+    width: 100%;
+    flex: 0;
+
+    .stadiumButtonGray,
+    .stadiumButtonBlue {
+      background-color: var(--chakra-colors-brandBlue, red);
+      color: white;
+      border-radius: 100px;
+      flex: 1;
+      &:hover {
+        background-color: blue;
+        color: white;
+      }
+    }
+
+    .stadiumButtonGray {
+      background-color: #bbb;
+      color: black;
+    }
+  }
+
+  .cardControls {
+    //  width: 100%;
+    // height: 100%;
+    display: flex;
 
     .cardButton {
       // position: absolute;
       // left: 50%;
       // bottom: 16px;
+      padding: 16px;
       min-width: 140px;
       margin-bottom: 10px;
       margin: 0 10px 10px 10px;
@@ -126,21 +117,20 @@ $cardHeight: 391px;
     }
   }
 
-  .cardBody {
-    padding: 10px 0;
-  }
-
   .cardLine {
     display: flex;
     justify-content: space-between;
+    padding: 20px;
     margin-top: 10px;
     font-size: 14px;
     align-items: flex-start;
+    flex: 0;
 
     .collectionRow {
       display: flex;
       align-items: center;
     }
+
     .collectionName {
       color: var(--text-secondary);
       font-size: 0.9em;
@@ -151,6 +141,7 @@ $cardHeight: 391px;
       text-overflow: ellipsis;
       overflow: hidden;
     }
+
     .cardTitle {
       font-size: 16px;
       line-height: 1;

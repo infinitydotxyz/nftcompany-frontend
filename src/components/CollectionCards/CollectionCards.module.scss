@@ -18,10 +18,8 @@
 }
 
 $innerHeight: 440px;
-$outerHeight: 445px;
 
 .card {
-  padding-bottom: 20px;
   border-radius: 16px;
   display: flex;
   flex-direction: column;
@@ -60,11 +58,18 @@ $outerHeight: 445px;
     }
   }
 
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+
+    padding: 20px;
+  }
+
   .stadiumButtonBlue {
     background-color: var(--chakra-colors-brandBlue, red);
     color: white;
     border-radius: 100px;
-    min-width: 160px;
     &:hover {
       background-color: blue;
       color: white;
@@ -90,6 +95,7 @@ $outerHeight: 445px;
   }
 }
 
+$outerHeight: 440px;
 .outOfViewCard {
   height: $outerHeight;
 }

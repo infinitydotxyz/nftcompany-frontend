@@ -66,9 +66,11 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
         />
       </div>
 
-      <Button mx={4} mt={3} size="lg" className={styles.stadiumButtonBlue} onClick={clickButton}>
-        View collection
-      </Button>
+      <div className={styles.buttons}>
+        <Button size="lg" className={styles.stadiumButtonBlue} onClick={clickButton}>
+          View collection
+        </Button>
+      </div>
     </div>
   );
 };

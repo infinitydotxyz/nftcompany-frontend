@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, MouseEvent } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import { CardData } from 'types/Nft.interface';
-import PreviewModal from 'components/PreviewModal/PreviewModal';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { WETH_ADDRESS } from 'utils/constants';
 import { addressesEqual } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
+import router from 'next/router';
+import { Button, Spacer } from '@chakra-ui/react';
 
 type Props = {
   data: CardData;
@@ -24,7 +25,6 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
-  const [previewModalShowed, setPreviewModalShowed] = useState(false);
   const { ref, inView } = useInView({ threshold: 0 });
 
   if (!data) {
@@ -36,141 +36,125 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     ownedByYou = addressesEqual(data.owner, userAccount);
   }
 
+  const clickCard = () => {
+    router.push(`/assets/${data.tokenAddress}/${data.tokenId}`);
+  };
+
   const collectionName = data.collectionName;
   const hasBlueCheck = data.hasBlueCheck;
 
   if (inView === false) {
     return <div ref={ref} id={`id_${data.id}`} className={styles.card}></div>;
   }
+
+  const actionButton = () => {
+    let handler: (ev: MouseEvent) => void = () => console.log('blah');
+    let name;
+
+    if (action === 'LIST_NFT') {
+      handler = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        if (onClickAction) {
+          onClickAction(data, 'LIST_NFT');
+        }
+      };
+      name = 'List NFT';
+    } else if (action === 'BUY_NFT' && !ownedByYou) {
+      handler = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        setPlaceBidModalShowed(true);
+      };
+      name = 'Purchase';
+    } else if (action === 'CANCEL_LISTING') {
+      handler = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        if (onClickAction) {
+          onClickAction(data, 'CANCEL_LISTING');
+        }
+      };
+      name = 'Cancel';
+    } else if (action === 'ACCEPT_OFFER') {
+      handler = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        setAcceptOfferModalShowed(true);
+      };
+      name = 'Accept';
+    } else if (action === 'CANCEL_OFFER') {
+      handler = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        setCancelOfferModalShowed(true);
+      };
+      name = 'Cancel';
+    }
+
+    if (name) {
+      return (
+        <Button className={styles.stadiumButtonBlue} onClick={handler}>
+          {name}
+        </Button>
+      );
+    }
+
+    return null;
+  };
+
   return (
-    <div ref={ref} id={`id_${data.id}`} className={styles.card}>
+    <div ref={ref} id={`id_${data.id}`} className={styles.card} onClick={clickCard}>
       {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
 
-      <div onClick={() => setPreviewModalShowed(true)}>
-        <div className={styles.cardPreview}>
-          <img src={data.image} alt="Card preview" />
+      <div className={styles.cardPreview}>
+        <img src={data.image} alt="Card preview" />
 
-          <div className={styles.cardControls}>
-            {action === 'LIST_NFT' && (
-              <a
-                className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-                href="#popup-bid"
-                data-effect="mfp-zoom-in"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                  ev.stopPropagation();
+        <div className={styles.cardControls}></div>
+      </div>
+      <div className={styles.cardLine}>
+        <div className={styles.cardTitle}>
+          {collectionName && (
+            <div className={styles.collectionRow}>
+              <div className={styles.collectionName}>{collectionName}</div>
 
-                  if (onClickAction) {
-                    onClickAction(data, 'LIST_NFT');
-                  }
-                }}
-              >
-                <span>List NFT</span>
-              </a>
-            )}
-            {action === 'BUY_NFT' && !ownedByYou && (
-              <a
-                className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-                href="#popup-bid"
-                data-effect="mfp-zoom-in"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                  ev.stopPropagation();
-
-                  setPlaceBidModalShowed(true);
-                }}
-              >
-                <span>Purchase</span>
-              </a>
-            )}
-            {action === 'CANCEL_LISTING' && (
-              <a
-                className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-                href="#popup-bid"
-                data-effect="mfp-zoom-in"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                  ev.stopPropagation();
-
-                  if (onClickAction) {
-                    onClickAction(data, 'CANCEL_LISTING');
-                  }
-                }}
-              >
-                <span>Cancel Listing</span>
-              </a>
-            )}
-
-            {action === 'ACCEPT_OFFER' && (
-              <a
-                className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-                href="#popup-bid"
-                data-effect="mfp-zoom-in"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                  ev.stopPropagation();
-
-                  setAcceptOfferModalShowed(true);
-                }}
-              >
-                <span>Accept Offer</span>
-              </a>
-            )}
-
-            {action === 'CANCEL_OFFER' && (
-              <a
-                className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-                href="#popup-bid"
-                data-effect="mfp-zoom-in"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                  ev.stopPropagation();
-
-                  setCancelOfferModalShowed(true);
-                }}
-              >
-                <span>Cancel Offer</span>
-              </a>
-            )}
-          </div>
-        </div>
-
-        <div className={styles.cardBody}>
-          <div className={styles.cardLine}>
-            <div className={styles.cardTitle}>
-              {collectionName && (
-                <div className={styles.collectionRow}>
-                  <div className={styles.collectionName}>{collectionName}</div>
-
-                  <div style={{ paddingLeft: 6 }}>
-                    <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
-                  </div>
-                </div>
-              )}
-              <div className={styles.title}>{data.title}</div>
+              <div style={{ paddingLeft: 6 }}>
+                <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
+              </div>
             </div>
-            <PriceBox
-              justifyRight
-              price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
-              token={data?.order?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
-              expirationTime={data?.expirationTime}
-            />
-          </div>
+          )}
+          <div className={styles.title}>{data.title}</div>
         </div>
+        <PriceBox
+          justifyRight
+          price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
+          token={data?.order?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
+          expirationTime={data?.expirationTime}
+        />
+      </div>
+
+      <Spacer />
+
+      <div className={styles.buttons}>
+        <Button
+          className={styles.stadiumButtonGray}
+          onClick={() => {
+            // sdf
+          }}
+        >
+          Info
+        </Button>
+        {actionButton()}
       </div>
 
       {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
       {cancelOfferModalShowed && <CancelOfferModal data={data} onClose={() => setCancelOfferModalShowed(false)} />}
       {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
-      {previewModalShowed && (
-        <PreviewModal
-          action={action}
-          data={data}
-          onClose={() => {
-            setPreviewModalShowed(false);
-          }}
-        />
-      )}
     </div>
   );
 }
