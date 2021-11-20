@@ -2,8 +2,10 @@ import React from 'react';
 import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefaultColorScheme } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
 
-const brandBlue = '#0000ff'; // #4047ff';
-const brandGray = '#888A8C'; // #4047ff';
+// const brandBlue = '#0000ff'; // #4047ff';
+// const brandGray = '#888A8C'; // #4047ff';
+const brandBlue = '#4047ff';
+const brandGray = '#888A8C';
 const darkGray = '#1A202C'; // Gray.800
 const darkGrayAlpha = '#1A202Ccc';
 
@@ -25,9 +27,9 @@ export const colors = {
   headerBg: lightBgAlpha,
   headerBgDark: darkGrayAlpha,
 
-  brandBlueAlpha: '#0000ffaa',
-  brandBlueLight: '#0000ff14',
-  brandBlueShadow: '#0000ff44',
+  brandBlueAlpha: brandBlue + 'aa',
+  brandBlueLight: brandBlue + '14',
+  brandBlueShadow: brandBlue + '44',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   // blue: {
