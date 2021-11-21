@@ -9,7 +9,7 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
-import { transformOpenSea } from 'utils/commonUtil';
+import { transformOpenSea, transformCovalent } from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
 
 export default function MyNFTs() {
@@ -27,19 +27,23 @@ export default function MyNFTs() {
     }
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
+    const source = 1;
 
     const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
       offset: newCurrentPage * ITEMS_PER_PAGE, // not "startAfter" because this is not firebase query.
       limit: ITEMS_PER_PAGE,
-      source: 1
+      source
     });
     if (error) {
       showAppError(`${error.message}`);
       return;
     }
     const moreData = (result?.assets || []).map((item: any) => {
-      const newItem = transformOpenSea(item, user?.account);
-      return newItem;
+      if (source === 1) {
+        return transformOpenSea(item, user?.account);
+      } else if (source === 4) {
+        return transformCovalent(item, user?.account);
+      }
     });
     setIsFetching(false);
     setData([...data, ...moreData]);

@@ -9,7 +9,7 @@ import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/Fet
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useRouter } from 'next/router';
-import { transformOpenSea } from 'utils/commonUtil';
+import { transformOpenSea, transformCovalent } from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
 
 export default function UserPage() {
@@ -32,11 +32,12 @@ export default function UserPage() {
 
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
+    const source = 1;
 
     const { result, error } = await apiGet(`/p/u/${userParam}/assets`, {
       offset: newCurrentPage * ITEMS_PER_PAGE,
       limit: ITEMS_PER_PAGE,
-      source: 1
+      source
     });
 
     if (error) {
@@ -44,8 +45,11 @@ export default function UserPage() {
       return;
     }
     const moreData = (result?.assets || []).map((item: any) => {
-      const newItem = transformOpenSea(item, userParam as string);
-      return newItem;
+      if (source === 1) {
+        return transformOpenSea(item, userParam as string);
+      } else if (source === 4) {
+        return transformCovalent(item, userParam as string);
+      }
     });
     setIsFetching(false);
     setData([...data, ...moreData]);
