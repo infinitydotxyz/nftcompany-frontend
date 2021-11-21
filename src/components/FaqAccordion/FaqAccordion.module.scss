@@ -36,6 +36,10 @@
         }
 
         font-weight: 700;
+        @media screen and (max-width: 768px) {
+          font-size: 1.1rem;
+          width: 18rem;
+        }
       }
 
       &:hover {
@@ -46,6 +50,9 @@
       padding: 0 1rem 1rem;
       color: #071013;
       font-size: 1.2rem;
+      @media screen and (max-width: 768px) {
+        font-size: 1rem;
+      }
 
       :global(body.chakra-ui-dark) & {
         color: #eee;

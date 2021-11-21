@@ -79,8 +79,9 @@ export default function ExplorePage() {
           )}
         </div>
       </div>
-
-      <FilterDrawer />
+      <div className="filter-panel-explore-page">
+        <FilterDrawer />
+      </div>
     </>
   );
 }
