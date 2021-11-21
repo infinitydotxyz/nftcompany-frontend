@@ -1,34 +1,34 @@
-import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import cn from "classnames";
-import styles from "./Header.module.sass";
-import Icon from "../Icon";
-import Image from "../Image";
-import Notification from "./Notification";
-import User from "./User";
+import React, { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import cn from 'classnames';
+import styles from './Header.module.sass';
+import Icon from '../Icon';
+import Image from '../Image';
+import Notification from './Notification';
+import User from './User';
 
 const nav = [
   {
-    url: "/search01",
-    title: "Discover",
+    url: '/search01',
+    title: 'Discover'
   },
   {
-    url: "/faq",
-    title: "How it work",
+    url: '/faq',
+    title: 'How it work'
   },
   {
-    url: "/item",
-    title: "Create item",
+    url: '/item',
+    title: 'Create item'
   },
   {
-    url: "/profile",
-    title: "Profile",
-  },
+    url: '/profile',
+    title: 'Profile'
+  }
 ];
 
 const Headers = () => {
   const [visibleNav, setVisibleNav] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   const handleSubmit = (e) => {
     alert();
@@ -36,7 +36,7 @@ const Headers = () => {
 
   return (
     <header className={styles.header}>
-      <div className={cn("container", styles.container)}>
+      <div className={cn('container', styles.container)}>
         <Link className={styles.logo} to="/">
           <Image
             className={styles.pic}
@@ -58,11 +58,7 @@ const Headers = () => {
               </Link>
             ))}
           </nav>
-          <form
-            className={styles.search}
-            action=""
-            onSubmit={() => handleSubmit()}
-          >
+          <form className={styles.search} action="" onSubmit={() => handleSubmit()}>
             <input
               className={styles.input}
               type="text"
@@ -76,18 +72,12 @@ const Headers = () => {
               <Icon name="search" size="20" />
             </button>
           </form>
-          <Link
-            className={cn("button-small", styles.button)}
-            to="/upload-variants"
-          >
+          <Link className={cn('button-small', styles.button)} to="/upload-variants">
             Upload
           </Link>
         </div>
         <Notification className={styles.notification} />
-        <Link
-          className={cn("button-small", styles.button)}
-          to="/upload-variants"
-        >
+        <Link className={cn('button-small', styles.button)} to="/upload-variants">
           Upload
         </Link>
         {/* <Link
