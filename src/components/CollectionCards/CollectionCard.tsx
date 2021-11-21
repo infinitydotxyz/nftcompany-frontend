@@ -31,8 +31,8 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
       return '';
     }
 
-    // remove spaces and dashes
-    let result = input.replace(/[\s-]/g, '');
+    // remove spaces only
+    let result = input.replace(/\s/g, '');
     result = result.toLowerCase();
 
     // name could have # and other url reseved characters
