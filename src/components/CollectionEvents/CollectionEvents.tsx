@@ -6,13 +6,16 @@ import { ellipsisAddress } from 'utils/commonUtil';
 import styles from './CollectionEvents.module.scss';
 import { FetchMore } from 'components/FetchMore/FetchMore';
 import { ITEMS_PER_PAGE, CHAIN_SCANNER_BASE } from 'utils/constants';
+import { useAppContext } from 'utils/context/AppContext';
 
 interface Props {
   address: string;
+  tokenId?: string;
   eventType: 'successful' | 'transfer' | 'bid_entered';
 }
 
-function CollectionEvents({ address, eventType }: Props) {
+function CollectionEvents({ address, tokenId, eventType }: Props) {
+  const { showAppError } = useAppContext();
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
@@ -22,10 +25,13 @@ function CollectionEvents({ address, eventType }: Props) {
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
     const offset = newCurrentPage * ITEMS_PER_PAGE;
-    const { result } = await apiGet(
-      `https://api.opensea.io/api/v1/events?asset_contract_address=${address}&event_type=${eventType}&only_opensea=false&offset=${offset}&limit=${ITEMS_PER_PAGE}`,
-      {}
+    const tokenIdParam = tokenId ? `&token_id=${tokenId}` : '';
+    const { result, error } = await apiGet(
+      `/events?asset_contract_address=${address}${tokenIdParam}&event_type=${eventType}&only_opensea=false&offset=${offset}&limit=${ITEMS_PER_PAGE}`
     );
+    if (error) {
+      showAppError(`Error when fetching data. ${error.message}`);
+    }
     const moreData = result.asset_events || [];
 
     setIsFetching(false);
@@ -49,7 +55,7 @@ function CollectionEvents({ address, eventType }: Props) {
       <Table>
         <Thead>
           <Tr>
-            <Th>Token</Th>
+            <Th style={{ width: '10%' }}>Token</Th>
             <Th>Buyer</Th>
             <Th>{eventType === 'successful' ? 'Price' : ''}</Th>
             <Th>Date</Th>
