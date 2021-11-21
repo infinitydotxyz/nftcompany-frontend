@@ -2,8 +2,24 @@
 
 @include cardList();
 
-$cardHeight: 440px;
+$cardHeight: 400px;
 
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  padding: 0 24px;
+  background: #4047ff;
+  border-radius: 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  color: #fcfcfd;
+  transition: all 0.2s;
+}
 .ownedTag {
   position: absolute;
   top: 20px;
@@ -47,26 +63,26 @@ $cardHeight: 440px;
 
 .card {
   position: relative;
-  border-radius: 16px;
+  padding: 12px;
+  border-radius: 20px;
   height: $cardHeight;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-
+  @include lightShadow();
   background-color: var(--chakra-colors-cardBgLight, red);
 
   :global(body.chakra-ui-dark) & {
+    @include darkShadow();
     background-color: var(--chakra-colors-cardBgDark, red);
   }
 
   .cardPreview {
     position: relative;
-    cursor: pointer;
+    border-radius: 16px;
     overflow: hidden;
-    flex: 5;
+    height: 250px;
 
     img {
       min-width: 100%;
+      min-height: 250px;
       transition: transform 1s;
       object-fit: cover;
     }
@@ -78,7 +94,7 @@ $cardHeight: 440px;
   .buttons {
     display: flex;
     gap: 10px;
-    padding: 0px 20px 20px 20px;
+    padding: 10px 20px 20px 20px;
     width: 100%;
     flex: 0;
 
@@ -109,7 +125,6 @@ $cardHeight: 440px;
       // position: absolute;
       // left: 50%;
       // bottom: 16px;
-      padding: 16px;
       min-width: 140px;
       margin-bottom: 10px;
       margin: 0 10px 10px 10px;
@@ -117,14 +132,15 @@ $cardHeight: 440px;
     }
   }
 
+  .cardBody {
+    padding: 10px 0;
+  }
   .cardLine {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
     margin-top: 10px;
     font-size: 14px;
     align-items: flex-start;
-    flex: 0;
 
     .collectionRow {
       display: flex;

@@ -45,32 +45,36 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
   }
 
   return (
-    <div ref={ref} className={`${styles.card} ${isFeatured && styles.featuredCard}`} onClick={clickButton}>
-      <div className={styles.top}>
-        <img className={styles.cardImage} src={entry.cardImage} alt="Card preview" />
-      </div>
-      <div className={styles.bottom}>
-        <div className={styles.collectionRow}>
-          <div>{entry.name}</div>
+    <div ref={ref} className={styles.tripleCard}>
+      <div className={styles.card1}></div>
+      <div className={styles.card2}></div>
 
-          <div style={{ paddingLeft: 6 }}>
-            <BlueCheckIcon hasBlueCheck={entry.hasBlueCheck} />
-          </div>
+      <div className={`${styles.card3} ${isFeatured && styles.featuredCard}`}>
+        <div className={styles.top}>
+          <img className={styles.cardImage} src={entry.cardImage} alt="Card preview" />
         </div>
+        <div className={styles.bottom}>
+          <div className={styles.collectionRow}>
+            <div>{entry.name}</div>
 
-        <ShortAddress
-          vertical={true}
-          href={`${CHAIN_SCANNER_BASE}/address/${entry.address}`}
-          address={entry.address}
-          label=""
-          tooltip={entry.address}
-        />
-      </div>
+            <div style={{ paddingLeft: 6 }}>
+              <BlueCheckIcon hasBlueCheck={entry.hasBlueCheck} />
+            </div>
+          </div>
 
-      <div className={styles.buttons}>
-        <Button size="lg" className={styles.stadiumButtonBlue} onClick={clickButton}>
-          View collection
-        </Button>
+          <ShortAddress
+            vertical={true}
+            href={`${CHAIN_SCANNER_BASE}/address/${entry.address}`}
+            address={entry.address}
+            label=""
+            tooltip={entry.address}
+          />
+        </div>
+        <div className={styles.buttons}>
+          <Button size="lg" className={styles.stadiumButtonBlue} onClick={clickButton}>
+            View collection
+          </Button>
+        </div>
       </div>
     </div>
   );

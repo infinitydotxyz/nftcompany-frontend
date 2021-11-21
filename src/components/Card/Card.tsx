@@ -48,7 +48,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   }
 
   const actionButton = () => {
-    let handler: (ev: MouseEvent) => void = () => console.log('blah');
+    let handler: (ev: MouseEvent) => void = () => console.log('');
     let name;
 
     if (action === 'LIST_NFT') {
@@ -109,7 +109,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   };
 
   return (
-    <div ref={ref} id={`id_${data.id}`} className={styles.card} onClick={clickCard}>
+    <div ref={ref} id={`id_${data.id}`} className={styles.card}>
       {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
 
       <div className={styles.cardPreview}>
@@ -117,34 +117,35 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
 
         <div className={styles.cardControls}></div>
       </div>
-      <div className={styles.cardLine}>
-        <div className={styles.cardTitle}>
-          {collectionName && (
-            <div className={styles.collectionRow}>
-              <div className={styles.collectionName}>{collectionName}</div>
+      <div className={styles.cardBody}>
+        <div className={styles.cardLine}>
+          <div className={styles.cardTitle}>
+            {collectionName && (
+              <div className={styles.collectionRow}>
+                <div className={styles.collectionName}>{collectionName}</div>
 
-              <div style={{ paddingLeft: 6 }}>
-                <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
+                <div style={{ paddingLeft: 6 }}>
+                  <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
+                </div>
               </div>
-            </div>
-          )}
-          <div className={styles.title}>{data.title}</div>
+            )}
+            <div className={styles.title}>{data.title}</div>
+          </div>
+          <PriceBox
+            justifyRight
+            price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
+            token={data?.order?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
+            expirationTime={data?.expirationTime}
+          />
         </div>
-        <PriceBox
-          justifyRight
-          price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
-          token={data?.order?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
-          expirationTime={data?.expirationTime}
-        />
       </div>
-
       <Spacer />
 
       <div className={styles.buttons}>
         <Button
           className={styles.stadiumButtonGray}
           onClick={() => {
-            // sdf
+            clickCard();
           }}
         >
           Info
