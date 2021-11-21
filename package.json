@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "export NODE_OPTIONS=--openssl-legacy-provider && next dev",
-    "build": "npx pnpm install && rm -rf ./build && export NODE_OPTIONS=--openssl-legacy-provider && cross-env NODE_ENV=production next build",
+    "dev": "next dev",
+    "build": "npx pnpm install && rm -rf ./build && cross-env NODE_ENV=production next build",
     "start": "next start -p 8080",
     "lint": "next lint",
     "format": "prettier --write src/**/*.{tsx,ts}"
