@@ -32,23 +32,23 @@ export const colors = {
   brandBlueShadow: brandBlue + '44',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
-  // blue: {
-  //   50: '#e8e9ff',
-  //   100: '#c6c8ff',
-  //   200: '#a0a3ff',
-  //   300: '#797eff',
-  //   400: '#5d63ff',
-  //   500: '#4047ff',
-  //   600: '#3a40ff',
-  //   700: '#3237ff',
-  //   800: '#2a2fff',
-  //   900: '#1c20ff',
-  //   A100: '#ffffff',
-  //   A200: '#ffffff',
-  //   A400: '#cdcdff',
-  //   A700: '#b3b4ff',
-  //   contrastDefaultColor: 'light'
-  // }
+  blue: {
+    50: '#e8e9ff',
+    100: '#c6c8ff',
+    200: '#a0a3ff',
+    300: '#797eff',
+    400: '#5d63ff',
+    500: '#4047ff',
+    600: '#3a40ff',
+    700: '#3237ff',
+    800: '#2a2fff',
+    900: '#1c20ff',
+    A100: '#ffffff',
+    A200: '#ffffff',
+    A400: '#cdcdff',
+    A700: '#b3b4ff',
+    contrastDefaultColor: 'light'
+  },
 
   grayish: {
     50: brandGray,
