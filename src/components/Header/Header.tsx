@@ -168,7 +168,7 @@ const Header = (): JSX.Element => {
     );
   }
 
-  const medNavMenu = [...ntfItems, <MenuDivider key="d1" />];
+  const medNavMenu = [...ntfItems, <MenuDivider key="d1" />, ...offerItems];
 
   const mobileNavMenu = () => {
     let result = [

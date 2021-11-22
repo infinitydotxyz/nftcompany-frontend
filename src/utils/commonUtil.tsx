@@ -131,6 +131,11 @@ export const transformCovalent = (item: any, owner: string) => {
     return null;
   }
 
+  const nftDataArr = item?.nft_data;
+  if (!nftDataArr || !nftDataArr.length || nftDataArr.length === 0) {
+    return null;
+  }
+
   let schemaName = '';
   const supportedInterfaces = item?.supports_erc;
   for (const iface of supportedInterfaces) {
