@@ -32,6 +32,8 @@ export type SearchFilter = {
   sortByPriceDirection: string;
   startAfterUser: string;
   listType?: '' | 'BUY_NOW' | 'AUCTION';
+  traitType?: string;
+  traitValue?: string;
 };
 
 export const defaultSearchState: SearchState = {
@@ -62,7 +64,9 @@ export const defaultFilterState: SearchFilter = {
   startAfterSearchTitle: '',
   startAfterSearchCollectionName: '',
   startAfterBlueCheck: undefined,
-  listType: ''
+  listType: '',
+  traitType: '',
+  traitValue: ''
 };
 
 const SearchContext = React.createContext({} as any);
