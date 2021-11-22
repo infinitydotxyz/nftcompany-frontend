@@ -2,15 +2,19 @@ import React from 'react';
 import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefaultColorScheme } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
 
+// const brandBlue = '#0000ff'; // #4047ff';
+// const brandGray = '#888A8C'; // #4047ff';
 const brandBlue = '#4047ff';
+const brandGray = '#888A8C';
 const darkGray = '#1A202C'; // Gray.800
 const darkGrayAlpha = '#1A202Ccc';
 
 const lightBg = '#fcfdfd';
 const lightBgAlpha = '#fcfdfdcc';
 
-const colors = {
+export const colors = {
   brandBlue: brandBlue,
+  brandGray: brandGray,
 
   // custom colors
   windowBg: lightBg,
@@ -23,9 +27,9 @@ const colors = {
   headerBg: lightBgAlpha,
   headerBgDark: darkGrayAlpha,
 
-  brandBlueAlpha: '#4047ffaa',
-  brandBlueLight: '#4047ff14',
-  brandBlueShadow: '#4047ff44',
+  brandBlueAlpha: brandBlue + 'aa',
+  brandBlueLight: brandBlue + '14',
+  brandBlueShadow: brandBlue + '44',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   blue: {
@@ -44,6 +48,23 @@ const colors = {
     A400: '#cdcdff',
     A700: '#b3b4ff',
     contrastDefaultColor: 'light'
+  },
+
+  grayish: {
+    50: brandGray,
+    100: brandGray,
+    200: brandGray,
+    300: brandGray,
+    400: brandGray,
+    500: brandGray,
+    600: brandGray,
+    700: brandGray,
+    800: brandGray,
+    900: brandGray,
+    A100: brandGray,
+    A200: brandGray,
+    A400: brandGray,
+    A700: brandGray
   }
 };
 
@@ -105,7 +126,7 @@ const Button = {
       const { colorScheme, colorMode } = props;
 
       // prevent chakra changing the button colors when in dark mode
-      if (colorMode === 'dark' && colorScheme !== 'gray') {
+      if (colorMode === 'dark' && colorScheme !== 'gray' && colorScheme !== 'grayish') {
         return {
           bg: brandBlue,
           color: 'white'

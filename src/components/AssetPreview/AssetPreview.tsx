@@ -8,6 +8,7 @@ import { defaultFilterState } from 'utils/context/SearchContext';
 import { Link, Spacer } from '@chakra-ui/react';
 import { DescriptionBox } from 'components/PurchaseAccordion/DescriptionBox';
 import { ExtraSpace } from 'components/Spacer/Spacer';
+import NFTEvents from 'components/NFTEvents/NFTEvents';
 
 type Props = {
   tokenId: string;
@@ -96,6 +97,8 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
             />
           </div>
         </div>
+
+        <NFTEvents address={tokenAddress} tokenId={tokenId} />
       </div>
     </>
   );

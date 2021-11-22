@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { ethers } from 'ethers';
 import { CardData } from 'types/Nft.interface';
-import { WETH_ADDRESS } from './constants';
+import { WETH_ADDRESS, CHAIN_SCANNER_BASE } from './constants';
 
 // OpenSea's EventType
 export enum EventType {
@@ -126,6 +126,41 @@ export const transformOpenSea = (item: any, owner: string) => {
   } as CardData;
 };
 
+export const transformCovalent = (item: any, owner: string) => {
+  if (!item) {
+    return null;
+  }
+
+  const nftDataArr = item?.nft_data;
+  if (!nftDataArr || !nftDataArr.length || nftDataArr.length === 0) {
+    return null;
+  }
+
+  let schemaName = '';
+  const supportedInterfaces = item?.supports_erc;
+  for (const iface of supportedInterfaces) {
+    if (iface.trim().toLowerCase() === 'erc721') {
+      schemaName = 'ERC721';
+    } else if (iface.trim().toLowerCase() === 'erc1155') {
+      schemaName = 'ERC1155';
+    }
+  }
+
+  return {
+    id: `${item?.contract_address}_${item?.nft_data[0]?.token_id}`,
+    title: item?.nft_data[0]?.external_data?.name,
+    description: item?.nft_data[0]?.external_data?.description,
+    image: item?.nft_data[0]?.external_data?.image_512,
+    imagePreview: item?.nft_data[0]?.external_data?.image_256,
+    tokenAddress: item?.contract_address,
+    tokenId: item?.nft_data[0]?.token_id,
+    collectionName: item?.contract_name,
+    owner,
+    schemaName,
+    data: item
+  } as CardData;
+};
+
 export const getCustomExceptionMsg = (msg: ReactNode) => {
   let customMsg = msg;
   if (typeof msg === 'string' && msg.indexOf('err: insufficient funds for gas * price + value') > 0) {
@@ -149,7 +184,7 @@ export const getCustomMessage = (eventName: string, data: any) => {
 
   const ev = data?.event;
   const createLink = (transactionHash: string) => (
-    <a className="toast-link" href={`https://etherscan.io/tx/${transactionHash}`} target="_blank" rel="noreferrer">
+    <a className="toast-link" href={`${CHAIN_SCANNER_BASE}/tx/${transactionHash}`} target="_blank" rel="noreferrer">
       {data?.transactionHash}
     </a>
   );

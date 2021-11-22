@@ -71,13 +71,14 @@ const catchError = (err: any) => {
   return { error: { message: typeof err === 'object' ? err?.message : err }, status: err?.response?.status };
 };
 
-export const apiGet = async (path: string, query?: any) => {
+export const apiGet = async (path: string, query?: any, options?: any) => {
   const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
     const { data, status } = await axiosApi({
       url: path.startsWith('http') ? path : `${API_BASE}${path}${queryStr}`,
       method: 'GET',
-      headers: path.indexOf('/u/') >= 0 ? await getAuthHeaders() : {}
+      headers: path.indexOf('/u/') >= 0 ? await getAuthHeaders() : {},
+      ...options
     });
     return { result: data, status };
   } catch (err: any) {

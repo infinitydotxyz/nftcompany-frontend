@@ -275,7 +275,7 @@
 
       &:hover,
       &.active {
-        background-color: #4047ff;
+        background-color: var(--chakra-colors-brandBlue, red);
         box-shadow: 0px 8px 12px rgba(64, 71, 255, 0.15);
 
         color: #fff;

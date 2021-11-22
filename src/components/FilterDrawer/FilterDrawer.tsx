@@ -16,7 +16,12 @@ import {
   Tr,
   Td,
   Tbody,
-  Thead
+  Thead,
+  HStack,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+  Select
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import * as React from 'react';
@@ -54,7 +59,8 @@ const FilterDrawer = () => {
   const [collectionName, setCollectionName] = React.useState('');
   const [collectionAddress, setCollectionAddress] = React.useState('');
   const [traits, setTraits] = React.useState<Trait[]>([]);
-  const [selectedTrait, setSelectedTrait] = React.useState<Trait | undefined>(undefined);
+  const [selectedTraitType, setSelectedTraitType] = React.useState<Trait | undefined>(undefined);
+  const [selectedTraitValue, setSelectedTraitValue] = React.useState('');
   const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
 
@@ -98,11 +104,13 @@ const FilterDrawer = () => {
     newFilter.priceMin = '';
     newFilter.priceMax = '';
     newFilter.collectionName = '';
+    newFilter.traitType = '';
+    newFilter.traitValue = '';
     setMinPriceVal('');
     setMaxPriceVal('');
     setCollectionName('');
     setTraits([]);
-    setSelectedTrait(undefined);
+    setSelectedTraitType(undefined);
     setFilterState(newFilter);
   };
 
@@ -198,25 +206,24 @@ const FilterDrawer = () => {
                 onClear={() => {
                   setCollectionName('');
                   setTraits([]);
-                  setSelectedTrait(undefined);
+                  setSelectedTraitType(undefined);
                 }}
                 onChange={async (val, address) => {
                   setCollectionName(val);
                   setCollectionAddress(address);
                   // fetch collection traits
-                  // if (address) {
-                  //   const { result, error } = await apiGet(`/collections/${address}/traits`);
-                  //   if (error) {
-                  //     // showAppError(error?.message);
-                  //   } else {
-                  //     console.log('traits', result);
-                  //     setTraits(result.traits);
-                  //   }
-                  // }
+                  if (address) {
+                    const { result, error } = await apiGet(`/collections/${address}/traits`);
+                    if (error) {
+                      // showAppError(error?.message);
+                    } else {
+                      setTraits(result.traits);
+                    }
+                  }
                 }}
               />
 
-              {/* {traits.length > 0 && (
+              {traits.length > 0 && (
                 <Table size="sm" mt={4}>
                   <Thead>
                     <Tr>
@@ -227,68 +234,44 @@ const FilterDrawer = () => {
 
                   <Tbody>
                     <Tr>
-                      <Td>Face</Td>
-                      <Td>
-                        <HStack spacing={4}>
-                          {['sm'].map((size) => (
-                            <Tag size={size} key={size} borderRadius="full" variant="solid" colorScheme="gray">
-                              <TagLabel>Happy</TagLabel>
-                              <TagCloseButton />
-                            </Tag>
-                          ))}
-                          {['sm'].map((size) => (
-                            <Tag size={size} key={size} borderRadius="full" variant="solid" colorScheme="gray">
-                              <TagLabel>Sad</TagLabel>
-                              <TagCloseButton />
-                            </Tag>
-                          ))}
-                        </HStack>
-                      </Td>
-                    </Tr>
-                    <Tr>
-                      <Td>Hair</Td>
-                      <Td>
-                        <HStack spacing={4}>
-                          {['sm'].map((size) => (
-                            <Tag size={size} key={size} borderRadius="full" variant="solid" colorScheme="gray">
-                              <TagLabel>Black</TagLabel>
-                              <TagCloseButton />
-                            </Tag>
-                          ))}
-                        </HStack>
-                      </Td>
-                    </Tr>
-
-                    <Tr>
                       <Td>
                         <Select
                           size="sm"
                           onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                             const traitType = event.target.value;
                             const trait = traits.find((t: Trait) => t.trait_type === traitType);
-                            setSelectedTrait(trait);
+                            setSelectedTraitType(trait);
                           }}
                         >
                           <option value=""></option>
                           {traits.map((item: any) => {
-                            return <option value={item.trait_type}>{item.trait_type}</option>;
+                            return (
+                              <option key={item.trait_type} value={item.trait_type}>
+                                {item.trait_type}
+                              </option>
+                            );
                           })}
                         </Select>
                       </Td>
 
                       <Td>
-                        {selectedTrait && (
+                        {selectedTraitType && (
                           <Select
                             size="sm"
                             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                              // const traitType = event.target.value;
-                              // const trait = traits.find((t: any) => t.trait_type === traitType);
-                              // setSelectedTrait(trait);
+                              const traitValue = event.target.value;
+                              setSelectedTraitValue(traitValue);
+                              filterState.traitType = selectedTraitType.trait_type;
+                              filterState.traitValue = traitValue;
                             }}
                           >
                             <option value=""></option>
-                            {selectedTrait.values.map((val: string) => {
-                              return <option value={val}>{val}</option>;
+                            {selectedTraitType.values.map((val: string) => {
+                              return (
+                                <option key={val} value={val}>
+                                  {val}
+                                </option>
+                              );
                             })}
                           </Select>
                         )}
@@ -296,7 +279,7 @@ const FilterDrawer = () => {
                     </Tr>
                   </Tbody>
                 </Table>
-              )} */}
+              )}
             </Box>
 
             <Box mt={8}>

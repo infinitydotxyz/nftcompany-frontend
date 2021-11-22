@@ -17,8 +17,8 @@
   flex-direction: center;
 }
 
-$innerHeight: 390px;
-$outerHeight: 405px;
+$innerHeight: 400px;
+$outerHeight: 400px;
 
 .card {
   position: absolute;
@@ -28,7 +28,6 @@ $outerHeight: 405px;
   flex-direction: column;
   width: 95%;
   height: $innerHeight;
-  cursor: pointer;
   border: 1px solid #ddd;
 
   @include lightShadow();
@@ -68,6 +67,24 @@ $outerHeight: 405px;
     }
   }
 
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+
+    padding: 10px;
+  }
+
+  .stadiumButtonBlue {
+    background-color: var(--chakra-colors-brandBlue, red);
+    color: white;
+    border-radius: 100px;
+    &:hover {
+      background-color: blue;
+      color: white;
+    }
+  }
+
   .bottom {
     flex: 1;
     overflow: hidden;
@@ -88,6 +105,7 @@ $outerHeight: 405px;
     }
   }
 }
+
 
 .outOfViewCard {
   height: $outerHeight;
@@ -141,8 +159,8 @@ $outerHeight: 405px;
     }
   }
 
-  .featuredCard {
-    background-image: linear-gradient(140deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(45, 185, 255, 0.2) 75%);
+.featuredCard {
+  background-image: linear-gradient(140deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(45, 185, 255, 0.2) 75%);
   }
 
   .cardControls {

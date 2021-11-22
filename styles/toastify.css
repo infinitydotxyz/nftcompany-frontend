@@ -12,7 +12,7 @@
 
 .Toastify__toast--info {
   word-break: break-all !important;
-  background-color: var(--brand-primary) !important;
+  background-color: var(--chakra-colors-brandBlue, red) !important;
   color: #eee !important;
 }
 

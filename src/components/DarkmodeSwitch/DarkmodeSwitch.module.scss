@@ -5,18 +5,19 @@
   padding: 10px;
   transition: all 0.82s;
   border-radius: 12px;
+  z-index: 100;
 
-  color: rgba(0, 0, 0, 0.1);
-  background-color: #0000000a;
+  color: rgba(0, 0, 0, 0.2);
+  background-color: #0000000e;
   &:hover {
     background-color: #00000022;
     color: rgba(0, 0, 0, 0.5);
   }
 
   :global(body.chakra-ui-dark) & {
-    color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.2);
 
-    background-color: #ffffff0a;
+    background-color: #ffffff0e;
     &:hover {
       background-color: #ffffff22;
       color: rgba(255, 255, 255, 0.5);

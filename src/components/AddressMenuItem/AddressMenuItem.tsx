@@ -3,6 +3,7 @@ import styles from './AddressMenuItem.module.scss';
 import { Tooltip, MenuItem } from '@chakra-ui/react';
 import { useAppContext, User } from 'utils/context/AppContext';
 import { MenuIcons } from 'components/Icons/MenuIcons';
+import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 type Props = {
   user: User;
@@ -17,7 +18,7 @@ export const AddressMenuItem = ({ user }: Props) => {
         <MenuItem
           icon={MenuIcons.externalLinkIcon}
           onClick={() => {
-            window.open(`https://etherscan.io/address/${user.account}`, '_blank');
+            window.open(`${CHAIN_SCANNER_BASE}/address/${user.account}`, '_blank');
           }}
         >
           Go to Etherscan

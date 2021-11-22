@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './CollectionCards.module.scss';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import router from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { uuidv4 } from 'utils/commonUtil';
-import PreviewModal from 'components/PreviewModal/PreviewModal';
 import { useInView } from 'react-intersection-observer';
+import { Button } from '@chakra-ui/react';
+import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 type Props = {
   entry: CollectionCardEntry;
@@ -15,19 +16,23 @@ type Props = {
 
 export const CollectionCard = ({ entry, isFeatured }: Props) => {
   const { ref, inView } = useInView({ threshold: 0 });
-  const [previewModalShowed, setPreviewModalShowed] = useState(false);
 
   if (!entry) {
     return <div>Nothing found</div>;
   }
+
+  const clickButton = () => {
+    // name could have # and other url reseved characters
+    router.push(`/collection/${cleanCollectionName(entry.name)}`);
+  };
 
   const cleanCollectionName = (input: string) => {
     if (!input) {
       return '';
     }
 
-    // remove spaces and dashes
-    let result = input.replace(/[\s-]/g, '');
+    // remove spaces only
+    let result = input.replace(/\s/g, '');
     result = result.toLowerCase();
 
     // name could have # and other url reseved characters
@@ -40,39 +45,13 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
   }
 
   return (
-    <div
-      ref={ref}
-      className={styles.tripleCard}
-      onClick={() => {
-        if (previewModalShowed) {
-          return;
-        }
-        // name could have # and other url reseved characters
-        router.push(`/collection/${cleanCollectionName(entry.name)}`);
-      }}
-    >
+    <div ref={ref} className={styles.tripleCard}>
       <div className={styles.card1}></div>
       <div className={styles.card2}></div>
 
       <div className={`${styles.card3} ${isFeatured && styles.featuredCard}`}>
         <div className={styles.top}>
           <img className={styles.cardImage} src={entry.cardImage} alt="Card preview" />
-
-          <div className={styles.cardControls}>
-            <a
-              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-              href="#popup-bid"
-              data-effect="mfp-zoom-in"
-              onClick={(ev) => {
-                ev.preventDefault();
-                ev.stopPropagation();
-
-                setPreviewModalShowed(true);
-              }}
-            >
-              <span>More Info</span>
-            </a>
-          </div>
         </div>
         <div className={styles.bottom}>
           <div className={styles.collectionRow}>
@@ -85,24 +64,18 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
 
           <ShortAddress
             vertical={true}
-            href={`https://etherscan.io/address/${entry.address}`}
+            href={`${CHAIN_SCANNER_BASE}/address/${entry.address}`}
             address={entry.address}
             label=""
             tooltip={entry.address}
           />
         </div>
+        <div className={styles.buttons}>
+          <Button size="lg" className={styles.stadiumButtonBlue} onClick={clickButton}>
+            View collection
+          </Button>
+        </div>
       </div>
-
-      {previewModalShowed && (
-        <PreviewModal
-          action={''}
-          data={entry}
-          previewCollection={true}
-          onClose={() => {
-            setPreviewModalShowed(false);
-          }}
-        />
-      )}
     </div>
   );
 };

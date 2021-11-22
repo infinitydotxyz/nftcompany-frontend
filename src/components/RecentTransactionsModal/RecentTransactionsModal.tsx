@@ -11,6 +11,7 @@ import { Spinner } from '@chakra-ui/spinner';
 import { ellipsisString } from 'utils/commonUtil';
 import { Button } from '@chakra-ui/react';
 import { CopyButton } from 'components/CopyButton/CopyButton';
+import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 const isServer = typeof window === 'undefined';
 interface IProps {
@@ -82,7 +83,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
                             <ExternalLinkIcon
                               color="brandBlue"
                               onClick={() => {
-                                window.open(`https://etherscan.io/tx/${item.txnHash}`, '_blank');
+                                window.open(`${CHAIN_SCANNER_BASE}/tx/${item.txnHash}`, '_blank');
                               }}
                             />
                           </Tooltip>

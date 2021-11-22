@@ -2,7 +2,7 @@
 
 @include cardList();
 
-$cardHeight: 391px;
+$cardHeight: 400px;
 
 .button {
   display: inline-flex;
@@ -20,7 +20,6 @@ $cardHeight: 391px;
   color: #fcfcfd;
   transition: all 0.2s;
 }
-
 .ownedTag {
   position: absolute;
   top: 20px;
@@ -67,7 +66,6 @@ $cardHeight: 391px;
   padding: 12px;
   border-radius: 20px;
   height: $cardHeight;
-
   @include lightShadow();
   background-color: var(--chakra-colors-cardBgLight, red);
 
@@ -76,23 +74,15 @@ $cardHeight: 391px;
     background-color: var(--chakra-colors-cardBgDark, red);
   }
 
-  &:hover {
-    .cardControls {
-      visibility: visible;
-      opacity: 1;
-    }
-  }
-
   .cardPreview {
     position: relative;
     border-radius: 16px;
-    cursor: pointer;
     overflow: hidden;
-    height: 280px;
+    height: 250px;
 
     img {
       min-width: 100%;
-      min-height: 280px;
+      min-height: 250px;
       transition: transform 1s;
       object-fit: cover;
     }
@@ -101,19 +91,35 @@ $cardHeight: 391px;
     }
   }
 
-  .cardControls {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(35, 38, 47, 0.2);
-    visibility: hidden;
-    border-radius: 16px;
-    opacity: 0;
-    transition: all 0.3s;
+  .buttons {
     display: flex;
-    flex-flow: column-reverse;
+    gap: 10px;
+    padding: 10px 20px 20px 20px;
+    width: 100%;
+    flex: 0;
+
+    .stadiumButtonGray,
+    .stadiumButtonBlue {
+      background-color: var(--chakra-colors-brandBlue, red);
+      color: white;
+      border-radius: 100px;
+      flex: 1;
+      &:hover {
+        background-color: blue;
+        color: white;
+      }
+    }
+
+    .stadiumButtonGray {
+      background-color: #bbb;
+      color: black;
+    }
+  }
+
+  .cardControls {
+    //  width: 100%;
+    // height: 100%;
+    display: flex;
 
     .cardButton {
       // position: absolute;
@@ -129,7 +135,6 @@ $cardHeight: 391px;
   .cardBody {
     padding: 10px 0;
   }
-
   .cardLine {
     display: flex;
     justify-content: space-between;
@@ -141,6 +146,7 @@ $cardHeight: 391px;
       display: flex;
       align-items: center;
     }
+
     .collectionName {
       color: var(--text-secondary);
       font-size: 0.9em;
@@ -151,6 +157,7 @@ $cardHeight: 391px;
       text-overflow: ellipsis;
       overflow: hidden;
     }
+
     .cardTitle {
       font-size: 16px;
       line-height: 1;

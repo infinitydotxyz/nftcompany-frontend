@@ -3,6 +3,7 @@ import { Tooltip } from '@chakra-ui/tooltip';
 import styles from './CopyButton.module.scss';
 import { CopyIcon } from '@chakra-ui/icons';
 import { useAppContext } from 'utils/context/AppContext';
+import { useColorMode } from '@chakra-ui/react';
 
 type Props = {
   copyText?: string;
@@ -11,6 +12,9 @@ type Props = {
 
 export const CopyButton = ({ copyText, tooltip = 'Copy to Clipboard' }: Props) => {
   const { showAppMessage } = useAppContext();
+  const { colorMode } = useColorMode();
+
+  const dark = colorMode === 'dark';
 
   if (!copyText) {
     return <div />;
@@ -21,7 +25,7 @@ export const CopyButton = ({ copyText, tooltip = 'Copy to Clipboard' }: Props) =
       <Tooltip label={tooltip} placement="top" hasArrow>
         <CopyIcon
           size="sm"
-          color="brandBlue"
+          color={dark ? 'white' : 'brandBlue'}
           aria-label="Copy"
           onClick={(e) => {
             e.stopPropagation();

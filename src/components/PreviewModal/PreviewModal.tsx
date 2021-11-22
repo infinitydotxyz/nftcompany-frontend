@@ -15,6 +15,7 @@ import CancelListingModal from 'components/CancelListingModal/CancelListingModal
 import { ExternalLinkIconButton, ShareIconButton } from 'components/ShareButton/ShareButton';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { Label } from 'components/Text/Text';
+import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 const isServer = typeof window === 'undefined';
 
@@ -169,7 +170,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                   <ShortAddress
                     vertical={true}
                     address={data.tokenAddress}
-                    href={`https://etherscan.io/token/${data.tokenAddress}`}
+                    href={`${CHAIN_SCANNER_BASE}/token/${data.tokenAddress}`}
                     label="Token Address"
                     tooltip={toChecksumAddress(data.tokenAddress)}
                   />
@@ -177,7 +178,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                   <ShortAddress
                     vertical={true}
                     address={data.tokenId}
-                    href={`https://etherscan.io/token/${data.tokenAddress}?a=${data.tokenId}`}
+                    href={`${CHAIN_SCANNER_BASE}/token/${data.tokenAddress}?a=${data.tokenId}`}
                     label="Token Id"
                     tooltip={data.tokenId}
                   />

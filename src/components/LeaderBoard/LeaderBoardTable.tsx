@@ -6,6 +6,7 @@ import { LeaderBoard, LeaderBoardEntry } from 'types/rewardTypes';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { CopyButton } from 'components/CopyButton/CopyButton';
+import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 type Props = {
   data?: LeaderBoard;
@@ -33,7 +34,7 @@ const getRows = (data: LeaderBoardEntry[]) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (item.id) {
-                      window.open(`https://etherscan.io/address/${item.id}`, '_blank');
+                      window.open(`${CHAIN_SCANNER_BASE}/address/${item.id}`, '_blank');
                     }
                   }}
                 />
