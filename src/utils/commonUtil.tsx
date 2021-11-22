@@ -126,6 +126,36 @@ export const transformOpenSea = (item: any, owner: string) => {
   } as CardData;
 };
 
+export const transformCovalent = (item: any, owner: string) => {
+  if (!item) {
+    return null;
+  }
+
+  let schemaName = '';
+  const supportedInterfaces = item?.supports_erc;
+  for (const iface of supportedInterfaces) {
+    if (iface.trim().toLowerCase() === 'erc721') {
+      schemaName = 'ERC721';
+    } else if (iface.trim().toLowerCase() === 'erc1155') {
+      schemaName = 'ERC1155';
+    }
+  }
+
+  return {
+    id: `${item?.contract_address}_${item?.nft_data[0]?.token_id}`,
+    title: item?.nft_data[0]?.external_data?.name,
+    description: item?.nft_data[0]?.external_data?.description,
+    image: item?.nft_data[0]?.external_data?.image_512,
+    imagePreview: item?.nft_data[0]?.external_data?.image_256,
+    tokenAddress: item?.contract_address,
+    tokenId: item?.nft_data[0]?.token_id,
+    collectionName: item?.contract_name,
+    owner,
+    schemaName,
+    data: item
+  } as CardData;
+};
+
 export const getCustomExceptionMsg = (msg: ReactNode) => {
   let customMsg = msg;
   if (typeof msg === 'string' && msg.indexOf('err: insufficient funds for gas * price + value') > 0) {
