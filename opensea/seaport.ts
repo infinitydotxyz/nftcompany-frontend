@@ -793,6 +793,17 @@ export class OpenSeaPort {
     (order as any).metadata.hasBlueCheck = hasBlueCheck;
     (order.metadata as any).asset.rawData = assetDetails?.data;
 
+    // traits
+    const rawTraits = assetDetails?.data?.traits;
+    const numTraits = rawTraits?.length;
+    const traits = [];
+    for (const rawTrait of rawTraits) {
+      traits.push({ traitType: rawTrait.trait_type, traitValue: String(rawTrait.value) });
+    }
+
+    (order.metadata as any).asset.traits = traits;
+    (order.metadata as any).asset.numTraits = numTraits;
+
     if (typeof hasBonusReward === 'undefined') {
       (order as any).metadata.checkBonusReward = true;
     }
