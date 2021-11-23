@@ -154,6 +154,7 @@ const FilterDrawer = () => {
             <p />
             <Button
               {...buttonProps}
+              mr={4}
               isActive={filterState.listType === LISTING_TYPE.FIXED_PRICE}
               onClick={() => handleClickListType('fixedPrice')}
             >
@@ -161,16 +162,16 @@ const FilterDrawer = () => {
             </Button>
             <Button
               {...buttonProps2}
-              ml={4}
+              mr={4}
               isActive={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
               onClick={() => handleClickListType('dutchAuction')}
             >
               Declining Price
             </Button>
-            <br/>
             <Button
               {...buttonProps3}
-              ml={4}
+              mr={4}
+              mt={2}
               isActive={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
               onClick={() => handleClickListType('englishAuction')}
             >
