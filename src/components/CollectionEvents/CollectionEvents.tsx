@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { apiGet } from 'utils/apiUtil';
-import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { weiToEther } from 'utils/ethersUtil';
 import { ellipsisAddress } from 'utils/commonUtil';
 import styles from './CollectionEvents.module.scss';
@@ -84,7 +85,7 @@ function CollectionEvents({ address, tokenId, eventType }: Props) {
                     >
                       {item?.seller?.user?.username || ellipsisAddress(item?.seller?.address)}
                     </a>{' '}
-                    🡒{' '}
+                    <ArrowForwardIcon />{' '}
                     <a
                       href={`${CHAIN_SCANNER_BASE}/address/${item?.winner_account?.address}`}
                       target="_blank"
@@ -103,7 +104,7 @@ function CollectionEvents({ address, tokenId, eventType }: Props) {
                     >
                       {item?.from_account?.user?.username || ellipsisAddress(item?.from_account?.address)}
                     </a>{' '}
-                    {item?.to_account ? '🡒 ' : ''}
+                    {item?.to_account ? <ArrowForwardIcon /> : ''}{' '}
                     <a
                       href={`${CHAIN_SCANNER_BASE}/address/${item?.to_account?.address}`}
                       target="_blank"
@@ -115,7 +116,14 @@ function CollectionEvents({ address, tokenId, eventType }: Props) {
                 )}
                 <Td>{item?.total_price ? weiToEther(item?.total_price) : ''}</Td>
                 <Td>{new Date(item?.created_date).toLocaleString()}</Td>
-                <Td></Td>
+
+                {item.transaction && (
+                  <Td>
+                    <Link href={`${CHAIN_SCANNER_BASE}/tx/${item.transaction?.transaction_hash}`} target="_blank">
+                      {ellipsisAddress(item.transaction?.transaction_hash)}
+                    </Link>
+                  </Td>
+                )}
               </Tr>
             );
           })}

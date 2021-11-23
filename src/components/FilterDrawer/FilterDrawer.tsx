@@ -17,10 +17,6 @@ import {
   Td,
   Tbody,
   Thead,
-  HStack,
-  Tag,
-  TagLabel,
-  TagCloseButton,
   Select
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
