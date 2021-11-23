@@ -1,7 +1,5 @@
-import { CardData } from 'types/Nft.interface';
 import React, { useContext, useState } from 'react';
 import { TypeAheadOption } from 'services/Listings.service';
-import { string } from 'prop-types';
 
 export type SearchState = {
   isLoading: boolean;
@@ -31,7 +29,7 @@ export type SearchFilter = {
   text: string;
   sortByPriceDirection: string;
   startAfterUser: string;
-  listType?: '' | 'BUY_NOW' | 'AUCTION';
+  listType?: '' | 'fixedPrice' | 'englishAuction' | 'dutchAuction';
   traitType?: string;
   traitValue?: string;
 };

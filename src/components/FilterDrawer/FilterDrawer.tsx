@@ -29,6 +29,7 @@ import { useSearchContext } from 'utils/context/SearchContext';
 import { useEffect } from 'react';
 import CollectionNameFilter from './CollectionNameFilter';
 import { apiGet } from 'utils/apiUtil';
+import { LISTING_TYPE } from 'utils/constants';
 
 const DEFAULT_MIN_PRICE = 0.0000000001;
 
@@ -83,7 +84,7 @@ const FilterDrawer = () => {
     return newFilter;
   };
 
-  const handleClickListType = (listType: '' | 'BUY_NOW' | 'AUCTION') => {
+  const handleClickListType = (listType: '' | 'fixedPrice' | 'englishAuction' | 'dutchAuction') => {
     let newListType = listType;
     if (listType === filterState.listType) {
       newListType = '';
@@ -114,8 +115,9 @@ const FilterDrawer = () => {
     setFilterState(newFilter);
   };
 
-  const buttonProps = filterState.listType === 'BUY_NOW' ? activeButtonProps : normalButtonProps;
-  const buttonProps2 = filterState.listType === 'AUCTION' ? activeButtonProps : normalButtonProps;
+  const buttonProps = filterState.listType === LISTING_TYPE.FIXED_PRICE ? activeButtonProps : normalButtonProps;
+  const buttonProps2 = filterState.listType === LISTING_TYPE.DUTCH_AUCTION ? activeButtonProps : normalButtonProps;
+  const buttonProps3 = filterState.listType === LISTING_TYPE.ENGLISH_AUCTION ? activeButtonProps : normalButtonProps;
 
   return (
     <>
@@ -156,16 +158,25 @@ const FilterDrawer = () => {
             <p />
             <Button
               {...buttonProps}
-              isActive={filterState.listType === 'BUY_NOW'}
-              onClick={() => handleClickListType('BUY_NOW')}
+              isActive={filterState.listType === LISTING_TYPE.FIXED_PRICE}
+              onClick={() => handleClickListType('fixedPrice')}
             >
-              Buy Now
+              Fixed Price
             </Button>
             <Button
               {...buttonProps2}
               ml={4}
-              isActive={filterState.listType === 'AUCTION'}
-              onClick={() => handleClickListType('AUCTION')}
+              isActive={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
+              onClick={() => handleClickListType('dutchAuction')}
+            >
+              Declining Price
+            </Button>
+            <br/>
+            <Button
+              {...buttonProps3}
+              ml={4}
+              isActive={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
+              onClick={() => handleClickListType('englishAuction')}
             >
               On Auction
             </Button>

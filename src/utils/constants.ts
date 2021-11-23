@@ -9,3 +9,9 @@ export const CHAIN_SCANNER_BASE = 'https://etherscan.io';
 export const WETH_ADDRESS = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
 
 export const ITEMS_PER_PAGE = 50;
+
+export const LISTING_TYPE = {
+  FIXED_PRICE: 'fixedPrice',
+  DUTCH_AUCTION: 'dutchAuction',
+  ENGLISH_AUCTION: 'englishAuction'
+};

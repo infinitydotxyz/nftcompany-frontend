@@ -146,6 +146,9 @@ export const transformCovalent = (item: any, owner: string) => {
     }
   }
 
+  const data = item;
+  data.traits = item?.nft_data[0]?.external_data?.attributes;
+
   return {
     id: `${item?.contract_address}_${item?.nft_data[0]?.token_id}`,
     title: item?.nft_data[0]?.external_data?.name,
@@ -157,7 +160,7 @@ export const transformCovalent = (item: any, owner: string) => {
     collectionName: item?.contract_name,
     owner,
     schemaName,
-    data: item
+    data
   } as CardData;
 };
 

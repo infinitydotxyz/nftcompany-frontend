@@ -9,6 +9,7 @@ import { Button, Spacer } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { getToken } from 'utils/commonUtil';
 import { Label, Title } from 'components/Text/Text';
+import { LISTING_TYPE } from 'utils/constants';
 
 interface IProps {
   data: CardData;
@@ -20,6 +21,7 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
   const { user, showAppError } = useAppContext();
   const [isBuying, setIsBuying] = useState(false);
   const token = getToken(order.paymentToken);
+  const listingType = order.metadata?.listingType;
 
   const onClickBuyNow = async () => {
     try {
@@ -64,7 +66,7 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
     }
   };
 
-  if (token === 'ETH') {
+  if (listingType !== LISTING_TYPE.ENGLISH_AUCTION) {
     return (
       <div>
         <Title text="Buy this NFT for the price shown" />
@@ -99,5 +101,5 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
     );
   }
 
-  return <div>{`Items offered in ${token} can't be purchased. Make an offer instead.`}</div>;
+  return <div>{`Items listed as English Auctions can't be purchased. Make an offer instead.`}</div>;
 };

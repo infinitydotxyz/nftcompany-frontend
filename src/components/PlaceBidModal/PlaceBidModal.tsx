@@ -11,6 +11,7 @@ import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { getToken, stringToFloat } from 'utils/commonUtil';
 import { DatePicker } from 'components/DatePicker/DatePicker';
+import { LISTING_TYPE } from 'utils/constants';
 
 const isServer = typeof window === 'undefined';
 
@@ -28,6 +29,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [order, setOrder] = React.useState<Order | undefined>();
   const [offerPrice, setOfferPrice] = React.useState(0);
   const token = getToken(data.order?.paymentToken);
+  const listingType = data.order?.metadata?.listingType;
 
   const loadOrder = useCallback(async () => {
     let orderParams: any;
@@ -69,9 +71,6 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
         setIsBuying(true);
         const seaport = getOpenSeaport();
 
-        // const txnHash = '0xcc128a83022cf34fbc5ec756146ee43bc63f2666443e22ade15180c6304b0d54';
-        // const salePriceInEth = '1';
-        // const feesInEth = '1';
         const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
           order: order,
           accountAddress: user!.account
@@ -152,7 +151,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       {!isServer && (
         <ModalDialog onClose={onClose}>
           <div>
-            {token === 'ETH' && (
+            {listingType !== LISTING_TYPE.ENGLISH_AUCTION && (
               <>
                 <div className={styles.title}>Buy Now</div>
 

@@ -120,6 +120,7 @@ import {
   sendRawTransaction,
   validateAndFormatWalletAddress
 } from './utils/utils';
+import { LISTING_TYPE } from '../src/utils/constants';
 
 export class OpenSeaPort {
   // Web3 instance to use
@@ -793,12 +794,24 @@ export class OpenSeaPort {
     (order as any).metadata.hasBlueCheck = hasBlueCheck;
     (order.metadata as any).asset.rawData = assetDetails?.data;
 
+     // listing type
+    let listingType = LISTING_TYPE.FIXED_PRICE;
+    if (waitForHighestBid) {
+      listingType = LISTING_TYPE.ENGLISH_AUCTION;
+    } else if (endAmount !== null && endAmount !== startAmount) {
+      listingType = LISTING_TYPE.DUTCH_AUCTION;
+    }
+    (order.metadata as any).listingType = listingType;
+
     // traits
     const rawTraits = assetDetails?.data?.traits;
-    const numTraits = rawTraits?.length;
+    let numTraits = 0;
     const traits = [];
-    for (const rawTrait of rawTraits) {
-      traits.push({ traitType: rawTrait.trait_type, traitValue: String(rawTrait.value) });
+    if (rawTraits) {
+      numTraits = rawTraits.length;
+      for (const rawTrait of rawTraits) {
+        traits.push({ traitType: rawTrait.trait_type, traitValue: String(rawTrait.value) });
+      }
     }
 
     (order.metadata as any).asset.traits = traits;
