@@ -35,7 +35,7 @@ export const toChecksumAddress = (address?: string): string => {
       // this crashes if the address isn't valid
       result = ethers.utils.getAddress(address);
     } catch (err) {
-      console.log(`toChecksumAddress failed: ${address}`);
+      // do nothing
     }
 
     return result;
