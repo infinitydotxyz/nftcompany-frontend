@@ -1,7 +1,8 @@
-import React, { MouseEventHandler } from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 import styles from './HoverMenuButton.module.scss';
 import { Menu, MenuButton, MenuList, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
+import { useWindowSize } from '@react-hook/window-size';
 
 type Props = {
   buttonContent?: JSX.Element;
@@ -25,7 +26,8 @@ export const HoverMenuButton = ({
   let hoverTimer: any;
   let menuListTimer: any;
   const delay = 100;
-
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [width, height] = useWindowSize();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (buttonTitle?.length) {
@@ -61,36 +63,73 @@ export const HoverMenuButton = ({
   return (
     <div className={styles.main}>
       {/* setting an id on menu prevents a console warning about non matching ids */}
-      <Menu isLazy isOpen={isOpen} id="hover-menu">
-        <MenuButton
-          onClick={onClick}
-          disabled={disabled}
-          className={buttonClass.join(' ')}
-          onMouseEnter={() => {
-            clearTimeout(menuListTimer);
-            if (!isOpen) {
-              onOpen();
-            }
-          }}
-          onMouseLeave={() => {
-            hoverTimer = setTimeout(onClose, delay);
-          }}
-        >
-          {buttonContent}
-        </MenuButton>
 
-        <MenuList
-          onClick={onClose}
-          onMouseLeave={() => {
-            menuListTimer = setTimeout(onClose, delay);
-          }}
-          onMouseEnter={() => {
-            clearTimeout(hoverTimer);
-          }}
-        >
-          {children}
-        </MenuList>
-      </Menu>
+      {/* Adding condition with mobile here to remove the bug with mobile menu*/}
+      {width <= 650 ? (
+        <Menu isLazy id="hover-menu">
+          <MenuButton
+            onClick={onClick}
+            disabled={disabled}
+            className={buttonClass.join(' ')}
+            onMouseEnter={() => {
+              clearTimeout(menuListTimer);
+
+              if (!isOpen) {
+                onOpen();
+              }
+            }}
+            onMouseLeave={() => {
+              hoverTimer = setTimeout(onClose, delay);
+            }}
+          >
+            {buttonContent}
+          </MenuButton>
+
+          <MenuList
+            onClick={onClose}
+            onMouseLeave={() => {
+              menuListTimer = setTimeout(onClose, delay);
+            }}
+            onMouseEnter={() => {
+              clearTimeout(hoverTimer);
+            }}
+          >
+            {children}
+          </MenuList>
+        </Menu>
+      ) : (
+        <Menu isLazy isOpen={isOpen} id="hover-menu">
+          <MenuButton
+            onClick={onClick}
+            disabled={disabled}
+            className={buttonClass.join(' ')}
+            onMouseEnter={() => {
+              clearTimeout(menuListTimer);
+
+              if (!isOpen) {
+                onOpen();
+              }
+            }}
+            onMouseLeave={() => {
+              hoverTimer = setTimeout(onClose, delay);
+            }}
+          >
+            {buttonContent}
+          </MenuButton>
+
+          <MenuList
+            onClick={onClose}
+            onMouseLeave={() => {
+              menuListTimer = setTimeout(onClose, delay);
+            }}
+            onMouseEnter={() => {
+              clearTimeout(hoverTimer);
+            }}
+          >
+            {children}
+          </MenuList>
+        </Menu>
+      )}
     </div>
   );
 };

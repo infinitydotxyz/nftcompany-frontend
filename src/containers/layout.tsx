@@ -10,6 +10,7 @@ import LogRocket from 'logrocket';
 import { Background } from 'components/Background/Background';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { useRouter } from 'next/router';
+import { useWindowSize } from '@react-hook/window-size';
 
 if (!isLocalhost()) {
   LogRocket.init('0pu9ak/nftco');
@@ -23,11 +24,11 @@ interface IProps {
 
 const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
   const router = useRouter();
-
+  const [width, height] = useWindowSize();
   return (
     <>
       <AppChakraProvider>
-        <Background />
+        {width <= 768 ? '' : <Background />}
 
         <AppContextProvider>
           <SearchContextProvider>

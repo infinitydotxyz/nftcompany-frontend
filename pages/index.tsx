@@ -55,7 +55,7 @@ export default function Home() {
   const automateSection = (
     <section className={styles.titleSection}>
       <div className={styles.containerAvg}>
-        <div className={styles.info}>
+        <div className={styles.infoHomepage}>
           <div className={styles.bigTitle}>
             Infinity is fully compatible with OpenSea. It uses the same contracts, not forks.
             <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
