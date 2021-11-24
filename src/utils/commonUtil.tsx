@@ -270,3 +270,12 @@ export const numStr = (value: any): string => {
 
   return short;
 };
+
+export const getSearchFriendlyString = (input: string): string => {
+  if (!input) {
+    return '';
+  }
+  // remove spaces, dashes and underscores only
+  const output = input.replace(/[\s-_]/g, '');
+  return output.toLowerCase();
+};

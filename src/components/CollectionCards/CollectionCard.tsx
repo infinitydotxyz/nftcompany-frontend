@@ -4,7 +4,7 @@ import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import router from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { uuidv4 } from 'utils/commonUtil';
+import { getSearchFriendlyString, uuidv4 } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import { Button } from '@chakra-ui/react';
 import { CHAIN_SCANNER_BASE } from 'utils/constants';
@@ -31,9 +31,7 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
       return '';
     }
 
-    // remove spaces only
-    let result = input.replace(/\s/g, '');
-    result = result.toLowerCase();
+    const result = getSearchFriendlyString(input);
 
     // name could have # and other url reseved characters
     // must encodeURIComponent()

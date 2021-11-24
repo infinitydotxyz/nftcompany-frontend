@@ -121,6 +121,7 @@ import {
   validateAndFormatWalletAddress
 } from './utils/utils';
 import { LISTING_TYPE } from '../src/utils/constants';
+import { getSearchFriendlyString } from '../src/utils/commonUtil';
 
 export class OpenSeaPort {
   // Web3 instance to use
@@ -657,8 +658,8 @@ export class OpenSeaPort {
       referrerAddress
     });
 
-    const searchTitle = this._getSearchFriendlyString(assetDetails?.title);
-    const searchCollectionName = this._getSearchFriendlyString(assetDetails?.collectionName);
+    const searchTitle = getSearchFriendlyString(assetDetails?.title);
+    const searchCollectionName = getSearchFriendlyString(assetDetails?.collectionName);
 
     (order.metadata as any).basePriceInEth = startAmount;
     (order.metadata as any).asset.image = assetDetails?.image;
@@ -779,8 +780,8 @@ export class OpenSeaPort {
       buyerAddress: buyerAddress || NULL_ADDRESS
     });
 
-    const searchTitle = this._getSearchFriendlyString(assetDetails?.title);
-    const searchCollectionName = this._getSearchFriendlyString(assetDetails?.collectionName);
+    const searchTitle = getSearchFriendlyString(assetDetails?.title);
+    const searchCollectionName = getSearchFriendlyString(assetDetails?.collectionName);
 
     (order.metadata as any).basePriceInEth = startAmount;
     (order.metadata as any).asset.image = assetDetails?.image;
@@ -3842,13 +3843,5 @@ export class OpenSeaPort {
 
       return testResolve(initialRetries);
     });
-  }
-
-  private _getSearchFriendlyString(input: string) {
-    if (!input) {
-      return '';
-    }
-    const noSpace = input.replace(/\s/g, '');
-    return noSpace.toLowerCase();
   }
 }
