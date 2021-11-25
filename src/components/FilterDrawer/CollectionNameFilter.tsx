@@ -2,38 +2,39 @@ import React from 'react';
 import Downshift from 'downshift';
 import { Box, Input } from '@chakra-ui/react';
 import { getTypeAheadOptions } from 'services/Listings.service';
-import { defaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import { CloseIcon } from '@chakra-ui/icons';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { useRouter } from 'next/router';
 
 import styles from './CollectionNameFilter.module.scss';
+import { uniq } from 'lodash';
 
 type SearchMatch = {
   value: string;
   label: string;
   type: 'Asset' | 'Collection';
   address?: string;
+  hasBlueCheck?: boolean;
 };
 
 type CollectionNameFilterProps = {
   value: string;
   onClear: () => void;
-  onChange: (value: string, address: string) => void;
+  onChange: (value: string, address: string, collectionIds: string) => void;
 };
 
 export default function CollectionNameFilter({ value, onClear, onChange }: CollectionNameFilterProps) {
-  const router = useRouter();
   const [options, setOptions] = React.useState<SearchMatch[]>([]);
   const [isSelecting, setIsSelecting] = React.useState(false); // user pressed Enter or selected a dropdown item.
   const [selectedValue, setSelectedValue] = React.useState('');
-  const { searchState, setSearchState, setFilterState } = useSearchContext();
+  const [selectedCollections, setSelectedCollections] = React.useState<string[]>([]);
   const timeoutId = React.useRef<any>(0);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     if (inputRef && inputRef.current && value === '') {
       inputRef.current.value = '';
+      setOptions([]);
+      inputRef.current.focus();
     }
   }, [value]);
 
@@ -43,8 +44,10 @@ export default function CollectionNameFilter({ value, onClear, onChange }: Colle
     if (inputRef && inputRef.current) {
       inputRef.current.value = '';
       if (onChange) {
-        onChange('', '');
+        onChange('', '', '');
       }
+      setOptions([]);
+      inputRef.current.focus();
       onClear();
     }
   };
@@ -65,7 +68,7 @@ export default function CollectionNameFilter({ value, onClear, onChange }: Colle
             inputRef.current.value = val;
             if (onChange) {
               const found = options.find((item) => item.value === val);
-              onChange(val, found?.address || '');
+              onChange(val, found?.address || '', selectedCollections.join(','));
             }
           }
         }}
@@ -104,14 +107,17 @@ export default function CollectionNameFilter({ value, onClear, onChange }: Colle
                 ),
                 value: item.name, // `Collection: ${item.name}`,
                 type: 'Collection',
-                address: item.address
+                address: item.address,
+                hasBlueCheck: item.hasBlueCheck
               });
             });
             setOptions(arr);
             setSelectedValue(text);
+            setSelectedCollections([]);
+
             if (onChange) {
               const found = options.find((item) => item.value === text);
-              onChange(text, found?.address || '');
+              onChange(text, found?.address || '', '');
             }
           };
           const inputProps = { ...getInputProps() };
@@ -145,7 +151,7 @@ export default function CollectionNameFilter({ value, onClear, onChange }: Colle
                   onChange={inputProps.onChange}
                   onBlur={inputProps.onBlur}
                 />
-                {isOpen ? (
+                {/* {isOpen ? (
                   <ul
                     className={styles.dropPanel + ' ' + (options.length > 0 && styles.dropPanelOpened)}
                     {...getMenuProps()}
@@ -164,7 +170,7 @@ export default function CollectionNameFilter({ value, onClear, onChange }: Colle
                       </li>
                     ))}
                   </ul>
-                ) : null}
+                ) : null} */}
               </div>
               {inputValue && (
                 <button
@@ -181,6 +187,41 @@ export default function CollectionNameFilter({ value, onClear, onChange }: Colle
           );
         }}
       </Downshift>
+
+      <Box mt={2}>
+        {options.map((item, index) => {
+          return (
+            <div key={item.value + index} className={styles.resultRow}>
+              <label>
+                <Box d="flex" alignItems="center" textAlign="left">
+                  <input
+                    type="checkbox"
+                    data-address={item.address}
+                    onChange={(ev) => {
+                      const address = ev.target?.dataset?.address || '';
+                      const ids: string[] = selectedCollections.filter((id) => id !== address);
+                      if (ev.target?.checked) {
+                        ids.push(ev.target?.dataset?.address || '');
+                      }
+                      const updatedIds = uniq(ids);
+                      setSelectedCollections(updatedIds);
+                      if (onChange) {
+                        onChange('', updatedIds.length === 1 ? updatedIds[0] : '', updatedIds.join(','));
+                      }
+                    }}
+                  />{' '}
+                  <Box ml={1}>{item.value}</Box>
+                  {item.hasBlueCheck && (
+                    <Box ml={1}>
+                      <BlueCheckIcon hasBlueCheck={item.hasBlueCheck} />
+                    </Box>
+                  )}
+                </Box>
+              </label>
+            </div>
+          );
+        })}
+      </Box>
     </div>
   );
 }

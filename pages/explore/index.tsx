@@ -40,7 +40,7 @@ export default function ExplorePage() {
     filterState?.collectionName?.length > 0 ||
     filterState.priceMin !== '' ||
     filterState.priceMax !== '';
-  searchMode = searchMode || filterState.listType !== '';
+  searchMode = searchMode || filterState.listType !== '' || filterState.collectionIds !== '';
 
   let contents;
   if (searchMode) {

@@ -30,6 +30,7 @@ export type SearchFilter = {
   sortByPriceDirection: string;
   startAfterUser: string;
   listType?: '' | 'fixedPrice' | 'englishAuction' | 'dutchAuction';
+  collectionIds?: string;
   traitType?: string;
   traitValue?: string;
 };
@@ -63,6 +64,7 @@ export const defaultFilterState: SearchFilter = {
   startAfterSearchCollectionName: '',
   startAfterBlueCheck: undefined,
   listType: '',
+  collectionIds: '',
   traitType: '',
   traitValue: ''
 };
