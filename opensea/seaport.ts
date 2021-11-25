@@ -790,6 +790,11 @@ export class OpenSeaPort {
     (order as any).metadata.hasBlueCheck = hasBlueCheck;
     (order.metadata as any).asset.rawData = assetDetails?.data;
 
+    // todo: adi
+    // add chain data based on logic no hardcode
+    (order as any).metadata.chain = 'ethereum';
+    (order as any).metadata.chainId = '1';
+
      // listing type
     let listingType = LISTING_TYPE.FIXED_PRICE;
     if (waitForHighestBid) {
