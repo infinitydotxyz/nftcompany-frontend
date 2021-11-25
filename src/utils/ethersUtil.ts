@@ -95,7 +95,7 @@ export const getOpenSeaport = () => {
   }
 
   // const network = getChainName();
-  const network = 'main'; // polymain
+  const network = 'main'; // todo: adi polymain; do not remove this comment
   openSeaPort = new OpenSeaPort(getWeb3().currentProvider, {
     networkName: network
   });

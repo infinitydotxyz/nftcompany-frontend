@@ -14,7 +14,7 @@ export const LISTING_TYPE = {
 // eth
 export const ETHEREUM_NETWORK_NAME = 'main';
 export const PROVIDER_URL_MAINNET = 'https://eth-mainnet.alchemyapi.io/v2/umiR3YUjFlvlrDNOQQltWppf2M-p07Q3';
-// polymain
+// todo: adi polymain; do not remove this comment
 export const CHAIN_SCANNER_BASE = 'https://etherscan.io';
 export const WETH_ADDRESS = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
 

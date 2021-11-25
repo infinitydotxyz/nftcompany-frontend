@@ -67,7 +67,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
       };
       if (activeTab !== 'SET_PRICE') {
         // for English Auction (Highest Bid):
-        obj['paymentTokenAddress'] = WETH_ADDRESS; /* polymain */
+        obj['paymentTokenAddress'] = WETH_ADDRESS; /* todo: adi polymain; do not remove this comment */
         obj['waitForHighestBid'] = true;
         if (reservePrice) {
           obj['englishAuctionReservePrice'] = reservePrice;
@@ -123,7 +123,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                     />
                   </div>
                   <div className={styles.right}>ETH</div>
-                  {/* polymain */}
+                  {/* todo: adi polymain; do not remove this comment */}
                 </div>
                 {endPriceShowed && (
                   <div className={styles.fields}>
@@ -139,7 +139,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       />
                     </div>
                     <div className={styles.right}>ETH</div>
-                    {/* polymain */}
+                    {/* todo: adi polymain; do not remove this comment */}
                   </div>
                 )}
 

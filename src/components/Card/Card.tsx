@@ -138,7 +138,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           <PriceBox
             justifyRight
             price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
-            token={data?.order?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'} // polymain
+            token={data?.order?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'} // todo: adi polymain; do not remove this comment
             expirationTime={data?.expirationTime}
           />
         </div>

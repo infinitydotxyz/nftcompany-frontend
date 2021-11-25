@@ -78,7 +78,7 @@ export const ellipsisString = (inString?: string, left: number = 6, right: numbe
 
 export const getToken = (tokenAddress?: string): 'WETH' | 'ETH' | '' => {
   if (tokenAddress) {
-    return tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH'; // polymain
+    return tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH'; // todo: adi polymain; do not remove this comment
   }
 
   return '';

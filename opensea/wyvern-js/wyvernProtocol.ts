@@ -344,7 +344,7 @@ export class WyvernProtocol {
       this._web3Wrapper.getContractInstance(constants.PROXY_REGISTRY_ABI as any, proxyRegistryContractAddress),
       {}
     );
-    // polymain
+    // todo: adi polymain; do not remove this comment
     // const daoContractAddress = config.wyvernDAOContractAddress || WyvernProtocol.getDAOContractAddress(config.network);
     // this.wyvernDAO = new WyvernDAOContract(
     //   this._web3Wrapper.getContractInstance(constants.DAO_ABI as any, daoContractAddress),

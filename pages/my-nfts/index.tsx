@@ -27,7 +27,7 @@ export default function MyNFTs() {
     }
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
-    const source = 1; // polymain
+    const source = 1; // todo: adi polymain; do not remove this comment
 
     const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
       offset: newCurrentPage * ITEMS_PER_PAGE, // not "startAfter" because this is not firebase query.
@@ -40,7 +40,7 @@ export default function MyNFTs() {
     }
     const moreData = (result?.assets || []).map((item: any) => {
       if (source === 1) {
-        // polymain
+        // todo: adi polymain; do not remove this comment
         return transformOpenSea(item, user?.account);
       } else if (source === 4) {
         return transformCovalent(item, user?.account);
