@@ -17,7 +17,6 @@ import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollecti
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 
 export default function ExplorePage() {
-  const searchContext = useSearchContext();
   const cardProvider = useCardProvider();
   const { searchState, filterState } = useSearchContext();
   const { user } = useAppContext();

@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const CollectionCard = ({ entry, isFeatured }: Props) => {
-  const { ref, inView } = useInView({ threshold: 0 });
+  const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
 
   if (!entry) {
     return <div>Nothing found</div>;

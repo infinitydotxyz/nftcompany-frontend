@@ -25,7 +25,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
-  const { ref, inView } = useInView({ threshold: 0 });
+  const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
 
   if (!data) {
     return null;
@@ -44,7 +44,11 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const hasBlueCheck = data.hasBlueCheck;
 
   if (inView === false) {
-    return <div ref={ref} id={`id_${data.id}`} className={styles.card}></div>;
+    return (
+      <div ref={ref} id={`id_${data.id}`} className={styles.card}>
+        <img src={data.image} alt="Preloaded Image" style={{ width: 1, height: 1 }} />
+      </div>
+    );
   }
 
   const actionButton = () => {
