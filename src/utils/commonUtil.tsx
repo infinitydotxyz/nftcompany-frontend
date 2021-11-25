@@ -1,7 +1,13 @@
 import { ReactNode } from 'react';
 import { ethers } from 'ethers';
 import { CardData } from 'types/Nft.interface';
-import { WETH_ADDRESS, CHAIN_SCANNER_BASE } from './constants';
+import {
+  WETH_ADDRESS,
+  CHAIN_SCANNER_BASE,
+  POLYGON_WETH_ADDRESS,
+  ETHEREUM_NETWORK_NAME,
+  POLYGON_NETWORK_NAME
+} from './constants';
 
 // OpenSea's EventType
 export enum EventType {
@@ -72,7 +78,7 @@ export const ellipsisString = (inString?: string, left: number = 6, right: numbe
 
 export const getToken = (tokenAddress?: string): 'WETH' | 'ETH' | '' => {
   if (tokenAddress) {
-    return tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH';
+    return tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH'; // polymain
   }
 
   return '';
@@ -278,4 +284,16 @@ export const getSearchFriendlyString = (input: string): string => {
   // remove spaces, dashes and underscores only
   const output = input.replace(/[\s-_]/g, '');
   return output.toLowerCase();
+};
+
+export const getCanonicalWeth = (chain: string): { address: string; decimals: number } => {
+  if (!chain) {
+    return { address: '', decimals: 0 };
+  }
+  if (chain === ETHEREUM_NETWORK_NAME) {
+    return { address: WETH_ADDRESS, decimals: 18 };
+  } else if (chain === POLYGON_NETWORK_NAME) {
+    return { address: POLYGON_WETH_ADDRESS, decimals: 18 };
+  }
+  return { address: '', decimals: 0 };
 };

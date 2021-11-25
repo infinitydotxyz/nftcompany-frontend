@@ -52,7 +52,6 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     try {
       const seaport = getOpenSeaport();
       const order: Order = await seaport.api.getOrder(orderParams);
-
       setOrder(order);
     } catch (err: any) {
       console.log(err);

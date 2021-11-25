@@ -31,9 +31,6 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
         setIsBuying(true);
         const seaport = getOpenSeaport();
 
-        // const txnHash = '0xcc128a83022cf34fbc5ec756146ee43bc63f2666443e22ade15180c6304b0d54';
-        // const salePriceInEth = '1';
-        // const feesInEth = '1';
         const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
           order: order,
           accountAddress: user!.account

@@ -57,7 +57,7 @@ const Header = (): JSX.Element => {
       try {
         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
 
-        if (chainId !== '0x1') {
+        if (chainId !== '0x1') { /* polymain */
           setLockout(true);
         }
       } catch (err) {
@@ -206,7 +206,7 @@ const Header = (): JSX.Element => {
     lockoutComponent = (
       <Alert className={styles.lockout} status="error">
         <AlertIcon />
-        You must be on Ethereum Mainnet
+        You must be on Ethereum Mainnet {/* polymain */}
         <CloseButton
           position="absolute"
           right="8px"

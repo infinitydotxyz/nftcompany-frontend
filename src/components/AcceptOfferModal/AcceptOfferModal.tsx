@@ -82,7 +82,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   <div>
                     <span>{data.metadata?.basePriceInEth}</span>
                   </div>
-                  <div>ETH</div>
+                  <div>ETH</div> {/* polymain */}
                 </li>
               </ul>
             </div>

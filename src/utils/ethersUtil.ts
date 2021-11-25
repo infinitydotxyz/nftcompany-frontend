@@ -95,7 +95,7 @@ export const getOpenSeaport = () => {
   }
 
   // const network = getChainName();
-  const network = 'main';
+  const network = 'main'; // polymain
   openSeaPort = new OpenSeaPort(getWeb3().currentProvider, {
     networkName: network
   });

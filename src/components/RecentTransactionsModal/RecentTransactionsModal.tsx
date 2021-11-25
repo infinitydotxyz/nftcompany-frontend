@@ -79,7 +79,7 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
                           <CopyButton copyText={item.txnHash} tooltip="Copy Txn Hash" />
                         </i>
                         <i className={styles.extLink}>
-                          <Tooltip label={'Open Etherscan Link'} placement="top" hasArrow>
+                          <Tooltip label={'Open Link'} placement="top" hasArrow>
                             <ExternalLinkIcon
                               color="brandBlue"
                               onClick={() => {

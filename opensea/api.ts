@@ -364,18 +364,11 @@ export class OpenSeaAPI {
    * @param opts RequestInit opts, similar to Fetch API
    */
   private async _fetch(apiPath: string, opts: RequestInit = {}) {
-    const apiBase = this.apiBaseUrl
-    const apiKey = this.apiKey
-    let finalUrl = ''
-    // todo: adi - is this still relevant
-    if (apiPath.indexOf('/assets/') > 0 || apiPath.indexOf('/asset/') > 0 || apiPath.indexOf('/tokens/') > 0) {
-      finalUrl = 'https://api.opensea.io' + apiPath
-    } else {
-      finalUrl = apiBase + apiPath
-    }
-    // const finalUrl = apiBase + apiPath
+    const apiBase = this.apiBaseUrl;
+    const apiKey = this.apiKey;
+    const finalUrl = apiBase + apiPath;
 
-    const authHeaders = await getAuthHeaders()
+    const authHeaders = await getAuthHeaders();
 
     const finalOpts = {
       ...opts,
@@ -384,11 +377,11 @@ export class OpenSeaAPI {
         ...(opts.headers || {}),
         ...authHeaders
       }
-    }
+    };
 
-    this.logger(`Sending request: ${finalUrl} ${JSON.stringify(finalOpts).substr(0, 100)}...`)
+    this.logger(`Sending request: ${finalUrl} ${JSON.stringify(finalOpts).substr(0, 100)}...`);
 
-    return fetch(finalUrl, finalOpts).then(async res => this._handleApiResponse(res))
+    return fetch(finalUrl, finalOpts).then(async (res) => this._handleApiResponse(res));
   }
 
   private async _handleApiResponse(response: Response) {
