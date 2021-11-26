@@ -29,13 +29,19 @@ function NFTEvents({ address, tokenId }: NFTEventsProps) {
 
             <TabPanels>
               <TabPanel>
-                {tabIndex === 0 && <CollectionEvents address={address} tokenId={tokenId} eventType="successful" />}
+                {tabIndex === 0 && (
+                  <CollectionEvents address={address} tokenId={tokenId} eventType="successful" activityType="sale" />
+                )}
               </TabPanel>
               <TabPanel>
-                {tabIndex === 1 && <CollectionEvents address={address} tokenId={tokenId} eventType="transfer" />}
+                {tabIndex === 1 && (
+                  <CollectionEvents address={address} tokenId={tokenId} eventType="transfer" activityType="transfer" />
+                )}
               </TabPanel>
               <TabPanel>
-                {tabIndex === 2 && <CollectionEvents address={address} tokenId={tokenId} eventType="bid_entered" />}
+                {tabIndex === 2 && (
+                  <CollectionEvents address={address} tokenId={tokenId} eventType="bid_entered" activityType="offer" />
+                )}
               </TabPanel>
             </TabPanels>
           </Tabs>

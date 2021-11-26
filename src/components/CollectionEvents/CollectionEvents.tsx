@@ -13,9 +13,10 @@ interface Props {
   address: string;
   tokenId?: string;
   eventType: 'successful' | 'transfer' | 'bid_entered';
+  activityType: 'sale' | 'transfer' | 'offer';
 }
 
-function CollectionEvents({ address, tokenId, eventType }: Props) {
+function CollectionEvents({ address, tokenId, eventType, activityType }: Props) {
   const { showAppError } = useAppContext();
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -56,11 +57,19 @@ function CollectionEvents({ address, tokenId, eventType }: Props) {
       <Table>
         <Thead>
           <Tr>
-            <Th style={{ width: '10%' }}>Token</Th>
-            <Th>Buyer</Th>
-            <Th>{eventType === 'successful' ? 'Price' : ''}</Th>
+            <Th style={{ width: '20%' }}>Token</Th>
+            <Th>
+              {activityType === 'sale'
+                ? 'Seller/Buyer'
+                : activityType === 'offer'
+                ? 'Bidder'
+                : activityType === 'transfer'
+                ? 'From/To'
+                : ''}
+            </Th>
             <Th>Date</Th>
-            <Th>Link</Th>
+            {(activityType === 'sale' || activityType === 'offer') && <Th>Price (ETH)</Th>}
+            {(activityType === 'sale' || activityType === 'transfer') && <Th>Link</Th>}
           </Tr>
         </Thead>
         <Tbody>
@@ -69,57 +78,89 @@ function CollectionEvents({ address, tokenId, eventType }: Props) {
               <Tr key={`${address}_${item?.asset?.token_id}_${item.created_date}`}>
                 <Td>
                   {item?.asset?.image_thumbnail_url && (
-                    <img
-                      src={`${item.asset.image_thumbnail_url}`}
-                      alt={item?.asset?.token_id}
-                      className={styles.thumb}
-                    />
+                    <>
+                      <img
+                        src={`${item.asset.image_thumbnail_url}`}
+                        alt={item?.asset?.token_id}
+                        className={styles.thumb}
+                      />
+                      <br />
+                      <p>{item?.asset?.name ? item?.asset?.name : item?.asset?.token_id}</p>
+                    </>
                   )}
                 </Td>
-                {eventType === 'successful' && (
+
+                {activityType === 'sale' && (
                   <Td>
-                    <a
+                    <Link
+                      className={styles.underline}
                       href={`${CHAIN_SCANNER_BASE}/address/${item?.seller?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       {item?.seller?.user?.username || ellipsisAddress(item?.seller?.address)}
-                    </a>{' '}
-                    <ArrowForwardIcon />{' '}
-                    <a
+                    </Link>
+                    {'   '}
+                    <ArrowForwardIcon className={styles.arrowPadding} />
+                    {'   '}
+                    <Link
+                      className={styles.underline}
                       href={`${CHAIN_SCANNER_BASE}/address/${item?.winner_account?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       {item?.winner_account?.user?.username || ellipsisAddress(item?.winner_account?.address)}
-                    </a>
+                    </Link>
                   </Td>
                 )}
-                {(eventType === 'transfer' || eventType === 'bid_entered') && (
+
+                {activityType === 'offer' && (
                   <Td>
-                    <a
+                    <Link
+                      className={styles.underline}
                       href={`${CHAIN_SCANNER_BASE}/address/${item?.from_account?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       {item?.from_account?.user?.username || ellipsisAddress(item?.from_account?.address)}
-                    </a>{' '}
+                    </Link>
+                  </Td>
+                )}
+
+                {activityType === 'transfer' && (
+                  <Td>
+                    <Link
+                      className={styles.underline}
+                      href={`${CHAIN_SCANNER_BASE}/address/${item?.from_account?.address}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {item?.from_account?.user?.username || ellipsisAddress(item?.from_account?.address)}
+                    </Link>{' '}
                     {item?.to_account ? <ArrowForwardIcon /> : ''}{' '}
-                    <a
+                    <Link
+                      className={styles.underline}
                       href={`${CHAIN_SCANNER_BASE}/address/${item?.to_account?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       {item?.to_account?.user?.username || ellipsisAddress(item?.to_account?.address)}
-                    </a>
+                    </Link>
                   </Td>
                 )}
-                <Td>{item?.total_price ? weiToEther(item?.total_price) : ''}</Td>
+
                 <Td>{new Date(item?.created_date).toLocaleString()}</Td>
 
-                {item.transaction && (
+                {activityType === 'sale' && <Td>{item?.total_price ? weiToEther(item?.total_price) : ''}</Td>}
+                {activityType === 'offer' && <Td>{item?.bid_amount ? weiToEther(item?.bid_amount) : ''}</Td>}
+
+                {(activityType === 'sale' || activityType === 'transfer') && (
                   <Td>
-                    <Link href={`${CHAIN_SCANNER_BASE}/tx/${item.transaction?.transaction_hash}`} target="_blank">
+                    <Link
+                      className={styles.underline}
+                      href={`${CHAIN_SCANNER_BASE}/tx/${item.transaction?.transaction_hash}`}
+                      target="_blank"
+                    >
                       {ellipsisAddress(item.transaction?.transaction_hash)}
                     </Link>
                   </Td>

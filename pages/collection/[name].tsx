@@ -49,39 +49,29 @@ const Collection = (): JSX.Element => {
 
               <TabPanels>
                 <TabPanel>
-                  <p>
-                    {name && (
-                      <CollectionContents
-                        name={name as string}
-                        onTitle={(newTitle) => {
-                          if (!title) {
-                            setTitle(newTitle);
-                          }
-                        }}
-                        onLoaded={({ address }) => setAddress(address)}
-                      />
-                    )}
-                  </p>
-                </TabPanel>
-                <TabPanel>
-                  {tabIndex === 1 && (
-                    <p>
-                      <CollectionEvents address={address} eventType="successful" />
-                    </p>
+                  {name && (
+                    <CollectionContents
+                      name={name as string}
+                      onTitle={(newTitle) => {
+                        if (!title) {
+                          setTitle(newTitle);
+                        }
+                      }}
+                      onLoaded={({ address }) => setAddress(address)}
+                    />
                   )}
                 </TabPanel>
                 <TabPanel>
+                  {tabIndex === 1 && <CollectionEvents address={address} eventType="successful" activityType="sale" />}
+                </TabPanel>
+                <TabPanel>
                   {tabIndex === 2 && (
-                    <p>
-                      <CollectionEvents address={address} eventType="transfer" />
-                    </p>
+                    <CollectionEvents address={address} eventType="transfer" activityType="transfer" />
                   )}
                 </TabPanel>
                 <TabPanel>
                   {tabIndex === 3 && (
-                    <p>
-                      <CollectionEvents address={address} eventType="bid_entered" />
-                    </p>
+                    <CollectionEvents address={address} eventType="bid_entered" activityType="offer" />
                   )}
                 </TabPanel>
               </TabPanels>
