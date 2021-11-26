@@ -551,7 +551,6 @@ export const orderToJSON = (order: Order): OrderJSON => {
  */
 export async function personalSignAsync(web3: Web3, message: string, signerAddress: string
   ): Promise<ECSignature> {
-
   const signature = await promisify<Web3.JSONRPCResponsePayload>(c => web3.currentProvider.sendAsync({
       method: 'personal_sign',
       params: [message, signerAddress],
