@@ -62,16 +62,33 @@ const Collection = (): JSX.Element => {
                   )}
                 </TabPanel>
                 <TabPanel>
-                  {tabIndex === 1 && <CollectionEvents address={address} eventType="successful" activityType="sale" />}
+                  {tabIndex === 1 && (
+                    <CollectionEvents
+                      address={address}
+                      eventType="successful"
+                      activityType="sale"
+                      pageType="collection"
+                    />
+                  )}
                 </TabPanel>
                 <TabPanel>
                   {tabIndex === 2 && (
-                    <CollectionEvents address={address} eventType="transfer" activityType="transfer" />
+                    <CollectionEvents
+                      address={address}
+                      eventType="transfer"
+                      activityType="transfer"
+                      pageType="collection"
+                    />
                   )}
                 </TabPanel>
                 <TabPanel>
                   {tabIndex === 3 && (
-                    <CollectionEvents address={address} eventType="bid_entered" activityType="offer" />
+                    <CollectionEvents
+                      address={address}
+                      eventType="bid_entered"
+                      activityType="offer"
+                      pageType="collection"
+                    />
                   )}
                 </TabPanel>
               </TabPanels>

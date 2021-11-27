@@ -14,9 +14,10 @@ interface Props {
   tokenId?: string;
   eventType: 'successful' | 'transfer' | 'bid_entered';
   activityType: 'sale' | 'transfer' | 'offer';
+  pageType: 'nft' | 'collection';
 }
 
-function CollectionEvents({ address, tokenId, eventType, activityType }: Props) {
+function CollectionEvents({ address, tokenId, eventType, activityType, pageType }: Props) {
   const { showAppError } = useAppContext();
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -28,8 +29,9 @@ function CollectionEvents({ address, tokenId, eventType, activityType }: Props) 
     const newCurrentPage = currentPage + 1;
     const offset = newCurrentPage * ITEMS_PER_PAGE;
     const tokenIdParam = tokenId ? `&token_id=${tokenId}` : '';
+    const addressLowerCase = address.trim().toLowerCase();
     const { result, error } = await apiGet(
-      `/events?asset_contract_address=${address}${tokenIdParam}&event_type=${eventType}&only_opensea=false&offset=${offset}&limit=${ITEMS_PER_PAGE}`
+      `/events?asset_contract_address=${addressLowerCase}${tokenIdParam}&event_type=${eventType}&only_opensea=false&offset=${offset}&limit=${ITEMS_PER_PAGE}`
     );
     if (error) {
       showAppError(`Error when fetching data. ${error.message}`);
@@ -57,7 +59,7 @@ function CollectionEvents({ address, tokenId, eventType, activityType }: Props) 
       <Table>
         <Thead>
           <Tr>
-            <Th style={{ width: '20%' }}>Token</Th>
+            {pageType === 'collection' && <Th style={{ width: '20%' }}>Token</Th>}
             <Th>
               {activityType === 'sale'
                 ? 'Seller/Buyer'
@@ -76,19 +78,21 @@ function CollectionEvents({ address, tokenId, eventType, activityType }: Props) 
           {data.map((item: any) => {
             return (
               <Tr key={`${address}_${item?.asset?.token_id}_${item.created_date}`}>
-                <Td>
-                  {item?.asset?.image_thumbnail_url && (
-                    <>
-                      <img
-                        src={`${item.asset.image_thumbnail_url}`}
-                        alt={item?.asset?.token_id}
-                        className={styles.thumb}
-                      />
-                      <br />
-                      <p>{item?.asset?.name ? item?.asset?.name : item?.asset?.token_id}</p>
-                    </>
-                  )}
-                </Td>
+                {pageType === 'collection' && (
+                  <Td>
+                    {item?.asset?.image_thumbnail_url && (
+                      <>
+                        <img
+                          src={`${item.asset.image_thumbnail_url}`}
+                          alt={item?.asset?.token_id}
+                          className={styles.thumb}
+                        />
+                        <br />
+                        <p>{item?.asset?.name ? item?.asset?.name : item?.asset?.token_id}</p>
+                      </>
+                    )}
+                  </Td>
+                )}
 
                 {activityType === 'sale' && (
                   <Td>
