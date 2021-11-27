@@ -28,7 +28,7 @@ const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
   return (
     <>
       <AppChakraProvider>
-        {width <= 768 ? '' : <Background />}
+        {width > 768 && <Background />}
 
         <AppContextProvider>
           <SearchContextProvider>
