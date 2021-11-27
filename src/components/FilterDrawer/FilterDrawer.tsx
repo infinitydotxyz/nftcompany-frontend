@@ -17,10 +17,6 @@ import {
   Td,
   Tbody,
   Thead,
-  HStack,
-  Tag,
-  TagLabel,
-  TagCloseButton,
   Select
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
@@ -29,6 +25,7 @@ import { useSearchContext } from 'utils/context/SearchContext';
 import { useEffect } from 'react';
 import CollectionNameFilter from './CollectionNameFilter';
 import { apiGet } from 'utils/apiUtil';
+import { LISTING_TYPE } from 'utils/constants';
 
 const DEFAULT_MIN_PRICE = 0.0000000001;
 
@@ -58,6 +55,7 @@ const FilterDrawer = () => {
   const [maxPriceVal, setMaxPriceVal] = React.useState('');
   const [collectionName, setCollectionName] = React.useState('');
   const [collectionAddress, setCollectionAddress] = React.useState('');
+  const [selectedCollectionIds, setSelectedCollectionIds] = React.useState('');
   const [traits, setTraits] = React.useState<Trait[]>([]);
   const [selectedTraitType, setSelectedTraitType] = React.useState<Trait | undefined>(undefined);
   const [selectedTraitValue, setSelectedTraitValue] = React.useState('');
@@ -80,10 +78,11 @@ const FilterDrawer = () => {
       newFilter.priceMin = newFilter.priceMin || DEFAULT_MIN_PRICE.toString();
     }
     newFilter.collectionName = collectionName;
+    newFilter.collectionIds = selectedCollectionIds;
     return newFilter;
   };
 
-  const handleClickListType = (listType: '' | 'BUY_NOW' | 'AUCTION') => {
+  const handleClickListType = (listType: '' | 'fixedPrice' | 'englishAuction' | 'dutchAuction') => {
     let newListType = listType;
     if (listType === filterState.listType) {
       newListType = '';
@@ -98,7 +97,7 @@ const FilterDrawer = () => {
     setFilterState(newFilter);
   };
 
-  const handleClickClearPrices = () => {
+  const handleClickClear = () => {
     const newFilter = { ...filterState };
     newFilter.listType = '';
     newFilter.priceMin = '';
@@ -109,13 +108,15 @@ const FilterDrawer = () => {
     setMinPriceVal('');
     setMaxPriceVal('');
     setCollectionName('');
+    setSelectedCollectionIds('');
     setTraits([]);
     setSelectedTraitType(undefined);
     setFilterState(newFilter);
   };
 
-  const buttonProps = filterState.listType === 'BUY_NOW' ? activeButtonProps : normalButtonProps;
-  const buttonProps2 = filterState.listType === 'AUCTION' ? activeButtonProps : normalButtonProps;
+  const buttonProps = filterState.listType === LISTING_TYPE.FIXED_PRICE ? activeButtonProps : normalButtonProps;
+  const buttonProps2 = filterState.listType === LISTING_TYPE.DUTCH_AUCTION ? activeButtonProps : normalButtonProps;
+  const buttonProps3 = filterState.listType === LISTING_TYPE.ENGLISH_AUCTION ? activeButtonProps : normalButtonProps;
 
   return (
     <>
@@ -156,16 +157,26 @@ const FilterDrawer = () => {
             <p />
             <Button
               {...buttonProps}
-              isActive={filterState.listType === 'BUY_NOW'}
-              onClick={() => handleClickListType('BUY_NOW')}
+              mr={4}
+              isActive={filterState.listType === LISTING_TYPE.FIXED_PRICE}
+              onClick={() => handleClickListType('fixedPrice')}
             >
-              Buy Now
+              Fixed Price
             </Button>
             <Button
               {...buttonProps2}
-              ml={4}
-              isActive={filterState.listType === 'AUCTION'}
-              onClick={() => handleClickListType('AUCTION')}
+              mr={4}
+              isActive={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
+              onClick={() => handleClickListType('dutchAuction')}
+            >
+              Declining Price
+            </Button>
+            <Button
+              {...buttonProps3}
+              mr={4}
+              mt={2}
+              isActive={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
+              onClick={() => handleClickListType('englishAuction')}
             >
               On Auction
             </Button>
@@ -202,28 +213,39 @@ const FilterDrawer = () => {
             </Heading>
             <Box>
               <CollectionNameFilter
-                value={collectionName}
+                value={selectedCollectionIds}
                 onClear={() => {
                   setCollectionName('');
+                  setSelectedCollectionIds('');
                   setTraits([]);
+                  setSelectedTraitValue('');
                   setSelectedTraitType(undefined);
                 }}
-                onChange={async (val, address) => {
-                  setCollectionName(val);
-                  setCollectionAddress(address);
+                onChange={async (val, address, selectedCollectionIds) => {
+                  // setCollectionName(val);
+                  // setCollectionAddress(address);
+                  setSelectedCollectionIds(selectedCollectionIds);
+                  const selectedCollectionIdsArr = selectedCollectionIds.split(',');
+
                   // fetch collection traits
-                  if (address) {
+                  if (address && selectedCollectionIdsArr.length === 1) {
                     const { result, error } = await apiGet(`/collections/${address}/traits`);
                     if (error) {
                       // showAppError(error?.message);
                     } else {
                       setTraits(result.traits);
                     }
+                  } else {
+                    setTraits([]);
+                    setSelectedTraitValue('');
+                    setSelectedTraitType(undefined);
+                    filterState.traitType = '';
+                    filterState.traitValue = '';
                   }
                 }}
               />
 
-              {traits.length > 0 && (
+              {selectedCollectionIds.split(',').length === 1 && traits.length > 0 && (
                 <Table size="sm" mt={4}>
                   <Thead>
                     <Tr>
@@ -286,7 +308,7 @@ const FilterDrawer = () => {
               <Button variant="outline" onClick={handleClickApply}>
                 Apply
               </Button>
-              <Button variant="outline" color="gray.500" ml={2} onClick={handleClickClearPrices}>
+              <Button variant="outline" color="gray.500" ml={2} onClick={handleClickClear}>
                 Clear
               </Button>
             </Box>

@@ -68,7 +68,7 @@ const Header = (): JSX.Element => {
     signIn();
 
     if (window?.ethereum) {
-      getChainId();
+      // getChainId();
 
       window.ethereum.on('accountsChanged', handleAccountChange);
       window.ethereum.on('chainChanged', handleNetworkChange);

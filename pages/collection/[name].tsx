@@ -49,39 +49,46 @@ const Collection = (): JSX.Element => {
 
               <TabPanels>
                 <TabPanel>
-                  <p>
-                    {name && (
-                      <CollectionContents
-                        name={name as string}
-                        onTitle={(newTitle) => {
-                          if (!title) {
-                            setTitle(newTitle);
-                          }
-                        }}
-                        onLoaded={({ address }) => setAddress(address)}
-                      />
-                    )}
-                  </p>
+                  {name && (
+                    <CollectionContents
+                      name={name as string}
+                      onTitle={(newTitle) => {
+                        if (!title) {
+                          setTitle(newTitle);
+                        }
+                      }}
+                      onLoaded={({ address }) => setAddress(address)}
+                    />
+                  )}
                 </TabPanel>
                 <TabPanel>
                   {tabIndex === 1 && (
-                    <p>
-                      <CollectionEvents address={address} eventType="successful" />
-                    </p>
+                    <CollectionEvents
+                      address={address}
+                      eventType="successful"
+                      activityType="sale"
+                      pageType="collection"
+                    />
                   )}
                 </TabPanel>
                 <TabPanel>
                   {tabIndex === 2 && (
-                    <p>
-                      <CollectionEvents address={address} eventType="transfer" />
-                    </p>
+                    <CollectionEvents
+                      address={address}
+                      eventType="transfer"
+                      activityType="transfer"
+                      pageType="collection"
+                    />
                   )}
                 </TabPanel>
                 <TabPanel>
                   {tabIndex === 3 && (
-                    <p>
-                      <CollectionEvents address={address} eventType="bid_entered" />
-                    </p>
+                    <CollectionEvents
+                      address={address}
+                      eventType="bid_entered"
+                      activityType="offer"
+                      pageType="collection"
+                    />
                   )}
                 </TabPanel>
               </TabPanels>

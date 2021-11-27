@@ -29,7 +29,7 @@ export const TransactionsTable = ({ entries }: Props) => {
             <div>{ellipsisAddress(item.txnHash, 10, 10)}</div>
             <CopyButton copyText={item.txnHash} tooltip="Copy Txn Hash" />
             <div className={styles.linkIcon}>
-              <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
+              <Tooltip label={'Go to link'} placement="top" hasArrow>
                 <ExternalLinkIcon
                   size="sm"
                   color="brandBlue"

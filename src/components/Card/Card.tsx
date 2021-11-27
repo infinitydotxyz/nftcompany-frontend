@@ -6,7 +6,6 @@ import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import { CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import { WETH_ADDRESS } from 'utils/constants';
 import { addressesEqual } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
@@ -25,7 +24,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
-  const { ref, inView } = useInView({ threshold: 0 });
+  const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
 
   if (!data) {
     return null;
@@ -44,7 +43,11 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const hasBlueCheck = data.hasBlueCheck;
 
   if (inView === false) {
-    return <div ref={ref} id={`id_${data.id}`} className={styles.card}></div>;
+    return (
+      <div ref={ref} id={`id_${data.id}`} className={styles.card}>
+        <img src={data.image} alt="Preloaded Image" style={{ width: 1, height: 1 }} />
+      </div>
+    );
   }
 
   const actionButton = () => {
@@ -134,7 +137,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           <PriceBox
             justifyRight
             price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
-            token={data?.order?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'}
+            token={data?.chainId === '1' ? 'ETH' : 'WETH'}
             expirationTime={data?.expirationTime}
           />
         </div>

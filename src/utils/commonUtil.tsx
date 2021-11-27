@@ -1,7 +1,13 @@
 import { ReactNode } from 'react';
 import { ethers } from 'ethers';
 import { CardData } from 'types/Nft.interface';
-import { WETH_ADDRESS, CHAIN_SCANNER_BASE } from './constants';
+import {
+  WETH_ADDRESS,
+  CHAIN_SCANNER_BASE,
+  POLYGON_WETH_ADDRESS,
+  ETHEREUM_NETWORK_NAME,
+  POLYGON_NETWORK_NAME
+} from './constants';
 
 // OpenSea's EventType
 export enum EventType {
@@ -35,7 +41,7 @@ export const toChecksumAddress = (address?: string): string => {
       // this crashes if the address isn't valid
       result = ethers.utils.getAddress(address);
     } catch (err) {
-      console.log(`toChecksumAddress failed: ${address}`);
+      // do nothing
     }
 
     return result;
@@ -72,7 +78,7 @@ export const ellipsisString = (inString?: string, left: number = 6, right: numbe
 
 export const getToken = (tokenAddress?: string): 'WETH' | 'ETH' | '' => {
   if (tokenAddress) {
-    return tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH';
+    return tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH'; // todo: adi polymain; do not remove this comment
   }
 
   return '';
@@ -122,6 +128,7 @@ export const transformOpenSea = (item: any, owner: string) => {
     collectionName: item.asset_contract.name,
     owner: owner,
     schemaName: item['asset_contract']['schema_name'],
+    chainId: '1', // polymain: assuming opensea api is used for ethereum
     data: item
   } as CardData;
 };
@@ -146,6 +153,9 @@ export const transformCovalent = (item: any, owner: string) => {
     }
   }
 
+  const data = item;
+  data.traits = item?.nft_data[0]?.external_data?.attributes;
+
   return {
     id: `${item?.contract_address}_${item?.nft_data[0]?.token_id}`,
     title: item?.nft_data[0]?.external_data?.name,
@@ -157,7 +167,8 @@ export const transformCovalent = (item: any, owner: string) => {
     collectionName: item?.contract_name,
     owner,
     schemaName,
-    data: item
+    chainId: '137', // polymain: assuming covalent api is used for ethereum
+    data
   } as CardData;
 };
 
@@ -266,4 +277,25 @@ export const numStr = (value: any): string => {
   }
 
   return short;
+};
+
+export const getSearchFriendlyString = (input: string): string => {
+  if (!input) {
+    return '';
+  }
+  // remove spaces, dashes and underscores only
+  const output = input.replace(/[\s-_]/g, '');
+  return output.toLowerCase();
+};
+
+export const getCanonicalWeth = (chain: string): { address: string; decimals: number } => {
+  if (!chain) {
+    return { address: '', decimals: 0 };
+  }
+  if (chain === ETHEREUM_NETWORK_NAME) {
+    return { address: WETH_ADDRESS, decimals: 18 };
+  } else if (chain === POLYGON_NETWORK_NAME) {
+    return { address: POLYGON_WETH_ADDRESS, decimals: 18 };
+  }
+  return { address: '', decimals: 0 };
 };

@@ -17,7 +17,6 @@ import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollecti
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 
 export default function ExplorePage() {
-  const searchContext = useSearchContext();
   const cardProvider = useCardProvider();
   const { searchState, filterState } = useSearchContext();
   const { user } = useAppContext();
@@ -41,7 +40,7 @@ export default function ExplorePage() {
     filterState?.collectionName?.length > 0 ||
     filterState.priceMin !== '' ||
     filterState.priceMax !== '';
-  searchMode = searchMode || filterState.listType !== '';
+  searchMode = searchMode || filterState.listType !== '' || filterState.collectionIds !== '';
 
   let contents;
   if (searchMode) {
@@ -79,8 +78,9 @@ export default function ExplorePage() {
           )}
         </div>
       </div>
-
-      <FilterDrawer />
+      <div className="filter-panel-explore-page">
+        <FilterDrawer />
+      </div>
     </>
   );
 }

@@ -36,7 +36,7 @@ export const CollectionsTable = ({ entries }: Props) => {
             <div>{ellipsisAddress(item.id, 10, 10)}</div>
             <CopyButton copyText={item.id} tooltip="Copy Address" />
             <div className={styles.linkIcon}>
-              <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
+              <Tooltip label={'Go to link'} placement="top" hasArrow>
                 <ExternalLinkIcon
                   size="sm"
                   color="brandBlue"

@@ -26,7 +26,7 @@ const getRows = (data: LeaderBoardEntry[]) => {
             <CopyButton copyText={item.id} tooltip="Copy Address" />
 
             <i className={styles.linkIcon}>
-              <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
+              <Tooltip label={'Go to link'} placement="top" hasArrow>
                 <ExternalLinkIcon
                   size="sm"
                   color="brandBlue"

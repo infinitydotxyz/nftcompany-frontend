@@ -21,7 +21,7 @@ export const AddressMenuItem = ({ user }: Props) => {
             window.open(`${CHAIN_SCANNER_BASE}/address/${user.account}`, '_blank');
           }}
         >
-          Go to Etherscan
+          Go to link
         </MenuItem>
       </div>
 

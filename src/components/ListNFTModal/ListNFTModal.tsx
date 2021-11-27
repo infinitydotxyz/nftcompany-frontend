@@ -65,6 +65,9 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
         assetDetails: { ...data }, // custom data to pass in details.
         ...backendChecks
       };
+      if (data.chainId !== '1') {
+        obj['paymentTokenAddress'] = WETH_ADDRESS;
+      }
       if (activeTab !== 'SET_PRICE') {
         // for English Auction (Highest Bid):
         obj['paymentTokenAddress'] = WETH_ADDRESS;
@@ -122,7 +125,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       onChange={(ev) => setPrice(parseFloat(ev.target.value))}
                     />
                   </div>
-                  <div className={styles.right}>ETH</div>
+                  <div className={styles.right}>{data.chainId === '1' ? 'ETH' : 'WETH'}</div>
                 </div>
                 {endPriceShowed && (
                   <div className={styles.fields}>
@@ -137,7 +140,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                         onChange={(ev) => setEndPrice(parseFloat(ev.target.value))}
                       />
                     </div>
-                    <div className={styles.right}>ETH</div>
+                    <div className={styles.right}>{data.chainId === '1' ? 'ETH' : 'WETH'}</div>
                   </div>
                 )}
 

@@ -32,7 +32,7 @@ export default function UserPage() {
 
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
-    const source = 1;
+    const source = 1; // todo: adi polymain; do not remove this comment
 
     const { result, error } = await apiGet(`/p/u/${userParam}/assets`, {
       offset: newCurrentPage * ITEMS_PER_PAGE,
@@ -46,6 +46,7 @@ export default function UserPage() {
     }
     const moreData = (result?.assets || []).map((item: any) => {
       if (source === 1) {
+        // todo: adi polymain; do not remove this comment
         return transformOpenSea(item, userParam as string);
       } else if (source === 4) {
         return transformCovalent(item, userParam as string);

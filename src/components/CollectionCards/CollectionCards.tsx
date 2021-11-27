@@ -78,7 +78,7 @@ export const CollectionCards = ({ rows = 0, featuredCollections = false, listMod
       const { result, error } = response;
 
       if (error) {
-        showAppError('Failed to fetch verified collections.');
+        showAppError('Failed to fetch.');
         setHasMore(false);
       } else {
         if (result.collections) {

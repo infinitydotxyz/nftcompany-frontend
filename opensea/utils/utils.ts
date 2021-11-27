@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { WyvernProtocol } from 'wyvern-js'
+import { WyvernProtocol } from '../wyvern-js'
 import * as ethUtil from 'ethereumjs-util'
 import * as _ from 'lodash'
 import * as Web3 from 'web3'
@@ -9,7 +9,7 @@ import {
   FunctionOutputKind,
   Schema,
   StateMutability
-} from 'wyvern-schemas/dist/types'
+} from '../wyvern-schemas/types'
 import { ERC1155 } from '../contracts'
 
 import { OpenSeaPort } from '..'
@@ -199,7 +199,7 @@ export const confirmTransaction = async (web3: Web3, txHash: string) => {
       if (didSucceed) {
         resolve("Transaction complete!")
       } else {
-        reject(new Error(`Transaction failed :( You might have already completed this action. See more on the mainnet at etherscan.io/tx/${txHash}`))
+        reject(new Error(`Transaction failed`))
       }
     })
   })
@@ -551,7 +551,6 @@ export const orderToJSON = (order: Order): OrderJSON => {
  */
 export async function personalSignAsync(web3: Web3, message: string, signerAddress: string
   ): Promise<ECSignature> {
-
   const signature = await promisify<Web3.JSONRPCResponsePayload>(c => web3.currentProvider.sendAsync({
       method: 'personal_sign',
       params: [message, signerAddress],
