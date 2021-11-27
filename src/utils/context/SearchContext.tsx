@@ -10,6 +10,11 @@ export type SearchState = {
   selectedOption: TypeAheadOption | undefined;
 };
 
+export enum ListingSource {
+  Infinity = 'infinity',
+  OpenSea = 'opensea'
+}
+
 export type SearchFilter = {
   sortByLikes: string;
   sortByPrice: string;
@@ -32,6 +37,7 @@ export type SearchFilter = {
   listType?: '' | 'fixedPrice' | 'englishAuction' | 'dutchAuction';
   traitType?: string;
   traitValue?: string;
+  offset?: number;
 };
 
 export const defaultSearchState: SearchState = {

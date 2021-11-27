@@ -1,10 +1,32 @@
 import { CardData, Order, Orders } from 'types/Nft.interface';
 import { weiToEther } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
-import { SearchFilter } from 'utils/context/SearchContext';
+import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
 
-export const getListings = async (listingFilter?: SearchFilter): Promise<CardData[]> => {
-  const path = `/listings/`;
+export const getListings = async (
+  listingFilter?: SearchFilter & { listingSource?: ListingSource }
+): Promise<CardData[]> => {
+  let path;
+  switch (listingFilter?.listingSource) {
+    case ListingSource.OpenSea:
+      path = '/opensea/listings/';
+      break;
+    case ListingSource.Infinity:
+      path = '/listings/';
+      break;
+    default:
+      path = '/listings/';
+  }
+
+  if (listingFilter?.listingSource === ListingSource.OpenSea) {
+    const tokenAddress = await getTokenAddress(listingFilter);
+    if (!tokenAddress) {
+      return [];
+    }
+    listingFilter.tokenAddress = tokenAddress;
+  }
+
+  delete listingFilter?.listingSource;
 
   const { result, error }: { result: Orders; error: any } = (await apiGet(path, listingFilter)) as any;
 
@@ -13,6 +35,26 @@ export const getListings = async (listingFilter?: SearchFilter): Promise<CardDat
   }
 
   return ordersToCardData(result.listings);
+};
+
+export const getTokenAddress = async (listingFilter?: SearchFilter): Promise<string> => {
+  if (listingFilter?.tokenAddress) {
+    return listingFilter.tokenAddress;
+  }
+
+  const path = `/collections/${listingFilter?.collectionName}`;
+
+  const { result, error }: { result: any; error: any } = (await apiGet(path)) as any;
+
+  if (error !== undefined) {
+    return '';
+  }
+
+  if (result.length >= 1 && result[0].address) {
+    return result[0].address;
+  }
+
+  return '';
 };
 
 export const ordersToCardData = (listings: Order[]): CardData[] => {

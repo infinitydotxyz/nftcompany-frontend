@@ -8,6 +8,7 @@ import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
+import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box } from '@chakra-ui/react';
@@ -45,12 +46,13 @@ const Collection = (): JSX.Element => {
                 <Tab isDisabled={!address}>Sales</Tab>
                 <Tab isDisabled={!address}>Transfers</Tab>
                 <Tab isDisabled={!address}>Offers</Tab>
+                <Tab>OpenSea</Tab>
               </TabList>
 
               <TabPanels>
                 <TabPanel>
                   <p>
-                    {name && (
+                    {name && tabIndex === 0 && (
                       <CollectionContents
                         name={name as string}
                         onTitle={(newTitle) => {
@@ -59,6 +61,7 @@ const Collection = (): JSX.Element => {
                           }
                         }}
                         onLoaded={({ address }) => setAddress(address)}
+                        listingSource={ListingSource.Infinity}
                       />
                     )}
                   </p>
@@ -84,6 +87,24 @@ const Collection = (): JSX.Element => {
                     </p>
                   )}
                 </TabPanel>
+                <TabPanel>
+                  {tabIndex === 4 && (
+                    <p>
+                      {name && (
+                        <CollectionContents
+                          name={name as string}
+                          onTitle={(newTitle) => {
+                            if (!title) {
+                              setTitle(newTitle);
+                            }
+                          }}
+                          onLoaded={({ address }) => setAddress(address)}
+                          listingSource={ListingSource.OpenSea}
+                        />
+                      )}
+                    </p>
+                  )}
+                </TabPanel>
               </TabPanels>
             </Tabs>
           </div>
@@ -103,10 +124,11 @@ type Props = {
   name: string;
   onTitle: (title: string) => void;
   onLoaded?: ({ address }: { address: string }) => void;
+  listingSource: ListingSource;
 };
 
-const CollectionContents = ({ name, onTitle, onLoaded }: Props): JSX.Element => {
-  const cardProvider = useCardProvider(name as string);
+const CollectionContents = ({ name, onTitle, onLoaded, listingSource }: Props): JSX.Element => {
+  const cardProvider = useCardProvider(listingSource, name as string);
   const { user } = useAppContext();
 
   useEffect(() => {
