@@ -4,10 +4,9 @@ import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import router from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { getSearchFriendlyString, uuidv4 } from 'utils/commonUtil';
+import { getChainScannerBase, getSearchFriendlyString, uuidv4 } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import { Button } from '@chakra-ui/react';
-import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 type Props = {
   entry: CollectionCardEntry;
@@ -62,7 +61,7 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
 
           <ShortAddress
             vertical={true}
-            href={`${CHAIN_SCANNER_BASE}/address/${entry.address}`}
+            href={`${getChainScannerBase(entry.chainId)}/address/${entry.address}`}
             address={entry.address}
             label=""
             tooltip={entry.address}

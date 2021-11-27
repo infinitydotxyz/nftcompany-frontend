@@ -7,7 +7,7 @@ import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { Button } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
-import { addressesEqual, getToken, toChecksumAddress } from 'utils/commonUtil';
+import { addressesEqual, getChainScannerBase, getToken, toChecksumAddress } from 'utils/commonUtil';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
@@ -15,7 +15,7 @@ import CancelListingModal from 'components/CancelListingModal/CancelListingModal
 import { ExternalLinkIconButton, ShareIconButton } from 'components/ShareButton/ShareButton';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { Label } from 'components/Text/Text';
-import { CHAIN_SCANNER_BASE, LISTING_TYPE } from 'utils/constants';
+import { LISTING_TYPE } from 'utils/constants';
 
 const isServer = typeof window === 'undefined';
 
@@ -171,7 +171,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                   <ShortAddress
                     vertical={true}
                     address={data.tokenAddress}
-                    href={`${CHAIN_SCANNER_BASE}/token/${data.tokenAddress}`}
+                    href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}`}
                     label="Token Address"
                     tooltip={toChecksumAddress(data.tokenAddress)}
                   />
@@ -179,7 +179,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                   <ShortAddress
                     vertical={true}
                     address={data.tokenId}
-                    href={`${CHAIN_SCANNER_BASE}/token/${data.tokenAddress}?a=${data.tokenId}`}
+                    href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}?a=${data.tokenId}`}
                     label="Token Id"
                     tooltip={data.tokenId}
                   />

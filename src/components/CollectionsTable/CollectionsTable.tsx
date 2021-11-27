@@ -1,13 +1,12 @@
 import React from 'react';
 import styles from './CollectionsTable.module.scss';
 import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
-import { ellipsisAddress } from 'utils/commonUtil';
+import { ellipsisAddress, getChainScannerBase } from 'utils/commonUtil';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { CopyButton } from 'components/CopyButton/CopyButton';
 import { CollectionCardEntry } from 'types/rewardTypes';
-import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 type Props = {
   entries?: CollectionCardEntry[];
@@ -44,7 +43,7 @@ export const CollectionsTable = ({ entries }: Props) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (item.id) {
-                      window.open(`${CHAIN_SCANNER_BASE}/address/${item.id}`, '_blank');
+                      window.open(`${getChainScannerBase(item.chainId)}/address/${item.id}`, '_blank');
                     }
                   }}
                 />

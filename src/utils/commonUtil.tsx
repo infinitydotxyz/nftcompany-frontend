@@ -7,7 +7,8 @@ import {
   POLYGON_WETH_ADDRESS,
   ETHEREUM_NETWORK_NAME,
   POLYGON_NETWORK_NAME,
-  LISTING_TYPE
+  LISTING_TYPE,
+  POLYGON_CHAIN_SCANNER_BASE
 } from './constants';
 
 // OpenSea's EventType
@@ -318,6 +319,15 @@ export const getWyvernChainName = (chainId?: string): string | null => {
     return 'main';
   } else if (chainId === '137') {
     return 'polygon';
+  }
+  return null;
+};
+
+export const getChainScannerBase = (chainId?: string): string | null => {
+  if (chainId === '1') {
+    return CHAIN_SCANNER_BASE;
+  } else if (chainId === '137') {
+    return POLYGON_CHAIN_SCANNER_BASE;
   }
   return null;
 };

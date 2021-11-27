@@ -5,14 +5,13 @@ import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { Button, Spacer } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import { addressesEqual, getToken, toChecksumAddress } from 'utils/commonUtil';
+import { addressesEqual, getChainScannerBase, getToken, toChecksumAddress } from 'utils/commonUtil';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
 import { Label } from 'components/Text/Text';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
-import { CHAIN_SCANNER_BASE, LISTING_TYPE } from 'utils/constants';
 
 interface Props {
   data: CardData;
@@ -104,7 +103,7 @@ export const PreviewInfo: React.FC<Props> = ({ showDescription = false, action, 
   const _tokenAddressSection = (
     <ShortAddress
       address={data.tokenAddress}
-      href={`${CHAIN_SCANNER_BASE}/token/${data.tokenAddress}`}
+      href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}`}
       label="Token Address:"
       tooltip={toChecksumAddress(data.tokenAddress)}
     />
@@ -113,7 +112,7 @@ export const PreviewInfo: React.FC<Props> = ({ showDescription = false, action, 
   const _tokenIdSection = (
     <ShortAddress
       address={data.tokenId}
-      href={`${CHAIN_SCANNER_BASE}/token/${data.tokenAddress}?a=${data.tokenId}`}
+      href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}?a=${data.tokenId}`}
       label="Token Id:"
       tooltip={data.tokenId}
     />

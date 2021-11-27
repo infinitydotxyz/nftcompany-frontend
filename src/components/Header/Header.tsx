@@ -27,6 +27,7 @@ const Header = (): JSX.Element => {
   const { colorMode } = useColorMode();
 
   const signedIn = !!user?.account;
+  let chainId = '1';
 
   useEffect(() => {
     const handleAccountChange = async (accounts: string[]) => {
@@ -53,12 +54,16 @@ const Header = (): JSX.Element => {
       window.location.reload();
     };
 
-    const getChainId = async () => {
+    const setChainId = async () => {
       try {
-        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        const chainIdLoc = await window.ethereum.request({ method: 'eth_chainId' });
 
-        if (chainId !== '0x1') {
-          setLockout(true);
+        if (chainIdLoc === '0x1') {
+          // eth main
+          chainId = '1';
+        } else if (chainIdLoc === '0x89') {
+          // polygon
+          chainId = '137';
         }
       } catch (err) {
         console.error('eth_chainId failed', err);
@@ -68,7 +73,7 @@ const Header = (): JSX.Element => {
     signIn();
 
     if (window?.ethereum) {
-      // getChainId();
+      setChainId();
 
       window.ethereum.on('accountsChanged', handleAccountChange);
       window.ethereum.on('chainChanged', handleNetworkChange);
@@ -119,7 +124,7 @@ const Header = (): JSX.Element => {
   let accountItems: JSX.Element[] = [];
   if (signedIn) {
     accountItems = [
-      <AddressMenuItem key="AddressMenuItem" user={user} />,
+      <AddressMenuItem key="AddressMenuItem" user={user} chainId={chainId} />,
       <MenuDivider key="kdd" />,
 
       ...transactionItems,
