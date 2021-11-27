@@ -106,7 +106,7 @@ export function useCardProvider(
 
     // are we getting the next page?
     if (!isTokenIdSearch && listType === newListType && list?.length > 0) {
-      previousList = list;
+      previousList = [...list];
       offset = previousList.length;
       startAfterSearchTitle = getLastItemSearchTitle(list);
       startAfterSearchCollectionName = getLastItemSearchCollectionName(list);
@@ -151,8 +151,7 @@ export function useCardProvider(
       setHasMore(true);
     }
 
-    setList([...previousList, ...result]);
-
+    setList(removeDuplicates([...previousList, ...result]));
     setHasLoaded(true);
   };
 
@@ -192,20 +191,24 @@ export function useCardProvider(
     const dupsIds = new Set<string>();
     const replacedIds = new Set<string>();
 
+    const getItemId = (item: { tokenId: string | number; tokenAddress: string }) => {
+      return `${item.tokenId}${item.tokenAddress}`;
+    };
+
     for (const item of srcList) {
-      const itemId = `${item.tokenId}${item.tokenAddress}`;
+      const itemId = getItemId(item as any);
 
-      let a = dupMap.get(itemId);
+      let dupItemArray = dupMap.get(itemId);
 
-      if (!a) {
-        a = [item];
+      if (!dupItemArray) {
+        dupItemArray = [item];
       } else {
-        a.push(item);
+        dupItemArray.push(item);
 
         dupsIds.add(itemId);
       }
 
-      dupMap.set(itemId, a);
+      dupMap.set(itemId, dupItemArray);
     }
 
     let showLowest = true;
@@ -220,7 +223,7 @@ export function useCardProvider(
       const result: CardData[] = [];
 
       for (const item of srcList) {
-        const itemId = `${item.tokenId}${item.tokenAddress}`;
+        const itemId = getItemId(item as any);
 
         if (dupsIds.has(itemId)) {
           if (!replacedIds.has(itemId)) {
@@ -273,8 +276,6 @@ export function useCardProvider(
     }
   };
 
-  const filteredList = removeDuplicates(list);
-
   // don't filter if we search for that name that you might own
   // if (!listType.startsWith('token-id')) {
   //   if (userAccount && list && list.length > 0) {
@@ -285,5 +286,5 @@ export function useCardProvider(
   //   }
   // }
 
-  return { list: filteredList, loadNext, hasData, hasLoaded };
+  return { list, loadNext, hasData, hasLoaded };
 }

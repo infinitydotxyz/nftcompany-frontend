@@ -11,14 +11,14 @@ import { useAppContext } from 'utils/context/AppContext';
 import { Spacer } from '@chakra-ui/layout';
 import { CardGrid } from 'components/CollectionCards/CollectionCard';
 import { CollectionCardEntry } from 'types/rewardTypes';
-import { useSearchContext } from 'utils/context/SearchContext';
+import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import CardList from 'components/Card/CardList';
 import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollections';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 
 export default function ExplorePage() {
   const searchContext = useSearchContext();
-  const cardProvider = useCardProvider();
+  const cardProvider = useCardProvider(ListingSource.Infinity);
   const { searchState, filterState } = useSearchContext();
   const { user } = useAppContext();
 
