@@ -12,6 +12,7 @@ import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
 import { Label } from 'components/Text/Text';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
+import { LISTING_TYPE } from 'utils/constants';
 
 interface Props {
   data: CardData;

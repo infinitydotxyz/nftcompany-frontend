@@ -138,6 +138,7 @@ export class OpenSeaPort {
   public gasIncreaseFactor = DEFAULT_GAS_INCREASE_FACTOR;
 
   private _networkName: Network;
+  private _chainId: string;
   private _wyvernProtocol: WyvernProtocol;
   private _wyvernProtocolReadOnly: WyvernProtocol;
   private _emitter: EventEmitter;
@@ -165,6 +166,7 @@ export class OpenSeaPort {
         ? POLYGON_PROVIDER_URL
         : RINKEBY_PROVIDER_URL
     );
+    this._chainId = this._networkName === Network.Main ? '1' : this._networkName === Network.Polygon ? '137' : '';
 
     // Web3 Config
     this.web3 = new Web3(provider);
@@ -3755,6 +3757,7 @@ export class OpenSeaPort {
   }
 
   private _dispatch(event: EventType, data: EventData) {
+    data.chainId = this._chainId;
     this._emitter.emit(event, data);
   }
 
