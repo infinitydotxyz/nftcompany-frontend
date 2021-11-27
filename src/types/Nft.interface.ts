@@ -42,6 +42,7 @@ export interface Metadata {
   createdAt: number;
   basePriceInEth: number;
   listingType: string;
+  chainId: string;
 }
 
 export interface Asset {
@@ -84,4 +85,5 @@ export type CardData = {
   metadata?: Metadata;
   schemaName?: string;
   expirationTime?: string;
+  chainId? : string;
 };

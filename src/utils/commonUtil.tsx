@@ -128,6 +128,7 @@ export const transformOpenSea = (item: any, owner: string) => {
     collectionName: item.asset_contract.name,
     owner: owner,
     schemaName: item['asset_contract']['schema_name'],
+    chainId: '1', // polymain: assuming opensea api is used for ethereum
     data: item
   } as CardData;
 };
@@ -166,6 +167,7 @@ export const transformCovalent = (item: any, owner: string) => {
     collectionName: item?.contract_name,
     owner,
     schemaName,
+    chainId: '137', // polymain: assuming covalent api is used for ethereum
     data
   } as CardData;
 };

@@ -6,7 +6,6 @@ import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import { CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import { WETH_ADDRESS } from 'utils/constants';
 import { addressesEqual } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
@@ -138,7 +137,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           <PriceBox
             justifyRight
             price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
-            token={data?.order?.paymentToken === WETH_ADDRESS ? 'WETH' : 'ETH'} // todo: adi polymain; do not remove this comment
+            token={data?.chainId === '1' ? 'ETH' : 'WETH'}
             expirationTime={data?.expirationTime}
           />
         </div>

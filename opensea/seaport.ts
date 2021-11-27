@@ -159,7 +159,11 @@ export class OpenSeaPort {
     this.api = new OpenSeaAPI(apiConfig);
     this._networkName = apiConfig.networkName;
     const readonlyProvider = new Web3.providers.HttpProvider(
-      this._networkName === Network.Main ? MAINNET_PROVIDER_URL : this._networkName === Network.Polygon ? POLYGON_PROVIDER_URL : RINKEBY_PROVIDER_URL
+      this._networkName === Network.Main
+        ? MAINNET_PROVIDER_URL
+        : this._networkName === Network.Polygon
+        ? POLYGON_PROVIDER_URL
+        : RINKEBY_PROVIDER_URL
     );
 
     // Web3 Config
@@ -670,6 +674,8 @@ export class OpenSeaPort {
     (order as any).metadata.hasBlueCheck = hasBlueCheck;
     (order.metadata as any).asset.rawData = assetDetails?.data;
 
+    (order as any).metadata.chainId = assetDetails?.chainId;
+
     if (typeof hasBonusReward === 'undefined') {
       (order as any).metadata.checkBonusReward = true;
     }
@@ -790,12 +796,9 @@ export class OpenSeaPort {
     (order as any).metadata.hasBlueCheck = hasBlueCheck;
     (order.metadata as any).asset.rawData = assetDetails?.data;
 
-    // todo: adi
-    // add chain data based on logic no hardcode
-    (order as any).metadata.chain = 'ethereum';
-    (order as any).metadata.chainId = '1';
+    (order as any).metadata.chainId = assetDetails?.chainId;
 
-     // listing type
+    // listing type
     let listingType = LISTING_TYPE.FIXED_PRICE;
     if (waitForHighestBid) {
       listingType = LISTING_TYPE.ENGLISH_AUCTION;
@@ -2205,9 +2208,7 @@ export class OpenSeaPort {
     );
 
     if (proxyAddress == '0x') {
-      throw new Error(
-        "Couldn't retrieve your account from the blockchain - make sure you're on the correct network!"
-      );
+      throw new Error("Couldn't retrieve your account from the blockchain - make sure you're on the correct network!");
     }
 
     if (!proxyAddress || proxyAddress == NULL_ADDRESS) {

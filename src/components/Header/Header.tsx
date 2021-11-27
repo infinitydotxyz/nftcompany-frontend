@@ -58,7 +58,6 @@ const Header = (): JSX.Element => {
         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
 
         if (chainId !== '0x1') {
-          /* todo: adi polymain; do not remove this comment */
           setLockout(true);
         }
       } catch (err) {
@@ -69,7 +68,7 @@ const Header = (): JSX.Element => {
     signIn();
 
     if (window?.ethereum) {
-      getChainId();
+      // getChainId();
 
       window.ethereum.on('accountsChanged', handleAccountChange);
       window.ethereum.on('chainChanged', handleNetworkChange);
@@ -207,7 +206,7 @@ const Header = (): JSX.Element => {
     lockoutComponent = (
       <Alert className={styles.lockout} status="error">
         <AlertIcon />
-        You must be on Ethereum Mainnet {/* todo: adi polymain; do not remove this comment */}
+        You must be on Ethereum Mainnet
         <CloseButton
           position="absolute"
           right="8px"

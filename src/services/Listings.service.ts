@@ -113,7 +113,8 @@ export const orderToCardData = (order: Order): CardData => {
     owner: order.maker,
     metadata: order.metadata,
     schemaName: order.metadata.schema,
-    expirationTime: order.expirationTime
+    expirationTime: order.expirationTime,
+    chainId: order.metadata.chainId
   };
   return cardData;
 };
