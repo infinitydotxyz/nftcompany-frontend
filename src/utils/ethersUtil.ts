@@ -12,10 +12,6 @@ declare global {
     ethereum: any;
   }
 }
-// const hstABI = require("human-standard-token-abi");
-
-let ethersProvider: any;
-let openSeaPortForChain: any;
 
 type initEthersArgs = {
   onError?: (tx: any) => void;
@@ -29,7 +25,7 @@ export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
     console.log(err);
     return;
   }
-  ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+  const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
 
   ethersProvider.on('pending', (tx: any) => {
     // Emitted when any new pending transaction is noticed
@@ -46,13 +42,11 @@ export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
   return ethersProvider;
 }
 
-export const getEthersProvider = () => ethersProvider;
+export const getEthersProvider = () => new ethers.providers.Web3Provider(window.ethereum);
 
 export const getAccount = async () => {
   try {
-    if (!ethersProvider) {
-      ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
-    }
+    const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
     if (!ethersProvider) {
       return '';
     }
@@ -81,10 +75,8 @@ export const getChainId = async () => {
 };
 
 export const getAddressBalance = async (address: string) => {
-  if (!ethersProvider) {
-    ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
-  }
   try {
+    const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
     const balance = await ethersProvider.getBalance(address);
     const ret = ethers.utils.formatEther(balance);
     return ret;
@@ -109,15 +101,11 @@ export const getWeb3 = () => {
 };
 
 export const getOpenSeaportForChain = (chainId?: string) => {
-  if (openSeaPortForChain) {
-    return openSeaPortForChain;
-  }
-
   let network = getWyvernChainName(chainId);
   if (!network) {
     network = 'main';
   }
-  openSeaPortForChain = new OpenSeaPort(getWeb3().currentProvider, {
+  const openSeaPortForChain = new OpenSeaPort(getWeb3().currentProvider, {
     networkName: network
   });
   return openSeaPortForChain;

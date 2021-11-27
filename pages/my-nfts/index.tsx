@@ -21,7 +21,7 @@ export default function MyNFTs() {
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const fetchData = async () => {
-    if (!user || !user?.account) {
+    if (!user || !user?.account || !chainId) {
       setData([]);
       return;
     }
@@ -52,7 +52,7 @@ export default function MyNFTs() {
 
   React.useEffect(() => {
     fetchData();
-  }, [user]);
+  }, [user, chainId]);
 
   React.useEffect(() => {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {

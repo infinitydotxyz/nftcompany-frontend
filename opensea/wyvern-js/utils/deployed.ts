@@ -51,6 +51,6 @@ export const deployed = {
   polygon: {
     WyvernTokenTransferProxy: '0x3e023b8d0bc62bc38ae08f663d668332e41d96c1',
     WyvernProxyRegistry: '0x396bffea196a753b3c697c9ab899f3a62077d18a',
-    WyvernExchange: '0xbfbf0bd8963FE4f5168745ad59da20bf78D6385e'
+    WyvernExchange: '0xbfbf0bd8963fe4f5168745ad59da20bf78d6385e'
   }
 };
