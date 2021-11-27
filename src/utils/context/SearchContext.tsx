@@ -30,6 +30,7 @@ export type SearchFilter = {
   id: string;
   tokenId: string;
   tokenAddress: string;
+  tokenAddresses?: string[];
   collectionName: string;
   text: string;
   sortByPriceDirection: string;
@@ -84,11 +85,13 @@ export function SearchContextProvider({ children }: any) {
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;
 }
 
-export function useSearchContext(): {
+export type SearchContextType = {
   searchState: SearchState;
   filterState: SearchFilter;
   setSearchState: (state: SearchState) => void;
   setFilterState: (state: SearchFilter) => void;
-} {
+};
+
+export function useSearchContext(): SearchContextType {
   return useContext(SearchContext);
 }

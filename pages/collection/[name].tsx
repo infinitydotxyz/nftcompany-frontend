@@ -128,7 +128,13 @@ type Props = {
 };
 
 const CollectionContents = ({ name, onTitle, onLoaded, listingSource }: Props): JSX.Element => {
-  const cardProvider = useCardProvider(listingSource, name as string);
+  const searchContext = useSearchContext();
+  const cardProvider = useCardProvider(
+    listingSource,
+    searchContext.searchState,
+    searchContext.filterState,
+    name as string
+  );
   const { user } = useAppContext();
 
   useEffect(() => {

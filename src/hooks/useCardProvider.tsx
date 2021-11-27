@@ -1,6 +1,12 @@
 import { CardData } from 'types/Nft.interface';
 import { useEffect, useState } from 'react';
-import { ListingSource, SearchFilter, useSearchContext } from 'utils/context/SearchContext';
+import {
+  ListingSource,
+  SearchContextType,
+  SearchFilter,
+  SearchState,
+  useSearchContext
+} from 'utils/context/SearchContext';
 import { useAppContext } from 'utils/context/AppContext';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { getListings, TypeAheadOption } from 'services/Listings.service';
@@ -61,6 +67,8 @@ const fetchData = async (
 
 export function useCardProvider(
   listingSource: ListingSource,
+  searchState: SearchState,
+  filterState: SearchFilter,
   inCollectionName?: string
 ): {
   list: CardData[];
@@ -74,7 +82,6 @@ export function useCardProvider(
   const [hasLoaded, setHasLoaded] = useState(false);
   const [savedCollectionName, setSavedCollectionName] = useState<string | undefined>();
   const [savedListingSource, setSavedListingSource] = useState<ListingSource | undefined>();
-  const searchContext = useSearchContext();
   const { user, userReady } = useAppContext();
 
   const dumpList = () => {
@@ -118,10 +125,9 @@ export function useCardProvider(
 
     setListType(newListType);
 
-    const filterState = searchContext.filterState;
-    let collectionName = searchContext.searchState.collectionName || searchContext.filterState.collectionName;
-    let text = searchContext.searchState.text;
-    let selectedOption = searchContext.searchState.selectedOption;
+    let collectionName = searchState.collectionName || filterState.collectionName;
+    let text = searchState.text;
+    let selectedOption = searchState.selectedOption;
 
     if (inCollectionName) {
       collectionName = inCollectionName;
@@ -157,19 +163,19 @@ export function useCardProvider(
 
   useEffect(() => {
     const loadData = async () => {
-      let hash = searchContext.searchState.collectionName;
-      hash += JSON.stringify(searchContext.searchState.text);
-      hash += JSON.stringify(searchContext.filterState);
-      hash += JSON.stringify(searchContext.searchState.selectedOption);
+      let hash = searchState.collectionName;
+      hash += JSON.stringify(searchState.text);
+      hash += JSON.stringify(filterState);
+      hash += JSON.stringify(searchState.selectedOption);
       hash += JSON.stringify(userAccount);
       hash = hashString(hash).toString();
 
-      if (searchContext.searchState.collectionName) {
+      if (searchState.collectionName) {
         fetchList('collection-name:' + hash);
       }
-      if (searchContext.searchState.text) {
+      if (searchState.text) {
         fetchList('text:' + hash);
-      } else if (searchContext.searchState.selectedOption) {
+      } else if (searchState.selectedOption) {
         fetchList('token-id:' + hash);
       } else {
         fetchList('normal:' + hash);
@@ -180,7 +186,7 @@ export function useCardProvider(
     if (userReady) {
       loadData();
     }
-  }, [searchContext, userAccount, userReady]);
+  }, [searchState, filterState, userAccount, userReady]);
 
   const hasData = () => {
     return list.length > 0;
@@ -215,7 +221,7 @@ export function useCardProvider(
 
     // if this is blank, we also show only the lowest
     // default sort is highest->lowest, so we must check for undefined sortByPrice too
-    if (searchContext.filterState.sortByPrice === 'DESC' || !searchContext.filterState.sortByPrice) {
+    if (filterState.sortByPrice === 'DESC' || !filterState.sortByPrice) {
       showLowest = false;
     }
 
