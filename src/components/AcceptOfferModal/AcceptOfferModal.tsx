@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './AcceptOfferModal.module.scss';
 import { CardData } from 'types/Nft.interface';
-import { getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
@@ -23,7 +23,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     setIsSubmitting(true);
 
     try {
-      const seaport = getOpenSeaport();
+      const seaport = getOpenSeaportForChain(data?.chainId);
       const order = await seaport.api.getOrder({
         maker: data.maker,
         id: data.id,

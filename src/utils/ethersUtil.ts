@@ -1,3 +1,5 @@
+import { getWyvernChainName } from "./commonUtil";
+
 const ethers = require('ethers');
 
 // OpenSea's dependencies:
@@ -13,7 +15,7 @@ declare global {
 // const hstABI = require("human-standard-token-abi");
 
 let ethersProvider: any;
-let openSeaPort: any;
+let openSeaPortForChain: any;
 
 type initEthersArgs = {
   onError?: (tx: any) => void;
@@ -89,17 +91,19 @@ export const getWeb3 = () => {
   return web3;
 };
 
-export const getOpenSeaport = () => {
-  if (openSeaPort) {
-    return openSeaPort;
+export const getOpenSeaportForChain = (chainId?: string) => {
+  if (openSeaPortForChain) {
+    return openSeaPortForChain;
   }
 
-  // const network = getChainName();
-  const network = 'main'; // todo: adi polymain; do not remove this comment
-  openSeaPort = new OpenSeaPort(getWeb3().currentProvider, {
+  let network = getWyvernChainName(chainId);
+  if (!network) {
+    network = 'main';
+  }
+  openSeaPortForChain = new OpenSeaPort(getWeb3().currentProvider, {
     networkName: network
   });
-  return openSeaPort;
+  return openSeaPortForChain;
 };
 
 export const getSchemaName = (address: string) => {
@@ -111,19 +115,6 @@ export const getSchemaName = (address: string) => {
   } else {
     return WyvernSchemaName.ERC721;
   }
-};
-
-// todo: adi - this uses an async method
-// we only support main and rinkeby for now so lets only allow those chainIds
-export const getChainName = (): string | null => {
-  const chainId = Number(window.ethereum.request({ method: 'net_version' }).result);
-  console.log('chain id: ' + chainId);
-  if (chainId === 1) {
-    return 'main';
-  } else if (chainId === 4) {
-    return 'rinkeby';
-  }
-  return null;
 };
 
 export const weiToEther = (wei: number) => ethers.utils.formatEther(wei);

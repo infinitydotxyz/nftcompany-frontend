@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getAccount, getOpenSeaport } from 'utils/ethersUtil';
+import { getAccount, getOpenSeaportForChain } from 'utils/ethersUtil';
 import { getCustomMessage, getCustomExceptionMsg } from 'utils/commonUtil';
 import { deleteAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
@@ -72,7 +72,7 @@ export function AppContextProvider({ children }: any) {
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
     if (user?.account && !isListenerAdded) {
       isListenerAdded = true;
-      const seaport = getOpenSeaport();
+      const seaport = getOpenSeaportForChain();
       Object.values(EventType).forEach((eventName: any) => {
         seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
       });

@@ -15,7 +15,7 @@ import CancelListingModal from 'components/CancelListingModal/CancelListingModal
 import { ExternalLinkIconButton, ShareIconButton } from 'components/ShareButton/ShareButton';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { Label } from 'components/Text/Text';
-import { CHAIN_SCANNER_BASE } from 'utils/constants';
+import { CHAIN_SCANNER_BASE, LISTING_TYPE } from 'utils/constants';
 
 const isServer = typeof window === 'undefined';
 
@@ -125,7 +125,8 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
     </div>
   );
 
-  const paymentToken = getToken(data?.order?.paymentToken);
+  const paymentToken = getToken(data.order?.metadata?.listingType, data.order?.metadata?.chainId);
+  const listingType = data?.order?.metadata?.listingType;
   return (
     <>
       {!isServer && (
@@ -157,7 +158,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
 
                   {data.metadata?.basePriceInEth && (
                     <>
-                      <Label bold mt text={paymentToken === 'WETH' ? 'Minimum Price' : 'Price'} />
+                      <Label bold mt text={listingType === LISTING_TYPE.ENGLISH_AUCTION ? 'Minimum Price' : 'Price'} />
 
                       <PriceBox
                         price={data.metadata?.basePriceInEth}

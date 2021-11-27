@@ -6,7 +6,8 @@ import {
   CHAIN_SCANNER_BASE,
   POLYGON_WETH_ADDRESS,
   ETHEREUM_NETWORK_NAME,
-  POLYGON_NETWORK_NAME
+  POLYGON_NETWORK_NAME,
+  LISTING_TYPE
 } from './constants';
 
 // OpenSea's EventType
@@ -76,12 +77,24 @@ export const ellipsisString = (inString?: string, left: number = 6, right: numbe
   return '';
 };
 
-export const getToken = (tokenAddress?: string): 'WETH' | 'ETH' | '' => {
-  if (tokenAddress) {
-    return tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH'; // todo: adi polymain; do not remove this comment
+export const getToken = (listingType?: string, chainId?: string): 'WETH' | 'ETH' | '' => {
+  if (listingType) {
+    return listingType === LISTING_TYPE.ENGLISH_AUCTION ? 'WETH' : 'ETH';
+  }
+  if (chainId) {
+    return chainId === '1' ? 'ETH' : 'WETH';
   }
 
   return '';
+};
+
+export const getPaymentTokenAddress = (listingType?: string, chainId?: string): string | undefined => {
+  if (chainId === '1') {
+    return listingType === LISTING_TYPE.ENGLISH_AUCTION ? WETH_ADDRESS : undefined;
+  } else if (chainId === '137') {
+    return POLYGON_WETH_ADDRESS;
+  }
+  return;
 };
 
 // parse a Timestamp string (in millis or secs)
@@ -298,4 +311,13 @@ export const getCanonicalWeth = (chain: string): { address: string; decimals: nu
     return { address: POLYGON_WETH_ADDRESS, decimals: 18 };
   }
   return { address: '', decimals: 0 };
+};
+
+export const getWyvernChainName = (chainId?: string): string | null => {
+  if (chainId === '1') {
+    return 'main';
+  } else if (chainId === '137') {
+    return 'polygon';
+  }
+  return null;
 };

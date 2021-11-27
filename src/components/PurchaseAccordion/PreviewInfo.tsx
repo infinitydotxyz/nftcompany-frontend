@@ -12,7 +12,7 @@ import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
 import { Label } from 'components/Text/Text';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
-import { CHAIN_SCANNER_BASE } from 'utils/constants';
+import { CHAIN_SCANNER_BASE, LISTING_TYPE } from 'utils/constants';
 
 interface Props {
   data: CardData;
@@ -128,10 +128,11 @@ export const PreviewInfo: React.FC<Props> = ({ showDescription = false, action, 
     </>
   ) : null;
 
-  const paymentToken = getToken(data?.order?.paymentToken);
+  const paymentToken = getToken(data.order?.metadata?.listingType, data.order?.metadata?.chainId);
+  const listingType = data?.order?.metadata?.listingType;
   const _priceSection = data.metadata?.basePriceInEth ? (
     <div className={styles.priceRow}>
-      <Label text={paymentToken === 'WETH' ? 'Minimum Price:' : 'Price:'} />
+      <Label text={listingType === LISTING_TYPE.ENGLISH_AUCTION ? 'Minimum Price:' : 'Price:'} />
 
       <Spacer />
       <PriceBox
