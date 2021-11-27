@@ -19,7 +19,7 @@ let isChangingAccount = false;
 
 const Header = (): JSX.Element => {
   const router = useRouter();
-  const { user, signIn, signOut } = useAppContext();
+  const { user, signIn, signOut, chainId } = useAppContext();
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [lockout, setLockout] = useState(false);
   const [closedLockout, setClosedLockout] = useState(false);
@@ -27,7 +27,6 @@ const Header = (): JSX.Element => {
   const { colorMode } = useColorMode();
 
   const signedIn = !!user?.account;
-  let chainId = '1';
 
   useEffect(() => {
     const handleAccountChange = async (accounts: string[]) => {
@@ -54,27 +53,9 @@ const Header = (): JSX.Element => {
       window.location.reload();
     };
 
-    const setChainId = async () => {
-      try {
-        const chainIdLoc = await window.ethereum.request({ method: 'eth_chainId' });
-
-        if (chainIdLoc === '0x1') {
-          // eth main
-          chainId = '1';
-        } else if (chainIdLoc === '0x89') {
-          // polygon
-          chainId = '137';
-        }
-      } catch (err) {
-        console.error('eth_chainId failed', err);
-      }
-    };
-
     signIn();
 
     if (window?.ethereum) {
-      setChainId();
-
       window.ethereum.on('accountsChanged', handleAccountChange);
       window.ethereum.on('chainChanged', handleNetworkChange);
     }

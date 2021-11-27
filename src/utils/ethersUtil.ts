@@ -1,4 +1,4 @@
-import { getWyvernChainName } from "./commonUtil";
+import { getWyvernChainName } from './commonUtil';
 
 const ethers = require('ethers');
 
@@ -61,6 +61,23 @@ export const getAccount = async () => {
     console.error(err);
     return '';
   }
+};
+
+export const getChainId = async () => {
+  try {
+    const chainIdLoc = await window.ethereum.request({ method: 'eth_chainId' });
+
+    if (chainIdLoc === '0x1') {
+      // eth main
+      return '1';
+    } else if (chainIdLoc === '0x89') {
+      // polygon
+      return '137';
+    }
+  } catch (err) {
+    console.error('eth_chainId failed', err);
+  }
+  return '';
 };
 
 export const getAddressBalance = async (address: string) => {

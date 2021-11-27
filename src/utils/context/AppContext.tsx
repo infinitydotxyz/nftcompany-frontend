@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getAccount, getOpenSeaportForChain } from 'utils/ethersUtil';
+import { getAccount, getChainId, getOpenSeaportForChain } from 'utils/ethersUtil';
 import { getCustomMessage, getCustomExceptionMsg } from 'utils/commonUtil';
 import { deleteAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
@@ -15,6 +15,7 @@ export type AppContextType = {
   signIn: () => void;
   signOut: () => void;
   userReady: boolean;
+  chainId: string;
   showAppError: (msg: string) => void;
   showAppMessage: (msg: string) => void;
 };
@@ -27,6 +28,7 @@ let isListenerAdded = false; // set up event listeners once.
 export function AppContextProvider({ children }: any) {
   const [user, setUser] = React.useState<User | null>(null);
   const [userReady, setUserReady] = React.useState(false);
+  const [chainId, setChainId] = React.useState('');
 
   const showAppError = (message: ReactNode) => {
     const msg = getCustomExceptionMsg(message);
@@ -72,7 +74,7 @@ export function AppContextProvider({ children }: any) {
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
     if (user?.account && !isListenerAdded) {
       isListenerAdded = true;
-      const seaport = getOpenSeaportForChain();
+      const seaport = getOpenSeaportForChain(chainId);
       Object.values(EventType).forEach((eventName: any) => {
         seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
       });
@@ -90,6 +92,7 @@ export function AppContextProvider({ children }: any) {
   const signIn = async (): Promise<void> => {
     if (window.ethereum) {
       setUser({ account: await getAccount() });
+      setChainId(await getChainId());
     }
 
     // views can avoid drawing until a login attempt was made to avoid a user=null and user='xx' refresh
@@ -106,6 +109,7 @@ export function AppContextProvider({ children }: any) {
     signIn,
     signOut,
     userReady,
+    chainId,
     showAppError,
     showAppMessage
   };

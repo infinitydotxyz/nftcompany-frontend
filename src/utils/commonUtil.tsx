@@ -209,7 +209,7 @@ export const getCustomMessage = (eventName: string, data: any) => {
 
   const ev = data?.event;
   const createLink = (transactionHash: string) => (
-    <a className="toast-link" href={`${CHAIN_SCANNER_BASE}/tx/${transactionHash}`} target="_blank" rel="noreferrer">
+    <a className="toast-link" href={`${getChainScannerBase(data.chainId)}/tx/${transactionHash}`} target="_blank" rel="noreferrer">
       {data?.transactionHash}
     </a>
   );
