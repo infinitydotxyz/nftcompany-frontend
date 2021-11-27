@@ -11,6 +11,14 @@ export const LISTING_TYPE = {
   ENGLISH_AUCTION: 'englishAuction'
 };
 
+export const NFT_DATA_SOURCES = {
+  INFINITY: 0,
+  OPENSEA: 1,
+  UNMARSHAL: 2,
+  ALCHEMY: 3,
+  COVALENT: 4
+};
+
 // eth
 export const ETHEREUM_NETWORK_NAME = 'main';
 export const PROVIDER_URL_MAINNET = 'https://eth-mainnet.alchemyapi.io/v2/umiR3YUjFlvlrDNOQQltWppf2M-p07Q3';

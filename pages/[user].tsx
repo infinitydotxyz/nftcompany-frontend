@@ -4,16 +4,16 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import CardList from 'components/Card/CardList';
 import { apiGet } from 'utils/apiUtil';
-import { ITEMS_PER_PAGE } from 'utils/constants';
+import { ITEMS_PER_PAGE, NFT_DATA_SOURCES } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useRouter } from 'next/router';
-import { transformOpenSea, transformCovalent } from 'utils/commonUtil';
+import { transformOpenSea, transformCovalent, getNftDataSource } from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
 
 export default function UserPage() {
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, chainId } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<CardData[]>([]);
   const [currentPage, setCurrentPage] = useState(-1);
@@ -32,7 +32,7 @@ export default function UserPage() {
 
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
-    const source = 1; // todo: adi polymain; do not remove this comment
+    const source = getNftDataSource(chainId);
 
     const { result, error } = await apiGet(`/p/u/${userParam}/assets`, {
       offset: newCurrentPage * ITEMS_PER_PAGE,
@@ -45,11 +45,10 @@ export default function UserPage() {
       return;
     }
     const moreData = (result?.assets || []).map((item: any) => {
-      if (source === 1) {
-        // todo: adi polymain; do not remove this comment
-        return transformOpenSea(item, userParam as string);
-      } else if (source === 4) {
-        return transformCovalent(item, userParam as string);
+      if (source === NFT_DATA_SOURCES.OPENSEA) {
+        return transformOpenSea(item, userParam as string, chainId);
+      } else if (source === NFT_DATA_SOURCES.COVALENT) {
+        return transformCovalent(item, userParam as string, chainId);
       }
     });
     setIsFetching(false);

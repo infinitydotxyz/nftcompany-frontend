@@ -8,7 +8,8 @@ import {
   ETHEREUM_NETWORK_NAME,
   POLYGON_NETWORK_NAME,
   LISTING_TYPE,
-  POLYGON_CHAIN_SCANNER_BASE
+  POLYGON_CHAIN_SCANNER_BASE,
+  NFT_DATA_SOURCES
 } from './constants';
 
 // OpenSea's EventType
@@ -126,7 +127,7 @@ export const stringToFloat = (numStr?: string, defaultValue = 0) => {
   return num;
 };
 
-export const transformOpenSea = (item: any, owner: string) => {
+export const transformOpenSea = (item: any, owner: string, chainId: string) => {
   if (!item) {
     return null;
   }
@@ -142,12 +143,12 @@ export const transformOpenSea = (item: any, owner: string) => {
     collectionName: item.asset_contract.name,
     owner: owner,
     schemaName: item['asset_contract']['schema_name'],
-    chainId: '1', // polymain: assuming opensea api is used for ethereum
+    chainId,
     data: item
   } as CardData;
 };
 
-export const transformCovalent = (item: any, owner: string) => {
+export const transformCovalent = (item: any, owner: string, chainId: string) => {
   if (!item) {
     return null;
   }
@@ -181,7 +182,7 @@ export const transformCovalent = (item: any, owner: string) => {
     collectionName: item?.contract_name,
     owner,
     schemaName,
-    chainId: '137', // polymain: assuming covalent api is used for ethereum
+    chainId,
     data
   } as CardData;
 };
@@ -331,3 +332,13 @@ export const getChainScannerBase = (chainId?: string): string | null => {
   }
   return null;
 };
+
+export const getNftDataSource = (chainId?: string) : number => {
+  if (chainId === '1') {
+    return NFT_DATA_SOURCES.OPENSEA;
+  } else if (chainId === '137') {
+    return NFT_DATA_SOURCES.COVALENT;
+  }
+  // default
+  return NFT_DATA_SOURCES.OPENSEA;
+}
