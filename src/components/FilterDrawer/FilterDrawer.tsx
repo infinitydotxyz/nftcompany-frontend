@@ -78,7 +78,7 @@ const FilterDrawer = () => {
       newFilter.priceMin = newFilter.priceMin || DEFAULT_MIN_PRICE.toString();
     }
     newFilter.collectionName = collectionName;
-    newFilter.collectionIds = selectedCollectionIds;
+    newFilter.collectionIds = selectedCollectionIds === 'CLEAR' ? '' : selectedCollectionIds;
     return newFilter;
   };
 
@@ -103,12 +103,13 @@ const FilterDrawer = () => {
     newFilter.priceMin = '';
     newFilter.priceMax = '';
     newFilter.collectionName = '';
+    newFilter.collectionIds = '';
     newFilter.traitType = '';
     newFilter.traitValue = '';
     setMinPriceVal('');
     setMaxPriceVal('');
     setCollectionName('');
-    setSelectedCollectionIds('');
+    setSelectedCollectionIds('CLEAR');
     setTraits([]);
     setSelectedTraitType(undefined);
     setFilterState(newFilter);
