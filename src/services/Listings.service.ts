@@ -5,7 +5,7 @@ import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
 import { getSearchFriendlyString } from 'utils/commonUtil';
 
 export const getListings = async (
-  listingFilter: SearchFilter & { listingSource: ListingSource }
+  listingFilter: SearchFilter & { listingSource: ListingSource; offset?: string | number }
 ): Promise<CardData[]> => {
   switch (listingFilter?.listingSource) {
     case ListingSource.OpenSea:
@@ -17,7 +17,7 @@ export const getListings = async (
   }
 };
 
-async function getInfinityListings(listingFilter: SearchFilter): Promise<CardData[]> {
+async function getInfinityListings(listingFilter: SearchFilter & { offset?: string | number }): Promise<CardData[]> {
   const path = '/listings/';
 
   const { result, error }: { result: Orders; error: any } = (await apiGet(path, {
@@ -32,7 +32,7 @@ async function getInfinityListings(listingFilter: SearchFilter): Promise<CardDat
   return ordersToCardData(result.listings);
 }
 
-async function getOpenSeaListings(listingFilter: SearchFilter): Promise<CardData[]> {
+async function getOpenSeaListings(listingFilter: SearchFilter & { offset?: string | number }): Promise<CardData[]> {
   const path = '/opensea/listings/';
   if (listingFilter.collectionName && !listingFilter.tokenAddress) {
     const tokenAddress = await getTokenAddress(listingFilter.collectionName);
