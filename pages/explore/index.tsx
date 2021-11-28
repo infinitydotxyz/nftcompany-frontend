@@ -15,7 +15,7 @@ import CardList from 'components/Card/CardList';
 import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab } from '@chakra-ui/react';
 import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollections';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
-import TrendingCollectionListings from 'components/TrendingCollectionListings/TrendingCollectionLIstings';
+import TrendingCollectionListings from 'components/TrendingCollectionListings/TrendingCollectionListings';
 import styles from './Explore.module.scss';
 
 export default function ExplorePage() {
