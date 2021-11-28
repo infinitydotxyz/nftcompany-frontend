@@ -34,6 +34,7 @@ const getRows = (data: LeaderBoardEntry[]) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (item.id) {
+                      // leaderboard is across chais, we show user address on ETH mainnet for now
                       window.open(`${CHAIN_SCANNER_BASE}/address/${item.id}`, '_blank');
                     }
                   }}

@@ -1,3 +1,5 @@
+import { getWyvernChainName } from './commonUtil';
+
 const ethers = require('ethers');
 
 // OpenSea's dependencies:
@@ -10,10 +12,6 @@ declare global {
     ethereum: any;
   }
 }
-// const hstABI = require("human-standard-token-abi");
-
-let ethersProvider: any;
-let openSeaPort: any;
 
 type initEthersArgs = {
   onError?: (tx: any) => void;
@@ -27,7 +25,7 @@ export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
     console.log(err);
     return;
   }
-  ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+  const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
 
   ethersProvider.on('pending', (tx: any) => {
     // Emitted when any new pending transaction is noticed
@@ -44,13 +42,11 @@ export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
   return ethersProvider;
 }
 
-export const getEthersProvider = () => ethersProvider;
+export const getEthersProvider = () => new ethers.providers.Web3Provider(window.ethereum);
 
 export const getAccount = async () => {
   try {
-    if (!ethersProvider) {
-      ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
-    }
+    const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
     if (!ethersProvider) {
       return '';
     }
@@ -61,11 +57,26 @@ export const getAccount = async () => {
   }
 };
 
-export const getAddressBalance = async (address: string) => {
-  if (!ethersProvider) {
-    ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
-  }
+export const getChainId = async () => {
   try {
+    const chainIdLoc = await window.ethereum.request({ method: 'eth_chainId' });
+
+    if (chainIdLoc === '0x1') {
+      // eth main
+      return '1';
+    } else if (chainIdLoc === '0x89') {
+      // polygon
+      return '137';
+    }
+  } catch (err) {
+    console.error('eth_chainId failed', err);
+  }
+  return '';
+};
+
+export const getAddressBalance = async (address: string) => {
+  try {
+    const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
     const balance = await ethersProvider.getBalance(address);
     const ret = ethers.utils.formatEther(balance);
     return ret;
@@ -89,17 +100,15 @@ export const getWeb3 = () => {
   return web3;
 };
 
-export const getOpenSeaport = () => {
-  if (openSeaPort) {
-    return openSeaPort;
+export const getOpenSeaportForChain = (chainId?: string) => {
+  let network = getWyvernChainName(chainId);
+  if (!network) {
+    network = 'main';
   }
-
-  // const network = getChainName();
-  const network = 'main'; // todo: adi polymain; do not remove this comment
-  openSeaPort = new OpenSeaPort(getWeb3().currentProvider, {
+  const openSeaPortForChain = new OpenSeaPort(getWeb3().currentProvider, {
     networkName: network
   });
-  return openSeaPort;
+  return openSeaPortForChain;
 };
 
 export const getSchemaName = (address: string) => {
@@ -111,19 +120,6 @@ export const getSchemaName = (address: string) => {
   } else {
     return WyvernSchemaName.ERC721;
   }
-};
-
-// todo: adi - this uses an async method
-// we only support main and rinkeby for now so lets only allow those chainIds
-export const getChainName = (): string | null => {
-  const chainId = Number(window.ethereum.request({ method: 'net_version' }).result);
-  console.log('chain id: ' + chainId);
-  if (chainId === 1) {
-    return 'main';
-  } else if (chainId === 4) {
-    return 'rinkeby';
-  }
-  return null;
 };
 
 export const weiToEther = (wei: number) => ethers.utils.formatEther(wei);

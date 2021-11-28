@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import styles from './PlaceBidModal.module.scss';
 import { Spinner } from '@chakra-ui/spinner';
 import { CardData, Order } from 'types/Nft.interface';
-import { getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 import { apiPost } from 'utils/apiUtil';
@@ -28,7 +28,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [expiryDate, setExpiryDate] = React.useState<Date | undefined>();
   const [order, setOrder] = React.useState<Order | undefined>();
   const [offerPrice, setOfferPrice] = React.useState(0);
-  const token = getToken(data.order?.paymentToken);
+  const token = getToken(data.order?.metadata?.listingType, data.order?.metadata?.chainId);
   const listingType = data.order?.metadata?.listingType;
 
   const loadOrder = useCallback(async () => {
@@ -50,7 +50,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     }
 
     try {
-      const seaport = getOpenSeaport();
+      const seaport = getOpenSeaportForChain(data?.chainId);
       const order: Order = await seaport.api.getOrder(orderParams);
       setOrder(order);
     } catch (err: any) {
@@ -68,7 +68,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       // another user or cancelled by the creator
       if (order) {
         setIsBuying(true);
-        const seaport = getOpenSeaport();
+        const seaport = getOpenSeaportForChain(data?.chainId);
 
         const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
           order: order,
@@ -108,16 +108,16 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       showAppError(`Offer Price must be greater than 0.`);
       return;
     }
-    if (token === 'WETH') {
+    if (listingType === LISTING_TYPE.ENGLISH_AUCTION) {
       const basePriceInEthNum = data.metadata?.basePriceInEth ?? 0; // validate: offer price must be >= min price:
       if (offerPrice < basePriceInEthNum) {
-        showAppError(`Offer Price must be greater than Minimum Price ${basePriceInEthNum} WETH.`);
+        showAppError(`Offer Price must be greater than the minimum price: ${basePriceInEthNum} WETH.`);
         return;
       }
     }
     try {
       setIsSubmitting(true);
-      const seaport = getOpenSeaport();
+      const seaport = getOpenSeaportForChain(data?.chainId);
       seaport
         .createBuyOrder({
           asset: {
@@ -190,7 +190,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 makeAnOffer();
               }}
             >
-              {token === 'WETH' && (
+              {listingType === LISTING_TYPE.ENGLISH_AUCTION && (
                 <div className={styles.row}>
                   <div className={styles.left}>
                     <div>Minimum Price</div>
@@ -199,7 +199,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                     <PriceBox
                       justifyRight
                       price={data.metadata?.basePriceInEth}
-                      token={token}
+                      token='WETH'
                       expirationTime={data?.expirationTime}
                     />
                   </div>

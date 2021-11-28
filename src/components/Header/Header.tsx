@@ -19,7 +19,7 @@ let isChangingAccount = false;
 
 const Header = (): JSX.Element => {
   const router = useRouter();
-  const { user, signIn, signOut } = useAppContext();
+  const { user, signIn, signOut, chainId } = useAppContext();
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [lockout, setLockout] = useState(false);
   const [closedLockout, setClosedLockout] = useState(false);
@@ -53,23 +53,9 @@ const Header = (): JSX.Element => {
       window.location.reload();
     };
 
-    const getChainId = async () => {
-      try {
-        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-
-        if (chainId !== '0x1') {
-          setLockout(true);
-        }
-      } catch (err) {
-        console.error('eth_chainId failed', err);
-      }
-    };
-
     signIn();
 
     if (window?.ethereum) {
-      // getChainId();
-
       window.ethereum.on('accountsChanged', handleAccountChange);
       window.ethereum.on('chainChanged', handleNetworkChange);
     }
@@ -119,7 +105,7 @@ const Header = (): JSX.Element => {
   let accountItems: JSX.Element[] = [];
   if (signedIn) {
     accountItems = [
-      <AddressMenuItem key="AddressMenuItem" user={user} />,
+      <AddressMenuItem key="AddressMenuItem" user={user} chainId={chainId} />,
       <MenuDivider key="kdd" />,
 
       ...transactionItems,

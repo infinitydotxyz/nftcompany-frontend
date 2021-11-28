@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './CancelListingModal.module.scss';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { CardData } from 'types/Nft.interface';
-import { getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
@@ -23,7 +23,7 @@ const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
     setIsSubmitting(true);
 
     try {
-      const seaport = getOpenSeaport();
+      const seaport = getOpenSeaportForChain(data?.chainId);
       const order = await seaport.api.getOrder({
         maker: user?.account,
         id: data?.id,

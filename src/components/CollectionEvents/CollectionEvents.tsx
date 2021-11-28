@@ -3,10 +3,10 @@ import { apiGet } from 'utils/apiUtil';
 import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { weiToEther } from 'utils/ethersUtil';
-import { ellipsisAddress } from 'utils/commonUtil';
+import { ellipsisAddress, getChainScannerBase } from 'utils/commonUtil';
 import styles from './CollectionEvents.module.scss';
 import { FetchMore } from 'components/FetchMore/FetchMore';
-import { ITEMS_PER_PAGE, CHAIN_SCANNER_BASE } from 'utils/constants';
+import { ITEMS_PER_PAGE } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 
 interface Props {
@@ -98,7 +98,7 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
                   <Td>
                     <Link
                       className={styles.underline}
-                      href={`${CHAIN_SCANNER_BASE}/address/${item?.seller?.address}`}
+                      href={`${getChainScannerBase(item?.chainId)}/address/${item?.seller?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -109,7 +109,7 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
                     {'   '}
                     <Link
                       className={styles.underline}
-                      href={`${CHAIN_SCANNER_BASE}/address/${item?.winner_account?.address}`}
+                      href={`${getChainScannerBase(item?.chainId)}/address/${item?.winner_account?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -122,7 +122,7 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
                   <Td>
                     <Link
                       className={styles.underline}
-                      href={`${CHAIN_SCANNER_BASE}/address/${item?.from_account?.address}`}
+                      href={`${getChainScannerBase(item?.chainId)}/address/${item?.from_account?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -135,7 +135,7 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
                   <Td>
                     <Link
                       className={styles.underline}
-                      href={`${CHAIN_SCANNER_BASE}/address/${item?.from_account?.address}`}
+                      href={`${getChainScannerBase(item?.chainId)}/address/${item?.from_account?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -144,7 +144,7 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
                     {item?.to_account ? <ArrowForwardIcon /> : ''}{' '}
                     <Link
                       className={styles.underline}
-                      href={`${CHAIN_SCANNER_BASE}/address/${item?.to_account?.address}`}
+                      href={`${getChainScannerBase(item?.chainId)}/address/${item?.to_account?.address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -162,7 +162,7 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
                   <Td>
                     <Link
                       className={styles.underline}
-                      href={`${CHAIN_SCANNER_BASE}/tx/${item.transaction?.transaction_hash}`}
+                      href={`${getChainScannerBase(item?.chainId)}/tx/${item.transaction?.transaction_hash}`}
                       target="_blank"
                     >
                       {ellipsisAddress(item.transaction?.transaction_hash)}

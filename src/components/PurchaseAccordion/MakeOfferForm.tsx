@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import styles from './scss/MakeOfferForm.module.scss';
 import { CardData, Order } from 'types/Nft.interface';
-import { getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 import { Button, Input, Spacer } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import { getToken } from 'utils/commonUtil';
 import { DatePicker } from 'components/DatePicker/DatePicker';
 import { Label, Title } from 'components/Text/Text';
+import { LISTING_TYPE } from 'utils/constants';
 
 interface IProps {
   data: CardData;
@@ -22,23 +22,23 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
   const [expiryTimeSeconds, setExpiryTimeSeconds] = useState(0);
   const [expiryDate, setExpiryDate] = useState<Date | undefined>();
   const [offerPrice, setOfferPrice] = useState(0);
-  const token = getToken(order.paymentToken);
+  const listingType = data.order?.metadata?.listingType;
 
   const makeAnOffer = () => {
     if (offerPrice <= 0) {
       showAppError(`Offer Price must be greater than 0.`);
       return;
     }
-    if (token === 'WETH') {
+    if (listingType === LISTING_TYPE.ENGLISH_AUCTION) {
       const basePriceInEthNum = data.metadata?.basePriceInEth ?? 0; // validate: offer price must be >= min price:
       if (offerPrice < basePriceInEthNum) {
-        showAppError(`Offer Price must be greater than Minimum Price ${basePriceInEthNum} WETH.`);
+        showAppError(`Offer Price must be greater than the minimum price: ${basePriceInEthNum} WETH.`);
         return;
       }
     }
     try {
       setIsSubmitting(true);
-      const seaport = getOpenSeaport();
+      const seaport = getOpenSeaportForChain(data?.chainId);
       seaport
         .createBuyOrder({
           asset: {
@@ -77,7 +77,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
           makeAnOffer();
         }}
       >
-        {token === 'WETH' && (
+        {listingType === LISTING_TYPE.ENGLISH_AUCTION && (
           <div className={styles.priceRow}>
             <Label text="Minimum Price" />
 
@@ -85,7 +85,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
             <PriceBox
               justifyRight
               price={data.metadata?.basePriceInEth}
-              token={token}
+              token='WETH'
               expirationTime={data?.expirationTime}
             />
           </div>

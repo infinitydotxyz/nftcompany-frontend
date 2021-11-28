@@ -3,13 +3,14 @@ import styles from './AddressMenuItem.module.scss';
 import { Tooltip, MenuItem } from '@chakra-ui/react';
 import { useAppContext, User } from 'utils/context/AppContext';
 import { MenuIcons } from 'components/Icons/MenuIcons';
-import { CHAIN_SCANNER_BASE } from 'utils/constants';
+import { getChainScannerBase } from 'utils/commonUtil';
 
 type Props = {
   user: User;
+  chainId: string;
 };
 
-export const AddressMenuItem = ({ user }: Props) => {
+export const AddressMenuItem = ({ user, chainId }: Props) => {
   const { showAppMessage } = useAppContext();
 
   return (
@@ -18,7 +19,7 @@ export const AddressMenuItem = ({ user }: Props) => {
         <MenuItem
           icon={MenuIcons.externalLinkIcon}
           onClick={() => {
-            window.open(`${CHAIN_SCANNER_BASE}/address/${user.account}`, '_blank');
+            window.open(`${getChainScannerBase(chainId)}/address/${user.account}`, '_blank');
           }}
         >
           Go to link

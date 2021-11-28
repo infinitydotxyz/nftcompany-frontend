@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './scss/PurchaseForm.module.scss';
 import { CardData, Order } from 'types/Nft.interface';
-import { getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 import { apiPost } from 'utils/apiUtil';
@@ -20,7 +20,7 @@ interface IProps {
 export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IProps) => {
   const { user, showAppError } = useAppContext();
   const [isBuying, setIsBuying] = useState(false);
-  const token = getToken(order.paymentToken);
+  const token = getToken(data.order?.metadata?.listingType, data.order?.metadata?.chainId);
   const listingType = order.metadata?.listingType;
 
   const onClickBuyNow = async () => {
@@ -29,7 +29,7 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
       // another user or cancelled by the creator
       if (order) {
         setIsBuying(true);
-        const seaport = getOpenSeaport();
+        const seaport = getOpenSeaportForChain(data?.chainId);
 
         const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
           order: order,

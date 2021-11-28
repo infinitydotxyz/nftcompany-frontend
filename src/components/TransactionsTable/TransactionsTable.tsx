@@ -1,13 +1,11 @@
 import React from 'react';
 import styles from './TransactionsTable.module.scss';
 import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
-import { ellipsisAddress } from 'utils/commonUtil';
+import { ellipsisAddress, getChainScannerBase } from 'utils/commonUtil';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
-import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { CopyButton } from 'components/CopyButton/CopyButton';
 import { TransactionCardEntry } from 'types/rewardTypes';
-import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 type Props = {
   entries?: TransactionCardEntry[];
@@ -37,7 +35,7 @@ export const TransactionsTable = ({ entries }: Props) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (item.txnHash) {
-                      window.open(`${CHAIN_SCANNER_BASE}/tx/${item.txnHash}`, '_blank');
+                      window.open(`${getChainScannerBase(item.chainId)}/tx/${item.txnHash}`, '_blank');
                     }
                   }}
                 />
