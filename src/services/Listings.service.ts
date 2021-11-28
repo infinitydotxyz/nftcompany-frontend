@@ -2,9 +2,10 @@ import { CardData, Order, Orders } from 'types/Nft.interface';
 import { weiToEther } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
+import { getSearchFriendlyString } from 'utils/commonUtil';
 
 export const getListings = async (
-  listingFilter?: SearchFilter & { listingSource?: ListingSource }
+  listingFilter: SearchFilter & { listingSource: ListingSource }
 ): Promise<CardData[]> => {
   let path;
   switch (listingFilter?.listingSource) {
@@ -19,9 +20,9 @@ export const getListings = async (
   }
 
   if (
-    listingFilter?.listingSource === ListingSource.OpenSea &&
+    listingFilter.listingSource === ListingSource.OpenSea &&
     listingFilter.collectionName &&
-    !listingFilter?.tokenAddress
+    !listingFilter.tokenAddress
   ) {
     const tokenAddress = await getTokenAddress(listingFilter.collectionName);
     if (!tokenAddress) {
@@ -30,13 +31,16 @@ export const getListings = async (
     listingFilter.tokenAddress = tokenAddress;
   }
 
-  delete listingFilter?.listingSource;
-
-  if (!listingFilter?.tokenAddress && (!listingFilter?.tokenAddresses || listingFilter.tokenAddresses.length === 0)) {
-    return [];
+  if (listingFilter.listingSource === ListingSource.OpenSea || !listingFilter.listingSource) {
+    if (!listingFilter.tokenAddress && (!listingFilter.tokenAddresses || listingFilter.tokenAddresses?.length === 0)) {
+      return [];
+    }
   }
 
-  const { result, error }: { result: Orders; error: any } = (await apiGet(path, listingFilter)) as any;
+  const { result, error }: { result: Orders; error: any } = (await apiGet(path, {
+    ...listingFilter,
+    ...{ collectionName: getSearchFriendlyString(listingFilter.collectionName) }
+  })) as any;
 
   if (error !== undefined) {
     return [];
@@ -46,7 +50,7 @@ export const getListings = async (
 };
 
 export const getTokenAddress = async (collectionName: string): Promise<string> => {
-  const path = `/collections/${collectionName}`;
+  const path = `/collections/${getSearchFriendlyString(collectionName)}`;
 
   const { result, error }: { result: any; error: any } = (await apiGet(path)) as any;
 

@@ -32,8 +32,8 @@ const fetchData = async (
   collectionName: string,
   text: string,
   typeAhead: TypeAheadOption | undefined,
-  offset?: number,
-  listingSource?: ListingSource
+  listingSource: ListingSource,
+  offset?: number
 ): Promise<CardData[]> => {
   const result = await getListings({
     ...filter,
@@ -151,8 +151,8 @@ export function useCardProvider(
       collectionName,
       text,
       selectedOption,
-      offset,
-      listingSource
+      listingSource,
+      offset
     );
 
     if (isActiveObj.isActive) {
