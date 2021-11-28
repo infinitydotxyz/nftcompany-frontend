@@ -7,7 +7,6 @@ export default function FeaturedCollections() {
       <div className="section-bar">
         <div className="tg-title">Featured</div>
       </div>
-
       <CollectionCards rows={1} featuredCollections />
     </>
   );

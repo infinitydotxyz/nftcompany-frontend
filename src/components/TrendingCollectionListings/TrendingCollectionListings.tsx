@@ -3,10 +3,9 @@ import { NoData } from 'components/FetchMore/FetchMore';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import React, { useEffect, useState } from 'react';
 import { getTrendingCollections, TrendingCollectionResponse } from 'services/Collections.service';
-import { getListings } from 'services/Listings.service';
 import { useAppContext } from 'utils/context/AppContext';
 import { useCardProvider } from 'hooks/useCardProvider';
-import { ListingSource } from 'utils/context/SearchContext';
+import { ListingSource, SearchContextType } from 'utils/context/SearchContext';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 
 export default function TrendingCollectionListings() {
@@ -24,23 +23,29 @@ function useTrendingCollections() {
   const [trendingCollections, setTrendingCollections] = useState<TrendingCollectionResponse[]>([]);
 
   useEffect(() => {
+    let isActive = true;
     const fetchTrendingCollections = async () => {
       const result = await getTrendingCollections();
-      setTrendingCollections(result);
+      if (isActive) {
+        setTrendingCollections(result);
+      }
     };
     fetchTrendingCollections();
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   return trendingCollections;
 }
 
-type Props = {};
+const TrendingCollectionContents = (): JSX.Element => {
+  const trendingCollections = useTrendingCollections();
+  const [isLoading, setIsLoading] = useState(true);
 
-const TrendingCollectionContents = (props: Props): JSX.Element => {
-  const trendincCollections = useTrendingCollections();
-  const cardProvider = useCardProvider(
-    ListingSource.OpenSea,
-    {
+  const [searchContext, setSearchContext] = useState<Pick<SearchContextType, 'searchState' | 'filterState'>>({
+    searchState: {
       isLoading: false,
       options: [],
       query: '',
@@ -48,7 +53,7 @@ const TrendingCollectionContents = (props: Props): JSX.Element => {
       text: '',
       selectedOption: undefined
     },
-    {
+    filterState: {
       sortByLikes: '',
       sortByPrice: '',
       priceMin: '',
@@ -63,54 +68,43 @@ const TrendingCollectionContents = (props: Props): JSX.Element => {
       id: '',
       tokenId: '',
       tokenAddress: '',
-      tokenAddresses: trendincCollections.map((collection) => collection.address),
+      tokenAddresses: [],
       collectionName: '',
       text: '',
       sortByPriceDirection: '',
       startAfterUser: '',
       offset: 0
     }
-  );
+  });
+
+  const cardProvider = useCardProvider(ListingSource.OpenSea, searchContext);
+
   const { user } = useAppContext();
-  const [list, setList] = useState<any[]>([]);
 
   useEffect(() => {
-    const fetchCollectionContents = async () => {
-      const listings = await getListings({
-        sortByLikes: '',
-        sortByPrice: '',
-        priceMin: '',
-        priceMax: '',
-        startAfterMillis: '',
-        startAfterPrice: '',
-        startAfterSearchTitle: '',
-        startAfterSearchCollectionName: '',
-        startAfterBlueCheck: undefined,
-        limit: '50',
-        user: '',
-        id: '',
-        tokenId: '',
-        tokenAddress: '',
-        tokenAddresses: trendincCollections.map((collection) => collection.address),
-        collectionName: '',
-        text: '',
-        sortByPriceDirection: '',
-        startAfterUser: '',
-        offset: 0
-      });
-      setList(listings);
-    };
+    if (cardProvider.list.length > 0) {
+      setIsLoading(false);
+    }
+  }, [cardProvider.list]);
 
-    fetchCollectionContents();
-  }, [trendincCollections]);
+  useEffect(() => {
+    setSearchContext((prev) => {
+      const tokenAddresses = trendingCollections.map((collection) => collection.address);
+      return { ...prev, filterState: { ...prev.filterState, tokenAddresses } };
+    });
+  }, [trendingCollections]);
 
   return (
     <>
-      <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
+      <NoData
+        dataLoaded={cardProvider.hasLoaded}
+        isFetching={isLoading || !cardProvider.hasLoaded}
+        data={cardProvider.list}
+      />
 
-      {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
+      {(isLoading || (!cardProvider.hasData() && !cardProvider.hasLoaded)) && <LoadingCardList />}
 
-      <CardList showItems={['PRICE']} userAccount={user?.account} data={list} action="BUY_NFT" />
+      <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
 
       {cardProvider.hasData() && (
         <ScrollLoader

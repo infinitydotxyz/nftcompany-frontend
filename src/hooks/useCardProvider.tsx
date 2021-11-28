@@ -1,12 +1,6 @@
 import { CardData } from 'types/Nft.interface';
 import { useEffect, useState } from 'react';
-import {
-  ListingSource,
-  SearchContextType,
-  SearchFilter,
-  SearchState,
-  useSearchContext
-} from 'utils/context/SearchContext';
+import { ListingSource, SearchFilter, SearchState } from 'utils/context/SearchContext';
 import { useAppContext } from 'utils/context/AppContext';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { getListings, TypeAheadOption } from 'services/Listings.service';
@@ -67,8 +61,10 @@ const fetchData = async (
 
 export function useCardProvider(
   listingSource: ListingSource,
-  searchState: SearchState,
-  filterState: SearchFilter,
+  searchContext: {
+    searchState: SearchState;
+    filterState: SearchFilter;
+  },
   inCollectionName?: string
 ): {
   list: CardData[];
@@ -82,7 +78,14 @@ export function useCardProvider(
   const [hasLoaded, setHasLoaded] = useState(false);
   const [savedCollectionName, setSavedCollectionName] = useState<string | undefined>();
   const [savedListingSource, setSavedListingSource] = useState<ListingSource | undefined>();
+  const [savedSearchContext, setSavedSearchContext] = useState(searchContext);
   const { user, userReady } = useAppContext();
+
+  useEffect(() => {
+    if (searchContext !== savedSearchContext) {
+      setSavedSearchContext(searchContext);
+    }
+  }, [searchContext]);
 
   const dumpList = () => {
     setSavedCollectionName(inCollectionName);
@@ -98,7 +101,7 @@ export function useCardProvider(
 
   const userAccount = user?.account;
 
-  const fetchList = async (newListType: string) => {
+  const fetchList = async (newListType: string, isActiveObj: { isActive: boolean }) => {
     let startAfterUser = '';
     let startAfterMillis = '';
     let startAfterPrice = '';
@@ -125,9 +128,10 @@ export function useCardProvider(
 
     setListType(newListType);
 
-    let collectionName = searchState.collectionName || filterState.collectionName;
-    let text = searchState.text;
-    let selectedOption = searchState.selectedOption;
+    const filterState = searchContext.filterState;
+    let collectionName = searchContext.searchState.collectionName || searchContext.filterState.collectionName;
+    let text = searchContext.searchState.text;
+    let selectedOption = searchContext.searchState.selectedOption;
 
     if (inCollectionName) {
       collectionName = inCollectionName;
@@ -151,34 +155,37 @@ export function useCardProvider(
       listingSource
     );
 
-    if (result.length === 0) {
-      setHasMore(false);
-    } else {
-      setHasMore(true);
+    if (isActiveObj.isActive) {
+      if (result.length === 0) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+      }
+      const newList = removeDuplicates([...previousList, ...result]);
+      setList(newList);
+      setHasLoaded(true);
     }
-
-    setList(removeDuplicates([...previousList, ...result]));
-    setHasLoaded(true);
   };
 
+  const isActiveObj = { isActive: true };
   useEffect(() => {
     const loadData = async () => {
-      let hash = searchState.collectionName;
-      hash += JSON.stringify(searchState.text);
-      hash += JSON.stringify(filterState);
-      hash += JSON.stringify(searchState.selectedOption);
+      let hash = searchContext.searchState.collectionName;
+      hash += JSON.stringify(searchContext.searchState.text);
+      hash += JSON.stringify(searchContext.filterState);
+      hash += JSON.stringify(searchContext.searchState.selectedOption);
       hash += JSON.stringify(userAccount);
       hash = hashString(hash).toString();
 
-      if (searchState.collectionName) {
-        fetchList('collection-name:' + hash);
+      if (searchContext.searchState.collectionName) {
+        fetchList('collection-name:' + hash, isActiveObj);
       }
-      if (searchState.text) {
-        fetchList('text:' + hash);
-      } else if (searchState.selectedOption) {
-        fetchList('token-id:' + hash);
+      if (searchContext.searchState.text) {
+        fetchList('text:' + hash, isActiveObj);
+      } else if (searchContext.searchState.selectedOption) {
+        fetchList('token-id:' + hash, isActiveObj);
       } else {
-        fetchList('normal:' + hash);
+        fetchList('normal:' + hash, isActiveObj);
       }
     };
 
@@ -186,7 +193,11 @@ export function useCardProvider(
     if (userReady) {
       loadData();
     }
-  }, [searchState, filterState, userAccount, userReady]);
+
+    return () => {
+      isActiveObj.isActive = false;
+    };
+  }, [savedSearchContext, userAccount, userReady]);
 
   const hasData = () => {
     return list.length > 0;
@@ -221,7 +232,7 @@ export function useCardProvider(
 
     // if this is blank, we also show only the lowest
     // default sort is highest->lowest, so we must check for undefined sortByPrice too
-    if (filterState.sortByPrice === 'DESC' || !filterState.sortByPrice) {
+    if (searchContext.filterState.sortByPrice === 'DESC' || !searchContext.filterState.sortByPrice) {
       showLowest = false;
     }
 
@@ -272,7 +283,7 @@ export function useCardProvider(
 
   const loadNext = () => {
     if (hasData() && hasMore) {
-      fetchList(listType);
+      fetchList(listType, isActiveObj);
     } else {
       if (!hasData()) {
         console.log('ScrollLoader too early to load next, no data');
@@ -292,5 +303,5 @@ export function useCardProvider(
   //   }
   // }
 
-  return { list, loadNext, hasData, hasLoaded };
+  return { list: list, loadNext, hasData, hasLoaded };
 }

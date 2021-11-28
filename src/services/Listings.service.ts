@@ -18,7 +18,11 @@ export const getListings = async (
       path = '/listings/';
   }
 
-  if (listingFilter?.listingSource === ListingSource.OpenSea && !listingFilter?.tokenAddress) {
+  if (
+    listingFilter?.listingSource === ListingSource.OpenSea &&
+    listingFilter.collectionName &&
+    !listingFilter?.tokenAddress
+  ) {
     const tokenAddress = await getTokenAddress(listingFilter.collectionName);
     if (!tokenAddress) {
       return [];
@@ -27,6 +31,10 @@ export const getListings = async (
   }
 
   delete listingFilter?.listingSource;
+
+  if (!listingFilter?.tokenAddress && (!listingFilter?.tokenAddresses || listingFilter.tokenAddresses.length === 0)) {
+    return [];
+  }
 
   const { result, error }: { result: Orders; error: any } = (await apiGet(path, listingFilter)) as any;
 
