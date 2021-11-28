@@ -4,7 +4,7 @@ import { CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PurchaseAccordion } from 'components/PurchaseAccordion/PurchaseAccordion';
 import { getListings } from 'services/Listings.service';
-import { defaultFilterState } from 'utils/context/SearchContext';
+import { defaultFilterState, ListingSource } from 'utils/context/SearchContext';
 import { Button, Link, Spacer } from '@chakra-ui/react';
 import { DescriptionBox } from 'components/PurchaseAccordion/DescriptionBox';
 import { ExtraSpace } from 'components/Spacer/Spacer';
@@ -34,7 +34,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
     filter.tokenAddress = tokenAddress;
     filter.tokenId = tokenId;
 
-    const result = await getListings(filter);
+    const result = await getListings({ ...filter, listingSource: ListingSource.Infinity });
 
     if (result && result.length > 0) {
       let theData = result[0];

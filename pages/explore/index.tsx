@@ -25,7 +25,6 @@ export default function ExplorePage() {
 
   const [searchMode, setSearchMode] = useState(false);
 
-
   useEffect(() => {
     let shouldUseSearchMode =
       searchContext.searchState.text?.length > 0 ||
