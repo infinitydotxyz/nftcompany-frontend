@@ -1,7 +1,16 @@
 import { ReactNode } from 'react';
 import { ethers } from 'ethers';
 import { CardData } from 'types/Nft.interface';
-import { WETH_ADDRESS, CHAIN_SCANNER_BASE } from './constants';
+import {
+  WETH_ADDRESS,
+  CHAIN_SCANNER_BASE,
+  POLYGON_WETH_ADDRESS,
+  ETHEREUM_NETWORK_NAME,
+  POLYGON_NETWORK_NAME,
+  LISTING_TYPE,
+  POLYGON_CHAIN_SCANNER_BASE,
+  NFT_DATA_SOURCES
+} from './constants';
 
 // OpenSea's EventType
 export enum EventType {
@@ -70,12 +79,24 @@ export const ellipsisString = (inString?: string, left: number = 6, right: numbe
   return '';
 };
 
-export const getToken = (tokenAddress?: string): 'WETH' | 'ETH' | '' => {
-  if (tokenAddress) {
-    return tokenAddress === WETH_ADDRESS ? 'WETH' : 'ETH';
+export const getToken = (listingType?: string, chainId?: string): 'WETH' | 'ETH' | '' => {
+  if (listingType) {
+    return listingType === LISTING_TYPE.ENGLISH_AUCTION ? 'WETH' : 'ETH';
+  }
+  if (chainId) {
+    return chainId === '1' ? 'ETH' : 'WETH';
   }
 
   return '';
+};
+
+export const getPaymentTokenAddress = (listingType?: string, chainId?: string): string | undefined => {
+  if (chainId === '1') {
+    return listingType === LISTING_TYPE.ENGLISH_AUCTION ? WETH_ADDRESS : undefined;
+  } else if (chainId === '137') {
+    return POLYGON_WETH_ADDRESS;
+  }
+  return;
 };
 
 // parse a Timestamp string (in millis or secs)
@@ -106,7 +127,7 @@ export const stringToFloat = (numStr?: string, defaultValue = 0) => {
   return num;
 };
 
-export const transformOpenSea = (item: any, owner: string) => {
+export const transformOpenSea = (item: any, owner: string, chainId: string) => {
   if (!item) {
     return null;
   }
@@ -122,11 +143,12 @@ export const transformOpenSea = (item: any, owner: string) => {
     collectionName: item.asset_contract.name,
     owner: owner,
     schemaName: item['asset_contract']['schema_name'],
+    chainId,
     data: item
   } as CardData;
 };
 
-export const transformCovalent = (item: any, owner: string) => {
+export const transformCovalent = (item: any, owner: string, chainId: string) => {
   if (!item) {
     return null;
   }
@@ -160,6 +182,7 @@ export const transformCovalent = (item: any, owner: string) => {
     collectionName: item?.contract_name,
     owner,
     schemaName,
+    chainId,
     data
   } as CardData;
 };
@@ -196,7 +219,7 @@ export const getCustomMessage = (eventName: string, data: any) => {
 
   const ev = data?.event;
   const createLink = (transactionHash: string) => (
-    <a className="toast-link" href={`${CHAIN_SCANNER_BASE}/tx/${transactionHash}`} target="_blank" rel="noreferrer">
+    <a className="toast-link" href={`${getChainScannerBase(data.chainId)}/tx/${transactionHash}`} target="_blank" rel="noreferrer">
       {data?.transactionHash}
     </a>
   );
@@ -279,3 +302,52 @@ export const numStr = (value: any): string => {
 
   return short;
 };
+
+export const getSearchFriendlyString = (input: string): string => {
+  if (!input) {
+    return '';
+  }
+  // remove spaces, dashes and underscores only
+  const output = input.replace(/[\s-_]/g, '');
+  return output.toLowerCase();
+};
+
+export const getCanonicalWeth = (chain: string): { address: string; decimals: number } => {
+  if (!chain) {
+    return { address: '', decimals: 0 };
+  }
+  if (chain === ETHEREUM_NETWORK_NAME) {
+    return { address: WETH_ADDRESS, decimals: 18 };
+  } else if (chain === POLYGON_NETWORK_NAME) {
+    return { address: POLYGON_WETH_ADDRESS, decimals: 18 };
+  }
+  return { address: '', decimals: 0 };
+};
+
+export const getWyvernChainName = (chainId?: string): string | null => {
+  if (chainId === '1') {
+    return 'main';
+  } else if (chainId === '137') {
+    return 'polygon';
+  }
+  return null;
+};
+
+export const getChainScannerBase = (chainId?: string): string | null => {
+  if (chainId === '1') {
+    return CHAIN_SCANNER_BASE;
+  } else if (chainId === '137') {
+    return POLYGON_CHAIN_SCANNER_BASE;
+  }
+  return null;
+};
+
+export const getNftDataSource = (chainId?: string) : number => {
+  if (chainId === '1') {
+    return NFT_DATA_SOURCES.OPENSEA;
+  } else if (chainId === '137') {
+    return NFT_DATA_SOURCES.COVALENT;
+  }
+  // default
+  return NFT_DATA_SOURCES.OPENSEA;
+}

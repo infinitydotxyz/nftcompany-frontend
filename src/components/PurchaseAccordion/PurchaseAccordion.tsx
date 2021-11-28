@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { CardData, Order } from 'types/Nft.interface';
-import { getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { useColorMode } from '@chakra-ui/react';
 import { PurchaseForm } from './PurchaseForm';
 import { MakeOfferForm } from './MakeOfferForm';
@@ -47,7 +47,7 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
       }
 
       try {
-        const seaport = getOpenSeaport();
+        const seaport = getOpenSeaportForChain(data?.chainId);
         const order: Order = await seaport.api.getOrder(orderParams);
 
         setOrder(order);

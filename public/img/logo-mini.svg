@@ -1,39 +1,12 @@
-<svg id="Symbol_on_white" data-name="Symbol on white" xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
-    <defs>
-        <style>
-            .cls-1 {
-                fill: url(#linear-gradient);
-            }
-
-            .cls-2 {
-                clip-path: url(#clip-path);
-            }
-
-            .cls-3 {
-                fill: url(#linear-gradient-3);
-            }
-        </style>
-        <linearGradient id="linear-gradient" x1="-391.59" y1="258.7" x2="817.71" y2="258.7"
-            gradientUnits="userSpaceOnUse">
-            <stop offset="0.2" stop-color="#d1d3de" />
-            <stop offset="0.39" stop-color="#d09bbb" />
-            <stop offset="0.46" stop-color="#a693c6" />
-            <stop offset="0.56" stop-color="#6db7d2" />
-            <stop offset="0.91" stop-color="#dedaed" />
-        </linearGradient>
-        <clipPath id="clip-path">
-            <path class="cls-1"
-                d="M108.86,198a86.31,86.31,0,0,0,0,122.1,90.54,90.54,0,0,0,17.87,14V184a90.92,90.92,0,0,0-17.87,14m276.9,136.1a90.94,90.94,0,0,0,17.92-14,86.34,86.34,0,0,0,0-122.11,90.94,90.94,0,0,0-17.92-14ZM169.91,172.81l-.08,0V345.3l.08,0v.09c19.9-.68,39.66-9.09,55.81-25.24h0l-12.59-12.6v-61l12.58,12.58,30.54,30.54,0,0L286.8,320.1h0c16.14,16.14,35.88,24.55,55.77,25.24v-.11l.12.06V172.78l-.12.06v-.08c-19.89.69-39.63,9.1-55.77,25.24h0l12.6,12.6v61l-12.58-12.58-30.54-30.54,0,0L225.73,198h0c-16.15-16.15-35.91-24.57-55.81-25.24Zm599.91-.39-38.75,64.71-38.38-64.71H644.8l64.7,107.84V345H753V280.26l64.7-107.84ZM-391.59,345.33h43.51V172.05h-43.51Z" />
-        </clipPath>
-        <linearGradient id="linear-gradient-3" x1="-0.63" y1="512.06" x2="1.73" y2="512.06"
-            gradientTransform="matrix(0, -592.59, -592.59, 0, 303656.88, 567.81)" xlink:href="#linear-gradient" />
-    </defs>
-    <title>Symbol Transparent BG</title>
-    <path class="cls-1"
-        d="M108.86,198a86.31,86.31,0,0,0,0,122.1,90.54,90.54,0,0,0,17.87,14V184a90.92,90.92,0,0,0-17.87,14m276.9,136.1a90.94,90.94,0,0,0,17.92-14,86.34,86.34,0,0,0,0-122.11,90.94,90.94,0,0,0-17.92-14ZM169.91,172.81l-.08,0V345.3l.08,0v.09c19.9-.68,39.66-9.09,55.81-25.24h0l-12.59-12.6v-61l12.58,12.58,30.54,30.54,0,0L286.8,320.1h0c16.14,16.14,35.88,24.55,55.77,25.24v-.11l.12.06V172.78l-.12.06v-.08c-19.89.69-39.63,9.1-55.77,25.24h0l12.6,12.6v61l-12.58-12.58-30.54-30.54,0,0L225.73,198h0c-16.15-16.15-35.91-24.57-55.81-25.24Zm599.91-.39-38.75,64.71-38.38-64.71H644.8l64.7,107.84V345H753V280.26l64.7-107.84ZM-391.59,345.33h43.51V172.05h-43.51Z" />
-    <g class="cls-2">
-        <rect class="cls-3" x="-353.9" y="-118.66" width="1133.93" height="754.73"
-            transform="translate(-100.81 141.19) rotate(-30)" />
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 228 160" style="enable-background:new 0 0 228 160;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#010101;}
+	.st1{fill:#FFFFFF;}
+</style>
+<rect x="30" y="30" class="st0" width="168" height="100"/>
+<path class="st1" d="M148,47c-29,0-34,31-34,31s-4-31-33-31c-19,0-34,15-34,33s14,33,33,33c29,0,34-31,34-31s4,31,33,31
+	c19,0,34-15,34-33S167,47,148,47z"/>
 </svg>

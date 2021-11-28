@@ -4,6 +4,8 @@ import { API_BASE } from './constants';
 import { getAccount, getWeb3 } from './ethersUtil';
 const personalSignAsync = require('../../opensea/utils/utils').personalSignAsync;
 
+const loginMessage = 'Welcome to Infinity. Click "Sign" to sign in. No password needed. This request will not trigger a blockchain transaction or cost any gas fees.'
+
 const axiosApi: AxiosInstance = axios.create({
   headers: {}
 });
@@ -23,12 +25,11 @@ export async function saveAuthHeaders(address: string) {
   const currentUser = localStorage.getItem('CURRENT_USER');
 
   if (currentUser !== user) {
-    const msg = 'LOGIN';
-    const sign = await personalSignAsync(getWeb3(), msg, address);
+    const sign = await personalSignAsync(getWeb3(), loginMessage, address);
     const sig = JSON.stringify(sign);
     localStorage.setItem('CURRENT_USER', user);
     localStorage.setItem('X-AUTH-SIGNATURE', sig);
-    localStorage.setItem('X-AUTH-MESSAGE', msg);
+    localStorage.setItem('X-AUTH-MESSAGE', loginMessage);
   }
 }
 
@@ -46,7 +47,7 @@ export async function getAuthHeaders() {
   // fetch auth signature and message from local storage
   const localStorage = window.localStorage;
   let sig = localStorage.getItem('X-AUTH-SIGNATURE') || '';
-  const msg = localStorage.getItem('X-AUTH-MESSAGE') || 'LOGIN';
+  const msg = localStorage.getItem('X-AUTH-MESSAGE') || loginMessage;
   // if they are empty, resign and store
   if (!sig) {
     console.log('No auth found, re logging in');

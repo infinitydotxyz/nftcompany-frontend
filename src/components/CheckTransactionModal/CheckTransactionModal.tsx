@@ -15,6 +15,7 @@ interface IProps {
 const CheckTransactionModal: React.FC<IProps> = ({ onClose }: IProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [txnHash, setTxnHash] = useState('');
+  const [chainId, setChainId] = useState('');
   const [actionType, setActionType] = useState('fulfill');
   const { user, showAppError, showAppMessage } = useAppContext();
 
@@ -27,7 +28,7 @@ const CheckTransactionModal: React.FC<IProps> = ({ onClose }: IProps) => {
     setIsSubmitting(true);
 
     try {
-      const body = { actionType, txnHash };
+      const body = { actionType, txnHash, chainId };
 
       const { result, error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns/check`, {}, body);
 
@@ -56,6 +57,19 @@ const CheckTransactionModal: React.FC<IProps> = ({ onClose }: IProps) => {
               placeholder="Transaction Hash"
               size="sm"
             />
+            <br />
+            <br />
+            <p>Chain</p>
+
+            <RadioGroup mt={4} onChange={setChainId} value={chainId}>
+              <Stack>
+                <Radio value="1">Ethereum</Radio>
+                <Radio value="137">Polygon</Radio>
+              </Stack>
+            </RadioGroup>
+
+            <br />
+            <p>Action</p>
 
             <RadioGroup mt={4} onChange={setActionType} value={actionType}>
               <Stack>

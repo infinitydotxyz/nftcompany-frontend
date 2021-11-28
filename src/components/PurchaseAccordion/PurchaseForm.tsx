@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './scss/PurchaseForm.module.scss';
 import { CardData, Order } from 'types/Nft.interface';
-import { getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 import { apiPost } from 'utils/apiUtil';
@@ -20,7 +20,7 @@ interface IProps {
 export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IProps) => {
   const { user, showAppError } = useAppContext();
   const [isBuying, setIsBuying] = useState(false);
-  const token = getToken(order.paymentToken);
+  const token = getToken(data.order?.metadata?.listingType, data.order?.metadata?.chainId);
   const listingType = order.metadata?.listingType;
 
   const onClickBuyNow = async () => {
@@ -29,11 +29,8 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
       // another user or cancelled by the creator
       if (order) {
         setIsBuying(true);
-        const seaport = getOpenSeaport();
+        const seaport = getOpenSeaportForChain(data?.chainId);
 
-        // const txnHash = '0xcc128a83022cf34fbc5ec756146ee43bc63f2666443e22ade15180c6304b0d54';
-        // const salePriceInEth = '1';
-        // const feesInEth = '1';
         const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
           order: order,
           accountAddress: user!.account
@@ -46,7 +43,8 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
           orderId: order.id,
           maker: order.maker,
           salePriceInEth: +salePriceInEth,
-          feesInEth: +feesInEth
+          feesInEth: +feesInEth,
+          chainId: data.chainId
         };
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {

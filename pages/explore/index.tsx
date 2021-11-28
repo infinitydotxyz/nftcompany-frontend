@@ -25,6 +25,7 @@ export default function ExplorePage() {
 
   const [searchMode, setSearchMode] = useState(false);
 
+
   useEffect(() => {
     let shouldUseSearchMode =
       searchContext.searchState.text?.length > 0 ||
@@ -120,8 +121,9 @@ export default function ExplorePage() {
           </Tabs>
         </div>
       </div>
-
-      <FilterDrawer />
+      <div className="filter-panel-explore-page">
+        <FilterDrawer />
+      </div>
     </>
   );
 }
