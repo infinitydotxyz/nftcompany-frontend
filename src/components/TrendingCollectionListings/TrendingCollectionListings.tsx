@@ -19,27 +19,6 @@ export default function TrendingCollectionListings() {
   );
 }
 
-function useTrendingCollections() {
-  const [trendingCollections, setTrendingCollections] = useState<TrendingCollectionResponse[]>([]);
-
-  useEffect(() => {
-    let isActive = true;
-    const fetchTrendingCollections = async () => {
-      const result = await getTrendingCollections();
-      if (isActive) {
-        setTrendingCollections(result);
-      }
-    };
-    fetchTrendingCollections();
-
-    return () => {
-      isActive = false;
-    };
-  }, []);
-
-  return trendingCollections;
-}
-
 const TrendingCollectionContents = (): JSX.Element => {
   const trendingCollections = useTrendingCollections();
   const [isLoading, setIsLoading] = useState(true);
@@ -116,3 +95,24 @@ const TrendingCollectionContents = (): JSX.Element => {
     </>
   );
 };
+
+function useTrendingCollections() {
+  const [trendingCollections, setTrendingCollections] = useState<TrendingCollectionResponse[]>([]);
+
+  useEffect(() => {
+    let isActive = true;
+    const fetchTrendingCollections = async () => {
+      const result = await getTrendingCollections();
+      if (isActive) {
+        setTrendingCollections(result);
+      }
+    };
+    fetchTrendingCollections();
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
+  return trendingCollections;
+}

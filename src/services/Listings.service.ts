@@ -7,39 +7,22 @@ import { getSearchFriendlyString } from 'utils/commonUtil';
 export const getListings = async (
   listingFilter: SearchFilter & { listingSource: ListingSource }
 ): Promise<CardData[]> => {
-  let path;
   switch (listingFilter?.listingSource) {
     case ListingSource.OpenSea:
-      path = '/opensea/listings/';
-      break;
+      return getOpenSeaListings(listingFilter);
     case ListingSource.Infinity:
-      path = '/listings/';
-      break;
+      return getInfinityListings(listingFilter);
     default:
-      path = '/listings/';
+      return getInfinityListings(listingFilter);
   }
+};
 
-  if (
-    listingFilter.listingSource === ListingSource.OpenSea &&
-    listingFilter.collectionName &&
-    !listingFilter.tokenAddress
-  ) {
-    const tokenAddress = await getTokenAddress(listingFilter.collectionName);
-    if (!tokenAddress) {
-      return [];
-    }
-    listingFilter.tokenAddress = tokenAddress;
-  }
-
-  if (listingFilter.listingSource === ListingSource.OpenSea || !listingFilter.listingSource) {
-    if (!listingFilter.tokenAddress && (!listingFilter.tokenAddresses || listingFilter.tokenAddresses?.length === 0)) {
-      return [];
-    }
-  }
+async function getInfinityListings(listingFilter: SearchFilter): Promise<CardData[]> {
+  const path = '/listings/';
 
   const { result, error }: { result: Orders; error: any } = (await apiGet(path, {
     ...listingFilter,
-    ...{ collectionName: getSearchFriendlyString(listingFilter.collectionName) }
+    ...{ collectionName: getSearchFriendlyString(listingFilter.collectionName || '') }
   })) as any;
 
   if (error !== undefined) {
@@ -47,7 +30,35 @@ export const getListings = async (
   }
 
   return ordersToCardData(result.listings);
-};
+}
+
+async function getOpenSeaListings(listingFilter: SearchFilter): Promise<CardData[]> {
+  const path = '/opensea/listings/';
+  if (listingFilter.collectionName && !listingFilter.tokenAddress) {
+    const tokenAddress = await getTokenAddress(listingFilter.collectionName);
+    if (!tokenAddress) {
+      return [];
+    }
+    listingFilter.tokenAddress = tokenAddress;
+  }
+
+  const invalidParameters =
+    !listingFilter.tokenAddress && (!listingFilter.tokenAddresses || listingFilter.tokenAddresses?.length === 0);
+  if (invalidParameters) {
+    return [];
+  }
+
+  const { result, error }: { result: Orders; error: any } = (await apiGet(path, {
+    ...listingFilter,
+    ...{ collectionName: getSearchFriendlyString(listingFilter.collectionName || '') }
+  })) as any;
+
+  if (error !== undefined) {
+    return [];
+  }
+
+  return ordersToCardData(result.listings);
+}
 
 export const getTokenAddress = async (collectionName: string): Promise<string> => {
   const path = `/collections/${getSearchFriendlyString(collectionName)}`;

@@ -33,6 +33,7 @@ function CollectionEvents({ address, tokenId, eventType }: Props) {
     if (error) {
       showAppError(`Error when fetching data. ${error.message}`);
     }
+
     const moreData = result.asset_events || [];
 
     setIsFetching(false);
