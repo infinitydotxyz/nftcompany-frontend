@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { getTrendingCollections, TrendingCollectionResponse } from 'services/Collections.service';
 import { useAppContext } from 'utils/context/AppContext';
 import { useCardProvider } from 'hooks/useCardProvider';
-import { ListingSource, SearchContextType } from 'utils/context/SearchContext';
+import { defaultFilterState, defaultSearchState, ListingSource, SearchContextType } from 'utils/context/SearchContext';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 
 export default function TrendingCollectionListings() {
@@ -24,36 +24,8 @@ const TrendingCollectionContents = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [searchContext, setSearchContext] = useState<Pick<SearchContextType, 'searchState' | 'filterState'>>({
-    searchState: {
-      isLoading: false,
-      options: [],
-      query: '',
-      collectionName: '',
-      text: '',
-      selectedOption: undefined
-    },
-    filterState: {
-      sortByLikes: '',
-      sortByPrice: '',
-      priceMin: '',
-      priceMax: '',
-      startAfterMillis: '',
-      startAfterPrice: '',
-      startAfterSearchTitle: '',
-      startAfterSearchCollectionName: '',
-      startAfterBlueCheck: undefined,
-      limit: '50',
-      user: '',
-      id: '',
-      tokenId: '',
-      tokenAddress: '',
-      tokenAddresses: [],
-      collectionName: '',
-      text: '',
-      sortByPriceDirection: '',
-      startAfterUser: '',
-      offset: 0
-    }
+    searchState: defaultSearchState,
+    filterState: { ...defaultFilterState, limit: '50' }
   });
 
   const cardProvider = useCardProvider(ListingSource.OpenSea, searchContext);

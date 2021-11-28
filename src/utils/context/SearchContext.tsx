@@ -39,7 +39,6 @@ export type SearchFilter = {
   collectionIds?: string;
   traitType?: string;
   traitValue?: string;
-  offset?: number;
 };
 
 export const defaultSearchState: SearchState = {
