@@ -10,6 +10,7 @@ import { DescriptionBox } from 'components/PurchaseAccordion/DescriptionBox';
 import { ExtraSpace } from 'components/Spacer/Spacer';
 import NFTEvents from 'components/NFTEvents/NFTEvents';
 import router from 'next/router';
+import { getSearchFriendlyString } from 'utils/commonUtil';
 
 type Props = {
   tokenId: string;
@@ -57,7 +58,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
     return <div />;
   }
 
-  let name = data?.collectionName?.replace(/\s/g, '');
+  let name = getSearchFriendlyString(data?.collectionName || '');
   name = name?.toLowerCase();
 
   return (
