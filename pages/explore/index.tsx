@@ -32,6 +32,7 @@ export default function ExplorePage() {
       searchContext.filterState?.collectionName?.length > 0 ||
       searchContext.filterState.priceMin !== '' ||
       searchContext.filterState.priceMax !== '' ||
+      !!searchContext.filterState.collectionIds ||
       searchContext.searchState.query?.length > 0;
 
     shouldUseSearchMode = shouldUseSearchMode || searchContext.filterState.listType !== '';

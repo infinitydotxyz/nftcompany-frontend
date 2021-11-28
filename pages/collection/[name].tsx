@@ -51,20 +51,18 @@ const Collection = (): JSX.Element => {
 
               <TabPanels>
                 <TabPanel>
-                  <p>
-                    {name && tabIndex === 0 && (
-                      <CollectionContents
-                        name={name as string}
-                        onTitle={(newTitle) => {
-                          if (!title) {
-                            setTitle(newTitle);
-                          }
-                        }}
-                        onLoaded={({ address }) => setAddress(address)}
-                        listingSource={ListingSource.Infinity}
-                      />
-                    )}
-                  </p>
+                  {name && tabIndex === 0 && (
+                    <CollectionContents
+                      name={name as string}
+                      onTitle={(newTitle) => {
+                        if (!title) {
+                          setTitle(newTitle);
+                        }
+                      }}
+                      onLoaded={({ address }) => setAddress(address)}
+                      listingSource={ListingSource.Infinity}
+                    />
+                  )}
                 </TabPanel>
                 <TabPanel>
                   {tabIndex === 1 && (
@@ -98,7 +96,7 @@ const Collection = (): JSX.Element => {
                 </TabPanel>
                 <TabPanel>
                   {tabIndex === 4 && (
-                    <p>
+                    <>
                       {name && (
                         <CollectionContents
                           name={name as string}
@@ -111,7 +109,7 @@ const Collection = (): JSX.Element => {
                           listingSource={ListingSource.OpenSea}
                         />
                       )}
-                    </p>
+                    </>
                   )}
                 </TabPanel>
               </TabPanels>

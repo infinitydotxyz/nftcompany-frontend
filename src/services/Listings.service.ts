@@ -3,6 +3,7 @@ import { weiToEther } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
 import { getSearchFriendlyString } from 'utils/commonUtil';
+import { list } from '.pnpm/@chakra-ui+styled-system@1.12.2/node_modules/@chakra-ui/styled-system';
 
 export const getListings = async (
   listingFilter: SearchFilter & { listingSource: ListingSource; offset?: string | number }
@@ -34,6 +35,7 @@ async function getInfinityListings(listingFilter: SearchFilter & { offset?: stri
 
 async function getOpenSeaListings(listingFilter: SearchFilter & { offset?: string | number }): Promise<CardData[]> {
   const path = '/opensea/listings/';
+
   if (listingFilter.collectionName && !listingFilter.tokenAddress) {
     const tokenAddress = await getTokenAddress(listingFilter.collectionName);
     if (!tokenAddress) {

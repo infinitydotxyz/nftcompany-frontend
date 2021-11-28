@@ -35,8 +35,8 @@ export type SearchFilter = {
   text: string;
   sortByPriceDirection: string;
   startAfterUser: string;
+  collectionIds: string;
   listType?: '' | 'fixedPrice' | 'englishAuction' | 'dutchAuction';
-  collectionIds?: string;
   traitType?: string;
   traitValue?: string;
 };
