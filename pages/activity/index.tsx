@@ -31,7 +31,6 @@ const Transactions = (): JSX.Element => {
     }
 
     setIsLoading(false);
-    console.log('result', result);
   };
 
   useEffect(() => {

@@ -1,13 +1,12 @@
 import React from 'react';
 import styles from './CollectionsTable.module.scss';
 import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
-import { ellipsisAddress } from 'utils/commonUtil';
+import { ellipsisAddress, getChainScannerBase, getSearchFriendlyString } from 'utils/commonUtil';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { CopyButton } from 'components/CopyButton/CopyButton';
 import { CollectionCardEntry } from 'types/rewardTypes';
-import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 type Props = {
   entries?: CollectionCardEntry[];
@@ -19,8 +18,7 @@ export const CollectionsTable = ({ entries }: Props) => {
   }
 
   const rows = entries.map((item, index) => {
-    let name = item.name.replace(/\s/g, '');
-    name = name.toLowerCase();
+    const name = getSearchFriendlyString(item.name);
 
     return (
       <Tr key={item.id}>
@@ -36,7 +34,7 @@ export const CollectionsTable = ({ entries }: Props) => {
             <div>{ellipsisAddress(item.id, 10, 10)}</div>
             <CopyButton copyText={item.id} tooltip="Copy Address" />
             <div className={styles.linkIcon}>
-              <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
+              <Tooltip label={'Go to link'} placement="top" hasArrow>
                 <ExternalLinkIcon
                   size="sm"
                   color="brandBlue"
@@ -44,7 +42,7 @@ export const CollectionsTable = ({ entries }: Props) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (item.id) {
-                      window.open(`${CHAIN_SCANNER_BASE}/address/${item.id}`, '_blank');
+                      window.open(`${getChainScannerBase(item.chainId)}/address/${item.id}`, '_blank');
                     }
                   }}
                 />

@@ -5,10 +5,12 @@ import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PurchaseAccordion } from 'components/PurchaseAccordion/PurchaseAccordion';
 import { getListings } from 'services/Listings.service';
 import { defaultFilterState } from 'utils/context/SearchContext';
-import { Link, Spacer } from '@chakra-ui/react';
+import { Button, Link, Spacer } from '@chakra-ui/react';
 import { DescriptionBox } from 'components/PurchaseAccordion/DescriptionBox';
 import { ExtraSpace } from 'components/Spacer/Spacer';
 import NFTEvents from 'components/NFTEvents/NFTEvents';
+import router from 'next/router';
+import { getSearchFriendlyString } from 'utils/commonUtil';
 
 type Props = {
   tokenId: string;
@@ -56,7 +58,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
     return <div />;
   }
 
-  let name = data?.collectionName?.replace(/\s/g, '');
+  let name = getSearchFriendlyString(data?.collectionName || '');
   name = name?.toLowerCase();
 
   return (
@@ -65,22 +67,33 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
         <div className={styles.nftContent}>
           <div className={styles.left}>
             <div className={styles.imageFrame}>
-              <div className={styles.imgHeader}>
-                <div className={styles.imgTitle}>{title}</div>
-                <Spacer />
-                <div className={styles.collectionRow}>
-                  <Link color="brandBlue" className={styles.collection} href={`${window.origin}/collection/${name}`}>
-                    {data?.collectionName}
-                  </Link>
-
-                  <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
-                </div>
-              </div>
-
               <img
                 alt="not available"
                 src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
               />
+
+              <div className={styles.imgFooter}>
+                <div className={styles.infoColumn}>
+                  <div className={styles.imgTitle}>{title}</div>
+                  <div className={styles.collectionRow}>
+                    <Link color="brandBlue" className={styles.collection} href={`${window.origin}/collection/${name}`}>
+                      {data?.collectionName}
+                    </Link>
+
+                    <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
+                  </div>
+                </div>
+                <Spacer />
+                <div className={styles.playButton}>
+                  <Button
+                    onClick={() => {
+                      router.push('/game');
+                    }}
+                  >
+                    Play Game
+                  </Button>
+                </div>
+              </div>
             </div>
 
             <ExtraSpace />

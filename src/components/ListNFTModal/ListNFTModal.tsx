@@ -4,13 +4,13 @@ import TabBar from 'components/TabBar/TabBar';
 import { Button } from '@chakra-ui/button';
 import { Spinner } from '@chakra-ui/spinner';
 import HelpTooltip from 'components/HelpTooltip/HelpTooltip';
-import { getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
-import { WETH_ADDRESS } from 'utils/constants';
+import { LISTING_TYPE } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from './ListNFTModal.module.scss';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
-import { isServer } from 'utils/commonUtil';
+import { getPaymentTokenAddress, isServer } from 'utils/commonUtil';
 import { DatePicker } from 'components/DatePicker/DatePicker';
 
 interface IProps {
@@ -50,13 +50,14 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
     let err = null;
     try {
       setIsSubmitting(true);
-      const seaport = getOpenSeaport();
+      const seaport = getOpenSeaportForChain(data?.chainId);
       const obj: any = {
         asset: {
           tokenAddress,
           tokenId,
           schemaName: data?.schemaName || ''
         },
+        paymentTokenAddress: getPaymentTokenAddress('', data?.chainId),
         accountAddress: user?.account,
         startAmount: price,
         // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
@@ -67,7 +68,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
       };
       if (activeTab !== 'SET_PRICE') {
         // for English Auction (Highest Bid):
-        obj['paymentTokenAddress'] = WETH_ADDRESS;
+        obj['paymentTokenAddress'] = getPaymentTokenAddress(LISTING_TYPE.ENGLISH_AUCTION, data?.chainId);
         obj['waitForHighestBid'] = true;
         if (reservePrice) {
           obj['englishAuctionReservePrice'] = reservePrice;
@@ -122,7 +123,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                       onChange={(ev) => setPrice(parseFloat(ev.target.value))}
                     />
                   </div>
-                  <div className={styles.right}>ETH</div>
+                  <div className={styles.right}>{data.chainId === '1' ? 'ETH' : 'WETH'}</div>
                 </div>
                 {endPriceShowed && (
                   <div className={styles.fields}>
@@ -137,7 +138,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                         onChange={(ev) => setEndPrice(parseFloat(ev.target.value))}
                       />
                     </div>
-                    <div className={styles.right}>ETH</div>
+                    <div className={styles.right}>{data.chainId === '1' ? 'ETH' : 'WETH'}</div>
                   </div>
                 )}
 

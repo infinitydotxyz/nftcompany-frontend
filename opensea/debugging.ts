@@ -1,4 +1,4 @@
-import { WyvernProtocol } from 'wyvern-js'
+import { WyvernProtocol } from './wyvern-js'
 import { NULL_ADDRESS } from './constants'
 import { Order } from './types'
 

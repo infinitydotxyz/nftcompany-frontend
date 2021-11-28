@@ -55,6 +55,7 @@ const FilterDrawer = () => {
   const [maxPriceVal, setMaxPriceVal] = React.useState('');
   const [collectionName, setCollectionName] = React.useState('');
   const [collectionAddress, setCollectionAddress] = React.useState('');
+  const [selectedCollectionIds, setSelectedCollectionIds] = React.useState('');
   const [traits, setTraits] = React.useState<Trait[]>([]);
   const [selectedTraitType, setSelectedTraitType] = React.useState<Trait | undefined>(undefined);
   const [selectedTraitValue, setSelectedTraitValue] = React.useState('');
@@ -77,6 +78,7 @@ const FilterDrawer = () => {
       newFilter.priceMin = newFilter.priceMin || DEFAULT_MIN_PRICE.toString();
     }
     newFilter.collectionName = collectionName;
+    newFilter.collectionIds = selectedCollectionIds === 'CLEAR' ? '' : selectedCollectionIds;
     return newFilter;
   };
 
@@ -95,17 +97,19 @@ const FilterDrawer = () => {
     setFilterState(newFilter);
   };
 
-  const handleClickClearPrices = () => {
+  const handleClickClear = () => {
     const newFilter = { ...filterState };
     newFilter.listType = '';
     newFilter.priceMin = '';
     newFilter.priceMax = '';
     newFilter.collectionName = '';
+    newFilter.collectionIds = '';
     newFilter.traitType = '';
     newFilter.traitValue = '';
     setMinPriceVal('');
     setMaxPriceVal('');
     setCollectionName('');
+    setSelectedCollectionIds('CLEAR');
     setTraits([]);
     setSelectedTraitType(undefined);
     setFilterState(newFilter);
@@ -210,28 +214,39 @@ const FilterDrawer = () => {
             </Heading>
             <Box>
               <CollectionNameFilter
-                value={collectionName}
+                value={selectedCollectionIds}
                 onClear={() => {
                   setCollectionName('');
+                  setSelectedCollectionIds('');
                   setTraits([]);
+                  setSelectedTraitValue('');
                   setSelectedTraitType(undefined);
                 }}
-                onChange={async (val, address) => {
-                  setCollectionName(val);
-                  setCollectionAddress(address);
+                onChange={async (val, address, selectedCollectionIds) => {
+                  // setCollectionName(val);
+                  // setCollectionAddress(address);
+                  setSelectedCollectionIds(selectedCollectionIds);
+                  const selectedCollectionIdsArr = selectedCollectionIds.split(',');
+
                   // fetch collection traits
-                  if (address) {
+                  if (address && selectedCollectionIdsArr.length === 1) {
                     const { result, error } = await apiGet(`/collections/${address}/traits`);
                     if (error) {
                       // showAppError(error?.message);
                     } else {
                       setTraits(result.traits);
                     }
+                  } else {
+                    setTraits([]);
+                    setSelectedTraitValue('');
+                    setSelectedTraitType(undefined);
+                    filterState.traitType = '';
+                    filterState.traitValue = '';
                   }
                 }}
               />
 
-              {traits.length > 0 && (
+              {selectedCollectionIds.split(',').length === 1 && traits.length > 0 && (
                 <Table size="sm" mt={4}>
                   <Thead>
                     <Tr>
@@ -294,7 +309,7 @@ const FilterDrawer = () => {
               <Button variant="outline" onClick={handleClickApply}>
                 Apply
               </Button>
-              <Button variant="outline" color="gray.500" ml={2} onClick={handleClickClearPrices}>
+              <Button variant="outline" color="gray.500" ml={2} onClick={handleClickClear}>
                 Clear
               </Button>
             </Box>

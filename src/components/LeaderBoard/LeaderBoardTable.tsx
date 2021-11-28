@@ -26,7 +26,7 @@ const getRows = (data: LeaderBoardEntry[]) => {
             <CopyButton copyText={item.id} tooltip="Copy Address" />
 
             <i className={styles.linkIcon}>
-              <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
+              <Tooltip label={'Go to link'} placement="top" hasArrow>
                 <ExternalLinkIcon
                   size="sm"
                   color="brandBlue"
@@ -34,6 +34,7 @@ const getRows = (data: LeaderBoardEntry[]) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (item.id) {
+                      // leaderboard is across chais, we show user address on ETH mainnet for now
                       window.open(`${CHAIN_SCANNER_BASE}/address/${item.id}`, '_blank');
                     }
                   }}

@@ -4,10 +4,10 @@
     {
       "name": "Dev",
       "type": "chrome",
-      "command": "npm run dev",
       "request": "launch",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceRoot}/src"
-    }
+      "webRoot": "${workspaceRoot}/src",
+      "userDataDir": false,
+     }
   ]
 }

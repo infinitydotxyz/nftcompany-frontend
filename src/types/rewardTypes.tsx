@@ -11,6 +11,7 @@ export type LeaderBoardEntries = {
 export type LeaderBoardEntry = {
   id: string;
   total: number;
+  chainId: string;
 };
 
 // ===========================================================
@@ -50,6 +51,7 @@ export type CollectionCardEntry = {
   openseaUrl: string;
   hasBlueCheck: boolean;
   title: string; // for <PreviewModal>
+  chainId: string
 };
 
 // ===========================================================
@@ -61,4 +63,5 @@ export type TransactionCardEntry = {
   status: string;
   feesInEth: number;
   salePriceInEth: number;
+  chainId: string
 };

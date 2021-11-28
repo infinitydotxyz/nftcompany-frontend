@@ -4,10 +4,9 @@ import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import router from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { uuidv4 } from 'utils/commonUtil';
+import { getChainScannerBase, getSearchFriendlyString, uuidv4 } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import { Button } from '@chakra-ui/react';
-import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 type Props = {
   entry: CollectionCardEntry;
@@ -15,7 +14,7 @@ type Props = {
 };
 
 export const CollectionCard = ({ entry, isFeatured }: Props) => {
-  const { ref, inView } = useInView({ threshold: 0 });
+  const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
 
   if (!entry) {
     return <div>Nothing found</div>;
@@ -31,9 +30,7 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
       return '';
     }
 
-    // remove spaces only
-    let result = input.replace(/\s/g, '');
-    result = result.toLowerCase();
+    const result = getSearchFriendlyString(input);
 
     // name could have # and other url reseved characters
     // must encodeURIComponent()
@@ -64,7 +61,7 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
 
           <ShortAddress
             vertical={true}
-            href={`${CHAIN_SCANNER_BASE}/address/${entry.address}`}
+            href={`${getChainScannerBase(entry.chainId)}/address/${entry.address}`}
             address={entry.address}
             label=""
             tooltip={entry.address}
