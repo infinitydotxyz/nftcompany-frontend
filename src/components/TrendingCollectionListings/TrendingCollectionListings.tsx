@@ -20,7 +20,6 @@ export default function TrendingCollectionListings() {
 }
 
 const TrendingCollectionContents = (): JSX.Element => {
-  const trendingCollections = useTrendingCollections();
   const [isLoading, setIsLoading] = useState(true);
 
   const [searchContext, setSearchContext] = useState<Pick<SearchContextType, 'searchState' | 'filterState'>>({
@@ -37,13 +36,6 @@ const TrendingCollectionContents = (): JSX.Element => {
       setIsLoading(false);
     }
   }, [cardProvider.list]);
-
-  useEffect(() => {
-    setSearchContext((prev) => {
-      const tokenAddresses = trendingCollections.map((collection) => collection.address);
-      return { ...prev, filterState: { ...prev.filterState, tokenAddresses } };
-    });
-  }, [trendingCollections]);
 
   return (
     <>
@@ -67,24 +59,3 @@ const TrendingCollectionContents = (): JSX.Element => {
     </>
   );
 };
-
-function useTrendingCollections() {
-  const [trendingCollections, setTrendingCollections] = useState<TrendingCollectionResponse[]>([]);
-
-  useEffect(() => {
-    let isActive = true;
-    const fetchTrendingCollections = async () => {
-      const result = await getTrendingCollections();
-      if (isActive) {
-        setTrendingCollections(result);
-      }
-    };
-    fetchTrendingCollections();
-
-    return () => {
-      isActive = false;
-    };
-  }, []);
-
-  return trendingCollections;
-}

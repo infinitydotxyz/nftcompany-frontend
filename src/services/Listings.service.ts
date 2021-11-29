@@ -44,12 +44,6 @@ async function getOpenSeaListings(listingFilter: SearchFilter & { offset?: strin
     listingFilter.tokenAddress = tokenAddress;
   }
 
-  const invalidParameters =
-    !listingFilter.tokenAddress && (!listingFilter.tokenAddresses || listingFilter.tokenAddresses?.length === 0);
-  if (invalidParameters) {
-    return [];
-  }
-
   const { result, error }: { result: Orders; error: any } = (await apiGet(path, {
     ...listingFilter,
     ...{ collectionName: getSearchFriendlyString(listingFilter.collectionName || '') }
