@@ -1,9 +1,9 @@
-import React, { useState, MouseEvent } from 'react';
+import React, { useState, MouseEvent, useEffect } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
-import { CardData } from 'types/Nft.interface';
+import { BaseCardData, CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { addressesEqual } from 'utils/commonUtil';
@@ -25,6 +25,16 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
   const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
+  const [order, setOrder] = useState<BaseCardData | undefined>();
+
+  useEffect(() => {
+    // prefer infinity listings
+    if (data.metadata?.basePriceInEth !== undefined) {
+      setOrder(data);
+    } else if (data.openseaListing?.metadata?.basePriceInEth !== undefined) {
+      setOrder(data.openseaListing);
+    }
+  }, [data]);
 
   if (!data) {
     return null;
@@ -136,9 +146,9 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           </div>
           <PriceBox
             justifyRight
-            price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
-            token={data?.chainId === '1' ? 'ETH' : 'WETH'}
-            expirationTime={data?.expirationTime}
+            price={showItems.indexOf('PRICE') >= 0 ? order?.metadata?.basePriceInEth : undefined}
+            token={order?.chainId === '1' ? 'ETH' : 'WETH'}
+            expirationTime={order?.expirationTime}
           />
         </div>
       </div>

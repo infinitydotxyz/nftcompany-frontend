@@ -64,7 +64,7 @@ export interface Orders {
   listings: Order[];
 }
 
-export type CardData = {
+export type BaseCardData = {
   id: string;
   title: string;
   name?: string;
@@ -85,5 +85,9 @@ export type CardData = {
   metadata?: Metadata;
   schemaName?: string;
   expirationTime?: string;
-  chainId? : string;
+  chainId?: string;
+};
+
+export type CardData = BaseCardData & {
+  openseaListing?: BaseCardData;
 };
