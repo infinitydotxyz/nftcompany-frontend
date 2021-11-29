@@ -10,12 +10,13 @@ import { addressesEqual } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
 import { Button, Spacer } from '@chakra-ui/react';
+import { NftAction } from 'types';
 
 type Props = {
   data: CardData;
-  onClickAction?: (item: any, action: string) => any;
+  onClickAction?: (item: any, action: NftAction) => any;
   showItems?: string[];
-  action?: string;
+  action?: NftAction | '';
   userAccount?: string;
   [key: string]: any;
 };
@@ -64,17 +65,17 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     let handler: (ev: MouseEvent) => void = () => console.log('');
     let name;
 
-    if (action === 'LIST_NFT') {
+    if (action === NftAction.ListNft) {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
 
         if (onClickAction) {
-          onClickAction(data, 'LIST_NFT');
+          onClickAction(data, NftAction.ListNft);
         }
       };
       name = 'List NFT';
-    } else if (action === 'BUY_NFT' && !ownedByYou) {
+    } else if (action === NftAction.BuyNft && !ownedByYou) {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
@@ -82,17 +83,17 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
         setPlaceBidModalShowed(true);
       };
       name = 'Purchase';
-    } else if (action === 'CANCEL_LISTING') {
+    } else if (action === NftAction.CancelListing) {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
 
         if (onClickAction) {
-          onClickAction(data, 'CANCEL_LISTING');
+          onClickAction(data, NftAction.CancelListing);
         }
       };
       name = 'Cancel';
-    } else if (action === 'ACCEPT_OFFER') {
+    } else if (action === NftAction.AcceptOffer) {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
@@ -100,7 +101,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
         setAcceptOfferModalShowed(true);
       };
       name = 'Accept';
-    } else if (action === 'CANCEL_OFFER') {
+    } else if (action === NftAction.CancelOffer) {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();

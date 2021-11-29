@@ -17,6 +17,7 @@ import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollecti
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import TrendingCollectionListings from 'components/TrendingCollectionListings/TrendingCollectionListings';
 import styles from './Explore.module.scss';
+import { NftAction } from 'types';
 
 export default function ExplorePage() {
   const searchContext = useSearchContext();
@@ -74,7 +75,12 @@ export default function ExplorePage() {
         {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
         {searchMode ? (
-          <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
+          <CardList
+            showItems={['PRICE']}
+            userAccount={user?.account}
+            data={cardProvider.list}
+            action={NftAction.BuyNft}
+          />
         ) : (
           <CardGrid data={collectionCards} />
         )}
