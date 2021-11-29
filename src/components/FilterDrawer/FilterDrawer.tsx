@@ -19,7 +19,7 @@ import {
   Thead,
   Select
 } from '@chakra-ui/react';
-import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon, ArrowForwardIcon, SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
 import * as React from 'react';
 import { useSearchContext } from 'utils/context/SearchContext';
 import { useEffect } from 'react';
@@ -58,6 +58,7 @@ const FilterDrawer = () => {
   const [selectedCollectionIds, setSelectedCollectionIds] = React.useState('');
   const [traits, setTraits] = React.useState<Trait[]>([]);
   const [selectedTraitType, setSelectedTraitType] = React.useState<Trait | undefined>(undefined);
+  const [traitPairs, setTraitPairs] = React.useState<any[]>([{ type: '', value: '', traitData: [] }]);
   const [selectedTraitValue, setSelectedTraitValue] = React.useState('');
   const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
@@ -73,6 +74,7 @@ const FilterDrawer = () => {
   }, []);
 
   const getNewFilterState = () => {
+    updateTraitFilterState();
     const newFilter = { ...filterState };
     if (newFilter.priceMax) {
       newFilter.priceMin = newFilter.priceMin || DEFAULT_MIN_PRICE.toString();
@@ -113,6 +115,11 @@ const FilterDrawer = () => {
     setTraits([]);
     setSelectedTraitType(undefined);
     setFilterState(newFilter);
+  };
+
+  const updateTraitFilterState = () => {
+    filterState.traitType = traitPairs.map((o) => o.type).join(',');
+    filterState.traitValue = traitPairs.map((o) => o.value).join(',');
   };
 
   const buttonProps = filterState.listType === LISTING_TYPE.FIXED_PRICE ? activeButtonProps : normalButtonProps;
@@ -252,54 +259,87 @@ const FilterDrawer = () => {
                     <Tr>
                       <Th>Attribute</Th>
                       <Th>Value</Th>
+                      <Th></Th>
                     </Tr>
                   </Thead>
 
                   <Tbody>
-                    <Tr>
-                      <Td>
-                        <Select
-                          size="sm"
-                          onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                            const traitType = event.target.value;
-                            const trait = traits.find((t: Trait) => t.trait_type === traitType);
-                            setSelectedTraitType(trait);
-                          }}
-                        >
-                          <option value=""></option>
-                          {traits.map((item: any) => {
-                            return (
-                              <option key={item.trait_type} value={item.trait_type}>
-                                {item.trait_type}
-                              </option>
-                            );
-                          })}
-                        </Select>
-                      </Td>
+                    {traitPairs.map((pair, pairIndex) => {
+                      return (
+                        <Tr key={pairIndex}>
+                          <Td pl={0} pr={1} width={50}>
+                            <Select
+                              size="sm"
+                              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                                const traitType = event.target.value;
+                                const traitData = traits.find((t: Trait) => t.trait_type === traitType);
+                                setSelectedTraitType(traitData);
 
-                      <Td>
-                        {selectedTraitType && (
-                          <Select
-                            size="sm"
-                            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                              const traitValue = event.target.value;
-                              setSelectedTraitValue(traitValue);
-                              filterState.traitType = selectedTraitType.trait_type;
-                              filterState.traitValue = traitValue;
-                            }}
-                          >
-                            <option value=""></option>
-                            {selectedTraitType.values.map((val: string) => {
-                              return (
-                                <option key={val} value={val}>
-                                  {val}
-                                </option>
-                              );
-                            })}
-                          </Select>
-                        )}
-                      </Td>
-                    </Tr>
+                                const newArr = [...traitPairs];
+                                newArr[pairIndex].type = traitType;
+                                newArr[pairIndex].traitData = traitData;
+                                setTraitPairs(newArr);
+                              }}
+                            >
+                              <option value=""></option>
+                              {traits.map((item: any) => {
+                                return (
+                                  <option key={item.trait_type} value={item.trait_type}>
+                                    {item.trait_type}
+                                  </option>
+                                );
+                              })}
+                            </Select>
+                          </Td>
+
+                          <Td pl={0} pr={1}>
+                            <Select
+                              size="sm"
+                              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                                const traitValue = event.target.value;
+                                setSelectedTraitValue(traitValue);
+
+                                const newArr = [...traitPairs];
+                                newArr[pairIndex].value = traitValue;
+                                setTraitPairs(newArr);
+                              }}
+                            >
+                              {traitPairs[pairIndex] && traitPairs[pairIndex]?.traitData?.values && (
+                                <>
+                                  <option value=""></option>
+                                  {((traitPairs[pairIndex] && traitPairs[pairIndex]?.traitData?.values) || []).map(
+                                    (val: string) => {
+                                      return (
+                                        <option key={val} value={val}>
+                                          {val}
+                                        </option>
+                                      );
+                                    }
+                                  )}
+                                </>
+                              )}
+                            </Select>
+                          </Td>
+                          <Td pl={0} pr={1}>
+                            {pairIndex > 0 && (
+                              <SmallCloseIcon
+                                onClick={() => {
+                                  const newArr = traitPairs.filter((_, index) => index !== pairIndex);
+                                  setTraitPairs(newArr);
+                                }}
+                              />
+                            )}
+                            <SmallAddIcon
+                              onClick={() => {
+                                const newArr = [...traitPairs];
+                                newArr.push({ type: '', value: '', traitData: undefined });
+                                setTraitPairs(newArr);
+                              }}
+                            />
+                          </Td>
+                        </Tr>
+                      );
+                    })}
                   </Tbody>
                 </Table>
               )}
