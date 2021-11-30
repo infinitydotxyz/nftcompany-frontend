@@ -58,7 +58,7 @@ const FilterDrawer = () => {
   const [selectedCollectionIds, setSelectedCollectionIds] = React.useState('');
   const [traits, setTraits] = React.useState<Trait[]>([]);
   const [selectedTraitType, setSelectedTraitType] = React.useState<Trait | undefined>(undefined);
-  const [traitPairs, setTraitPairs] = React.useState<any[]>([{ type: '', value: '', traitData: [] }]);
+  const [selectedTraits, setSelectedTraits] = React.useState<any[]>([{ type: '', value: '', traitData: undefined }]);
   const [selectedTraitValue, setSelectedTraitValue] = React.useState('');
   const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
@@ -118,8 +118,8 @@ const FilterDrawer = () => {
   };
 
   const updateTraitFilterState = () => {
-    filterState.traitType = traitPairs.map((o) => o.type).join(',');
-    filterState.traitValue = traitPairs.map((o) => o.value).join(',');
+    filterState.traitType = selectedTraits.map((o) => o.type).join(',');
+    filterState.traitValue = selectedTraits.map((o) => o.value).join(',');
   };
 
   const buttonProps = filterState.listType === LISTING_TYPE.FIXED_PRICE ? activeButtonProps : normalButtonProps;
@@ -257,16 +257,17 @@ const FilterDrawer = () => {
                 <Table size="sm" mt={4}>
                   <Thead>
                     <Tr>
-                      <Th>Attribute</Th>
-                      <Th>Value</Th>
+                      <Th pl={0}>Attribute</Th>
+                      <Th pl={0}>Value</Th>
                       <Th></Th>
                     </Tr>
                   </Thead>
 
                   <Tbody>
-                    {traitPairs.map((pair, pairIndex) => {
+                    {selectedTraits.map((pair, selTraitIdx) => {
+                      const selectedTraitValues = selectedTraits[selTraitIdx]?.traitData?.values || [];
                       return (
-                        <Tr key={pairIndex}>
+                        <Tr key={selTraitIdx}>
                           <Td pl={0} pr={1} width={50}>
                             <Select
                               size="sm"
@@ -275,10 +276,10 @@ const FilterDrawer = () => {
                                 const traitData = traits.find((t: Trait) => t.trait_type === traitType);
                                 setSelectedTraitType(traitData);
 
-                                const newArr = [...traitPairs];
-                                newArr[pairIndex].type = traitType;
-                                newArr[pairIndex].traitData = traitData;
-                                setTraitPairs(newArr);
+                                const newArr = [...selectedTraits];
+                                newArr[selTraitIdx].type = traitType;
+                                newArr[selTraitIdx].traitData = traitData;
+                                setSelectedTraits(newArr);
                               }}
                             >
                               <option value=""></option>
@@ -299,41 +300,39 @@ const FilterDrawer = () => {
                                 const traitValue = event.target.value;
                                 setSelectedTraitValue(traitValue);
 
-                                const newArr = [...traitPairs];
-                                newArr[pairIndex].value = traitValue;
-                                setTraitPairs(newArr);
+                                const newArr = [...selectedTraits];
+                                newArr[selTraitIdx].value = traitValue;
+                                setSelectedTraits(newArr);
                               }}
                             >
-                              {traitPairs[pairIndex] && traitPairs[pairIndex]?.traitData?.values && (
+                              {selectedTraitValues && (
                                 <>
                                   <option value=""></option>
-                                  {((traitPairs[pairIndex] && traitPairs[pairIndex]?.traitData?.values) || []).map(
-                                    (val: string) => {
-                                      return (
-                                        <option key={val} value={val}>
-                                          {val}
-                                        </option>
-                                      );
-                                    }
-                                  )}
+                                  {selectedTraitValues.map((val: string) => {
+                                    return (
+                                      <option key={val} value={val}>
+                                        {val}
+                                      </option>
+                                    );
+                                  })}
                                 </>
                               )}
                             </Select>
                           </Td>
                           <Td pl={0} pr={1}>
-                            {pairIndex > 0 && (
+                            {selTraitIdx > 0 && (
                               <SmallCloseIcon
                                 onClick={() => {
-                                  const newArr = traitPairs.filter((_, index) => index !== pairIndex);
-                                  setTraitPairs(newArr);
+                                  const newArr = selectedTraits.filter((_, index) => index !== selTraitIdx);
+                                  setSelectedTraits(newArr);
                                 }}
                               />
                             )}
                             <SmallAddIcon
                               onClick={() => {
-                                const newArr = [...traitPairs];
+                                const newArr = [...selectedTraits];
                                 newArr.push({ type: '', value: '', traitData: undefined });
-                                setTraitPairs(newArr);
+                                setSelectedTraits(newArr);
                               }}
                             />
                           </Td>
