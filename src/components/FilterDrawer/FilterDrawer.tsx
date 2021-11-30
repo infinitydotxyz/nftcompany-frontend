@@ -26,6 +26,8 @@ import { useEffect } from 'react';
 import CollectionNameFilter from './CollectionNameFilter';
 import { apiGet } from 'utils/apiUtil';
 import { LISTING_TYPE } from 'utils/constants';
+import { useAppContext } from 'utils/context/AppContext';
+import styles from './FilterDrawer.module.scss';
 
 const DEFAULT_MIN_PRICE = 0.0000000001;
 
@@ -49,7 +51,10 @@ type Trait = {
   values: string[];
 };
 
+const EmptyTrait = { type: '', value: '', traitData: undefined };
+
 const FilterDrawer = () => {
+  const { showAppError } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
   const [minPriceVal, setMinPriceVal] = React.useState('');
   const [maxPriceVal, setMaxPriceVal] = React.useState('');
@@ -58,7 +63,7 @@ const FilterDrawer = () => {
   const [selectedCollectionIds, setSelectedCollectionIds] = React.useState('');
   const [traits, setTraits] = React.useState<Trait[]>([]);
   const [selectedTraitType, setSelectedTraitType] = React.useState<Trait | undefined>(undefined);
-  const [selectedTraits, setSelectedTraits] = React.useState<any[]>([{ type: '', value: '', traitData: undefined }]);
+  const [selectedTraits, setSelectedTraits] = React.useState<any[]>([EmptyTrait]);
   const [selectedTraitValue, setSelectedTraitValue] = React.useState('');
   const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
@@ -238,15 +243,17 @@ const FilterDrawer = () => {
                   // fetch collection traits
                   if (address && selectedCollectionIdsArr.length === 1) {
                     const { result, error } = await apiGet(`/collections/${address}/traits`);
-                    if (error) {
-                      // showAppError(error?.message);
-                    } else {
+                    if (result?.traits) {
                       setTraits(result.traits);
+                      setSelectedTraits([{ ...EmptyTrait }]);
+                    } else {
+                      showAppError(`Failed to fetch traits. ${error?.message}`);
                     }
                   } else {
                     setTraits([]);
                     setSelectedTraitValue('');
                     setSelectedTraitType(undefined);
+                    setSelectedTraits([{ ...EmptyTrait }]);
                     filterState.traitType = '';
                     filterState.traitValue = '';
                   }
@@ -293,7 +300,7 @@ const FilterDrawer = () => {
                             </Select>
                           </Td>
 
-                          <Td pl={0} pr={1}>
+                          <Td pl={0} pr={1} width={140}>
                             <Select
                               size="sm"
                               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -320,18 +327,26 @@ const FilterDrawer = () => {
                             </Select>
                           </Td>
                           <Td pl={0} pr={1}>
-                            {selTraitIdx > 0 && (
-                              <SmallCloseIcon
-                                onClick={() => {
+                            {' '}
+                            <SmallCloseIcon
+                              className={styles.traitActionIcon}
+                              onClick={() => {
+                                if (selTraitIdx > 0) {
                                   const newArr = selectedTraits.filter((_, index) => index !== selTraitIdx);
                                   setSelectedTraits(newArr);
-                                }}
-                              />
-                            )}
+                                } else {
+                                  setSelectedTraits([]);
+                                  setTimeout(() => {
+                                    setSelectedTraits([{ ...EmptyTrait }]);
+                                  }, 10);
+                                }
+                              }}
+                            />{' '}
                             <SmallAddIcon
+                              className={styles.traitActionIcon}
                               onClick={() => {
                                 const newArr = [...selectedTraits];
-                                newArr.push({ type: '', value: '', traitData: undefined });
+                                newArr.push({ ...EmptyTrait });
                                 setSelectedTraits(newArr);
                               }}
                             />
