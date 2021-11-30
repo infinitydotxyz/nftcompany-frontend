@@ -13,11 +13,10 @@ import { CardGrid } from 'components/CollectionCards/CollectionCard';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import { useSearchContext } from 'utils/context/SearchContext';
 import CardList from 'components/Card/CardList';
-import { useRouter } from 'next/router';
-import FeaturedPage from '../featured';
+import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollections';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 
 export default function ExplorePage() {
-  const searchContext = useSearchContext();
   const cardProvider = useCardProvider();
   const { searchState, filterState } = useSearchContext();
   const { user } = useAppContext();
@@ -36,8 +35,12 @@ export default function ExplorePage() {
   const searchText = searchState.text;
   const searchCollName = searchState.collectionName;
   let searchMode =
-    searchText?.length > 0 || searchCollName?.length > 0 || filterState.priceMin !== '' || filterState.priceMax !== '';
-  searchMode = searchMode || filterState.listType !== '';
+    searchText?.length > 0 ||
+    searchCollName?.length > 0 ||
+    filterState?.collectionName?.length > 0 ||
+    filterState.priceMin !== '' ||
+    filterState.priceMax !== '';
+  searchMode = searchMode || filterState.listType !== '' || filterState.collectionIds !== '';
 
   let contents;
   if (searchMode) {
@@ -53,13 +56,14 @@ export default function ExplorePage() {
       </Head>
       <div>
         <div className="page-container">
-          {!searchMode && <FeaturedPage asSection={true} />}
+          {!searchMode && <FeaturedCollections />}
+          <div className="page-wrapper">
+            <div className="section-bar">
+              <div className="tg-title">Explore</div>
 
-          <div className="section-bar">
-            <div className="tg-title">Explore</div>
-
-            <Spacer />
-            <SortMenuButton disabled={!searchMode} />
+              <Spacer />
+              <SortMenuButton disabled={!searchMode} />
+            </div>
           </div>
           <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
           {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
@@ -74,6 +78,9 @@ export default function ExplorePage() {
             />
           )}
         </div>
+      </div>
+      <div className="filter-panel-explore-page">
+        <FilterDrawer />
       </div>
     </>
   );

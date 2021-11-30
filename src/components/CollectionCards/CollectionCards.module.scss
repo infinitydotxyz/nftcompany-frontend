@@ -17,8 +17,8 @@
   flex-direction: center;
 }
 
-$innerHeight: 390px;
-$outerHeight: 405px;
+$innerHeight: 400px;
+$outerHeight: 400px;
 
 .card {
   position: absolute;
@@ -28,14 +28,16 @@ $outerHeight: 405px;
   flex-direction: column;
   width: 95%;
   height: $innerHeight;
-  cursor: pointer;
+  border: 1px solid #ddd;
 
   @include lightShadow();
   background-color: var(--chakra-colors-cardBgLight, red);
 
   :global(body.chakra-ui-dark) & {
-    @include darkShadow();
+    box-shadow: none;
     background-color: var(--chakra-colors-cardBgDark, red);
+
+    border: 1px solid #333;
   }
 
   &:hover {
@@ -65,6 +67,24 @@ $outerHeight: 405px;
     }
   }
 
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+
+    padding: 10px;
+  }
+
+  .stadiumButtonBlue {
+    background-color: var(--chakra-colors-brandBlue, red);
+    color: white;
+    border-radius: 100px;
+    &:hover {
+      background-color: blue;
+      color: white;
+    }
+  }
+
   .bottom {
     flex: 1;
     overflow: hidden;
@@ -86,6 +106,7 @@ $outerHeight: 405px;
   }
 }
 
+
 .outOfViewCard {
   height: $outerHeight;
 }
@@ -97,14 +118,23 @@ $outerHeight: 405px;
   height: $outerHeight;
   position: relative;
 
+  // added to make the 3d effect a little better
+  $lightShadow: 0 0 10px rgba(255, 255, 255, 0.1);
+
   .card1 {
     @extend .card;
-    border: 1px solid #eee;
+
+    :global(body.chakra-ui-dark) & {
+      @include darkShadow();
+    }
   }
 
   .card2 {
     @extend .card;
-    border: 1px solid #ddd;
+
+    :global(body.chakra-ui-dark) & {
+      box-shadow: $lightShadow;
+    }
 
     top: 4px;
     left: 8px;
@@ -112,7 +142,10 @@ $outerHeight: 405px;
 
   .card3 {
     @extend .card;
-    border: 1px solid #ddd;
+
+    :global(body.chakra-ui-dark) & {
+      box-shadow: $lightShadow;
+    }
 
     top: 8px;
     left: 16px;
@@ -126,8 +159,8 @@ $outerHeight: 405px;
     }
   }
 
-  .featuredCard {
-    background-image: linear-gradient(140deg, #ffffff 0%, #ffffff 50%, #d2fffb 75%);
+.featuredCard {
+  background-image: linear-gradient(140deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(45, 185, 255, 0.2) 75%);
   }
 
   .cardControls {
@@ -145,9 +178,8 @@ $outerHeight: 405px;
 
     .cardButton {
       min-width: 140px;
-      margin-bottom: 10px;
       margin: 0 10px 10px 10px;
-      background-color: blue;
+      background-color: var(--chakra-colors-brandBlue, red);
       padding: 10px 20px;
       text-align: center;
       border-radius: 24px;

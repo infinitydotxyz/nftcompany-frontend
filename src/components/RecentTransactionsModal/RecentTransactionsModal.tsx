@@ -8,7 +8,7 @@ import { Box } from '@chakra-ui/layout';
 
 import styles from './RecentTransactionsModal.module.scss';
 import { Spinner } from '@chakra-ui/spinner';
-import { ellipsisString } from 'utils/commonUtil';
+import { ellipsisString, getChainScannerBase } from 'utils/commonUtil';
 import { Button } from '@chakra-ui/react';
 import { CopyButton } from 'components/CopyButton/CopyButton';
 
@@ -78,11 +78,11 @@ const RecentTransactionsModal: React.FC<IProps> = ({ onClose }: IProps) => {
                           <CopyButton copyText={item.txnHash} tooltip="Copy Txn Hash" />
                         </i>
                         <i className={styles.extLink}>
-                          <Tooltip label={'Open Etherscan Link'} placement="top" hasArrow>
+                          <Tooltip label={'Open Link'} placement="top" hasArrow>
                             <ExternalLinkIcon
                               color="brandBlue"
                               onClick={() => {
-                                window.open(`https://etherscan.io/tx/${item.txnHash}`, '_blank');
+                                window.open(`${getChainScannerBase(item.chainId)}/tx/${item.txnHash}`, '_blank');
                               }}
                             />
                           </Tooltip>

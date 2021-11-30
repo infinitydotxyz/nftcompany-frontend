@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './AcceptOfferModal.module.scss';
 import { CardData } from 'types/Nft.interface';
-import { getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
@@ -23,7 +23,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     setIsSubmitting(true);
 
     try {
-      const seaport = getOpenSeaport();
+      const seaport = getOpenSeaportForChain(data?.chainId);
       const order = await seaport.api.getOrder({
         maker: data.maker,
         id: data.id,
@@ -47,7 +47,8 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           orderId: data.id,
           maker: data.maker,
           salePriceInEth: +salePriceInEth,
-          feesInEth: +feesInEth
+          feesInEth: +feesInEth,
+          chainId: data.chainId
         };
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
@@ -82,7 +83,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                   <div>
                     <span>{data.metadata?.basePriceInEth}</span>
                   </div>
-                  <div>ETH</div>
+                  <div>WETH</div>
                 </li>
               </ul>
             </div>

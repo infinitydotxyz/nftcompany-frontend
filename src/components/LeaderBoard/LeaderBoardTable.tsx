@@ -6,6 +6,7 @@ import { LeaderBoard, LeaderBoardEntry } from 'types/rewardTypes';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { CopyButton } from 'components/CopyButton/CopyButton';
+import { CHAIN_SCANNER_BASE } from 'utils/constants';
 
 type Props = {
   data?: LeaderBoard;
@@ -25,7 +26,7 @@ const getRows = (data: LeaderBoardEntry[]) => {
             <CopyButton copyText={item.id} tooltip="Copy Address" />
 
             <i className={styles.linkIcon}>
-              <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
+              <Tooltip label={'Go to link'} placement="top" hasArrow>
                 <ExternalLinkIcon
                   size="sm"
                   color="brandBlue"
@@ -33,7 +34,8 @@ const getRows = (data: LeaderBoardEntry[]) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (item.id) {
-                      window.open(`https://etherscan.io/address/${item.id}`, '_blank');
+                      // leaderboard is across chais, we show user address on ETH mainnet for now
+                      window.open(`${CHAIN_SCANNER_BASE}/address/${item.id}`, '_blank');
                     }
                   }}
                 />

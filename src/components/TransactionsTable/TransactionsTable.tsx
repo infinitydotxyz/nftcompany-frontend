@@ -1,10 +1,9 @@
 import React from 'react';
 import styles from './TransactionsTable.module.scss';
 import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
-import { ellipsisAddress } from 'utils/commonUtil';
+import { ellipsisAddress, getChainScannerBase } from 'utils/commonUtil';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
-import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { CopyButton } from 'components/CopyButton/CopyButton';
 import { TransactionCardEntry } from 'types/rewardTypes';
 
@@ -28,7 +27,7 @@ export const TransactionsTable = ({ entries }: Props) => {
             <div>{ellipsisAddress(item.txnHash, 10, 10)}</div>
             <CopyButton copyText={item.txnHash} tooltip="Copy Txn Hash" />
             <div className={styles.linkIcon}>
-              <Tooltip label={'Go to Etherscan'} placement="top" hasArrow>
+              <Tooltip label={'Go to link'} placement="top" hasArrow>
                 <ExternalLinkIcon
                   size="sm"
                   color="brandBlue"
@@ -36,7 +35,7 @@ export const TransactionsTable = ({ entries }: Props) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (item.txnHash) {
-                      window.open(`https://etherscan.io/tx/${item.txnHash}`, '_blank');
+                      window.open(`${getChainScannerBase(item.chainId)}/tx/${item.txnHash}`, '_blank');
                     }
                   }}
                 />

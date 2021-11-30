@@ -7,5 +7,13 @@
   .divider {
     width: 1px;
     background-color: #ccc;
+
+    :global(body.chakra-ui-dark) & {
+      background-color: #555;
+    }
+  }
+
+  :global(body.chakra-ui-dark) & {
+    border: 1px solid #555;
   }
 }

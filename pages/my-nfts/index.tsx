@@ -5,15 +5,15 @@ import Layout from 'containers/layout';
 import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import { apiGet } from 'utils/apiUtil';
-import { ITEMS_PER_PAGE } from 'utils/constants';
+import { ITEMS_PER_PAGE, NFT_DATA_SOURCES } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
-import { transformOpenSea } from 'utils/commonUtil';
+import { transformOpenSea, transformCovalent, getNftDataSource } from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
 
 export default function MyNFTs() {
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, chainId } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<CardData[]>([]);
   const [listModalItem, setListModalItem] = useState(null);
@@ -21,25 +21,29 @@ export default function MyNFTs() {
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const fetchData = async () => {
-    if (!user || !user?.account) {
+    if (!user || !user?.account || !chainId) {
       setData([]);
       return;
     }
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
+    const source = getNftDataSource(chainId);
 
     const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
       offset: newCurrentPage * ITEMS_PER_PAGE, // not "startAfter" because this is not firebase query.
       limit: ITEMS_PER_PAGE,
-      source: 1
+      source
     });
     if (error) {
       showAppError(`${error.message}`);
       return;
     }
     const moreData = (result?.assets || []).map((item: any) => {
-      const newItem = transformOpenSea(item, user?.account);
-      return newItem;
+      if (source === NFT_DATA_SOURCES.OPENSEA) {
+        return transformOpenSea(item, user?.account, chainId);
+      } else if (source === NFT_DATA_SOURCES.COVALENT) {
+        return transformCovalent(item, user?.account, chainId);
+      }
     });
     setIsFetching(false);
     setData([...data, ...moreData]);
@@ -48,7 +52,7 @@ export default function MyNFTs() {
 
   React.useEffect(() => {
     fetchData();
-  }, [user]);
+  }, [user, chainId]);
 
   React.useEffect(() => {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {

@@ -22,12 +22,7 @@ const LandingHeader = () => {
           <div className="col-sm-8 col-md-3">
             <Link href="/">
               <a>
-                <Image
-                  alt="Infinity"
-                  src={dark ? '/img/nftcompanyDarkModeLogo.svg' : '/img/infinity.svg'}
-                  width={270}
-                  height={90}
-                />
+                <img alt="Infinity" src={dark ? '/img/logo-dark-mode.svg' : '/img/logo-light-mode.svg'} width={270} />
               </a>
             </Link>
           </div>

@@ -6,14 +6,11 @@ import { AppChakraProvider } from 'utils/themeUtil';
 import LandingFooter from 'components/LandingFooter/LandingFooter';
 import Header from 'components/Header/Header';
 import { isLocalhost } from 'utils/commonUtil';
-
 import LogRocket from 'logrocket';
 import { Background } from 'components/Background/Background';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
-import { Button } from '@chakra-ui/react';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
-import { route } from 'next/dist/server/router';
+import { useWindowSize } from '@react-hook/window-size';
 
 if (!isLocalhost()) {
   LogRocket.init('0pu9ak/nftco');
@@ -27,38 +24,18 @@ interface IProps {
 
 const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
   const router = useRouter();
-  const [isFilterOpen, setIsFilterOpen] = React.useState(true);
-
-  const handlePageClick = () => {
-    if (isFilterOpen) {
-      setIsFilterOpen(false);
-    }
-  };
+  const [width, height] = useWindowSize();
   return (
     <>
-      <Background />
       <AppChakraProvider>
+        {width > 768 && <Background />}
+
         <AppContextProvider>
           <SearchContextProvider>
             {/* No header on connect page */}
-            {!connect && <Header onLockout={() => setIsFilterOpen(false)} />}
+            {!connect && <Header />}
 
-            {router.pathname === '/explore' && (
-              <>
-                <FilterDrawer isOpen={isFilterOpen} setIsOpen={setIsFilterOpen} />
-                <Button
-                  position="fixed"
-                  top={100}
-                  variant="ghost"
-                  color="gray.700"
-                  onClick={() => setIsFilterOpen(!isFilterOpen)}
-                >
-                  <ArrowForwardIcon />
-                </Button>
-              </>
-            )}
-
-            <main onClick={handlePageClick}>{children}</main>
+            <main>{children}</main>
 
             {landing && <LandingFooter />}
 

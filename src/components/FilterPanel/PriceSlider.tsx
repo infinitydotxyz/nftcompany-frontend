@@ -2,6 +2,7 @@ import { useSearchContext } from 'utils/context/SearchContext';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { useEffect, useState } from 'react';
+import { colors } from 'utils/themeUtil';
 const { createSliderWithTooltip } = Slider;
 const Range = createSliderWithTooltip(Slider.Range);
 const MAX = 1000;
@@ -42,19 +43,19 @@ const PriceSlider = () => {
           [getMaxMarker(sliderMax)]: `${getMaxMarker(sliderMax) - 1}`
         }}
         railStyle={{
-          color: '#4047ff',
+          color: colors.brandBlue,
           backgroundColor: 'gray'
         }}
         trackStyle={[
           {
-            backgroundColor: '#4047ff',
+            backgroundColor: colors.brandBlue,
             border: 0
           }
         ]}
         handleStyle={[
           {
             backgroundColor: 'blue',
-            color: '#4047ff',
+            color: colors.brandBlue,
             border: 0
           }
         ]}

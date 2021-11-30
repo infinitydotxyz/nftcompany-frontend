@@ -2,30 +2,34 @@ import React from 'react';
 import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefaultColorScheme } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
 
+// const brandBlue = '#0000ff'; // #4047ff';
+// const brandGray = '#888A8C'; // #4047ff';
 const brandBlue = '#4047ff';
+const brandGray = '#888A8C';
 const darkGray = '#1A202C'; // Gray.800
 const darkGrayAlpha = '#1A202Ccc';
 
 const lightBg = '#fcfdfd';
 const lightBgAlpha = '#fcfdfdcc';
 
-const colors = {
+export const colors = {
   brandBlue: brandBlue,
+  brandGray: brandGray,
 
   // custom colors
   windowBg: lightBg,
   windowBgDark: darkGray,
 
   cardBgLight: '#f3f3f3',
-  cardBgDark: 'black',
+  cardBgDark: '#111',
 
   // unsure how to add opacity on a css var so we have these variants for now
   headerBg: lightBgAlpha,
   headerBgDark: darkGrayAlpha,
 
-  brandBlueAlpha: '#4047ffaa',
-  brandBlueLight: '#4047ff14',
-  brandBlueShadow: '#4047ff44',
+  brandBlueAlpha: brandBlue + 'aa',
+  brandBlueLight: brandBlue + '14',
+  brandBlueShadow: brandBlue + '44',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   blue: {
@@ -44,6 +48,23 @@ const colors = {
     A400: '#cdcdff',
     A700: '#b3b4ff',
     contrastDefaultColor: 'light'
+  },
+
+  grayish: {
+    50: brandGray,
+    100: brandGray,
+    200: brandGray,
+    300: brandGray,
+    400: brandGray,
+    500: brandGray,
+    600: brandGray,
+    700: brandGray,
+    800: brandGray,
+    900: brandGray,
+    A100: brandGray,
+    A200: brandGray,
+    A400: brandGray,
+    A700: brandGray
   }
 };
 
@@ -96,11 +117,16 @@ const Button = {
     };
   },
   variants: {
+    outline: (props: any) => {
+      return {
+        border: '2px solid'
+      };
+    },
     solid: (props: any) => {
       const { colorScheme, colorMode } = props;
 
       // prevent chakra changing the button colors when in dark mode
-      if (colorMode === 'dark' && colorScheme !== 'gray') {
+      if (colorMode === 'dark' && colorScheme !== 'gray' && colorScheme !== 'grayish') {
         return {
           bg: brandBlue,
           color: 'white'
@@ -144,7 +170,7 @@ const styles = {
         color: mode('gray.800', 'whiteAlpha.900')(props),
 
         // bg: mode('white', 'gray.800')(props)
-        bg: mode('windowBg', 'gray.800')(props)
+        bg: mode('windowBg', 'windowBgDark')(props)
       },
       '*::placeholder': {
         color: mode('gray.400', 'whiteAlpha.400')(props)

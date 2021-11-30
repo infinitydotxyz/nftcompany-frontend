@@ -1,7 +1,5 @@
-import { CardData } from 'types/Nft.interface';
 import React, { useContext, useState } from 'react';
 import { TypeAheadOption } from 'services/Listings.service';
-import { string } from 'prop-types';
 
 export type SearchState = {
   isLoading: boolean;
@@ -31,7 +29,10 @@ export type SearchFilter = {
   text: string;
   sortByPriceDirection: string;
   startAfterUser: string;
-  listType?: '' | 'BUY_NOW' | 'AUCTION';
+  listType?: '' | 'fixedPrice' | 'englishAuction' | 'dutchAuction';
+  collectionIds?: string;
+  traitType?: string;
+  traitValue?: string;
 };
 
 export const defaultSearchState: SearchState = {
@@ -62,7 +63,10 @@ export const defaultFilterState: SearchFilter = {
   startAfterSearchTitle: '',
   startAfterSearchCollectionName: '',
   startAfterBlueCheck: undefined,
-  listType: ''
+  listType: '',
+  collectionIds: '',
+  traitType: '',
+  traitValue: ''
 };
 
 const SearchContext = React.createContext({} as any);

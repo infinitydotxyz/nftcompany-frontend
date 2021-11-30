@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './CollectionCards.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
-import { apiPost } from 'utils/apiUtil';
+import { apiGet, apiPost } from 'utils/apiUtil';
 import { Spinner } from '@chakra-ui/spinner';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { CollectionsTable } from 'components/CollectionsTable/CollectionsTable';
@@ -13,9 +13,10 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 type MProps = {
   listMode?: boolean;
   rows?: number;
+  featuredCollections?: boolean; // default is verifiedCollections
 };
 
-export const CollectionCards = ({ rows = 0, listMode = false }: MProps): JSX.Element => {
+export const CollectionCards = ({ rows = 0, featuredCollections = false, listMode = false }: MProps): JSX.Element => {
   const { showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -67,17 +68,27 @@ export const CollectionCards = ({ rows = 0, listMode = false }: MProps): JSX.Ele
     try {
       const body = { startAfterName, limit };
 
-      const { result, error } = await apiPost(`/verifiedTokens`, {}, body);
+      let response;
+      if (featuredCollections) {
+        response = await apiGet(`/featured-collections`, {});
+      } else {
+        response = await apiGet('/verifiedCollections', body);
+      }
 
-      // not ready yet
-      // const { result, error } = await apiPost('/verifiedCollections', {}, body);
+      const { result, error } = response;
 
       if (error) {
-        showAppError('Failed to fetch verified collections.');
+        showAppError('Failed to fetch.');
         setHasMore(false);
       } else {
         if (result.collections) {
-          const newCols = result.collections as CollectionCardEntry[];
+          let newCols = result.collections as CollectionCardEntry[];
+
+          // add bluecheck
+          newCols = newCols.map((e) => {
+            e.hasBlueCheck = true;
+            return e;
+          });
 
           setCollections([...collections, ...newCols]);
         }
@@ -122,9 +133,7 @@ export const CollectionCards = ({ rows = 0, listMode = false }: MProps): JSX.Ele
 
   let contents;
 
-  // force list view for now
-  // if (listMode) {
-  if (true) {
+  if (listMode) {
     contents = (
       <div className={styles.main}>
         <CollectionsTable entries={collectionData} />
@@ -140,7 +149,7 @@ export const CollectionCards = ({ rows = 0, listMode = false }: MProps): JSX.Ele
   } else {
     contents = (
       <div className={styles.main}>
-        <CardGrid data={collectionData} />;
+        <CardGrid data={collectionData} isFeatured={featuredCollections} />
         {hasMore && (
           <ScrollLoader
             onFetchMore={async () => {

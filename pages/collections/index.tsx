@@ -7,7 +7,7 @@ import { CollectionCards } from 'components/CollectionCards/CollectionCards';
 import { ViewControl } from 'components/ViewControl/ViewControl';
 
 const Collections = (): JSX.Element => {
-  const [mode, setMode] = useState<'icon' | 'list'>('icon');
+  const [mode, setMode] = useState<'icon' | 'list'>('list');
 
   return (
     <>
@@ -21,7 +21,7 @@ const Collections = (): JSX.Element => {
 
             <div className={styles.row}>
               <ViewControl
-                disabled={true} // disabled for now
+                disabled={false} // disabled for now, data doesn't have images
                 mode={mode}
                 onClick={(m) => {
                   setMode(m);

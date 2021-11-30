@@ -1,86 +1,54 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './CollectionCards.module.scss';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import router from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { uuidv4 } from 'utils/commonUtil';
+import { getChainScannerBase, getSearchFriendlyString, uuidv4 } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
-import PreviewModal from 'components/PreviewModal/PreviewModal';
-
-export const loadingCardData: CollectionCardEntry = {
-  id: 'loading-card-id',
-  address: '',
-  name: '⠀', // placeholder char to avoid jumpy layout.
-  description: '',
-  cardImage: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==', // blank image
-  bannerImage: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==', // blank image
-  hasBlueCheck: false,
-  openseaUrl: '',
-  title: ''
-};
+import { Button } from '@chakra-ui/react';
 
 type Props = {
   entry: CollectionCardEntry;
   isFeatured?: boolean;
 };
 
-function getSearchFriendlyString(input: string) {
-  if (!input) {
-    return '';
-  }
-  const noSpace = input.replace(/[\s-]/g, '');
-  return noSpace.toLowerCase();
-}
-
 export const CollectionCard = ({ entry, isFeatured }: Props) => {
-  const { ref, inView } = useInView({ threshold: 0 });
-  const [previewModalShowed, setPreviewModalShowed] = useState(false);
+  const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
 
   if (!entry) {
     return <div>Nothing found</div>;
   }
 
-  let name = entry.name.replace(/\s/g, '');
-  name = name.toLowerCase();
+  const clickButton = () => {
+    // name could have # and other url reseved characters
+    router.push(`/collection/${cleanCollectionName(entry.name)}`);
+  };
+
+  const cleanCollectionName = (input: string) => {
+    if (!input) {
+      return '';
+    }
+
+    const result = getSearchFriendlyString(input);
+
+    // name could have # and other url reseved characters
+    // must encodeURIComponent()
+    return encodeURIComponent(result);
+  };
 
   if (inView === false) {
     return <div ref={ref} className={styles.outOfViewCard}></div>;
   }
+
   return (
-    <div
-      ref={ref}
-      className={styles.tripleCard}
-      onClick={() => {
-        if (previewModalShowed) {
-          return;
-        }
-        // name could have # and other url reseved characters
-        router.push(`/collection/${getSearchFriendlyString(entry.name)}`);
-      }}
-    >
+    <div ref={ref} className={styles.tripleCard}>
       <div className={styles.card1}></div>
       <div className={styles.card2}></div>
 
       <div className={`${styles.card3} ${isFeatured && styles.featuredCard}`}>
         <div className={styles.top}>
           <img className={styles.cardImage} src={entry.cardImage} alt="Card preview" />
-
-          <div className={styles.cardControls}>
-            <a
-              className={`${styles.button} button-small js-popup-open ${styles.cardButton}`}
-              href="#popup-bid"
-              data-effect="mfp-zoom-in"
-              onClick={(ev) => {
-                ev.preventDefault();
-                ev.stopPropagation();
-
-                setPreviewModalShowed(true);
-              }}
-            >
-              <span>More Info</span>
-            </a>
-          </div>
         </div>
         <div className={styles.bottom}>
           <div className={styles.collectionRow}>
@@ -93,24 +61,18 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
 
           <ShortAddress
             vertical={true}
-            href={`https://etherscan.io/address/${entry.address}`}
+            href={`${getChainScannerBase(entry.chainId)}/address/${entry.address}`}
             address={entry.address}
             label=""
             tooltip={entry.address}
           />
         </div>
+        <div className={styles.buttons}>
+          <Button size="lg" className={styles.stadiumButtonBlue} onClick={clickButton}>
+            View collection
+          </Button>
+        </div>
       </div>
-
-      {previewModalShowed && (
-        <PreviewModal
-          action={''}
-          data={entry}
-          previewCollection={true}
-          onClose={() => {
-            setPreviewModalShowed(false);
-          }}
-        />
-      )}
     </div>
   );
 };
@@ -119,9 +81,10 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
 
 type xProps = {
   data: CollectionCardEntry[];
+  isFeatured?: boolean;
 };
 
-export const CardGrid = ({ data }: xProps): JSX.Element => {
+export const CardGrid = ({ data, isFeatured = false }: xProps): JSX.Element => {
   return (
     <div className={`${styles.cardList}`}>
       {(data || []).map((item) => {
@@ -129,7 +92,7 @@ export const CardGrid = ({ data }: xProps): JSX.Element => {
           return null;
         }
 
-        return <CollectionCard key={item?.id || uuidv4()} entry={item} />;
+        return <CollectionCard key={item?.id || uuidv4()} entry={item} isFeatured={isFeatured} />;
       })}
     </div>
   );

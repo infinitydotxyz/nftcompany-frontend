@@ -40,7 +40,7 @@ export default function Home() {
             <Button
               size="lg"
               className={styles.stadiumButton}
-              colorScheme="gray"
+              colorScheme="grayish"
               onClick={() => router.push('/my-nfts')}
             >
               List NFTs
@@ -55,7 +55,7 @@ export default function Home() {
   const automateSection = (
     <section className={styles.titleSection}>
       <div className={styles.containerAvg}>
-        <div className={styles.info}>
+        <div className={styles.infoHomepage}>
           <div className={styles.bigTitle}>
             Infinity is fully compatible with OpenSea. It uses the same contracts, not forks.
             <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
@@ -234,7 +234,7 @@ export default function Home() {
                 {
                   question: 'What is Infinity?',
                   answer:
-                    'Infinity is the “FTX of NFTs” - a community-driven, decentralized NFT super app that enables discovering, developing, trading, and managing NFTs.'
+                    'Infinity is a decentralized NFT super app that enables discovering, developing, trading, and managing NFTs.'
                 },
                 {
                   question: 'Is Infinity live?',

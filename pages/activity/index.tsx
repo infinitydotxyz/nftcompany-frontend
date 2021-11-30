@@ -31,7 +31,6 @@ const Transactions = (): JSX.Element => {
     }
 
     setIsLoading(false);
-    console.log('result', result);
   };
 
   useEffect(() => {
@@ -48,7 +47,12 @@ const Transactions = (): JSX.Element => {
           <div className="section-bar">
             <div className="tg-title">Activity</div>
 
-            <Button variant="outline" onClick={() => setTransactionsModalShowed(true)} disabled={isLoading}>
+            <Button
+              variant="outline"
+              colorScheme="gray"
+              onClick={() => setTransactionsModalShowed(true)}
+              disabled={isLoading}
+            >
               Missing txn?
             </Button>
           </div>

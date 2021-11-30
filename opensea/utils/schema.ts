@@ -1,15 +1,15 @@
 import { BigNumber } from 'bignumber.js'
 import * as ethABI from 'ethereumjs-abi'
-import { WyvernProtocol } from 'wyvern-js'
-import { HowToCall, ReplacementEncoder, Network } from 'wyvern-js/lib/types'
-import { WyvernAtomicizerContract } from 'wyvern-js/lib/abi_gen/wyvern_atomicizer'
+import { WyvernProtocol } from '../wyvern-js'
+import { HowToCall, ReplacementEncoder, Network } from '../wyvern-js/types'
+import { WyvernAtomicizerContract } from '../wyvern-js/abi_gen/wyvern_atomicizer'
 
 import {
   AnnotatedFunctionABI,
   FunctionInputKind,
   Schema,
-} from 'wyvern-schemas/dist/types'
-export { AbiType } from 'wyvern-schemas'
+} from '../wyvern-schemas/types'
+export { AbiType } from '../wyvern-schemas'
 import { WyvernAsset, OrderSide } from '../types'
 import { proxyAssertABI, proxyABI } from '../abi/Proxy'
 

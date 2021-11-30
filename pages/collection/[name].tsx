@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
@@ -10,10 +10,14 @@ import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
 import { useRouter } from 'next/router';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
-import { Spacer } from '@chakra-ui/react';
+import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box } from '@chakra-ui/react';
+import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
+import styles from './Collection.module.scss';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
+  const [address, setAddress] = useState('');
+  const [tabIndex, setTabIndex] = useState(0);
   const router = useRouter();
   const {
     query: { name }
@@ -31,19 +35,65 @@ const Collection = (): JSX.Element => {
 
             <Spacer />
 
-            <SortMenuButton />
+            {tabIndex === 0 ? <SortMenuButton /> : <Box height={10}>&nbsp;</Box>}
           </div>
 
-          {name && (
-            <CollectionContents
-              name={name as string}
-              onTitle={(newTitle) => {
-                if (!title) {
-                  setTitle(newTitle);
-                }
-              }}
-            />
-          )}
+          <div className="center">
+            <Tabs onChange={(index) => setTabIndex(index)}>
+              <TabList className={styles.tabList}>
+                <Tab>NFTs</Tab>
+                <Tab isDisabled={!address}>Sales</Tab>
+                <Tab isDisabled={!address}>Transfers</Tab>
+                <Tab isDisabled={!address}>Offers</Tab>
+              </TabList>
+
+              <TabPanels>
+                <TabPanel>
+                  {name && (
+                    <CollectionContents
+                      name={name as string}
+                      onTitle={(newTitle) => {
+                        if (!title) {
+                          setTitle(newTitle);
+                        }
+                      }}
+                      onLoaded={({ address }) => setAddress(address)}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel>
+                  {tabIndex === 1 && (
+                    <CollectionEvents
+                      address={address}
+                      eventType="successful"
+                      activityType="sale"
+                      pageType="collection"
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel>
+                  {tabIndex === 2 && (
+                    <CollectionEvents
+                      address={address}
+                      eventType="transfer"
+                      activityType="transfer"
+                      pageType="collection"
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel>
+                  {tabIndex === 3 && (
+                    <CollectionEvents
+                      address={address}
+                      eventType="bid_entered"
+                      activityType="offer"
+                      pageType="collection"
+                    />
+                  )}
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </div>
         </div>
       </div>
     </>
@@ -59,21 +109,27 @@ export default Collection;
 type Props = {
   name: string;
   onTitle: (title: string) => void;
+  onLoaded?: ({ address }: { address: string }) => void;
 };
 
-const CollectionContents = ({ name, onTitle }: Props): JSX.Element => {
+const CollectionContents = ({ name, onTitle, onLoaded }: Props): JSX.Element => {
   const cardProvider = useCardProvider(name as string);
   const { user } = useAppContext();
 
-  if (cardProvider.hasLoaded) {
-    if (cardProvider.list.length > 0) {
-      const title = cardProvider.list[0].collectionName;
-
-      if (title) {
-        onTitle(title);
+  useEffect(() => {
+    if (cardProvider.hasLoaded) {
+      if (cardProvider.list.length > 0) {
+        const title = cardProvider.list[0].collectionName;
+        const tokenAddress = cardProvider.list[0].tokenAddress || '';
+        if (onLoaded) {
+          onLoaded({ address: tokenAddress });
+        }
+        if (title) {
+          onTitle(title);
+        }
       }
     }
-  }
+  }, [cardProvider]);
 
   return (
     <>

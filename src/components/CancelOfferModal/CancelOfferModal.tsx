@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './CancelOfferModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
-import { getOpenSeaport } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
 import { GenericError } from 'types';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
@@ -22,7 +22,7 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     setIsSubmitting(true);
 
     try {
-      const seaport = getOpenSeaport();
+      const seaport = getOpenSeaportForChain(data?.chainId);
       const order = await seaport.api.getOrder({
         maker: user?.account,
         id: data.id,
@@ -41,7 +41,8 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           txnHash,
           side: 0,
           orderId: data.id,
-          maker: user?.account
+          maker: user?.account,
+          chainId: data.chainId
         };
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
