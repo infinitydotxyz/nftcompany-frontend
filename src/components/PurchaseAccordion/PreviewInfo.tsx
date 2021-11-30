@@ -105,7 +105,7 @@ export const PreviewInfo: React.FC<Props> = ({ showDescription = false, action, 
     <ShortAddress
       address={data.tokenAddress}
       href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}`}
-      label="Token Address:"
+      label="Contract Address:"
       tooltip={toChecksumAddress(data.tokenAddress)}
     />
   );
