@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './CollectionsTable.module.scss';
 import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
-import { ellipsisAddress, getChainScannerBase } from 'utils/commonUtil';
+import { ellipsisAddress, getChainScannerBase, getSearchFriendlyString } from 'utils/commonUtil';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
@@ -18,8 +18,7 @@ export const CollectionsTable = ({ entries }: Props) => {
   }
 
   const rows = entries.map((item, index) => {
-    let name = item.name.replace(/\s/g, '');
-    name = name.toLowerCase();
+    const name = getSearchFriendlyString(item.name);
 
     return (
       <Tr key={item.id}>

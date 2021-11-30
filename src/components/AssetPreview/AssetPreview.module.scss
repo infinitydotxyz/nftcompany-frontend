@@ -13,7 +13,7 @@
       .imageFrame {
         border-radius: 16px;
         overflow: hidden;
-        padding: 0 16px 16px 16px;
+        padding: 16px;
 
         background-color: white; // var(--chakra-colors-cardBgLight, red);
         border: solid 1px #ddd;
@@ -23,22 +23,31 @@
           border: solid 1px #333;
         }
 
-        .imgHeader {
-          padding: 10px 5px;
-
+        .imgFooter {
+          padding: 14px 5px 0px 5px;
           display: flex;
           align-items: center;
-          .imgTitle {
-            font-weight: bold;
-            font-size: 1.4rem;
-          }
-          .collection {
-            margin-right: 6px;
+
+          .infoColumn {
+            display: flex;
+            flex-direction: column;
+
+            .imgTitle {
+              font-weight: bold;
+              font-size: 1.3rem;
+            }
+            .collection {
+              margin-right: 6px;
+            }
+
+            .collectionRow {
+              display: flex;
+              align-items: center;
+            }
           }
 
-          .collectionRow {
-            display: flex;
-            align-items: center;
+          .playButton {
+            margin-right: 6px;
           }
         }
 

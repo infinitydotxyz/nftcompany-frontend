@@ -57,12 +57,13 @@ export default function ExplorePage() {
       <div>
         <div className="page-container">
           {!searchMode && <FeaturedCollections />}
+          <div className="page-wrapper">
+            <div className="section-bar">
+              <div className="tg-title">Explore</div>
 
-          <div className="section-bar">
-            <div className="tg-title">Explore</div>
-
-            <Spacer />
-            <SortMenuButton disabled={!searchMode} />
+              <Spacer />
+              <SortMenuButton disabled={!searchMode} />
+            </div>
           </div>
           <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
           {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}

@@ -12,7 +12,7 @@ const LandingFooter = () => {
       <div className="grid-footer">
         <Box className="col-sm-12 col-md-6">
           <Link href="/">
-            <img alt="Infinity" src={dark ? '/img/logo-dark-mode.svg' : '/img/logo-light-mode.svg'} width={160} />
+            <img alt="Infinity" src={dark ? '/img/logo-dark-mode.svg' : '/img/logo-light-mode.svg'} width={130} />
           </Link>
 
           <p className={styles.paragraph}>
