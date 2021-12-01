@@ -78,6 +78,21 @@ export function useUserListings(source: ListingSource) {
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
 
+  const getId = (cardData: CardData) => {
+    return `${cardData.tokenAddress}-${cardData.tokenId}-${cardData.price}`;
+  };
+
+  const removeDuplicates = (listings: CardData[]) => {
+    const ids = new Set();
+
+    return listings.filter((cardData) => {
+      const id = getId(cardData);
+      const unique = !ids.has(id);
+      ids.add(id);
+      return unique;
+    });
+  };
+
   useEffect(() => {
     let isActive = true;
     if (source !== savedSource.current) {
@@ -92,9 +107,14 @@ export function useUserListings(source: ListingSource) {
       setIsFetching(true);
       setDataLoaded(false);
       fetchData(user.account).then((moreListings) => {
-        const newListings = moreListings || [];
+        const newListings = (moreListings || []).map((item) => {
+          return {
+            ...item,
+            id: getId(item)
+          };
+        });
         if (isActive) {
-          setListings((prevListings) => [...prevListings, ...newListings]);
+          setListings((prevListings) => removeDuplicates([...prevListings, ...newListings]));
           setIsFetching(false);
           setCurrentPage((prevPage) => prevPage + 1);
         }

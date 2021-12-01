@@ -10,34 +10,55 @@ import { useAppContext } from 'utils/context/AppContext';
 import { ListingSource } from 'services/Listings.service';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { CardData } from 'types/Nft.interface';
-import { Tab, TabList, Tabs } from '@chakra-ui/react';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import styles from './ListNFTs.module.scss';
 import { useUserListings } from 'hooks/useUserListings';
-
-enum TabIndex {
-  Infinity,
-  OpenSea
-}
 
 export default function ListNFTs() {
   const { user } = useAppContext();
   const [tabIndex, setTabIndex] = useState(0);
-  const [source, setSource] = useState(ListingSource.Infinity);
-  const { listings, isFetching, fetchMore, currentPage, dataLoaded } = useUserListings(source);
   const [deleteModalItem, setDeleteModalItem] = useState<CardData | null>(null);
 
-  useEffect(() => {
-    switch (tabIndex) {
-      case TabIndex.Infinity:
-        setSource(ListingSource.Infinity);
-        break;
-      case TabIndex.OpenSea:
-        setSource(ListingSource.OpenSea);
-        break;
-      default:
-        setSource(ListingSource.Infinity);
-    }
-  }, [tabIndex]);
+  const transferOrder = (item: CardData) => {
+    console.log('Transferring Order');
+  };
+
+  const Listings = (props: { source: ListingSource }) => {
+    const { listings, isFetching, fetchMore, currentPage, dataLoaded } = useUserListings(props.source);
+    const action = props.source === ListingSource.OpenSea ? 'TRANSFER_ORDER' : 'CANCEL_LISTING';
+
+    return (
+      <>
+        <div>
+          <PleaseConnectWallet account={user?.account} />
+          <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={listings} />
+          {listings?.length === 0 && isFetching && <LoadingCardList />}
+
+          <CardList
+            data={listings}
+            action={action}
+            onClickAction={async (item, action) => {
+              if (action === 'TRANSFER_ORDER') {
+                transferOrder(item);
+              } else {
+                setDeleteModalItem(item);
+              }
+            }}
+          />
+        </div>
+
+        {dataLoaded && (
+          <FetchMore
+            currentPage={currentPage}
+            data={listings}
+            onFetchMore={() => {
+              fetchMore();
+            }}
+          />
+        )}
+      </>
+    );
+  };
 
   return (
     <>
@@ -56,30 +77,19 @@ export default function ListNFTs() {
                 <Tab>Infinity</Tab>
                 <Tab>OpenSea</Tab>
               </TabList>
+
+              <TabPanels>
+                <TabPanel>
+                  <Listings source={ListingSource.Infinity} />
+                </TabPanel>
+
+                {tabIndex === 1 && (
+                  <TabPanel>
+                    <Listings source={ListingSource.OpenSea} />
+                  </TabPanel>
+                )}
+              </TabPanels>
             </Tabs>
-            <div>
-              <PleaseConnectWallet account={user?.account} />
-              <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={listings} />
-              {listings?.length === 0 && isFetching && <LoadingCardList />}
-
-              <CardList
-                data={listings}
-                action="CANCEL_LISTING"
-                onClickAction={async (item, action) => {
-                  setDeleteModalItem(item);
-                }}
-              />
-            </div>
-
-            {dataLoaded && (
-              <FetchMore
-                currentPage={currentPage}
-                data={listings}
-                onFetchMore={() => {
-                  fetchMore();
-                }}
-              />
-            )}
           </div>
         </div>
       </div>

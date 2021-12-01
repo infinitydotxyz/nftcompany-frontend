@@ -24,6 +24,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
+  const [transferOrderModalShowed, setTransferOrderModalShowed] = useState(false);
   const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
 
   if (!data) {
@@ -98,6 +99,16 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
         setCancelOfferModalShowed(true);
       };
       name = 'Cancel';
+    } else if (action === 'TRANSFER_ORDER') {
+      handler = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        if (onClickAction) {
+          onClickAction(data, 'TRANSFER_ORDER');
+        }
+      };
+      name = 'Import Order';
     }
 
     if (name) {
@@ -136,7 +147,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           </div>
           <PriceBox
             justifyRight
-            price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
+            price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
             token={data?.chainId === '1' ? 'ETH' : 'WETH'}
             expirationTime={data?.expirationTime}
           />
