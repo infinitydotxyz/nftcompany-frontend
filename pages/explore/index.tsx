@@ -45,7 +45,6 @@ export default function ExplorePage() {
     const [collectionCards, setCollectionCards] = useState<CollectionCardEntry[]>([]);
     useEffect(() => {
       let isMounted = true;
-
       if (isMounted) {
         const collCards = cardProvider.list.map((x) => {
           return {

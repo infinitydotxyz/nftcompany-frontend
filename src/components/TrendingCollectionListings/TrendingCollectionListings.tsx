@@ -7,6 +7,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import { useCardProvider } from 'hooks/useCardProvider';
 import { defaultFilterState, defaultSearchState, ListingSource, SearchContextType } from 'utils/context/SearchContext';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
+import { NftAction } from 'types';
 
 export default function TrendingCollectionListings() {
   return (
@@ -47,7 +48,7 @@ const TrendingCollectionContents = (): JSX.Element => {
 
       {(isLoading || (!cardProvider.hasData() && !cardProvider.hasLoaded)) && <LoadingCardList />}
 
-      <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
+      <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action={NftAction.BuyNft} />
 
       {cardProvider.hasData() && (
         <ScrollLoader

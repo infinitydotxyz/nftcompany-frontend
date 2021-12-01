@@ -14,6 +14,7 @@ import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box } from '@chakra-ui/react';
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 import styles from './Collection.module.scss';
+import { NftAction } from 'types';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -160,7 +161,7 @@ const CollectionContents = ({ name, onTitle, onLoaded, listingSource }: Props): 
 
       {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
-      <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
+      <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action={NftAction.BuyNft} />
 
       {cardProvider.hasData() && (
         <ScrollLoader

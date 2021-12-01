@@ -153,14 +153,13 @@ export const getTypeAheadOptions = async (
 };
 
 export const orderToCardData = (order: Order): CardData => {
-  const cheapestOpenseaOrder = getCheapestOpenseaOrder(order);
   const cardData: CardData = {
     id: order.id,
     image: order.metadata.asset.image,
     title: order.metadata.asset.title,
     description: order.metadata.asset.description,
     inStock: +order.metadata.asset.quantity,
-    price: weiToEther(order.basePrice || 0),
+    price: Number(weiToEther(order.basePrice || 0)),
     tokenAddress: order.metadata.asset.address,
     tokenId: order.metadata.asset.id,
     maker: order.maker,
@@ -172,30 +171,7 @@ export const orderToCardData = (order: Order): CardData => {
     metadata: order.metadata,
     schemaName: order.metadata.schema,
     expirationTime: order.expirationTime,
-    chainId: order.metadata.chainId,
-    openseaListing: cheapestOpenseaOrder
+    chainId: order.metadata.chainId
   };
   return cardData;
-};
-
-const getCheapestOpenseaOrder = (order: Order) => {
-  const sellOrders = (order as any)?.openseaListings;
-  const ethSellOrderByOwner = sellOrders?.filter(
-    (order: Order & { paymentTokenSymbol: string }) =>
-      order?.side === 1 && order?.paymentTokenSymbol === 'ETH' && order?.saleKind === 0
-  );
-  if (ethSellOrderByOwner?.length > 0) {
-    const cheapestSellOrder = ethSellOrderByOwner?.reduce((lowestOrder: Order, currentOrder: Order) => {
-      try {
-        if (BigNumber.from(currentOrder?.basePrice).lt(BigNumber.from(lowestOrder?.basePrice))) {
-          return currentOrder;
-        }
-      } catch {
-      } finally {
-        return lowestOrder;
-      }
-    });
-
-    return cheapestSellOrder;
-  }
 };

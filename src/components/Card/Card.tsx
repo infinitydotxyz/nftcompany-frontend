@@ -3,7 +3,7 @@ import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
-import { BaseCardData, CardData } from 'types/Nft.interface';
+import { CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { addressesEqual } from 'utils/commonUtil';
@@ -26,14 +26,11 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
   const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
-  const [order, setOrder] = useState<BaseCardData | undefined>();
+  const [order, setOrder] = useState<CardData>(data);
 
   useEffect(() => {
-    // prefer infinity listings
     if (data.metadata?.basePriceInEth !== undefined) {
       setOrder(data);
-    } else if (data.openseaListing?.metadata?.basePriceInEth !== undefined) {
-      setOrder(data.openseaListing);
     }
   }, [data]);
 
@@ -167,7 +164,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
         {actionButton()}
       </div>
 
-      {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
+      {placeBidModalShowed && <PlaceBidModal data={order || data} onClose={() => setPlaceBidModalShowed(false)} />}
       {cancelOfferModalShowed && <CancelOfferModal data={data} onClose={() => setCancelOfferModalShowed(false)} />}
       {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
     </div>

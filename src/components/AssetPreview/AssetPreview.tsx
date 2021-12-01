@@ -11,6 +11,7 @@ import { ExtraSpace } from 'components/Spacer/Spacer';
 import NFTEvents from 'components/NFTEvents/NFTEvents';
 import router from 'next/router';
 import { getSearchFriendlyString } from 'utils/commonUtil';
+import { NftAction } from 'types';
 
 type Props = {
   tokenId: string;
@@ -22,7 +23,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
   const [data, setData] = useState<CardData | undefined>();
   const [title, setTitle] = useState('');
 
-  const action = 'BUY_NFT';
+  const action = NftAction.BuyNft;
 
   useEffect(() => {
     getCardData();
