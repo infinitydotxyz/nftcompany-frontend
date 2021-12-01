@@ -1,70 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import CardList from 'components/Card/CardList';
-import { apiGet } from 'utils/apiUtil';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
+import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-import { ordersToCardData } from 'services/Listings.service';
+import { ListingSource } from 'services/Listings.service';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { CardData } from 'types/Nft.interface';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Tab, TabList, Tabs } from '@chakra-ui/react';
 import styles from './ListNFTs.module.scss';
+import { useUserListings } from 'hooks/useUserListings';
+
+enum TabIndex {
+  Infinity,
+  OpenSea
+}
 
 export default function ListNFTs() {
-  const { user, showAppError } = useAppContext();
+  const { user } = useAppContext();
   const [tabIndex, setTabIndex] = useState(0);
-  const [currentPage, setCurrentPage] = useState(-1);
-  const [dataLoaded, setDataLoaded] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
-  const [data, setData] = useState<any>([]);
+  const [source, setSource] = useState(ListingSource.Infinity);
+  const { listings, isFetching, fetchMore, currentPage, dataLoaded } = useUserListings(source);
   const [deleteModalItem, setDeleteModalItem] = useState<CardData | null>(null);
 
-  const fetchData = async (isRefreshing: boolean = false) => {
-    if (!user?.account) {
-      setData([]);
-      return;
+  useEffect(() => {
+    switch (tabIndex) {
+      case TabIndex.Infinity:
+        setSource(ListingSource.Infinity);
+        break;
+      case TabIndex.OpenSea:
+        setSource(ListingSource.OpenSea);
+        break;
+      default:
+        setSource(ListingSource.Infinity);
     }
-    setIsFetching(true);
-    let listingData = [];
-    let newCurrentPage = currentPage + 1;
-    if (isRefreshing) {
-      newCurrentPage = 0;
-      setDataLoaded(false);
-    }
-    try {
-      const { result, error } = await apiGet(`/u/${user?.account}/listings`, {
-        startAfter: isRefreshing ? '' : getLastItemCreatedAt(data),
-        limit: ITEMS_PER_PAGE
-      });
-      if (error) {
-        showAppError(`Failed to fetch listings. ${error?.message}.`);
-        return;
-      }
-      listingData = result?.listings || [];
-    } catch (e) {
-      console.error(e);
-    }
-    const moreData = ordersToCardData(listingData || []);
+  }, [tabIndex]);
 
-    setIsFetching(false);
-    setData(isRefreshing ? moreData : [...data, ...moreData]);
-    setCurrentPage(newCurrentPage);
-  };
-
-  React.useEffect(() => {
-    fetchData();
-  }, [user]);
-
-  React.useEffect(() => {
-    if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
-      return;
-    }
-    setDataLoaded(true); // current page's data loaded & rendered.
-  }, [currentPage]);
   return (
     <>
       <Head>
@@ -82,40 +56,30 @@ export default function ListNFTs() {
                 <Tab>Infinity</Tab>
                 <Tab>OpenSea</Tab>
               </TabList>
-
-              <TabPanels>
-                <TabPanel>
-                  <div>
-                    <PleaseConnectWallet account={user?.account} />
-                    <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
-                    {data?.length === 0 && isFetching && <LoadingCardList />}
-
-                    <CardList
-                      data={data}
-                      action="CANCEL_LISTING"
-                      onClickAction={async (item, action) => {
-                        setDeleteModalItem(item);
-                      }}
-                    />
-                  </div>
-
-                  {dataLoaded && (
-                    <FetchMore
-                      currentPage={currentPage}
-                      data={data}
-                      onFetchMore={async () => {
-                        setDataLoaded(false);
-                        await fetchData();
-                      }}
-                    />
-                  )}
-                </TabPanel>
-
-                <TabPanel>
-                  <div>OpenSea Listings HERE</div>
-                </TabPanel>
-              </TabPanels>
             </Tabs>
+            <div>
+              <PleaseConnectWallet account={user?.account} />
+              <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={listings} />
+              {listings?.length === 0 && isFetching && <LoadingCardList />}
+
+              <CardList
+                data={listings}
+                action="CANCEL_LISTING"
+                onClickAction={async (item, action) => {
+                  setDeleteModalItem(item);
+                }}
+              />
+            </div>
+
+            {dataLoaded && (
+              <FetchMore
+                currentPage={currentPage}
+                data={listings}
+                onFetchMore={() => {
+                  fetchMore();
+                }}
+              />
+            )}
           </div>
         </div>
       </div>

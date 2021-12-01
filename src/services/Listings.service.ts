@@ -3,6 +3,11 @@ import { weiToEther } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { SearchFilter } from 'utils/context/SearchContext';
 
+export enum ListingSource {
+  Infinity = 'infinity',
+  OpenSea = 'opensea'
+}
+
 export const getListings = async (listingFilter?: SearchFilter): Promise<CardData[]> => {
   const path = `/listings/`;
 
