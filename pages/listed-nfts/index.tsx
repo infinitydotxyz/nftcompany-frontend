@@ -11,9 +11,12 @@ import { useAppContext } from 'utils/context/AppContext';
 import { ordersToCardData } from 'services/Listings.service';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { CardData } from 'types/Nft.interface';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import styles from './ListNFTs.module.scss';
 
 export default function ListNFTs() {
   const { user, showAppError } = useAppContext();
+  const [tabIndex, setTabIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
@@ -73,30 +76,47 @@ export default function ListNFTs() {
             <div className="tg-title">Listed NFTs</div>
           </div>
 
-          <div>
-            <PleaseConnectWallet account={user?.account} />
-            <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
-            {data?.length === 0 && isFetching && <LoadingCardList />}
+          <div className="center">
+            <Tabs onChange={(index) => setTabIndex(index)}>
+              <TabList className={styles.tabList}>
+                <Tab>Infinity</Tab>
+                <Tab>OpenSea</Tab>
+              </TabList>
 
-            <CardList
-              data={data}
-              action="CANCEL_LISTING"
-              onClickAction={async (item, action) => {
-                setDeleteModalItem(item);
-              }}
-            />
+              <TabPanels>
+                <TabPanel>
+                  <div>
+                    <PleaseConnectWallet account={user?.account} />
+                    <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
+                    {data?.length === 0 && isFetching && <LoadingCardList />}
+
+                    <CardList
+                      data={data}
+                      action="CANCEL_LISTING"
+                      onClickAction={async (item, action) => {
+                        setDeleteModalItem(item);
+                      }}
+                    />
+                  </div>
+
+                  {dataLoaded && (
+                    <FetchMore
+                      currentPage={currentPage}
+                      data={data}
+                      onFetchMore={async () => {
+                        setDataLoaded(false);
+                        await fetchData();
+                      }}
+                    />
+                  )}
+                </TabPanel>
+
+                <TabPanel>
+                  <div>OpenSea Listings HERE</div>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </div>
-
-          {dataLoaded && (
-            <FetchMore
-              currentPage={currentPage}
-              data={data}
-              onFetchMore={async () => {
-                setDataLoaded(false);
-                await fetchData();
-              }}
-            />
-          )}
         </div>
       </div>
 
