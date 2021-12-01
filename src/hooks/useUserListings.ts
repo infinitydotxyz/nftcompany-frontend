@@ -23,8 +23,18 @@ export function useUserListings(source: ListingSource) {
   };
 
   const getOpenseaListings = async (address: string) => {
-    const offest = listings.length;
-    return { result: [], error: undefined };
+    const { result, error } = await apiGet('/opensea/wyvern/v1/orders', {
+      maker: address,
+      limit: ITEMS_PER_PAGE,
+      side: '1'
+    });
+    return {
+      error,
+      result: {
+        count: result?.count,
+        listings: result?.orders
+      }
+    };
   };
 
   const getListingSource = (source: ListingSource) => {
