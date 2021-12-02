@@ -216,7 +216,7 @@ const Header = (): JSX.Element => {
                 className="can-click"
                 alt="logo"
                 src={dark ? '/img/logo-dark-mode.svg' : '/img/logo-light-mode.svg'}
-                width={180}
+                width={130}
               />
             </Link>
           </div>

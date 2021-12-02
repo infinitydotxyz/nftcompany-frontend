@@ -173,7 +173,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                     vertical={true}
                     address={data.tokenAddress}
                     href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}`}
-                    label="Token Address"
+                    label="Contract Address"
                     tooltip={toChecksumAddress(data.tokenAddress)}
                   />
 

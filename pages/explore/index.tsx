@@ -68,7 +68,7 @@ export default function ExplorePage() {
         <div className="section-bar">
           <div className="tg-title">Explore</div>
           <Spacer />
-          <SortMenuButton disabled={!searchMode} />
+          <SortMenuButton disabled={!searchMode || props.listingSource == ListingSource.OpenSea} />
         </div>
         <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
         {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
