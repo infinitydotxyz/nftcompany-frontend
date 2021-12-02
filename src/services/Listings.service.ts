@@ -107,7 +107,7 @@ export const orderToCardData = (order: Order): CardData => {
     title: order.metadata.asset.title,
     description: order.metadata.asset.description,
     inStock: +order.metadata.asset.quantity,
-    price: weiToEther(order.basePrice || 0),
+    price: Number(weiToEther(order.basePrice || 0)),
     tokenAddress: order.metadata.asset.address,
     tokenId: order.metadata.asset.id,
     maker: order.maker,

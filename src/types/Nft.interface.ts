@@ -87,3 +87,33 @@ export type CardData = {
   expirationTime?: string;
   chainId?: string;
 };
+
+export enum WyvernSchemaName {
+  ERC20 = 'ERC20',
+  ERC721 = 'ERC721',
+  ERC1155 = 'ERC1155',
+  LegacyEnjin = 'Enjin',
+  ENSShortNameAuction = 'ENSShortNameAuction',
+  CryptoPunks = 'CryptoPunks'
+}
+
+/**
+ * The NFT version that this contract uses.
+ * ERC721 versions are:
+ * 1.0: CryptoKitties and early 721s, which lack approve-all and
+ *      have problems calling `transferFrom` from the owner's account.
+ * 2.0: CryptoSaga and others that lack `transferFrom` and have
+ *      `takeOwnership` instead
+ * 3.0: The current OpenZeppelin standard:
+ *      https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC721/ERC721.sol
+ * Special cases:
+ * locked: When the transfer function has been locked by the dev
+ */
+export enum TokenStandardVersion {
+  Unsupported = 'unsupported',
+  Locked = 'locked',
+  Enjin = '1155-1.0',
+  ERC721v1 = '1.0',
+  ERC721v2 = '2.0',
+  ERC721v3 = '3.0'
+}

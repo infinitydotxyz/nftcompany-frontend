@@ -121,7 +121,7 @@ import {
   sendRawTransaction,
   validateAndFormatWalletAddress
 } from './utils/utils';
-import { LISTING_TYPE } from '../src/utils/constants';
+import { LISTING_TYPE, NFTC_FEE_RECIPIENT } from '../src/utils/constants';
 import { getSearchFriendlyString, getCanonicalWeth } from '../src/utils/commonUtil';
 
 export class OpenSeaPort {
@@ -707,8 +707,6 @@ export class OpenSeaPort {
       ...signature
     };
 
-    console.log(orderWithSignature);
-
     return this.validateAndPostOrder(orderWithSignature);
   }
 
@@ -797,6 +795,7 @@ export class OpenSeaPort {
     (order as any).metadata.hasBonusReward = hasBonusReward;
     (order as any).metadata.hasBlueCheck = hasBlueCheck;
     (order.metadata as any).asset.rawData = assetDetails?.data;
+    order.feeRecipient = NFTC_FEE_RECIPIENT;
 
     (order as any).metadata.chainId = assetDetails?.chainId;
 
@@ -842,6 +841,7 @@ export class OpenSeaPort {
       ...order,
       hash: getOrderHash(order)
     };
+
     let signature;
     try {
       signature = await this._authorizeOrder(hashedOrder);

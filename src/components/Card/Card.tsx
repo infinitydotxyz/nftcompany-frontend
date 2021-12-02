@@ -10,6 +10,7 @@ import { addressesEqual } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
 import { Button, Spacer } from '@chakra-ui/react';
+import { LISTING_TYPE } from 'utils/constants';
 
 type Props = {
   data: CardData;
@@ -24,7 +25,6 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
-  const [transferOrderModalShowed, setTransferOrderModalShowed] = useState(false);
   const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
 
   if (!data) {
@@ -108,7 +108,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           onClickAction(data, 'TRANSFER_ORDER');
         }
       };
-      name = 'Import Order';
+      name = 'Import Listing';
     }
 
     if (name) {
@@ -120,6 +120,13 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     }
 
     return null;
+  };
+
+  const getToken = () => {
+    if (data.chainId === '1') {
+      return data?.order?.metadata?.listingType !== LISTING_TYPE.ENGLISH_AUCTION ? 'ETH' : 'WETH';
+    }
+    return 'WETH';
   };
 
   return (
@@ -148,7 +155,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           <PriceBox
             justifyRight
             price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
-            token={data?.chainId === '1' ? 'ETH' : 'WETH'}
+            token={getToken()}
             expirationTime={data?.expirationTime}
           />
         </div>
