@@ -15,6 +15,7 @@ import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box } from '@chakra-ui
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 import styles from './Collection.module.scss';
 import { NftAction } from 'types';
+import CollectionContents from 'components/CollectionContents/CollectionContents';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -108,6 +109,7 @@ const Collection = (): JSX.Element => {
                           }}
                           onLoaded={({ address }) => setAddress(address)}
                           listingSource={ListingSource.OpenSea}
+                          address={address}
                         />
                       )}
                     </>
@@ -127,49 +129,3 @@ Collection.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
 export default Collection;
 
 // =============================================================
-
-type Props = {
-  name: string;
-  onTitle: (title: string) => void;
-  onLoaded?: ({ address }: { address: string }) => void;
-  listingSource: ListingSource;
-};
-
-const CollectionContents = ({ name, onTitle, onLoaded, listingSource }: Props): JSX.Element => {
-  const searchContext = useSearchContext();
-  const cardProvider = useCardProvider(listingSource, searchContext, name as string);
-  const { user } = useAppContext();
-
-  useEffect(() => {
-    if (cardProvider.hasLoaded) {
-      if (cardProvider.list.length > 0) {
-        const title = cardProvider.list[0].collectionName;
-        const tokenAddress = cardProvider.list[0].tokenAddress || '';
-        if (onLoaded) {
-          onLoaded({ address: tokenAddress });
-        }
-        if (title) {
-          onTitle(title);
-        }
-      }
-    }
-  }, [cardProvider]);
-
-  return (
-    <>
-      <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
-
-      {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
-
-      <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action={NftAction.BuyNft} />
-
-      {cardProvider.hasData() && (
-        <ScrollLoader
-          onFetchMore={async () => {
-            cardProvider.loadNext();
-          }}
-        />
-      )}
-    </>
-  );
-};

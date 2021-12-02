@@ -3,7 +3,6 @@ import { weiToEther } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
 import { getSearchFriendlyString } from 'utils/commonUtil';
-import { BigNumber } from 'ethers';
 
 export const getListings = async (
   listingFilter: SearchFilter & { listingSource: ListingSource; offset?: string | number }
@@ -49,7 +48,7 @@ async function getOpenSeaListings(listingFilter: SearchFilter & { offset?: strin
     ...{ collectionName: getSearchFriendlyString(listingFilter.collectionName || '') }
   })) as any;
 
-  if (error !== undefined) {
+  if (error !== undefined || !result?.listings) {
     return [];
   }
 

@@ -35,8 +35,15 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
     filter.tokenAddress = tokenAddress;
     filter.tokenId = tokenId;
 
-    const result = await getListings({ ...filter, listingSource: ListingSource.Infinity });
+    const infinityResultsPromise = getListings({ ...filter, listingSource: ListingSource.Infinity });
+    const openseaResultsPromise = getListings({ ...filter, listingSource: ListingSource.OpenSea });
+    const promiseAllSettledResults = await Promise.allSettled([infinityResultsPromise, openseaResultsPromise]);
 
+    const [infinityPromiseResult, openseaPromiseResult] = promiseAllSettledResults;
+    const infinityResults = infinityPromiseResult?.status === 'fulfilled' ? infinityPromiseResult.value : [];
+    const openseaResults = openseaPromiseResult?.status === 'fulfilled' ? openseaPromiseResult.value : [];
+
+    const result: any[] = [...infinityResults, ...openseaResults];
     if (result && result.length > 0) {
       let theData = result[0];
       let createdAt = theData.metadata?.createdAt ?? 0;

@@ -46,7 +46,7 @@ const fetchData = async (
     startAfterBlueCheck,
     limit: PAGE_SIZE.toString(),
     tokenId: typeAhead?.id ?? '',
-    tokenAddress: typeAhead?.address ?? '',
+    tokenAddress: (typeAhead?.address || filter.tokenAddress) ?? '',
     collectionName,
     text,
     priceMax: collectionName?.length > 0 ? '1000000' : filter.priceMax, // SNG,
@@ -110,7 +110,6 @@ export function useCardProvider(
     let startAfterSearchTitle = '';
     let previousList: CardData[] = [];
     let offset = 0;
-
     // always get a fresh search
     const isTokenIdSearch = newListType.startsWith('token-id');
 
