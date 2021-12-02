@@ -59,6 +59,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   }
 
   const actionButton = () => {
+    const isForSale = data.metadata?.basePriceInEth;
     let handler: (ev: MouseEvent) => void = () => console.log('');
     let name;
 
@@ -79,7 +80,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
 
         setPlaceBidModalShowed(true);
       };
-      name = 'Purchase';
+      name = isForSale ? 'Purchase' : 'Make Offer';
     } else if (action === NftAction.CancelListing) {
       handler = (ev) => {
         ev.preventDefault();
