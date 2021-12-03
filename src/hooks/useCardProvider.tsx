@@ -1,6 +1,6 @@
 import { CardData } from 'types/Nft.interface';
 import { useEffect, useState } from 'react';
-import { defaultFilterState, SearchFilter, useSearchContext } from 'utils/context/SearchContext';
+import { ListingSource, SearchFilter, SearchState } from 'utils/context/SearchContext';
 import { useAppContext } from 'utils/context/AppContext';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { getListings, TypeAheadOption } from 'services/Listings.service';
@@ -31,7 +31,9 @@ const fetchData = async (
   startAfterBlueCheck: boolean | undefined,
   collectionName: string,
   text: string,
-  typeAhead: TypeAheadOption | undefined
+  typeAhead: TypeAheadOption | undefined,
+  listingSource: ListingSource,
+  offset?: number
 ): Promise<CardData[]> => {
   const result = await getListings({
     ...filter,
@@ -47,7 +49,9 @@ const fetchData = async (
     tokenAddress: typeAhead?.address ?? '',
     collectionName,
     text,
-    priceMax: collectionName?.length > 0 ? '1000000' : filter.priceMax // SNG
+    priceMax: collectionName?.length > 0 ? '1000000' : filter.priceMax, // SNG,
+    offset,
+    listingSource
   });
 
   return result;
@@ -55,7 +59,14 @@ const fetchData = async (
 
 // ==================================================================
 
-export function useCardProvider(inCollectionName?: string): {
+export function useCardProvider(
+  listingSource: ListingSource,
+  searchContext: {
+    searchState: SearchState;
+    filterState: SearchFilter;
+  },
+  inCollectionName?: string
+): {
   list: CardData[];
   loadNext: () => void;
   hasData: () => boolean;
@@ -66,18 +77,31 @@ export function useCardProvider(inCollectionName?: string): {
   const [hasMore, setHasMore] = useState(true);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [savedCollectionName, setSavedCollectionName] = useState<string | undefined>();
-  const searchContext = useSearchContext();
+  const [savedListingSource, setSavedListingSource] = useState<ListingSource | undefined>();
+  const [savedSearchContext, setSavedSearchContext] = useState(searchContext);
   const { user, userReady } = useAppContext();
 
-  // if collection name changes, dump list
-  if (savedCollectionName !== inCollectionName) {
+  useEffect(() => {
+    if (searchContext !== savedSearchContext) {
+      setSavedSearchContext(searchContext);
+    }
+  }, [searchContext]);
+
+  const dumpList = () => {
     setSavedCollectionName(inCollectionName);
+    setSavedListingSource(listingSource);
     setList([]);
+  };
+
+  const collectionNameChanged = savedCollectionName !== inCollectionName;
+  const listingSourceChanged = savedListingSource !== listingSource;
+  if (collectionNameChanged || listingSourceChanged) {
+    dumpList();
   }
 
   const userAccount = user?.account;
 
-  const fetchList = async (newListType: string) => {
+  const fetchList = async (newListType: string, isActiveObj: { isActive: boolean }) => {
     let startAfterUser = '';
     let startAfterMillis = '';
     let startAfterPrice = '';
@@ -85,13 +109,15 @@ export function useCardProvider(inCollectionName?: string): {
     let startAfterBlueCheck;
     let startAfterSearchTitle = '';
     let previousList: CardData[] = [];
+    let offset = 0;
 
     // always get a fresh search
     const isTokenIdSearch = newListType.startsWith('token-id');
 
     // are we getting the next page?
     if (!isTokenIdSearch && listType === newListType && list?.length > 0) {
-      previousList = list;
+      previousList = [...list];
+      offset = previousList.length;
       startAfterSearchTitle = getLastItemSearchTitle(list);
       startAfterSearchCollectionName = getLastItemSearchCollectionName(list);
       startAfterUser = getLastItemMaker(list);
@@ -124,19 +150,24 @@ export function useCardProvider(inCollectionName?: string): {
       startAfterBlueCheck,
       collectionName,
       text,
-      selectedOption
+      selectedOption,
+      listingSource,
+      offset
     );
 
-    if (result.length === 0) {
-      setHasMore(false);
-    } else {
-      setHasMore(true);
+    if (isActiveObj.isActive) {
+      if (result.length === 0) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+      }
+      const newList = removeDuplicates([...previousList, ...result]);
+      setList(newList);
+      setHasLoaded(true);
     }
-
-    setList([...previousList, ...result]);
-    setHasLoaded(true);
   };
 
+  const isActiveObj = { isActive: true };
   useEffect(() => {
     const loadData = async () => {
       let hash = searchContext.searchState.collectionName;
@@ -147,14 +178,14 @@ export function useCardProvider(inCollectionName?: string): {
       hash = hashString(hash).toString();
 
       if (searchContext.searchState.collectionName) {
-        fetchList('collection-name:' + hash);
+        fetchList('collection-name:' + hash, isActiveObj);
       }
       if (searchContext.searchState.text) {
-        fetchList('text:' + hash);
+        fetchList('text:' + hash, isActiveObj);
       } else if (searchContext.searchState.selectedOption) {
-        fetchList('token-id:' + hash);
+        fetchList('token-id:' + hash, isActiveObj);
       } else {
-        fetchList('normal:' + hash);
+        fetchList('normal:' + hash, isActiveObj);
       }
     };
 
@@ -162,7 +193,11 @@ export function useCardProvider(inCollectionName?: string): {
     if (userReady) {
       loadData();
     }
-  }, [searchContext, userAccount, userReady]);
+
+    return () => {
+      isActiveObj.isActive = false;
+    };
+  }, [savedSearchContext, userAccount, userReady]);
 
   const hasData = () => {
     return list.length > 0;
@@ -173,20 +208,24 @@ export function useCardProvider(inCollectionName?: string): {
     const dupsIds = new Set<string>();
     const replacedIds = new Set<string>();
 
+    const getItemId = (item: { tokenId: string | number; tokenAddress: string }) => {
+      return `${item.tokenId}${item.tokenAddress}`;
+    };
+
     for (const item of srcList) {
-      const itemId = `${item.tokenId}${item.tokenAddress}`;
+      const itemId = getItemId(item as any);
 
-      let a = dupMap.get(itemId);
+      let dupItemArray = dupMap.get(itemId);
 
-      if (!a) {
-        a = [item];
+      if (!dupItemArray) {
+        dupItemArray = [item];
       } else {
-        a.push(item);
+        dupItemArray.push(item);
 
         dupsIds.add(itemId);
       }
 
-      dupMap.set(itemId, a);
+      dupMap.set(itemId, dupItemArray);
     }
 
     let showLowest = true;
@@ -201,7 +240,7 @@ export function useCardProvider(inCollectionName?: string): {
       const result: CardData[] = [];
 
       for (const item of srcList) {
-        const itemId = `${item.tokenId}${item.tokenAddress}`;
+        const itemId = getItemId(item as any);
 
         if (dupsIds.has(itemId)) {
           if (!replacedIds.has(itemId)) {
@@ -244,7 +283,7 @@ export function useCardProvider(inCollectionName?: string): {
 
   const loadNext = () => {
     if (hasData() && hasMore) {
-      fetchList(listType);
+      fetchList(listType, isActiveObj);
     } else {
       if (!hasData()) {
         console.log('ScrollLoader too early to load next, no data');
@@ -253,8 +292,6 @@ export function useCardProvider(inCollectionName?: string): {
       }
     }
   };
-
-  const filteredList = removeDuplicates(list);
 
   // don't filter if we search for that name that you might own
   // if (!listType.startsWith('token-id')) {
@@ -266,5 +303,5 @@ export function useCardProvider(inCollectionName?: string): {
   //   }
   // }
 
-  return { list: filteredList, loadNext, hasData, hasLoaded };
+  return { list: list, loadNext, hasData, hasLoaded };
 }

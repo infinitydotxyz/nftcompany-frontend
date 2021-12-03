@@ -1,23 +1,75 @@
 import { CardData, Order, Orders } from 'types/Nft.interface';
 import { weiToEther } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
-import { SearchFilter } from 'utils/context/SearchContext';
+import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
+import { getSearchFriendlyString } from 'utils/commonUtil';
+import { BigNumber } from 'ethers';
 
-export enum ListingSource {
-  Infinity = 'infinity',
-  OpenSea = 'opensea'
-}
+export const getListings = async (
+  listingFilter: SearchFilter & { listingSource: ListingSource; offset?: string | number }
+): Promise<CardData[]> => {
+  switch (listingFilter?.listingSource) {
+    case ListingSource.OpenSea:
+      return getOpenSeaListings(listingFilter);
+    case ListingSource.Infinity:
+      return getInfinityListings(listingFilter);
+    default:
+      return getInfinityListings(listingFilter);
+  }
+};
 
-export const getListings = async (listingFilter?: SearchFilter): Promise<CardData[]> => {
-  const path = `/listings/`;
+async function getInfinityListings(listingFilter: SearchFilter & { offset?: string | number }): Promise<CardData[]> {
+  const path = '/listings/';
 
-  const { result, error }: { result: Orders; error: any } = (await apiGet(path, listingFilter)) as any;
+  const { result, error }: { result: Orders; error: any } = (await apiGet(path, {
+    ...listingFilter,
+    ...{ collectionName: getSearchFriendlyString(listingFilter.collectionName || '') }
+  })) as any;
 
   if (error !== undefined) {
     return [];
   }
 
   return ordersToCardData(result.listings);
+}
+
+async function getOpenSeaListings(listingFilter: SearchFilter & { offset?: string | number }): Promise<CardData[]> {
+  const path = '/opensea/listings/';
+
+  if (listingFilter.collectionName && !listingFilter.tokenAddress) {
+    const tokenAddress = await getTokenAddress(listingFilter.collectionName);
+    if (!tokenAddress) {
+      return [];
+    }
+    listingFilter.tokenAddress = tokenAddress;
+  }
+
+  const { result, error }: { result: Orders; error: any } = (await apiGet(path, {
+    ...listingFilter,
+    ...{ collectionName: getSearchFriendlyString(listingFilter.collectionName || '') }
+  })) as any;
+
+  if (error !== undefined) {
+    return [];
+  }
+
+  return ordersToCardData(result.listings);
+}
+
+export const getTokenAddress = async (collectionName: string): Promise<string> => {
+  const path = `/collections/${getSearchFriendlyString(collectionName)}`;
+
+  const { result, error }: { result: any; error: any } = (await apiGet(path)) as any;
+
+  if (error !== undefined) {
+    return '';
+  }
+
+  if (result.length >= 1 && result[0].address) {
+    return result[0].address;
+  }
+
+  return '';
 };
 
 export const ordersToCardData = (listings: Order[]): CardData[] => {
@@ -101,6 +153,7 @@ export const getTypeAheadOptions = async (
 };
 
 export const orderToCardData = (order: Order): CardData => {
+  const cheapestOpenseaOrder = getCheapestOpenseaOrder(order);
   const cardData: CardData = {
     id: order.id,
     image: order.metadata.asset.image,
@@ -119,7 +172,30 @@ export const orderToCardData = (order: Order): CardData => {
     metadata: order.metadata,
     schemaName: order.metadata.schema,
     expirationTime: order.expirationTime,
-    chainId: order.metadata.chainId
+    chainId: order.metadata.chainId,
+    openseaListing: cheapestOpenseaOrder
   };
   return cardData;
+};
+
+const getCheapestOpenseaOrder = (order: Order) => {
+  const sellOrders = (order as any)?.openseaListings;
+  const ethSellOrderByOwner = sellOrders?.filter(
+    (order: Order & { paymentTokenSymbol: string }) =>
+      order?.side === 1 && order?.paymentTokenSymbol === 'ETH' && order?.saleKind === 0
+  );
+  if (ethSellOrderByOwner?.length > 0) {
+    const cheapestSellOrder = ethSellOrderByOwner?.reduce((lowestOrder: Order, currentOrder: Order) => {
+      try {
+        if (BigNumber.from(currentOrder?.basePrice).lt(BigNumber.from(lowestOrder?.basePrice))) {
+          return currentOrder;
+        }
+      } catch {
+      } finally {
+        return lowestOrder;
+      }
+    });
+
+    return cheapestSellOrder;
+  }
 };

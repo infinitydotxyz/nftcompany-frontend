@@ -64,7 +64,7 @@ export interface Orders {
   listings: Order[];
 }
 
-export type CardData = {
+export type BaseCardData = {
   id: string;
   title: string;
   name?: string;
@@ -86,6 +86,10 @@ export type CardData = {
   schemaName?: string;
   expirationTime?: string;
   chainId?: string;
+};
+
+export type CardData = BaseCardData & {
+  openseaListing?: BaseCardData;
 };
 
 export enum WyvernSchemaName {

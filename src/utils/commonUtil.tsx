@@ -210,7 +210,12 @@ export const getCustomMessage = (eventName: string, data: any) => {
 
   const ev = data?.event;
   const createLink = (transactionHash: string) => (
-    <a className="toast-link" href={`${getChainScannerBase(data.chainId)}/tx/${transactionHash}`} target="_blank" rel="noreferrer">
+    <a
+      className="toast-link"
+      href={`${getChainScannerBase(data.chainId)}/tx/${transactionHash}`}
+      target="_blank"
+      rel="noreferrer"
+    >
       {data?.transactionHash}
     </a>
   );
@@ -333,7 +338,7 @@ export const getChainScannerBase = (chainId?: string): string | null => {
   return null;
 };
 
-export const getNftDataSource = (chainId?: string) : number => {
+export const getNftDataSource = (chainId?: string): number => {
   if (chainId === '1') {
     return NFT_DATA_SOURCES.OPENSEA;
   } else if (chainId === '137') {
@@ -341,4 +346,4 @@ export const getNftDataSource = (chainId?: string) : number => {
   }
   // default
   return NFT_DATA_SOURCES.OPENSEA;
-}
+};
