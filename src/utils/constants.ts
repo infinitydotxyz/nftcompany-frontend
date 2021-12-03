@@ -1,7 +1,7 @@
-export const API_BASE = 'http://localhost:9090';
-export const RINKEBY_API_BASE = 'http://localhost:9090';
-export const SITE_HOST = 'http://localhost:3000';
-export const RINKEBY_SITE_HOST = 'http://localhost:3000';
+export const API_BASE = 'https://sv-dev.nftcompany.com';
+export const RINKEBY_API_BASE = 'https://sv-dev.nftcompany.com';
+export const SITE_HOST = 'https://dev.nftcompany.com';
+export const RINKEBY_SITE_HOST = 'https://dev.nftcompany.com';
 export const NFTC_FEE_RECIPIENT = '0xAAdd54c429a6eEBD4514135EaD53d98D0Cc57d57';
 export const ITEMS_PER_PAGE = 50;
 export const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
