@@ -11,6 +11,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import { ordersToCardData } from 'services/Listings.service';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { CardData } from 'types/Nft.interface';
+import { NftAction } from 'types';
 
 export default function ListNFTs() {
   const { user, showAppError } = useAppContext();
@@ -80,7 +81,7 @@ export default function ListNFTs() {
 
             <CardList
               data={data}
-              action="CANCEL_LISTING"
+              action={NftAction.CancelListing}
               onClickAction={async (item, action) => {
                 setDeleteModalItem(item);
               }}
