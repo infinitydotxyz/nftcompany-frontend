@@ -85,6 +85,5 @@ export type CardData = {
   metadata?: Metadata;
   schemaName?: string;
   expirationTime?: string;
-  chainId?: string;
-  source?: number;
+  chainId? : string;
 };

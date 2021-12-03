@@ -8,14 +8,11 @@ import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
-import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box } from '@chakra-ui/react';
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 import styles from './Collection.module.scss';
-import { NftAction } from 'types';
-import CollectionContents from 'components/CollectionContents/CollectionContents';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -48,12 +45,11 @@ const Collection = (): JSX.Element => {
                 <Tab isDisabled={!address}>Sales</Tab>
                 <Tab isDisabled={!address}>Transfers</Tab>
                 <Tab isDisabled={!address}>Offers</Tab>
-                <Tab>OpenSea</Tab>
               </TabList>
 
               <TabPanels>
                 <TabPanel>
-                  {name && tabIndex === 0 && (
+                  {name && (
                     <CollectionContents
                       name={name as string}
                       onTitle={(newTitle) => {
@@ -62,7 +58,6 @@ const Collection = (): JSX.Element => {
                         }
                       }}
                       onLoaded={({ address }) => setAddress(address)}
-                      listingSource={ListingSource.Infinity}
                     />
                   )}
                 </TabPanel>
@@ -96,25 +91,6 @@ const Collection = (): JSX.Element => {
                     />
                   )}
                 </TabPanel>
-                <TabPanel>
-                  {tabIndex === 4 && (
-                    <>
-                      {name && (
-                        <CollectionContents
-                          name={name as string}
-                          onTitle={(newTitle) => {
-                            if (!title) {
-                              setTitle(newTitle);
-                            }
-                          }}
-                          onLoaded={({ address }) => setAddress(address)}
-                          listingSource={ListingSource.OpenSea}
-                          address={address}
-                        />
-                      )}
-                    </>
-                  )}
-                </TabPanel>
               </TabPanels>
             </Tabs>
           </div>
@@ -129,3 +105,47 @@ Collection.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
 export default Collection;
 
 // =============================================================
+
+type Props = {
+  name: string;
+  onTitle: (title: string) => void;
+  onLoaded?: ({ address }: { address: string }) => void;
+};
+
+const CollectionContents = ({ name, onTitle, onLoaded }: Props): JSX.Element => {
+  const cardProvider = useCardProvider(name as string);
+  const { user } = useAppContext();
+
+  useEffect(() => {
+    if (cardProvider.hasLoaded) {
+      if (cardProvider.list.length > 0) {
+        const title = cardProvider.list[0].collectionName;
+        const tokenAddress = cardProvider.list[0].tokenAddress || '';
+        if (onLoaded) {
+          onLoaded({ address: tokenAddress });
+        }
+        if (title) {
+          onTitle(title);
+        }
+      }
+    }
+  }, [cardProvider]);
+
+  return (
+    <>
+      <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
+
+      {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
+
+      <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
+
+      {cardProvider.hasData() && (
+        <ScrollLoader
+          onFetchMore={async () => {
+            cardProvider.loadNext();
+          }}
+        />
+      )}
+    </>
+  );
+};

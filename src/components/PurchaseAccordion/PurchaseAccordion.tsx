@@ -11,11 +11,10 @@ import styles from './scss/PurchaseAccordion.module.scss';
 import { LargeIcons } from 'components/Icons/MenuIcons';
 import { PurchaseAccordionItem, SingleAccordion } from './SingleAccordion';
 import { ExtraSpace } from 'components/Spacer/Spacer';
-import { NftAction } from 'types';
 
 interface Props {
   data: CardData;
-  action: NftAction;
+  action: string;
   onComplete: () => void;
 }
 
@@ -65,13 +64,13 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
   let showPurchase = false;
 
   switch (action) {
-    case NftAction.CancelListing:
-    case NftAction.CancelOffer:
-    case NftAction.AcceptOffer:
-    case NftAction.ListNft:
-    case NftAction.ViewOrder:
+    case 'CANCEL_LISTING':
+    case 'CANCEL_OFFER':
+    case 'ACCEPT_OFFER':
+    case 'LIST_NFT':
+    case 'VIEW_ORDER':
       break;
-    case NftAction.BuyNft:
+    case 'BUY_NFT':
     default:
       if (data.owner && !addressesEqual(data.owner, user?.account)) {
         showPurchase = true;

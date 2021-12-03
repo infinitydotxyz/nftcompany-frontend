@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent, useEffect } from 'react';
+import React, { useState, MouseEvent } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
@@ -10,13 +10,12 @@ import { addressesEqual } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
 import { Button, Spacer } from '@chakra-ui/react';
-import { NftAction } from 'types';
 
 type Props = {
   data: CardData;
-  onClickAction?: (item: any, action: NftAction) => any;
+  onClickAction?: (item: any, action: string) => any;
   showItems?: string[];
-  action?: NftAction | '';
+  action?: string;
   userAccount?: string;
   [key: string]: any;
 };
@@ -26,13 +25,6 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
   const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
-  const [order, setOrder] = useState<CardData>(data);
-
-  useEffect(() => {
-    if (data.metadata?.basePriceInEth !== undefined) {
-      setOrder(data);
-    }
-  }, [data]);
 
   if (!data) {
     return null;
@@ -59,39 +51,38 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   }
 
   const actionButton = () => {
-    const isForSale = data.metadata?.basePriceInEth;
     let handler: (ev: MouseEvent) => void = () => console.log('');
     let name;
 
-    if (action === NftAction.ListNft) {
+    if (action === 'LIST_NFT') {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
 
         if (onClickAction) {
-          onClickAction(data, NftAction.ListNft);
+          onClickAction(data, 'LIST_NFT');
         }
       };
       name = 'List NFT';
-    } else if (action === NftAction.BuyNft && !ownedByYou) {
+    } else if (action === 'BUY_NFT' && !ownedByYou) {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
 
         setPlaceBidModalShowed(true);
       };
-      name = isForSale ? 'Purchase' : 'Make Offer';
-    } else if (action === NftAction.CancelListing) {
+      name = 'Purchase';
+    } else if (action === 'CANCEL_LISTING') {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
 
         if (onClickAction) {
-          onClickAction(data, NftAction.CancelListing);
+          onClickAction(data, 'CANCEL_LISTING');
         }
       };
       name = 'Cancel';
-    } else if (action === NftAction.AcceptOffer) {
+    } else if (action === 'ACCEPT_OFFER') {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
@@ -99,7 +90,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
         setAcceptOfferModalShowed(true);
       };
       name = 'Accept';
-    } else if (action === NftAction.CancelOffer) {
+    } else if (action === 'CANCEL_OFFER') {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
@@ -145,9 +136,9 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           </div>
           <PriceBox
             justifyRight
-            price={showItems.indexOf('PRICE') >= 0 ? order?.metadata?.basePriceInEth : undefined}
-            token={order?.chainId === '1' ? 'ETH' : 'WETH'}
-            expirationTime={order?.expirationTime}
+            price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
+            token={data?.chainId === '1' ? 'ETH' : 'WETH'}
+            expirationTime={data?.expirationTime}
           />
         </div>
       </div>
@@ -165,7 +156,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
         {actionButton()}
       </div>
 
-      {placeBidModalShowed && <PlaceBidModal data={order || data} onClose={() => setPlaceBidModalShowed(false)} />}
+      {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
       {cancelOfferModalShowed && <CancelOfferModal data={data} onClose={() => setCancelOfferModalShowed(false)} />}
       {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
     </div>

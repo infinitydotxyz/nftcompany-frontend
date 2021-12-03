@@ -9,7 +9,7 @@ import { apiPost } from 'utils/apiUtil';
 import { Button, Input } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
-import { getToken } from 'utils/commonUtil';
+import { getToken, stringToFloat } from 'utils/commonUtil';
 import { DatePicker } from 'components/DatePicker/DatePicker';
 import { LISTING_TYPE } from 'utils/constants';
 
@@ -33,13 +33,12 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
 
   const loadOrder = useCallback(async () => {
     let orderParams: any;
+
     if (data.id && data.maker) {
       orderParams = {
         maker: data.maker,
         id: data.id,
-        side: 1, // sell order
-        tokenId: data.tokenId,
-        tokenAddress: data.tokenAddress
+        side: 1 // sell order
       };
     } else {
       orderParams = {
@@ -200,7 +199,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                     <PriceBox
                       justifyRight
                       price={data.metadata?.basePriceInEth}
-                      token="WETH"
+                      token='WETH'
                       expirationTime={data?.expirationTime}
                     />
                   </div>

@@ -85,7 +85,6 @@ const FilterDrawer = () => {
       newFilter.priceMin = newFilter.priceMin || DEFAULT_MIN_PRICE.toString();
     }
     newFilter.collectionName = collectionName;
-    newFilter.tokenAddresses = selectedCollectionIds === 'CLEAR' ? [] : selectedCollectionIds.split(',');
     newFilter.collectionIds = selectedCollectionIds === 'CLEAR' ? '' : selectedCollectionIds;
     return newFilter;
   };

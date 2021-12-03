@@ -1,5 +1,4 @@
 import React from 'react';
-import { NftAction } from 'types';
 import { CardData } from 'types/Nft.interface';
 import { uuidv4 } from 'utils/commonUtil';
 import Card from './Card';
@@ -7,7 +6,7 @@ import styles from './CardList.module.scss';
 
 type Props = {
   data: CardData[];
-  action?: NftAction;
+  action?: string;
   showItems?: string[];
   userAccount?: string;
   onClickAction?: (item: any, action: string) => void;

@@ -11,7 +11,6 @@ import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { transformOpenSea, transformCovalent, getNftDataSource } from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
-import { NftAction } from 'types';
 
 export default function MyNFTs() {
   const { user, showAppError, chainId } = useAppContext();
@@ -81,7 +80,7 @@ export default function MyNFTs() {
             <CardList
               data={data}
               showItems={[]}
-              action={NftAction.ListNft}
+              action="LIST_NFT"
               onClickAction={(item) => {
                 setListModalItem(item);
               }}
