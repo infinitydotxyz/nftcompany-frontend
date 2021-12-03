@@ -86,6 +86,7 @@ export type CardData = {
   schemaName?: string;
   expirationTime?: string;
   chainId?: string;
+  source?: number;
 };
 
 export enum WyvernSchemaName {

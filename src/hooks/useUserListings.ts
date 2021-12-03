@@ -1,10 +1,11 @@
-import { ListingSource, ordersToCardData } from 'services/Listings.service';
+import { ordersToCardData } from 'services/Listings.service';
 import { getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
 import { useState, useEffect, useRef } from 'react';
 import { CardData } from 'types/Nft.interface';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { apiGet } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
+import { ListingSource } from 'utils/context/SearchContext';
 
 export function useUserListings(source: ListingSource) {
   const [listings, setListings] = useState<CardData[]>([]);

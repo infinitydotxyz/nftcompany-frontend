@@ -7,7 +7,6 @@ import CancelListingModal from 'components/CancelListingModal/CancelListingModal
 import { LISTING_TYPE, NULL_ADDRESS } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-import { ListingSource } from 'services/Listings.service';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { CardData, WyvernSchemaName } from 'types/Nft.interface';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
@@ -16,6 +15,8 @@ import { useUserListings } from 'hooks/useUserListings';
 import { createSellOrder, fetchVerifiedBonusReward, SellOrderProps } from 'components/ListNFTModal/listNFT';
 import { getPaymentTokenAddress } from 'utils/commonUtil';
 import { weiToEther } from 'utils/ethersUtil';
+import { NftAction } from 'types';
+import { ListingSource } from 'utils/context/SearchContext';
 
 export default function ListNFTs() {
   const { user, showAppError, showAppMessage } = useAppContext();
@@ -105,7 +106,7 @@ export default function ListNFTs() {
 
   const Listings = (props: { source: ListingSource }) => {
     const { listings, isFetching, fetchMore, currentPage, dataLoaded } = useUserListings(props.source);
-    const action = props.source === ListingSource.OpenSea ? 'TRANSFER_ORDER' : 'CANCEL_LISTING';
+    const action = props.source === ListingSource.OpenSea ? NftAction.ImportOrder : NftAction.CancelOffer;
 
     return (
       <>
@@ -118,7 +119,7 @@ export default function ListNFTs() {
             data={listings}
             action={action}
             onClickAction={async (item, action) => {
-              if (action === 'TRANSFER_ORDER') {
+              if (action === NftAction.ImportOrder) {
                 transferOrder(item);
               } else {
                 setDeleteModalItem(item);
@@ -162,7 +163,6 @@ export default function ListNFTs() {
                 <TabPanel>
                   <Listings source={ListingSource.Infinity} />
                 </TabPanel>
-
                 {tabIndex === 1 && (
                   <TabPanel>
                     <Listings source={ListingSource.OpenSea} />

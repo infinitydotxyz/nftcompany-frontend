@@ -1,23 +1,74 @@
 import { CardData, Order, Orders } from 'types/Nft.interface';
 import { weiToEther } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
-import { SearchFilter } from 'utils/context/SearchContext';
+import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
+import { getSearchFriendlyString } from 'utils/commonUtil';
 
-export enum ListingSource {
-  Infinity = 'infinity',
-  OpenSea = 'opensea'
-}
+export const getListings = async (
+  listingFilter: SearchFilter & { listingSource: ListingSource; offset?: string | number }
+): Promise<CardData[]> => {
+  switch (listingFilter?.listingSource) {
+    case ListingSource.OpenSea:
+      return getOpenSeaListings(listingFilter);
+    case ListingSource.Infinity:
+      return getInfinityListings(listingFilter);
+    default:
+      return getInfinityListings(listingFilter);
+  }
+};
 
-export const getListings = async (listingFilter?: SearchFilter): Promise<CardData[]> => {
-  const path = `/listings/`;
+async function getInfinityListings(listingFilter: SearchFilter & { offset?: string | number }): Promise<CardData[]> {
+  const path = '/listings/';
 
-  const { result, error }: { result: Orders; error: any } = (await apiGet(path, listingFilter)) as any;
+  const { result, error }: { result: Orders; error: any } = (await apiGet(path, {
+    ...listingFilter,
+    ...{ collectionName: getSearchFriendlyString(listingFilter.collectionName || '') }
+  })) as any;
 
   if (error !== undefined) {
     return [];
   }
 
   return ordersToCardData(result.listings);
+}
+
+async function getOpenSeaListings(listingFilter: SearchFilter & { offset?: string | number }): Promise<CardData[]> {
+  const path = '/opensea/listings/';
+
+  if (listingFilter.collectionName && !listingFilter.tokenAddress) {
+    const tokenAddress = await getTokenAddress(listingFilter.collectionName);
+    if (!tokenAddress) {
+      return [];
+    }
+    listingFilter.tokenAddress = tokenAddress;
+  }
+
+  const { result, error }: { result: Orders; error: any } = (await apiGet(path, {
+    ...listingFilter,
+    ...{ collectionName: getSearchFriendlyString(listingFilter.collectionName || '') }
+  })) as any;
+
+  if (error !== undefined || !result?.listings) {
+    return [];
+  }
+
+  return ordersToCardData(result.listings);
+}
+
+export const getTokenAddress = async (collectionName: string): Promise<string> => {
+  const path = `/collections/${getSearchFriendlyString(collectionName)}`;
+
+  const { result, error }: { result: any; error: any } = (await apiGet(path)) as any;
+
+  if (error !== undefined) {
+    return '';
+  }
+
+  if (result.length >= 1 && result[0].address) {
+    return result[0].address;
+  }
+
+  return '';
 };
 
 export const ordersToCardData = (listings: Order[]): CardData[] => {

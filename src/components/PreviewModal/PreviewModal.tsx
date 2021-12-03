@@ -16,12 +16,13 @@ import { ExternalLinkIconButton, ShareIconButton } from 'components/ShareButton/
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { Label } from 'components/Text/Text';
 import { LISTING_TYPE } from 'utils/constants';
+import { NftAction } from 'types';
 
 const isServer = typeof window === 'undefined';
 
 interface Props {
   data: CardData;
-  action: string; // 'purchase', 'accept-offer', 'cancel-offer'
+  action: NftAction;
   previewCollection?: boolean;
   onClose: () => void;
 }
@@ -53,21 +54,21 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
 
   let purchaseButton;
   switch (action) {
-    case 'CANCEL_LISTING':
+    case NftAction.CancelListing:
       purchaseButton = <Button onClick={() => setDeleteListingModalShowed(true)}>Cancel Listing</Button>;
 
       // hide the owner
       owner = '';
 
       break;
-    case 'CANCEL_OFFER':
+    case NftAction.CancelOffer:
       purchaseButton = <Button onClick={() => setCancelOfferModalShowed(true)}>Cancel Offer</Button>;
 
       // change to owner of asset
       owner = data.metadata?.asset.owner ?? '';
 
       break;
-    case 'ACCEPT_OFFER':
+    case NftAction.AcceptOffer:
       offerMaker = data.maker ?? 'unkonwn';
 
       // hide the owner
@@ -75,15 +76,15 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
 
       purchaseButton = <Button onClick={() => setAcceptOfferModalShowed(true)}>Accept Offer</Button>;
       break;
-    case 'LIST_NFT':
+    case NftAction.ListNft:
       purchaseButton = <Button onClick={() => setListNFTModalShowed(true)}>List NFT</Button>;
       break;
-    case 'VIEW_ORDER':
+    case NftAction.ViewOrder:
       // hide the owner
       owner = '';
 
       break;
-    case 'BUY_NFT':
+    case NftAction.BuyNft:
     default:
       // not even sure I need this if statement, SNG remove later
       if (showPurchase) {
