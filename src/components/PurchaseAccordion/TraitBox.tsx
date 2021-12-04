@@ -16,7 +16,7 @@ export const TraitBox: React.FC<Props> = ({ data }: Props) => {
   return (
     <div className={styles.infoBox}>
       <SingleAccordion defaultExpandedIndex={-1}>
-        <PurchaseAccordionItem dark={dark} title="Properties" icon={LargeIcons.starIcon}>
+        <PurchaseAccordionItem dark={dark} title="Properties" icon={LargeIcons.listIcon}>
           <Box d="flex" flexWrap="wrap">
             {(data.metadata?.asset?.traits || []).map((item) => {
               return (
