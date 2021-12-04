@@ -5,12 +5,12 @@ import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PurchaseAccordion } from 'components/PurchaseAccordion/PurchaseAccordion';
 import { getListings } from 'services/Listings.service';
 import { defaultFilterState } from 'utils/context/SearchContext';
-import { Button, Link, Spacer } from '@chakra-ui/react';
+import { Link, Spacer, Box } from '@chakra-ui/react';
 import { DescriptionBox } from 'components/PurchaseAccordion/DescriptionBox';
 import { ExtraSpace } from 'components/Spacer/Spacer';
 import NFTEvents from 'components/NFTEvents/NFTEvents';
-import router from 'next/router';
 import { getSearchFriendlyString } from 'utils/commonUtil';
+import { TraitBox } from 'components/PurchaseAccordion/TraitBox';
 
 type Props = {
   tokenId: string;
@@ -97,7 +97,14 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
             </div>
 
             <ExtraSpace />
+
             <DescriptionBox data={data} />
+
+            {(data.metadata?.asset?.traits || []).length > 0 && (
+              <Box mt={4}>
+                <TraitBox data={data} />
+              </Box>
+            )}
           </div>
 
           <div className={styles.right}>
