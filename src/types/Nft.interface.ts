@@ -34,6 +34,11 @@ export interface Order {
   makerReferrerFee: string;
 }
 
+export interface TraitItem {
+  traitType: string;
+  traitValue: string;
+}
+
 export interface Metadata {
   asset: Asset;
   hasBonusReward: boolean;
@@ -57,6 +62,7 @@ export interface Asset {
   collectionName: string;
   searchCollectionName?: string;
   searchTitle?: string;
+  traits?: TraitItem[];
 }
 
 export interface Orders {

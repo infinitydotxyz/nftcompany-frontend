@@ -5,12 +5,12 @@ import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PurchaseAccordion } from 'components/PurchaseAccordion/PurchaseAccordion';
 import { getListings } from 'services/Listings.service';
 import { defaultFilterState, ListingSource } from 'utils/context/SearchContext';
-import { Button, Link, Spacer } from '@chakra-ui/react';
+import { Link, Spacer, Box } from '@chakra-ui/react';
 import { DescriptionBox } from 'components/PurchaseAccordion/DescriptionBox';
 import { ExtraSpace } from 'components/Spacer/Spacer';
 import NFTEvents from 'components/NFTEvents/NFTEvents';
-import router from 'next/router';
 import { getSearchFriendlyString } from 'utils/commonUtil';
+import { TraitBox } from 'components/PurchaseAccordion/TraitBox';
 import { NftAction } from 'types';
 
 type Props = {
@@ -35,15 +35,8 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
     filter.tokenAddress = tokenAddress;
     filter.tokenId = tokenId;
 
-    const infinityResultsPromise = getListings({ ...filter, listingSource: ListingSource.Infinity });
-    const openseaResultsPromise = getListings({ ...filter, listingSource: ListingSource.OpenSea });
-    const promiseAllSettledResults = await Promise.allSettled([infinityResultsPromise, openseaResultsPromise]);
+    const result = await getListings({ ...filter, listingSource: ListingSource.Infinity });
 
-    const [infinityPromiseResult, openseaPromiseResult] = promiseAllSettledResults;
-    const infinityResults = infinityPromiseResult?.status === 'fulfilled' ? infinityPromiseResult.value : [];
-    const openseaResults = openseaPromiseResult?.status === 'fulfilled' ? openseaPromiseResult.value : [];
-
-    const result: any[] = [...infinityResults, ...openseaResults];
     if (result && result.length > 0) {
       let theData = result[0];
       let createdAt = theData.metadata?.createdAt ?? 0;
@@ -105,7 +98,14 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
             </div>
 
             <ExtraSpace />
+
             <DescriptionBox data={data} />
+
+            {(data.metadata?.asset?.traits || []).length > 0 && (
+              <Box mt={4}>
+                <TraitBox data={data} />
+              </Box>
+            )}
           </div>
 
           <div className={styles.right}>
