@@ -103,28 +103,8 @@ export default function ExplorePage() {
       </Head>
       <div>
         <div className="page-container">
-          <Tabs onChange={(index) => setTabIndex(index)}>
-            <TabList className={styles.tabList}>
-              <Tab>Infinity</Tab>
-              <Tab>OpenSea</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                {tabIndex === 0 && (
-                  <>
-                    {!searchMode && <FeaturedCollections />}
-                    <Explore listingSource={ListingSource.Infinity} />
-                  </>
-                )}
-              </TabPanel>
-
-              <TabPanel>
-                {tabIndex === 1 && (
-                  <>{searchMode ? <Explore listingSource={ListingSource.OpenSea} /> : <TrendingCollectionListings />}</>
-                )}
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+          {!searchMode && <FeaturedCollections />}
+          <Explore listingSource={ListingSource.Infinity} />
         </div>
       </div>
       <div className="filter-panel-explore-page">

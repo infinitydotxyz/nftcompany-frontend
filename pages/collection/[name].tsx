@@ -47,7 +47,6 @@ const Collection = (): JSX.Element => {
                 <Tab isDisabled={!address}>Sales</Tab>
                 <Tab isDisabled={!address}>Transfers</Tab>
                 <Tab isDisabled={!address}>Offers</Tab>
-                <Tab>OpenSea</Tab>
               </TabList>
 
               <TabPanels>
@@ -93,24 +92,6 @@ const Collection = (): JSX.Element => {
                       activityType="offer"
                       pageType="collection"
                     />
-                  )}
-                </TabPanel>
-                <TabPanel>
-                  {tabIndex === 4 && (
-                    <>
-                      {name && (
-                        <CollectionContents
-                          name={name as string}
-                          onTitle={(newTitle) => {
-                            if (!title) {
-                              setTitle(newTitle);
-                            }
-                          }}
-                          onLoaded={({ address }) => setAddress(address)}
-                          listingSource={ListingSource.OpenSea}
-                        />
-                      )}
-                    </>
                   )}
                 </TabPanel>
               </TabPanels>
