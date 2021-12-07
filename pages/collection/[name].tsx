@@ -8,11 +8,13 @@ import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
+import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box } from '@chakra-ui/react';
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 import styles from './Collection.module.scss';
+import { NftAction } from 'types';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -49,7 +51,7 @@ const Collection = (): JSX.Element => {
 
               <TabPanels>
                 <TabPanel>
-                  {name && (
+                  {name && tabIndex === 0 && (
                     <CollectionContents
                       name={name as string}
                       onTitle={(newTitle) => {
@@ -58,6 +60,7 @@ const Collection = (): JSX.Element => {
                         }
                       }}
                       onLoaded={({ address }) => setAddress(address)}
+                      listingSource={ListingSource.Infinity}
                     />
                   )}
                 </TabPanel>
@@ -110,10 +113,12 @@ type Props = {
   name: string;
   onTitle: (title: string) => void;
   onLoaded?: ({ address }: { address: string }) => void;
+  listingSource: ListingSource;
 };
 
-const CollectionContents = ({ name, onTitle, onLoaded }: Props): JSX.Element => {
-  const cardProvider = useCardProvider(name as string);
+const CollectionContents = ({ name, onTitle, onLoaded, listingSource }: Props): JSX.Element => {
+  const searchContext = useSearchContext();
+  const cardProvider = useCardProvider(listingSource, searchContext, name as string);
   const { user } = useAppContext();
 
   useEffect(() => {
@@ -137,7 +142,7 @@ const CollectionContents = ({ name, onTitle, onLoaded }: Props): JSX.Element => 
 
       {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
-      <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />
+      <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action={NftAction.BuyNft} />
 
       {cardProvider.hasData() && (
         <ScrollLoader

@@ -1,6 +1,6 @@
 import { getWyvernChainName } from './commonUtil';
 
-const ethers = require('ethers');
+import * as ethers from 'ethers';
 
 // OpenSea's dependencies:
 const Web3 = require('web3');
@@ -122,4 +122,4 @@ export const getSchemaName = (address: string) => {
   }
 };
 
-export const weiToEther = (wei: number) => ethers.utils.formatEther(wei);
+export const weiToEther = (wei: ethers.BigNumberish) => ethers.utils.formatEther(wei);
