@@ -28,7 +28,8 @@ export default function ExplorePage() {
       address: x.tokenAddress,
       cardImage: x.image,
       description: x.description,
-      hasBlueCheck: x.hasBlueCheck
+      hasBlueCheck: x.hasBlueCheck,
+      chainId: x.chainId
     } as CollectionCardEntry;
   });
 
