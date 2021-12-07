@@ -9,8 +9,6 @@ export const getListings = async (
   listingFilter: SearchFilter & { listingSource: ListingSource; offset?: string | number }
 ): Promise<CardData[]> => {
   switch (listingFilter?.listingSource) {
-    case ListingSource.OpenSea:
-      return getOpenSeaListings(listingFilter);
     case ListingSource.Infinity:
       return getInfinityListings(listingFilter);
     default:
@@ -20,29 +18,6 @@ export const getListings = async (
 
 async function getInfinityListings(listingFilter: SearchFilter & { offset?: string | number }): Promise<CardData[]> {
   const path = '/listings/';
-
-  const { result, error }: { result: Orders; error: any } = (await apiGet(path, {
-    ...listingFilter,
-    ...{ collectionName: getSearchFriendlyString(listingFilter.collectionName || '') }
-  })) as any;
-
-  if (error !== undefined) {
-    return [];
-  }
-
-  return ordersToCardData(result.listings);
-}
-
-async function getOpenSeaListings(listingFilter: SearchFilter & { offset?: string | number }): Promise<CardData[]> {
-  const path = '/opensea/listings/';
-
-  if (listingFilter.collectionName && !listingFilter.tokenAddress) {
-    const tokenAddress = await getTokenAddress(listingFilter.collectionName);
-    if (!tokenAddress) {
-      return [];
-    }
-    listingFilter.tokenAddress = tokenAddress;
-  }
 
   const { result, error }: { result: Orders; error: any } = (await apiGet(path, {
     ...listingFilter,
