@@ -225,7 +225,7 @@ const Header = (): JSX.Element => {
             Import your listed NFTs from OpenSea for free, with the click of a&nbsp;
             <a
               onClick={() => {
-                router.push('/listed-nfts');
+                router.push('/listed-nfts?tab=opensea');
                 setShowBanner(false);
               }}
               style={{ textDecoration: 'underline', cursor: 'pointer' }}

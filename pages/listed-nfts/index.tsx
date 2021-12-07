@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
@@ -17,11 +17,18 @@ import { getPaymentTokenAddress } from 'utils/commonUtil';
 import { weiToEther } from 'utils/ethersUtil';
 import { NftAction } from 'types';
 import { ListingSource } from 'utils/context/SearchContext';
+import router from 'next/router';
 
 export default function ListNFTs() {
   const { user, showAppError, showAppMessage } = useAppContext();
   const [tabIndex, setTabIndex] = useState(0);
   const [deleteModalItem, setDeleteModalItem] = useState<CardData | null>(null);
+
+  useEffect(() => {
+    if (router.query.tab === 'opensea') {
+      setTabIndex(1);
+    }
+  }, []);
 
   const importOrder = async (item: CardData) => {
     const order = item.order;
@@ -153,7 +160,7 @@ export default function ListNFTs() {
           </div>
 
           <div className="center">
-            <Tabs onChange={(index) => setTabIndex(index)}>
+            <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
               <TabList className={styles.tabList}>
                 <Tab>Infinity</Tab>
                 <Tab>OpenSea</Tab>
