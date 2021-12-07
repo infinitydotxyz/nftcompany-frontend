@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { MenuItem, MenuDivider, Box, useColorMode, Alert, AlertIcon, CloseButton } from '@chakra-ui/react';
+import {
+  MenuItem,
+  MenuDivider,
+  Box,
+  useColorMode,
+  Alert,
+  AlertIcon,
+  CloseButton,
+  Button,
+  Text
+} from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { saveAuthHeaders } from '../../../src/utils/apiUtil';
@@ -10,6 +20,7 @@ import SettingsModal from 'components/SettingsModal/SettingsModal';
 import { ellipsisAddress } from 'utils/commonUtil';
 import { EthToken, MoreVertIcon } from 'components/Icons/Icons';
 import SearchBox from '../SearchBox/SearchBox';
+import { CloseIcon } from '@chakra-ui/icons';
 
 import styles from './Header.module.scss';
 import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
@@ -20,6 +31,7 @@ let isChangingAccount = false;
 const Header = (): JSX.Element => {
   const router = useRouter();
   const { user, signIn, signOut, chainId } = useAppContext();
+  const [showBanner, setShowBanner] = useState(true);
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [lockout, setLockout] = useState(false);
   const [closedLockout, setClosedLockout] = useState(false);
@@ -205,9 +217,39 @@ const Header = (): JSX.Element => {
     );
   }
 
+  const Banner = () => {
+    return (
+      <>
+        <Box className={styles.banner} justifyContent="center" alignItems="center" display="flex">
+          <Text color="white" textAlign="center" w="100" s>
+            Import your listed NFTs from OpenSea for free, with the click of a&nbsp;
+            <a
+              onClick={() => {
+                router.push('/listed-nfts');
+                setShowBanner(false);
+              }}
+              style={{ textDecoration: 'underline', cursor: 'pointer' }}
+            >
+              button
+            </a>
+          </Text>
+        </Box>
+        <CloseIcon
+          className={styles.closeBanner}
+          boxSize={MenuIcons.sbs}
+          color="#ffffff"
+          onClick={() => {
+            setShowBanner(false);
+          }}
+        />
+      </>
+    );
+  };
+
   return (
     <header className={styles.header}>
-      <Box className={styles.hdf}>
+      {showBanner && <Banner />}
+      <Box className={styles.hdf} style={showBanner ? { top: 51 } : {}}>
         <div className="page-container-header">
           <div className={styles.showLargeLogo}>
             <Link href="/" passHref>
