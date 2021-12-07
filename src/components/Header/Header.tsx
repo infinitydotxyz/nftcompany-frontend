@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  MenuItem,
-  MenuDivider,
-  Box,
-  useColorMode,
-  Alert,
-  AlertIcon,
-  CloseButton,
-  Button,
-  Text
-} from '@chakra-ui/react';
+import { MenuItem, MenuDivider, Box, useColorMode, Alert, AlertIcon, CloseButton, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { saveAuthHeaders } from '../../../src/utils/apiUtil';
@@ -18,7 +8,7 @@ import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import SettingsModal from 'components/SettingsModal/SettingsModal';
 import { ellipsisAddress } from 'utils/commonUtil';
-import { EthToken, MoreVertIcon } from 'components/Icons/Icons';
+import { MoreVertIcon } from 'components/Icons/Icons';
 import SearchBox from '../SearchBox/SearchBox';
 import { CloseIcon } from '@chakra-ui/icons';
 
@@ -221,7 +211,7 @@ const Header = (): JSX.Element => {
     return (
       <>
         <Box className={styles.banner} justifyContent="center" alignItems="center" display="flex">
-          <Text color="white" textAlign="center" w="100" s>
+          <Text color="white" textAlign="center" w="100">
             Import your listed NFTs from OpenSea for free, with the click of a&nbsp;
             <a
               onClick={() => {

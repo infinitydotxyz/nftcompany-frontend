@@ -1,0 +1,19 @@
+.traitItem {
+  width: 22%;
+  background-color: #fff;
+  border: 1px solid var(--chakra-colors-brandBlue, red);
+  border-radius: 4px;
+  margin-top: 10px;
+  margin-right: 10px;
+  text-align: center;
+  padding: 4px;
+  font-size: 0.8em;
+
+  h3 {
+    color: #666;
+  }
+  div {
+    margin-top: 6px;
+    font-weight: bold;
+  }
+}

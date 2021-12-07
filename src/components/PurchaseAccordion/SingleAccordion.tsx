@@ -31,10 +31,11 @@ export const PurchaseAccordionItem: React.FC<IProps> = ({ dark, icon, title, chi
 
 interface EProps {
   children: JSX.Element;
+  defaultExpandedIndex?: number;
 }
 
-export const SingleAccordion: React.FC<EProps> = ({ children }: EProps) => {
-  const [expandedIndex, setExpandedIndex] = useState<number[]>([0]);
+export const SingleAccordion: React.FC<EProps> = ({ children, defaultExpandedIndex }: EProps) => {
+  const [expandedIndex, setExpandedIndex] = useState<number[]>([defaultExpandedIndex ?? 0]);
 
   return (
     <div className={styles.singleAccordion}>

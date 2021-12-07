@@ -12,11 +12,9 @@ import { CardGrid } from 'components/CollectionCards/CollectionCard';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import CardList from 'components/Card/CardList';
-import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab } from '@chakra-ui/react';
+import { Spacer } from '@chakra-ui/react';
 import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollections';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
-import TrendingCollectionListings from 'components/TrendingCollectionListings/TrendingCollectionListings';
-import styles from './Explore.module.scss';
 import { NftAction } from 'types';
 
 export default function ExplorePage() {
