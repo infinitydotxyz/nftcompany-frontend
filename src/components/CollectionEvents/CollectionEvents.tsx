@@ -37,7 +37,7 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
       showAppError(`Error when fetching data. ${error.message}`);
     }
 
-    const moreData = result.asset_events || [];
+    const moreData = result?.asset_events || [];
 
     setIsFetching(false);
     setData([...data, ...moreData]);
