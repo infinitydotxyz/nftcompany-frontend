@@ -24,7 +24,7 @@ export function useUserListings(source: ListingSource) {
   };
 
   const getOpenseaListings = async (address: string) => {
-    const { result, error } = await apiGet('/opensea/wyvern/v1/orders', {
+    const { result, error } = await apiGet('/listings/import', {
       maker: address,
       limit: ITEMS_PER_PAGE,
       side: '1'
