@@ -47,7 +47,6 @@ const Collection = (): JSX.Element => {
                 <Tab isDisabled={!address}>Sales</Tab>
                 <Tab isDisabled={!address}>Transfers</Tab>
                 <Tab isDisabled={!address}>Offers</Tab>
-                <Tab>OpenSea</Tab>
               </TabList>
 
               <TabPanels>
