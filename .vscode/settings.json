@@ -1,6 +1,10 @@
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "js/ts.implicitProjectConfig.checkJs": true,
 
   // fixes auto format when editing svgs
   "files.associations": {
