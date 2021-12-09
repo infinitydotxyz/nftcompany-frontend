@@ -7,8 +7,6 @@ import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
 import { RewardResults } from '../../src/types/rewardTypes';
 import { Spinner } from '@chakra-ui/spinner';
-import { RewardCardRow } from 'components/RewardCardList/RewardCardList';
-import CountryConfirmModal from 'components/CountryConfirmModal/CountryConfirmModal';
 import { DataItem, RewardCard } from 'components/RewardCard/RewardCard';
 import { GiftCardIcon } from 'components/Icons/Icons';
 
@@ -66,24 +64,23 @@ const Rewards = (): JSX.Element => {
   const items = () => {
     if (rewardResults) {
       const activityItems: DataItem[] = [
-        { title: 'Threshold', value: rewardResults.threshold },
-        { title: 'Transacted', value: rewardResults.transacted },
-        { title: 'Eligible', value: rewardResults.eligible },
-        { title: 'Bonus', value: rewardResults.bonus },
-        { title: 'Reward', value: rewardResults.reward },
-        { title: 'Total', value: rewardResults.total }
+        { title: 'Eligible Tokens', value: rewardResults.eligible },
+        { title: 'Threshold amount', value: rewardResults.threshold },
+        { title: 'Transacted amount', value: rewardResults.transacted },
+        { title: 'Earned tokens', value: rewardResults.reward },
+        { title: 'Early supporter bonus', value: rewardResults.bonus },
+        { title: 'Total tokens', value: rewardResults.total }
       ];
-
       return activityItems;
     }
 
     const activityItems: DataItem[] = [
-      { title: 'Threshold', value: '0' },
-      { title: 'Transacted', value: '0' },
-      { title: 'Eligible', value: '0' },
-      { title: 'Bonus', value: '0' },
-      { title: 'Reward', value: '0' },
-      { title: 'Total', value: '0' }
+      { title: 'Eligible Tokens', value: '0' },
+      { title: 'Threshold amount', value: '0' },
+      { title: 'Transacted amount', value: '0' },
+      { title: 'Earned tokens', value: '0' },
+      { title: 'Early supporter bonus', value: '0' },
+      { title: 'Total tokens', value: '0' }
     ];
 
     return activityItems;
@@ -98,13 +95,11 @@ const Rewards = (): JSX.Element => {
         <div className="page-container">
           <div className={styles.content}>
             <div className={styles.centered}>
-              <div className="section-bar" style={{ marginBottom: 30 }}>
-                <div className="tg-title">Rewards</div>
-              </div>
               <div className={styles.centerStuff}>
                 <div className={styles.stuff}>
                   <div className={styles.title}>The Airdrop has ended</div>
                   <div className={styles.subtitle}>Here are your rewards</div>
+                  <div className={styles.subtitle}>Token will be live and claimable early Jan 2022</div>
                   <RewardCard lines={false} items={items()} title="Rewards" icon={<GiftCardIcon boxSize={8} />} />
                 </div>
               </div>
