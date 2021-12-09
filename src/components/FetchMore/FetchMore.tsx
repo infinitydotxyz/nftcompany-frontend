@@ -13,7 +13,7 @@ const FetchMoreElement = ({ inView, ref, onFetchMore, data, currentPage }: any) 
       onFetchMore();
     }
   }, [inView]);
-  return <div ref={ref}>&nbsp;</div>; // render a placeholder to check if it's visible (inView) or not.
+  return <span ref={ref}>&nbsp;</span>; // render a placeholder to check if it's visible (inView) or not.
 };
 
 type FetchMoreProps = {

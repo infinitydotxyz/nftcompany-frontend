@@ -10,6 +10,11 @@ export type SearchState = {
   selectedOption: TypeAheadOption | undefined;
 };
 
+export enum ListingSource {
+  Infinity = 'infinity',
+  OpenSea = 'opensea'
+}
+
 export type SearchFilter = {
   sortByLikes: string;
   sortByPrice: string;
@@ -25,12 +30,13 @@ export type SearchFilter = {
   id: string;
   tokenId: string;
   tokenAddress: string;
+  tokenAddresses?: string[];
   collectionName: string;
   text: string;
   sortByPriceDirection: string;
   startAfterUser: string;
+  collectionIds: string;
   listType?: '' | 'fixedPrice' | 'englishAuction' | 'dutchAuction';
-  collectionIds?: string;
   traitType?: string;
   traitValue?: string;
 };
@@ -80,11 +86,13 @@ export function SearchContextProvider({ children }: any) {
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;
 }
 
-export function useSearchContext(): {
+export type SearchContextType = {
   searchState: SearchState;
   filterState: SearchFilter;
   setSearchState: (state: SearchState) => void;
   setFilterState: (state: SearchFilter) => void;
-} {
+};
+
+export function useSearchContext(): SearchContextType {
   return useContext(SearchContext);
 }

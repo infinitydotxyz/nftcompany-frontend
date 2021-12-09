@@ -1,5 +1,4 @@
 import React from 'react';
-import { numStr } from 'utils/commonUtil';
 import styles from './RewardCard.module.scss';
 import { Countdown } from 'components/Countdown/Countdown';
 import { AlarmIcon, AwardIcon, LeaderboardIcon, StatsIcon } from 'components/Icons/Icons';
@@ -21,6 +20,37 @@ type IProps = {
   items: DataItem[];
 };
 
+// makes number strings from strings or numbers
+export const numberStr = (value: any): string => {
+  let short;
+
+  if (typeof value === 'undefined' || value === null) {
+    short = '';
+  } else if (typeof value === 'string') {
+    short = value;
+  } else if (typeof value === 'number') {
+    short = value.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 4 });
+  } else {
+    short = value.toString();
+  }
+
+  // remove .0000
+  let zeros = '.0000';
+  if (short.endsWith(zeros)) {
+    short = short.substring(0, short.length - zeros.length);
+  }
+
+  // .9800 -> .98
+  if (short.includes('.')) {
+    zeros = '00';
+    if (short.endsWith(zeros)) {
+      short = short.substring(0, short.length - zeros.length);
+    }
+  }
+
+  return short;
+};
+
 export const RewardCard = ({ title, icon, lines = true, items }: IProps) => {
   if (!items) {
     return <div>Nothing found</div>;
@@ -36,7 +66,7 @@ export const RewardCard = ({ title, icon, lines = true, items }: IProps) => {
   }
 
   const divs = items.map((i) => {
-    const val = numStr(i.value);
+    const val = numberStr(i.value);
 
     return (
       <div key={i.title + i.value} className={classes.join(' ')}>

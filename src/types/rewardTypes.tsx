@@ -41,6 +41,15 @@ export type UserReward = {
 
 // ===========================================================
 
+export type RewardResults = {
+  newEligible: number;
+  newThreshold: number;
+  transacted: number;
+  finalEarnedTokens: number;
+};
+
+// ===========================================================
+
 export type CollectionCardEntry = {
   address: string;
   bannerImage: string;
@@ -51,7 +60,7 @@ export type CollectionCardEntry = {
   openseaUrl: string;
   hasBlueCheck: boolean;
   title: string; // for <PreviewModal>
-  chainId: string
+  chainId: string;
 };
 
 // ===========================================================
@@ -63,5 +72,5 @@ export type TransactionCardEntry = {
   status: string;
   feesInEth: number;
   salePriceInEth: number;
-  chainId: string
+  chainId: string;
 };

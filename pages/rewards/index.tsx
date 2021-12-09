@@ -5,20 +5,17 @@ import Layout from 'containers/layout';
 import styles from './Rewards.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
-import { LeaderBoard, UserReward } from '../../src/types/rewardTypes';
+import { RewardResults } from '../../src/types/rewardTypes';
 import { Spinner } from '@chakra-ui/spinner';
-import { RewardCardRow } from 'components/RewardCardList/RewardCardList';
-import { SaleLeaderboardCard, BuyLeaderboardCard } from 'components/RewardCard/RewardCard';
-import CountryConfirmModal from 'components/CountryConfirmModal/CountryConfirmModal';
+import { DataItem, RewardCard } from 'components/RewardCard/RewardCard';
+import { GiftCardIcon } from 'components/Icons/Icons';
 
 const Rewards = (): JSX.Element => {
   const { user, showAppError } = useAppContext();
-  const [countryConfirmShowed, setCountryConfirmShowed] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-  const [userReward, setUserReward] = useState<UserReward | undefined>();
-  const [leaderboard, setLeaderBoard] = useState<LeaderBoard | undefined>();
+  const [rewardResults, setRewardResults] = useState<RewardResults | undefined>();
 
-  const fetchUserReward = async () => {
+  const fetchRewardResults = async () => {
     if (!user) {
       return;
     }
@@ -27,14 +24,10 @@ const Rewards = (): JSX.Element => {
     try {
       const { result, error } = await apiGet(`/u/${user?.account}/reward`);
       if (error) {
-        showAppError('Failed to fetch rewards.');
+        showAppError('Please relogin.');
       } else {
-        const userReward = result as UserReward;
-        setUserReward(userReward);
-        if (userReward.usPerson === 'NONE') {
-          // user has not confirmed eligibility: show Confirm modal
-          setCountryConfirmShowed(true);
-        }
+        const res = result as RewardResults;
+        setRewardResults(res);
       }
     } catch (e) {
       console.error(e);
@@ -43,23 +36,9 @@ const Rewards = (): JSX.Element => {
     }
   };
 
-  const fetchLeaderboard = async () => {
-    try {
-      const { result, error } = await apiGet(`/rewards/leaderboard`);
-
-      setLeaderBoard(result);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   React.useEffect(() => {
-    fetchUserReward();
+    fetchRewardResults();
   }, [user]);
-
-  React.useEffect(() => {
-    fetchLeaderboard();
-  }, []);
 
   if (isFetching) {
     return (
@@ -82,6 +61,33 @@ const Rewards = (): JSX.Element => {
     return <div />;
   }
 
+  const items = () => {
+    if (rewardResults) {
+      const activityItems: DataItem[] = [
+        { title: 'Eligible Tokens', value: rewardResults.newEligible },
+        { title: 'Threshold amount (ETH)', value: rewardResults.newThreshold },
+        { title: 'Transacted amount (ETH)', value: rewardResults.transacted },
+        {
+          title: 'Early supporter bonus',
+          value:
+            (Math.round((rewardResults.finalEarnedTokens / rewardResults.newEligible + Number.EPSILON) * 100) / 100) + 'x'
+        },
+        { title: 'Total tokens', value: rewardResults.finalEarnedTokens }
+      ];
+      return activityItems;
+    }
+
+    const activityItems: DataItem[] = [
+      { title: 'Eligible Tokens', value: 0 },
+      { title: 'Threshold amount (ETH)', value: 0 },
+      { title: 'Transacted amount (ETH)', value: 0 },
+      { title: 'Early supporter bonus', value: 0 },
+      { title: 'Total tokens', value: 0 }
+    ];
+
+    return activityItems;
+  };
+
   return (
     <>
       <Head>
@@ -91,31 +97,18 @@ const Rewards = (): JSX.Element => {
         <div className="page-container">
           <div className={styles.content}>
             <div className={styles.centered}>
-              <div className="section-bar" style={{ marginBottom: 30 }}>
-                <div className="tg-title">Rewards</div>
-              </div>
-              <RewardCardRow data={userReward} />
-              <div className={styles.leaderBox}>
-                <BuyLeaderboardCard data={leaderboard} />
-              </div>
-              <div className={styles.leaderBox}>
-                <SaleLeaderboardCard data={leaderboard} />
+              <div className={styles.centerStuff}>
+                <div className={styles.stuff}>
+                  <div className={styles.title}>The Airdrop has ended</div>
+                  <div className={styles.subtitle}>Here are your rewards</div>
+                  <div className={styles.subtitle}>Tokens claimable early Jan 2022</div>
+                  <RewardCard lines={false} items={items()} title="Rewards" icon={<GiftCardIcon boxSize={8} />} />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {countryConfirmShowed && (
-        <CountryConfirmModal
-          onSubmit={() => {
-            // user confirmed eligibility: refresh data
-            setCountryConfirmShowed(false);
-            fetchUserReward();
-          }}
-          onClose={() => setCountryConfirmShowed(false)}
-        />
-      )}
     </>
   );
 };

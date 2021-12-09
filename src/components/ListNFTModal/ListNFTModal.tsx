@@ -12,6 +12,7 @@ import styles from './ListNFTModal.module.scss';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { getPaymentTokenAddress, isServer } from 'utils/commonUtil';
 import { DatePicker } from 'components/DatePicker/DatePicker';
+import { createSellOrder, fetchVerifiedBonusReward, SellOrderProps } from './listNFT';
 
 interface IProps {
   data?: any;
@@ -34,7 +35,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
 
   React.useEffect(() => {
     const fetchBackendChecks = async () => {
-      const { result } = await apiGet(`/token/${data.tokenAddress}/verfiedBonusReward`);
+      const result = await fetchVerifiedBonusReward(data.tokenAddress);
       setBackendChecks({ hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified });
     };
     fetchBackendChecks();
@@ -45,13 +46,17 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
       showAppError('Please enter price.');
       return;
     }
+    if (!user?.account) {
+      showAppError('Please login.');
+      return;
+    }
     const { tokenAddress, tokenId } = data;
     const expirationTime = endPriceShowed ? expiryTimeSeconds : 0;
     let err = null;
     try {
       setIsSubmitting(true);
-      const seaport = getOpenSeaportForChain(data?.chainId);
-      const obj: any = {
+      const obj: SellOrderProps & { chainId?: string } = {
+        chainId: data.chainId,
         asset: {
           tokenAddress,
           tokenId,
@@ -68,14 +73,14 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
       };
       if (activeTab !== 'SET_PRICE') {
         // for English Auction (Highest Bid):
-        obj['paymentTokenAddress'] = getPaymentTokenAddress(LISTING_TYPE.ENGLISH_AUCTION, data?.chainId);
-        obj['waitForHighestBid'] = true;
+        obj.paymentTokenAddress = getPaymentTokenAddress(LISTING_TYPE.ENGLISH_AUCTION, data?.chainId);
+        obj.waitForHighestBid = true;
         if (reservePrice) {
-          obj['englishAuctionReservePrice'] = reservePrice;
+          obj.englishAuctionReservePrice = reservePrice;
         }
-        obj['expirationTime'] = expiryTimeSeconds;
+        obj.expirationTime = expiryTimeSeconds;
       }
-      await seaport.createSellOrder(obj);
+      await createSellOrder(obj);
     } catch (e: any) {
       setIsSubmitting(false);
       err = e;

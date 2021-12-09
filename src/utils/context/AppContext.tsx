@@ -18,6 +18,8 @@ export type AppContextType = {
   chainId: string;
   showAppError: (msg: string) => void;
   showAppMessage: (msg: string) => void;
+  headerPosition: number;
+  setHeaderPosition: (bottom: number) => void;
 };
 
 const AppContext = React.createContext<AppContextType | null>(null);
@@ -29,7 +31,7 @@ export function AppContextProvider({ children }: any) {
   const [user, setUser] = React.useState<User | null>(null);
   const [userReady, setUserReady] = React.useState(false);
   const [chainId, setChainId] = React.useState('');
-
+  const [headerPosition, setHeaderPosition] = React.useState(0);
   const showAppError = (message: ReactNode) => {
     const msg = getCustomExceptionMsg(message);
     errorToast(msg);
@@ -111,7 +113,9 @@ export function AppContextProvider({ children }: any) {
     userReady,
     chainId,
     showAppError,
-    showAppMessage
+    showAppMessage,
+    headerPosition,
+    setHeaderPosition
   };
 
   return (

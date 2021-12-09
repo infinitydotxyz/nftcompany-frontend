@@ -4,7 +4,8 @@ import { API_BASE } from './constants';
 import { getAccount, getWeb3 } from './ethersUtil';
 const personalSignAsync = require('../../opensea/utils/utils').personalSignAsync;
 
-const loginMessage = 'Welcome to Infinity. Click "Sign" to sign in. No password needed. This request will not trigger a blockchain transaction or cost any gas fees.'
+const loginMessage =
+  'Welcome to Infinity. Click "Sign" to sign in. No password needed. This request will not trigger a blockchain transaction or cost any gas fees.';
 
 const axiosApi: AxiosInstance = axios.create({
   headers: {}

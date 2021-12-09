@@ -53,8 +53,12 @@ type Trait = {
 
 const EmptyTrait = { type: '', value: '', traitData: undefined };
 
-const FilterDrawer = () => {
-  const { showAppError } = useAppContext();
+interface Props {
+  onToggle: (isOpen: boolean) => void;
+}
+
+const FilterDrawer = ({ onToggle }: Props) => {
+  const { showAppError, headerPosition } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
   const [minPriceVal, setMinPriceVal] = React.useState('');
   const [maxPriceVal, setMaxPriceVal] = React.useState('');
@@ -78,6 +82,10 @@ const FilterDrawer = () => {
     }
   }, []);
 
+  useEffect(() => {
+    onToggle(isOpen);
+  }, [isOpen]);
+
   const getNewFilterState = () => {
     updateTraitFilterState();
     const newFilter = { ...filterState };
@@ -85,6 +93,7 @@ const FilterDrawer = () => {
       newFilter.priceMin = newFilter.priceMin || DEFAULT_MIN_PRICE.toString();
     }
     newFilter.collectionName = collectionName;
+    newFilter.tokenAddresses = selectedCollectionIds === 'CLEAR' ? [] : selectedCollectionIds.split(',');
     newFilter.collectionIds = selectedCollectionIds === 'CLEAR' ? '' : selectedCollectionIds;
     return newFilter;
   };
@@ -137,7 +146,7 @@ const FilterDrawer = () => {
         aria-label=""
         position="fixed"
         size="lg"
-        top={100}
+        top={headerPosition + 24}
         variant="ghost"
         colorScheme="gray"
         onClick={() => setIsOpen(!isOpen)}
@@ -148,14 +157,14 @@ const FilterDrawer = () => {
       <Drawer
         isOpen={isOpen}
         placement="left"
-        onClose={() => setIsOpen(!isOpen)}
+        onClose={() => undefined}
         size={isMobile ? 'full' : 'xs'}
         blockScrollOnMount={false}
         trapFocus={false}
       >
-        <DrawerOverlay backgroundColor="rgba(0,0,0,0)" />
+        {/* <DrawerOverlay backgroundColor="rgba(0,0,0,0)" /> */}
 
-        <DrawerContent shadow="lg" mt={88}>
+        <DrawerContent shadow="lg" mt={headerPosition + 12}>
           <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
             <Heading size="sm">Filter</Heading>
             <IconButton aria-label="" variant="ghost" size="lg" colorScheme="gray" onClick={() => setIsOpen(false)}>

@@ -4,6 +4,10 @@
 @import 'react-toastify/dist/ReactToastify.css';
 @import './toastify.css';
 
+.chakra-portal > div {
+  width: auto; /* to unset the Filter Drawer Overlay's width so it doesn't cover the main layout */
+}
+
 html,
 body {
   padding: 0;

@@ -9,6 +9,7 @@ import { FetchMore, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'co
 import { useAppContext } from 'utils/context/AppContext';
 import { ordersToCardData } from 'services/Listings.service';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
+import { NftAction } from 'types';
 
 export default function OffersMade() {
   const { user, showAppError } = useAppContext();
@@ -70,7 +71,7 @@ export default function OffersMade() {
             <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
 
-            <CardList data={data} action="CANCEL_OFFER" />
+            <CardList data={data} action={NftAction.CancelOffer} />
           </div>
 
           {dataLoaded && (
