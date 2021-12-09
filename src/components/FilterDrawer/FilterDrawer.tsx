@@ -53,7 +53,11 @@ type Trait = {
 
 const EmptyTrait = { type: '', value: '', traitData: undefined };
 
-const FilterDrawer = () => {
+interface Props {
+  onToggle: (isOpen: boolean) => void;
+}
+
+const FilterDrawer = ({ onToggle }: Props) => {
   const { showAppError, headerPosition } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
   const [minPriceVal, setMinPriceVal] = React.useState('');
@@ -77,6 +81,10 @@ const FilterDrawer = () => {
       localStorage.setItem('didShowDrawerFirstTime', 'true');
     }
   }, []);
+
+  useEffect(() => {
+    onToggle(isOpen);
+  }, [isOpen]);
 
   const getNewFilterState = () => {
     updateTraitFilterState();
@@ -149,12 +157,12 @@ const FilterDrawer = () => {
       <Drawer
         isOpen={isOpen}
         placement="left"
-        onClose={() => setIsOpen(!isOpen)}
+        onClose={() => undefined}
         size={isMobile ? 'full' : 'xs'}
         blockScrollOnMount={false}
         trapFocus={false}
       >
-        <DrawerOverlay backgroundColor="rgba(0,0,0,0)" />
+        {/* <DrawerOverlay backgroundColor="rgba(0,0,0,0)" /> */}
 
         <DrawerContent shadow="lg" mt={headerPosition + 12}>
           <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
