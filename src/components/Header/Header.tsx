@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { MenuItem, MenuDivider, Box, useColorMode, Alert, AlertIcon, CloseButton } from '@chakra-ui/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { MenuItem, MenuDivider, Box, useColorMode, Alert, AlertIcon, CloseButton, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { saveAuthHeaders } from '../../../src/utils/apiUtil';
@@ -8,8 +8,9 @@ import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import SettingsModal from 'components/SettingsModal/SettingsModal';
 import { ellipsisAddress } from 'utils/commonUtil';
-import { EthToken, MoreVertIcon } from 'components/Icons/Icons';
+import { MoreVertIcon } from 'components/Icons/Icons';
 import SearchBox from '../SearchBox/SearchBox';
+import { CloseIcon } from '@chakra-ui/icons';
 
 import styles from './Header.module.scss';
 import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
@@ -19,10 +20,20 @@ let isChangingAccount = false;
 
 const Header = (): JSX.Element => {
   const router = useRouter();
-  const { user, signIn, signOut, chainId } = useAppContext();
+  const { user, signIn, signOut, chainId, setHeaderPosition } = useAppContext();
+  const [showBanner, setShowBanner] = useState(true);
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [lockout, setLockout] = useState(false);
   const [closedLockout, setClosedLockout] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    let position = headerRef?.current?.getBoundingClientRect?.()?.bottom as number;
+    if (!position) {
+      position = 76;
+    }
+    setHeaderPosition(position);
+  }, [headerRef?.current?.getBoundingClientRect?.()?.bottom, showBanner]);
 
   const { colorMode } = useColorMode();
 
@@ -205,9 +216,39 @@ const Header = (): JSX.Element => {
     );
   }
 
+  const Banner = () => {
+    return (
+      <>
+        <Box className={styles.banner} justifyContent="center" alignItems="center" display="flex">
+          <Text color="white" textAlign="center" w="100">
+            Import your listed NFTs from OpenSea for free, with the click of a&nbsp;
+            <a
+              onClick={() => {
+                router.push('/listed-nfts?tab=opensea');
+                setShowBanner(false);
+              }}
+              style={{ textDecoration: 'underline', cursor: 'pointer' }}
+            >
+              button
+            </a>
+          </Text>
+        </Box>
+        <CloseIcon
+          className={styles.closeBanner}
+          boxSize={MenuIcons.sbs}
+          color="#ffffff"
+          onClick={() => {
+            setShowBanner(false);
+          }}
+        />
+      </>
+    );
+  };
+
   return (
-    <header className={styles.header}>
-      <Box className={styles.hdf}>
+    <header ref={headerRef} className={styles.header} style={showBanner ? { height: '127px' } : { height: '76px' }}>
+      {showBanner && <Banner />}
+      <Box className={styles.hdf} style={showBanner ? { top: 51 } : {}}>
         <div className="page-container-header">
           <div className={styles.showLargeLogo}>
             <Link href="/" passHref>

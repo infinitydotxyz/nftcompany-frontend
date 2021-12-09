@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
@@ -8,79 +8,111 @@ import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
-import { Spacer } from '@chakra-ui/layout';
 import { CardGrid } from 'components/CollectionCards/CollectionCard';
 import { CollectionCardEntry } from 'types/rewardTypes';
-import { useSearchContext } from 'utils/context/SearchContext';
+import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import CardList from 'components/Card/CardList';
+import { Spacer } from '@chakra-ui/react';
 import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollections';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
+import { NftAction } from 'types';
+import styles from './Explore.module.scss';
 
 export default function ExplorePage() {
-  const cardProvider = useCardProvider();
-  const { searchState, filterState } = useSearchContext();
+  const searchContext = useSearchContext();
+  const [tabIndex, setTabIndex] = useState(0);
   const { user } = useAppContext();
+  const [isFilterOpened, setIsFilterOpened] = React.useState(false);
 
-  const collectionCards = cardProvider.list.map((x) => {
-    return {
-      id: x.id,
-      name: x.collectionName,
-      address: x.tokenAddress,
-      cardImage: x.image,
-      description: x.description,
-      hasBlueCheck: x.hasBlueCheck
-    } as CollectionCardEntry;
-  });
+  const [searchMode, setSearchMode] = useState(false);
 
-  const searchText = searchState.text;
-  const searchCollName = searchState.collectionName;
-  let searchMode =
-    searchText?.length > 0 ||
-    searchCollName?.length > 0 ||
-    filterState?.collectionName?.length > 0 ||
-    filterState.priceMin !== '' ||
-    filterState.priceMax !== '';
-  searchMode = searchMode || filterState.listType !== '' || filterState.collectionIds !== '';
+  useEffect(() => {
+    let shouldUseSearchMode =
+      searchContext.searchState.text?.length > 0 ||
+      searchContext.searchState.collectionName?.length > 0 ||
+      searchContext.filterState?.collectionName?.length > 0 ||
+      searchContext.filterState.priceMin !== '' ||
+      searchContext.filterState.priceMax !== '' ||
+      !!searchContext.filterState.collectionIds ||
+      searchContext.searchState.query?.length > 0;
 
-  let contents;
-  if (searchMode) {
-    contents = <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action="BUY_NFT" />;
-  } else {
-    contents = <CardGrid data={collectionCards} />;
-  }
+    shouldUseSearchMode = shouldUseSearchMode || searchContext.filterState.listType !== '';
+    setSearchMode(shouldUseSearchMode);
+  }, [searchContext]);
+
+  const Explore = (props: { listingSource: ListingSource }) => {
+    const cardProvider = useCardProvider(props.listingSource, searchContext);
+    const [collectionCards, setCollectionCards] = useState<CollectionCardEntry[]>([]);
+    useEffect(() => {
+      let isMounted = true;
+
+      if (isMounted) {
+        const collCards = cardProvider.list.map((x) => {
+          return {
+            id: x.id,
+            name: x.collectionName,
+            address: x.tokenAddress,
+            cardImage: x.image,
+            description: x.description,
+            hasBlueCheck: x.hasBlueCheck
+          } as CollectionCardEntry;
+        });
+        setCollectionCards(collCards);
+      }
+      return () => {
+        isMounted = false;
+      };
+    }, [cardProvider.list]);
+
+    return (
+      <>
+        <div className="section-bar">
+          <div className="tg-title">Explore</div>
+          <Spacer />
+          <SortMenuButton disabled={!searchMode || props.listingSource === ListingSource.OpenSea} />
+        </div>
+        <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
+        {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
+
+        {searchMode ? (
+          <CardList
+            showItems={['PRICE']}
+            userAccount={user?.account}
+            data={cardProvider.list}
+            action={NftAction.BuyNft}
+          />
+        ) : (
+          <CardGrid data={collectionCards} />
+        )}
+
+        {cardProvider.hasData() && (
+          <ScrollLoader
+            onFetchMore={async () => {
+              cardProvider.loadNext();
+            }}
+          />
+        )}
+      </>
+    );
+  };
 
   return (
     <>
       <Head>
         <title>Explore</title>
       </Head>
-      <div>
+
+      <div className={`${styles.main} page-wrapper`}>
+        {isFilterOpened && <div className={styles.filterPlaceholder}></div>}
+
         <div className="page-container">
           {!searchMode && <FeaturedCollections />}
-          <div className="page-wrapper">
-            <div className="section-bar">
-              <div className="tg-title">Explore</div>
-
-              <Spacer />
-              <SortMenuButton disabled={!searchMode} />
-            </div>
-          </div>
-          <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
-          {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
-
-          {contents}
-
-          {cardProvider.hasData() && (
-            <ScrollLoader
-              onFetchMore={async () => {
-                cardProvider.loadNext();
-              }}
-            />
-          )}
+          <Explore listingSource={ListingSource.Infinity} />
         </div>
       </div>
+
       <div className="filter-panel-explore-page">
-        <FilterDrawer />
+        <FilterDrawer onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
       </div>
     </>
   );

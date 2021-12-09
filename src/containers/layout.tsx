@@ -8,7 +8,6 @@ import Header from 'components/Header/Header';
 import { isLocalhost } from 'utils/commonUtil';
 import LogRocket from 'logrocket';
 import { Background } from 'components/Background/Background';
-import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { useRouter } from 'next/router';
 import { useWindowSize } from '@react-hook/window-size';
 

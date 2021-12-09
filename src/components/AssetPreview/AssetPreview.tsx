@@ -4,13 +4,14 @@ import { CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PurchaseAccordion } from 'components/PurchaseAccordion/PurchaseAccordion';
 import { getListings } from 'services/Listings.service';
-import { defaultFilterState } from 'utils/context/SearchContext';
-import { Button, Link, Spacer } from '@chakra-ui/react';
+import { defaultFilterState, ListingSource } from 'utils/context/SearchContext';
+import { Link, Spacer, Box } from '@chakra-ui/react';
 import { DescriptionBox } from 'components/PurchaseAccordion/DescriptionBox';
 import { ExtraSpace } from 'components/Spacer/Spacer';
 import NFTEvents from 'components/NFTEvents/NFTEvents';
-import router from 'next/router';
 import { getSearchFriendlyString } from 'utils/commonUtil';
+import { TraitBox } from 'components/PurchaseAccordion/TraitBox';
+import { NftAction } from 'types';
 
 type Props = {
   tokenId: string;
@@ -22,7 +23,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
   const [data, setData] = useState<CardData | undefined>();
   const [title, setTitle] = useState('');
 
-  const action = 'BUY_NFT';
+  const action = NftAction.BuyNft;
 
   useEffect(() => {
     getCardData();
@@ -34,7 +35,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
     filter.tokenAddress = tokenAddress;
     filter.tokenId = tokenId;
 
-    const result = await getListings(filter);
+    const result = await getListings({ ...filter, listingSource: ListingSource.Infinity });
 
     if (result && result.length > 0) {
       let theData = result[0];
@@ -97,7 +98,14 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
             </div>
 
             <ExtraSpace />
+
             <DescriptionBox data={data} />
+
+            {(data.metadata?.asset?.traits || []).length > 0 && (
+              <Box mt={4}>
+                <TraitBox data={data} />
+              </Box>
+            )}
           </div>
 
           <div className={styles.right}>

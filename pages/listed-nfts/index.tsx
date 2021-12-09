@@ -1,67 +1,153 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import CardList from 'components/Card/CardList';
-import { apiGet } from 'utils/apiUtil';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
-import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
+import { LISTING_TYPE, NULL_ADDRESS } from 'utils/constants';
+import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-import { ordersToCardData } from 'services/Listings.service';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
-import { CardData } from 'types/Nft.interface';
+import { CardData, WyvernSchemaName } from 'types/Nft.interface';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import styles from './ListNFTs.module.scss';
+import { useUserListings } from 'hooks/useUserListings';
+import { createSellOrder, fetchVerifiedBonusReward, SellOrderProps } from 'components/ListNFTModal/listNFT';
+import { getPaymentTokenAddress } from 'utils/commonUtil';
+import { weiToEther } from 'utils/ethersUtil';
+import { NftAction } from 'types';
+import { ListingSource } from 'utils/context/SearchContext';
+import router from 'next/router';
 
 export default function ListNFTs() {
-  const { user, showAppError } = useAppContext();
-  const [currentPage, setCurrentPage] = useState(-1);
-  const [dataLoaded, setDataLoaded] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
-  const [data, setData] = useState<any>([]);
+  const { user, showAppError, showAppMessage } = useAppContext();
+  const [tabIndex, setTabIndex] = useState(0);
   const [deleteModalItem, setDeleteModalItem] = useState<CardData | null>(null);
 
-  const fetchData = async (isRefreshing: boolean = false) => {
-    if (!user?.account) {
-      setData([]);
+  useEffect(() => {
+    if (router.query.tab === 'opensea') {
+      setTabIndex(1);
+    }
+  }, []);
+
+  const importOrder = async (item: CardData) => {
+    const order = item.order;
+    if (!order) {
+      showAppError('Invalid Listing');
       return;
     }
-    setIsFetching(true);
-    let listingData = [];
-    let newCurrentPage = currentPage + 1;
-    if (isRefreshing) {
-      newCurrentPage = 0;
-      setDataLoaded(false);
+    if (!user?.account) {
+      showAppError('Please login.');
+      return;
     }
-    try {
-      const { result, error } = await apiGet(`/u/${user?.account}/listings`, {
-        startAfter: isRefreshing ? '' : getLastItemCreatedAt(data),
-        limit: ITEMS_PER_PAGE
-      });
-      if (error) {
-        showAppError(`Failed to fetch listings. ${error?.message}.`);
-        return;
-      }
-      listingData = result?.listings || [];
-    } catch (e) {
-      console.error(e);
-    }
-    const moreData = ordersToCardData(listingData || []);
 
-    setIsFetching(false);
-    setData(isRefreshing ? moreData : [...data, ...moreData]);
-    setCurrentPage(newCurrentPage);
+    const tokenAddress = order.metadata.asset.address;
+    const tokenId = order.metadata.asset.id;
+    const expirationTime = Number(order.expirationTime);
+
+    const fetchBackendChecks = async () => {
+      const result = await fetchVerifiedBonusReward(tokenAddress);
+      return { hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified };
+    };
+
+    const backendChecks = await fetchBackendChecks();
+    const chainId = order.metadata.chainId;
+    let err;
+    const startAmount = Number(weiToEther(order.basePrice));
+    try {
+      const obj: SellOrderProps & { chainId?: string } = {
+        chainId: chainId,
+        asset: {
+          tokenAddress,
+          tokenId,
+          schemaName: (order?.metadata.schema || '') as WyvernSchemaName
+        },
+        paymentTokenAddress: getPaymentTokenAddress('', chainId),
+        accountAddress: user.account,
+        startAmount: startAmount,
+        endAmount: startAmount,
+        expirationTime,
+        assetDetails: { ...item }, // custom data to pass in details.
+        ...backendChecks
+      };
+
+      switch (order.metadata.listingType) {
+        case LISTING_TYPE.FIXED_PRICE:
+          obj.endAmount = startAmount;
+          break;
+
+        case LISTING_TYPE.DUTCH_AUCTION:
+          if (!order.extra) {
+            showAppError('Failed to find ending price');
+            return;
+          }
+          obj.endAmount = Number(weiToEther(order.extra));
+          break;
+
+        case LISTING_TYPE.ENGLISH_AUCTION:
+          // ignore reserve price
+          obj.endAmount = startAmount;
+          obj.paymentTokenAddress = getPaymentTokenAddress(LISTING_TYPE.ENGLISH_AUCTION, chainId);
+          obj.waitForHighestBid = true;
+          break;
+
+        default:
+          showAppError('Failed to determine order type.');
+          return;
+      }
+
+      if (order.taker && order.taker !== NULL_ADDRESS) {
+        obj.buyerAddress = order.taker;
+      }
+
+      await createSellOrder(obj);
+    } catch (e: any) {
+      err = e;
+      console.error('ERROR: ', e, '   ', expirationTime);
+      showAppError(e.message);
+    }
+    if (!err) {
+      showAppMessage('NFT listed successfully!');
+    }
   };
 
-  React.useEffect(() => {
-    fetchData();
-  }, [user]);
+  const Listings = (props: { source: ListingSource }) => {
+    const { listings, isFetching, fetchMore, currentPage, dataLoaded } = useUserListings(props.source);
+    const action = props.source === ListingSource.OpenSea ? NftAction.ImportOrder : NftAction.CancelListing;
 
-  React.useEffect(() => {
-    if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
-      return;
-    }
-    setDataLoaded(true); // current page's data loaded & rendered.
-  }, [currentPage]);
+    return (
+      <>
+        <div>
+          <PleaseConnectWallet account={user?.account} />
+          <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={listings} />
+          {listings?.length === 0 && isFetching && <LoadingCardList />}
+
+          <CardList
+            data={listings}
+            action={action}
+            onClickAction={async (item, action) => {
+              if (action === NftAction.ImportOrder) {
+                importOrder(item);
+              } else {
+                setDeleteModalItem(item);
+              }
+            }}
+          />
+        </div>
+
+        {dataLoaded && (
+          <FetchMore
+            currentPage={currentPage}
+            data={listings}
+            onFetchMore={() => {
+              fetchMore();
+            }}
+          />
+        )}
+      </>
+    );
+  };
+
   return (
     <>
       <Head>
@@ -73,30 +159,26 @@ export default function ListNFTs() {
             <div className="tg-title">Listed NFTs</div>
           </div>
 
-          <div>
-            <PleaseConnectWallet account={user?.account} />
-            <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
-            {data?.length === 0 && isFetching && <LoadingCardList />}
+          <div className="center">
+            <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
+              <TabList className={styles.tabList}>
+                <Tab>Infinity</Tab>
+                <Tab>OpenSea</Tab>
+              </TabList>
 
-            <CardList
-              data={data}
-              action="CANCEL_LISTING"
-              onClickAction={async (item, action) => {
-                setDeleteModalItem(item);
-              }}
-            />
+              <TabPanels>
+                <TabPanel>
+                  <Listings source={ListingSource.Infinity} />
+                </TabPanel>
+
+                {tabIndex === 1 && (
+                  <TabPanel>
+                    <Listings source={ListingSource.OpenSea} />
+                  </TabPanel>
+                )}
+              </TabPanels>
+            </Tabs>
           </div>
-
-          {dataLoaded && (
-            <FetchMore
-              currentPage={currentPage}
-              data={data}
-              onFetchMore={async () => {
-                setDataLoaded(false);
-                await fetchData();
-              }}
-            />
-          )}
         </div>
       </div>
 

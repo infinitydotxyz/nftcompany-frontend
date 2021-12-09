@@ -1,15 +1,17 @@
-import React, { useState, MouseEvent } from 'react';
+import React, { useState, MouseEvent, useEffect } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
-import { CardData } from 'types/Nft.interface';
+import { BaseCardData, CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { addressesEqual } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
 import { Button, Spacer } from '@chakra-ui/react';
+import { LISTING_TYPE } from 'utils/constants';
+import { NftAction } from 'types';
 
 type Props = {
   data: CardData;
@@ -25,6 +27,16 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
   const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
+  const [order, setOrder] = useState<BaseCardData | undefined>();
+
+  useEffect(() => {
+    // prefer infinity listings
+    if (data.metadata?.basePriceInEth !== undefined) {
+      setOrder(data);
+    } else if (data.openseaListing?.metadata?.basePriceInEth !== undefined) {
+      setOrder(data.openseaListing);
+    }
+  }, [data]);
 
   if (!data) {
     return null;
@@ -51,38 +63,39 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   }
 
   const actionButton = () => {
+    const isForSale = data.metadata?.basePriceInEth;
     let handler: (ev: MouseEvent) => void = () => console.log('');
     let name;
 
-    if (action === 'LIST_NFT') {
+    if (action === NftAction.ListNft) {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
 
         if (onClickAction) {
-          onClickAction(data, 'LIST_NFT');
+          onClickAction(data, NftAction.ListNft);
         }
       };
       name = 'List NFT';
-    } else if (action === 'BUY_NFT' && !ownedByYou) {
+    } else if (action === NftAction.BuyNft && !ownedByYou) {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
 
         setPlaceBidModalShowed(true);
       };
-      name = 'Purchase';
-    } else if (action === 'CANCEL_LISTING') {
+      name = isForSale ? 'Purchase' : 'Make Offer';
+    } else if (action === NftAction.CancelListing) {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
 
         if (onClickAction) {
-          onClickAction(data, 'CANCEL_LISTING');
+          onClickAction(data, NftAction.CancelListing);
         }
       };
       name = 'Cancel';
-    } else if (action === 'ACCEPT_OFFER') {
+    } else if (action === NftAction.AcceptOffer) {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
@@ -90,7 +103,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
         setAcceptOfferModalShowed(true);
       };
       name = 'Accept';
-    } else if (action === 'CANCEL_OFFER') {
+    } else if (action === NftAction.CancelOffer) {
       handler = (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
@@ -98,6 +111,16 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
         setCancelOfferModalShowed(true);
       };
       name = 'Cancel';
+    } else if (action === NftAction.ImportOrder) {
+      handler = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        if (onClickAction) {
+          onClickAction(data, NftAction.ImportOrder);
+        }
+      };
+      name = 'Import Listing';
     }
 
     if (name) {
@@ -109,6 +132,13 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     }
 
     return null;
+  };
+
+  const getToken = () => {
+    if (data.chainId === '1') {
+      return data?.order?.metadata?.listingType !== LISTING_TYPE.ENGLISH_AUCTION ? 'ETH' : 'WETH';
+    }
+    return 'WETH';
   };
 
   return (
@@ -136,8 +166,8 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           </div>
           <PriceBox
             justifyRight
-            price={showItems.indexOf('PRICE') >= 0 ? data.metadata?.basePriceInEth : undefined}
-            token={data?.chainId === '1' ? 'ETH' : 'WETH'}
+            price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
+            token={getToken()}
             expirationTime={data?.expirationTime}
           />
         </div>

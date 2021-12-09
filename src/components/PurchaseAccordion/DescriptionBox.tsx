@@ -30,7 +30,7 @@ export const DescriptionBox: React.FC<Props> = ({ data }: Props) => {
   return (
     <div className={styles.infoBox}>
       <SingleAccordion>
-        <PurchaseAccordionItem dark={dark} title="Description" icon={LargeIcons.starIcon}>
+        <PurchaseAccordionItem dark={dark} title="Description" icon={LargeIcons.listIcon}>
           <>
             {_descriptionSection}
 
