@@ -55,7 +55,7 @@ export function useUserListings(source: ListingSource) {
       const getListings = getListingSource(source);
       const { result, error } = await getListings(address);
       if (error) {
-        showAppError(`Failed to fetch listings. ${error?.message}.`);
+        showAppError(`Failed to fetch listings. Please relogin.`);
         return;
       }
       listingData = result?.listings || [];

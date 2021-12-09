@@ -24,7 +24,7 @@ const Rewards = (): JSX.Element => {
     try {
       const { result, error } = await apiGet(`/u/${user?.account}/reward`);
       if (error) {
-        showAppError('Failed to fetch rewards.');
+        showAppError('Please relogin.');
       } else {
         const res = result as RewardResults;
         setRewardResults(res);
