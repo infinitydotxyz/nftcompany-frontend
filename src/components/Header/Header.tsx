@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MenuItem, MenuDivider, Box, useColorMode, Alert, AlertIcon, CloseButton, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -20,11 +20,20 @@ let isChangingAccount = false;
 
 const Header = (): JSX.Element => {
   const router = useRouter();
-  const { user, signIn, signOut, chainId } = useAppContext();
+  const { user, signIn, signOut, chainId, setHeaderPosition } = useAppContext();
   const [showBanner, setShowBanner] = useState(true);
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [lockout, setLockout] = useState(false);
   const [closedLockout, setClosedLockout] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    let position = headerRef?.current?.getBoundingClientRect?.()?.bottom as number;
+    if (!position) {
+      position = 76;
+    }
+    setHeaderPosition(position);
+  }, [headerRef?.current?.getBoundingClientRect?.()?.bottom, showBanner]);
 
   const { colorMode } = useColorMode();
 
@@ -237,7 +246,7 @@ const Header = (): JSX.Element => {
   };
 
   return (
-    <header className={styles.header} style={showBanner ? { height: '127px' } : { height: '76px' }}>
+    <header ref={headerRef} className={styles.header} style={showBanner ? { height: '127px' } : { height: '76px' }}>
       {showBanner && <Banner />}
       <Box className={styles.hdf} style={showBanner ? { top: 51 } : {}}>
         <div className="page-container-header">

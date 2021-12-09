@@ -99,7 +99,7 @@ export default function ExplorePage() {
       <Head>
         <title>Explore</title>
       </Head>
-      <div>
+      <div className="page-wrapper">
         <div className="page-container">
           {!searchMode && <FeaturedCollections />}
           <Explore listingSource={ListingSource.Infinity} />
