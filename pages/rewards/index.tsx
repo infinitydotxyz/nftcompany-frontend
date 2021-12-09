@@ -69,7 +69,8 @@ const Rewards = (): JSX.Element => {
         { title: 'Transacted amount (ETH)', value: rewardResults.transacted },
         {
           title: 'Early supporter bonus',
-          value: rewardResults.finalEarnedTokens / rewardResults.newEligible + 'x'
+          value:
+            (Math.round((rewardResults.finalEarnedTokens / rewardResults.newEligible + Number.EPSILON) * 100) / 100) + 'x'
         },
         { title: 'Total tokens', value: rewardResults.finalEarnedTokens }
       ];
