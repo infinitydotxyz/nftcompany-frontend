@@ -16,11 +16,13 @@ import { Spacer } from '@chakra-ui/react';
 import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollections';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { NftAction } from 'types';
+import styles from './Explore.module.scss';
 
 export default function ExplorePage() {
   const searchContext = useSearchContext();
   const [tabIndex, setTabIndex] = useState(0);
   const { user } = useAppContext();
+  const [isFilterOpened, setIsFilterOpened] = React.useState(false);
 
   const [searchMode, setSearchMode] = useState(false);
 
@@ -99,14 +101,18 @@ export default function ExplorePage() {
       <Head>
         <title>Explore</title>
       </Head>
-      <div className="page-wrapper">
+
+      <div className={`${styles.main} page-wrapper`}>
+        {isFilterOpened && <div className={styles.filterPlaceholder}></div>}
+
         <div className="page-container">
           {!searchMode && <FeaturedCollections />}
           <Explore listingSource={ListingSource.Infinity} />
         </div>
       </div>
+
       <div className="filter-panel-explore-page">
-        <FilterDrawer />
+        <FilterDrawer onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
       </div>
     </>
   );
