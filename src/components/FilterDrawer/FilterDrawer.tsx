@@ -54,7 +54,7 @@ type Trait = {
 const EmptyTrait = { type: '', value: '', traitData: undefined };
 
 const FilterDrawer = () => {
-  const { showAppError } = useAppContext();
+  const { showAppError, headerPosition } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
   const [minPriceVal, setMinPriceVal] = React.useState('');
   const [maxPriceVal, setMaxPriceVal] = React.useState('');
@@ -138,7 +138,7 @@ const FilterDrawer = () => {
         aria-label=""
         position="fixed"
         size="lg"
-        top={100}
+        top={headerPosition + 24}
         variant="ghost"
         colorScheme="gray"
         onClick={() => setIsOpen(!isOpen)}
@@ -156,7 +156,7 @@ const FilterDrawer = () => {
       >
         <DrawerOverlay backgroundColor="rgba(0,0,0,0)" />
 
-        <DrawerContent shadow="lg" mt={88}>
+        <DrawerContent shadow="lg" mt={headerPosition + 12}>
           <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
             <Heading size="sm">Filter</Heading>
             <IconButton aria-label="" variant="ghost" size="lg" colorScheme="gray" onClick={() => setIsOpen(false)}>
