@@ -42,12 +42,10 @@ export type UserReward = {
 // ===========================================================
 
 export type RewardResults = {
-  threshold: string;
-  transacted: string;
-  bonus: string;
-  eligible: number;
-  reward: number;
-  total: number;
+  newEligible: number;
+  newThreshold: number;
+  transacted: number;
+  finalEarnedTokens: number;
 };
 
 // ===========================================================

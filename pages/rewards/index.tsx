@@ -64,23 +64,24 @@ const Rewards = (): JSX.Element => {
   const items = () => {
     if (rewardResults) {
       const activityItems: DataItem[] = [
-        { title: 'Eligible Tokens', value: rewardResults.eligible },
-        { title: 'Threshold amount', value: rewardResults.threshold },
-        { title: 'Transacted amount', value: rewardResults.transacted },
-        { title: 'Earned tokens', value: rewardResults.reward },
-        { title: 'Early supporter bonus', value: rewardResults.bonus },
-        { title: 'Total tokens', value: rewardResults.total }
+        { title: 'Eligible Tokens', value: rewardResults.newEligible },
+        { title: 'Threshold amount (ETH)', value: rewardResults.newThreshold },
+        { title: 'Transacted amount (ETH)', value: rewardResults.transacted },
+        {
+          title: 'Early supporter bonus',
+          value: rewardResults.finalEarnedTokens / rewardResults.newEligible + 'x'
+        },
+        { title: 'Total tokens', value: rewardResults.finalEarnedTokens }
       ];
       return activityItems;
     }
 
     const activityItems: DataItem[] = [
-      { title: 'Eligible Tokens', value: '0' },
-      { title: 'Threshold amount', value: '0' },
-      { title: 'Transacted amount', value: '0' },
-      { title: 'Earned tokens', value: '0' },
-      { title: 'Early supporter bonus', value: '0' },
-      { title: 'Total tokens', value: '0' }
+      { title: 'Eligible Tokens', value: 0 },
+      { title: 'Threshold amount (ETH)', value: 0 },
+      { title: 'Transacted amount (ETH)', value: 0 },
+      { title: 'Early supporter bonus', value: 0 },
+      { title: 'Total tokens', value: 0 }
     ];
 
     return activityItems;
@@ -99,7 +100,7 @@ const Rewards = (): JSX.Element => {
                 <div className={styles.stuff}>
                   <div className={styles.title}>The Airdrop has ended</div>
                   <div className={styles.subtitle}>Here are your rewards</div>
-                  <div className={styles.subtitle}>Token will be live and claimable early Jan 2022</div>
+                  <div className={styles.subtitle}>Tokens claimable early Jan 2022</div>
                   <RewardCard lines={false} items={items()} title="Rewards" icon={<GiftCardIcon boxSize={8} />} />
                 </div>
               </div>
