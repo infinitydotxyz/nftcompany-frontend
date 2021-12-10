@@ -80,7 +80,7 @@ export function useUserListings(source: ListingSource) {
   }, [currentPage]);
 
   const getId = (cardData: CardData) => {
-    return `${cardData.tokenAddress}-${cardData.tokenId}-${cardData.price}`;
+    return cardData.id;
   };
 
   const removeDuplicates = (listings: CardData[]) => {
