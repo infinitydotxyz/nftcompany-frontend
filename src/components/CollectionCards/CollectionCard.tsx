@@ -68,8 +68,10 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
           />
         </div>
         <div className={styles.buttons}>
-          <Button size="lg" className={styles.stadiumButtonBlue} onClick={clickButton}>
-            View collection
+          <Button size="lg" className={styles.stadiumButtonBlue}>
+            <a href={`/collection/${cleanCollectionName(entry.name)}`} target="_blank" rel="noreferrer">
+              View Collection
+            </a>
           </Button>
         </div>
       </div>
