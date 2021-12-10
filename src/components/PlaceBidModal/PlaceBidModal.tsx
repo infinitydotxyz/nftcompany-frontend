@@ -74,7 +74,6 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           order: order,
           accountAddress: user!.account
         });
-        // console.log('Buy NFT txn hash: ' + txnHash + ' salePriceInEth: ' + salePriceInEth + ' feesInEth: ' + feesInEth);
         const payload = {
           actionType: 'fulfill',
           txnHash,
@@ -83,7 +82,8 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           maker: order.maker,
           salePriceInEth: +salePriceInEth,
           feesInEth: +feesInEth,
-          chainId: data.chainId
+          chainId: data.chainId,
+          orderData: order
         };
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {

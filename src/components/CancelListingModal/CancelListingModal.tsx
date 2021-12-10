@@ -41,7 +41,8 @@ const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
           side: 1,
           orderId: data?.id,
           maker: user?.account,
-          chainId: data.chainId
+          chainId: data.chainId,
+          orderData: order
         };
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
