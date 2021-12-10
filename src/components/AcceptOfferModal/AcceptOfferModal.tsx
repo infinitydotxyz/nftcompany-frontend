@@ -48,7 +48,8 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           maker: data.maker,
           salePriceInEth: +salePriceInEth,
           feesInEth: +feesInEth,
-          chainId: data.chainId
+          chainId: data.chainId,
+          orderData: order
         };
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {

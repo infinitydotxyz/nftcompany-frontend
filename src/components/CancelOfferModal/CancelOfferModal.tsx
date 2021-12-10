@@ -35,14 +35,14 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           accountAddress: user!.account
         });
         onClose();
-
         const payload = {
           actionType: 'cancel',
           txnHash,
           side: 0,
           orderId: data.id,
           maker: user?.account,
-          chainId: data.chainId
+          chainId: data.chainId,
+          orderData: order
         };
         const { error } = await apiPost(`/u/${user?.account}/wyvern/v1/txns`, {}, payload);
         if (error) {
