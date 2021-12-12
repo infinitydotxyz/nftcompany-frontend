@@ -175,10 +175,13 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
       <Spacer />
 
       <div className={styles.buttons}>
-        <Button className={styles.stadiumButtonGray}>
-          <a href={`/assets/${data.tokenAddress}/${data.tokenId}`} target="_blank" rel="noreferrer">
-            Info
-          </a>
+        <Button
+          className={styles.stadiumButtonGray}
+          onClick={() => {
+            router.push(`/assets/${data.tokenAddress}/${data.tokenId}`);
+          }}
+        >
+          Info
         </Button>
         {actionButton()}
       </div>
