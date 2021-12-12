@@ -28,6 +28,7 @@ import { apiGet } from 'utils/apiUtil';
 import { LISTING_TYPE } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from './FilterDrawer.module.scss';
+import { DownshiftSelect, SelectItem } from './DownshiftSelect';
 
 const DEFAULT_MIN_PRICE = 0.0000000001;
 
@@ -282,11 +283,17 @@ const FilterDrawer = ({ onToggle }: Props) => {
                   <Tbody>
                     {selectedTraits.map((pair, selTraitIdx) => {
                       const selectedTraitValues = selectedTraits[selTraitIdx]?.traitData?.values || [];
+                      const traitValueOptions = selectedTraitValues.map((str: string) => ({ label: str, id: str }));
+
+                      const selectedTraitValuesArr: SelectItem[] = selectedTraits[selTraitIdx]?.value
+                        ? selectedTraits[selTraitIdx]?.value.split('|').map((str: string) => ({ id: str, label: str }))
+                        : [];
                       return (
                         <Tr key={selTraitIdx}>
-                          <Td pl={0} pr={1} width={50}>
+                          <Td pl={0} pr={1} width={50} border="none">
                             <Select
                               size="sm"
+                              placeholder="Type"
                               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                                 const traitType = event.target.value;
                                 const traitData = traits.find((t: Trait) => t.trait_type === traitType);
@@ -309,33 +316,30 @@ const FilterDrawer = ({ onToggle }: Props) => {
                             </Select>
                           </Td>
 
-                          <Td pl={0} pr={1} width={140}>
-                            <Select
-                              size="sm"
-                              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                                const traitValue = event.target.value;
-                                setSelectedTraitValue(traitValue);
+                          <Td pl={0} pr={1} width={140} border="none">
+                            <DownshiftSelect
+                              placeholder="Trait(s)"
+                              isMulti={true}
+                              options={traitValueOptions}
+                              selectedItems={selectedTraitValuesArr}
+                              onChange={(params: SelectItem[]) => {
+                                const item = params.slice(-1)[0]; // current item = last item of params array
+
+                                const found = selectedTraitValuesArr.find((obj) => obj.id === item.id);
+                                let arr = selectedTraitValuesArr;
+                                if (found) {
+                                  arr = selectedTraitValuesArr.filter((obj) => obj.id !== item.id);
+                                } else {
+                                  arr.push(item);
+                                }
 
                                 const newArr = [...selectedTraits];
-                                newArr[selTraitIdx].value = traitValue;
+                                newArr[selTraitIdx].value = arr.map((obj) => obj.id).join('|');
                                 setSelectedTraits(newArr);
                               }}
-                            >
-                              {selectedTraitValues && (
-                                <>
-                                  <option value=""></option>
-                                  {selectedTraitValues.map((val: string) => {
-                                    return (
-                                      <option key={val} value={val}>
-                                        {val}
-                                      </option>
-                                    );
-                                  })}
-                                </>
-                              )}
-                            </Select>
+                            />
                           </Td>
-                          <Td pl={0} pr={1}>
+                          <Td pl={0} pr={1} d={'flex'} border="none" mt={3}>
                             {' '}
                             <SmallCloseIcon
                               className={styles.traitActionIcon}
