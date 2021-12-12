@@ -188,11 +188,8 @@ export class DownshiftSelect extends Component<Props> {
                       highlightedIndex: d.highlightedIndex,
                       isItemSelected: this.props.isMulti
                         ? (item: SelectItem) => {
-                            // return this.getSelectedItems().includes(item)
                             const arr: SelectItem[] = this.getSelectedItems();
-
-                            const isSelected = arr.find((obj: SelectItem) => obj.id === item.id) ? true : false;
-                            // console.log('arr', arr, item, isSelected);
+                            const isSelected = !!arr.find((obj: SelectItem) => obj.id === item.id);
                             return isSelected;
                           }
                         : (item: SelectItem) => item === d.selectedItem

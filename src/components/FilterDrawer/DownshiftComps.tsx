@@ -88,7 +88,7 @@ const Checkbox = styled.input`
   margin: 0 5px;
 `;
 
-export function ListItem({ children, ...containerProps }) {
+export function ListItem({ children, ...containerProps }: any) {
   const { selected } = containerProps;
 
   return (
