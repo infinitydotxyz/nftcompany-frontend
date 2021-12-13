@@ -80,17 +80,12 @@ export function useUserListings(source: ListingSource) {
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
 
-  const getId = (cardData: CardData) => {
-    return cardData.id;
-  };
-
   const removeDuplicates = (listings: CardData[]) => {
     const ids = new Set();
 
     return listings.filter((cardData) => {
-      const id = getId(cardData);
-      const unique = !ids.has(id);
-      ids.add(id);
+      const unique = !ids.has(cardData.id);
+      ids.add(cardData.id);
       return unique;
     });
   };
