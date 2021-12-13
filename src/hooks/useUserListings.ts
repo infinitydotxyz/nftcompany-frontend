@@ -108,14 +108,9 @@ export function useUserListings(source: ListingSource) {
     } else {
       setIsFetching(true);
       setDataLoaded(false);
-      fetchData(user.account).then((moreListings) => {
-        const newListings = (moreListings || []).map((item) => {
-          return {
-            ...item
-          };
-        });
+      fetchData(user.account).then((newListings) => {
         if (isActive) {
-          setListings((prevListings) => removeDuplicates([...prevListings, ...newListings]));
+          setListings((prevListings) => removeDuplicates([...prevListings, ...(newListings || [])]));
           setIsFetching(false);
           setCurrentPage((prevPage) => prevPage + 1);
         }
