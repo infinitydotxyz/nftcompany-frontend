@@ -27,7 +27,8 @@ export function useUserListings(source: ListingSource) {
     const { result, error } = await apiGet('/listings/import', {
       maker: address,
       limit: ITEMS_PER_PAGE,
-      side: '1'
+      side: '1',
+      offset: listings.length || 0
     });
     return {
       error,
@@ -110,8 +111,7 @@ export function useUserListings(source: ListingSource) {
       fetchData(user.account).then((moreListings) => {
         const newListings = (moreListings || []).map((item) => {
           return {
-            ...item,
-            id: getId(item)
+            ...item
           };
         });
         if (isActive) {
