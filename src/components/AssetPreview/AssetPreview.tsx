@@ -88,7 +88,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
                 <div className={styles.playButton}>
                   {/* <Button
                     onClick={() => {
-                      router.push('/game');
+                      router.push('/game/doge2048');
                     }}
                   >
                     Play Game

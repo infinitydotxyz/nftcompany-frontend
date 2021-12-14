@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import styles from './GameFrame.module.scss';
-import { GameMessenger } from '../../src/utils/gameMessenger';
+import { GameMessenger } from '../../../src/utils/gameMessenger';
 import Layout from 'containers/layout';
 import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import { useRouter } from 'next/router';
+import { Button, Spacer } from '@chakra-ui/react';
 
 export default function GameFrame() {
   const { user } = useAppContext();
@@ -56,6 +57,17 @@ export default function GameFrame() {
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Doge 2048</div>
+
+            <Spacer />
+
+            <Button
+              variant="outline"
+              onClick={() => {
+                // sdf
+              }}
+            >
+              Mint Doge 2048 NFT
+            </Button>
           </div>
 
           <div className={styles.gameFrame}>
