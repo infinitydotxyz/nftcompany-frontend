@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import styles from './GameFrame.module.scss';
@@ -8,9 +8,14 @@ import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import { useRouter } from 'next/router';
 import { Button, Spacer } from '@chakra-ui/react';
+import { apiGet } from 'utils/apiUtil';
+import { ITEMS_PER_PAGE } from 'utils/constants';
+import { NFTAsset } from 'types/rewardTypes';
 
 export default function GameFrame() {
-  const { user } = useAppContext();
+  const { user, showAppError, showAppMessage } = useAppContext();
+  const [nftAddress, setNftAddress] = useState<string>('');
+  const [data, setData] = useState<NFTAsset[]>([]);
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
 
   const router = useRouter();
@@ -25,6 +30,43 @@ export default function GameFrame() {
   }
 
   const isServer = typeof window === 'undefined';
+
+  const fetchData = async () => {
+    if (!user || !user?.account) {
+      return;
+    }
+
+    // const address = user?.account;
+    const address = '0xC844c8e1207B9d3C54878C849A431301bA9c23E0';
+
+    const { result, error } = await apiGet(`/p/u/${address}/assets`, {
+      offset: 0, // not "startAfter" because this is not firebase query.
+      limit: ITEMS_PER_PAGE,
+      source: 2
+    });
+
+    if (error) {
+      showAppError(error?.message);
+    } else {
+      const nfts = result as NFTAsset[];
+
+      for (const nft of nfts) {
+        console.log(nft.asset_contract);
+
+        // if doge nft
+        if (nft.asset_contract !== 'wtf') {
+          setNftAddress(nft.asset_contract!);
+          break;
+        }
+      }
+
+      setData(nfts || []);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [user]);
 
   React.useEffect(() => {
     let gm: any;
@@ -48,6 +90,14 @@ export default function GameFrame() {
     };
   }, [iframeRef]);
 
+  let contents;
+
+  if (nftAddress && gameUrl) {
+    contents = <GameFrameContent gameUrl={gameUrl} nftAddress={nftAddress} />;
+  } else {
+    contents = <div>You need to mint an NFT to play the game</div>;
+  }
+
   return (
     <>
       <Head>
@@ -70,10 +120,10 @@ export default function GameFrame() {
             </Button>
           </div>
 
-          <div className={styles.gameFrame}>
+          <div>
             <PleaseConnectWallet account={user?.account} />
 
-            <iframe ref={iframeRef} src={gameUrl} height="900px" width="100%" />
+            {contents}
           </div>
         </div>
       </div>
@@ -83,3 +133,40 @@ export default function GameFrame() {
 
 // eslint-disable-next-line react/display-name
 GameFrame.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
+
+// =================================================================
+
+type Props = {
+  gameUrl: string;
+  nftAddress: string;
+};
+
+function GameFrameContent({ gameUrl, nftAddress }: Props) {
+  const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
+
+  React.useEffect(() => {
+    let gm: any;
+
+    if (iframeRef && iframeRef.current) {
+      const element = iframeRef.current;
+
+      const iframeWindow = element.contentWindow;
+
+      if (iframeWindow) {
+        gm = new GameMessenger(iframeWindow, (message) => {
+          // console.log(message);
+        });
+      }
+    }
+
+    return () => {
+      gm?.dispose();
+    };
+  }, [iframeRef]);
+
+  return (
+    <div className={styles.gameFrame}>
+      <iframe ref={iframeRef} src={gameUrl} height="900px" width="100%" />
+    </div>
+  );
+}

@@ -74,3 +74,33 @@ export type TransactionCardEntry = {
   salePriceInEth: number;
   chainId: string;
 };
+
+// ===========================================================
+
+export interface NFTAsset {
+  asset_contract?: string;
+  token_id?: string;
+  owner?: string;
+  external_link?: string;
+  type?: string;
+  balance?: number;
+  nft_metadata?: NftMetadatum[];
+  issuer_specific_data?: IssuerSpecificData;
+  price?: string;
+  animation_url?: string;
+  description?: string;
+}
+
+export interface IssuerSpecificData {
+  entire_response?: string;
+  image_url?: string;
+  name?: string;
+}
+
+export interface NftMetadatum {
+  trait_type?: string;
+  value?: number | string;
+  display_type?: string;
+}
+
+// ===========================================================
