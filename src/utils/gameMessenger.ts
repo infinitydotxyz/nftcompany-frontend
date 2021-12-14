@@ -40,12 +40,15 @@ export class GameMessenger {
         case 'address':
           const address = await getAccount();
 
-          console.log(address);
-
           this.sendToGame(event.source!, 'address', address);
           break;
+        case 'game-results':
+          console.log(event.data.param);
+
+          // send to backend
+          break;
         default:
-          console.log(`GM: event not handled ${event.data}`);
+          console.log(`GM: event not handled ${event.data.toString()}`);
           break;
       }
     }
