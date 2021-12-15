@@ -51,6 +51,15 @@ export class GameMessenger {
           console.log('deposit-dog');
           break;
 
+        case 'level-images':
+          const levelImages = [];
+
+          levelImages.push('/path/to/image');
+          levelImages.push('/path/to/222');
+
+          this.sendToGame(event.source!, 'level-images', JSON.stringify(levelImages));
+          break;
+
         default:
           console.log(`GM: event not handled ${event.data.toString()}`);
           break;
