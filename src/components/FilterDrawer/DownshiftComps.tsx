@@ -41,9 +41,9 @@ export function ArrowIcon({ isOpen }: { isOpen: boolean }) {
     <svg
       viewBox="0 0 20 20"
       preserveAspectRatio="none"
-      width={12}
+      width={11}
       fill="transparent"
-      stroke="#555"
+      stroke="#333"
       strokeWidth="3px"
       transform={isOpen ? 'rotate(180)' : undefined}
     >
@@ -72,7 +72,9 @@ type ListItemContainerProps = {
 
 const ListItemContainer = styled.div`
   font-weight: ${(props: ListItemContainerProps) => (props.selected ? 'bold' : 'normal')};
-  background-color: ${(props: ListItemContainerProps) => (props.highlighted ? 'rebeccapurple' : 'transparent')};
+  background-color: ${(props: ListItemContainerProps) =>
+    props.highlighted ? 'var(--chakra-colors-brandBlue, red)' : 'transparent'};
+  color: ${(props: ListItemContainerProps) => (props.highlighted ? 'white' : 'inherit')};
   white-space: nowrap;
   overflow: hidden;
   cursor: pointer;
@@ -81,7 +83,7 @@ const ListItemContainer = styled.div`
 const Checkbox = styled.input`
   appearance: none;
   background: ${(props) => (props.checked ? 'black' : 'none')};
-  border: 1px solid black;
+  border: 1px solid #555;
   width: 10px;
   height: 10px;
   vertical-align: middle;
