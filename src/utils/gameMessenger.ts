@@ -42,11 +42,15 @@ export class GameMessenger {
 
           this.sendToGame(event.source!, 'address', address);
           break;
+
         case 'game-results':
           console.log(event.data.param);
-
-          // send to backend
           break;
+
+        case 'deposit-dog':
+          console.log('deposit-dog');
+          break;
+
         default:
           console.log(`GM: event not handled ${event.data.toString()}`);
           break;
