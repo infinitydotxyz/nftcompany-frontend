@@ -59,13 +59,36 @@ export class GameMessenger {
 
       if (!error) {
         const nftUrl = result['nftUrl'];
-
-        console.log(nftUrl);
         levelImages.push(nftUrl);
       }
     }
 
     return levelImages;
+  };
+
+  nftImage = async () => {
+    const levelImages: string[] = [];
+
+    // '0xC844c8e1207B9d3C54878C849A431301bA9c23E0'
+
+    // const address = user?.account;
+    const address = '0xC844c8e1207B9d3C54878C849A431301bA9c23E0';
+
+    const { result, error } = await apiGet(
+      `/nfts/0xC844c8e1207B9d3C54878C849A431301bA9c23E0/4c8e1207B9d3C54878C849A431301bA9c23E0`,
+      {
+        chainId: this.chainId,
+        score: 3000,
+        numPlays: 33
+      }
+    );
+
+    if (!error) {
+      const nftUrl = result['nftUrl'];
+      return nftUrl;
+    }
+
+    return '';
   };
 
   listener = async (event: any) => {
@@ -90,6 +113,12 @@ export class GameMessenger {
           const levelImages = await this.getLevelImages();
 
           this.sendToGame(event.source!, 'level-images', JSON.stringify(levelImages));
+          break;
+
+        case 'nft-image':
+          const nft = await this.nftImage();
+
+          this.sendToGame(event.source!, 'nft-image', nft);
           break;
 
         default:

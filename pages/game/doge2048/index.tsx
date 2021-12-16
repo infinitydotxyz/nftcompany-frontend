@@ -22,8 +22,8 @@ export default function GameFrame() {
     query: { url }
   } = router;
 
-  // let gameUrl = 'https://pleasr.infinity.xyz/';
-  let gameUrl = 'http://localhost:9092/';
+  let gameUrl = 'https://pleasr.infinity.xyz/';
+  // let gameUrl = 'http://localhost:9092/';
   if (url) {
     gameUrl = url as string;
   }
@@ -125,7 +125,7 @@ function GameFrameContent({ gameUrl, chainId, nftAddress }: Props) {
   React.useEffect(() => {
     let gm: any;
 
-    if (iframeRef && iframeRef.current) {
+    if (chainId && iframeRef && iframeRef.current) {
       const element = iframeRef.current;
 
       const iframeWindow = element.contentWindow;
@@ -140,7 +140,7 @@ function GameFrameContent({ gameUrl, chainId, nftAddress }: Props) {
     return () => {
       gm?.dispose();
     };
-  }, [iframeRef]);
+  }, [iframeRef, chainId]);
 
   return (
     <div className={styles.gameFrame}>
