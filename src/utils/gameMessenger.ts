@@ -18,14 +18,12 @@ export class GameMessenger {
   chainId: string;
 
   dispose = () => {
-    console.log('GameMessenger dispose');
-
     window.removeEventListener('message', this.listener);
   };
 
   // MessageEventSource ? for sender, didn't work
   sendToGame = (sender: any, message: string, param: string) => {
-    console.log(`GameMessenger sendToGame ${param} ${message}`);
+    // console.log(`GameMessenger sendToGame ${param} ${message}`);
 
     sender.postMessage(
       {
@@ -39,8 +37,6 @@ export class GameMessenger {
 
   getLevelImages = async () => {
     const levelImages: string[] = [];
-
-    // '0xC844c8e1207B9d3C54878C849A431301bA9c23E0'
 
     // const address = user?.account;
     const address = '0xC844c8e1207B9d3C54878C849A431301bA9c23E0';
@@ -69,8 +65,6 @@ export class GameMessenger {
   nftImage = async () => {
     const levelImages: string[] = [];
 
-    // '0xC844c8e1207B9d3C54878C849A431301bA9c23E0'
-
     // const address = user?.account;
     const address = '0xC844c8e1207B9d3C54878C849A431301bA9c23E0';
 
@@ -93,7 +87,6 @@ export class GameMessenger {
 
   listener = async (event: any) => {
     if (event.data && event.data.from === 'game') {
-      console.log(event);
       switch (event.data.message) {
         case 'address':
           const address = await getAccount();
