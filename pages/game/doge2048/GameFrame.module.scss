@@ -1,8 +1,6 @@
 @import 'styles/_mixins.scss';
 
 .gameFrame {
-  margin-top: 20px;
-
   @include lightShadow();
 
   :global(body.chakra-ui-dark) & {
@@ -11,4 +9,7 @@
 
   border-radius: 10px;
   overflow: hidden;
+  width: 1150px;
+  margin: 0 auto;
+  margin-top: 20px;
 }
