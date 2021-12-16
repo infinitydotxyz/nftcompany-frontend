@@ -90,7 +90,7 @@ export default function GameFrame() {
             <Button
               variant="outline"
               onClick={() => {
-                // sdf
+                console.log('mint doge here');
               }}
             >
               Mint Doge 2048 NFT
