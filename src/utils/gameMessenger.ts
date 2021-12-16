@@ -96,10 +96,16 @@ export class GameMessenger {
 
         case 'game-results':
           console.log(event.data.param);
+          // TODO: Adi handle score {score: 100}
+          // number of plays
+          // update score
           break;
 
         case 'deposit-dog':
           console.log('deposit-dog');
+          // TODO: Adi show metamask
+
+          // this.sendToGame(event.source!, 'state-update', JSON.stringify(levelImages));
           break;
 
         case 'level-images':

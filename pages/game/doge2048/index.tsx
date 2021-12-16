@@ -53,7 +53,11 @@ export default function GameFrame() {
         console.log(nft.asset_contract);
 
         // if doge nft
+        // TODO: Steve if find token for NFT
         if (nft.asset_contract !== 'wtf') {
+          // TODO: Adi check for dog balance
+          // TODO: Steve if dog balance below minimum then show deposit button
+          // best score
           setNftAddress(nft.asset_contract!);
           break;
         }
