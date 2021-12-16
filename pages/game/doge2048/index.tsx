@@ -13,18 +13,17 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { NFTAsset } from 'types/rewardTypes';
 
 export default function GameFrame() {
-  const { user, showAppError, showAppMessage } = useAppContext();
+  const { user, showAppError, chainId } = useAppContext();
   const [nftAddress, setNftAddress] = useState<string>('');
   const [data, setData] = useState<NFTAsset[]>([]);
-  const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
 
   const router = useRouter();
   const {
     query: { url }
   } = router;
 
-  let gameUrl = 'https://pleasr.infinity.xyz/';
-  // let gameUrl = 'http://localhost:9092/';
+  // let gameUrl = 'https://pleasr.infinity.xyz/';
+  let gameUrl = 'http://localhost:9092/';
   if (url) {
     gameUrl = url as string;
   }
@@ -68,32 +67,10 @@ export default function GameFrame() {
     fetchData();
   }, [user]);
 
-  React.useEffect(() => {
-    let gm: any;
-
-    if (!isServer) {
-      if (iframeRef && iframeRef.current) {
-        const element = iframeRef.current;
-
-        const iframeWindow = element.contentWindow;
-
-        if (iframeWindow) {
-          gm = new GameMessenger(iframeWindow, (message) => {
-            // console.log(message);
-          });
-        }
-      }
-    }
-
-    return () => {
-      gm?.dispose();
-    };
-  }, [iframeRef]);
-
   let contents;
 
   if (nftAddress && gameUrl) {
-    contents = <GameFrameContent gameUrl={gameUrl} nftAddress={nftAddress} />;
+    contents = <GameFrameContent gameUrl={gameUrl} chainId={chainId} nftAddress={nftAddress} />;
   } else {
     contents = <div>You need to mint an NFT to play the game</div>;
   }
@@ -139,9 +116,10 @@ GameFrame.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
 type Props = {
   gameUrl: string;
   nftAddress: string;
+  chainId: string;
 };
 
-function GameFrameContent({ gameUrl, nftAddress }: Props) {
+function GameFrameContent({ gameUrl, chainId, nftAddress }: Props) {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
 
   React.useEffect(() => {
@@ -153,7 +131,7 @@ function GameFrameContent({ gameUrl, nftAddress }: Props) {
       const iframeWindow = element.contentWindow;
 
       if (iframeWindow) {
-        gm = new GameMessenger(iframeWindow, (message) => {
+        gm = new GameMessenger(iframeWindow, chainId, (message) => {
           // console.log(message);
         });
       }

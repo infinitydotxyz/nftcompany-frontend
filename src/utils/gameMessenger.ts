@@ -1,17 +1,21 @@
 import { getAccount } from 'utils/ethersUtil';
+import { apiGet } from './apiUtil';
 
 export class GameMessenger {
-  constructor(iframeWindow: Window, callback: (arg: object) => void) {
+  constructor(iframeWindow: Window, chainId: string, callback: (arg: object) => void) {
     console.log('GameMessenger constructor');
 
     this.callback = callback;
+    this.chainId = chainId;
+
     window.addEventListener('message', this.listener);
 
     // tell game we are ready
     this.sendToGame(iframeWindow, 'ready', '');
   }
 
-  public callback: (arg: object) => void;
+  callback: (arg: object) => void;
+  chainId: string;
 
   dispose = () => {
     console.log('GameMessenger dispose');
@@ -21,7 +25,7 @@ export class GameMessenger {
 
   // MessageEventSource ? for sender, didn't work
   sendToGame = (sender: any, message: string, param: string) => {
-    console.log('GameMessenger sendToGame');
+    console.log(`GameMessenger sendToGame ${param} ${message}`);
 
     sender.postMessage(
       {
@@ -31,6 +35,37 @@ export class GameMessenger {
       },
       '*'
     );
+  };
+
+  getLevelImages = async () => {
+    const levelImages: string[] = [];
+
+    // '0xC844c8e1207B9d3C54878C849A431301bA9c23E0'
+
+    // const address = user?.account;
+    const address = '0xC844c8e1207B9d3C54878C849A431301bA9c23E0';
+
+    const levelScores = [0, 44, 125, 317, 765, 1789, 4093, 9213, 20477, 45053, 98301, 212989, 458749, 983037, 2097149];
+
+    for (const score of levelScores) {
+      const { result, error } = await apiGet(
+        `/nfts/0xC844c8e1207B9d3C54878C849A431301bA9c23E0/4c8e1207B9d3C54878C849A431301bA9c23E0`,
+        {
+          chainId: this.chainId,
+          score,
+          numPlays: score | 0
+        }
+      );
+
+      if (!error) {
+        const nftUrl = result['nftUrl'];
+
+        console.log(nftUrl);
+        levelImages.push(nftUrl);
+      }
+    }
+
+    return levelImages;
   };
 
   listener = async (event: any) => {
@@ -52,10 +87,7 @@ export class GameMessenger {
           break;
 
         case 'level-images':
-          const levelImages = [];
-
-          levelImages.push('/path/to/image');
-          levelImages.push('/path/to/222');
+          const levelImages = await this.getLevelImages();
 
           this.sendToGame(event.source!, 'level-images', JSON.stringify(levelImages));
           break;
