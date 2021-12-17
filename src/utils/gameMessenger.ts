@@ -88,10 +88,13 @@ export class GameMessenger {
   listener = async (event: any) => {
     if (event.data && event.data.from === 'game') {
       switch (event.data.message) {
-        case 'address':
+        case 'game-state':
           const address = await getAccount();
 
-          this.sendToGame(event.source!, 'address', address);
+          const highScore = 887723;
+          const numPlays = 44;
+
+          this.sendToGame(event.source!, 'game-state', JSON.stringify({ address, highScore, numPlays }));
           break;
 
         case 'game-results':
