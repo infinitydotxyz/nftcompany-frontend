@@ -67,11 +67,9 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
             tooltip={entry.address}
           />
         </div>
-        <div className={styles.buttons}>
+        <div className={styles.buttons} onClick={() => router.push(`/collection/${cleanCollectionName(entry.name)}`)}>
           <Button size="lg" className={styles.stadiumButtonBlue}>
-            <a href={`/collection/${cleanCollectionName(entry.name)}`} target="_blank" rel="noreferrer">
-              View Collection
-            </a>
+            View Collection
           </Button>
         </div>
       </div>
