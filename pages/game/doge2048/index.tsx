@@ -11,6 +11,10 @@ import { Button, Spacer } from '@chakra-ui/react';
 import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { NFTAsset } from 'types/rewardTypes';
+import { ethers } from 'ethers';
+import { getEthersProvider } from 'utils/ethersUtil';
+
+const doge2048Abi = require('./abis/doge2048.json'); // todo: adi
 
 export default function GameFrame() {
   const { user, showAppError, chainId } = useAppContext();
@@ -22,8 +26,10 @@ export default function GameFrame() {
     query: { url }
   } = router;
 
-  let gameUrl = 'https://pleasr.infinity.xyz/';
-  // let gameUrl = 'http://localhost:9092/';
+  const dogTokenAddress = '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6'; // todo: adi
+  const nftFactoryAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'; // todo: adi
+  // let gameUrl = 'https://pleasr.infinity.xyz/';
+  let gameUrl = 'http://localhost:9092/';
   if (url) {
     gameUrl = url as string;
   }
@@ -35,37 +41,52 @@ export default function GameFrame() {
       return;
     }
 
-    // const address = user?.account;
-    const address = '0xC844c8e1207B9d3C54878C849A431301bA9c23E0';
+    const address = user?.account;
 
-    const { result, error } = await apiGet(`/p/u/${address}/assets`, {
-      offset: 0, // not "startAfter" because this is not firebase query.
-      limit: ITEMS_PER_PAGE,
-      source: 2
-    });
+    setNftAddress('0x9f1ac54BEF0DD2f6f3462EA0fa94fC62300d3a8e'); // todo: adi
 
-    if (error) {
-      showAppError(error?.message);
-    } else {
-      const nfts = result as NFTAsset[];
+    // todo: adi
+    const contract = new ethers.Contract(
+      '0x9f1ac54BEF0DD2f6f3462EA0fa94fC62300d3a8e',
+      doge2048Abi,
+      getEthersProvider().getSigner()
+    );
+    const numPlays = await contract.numPlays();
+    const score = await contract.score();
+    const dogBalance = (await contract.getTokenBalance(dogTokenAddress)).toNumber();
+    console.log(numPlays, score, dogBalance);
 
-      for (const nft of nfts) {
-        console.log(nft.asset_contract);
+    // const address = '0xC844c8e1207B9d3C54878C849A431301bA9c23E0';
+    // todo: adi
+    // const { result, error } = await apiGet(`/u/${address}/assets`, {
+    //   offset: 0, // not "startAfter" because this is not firebase query.
+    //   limit: ITEMS_PER_PAGE,
+    //   source: 2,
+    //   contract: nftFactoryAddress
+    // });
 
-        // if doge nft
-        // TODO: Steve if find token for NFT
-        if (nft.asset_contract !== 'wtf') {
-          // TODO: Adi check for dog balance
-          // TODO: Steve if dog balance below minimum then show deposit button
-          // best score
-          setNftAddress(nft.asset_contract!);
-          break;
-        }
-      }
+    // if (error) {
+    //   showAppError(error?.message);
+    // } else {
+    //   const nfts = result as NFTAsset[];
 
-      setData(nfts || []);
-    }
-  };
+    //   for (const nft of nfts) {
+    //     console.log(nft.asset_contract);
+
+    //     // if doge nft
+    //     // TODO: Steve if find token for NFT
+    //     if (nft.asset_contract !== 'wtf') {
+    //       // TODO: Adi check for dog balance
+    //       // TODO: Steve if dog balance below minimum then show deposit button
+    //       // best score
+    //       setNftAddress(nft.asset_contract!);
+    //       break;
+    //     }
+    //   }
+
+    //   setData(nfts || []);
+    // }
+  };;
 
   useEffect(() => {
     fetchData();

@@ -95,7 +95,7 @@ export class GameMessenger {
           break;
 
         case 'game-results':
-          console.log(event.data.param);
+          console.log('game result', event.data.param);
           // TODO: Adi handle score {score: 100}
           // number of plays
           // update score
