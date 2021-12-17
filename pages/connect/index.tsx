@@ -22,7 +22,10 @@ export default function ConnectWallet() {
 
     if (res && res.getSigner) {
       await saveAuthHeaders(await res.getSigner().getAddress());
-      router.push('/explore');
+
+      // just go back, not sure how to check if back is valid.
+      // maybe we should check first, but I think it should be OK.
+      router.back();
     } else {
       showAppError('Failed to connect');
     }
