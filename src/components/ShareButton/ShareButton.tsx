@@ -54,6 +54,7 @@ export const ShareIconButton = ({ copyText, tooltip = 'Copy to Clipboard' }: Pro
       <Tooltip label={tooltip} placement="top" hasArrow>
         <IconButton
           size="sm"
+          variant="outline"
           colorScheme="gray"
           aria-label="Open link"
           icon={<ShareIcon />}
@@ -118,6 +119,7 @@ export const ExternalLinkIconButton = ({ url, tooltip = 'Open Link' }: EProps) =
       <Tooltip label={tooltip} placement="top" hasArrow>
         <IconButton
           size="sm"
+          variant="outline"
           colorScheme="gray"
           aria-label="Open link"
           icon={<ExternalLinkIcon />}
