@@ -113,7 +113,8 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
             </Link>
             <Box flex={1} />
             <IconButton
-              colorScheme="whiteAlpha"
+              variant="outline"
+              colorScheme="gray"
               aria-label="Copy"
               icon={<CopyIcon />}
               onClick={(e) => {
