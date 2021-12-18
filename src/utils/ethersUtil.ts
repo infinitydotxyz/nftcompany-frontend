@@ -60,13 +60,16 @@ export const getAccount = async () => {
 export const getChainId = async () => {
   try {
     const chainIdLoc = await window.ethereum.request({ method: 'eth_chainId' });
-
+    console.log('chain id loc', chainIdLoc);
     if (chainIdLoc === '0x1') {
       // eth main
       return '1';
     } else if (chainIdLoc === '0x89') {
       // polygon
       return '137';
+    } else if (chainIdLoc === '0x7a69') {
+      // localhost hardhat
+      return '31337';
     }
   } catch (err) {
     console.error('eth_chainId failed', err);
