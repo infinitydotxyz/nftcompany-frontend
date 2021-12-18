@@ -75,7 +75,6 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
 
               <div className={styles.imgFooter}>
                 <div className={styles.infoColumn}>
-                  <div className={styles.imgTitle}>{title}</div>
                   <div className={styles.collectionRow}>
                     <Link color="brandBlue" className={styles.collection} href={`${window.origin}/collection/${name}`}>
                       {data?.collectionName}
@@ -83,6 +82,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
 
                     <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
                   </div>
+                  <div className={styles.imgTitle}>{title}</div>
                 </div>
                 <Spacer />
                 <div className={styles.playButton}>

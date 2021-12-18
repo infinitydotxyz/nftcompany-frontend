@@ -113,7 +113,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
             </Link>
             <Box flex={1} />
             <IconButton
-              colorScheme="gray"
+              colorScheme="whiteAlpha"
               aria-label="Copy"
               icon={<CopyIcon />}
               onClick={(e) => {
@@ -158,9 +158,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
               {content}
               <div className={styles.buttons}>
                 <Button onClick={() => saveEmail()}>Save</Button>
-                <Button colorScheme="gray" onClick={onClose}>
-                  Cancel
-                </Button>
+                <Button onClick={onClose}>Cancel</Button>
               </div>
             </div>
           </div>

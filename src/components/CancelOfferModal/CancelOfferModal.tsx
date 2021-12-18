@@ -85,7 +85,7 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 Cancel Offer
               </Button>
 
-              <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose && onClose()}>
+              <Button disabled={isSubmitting} onClick={() => onClose && onClose()}>
                 Close
               </Button>
             </div>

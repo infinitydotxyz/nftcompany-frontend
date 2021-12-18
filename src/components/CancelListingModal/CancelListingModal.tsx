@@ -79,7 +79,7 @@ const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 Confirm
               </Button>
 
-              <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose()}>
+              <Button disabled={isSubmitting} onClick={() => onClose()}>
                 Close
               </Button>
             </div>

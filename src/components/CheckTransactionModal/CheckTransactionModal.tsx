@@ -89,7 +89,7 @@ const CheckTransactionModal: React.FC<IProps> = ({ onClose }: IProps) => {
                 Confirm
               </Button>
 
-              <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose()}>
+              <Button disabled={isSubmitting} onClick={() => onClose()}>
                 Cancel
               </Button>
             </div>
