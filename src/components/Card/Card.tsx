@@ -47,20 +47,12 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     ownedByYou = addressesEqual(data.owner, userAccount);
   }
 
-  const clickCard = () => {
+  const onClickCard = (ev: MouseEvent) => {
     router.push(`/assets/${data.tokenAddress}/${data.tokenId}`);
   };
 
   const collectionName = data.collectionName;
   const hasBlueCheck = data.hasBlueCheck;
-
-  if (inView === false) {
-    return (
-      <div ref={ref} id={`id_${data.id}`} className={styles.card}>
-        <img src={data.image} alt="Preloaded Image" style={{ width: 1, height: 1 }} />
-      </div>
-    );
-  }
 
   const actionButton = () => {
     const isForSale = data.metadata?.basePriceInEth;
@@ -141,15 +133,23 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     return 'WETH';
   };
 
+  if (inView === false) {
+    return (
+      <div ref={ref} id={`id_${data.id}`} className={styles.card}>
+        <img src={data.image} alt="Preloaded Image" style={{ width: 1, height: 1 }} />
+      </div>
+    );
+  }
   return (
     <div ref={ref} id={`id_${data.id}`} className={styles.card}>
       {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
 
-      <div className={styles.cardPreview}>
+      <div className={styles.cardPreview} onClick={onClickCard}>
         <img src={data.image} alt="Card preview" />
 
         <div className={styles.cardControls}></div>
       </div>
+
       <div className={styles.cardBody}>
         <div className={styles.cardLine}>
           <div className={styles.cardTitle}>
