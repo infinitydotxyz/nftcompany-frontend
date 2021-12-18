@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import styles from './scss/TraitBox.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { PurchaseAccordionItem, SingleAccordion } from './SingleAccordion';
 import { LargeIcons } from 'components/Icons/MenuIcons';
 import { Box, useColorMode } from '@chakra-ui/react';
+import styles from './scss/TraitBox.module.scss';
 
 interface Props {
   data: CardData;
