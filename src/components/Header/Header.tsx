@@ -256,7 +256,7 @@ const Header = (): JSX.Element => {
                 // style={{ flex: '0 1 auto', minHeight: 68 }}
                 className="can-click"
                 alt="logo"
-                src={dark ? '/img/logo-new.png' : '/img/logo-new.png'}
+                src={dark ? '/img/logo-new.svg' : '/img/logo-new.svg'}
                 width={160}
               />
             </Link>
