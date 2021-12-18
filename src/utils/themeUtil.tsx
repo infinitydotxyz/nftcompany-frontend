@@ -165,7 +165,7 @@ const styles = {
     return {
       body: {
         fontFamily:
-          'Greycliff, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif',
+          'Futura, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif',
 
         color: mode('gray.800', 'whiteAlpha.900')(props),
 
