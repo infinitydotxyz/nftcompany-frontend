@@ -26,10 +26,10 @@ export default function GameFrame() {
     query: { url }
   } = router;
 
-  const dogTokenAddress = '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6'; // todo: adi
+  const dogTokenAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9'; // todo: adi
   const nftFactoryAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'; // todo: adi
   // let gameUrl = 'https://pleasr.infinity.xyz/';
-  let gameUrl = 'http://localhost:9092/';
+  let gameUrl = 'http://localhost:8080/';
   if (url) {
     gameUrl = url as string;
   }
@@ -53,7 +53,9 @@ export default function GameFrame() {
     );
     const numPlays = await contract.numPlays();
     const score = await contract.score();
-    const dogBalance = (await contract.getTokenBalance(dogTokenAddress)).toNumber();
+    let dogBalance = await contract.getTokenBalance(dogTokenAddress);
+    dogBalance = ethers.utils.formatEther(dogBalance);
+    // contract.saveState(score);
     console.log(numPlays, score, dogBalance);
 
     // const address = '0xC844c8e1207B9d3C54878C849A431301bA9c23E0';
@@ -149,14 +151,14 @@ function GameFrameContent({ gameUrl, chainId, nftAddress }: Props) {
 
   React.useEffect(() => {
     let gm: any;
-
+    console.log('game frame', chainId);
     if (chainId && iframeRef && iframeRef.current) {
       const element = iframeRef.current;
-
+      console.log('game frame 155', chainId);
       const iframeWindow = element.contentWindow;
 
       if (iframeWindow) {
-        gm = new GameMessenger(iframeWindow, chainId, (message) => {
+        gm = new GameMessenger(iframeWindow, chainId, nftAddress, (message) => {
           // console.log(message);
         });
       }

@@ -2,7 +2,7 @@ import { getAccount } from 'utils/ethersUtil';
 import { apiGet } from './apiUtil';
 
 export class GameMessenger {
-  constructor(iframeWindow: Window, chainId: string, callback: (arg: object) => void) {
+  constructor(iframeWindow: Window, chainId: string, nftAddress: string, callback: (arg: object) => void) {
     console.log('GameMessenger constructor');
 
     this.callback = callback;
@@ -37,6 +37,7 @@ export class GameMessenger {
 
   getLevelImages = async () => {
     const levelImages: string[] = [];
+    console.log('level images game');
 
     // const address = user?.account;
     const address = '0xC844c8e1207B9d3C54878C849A431301bA9c23E0';
