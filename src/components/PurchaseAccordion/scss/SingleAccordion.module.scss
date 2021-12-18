@@ -1,5 +1,11 @@
 .accordionButton {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-bottom: solid 1px #ddd;
   padding: 10px;
+
+  :global(body.chakra-ui-dark) & {
+    border-bottom: solid 1px #333;
+  }
 
   .title {
     flex: 1;
@@ -7,10 +13,18 @@
     text-align: left;
     font-weight: bold;
   }
+
+  :global(body.chakra-ui-dark) & {
+    background-color: var(--chakra-colors-cardBgDark, red);
+  }
 }
 
 .singleAccordion {
   overflow: hidden;
+
+  :global(body.chakra-ui-dark) & {
+    border: 1px solid #333;
+  }
 }
 
 .accordionPanel {
