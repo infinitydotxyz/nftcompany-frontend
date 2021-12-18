@@ -113,13 +113,33 @@ const Button = {
   baseStyle: (props: any) => {
     return {
       // default is 1.2 and it makes the text a few pixels too high
-      lineHeight: '1.0'
+      lineHeight: '1.0',
+      paddingBottom: '4px', // align button text vertically
+      fontWeight: 'normal',
+      bg: '#222',
+      backgroundColor: '#222',
+      _hover: {
+        bg: '#555',
+        backgroundColor: '#555'
+      },
+      _active: {
+        bg: '#222',
+        backgroundColor: '#222'
+      }
     };
   },
   variants: {
     outline: (props: any) => {
       return {
+        bg: '#fff',
+        backgroundColor: '#fff',
         border: '2px solid'
+      };
+    },
+    ghost: (props: any) => {
+      return {
+        bg: '#fff',
+        backgroundColor: '#fff'
       };
     },
     solid: (props: any) => {
