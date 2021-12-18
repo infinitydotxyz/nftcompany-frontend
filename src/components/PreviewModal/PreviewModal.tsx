@@ -192,7 +192,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
 
                   <Label text={description} />
 
-                  <div className={styles.buttons}>{purchaseButton}</div>
+                  {/* <div className={styles.buttons}>{purchaseButton}</div> */}
                 </div>
               </div>
             </div>
