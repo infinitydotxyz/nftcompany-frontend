@@ -54,7 +54,7 @@ const CountryConfirmModal: React.FC<IProps> = ({ onSubmit, onClose }: IProps) =>
                 Confirm
               </Button>
 
-              <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose && onClose()}>
+              <Button disabled={isSubmitting} onClick={() => onClose && onClose()}>
                 Cancel
               </Button>
             </div>
