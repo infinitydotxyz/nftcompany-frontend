@@ -12,6 +12,7 @@ import {
   NFT_DATA_SOURCES
 } from './constants';
 import { Spinner } from '@chakra-ui/spinner';
+import { UnmarshalNFTAsset } from 'types/rewardTypes';
 
 // OpenSea's EventType
 export enum EventType {
@@ -188,6 +189,38 @@ export const transformCovalent = (item: any, owner: string, chainId: string) => 
   } as CardData;
 };
 
+export const transformUnmarshal = (item: UnmarshalNFTAsset, owner: string, chainId: string) => {
+  if (!item) {
+    return null;
+  }
+
+  let schemaName = '';
+  const nftType = item?.type;
+  if (nftType === '721') {
+    schemaName = 'ERC721';
+  } else if (nftType === '1155') {
+    schemaName = 'ERC1155';
+  }
+
+  const data = item;
+  data.traits = item?.nft_metadata;
+
+  return {
+    id: `${item?.asset_contract}_${item?.token_id}`,
+    title: item?.issuer_specific_data?.name,
+    description: item?.description,
+    image: item?.issuer_specific_data?.image_url,
+    imagePreview: item?.issuer_specific_data?.image_url,
+    tokenAddress: item?.asset_contract,
+    tokenId: item?.token_id,
+    collectionName: item?.issuer_specific_data?.name,
+    owner,
+    schemaName,
+    chainId,
+    data
+  } as CardData;
+};
+
 export const getCustomExceptionMsg = (msg: ReactNode) => {
   let customMsg = msg;
   if (typeof msg === 'string' && msg.indexOf('err: insufficient funds for gas * price + value') > 0) {
@@ -343,7 +376,7 @@ export const getNftDataSource = (chainId?: string): number => {
   if (chainId === '1') {
     return NFT_DATA_SOURCES.OPENSEA;
   } else if (chainId === '137') {
-    return NFT_DATA_SOURCES.COVALENT;
+    return NFT_DATA_SOURCES.UNMARSHAL;
   }
   // default
   return NFT_DATA_SOURCES.OPENSEA;

@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { Button, Spacer } from '@chakra-ui/react';
 import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { NFTAsset } from 'types/rewardTypes';
+import { UnmarshalNFTAsset } from 'types/rewardTypes';
 import { ethers } from 'ethers';
 import { getEthersProvider } from 'utils/ethersUtil';
 
@@ -29,7 +29,7 @@ export default function GameFrame() {
   const { user, showAppError, chainId } = useAppContext();
   const [tokenId, setTokenId] = useState<number>(0);
   const [nftAddress, setNftAddress] = useState<string>('');
-  const [data, setData] = useState<NFTAsset[]>([]);
+  const [data, setData] = useState<UnmarshalNFTAsset[]>([]);
 
   const router = useRouter();
   const {
@@ -68,7 +68,7 @@ export default function GameFrame() {
     if (error) {
       showAppError(error?.message);
     } else {
-      const nfts = result as NFTAsset[];
+      const nfts = result as UnmarshalNFTAsset[];
       if (nfts.length > 0) {
         // get the first one by default
         const nft = nfts[0];
@@ -88,7 +88,7 @@ export default function GameFrame() {
           let dogBalance = await nftInstance.getTokenBalance(dogTokenAddress);
           dogBalance = ethers.utils.formatEther(dogBalance);
         } else {
-          showAppError('Not the right contract' + nft.asset_contract);
+          showAppError('Not the right contract ' + nft.asset_contract);
         }
       } else {
         // no doge2048 nfts found
