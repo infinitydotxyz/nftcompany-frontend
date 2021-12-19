@@ -78,12 +78,12 @@ $cardHeight: 420px;
     position: relative;
     border-radius: 16px;
     overflow: hidden;
-    height: 300px;
+    height: 280px;
     cursor: pointer;
 
     img {
       min-width: 100%;
-      min-height: 300px;
+      min-height: 280px;
       transition: transform 1s;
       object-fit: cover;
     }
@@ -168,7 +168,6 @@ $cardHeight: 420px;
 
     .cardTitle {
       font-size: 16px;
-      line-height: 1;
       font-weight: 500;
       display: flex;
       gap: 7px;

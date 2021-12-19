@@ -9,6 +9,7 @@ import { CollectionCardEntry } from 'types/rewardTypes';
 import useResizeObserver from 'use-resize-observer';
 import { CardGrid } from './CollectionCard';
 import { ITEMS_PER_PAGE } from 'utils/constants';
+import { renderSpinner } from 'utils/commonUtil';
 
 type MProps = {
   listMode?: boolean;
@@ -117,9 +118,7 @@ export const CollectionCards = ({ rows = 0, featuredCollections = false, listMod
     return (
       <div className={styles.main}>
         <div className={styles.spinner}>
-          <div>
-            <Spinner color="brandBlue" thickness="4px" height={26} width={26} emptyColor="gray.200" speed=".8s" />
-          </div>
+          <div>{renderSpinner()}</div>
         </div>
       </div>
     );

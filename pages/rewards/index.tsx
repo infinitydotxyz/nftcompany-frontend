@@ -9,6 +9,7 @@ import { RewardResults } from '../../src/types/rewardTypes';
 import { Spinner } from '@chakra-ui/spinner';
 import { DataItem, RewardCard } from 'components/RewardCard/RewardCard';
 import { GiftCardIcon } from 'components/Icons/Icons';
+import { renderSpinner } from 'utils/commonUtil';
 
 const Rewards = (): JSX.Element => {
   const { user, showAppError } = useAppContext();
@@ -48,9 +49,7 @@ const Rewards = (): JSX.Element => {
         </Head>
         <div className={styles.main}>
           <div className={styles.spinner}>
-            <div>
-              <Spinner color="brandBlue" thickness="4px" height={26} width={26} emptyColor="gray.200" speed=".8s" />
-            </div>
+            <div>{renderSpinner()}</div>
           </div>
         </div>
       </>
@@ -70,7 +69,7 @@ const Rewards = (): JSX.Element => {
         {
           title: 'Early supporter bonus',
           value:
-            (Math.round((rewardResults.finalEarnedTokens / rewardResults.newEligible + Number.EPSILON) * 100) / 100) + 'x'
+            Math.round((rewardResults.finalEarnedTokens / rewardResults.newEligible + Number.EPSILON) * 100) / 100 + 'x'
         },
         { title: 'Total tokens', value: rewardResults.finalEarnedTokens }
       ];

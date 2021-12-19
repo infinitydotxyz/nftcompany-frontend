@@ -3,7 +3,7 @@ import { apiGet } from 'utils/apiUtil';
 import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { weiToEther } from 'utils/ethersUtil';
-import { ellipsisAddress, getChainScannerBase } from 'utils/commonUtil';
+import { ellipsisAddress, getChainScannerBase, renderSpinner } from 'utils/commonUtil';
 import styles from './CollectionEvents.module.scss';
 import { FetchMore } from 'components/FetchMore/FetchMore';
 import { ITEMS_PER_PAGE } from 'utils/constants';
@@ -76,6 +76,8 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
           </Tr>
         </Thead>
         <Tbody>
+          {isFetching && renderSpinner({ margin: 5 })}
+
           {data.map((item: any) => {
             return (
               <Tr key={`${address}_${item?.asset?.token_id}_${item.created_date}`}>

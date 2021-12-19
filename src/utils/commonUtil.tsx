@@ -11,6 +11,7 @@ import {
   POLYGON_CHAIN_SCANNER_BASE,
   NFT_DATA_SOURCES
 } from './constants';
+import { Spinner } from '@chakra-ui/spinner';
 
 // OpenSea's EventType
 export enum EventType {
@@ -347,3 +348,7 @@ export const getNftDataSource = (chainId?: string): number => {
   // default
   return NFT_DATA_SOURCES.OPENSEA;
 };
+
+export const renderSpinner = (props?: any) => (
+  <Spinner color="brandBlue" thickness="2px" height={26} width={26} emptyColor="gray.200" speed=".8s" {...props} />
+);
