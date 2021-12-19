@@ -11,7 +11,6 @@ export class GameMessenger {
   chainId: string;
   tokenAddress: string;
   dogTokenAddress: string;
-  dogTokensPerPlay: number;
   tokenId: number;
   factoryContract: ethers.Contract;
   ierc20Instance: ethers.Contract;
@@ -22,7 +21,6 @@ export class GameMessenger {
     tokenAddress: string,
     tokenId: number,
     dogTokenAddress: string,
-    dogTokensPerPlay: number,
     callback: (arg: object) => void
   ) {
     console.log('GameMessenger constructor');
@@ -32,7 +30,6 @@ export class GameMessenger {
     this.tokenAddress = tokenAddress;
     this.tokenId = tokenId;
     this.dogTokenAddress = dogTokenAddress;
-    this.dogTokensPerPlay = dogTokensPerPlay;
 
     window.addEventListener('message', this.listener);
 
@@ -108,7 +105,6 @@ export class GameMessenger {
           console.log('game result', event.data.param);
           await nftInstance.saveState(
             this.dogTokenAddress,
-            ethers.utils.parseEther(String(this.dogTokensPerPlay)),
             event.data.param.score
           );
           break;

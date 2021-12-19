@@ -20,7 +20,7 @@ const variationName = 'doge2048';
 const numToMint = 1;
 const dogTokenAddress = '0x3604035F54e5fe0875652842024b49D1Fea11C7C'; // todo: adi
 // lower case
-const tokenAddress = '0x7705b65be22cc37c0b8f5f664d3884c10e9017b4'; // todo: adi
+const tokenAddress = '0xde945603aa3c9bc22610957dce5646ac6e770e6c'; // todo: adi
 const dogTokensPerPlay = 1; // todo: adi
 // let gameUrl = 'https://pleasr.infinity.xyz/';
 let gameUrl = 'http://localhost:8080/'; // todo: adi
@@ -69,10 +69,9 @@ export default function GameFrame() {
       showAppError(error?.message);
     } else {
       const nfts = result as UnmarshalNFTAsset[];
-      if (nfts.length > 0) {
-        // get the first one by default
-        const nft = nfts[0];
-        console.log(nft.asset_contract);
+      if (nfts && nfts.length > 0) {
+        // get the last one by default
+        const nft = nfts[nfts.length - 1];
         const _tokenId = nft.token_id || '1';
         setTokenId(parseInt(_tokenId));
         if (nft.asset_contract?.toLowerCase() === tokenAddress) {
@@ -81,6 +80,7 @@ export default function GameFrame() {
           // best score
           const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
           const instanceAddress = await factoryContract.tokenIdToInstance(tokenId);
+          console.log('nft instance', instanceAddress);
           setNftAddress(instanceAddress);
           const nftInstance = new ethers.Contract(instanceAddress, doge2048Abi, getEthersProvider().getSigner());
           const numPlays = await nftInstance.numPlays();
@@ -123,7 +123,6 @@ export default function GameFrame() {
         tokenAddress={tokenAddress}
         tokenId={tokenId}
         dogTokenAddress={dogTokenAddress}
-        dogTokensPerPlay={dogTokensPerPlay}
       />
     );
   } else {
@@ -175,10 +174,9 @@ type Props = {
   tokenAddress: string;
   tokenId: number;
   dogTokenAddress: string;
-  dogTokensPerPlay: number;
 };
 
-function GameFrameContent({ gameUrl, chainId, tokenAddress, tokenId, dogTokenAddress, dogTokensPerPlay }: Props) {
+function GameFrameContent({ gameUrl, chainId, tokenAddress, tokenId, dogTokenAddress }: Props) {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
 
   React.useEffect(() => {
@@ -196,7 +194,6 @@ function GameFrameContent({ gameUrl, chainId, tokenAddress, tokenId, dogTokenAdd
           tokenAddress,
           tokenId,
           dogTokenAddress,
-          dogTokensPerPlay,
           (message) => {
             // console.log(message);
           }
