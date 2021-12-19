@@ -5,7 +5,7 @@ import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import { BaseCardData, CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import { addressesEqual } from 'utils/commonUtil';
+import { addressesEqual, getSearchFriendlyString } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
 import { Spacer, Link } from '@chakra-ui/react';
@@ -153,7 +153,13 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           <div className={styles.cardTitle}>
             {collectionName && (
               <div className={styles.collectionRow}>
-                <div className={styles.collectionName}>{collectionName}</div>
+                <Link
+                  color="gray"
+                  fontWeight="normal"
+                  onClick={() => router.push(`/collection/${getSearchFriendlyString(collectionName)}`)}
+                >
+                  {collectionName}
+                </Link>
 
                 <div style={{ paddingLeft: 6 }}>
                   <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
