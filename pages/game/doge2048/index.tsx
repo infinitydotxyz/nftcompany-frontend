@@ -72,15 +72,15 @@ export default function GameFrame() {
       if (nfts && nfts.length > 0) {
         // get the last one by default
         const nft = nfts[nfts.length - 1];
-        const _tokenId = nft.token_id || '1';
-        setTokenId(parseInt(_tokenId));
+        const _tokenId = parseInt(nft.token_id || '1');
+        setTokenId(_tokenId);
         if (nft.asset_contract?.toLowerCase() === tokenAddress) {
           // TODO: Adi check for dog balance
           // TODO: Steve if dog balance below minimum then show deposit button
           // best score
           const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
-          const instanceAddress = await factoryContract.tokenIdToInstance(tokenId);
-          console.log('nft instance', instanceAddress);
+          const instanceAddress = await factoryContract.tokenIdToInstance(_tokenId);
+          console.log('token id and instance', _tokenId, instanceAddress);
           setNftAddress(instanceAddress);
           const nftInstance = new ethers.Contract(instanceAddress, doge2048Abi, getEthersProvider().getSigner());
           const numPlays = await nftInstance.numPlays();
