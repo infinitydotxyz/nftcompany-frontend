@@ -76,7 +76,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
               <div className={styles.imgFooter}>
                 <div className={styles.infoColumn}>
                   <div className={styles.collectionRow}>
-                    <Link color="brandBlue" className={styles.collection} href={`${window.origin}/collection/${name}`}>
+                    <Link color="gray" className={styles.collection} href={`${window.origin}/collection/${name}`}>
                       {data?.collectionName}
                     </Link>
 
