@@ -6,13 +6,12 @@ const doge2048Abi = require('../../pages/game/doge2048/abis/doge2048.json'); // 
 const factoryAbi = require('../../pages/game/doge2048/abis/infinityFactory.json'); // todo: adi
 const ierc20Abi = require('../../pages/game/doge2048/abis/ierc20.json');
 
-const dogTokenAddress = '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853'; // todo: adi
-const dogTokensPerPlay = 1; // todo: adi
-
 export class GameMessenger {
   callback: (arg: object) => void;
   chainId: string;
   tokenAddress: string;
+  dogTokenAddress: string;
+  dogTokensPerPlay: number;
   tokenId: number;
   factoryContract: ethers.Contract;
   ierc20Instance: ethers.Contract;
@@ -22,6 +21,8 @@ export class GameMessenger {
     chainId: string,
     tokenAddress: string,
     tokenId: number,
+    dogTokenAddress: string,
+    dogTokensPerPlay: number,
     callback: (arg: object) => void
   ) {
     console.log('GameMessenger constructor');
@@ -30,6 +31,8 @@ export class GameMessenger {
     this.chainId = chainId;
     this.tokenAddress = tokenAddress;
     this.tokenId = tokenId;
+    this.dogTokenAddress = dogTokenAddress;
+    this.dogTokensPerPlay = dogTokensPerPlay;
 
     window.addEventListener('message', this.listener);
 
@@ -76,7 +79,7 @@ export class GameMessenger {
 
   nftImage = async () => {
     // todo: adi change chain name and address and token id
-    const { result, error } = await apiGet(`/nfts/localhost/${this.tokenAddress}/${this.tokenId}`);
+    const { result, error } = await apiGet(`/nfts/polygon/${this.tokenAddress}/${this.tokenId}`);
 
     if (!error) {
       const imageUrl = result['image'];
@@ -87,8 +90,7 @@ export class GameMessenger {
   };
 
   listener = async (event: any) => {
-    console.log('listener', event);
-
+    // console.log('listener', event);
     if (event.data && event.data.from === 'game') {
       const instanceAddress = await this.factoryContract.tokenIdToInstance(this.tokenId);
       const nftInstance = new ethers.Contract(instanceAddress, doge2048Abi, getEthersProvider().getSigner());
@@ -97,16 +99,18 @@ export class GameMessenger {
           const address = await getAccount();
           const numPlays = await nftInstance.numPlays();
           const highScore = await nftInstance.score();
-          let dogBalance = await nftInstance.getTokenBalance(dogTokenAddress);
+          let dogBalance = await nftInstance.getTokenBalance(this.dogTokenAddress);
           dogBalance = ethers.utils.formatEther(dogBalance);
-          console.log(numPlays, highScore, dogBalance);
-
-          this.sendToGame(event.source!, 'game-state', JSON.stringify({ address, highScore, numPlays }));
+          this.sendToGame(event.source!, 'game-state', JSON.stringify({ address, highScore, numPlays, dogBalance }));
           break;
 
         case 'game-results':
           console.log('game result', event.data.param);
-          await nftInstance.saveState(dogTokenAddress, ethers.utils.parseEther(String(dogTokensPerPlay)), event.data.param.score);
+          await nftInstance.saveState(
+            this.dogTokenAddress,
+            ethers.utils.parseEther(String(this.dogTokensPerPlay)),
+            event.data.param.score
+          );
           break;
 
         case 'deposit-dog':
