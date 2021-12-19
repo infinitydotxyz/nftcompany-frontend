@@ -27,7 +27,7 @@ export default function GameFrame() {
     query: { url }
   } = router;
 
-  const dogTokenAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9'; // todo: adi
+  const dogTokenAddress = '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853'; // todo: adi
   const tokenAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'; // todo: adi
   // let gameUrl = 'https://pleasr.infinity.xyz/';
   let gameUrl = 'http://localhost:8080/'; // todo: adi
