@@ -113,7 +113,6 @@ export class GameMessenger {
           console.log('deposit-dog', event.data.param);
           const amount = ethers.utils.parseEther(event.data.param.amount);
           await this.ierc20Instance.transfer(instanceAddress, amount); // todo: adi
-          // this.sendToGame(event.source!, 'state-update', JSON.stringify(levelImages));
           break;
 
         case 'level-images':
