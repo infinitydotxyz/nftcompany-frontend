@@ -17,19 +17,9 @@
   :global(body.chakra-ui-dark) & {
     background-color: var(--chakra-colors-cardBgDark, red);
   }
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.9) !important;
-
-    :global(body.chakra-ui-dark) & {
-      background-color: #000 !important;
-    }
-  }
 }
 
 .singleAccordion {
-  border: solid 1px #ddd;
-  border-radius: 12px;
   overflow: hidden;
 
   :global(body.chakra-ui-dark) & {
@@ -38,9 +28,4 @@
 }
 
 .accordionPanel {
-  background-color: rgba(255, 255, 255, 0.8);
-
-  :global(body.chakra-ui-dark) & {
-    background-color: var(--chakra-colors-cardBgDark, red);
-  }
 }

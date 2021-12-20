@@ -2,8 +2,9 @@ import React from 'react';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { EthToken, WEthToken } from 'components/Icons/Icons';
 import { format } from 'timeago.js';
-import styles from './PriceBox.module.scss';
 import { parseTimestampString } from 'utils/commonUtil';
+import { Box } from '@chakra-ui/layout';
+import styles from './PriceBox.module.scss';
 
 type Props = {
   price?: number;
@@ -50,7 +51,7 @@ export const PriceBox = ({ justifyRight = false, price, expirationTime = '', tok
       >
         <div className={priceStyle.join(' ')}>
           <div className={styles.price}>
-            {priceStr} {token === 'ETH' ? <EthToken /> : <WEthToken />}
+            <Box pb={1}>{priceStr}</Box> {token === 'ETH' ? <EthToken /> : <WEthToken />}
           </div>
           {expDate && (
             <div className={styles.expTime} title={expDate.toLocaleString()}>

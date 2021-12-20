@@ -9,7 +9,7 @@ import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/Fet
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useRouter } from 'next/router';
-import { transformOpenSea, transformCovalent, getNftDataSource } from 'utils/commonUtil';
+import { transformOpenSea, transformCovalent, getNftDataSource, transformUnmarshal } from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
 
 export default function UserPage() {
@@ -49,6 +49,8 @@ export default function UserPage() {
         return transformOpenSea(item, userParam as string, chainId);
       } else if (source === NFT_DATA_SOURCES.COVALENT) {
         return transformCovalent(item, userParam as string, chainId);
+      } else if (source === NFT_DATA_SOURCES.UNMARSHAL) {
+        return transformUnmarshal(item, userParam as string, chainId);
       }
     });
     setIsFetching(false);

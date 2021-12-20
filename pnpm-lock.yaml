@@ -17,6 +17,7 @@ specifiers:
   '@types/react-bootstrap-typeahead': 5.1.7
   '@types/react-dom': 17.0.9
   '@types/react-flatpickr': 3.8.4
+  '@types/react-window': ^1.8.5
   '@types/validator': 13.6.3
   '@typescript-eslint/eslint-plugin': 4.31.2
   '@typescript-eslint/parser': 4.31.2
@@ -37,6 +38,7 @@ specifiers:
   json-loader: 0.5.7
   lodash: 4.17.21
   logrocket: 2.0.0
+  memoize-one: ^6.0.0
   moment: 2.29.1
   next: 11.1.2
   nextjs-progressbar: 0.0.11
@@ -54,6 +56,7 @@ specifiers:
   react-range: 1.8.11
   react-timer-hook: 3.0.5
   react-toastify: 8.0.3
+  react-window: ^1.8.6
   recharts: 2.1.4
   rimraf: ^3.0.2
   sass: 1.42.1
@@ -93,6 +96,7 @@ dependencies:
   json-loader: 0.5.7
   lodash: 4.17.21
   logrocket: 2.0.0
+  memoize-one: 6.0.0
   moment: 2.29.1
   next: 11.1.2_117b0a1dfe852bf4fed482051ff5cfc9
   nextjs-progressbar: 0.0.11_next@11.1.2+react@17.0.2
@@ -108,6 +112,7 @@ dependencies:
   react-range: 1.8.11_react-dom@17.0.2+react@17.0.2
   react-timer-hook: 3.0.5_react-dom@17.0.2+react@17.0.2
   react-toastify: 8.0.3_react-dom@17.0.2+react@17.0.2
+  react-window: 1.8.6_react-dom@17.0.2+react@17.0.2
   recharts: 2.1.4_9bdd65c2b60ce8638444b80b396a481b
   sass: 1.42.1
   timeago.js: 4.0.2
@@ -122,6 +127,7 @@ devDependencies:
   '@types/react-bootstrap-typeahead': 5.1.7
   '@types/react-dom': 17.0.9
   '@types/react-flatpickr': 3.8.4
+  '@types/react-window': 1.8.5
   '@types/validator': 13.6.3
   '@typescript-eslint/eslint-plugin': 4.31.2_3815fab247b4312be6d1f55eb1f81298
   '@typescript-eslint/parser': 4.31.2_eslint@7.32.0+typescript@4.4.3
@@ -2150,6 +2156,12 @@ packages:
     dependencies:
       '@types/react': 17.0.24
       flatpickr: 4.6.9
+    dev: true
+
+  /@types/react-window/1.8.5:
+    resolution: {integrity: sha512-V9q3CvhC9Jk9bWBOysPGaWy/Z0lxYcTXLtLipkt2cnRj1JOSFNF7wqGpkScSXMgBwC+fnVRg/7shwgddBG5ICw==}
+    dependencies:
+      '@types/react': 17.0.24
     dev: true
 
   /@types/react/17.0.24:
@@ -6441,6 +6453,14 @@ packages:
       safe-buffer: 5.1.2
     dev: false
 
+  /memoize-one/5.2.1:
+    resolution: {integrity: sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==}
+    dev: false
+
+  /memoize-one/6.0.0:
+    resolution: {integrity: sha512-rkpe71W0N0c0Xz6QD0eJETuWAJGnJ9afsl1srmwPrI+yBCkge5EycXXbYRyvL29zZVUWQCY7InPRCv3GDXuZNw==}
+    dev: false
+
   /memory-fs/0.4.1:
     resolution: {integrity: sha1-OpoguEYlI+RHz7x+i7gO1me/xVI=}
     dependencies:
@@ -7752,6 +7772,19 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-lifecycles-compat: 3.0.4
+    dev: false
+
+  /react-window/1.8.6_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-8VwEEYyjz6DCnGBsd+MgkD0KJ2/OXFULyDtorIiTz+QzwoP94tBoA7CnbtyXMm+cCeAUER5KJcPtWl9cpKbOBg==}
+    engines: {node: '>8.0.0'}
+    peerDependencies:
+      react: ^15.0.0 || ^16.0.0 || ^17.0.0
+      react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0
+    dependencies:
+      '@babel/runtime': 7.15.4
+      memoize-one: 5.2.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /react/17.0.2:

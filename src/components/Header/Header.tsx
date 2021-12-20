@@ -253,17 +253,23 @@ const Header = (): JSX.Element => {
           <div className={styles.showLargeLogo}>
             <Link href="/" passHref>
               <img
-                style={{ flex: '0 1 auto', minHeight: 68 }}
+                // style={{ flex: '0 1 auto', minHeight: 68 }}
                 className="can-click"
                 alt="logo"
-                src={dark ? '/img/logo-dark-mode.svg' : '/img/logo-light-mode.svg'}
-                width={130}
+                src={dark ? '/img/logo-new.svg' : '/img/logo-new.svg'}
+                width={160}
               />
             </Link>
           </div>
           <div className={styles.showSmallLogo}>
             <Link href="/" passHref>
-              <img style={{ flex: '0 1 auto' }} className="can-click" alt="logo" src="/img/logo-mini.svg" width={60} />
+              <img
+                style={{ flex: '0 1 auto' }}
+                className="can-click"
+                alt="logo"
+                src="/img/logo-mini-new.svg"
+                width={60}
+              />
             </Link>
           </div>
 

@@ -1,17 +1,18 @@
 import React, { useState, MouseEvent, useEffect } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import { BaseCardData, CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PriceBox } from 'components/PriceBox/PriceBox';
-import { addressesEqual } from 'utils/commonUtil';
+import { addressesEqual, getSearchFriendlyString } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
-import { Button, Spacer } from '@chakra-ui/react';
+import { Spacer, Link } from '@chakra-ui/react';
 import { LISTING_TYPE } from 'utils/constants';
 import { NftAction } from 'types';
+import styles from './CardList.module.scss';
+import PreviewModal from 'components/PreviewModal/PreviewModal';
 
 type Props = {
   data: CardData;
@@ -28,6 +29,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
   const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
   const [order, setOrder] = useState<BaseCardData | undefined>();
+  const [previewModalShowed, setPreviewModalShowed] = useState(false);
 
   useEffect(() => {
     // prefer infinity listings
@@ -47,20 +49,12 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     ownedByYou = addressesEqual(data.owner, userAccount);
   }
 
-  const clickCard = () => {
+  const onClickCard = (ev: MouseEvent) => {
     router.push(`/assets/${data.tokenAddress}/${data.tokenId}`);
   };
 
   const collectionName = data.collectionName;
   const hasBlueCheck = data.hasBlueCheck;
-
-  if (inView === false) {
-    return (
-      <div ref={ref} id={`id_${data.id}`} className={styles.card}>
-        <img src={data.image} alt="Preloaded Image" style={{ width: 1, height: 1 }} />
-      </div>
-    );
-  }
 
   const actionButton = () => {
     const isForSale = data.metadata?.basePriceInEth;
@@ -124,11 +118,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     }
 
     if (name) {
-      return (
-        <Button className={styles.stadiumButtonBlue} onClick={handler}>
-          {name}
-        </Button>
-      );
+      return <Link onClick={handler}>{name}</Link>;
     }
 
     return null;
@@ -141,21 +131,35 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     return 'WETH';
   };
 
+  if (inView === false) {
+    return (
+      <div ref={ref} id={`id_${data.id}`} className={styles.card}>
+        <img src={data.image} alt="Preloaded Image" style={{ width: 1, height: 1 }} />
+      </div>
+    );
+  }
   return (
     <div ref={ref} id={`id_${data.id}`} className={styles.card}>
       {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
 
-      <div className={styles.cardPreview}>
-        <img src={data.image} alt="Card preview" />
+      <div className={styles.cardPreview} onClick={onClickCard}>
+        <img src={data.image} alt="NFT image" />
 
         <div className={styles.cardControls}></div>
       </div>
+
       <div className={styles.cardBody}>
         <div className={styles.cardLine}>
           <div className={styles.cardTitle}>
             {collectionName && (
               <div className={styles.collectionRow}>
-                <div className={styles.collectionName}>{collectionName}</div>
+                <Link
+                  color="gray"
+                  fontWeight="normal"
+                  onClick={() => router.push(`/collection/${getSearchFriendlyString(collectionName)}`)}
+                >
+                  {collectionName}
+                </Link>
 
                 <div style={{ paddingLeft: 6 }}>
                   <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
@@ -175,17 +179,22 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
       <Spacer />
 
       <div className={styles.buttons}>
-        <Button className={styles.stadiumButtonGray}>
-          <a href={`/assets/${data.tokenAddress}/${data.tokenId}`} target="_blank" rel="noreferrer">
-            Info
-          </a>
-        </Button>
         {actionButton()}
+        <Link onClick={() => setPreviewModalShowed(true)}>Preview</Link>
       </div>
 
       {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
       {cancelOfferModalShowed && <CancelOfferModal data={data} onClose={() => setCancelOfferModalShowed(false)} />}
       {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
+      {previewModalShowed && (
+        <PreviewModal
+          action={action}
+          data={data}
+          onClose={() => {
+            setPreviewModalShowed(false);
+          }}
+        />
+      )}
     </div>
   );
 }

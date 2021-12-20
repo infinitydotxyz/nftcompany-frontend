@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import styles from './PreviewModal.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { Button } from '@chakra-ui/react';
+import { Button, Link } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { addressesEqual, getChainScannerBase, getToken, toChecksumAddress } from 'utils/commonUtil';
@@ -17,6 +16,8 @@ import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { Label } from 'components/Text/Text';
 import { LISTING_TYPE } from 'utils/constants';
 import { NftAction } from 'types';
+import { TraitBox } from 'components/PurchaseAccordion/TraitBox';
+import styles from './PreviewModal.module.scss';
 
 const isServer = typeof window === 'undefined';
 
@@ -34,6 +35,15 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
   const [listNFTModalShowed, setListNFTModalShowed] = useState(false);
   const [deleteListingModalShowed, setDeleteListingModalShowed] = useState(false);
 
+  let description = data.description;
+  if (!description || description?.length === 0) {
+    description = 'None';
+  }
+  const [showMore, setShowMore] = useState(description.length > 300 ? 1 : 0); // 0 (hide), 1: show more, 2: fully showed desc.
+  if (showMore === 1) {
+    description = description.slice(0, 300) + '...';
+  }
+
   const { user } = useAppContext();
 
   let showPurchase = true;
@@ -45,12 +55,6 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
   let offerMaker = '';
 
   let owner = data.owner ?? '';
-
-  let description = data.description;
-
-  if (!description || description?.length === 0) {
-    description = 'none';
-  }
 
   let purchaseButton;
   switch (action) {
@@ -157,7 +161,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
 
                   {previewCollection === true ? null : _buttonBar}
 
-                  {data.metadata?.basePriceInEth && (
+                  {/* {data.metadata?.basePriceInEth && (
                     <>
                       <Label bold mt text={listingType === LISTING_TYPE.ENGLISH_AUCTION ? 'Minimum Price' : 'Price'} />
 
@@ -167,7 +171,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                         expirationTime={data?.expirationTime}
                       />
                     </>
-                  )}
+                  )} */}
 
                   <ShortAddress
                     vertical={true}
@@ -189,10 +193,13 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                   {_offerMakerSection}
 
                   {previewCollection === true ? <span>&nbsp;</span> : <Label bold mt text="Description" />}
-
                   <Label text={description} />
+                  {showMore === 1 && <Link onClick={() => setShowMore(2)}>More...</Link>}
 
-                  <div className={styles.buttons}>{purchaseButton}</div>
+                  <Label bold mt text="Traits" />
+                  <TraitBox data={data} contentOnly={true} />
+
+                  {/* <div className={styles.buttons}>{purchaseButton}</div> */}
                 </div>
               </div>
             </div>

@@ -42,6 +42,7 @@ export const DatePicker = ({ placeholder = 'Dec 8, 2021  12:00 PM', value, onCha
 
       <IconButton
         className={styles.iconButton}
+        variant="outline"
         colorScheme="gray"
         aria-label="Expiry date"
         icon={<CalendarIcon />}

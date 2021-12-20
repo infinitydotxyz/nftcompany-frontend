@@ -27,7 +27,8 @@ export function useUserListings(source: ListingSource) {
     const { result, error } = await apiGet('/listings/import', {
       maker: address,
       limit: ITEMS_PER_PAGE,
-      side: '1'
+      side: '1',
+      offset: listings.length || 0
     });
     return {
       error,
@@ -79,17 +80,12 @@ export function useUserListings(source: ListingSource) {
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
 
-  const getId = (cardData: CardData) => {
-    return `${cardData.tokenAddress}-${cardData.tokenId}-${cardData.price}`;
-  };
-
   const removeDuplicates = (listings: CardData[]) => {
     const ids = new Set();
 
     return listings.filter((cardData) => {
-      const id = getId(cardData);
-      const unique = !ids.has(id);
-      ids.add(id);
+      const unique = !ids.has(cardData.id);
+      ids.add(cardData.id);
       return unique;
     });
   };
@@ -107,15 +103,9 @@ export function useUserListings(source: ListingSource) {
     } else {
       setIsFetching(true);
       setDataLoaded(false);
-      fetchData(user.account).then((moreListings) => {
-        const newListings = (moreListings || []).map((item) => {
-          return {
-            ...item,
-            id: getId(item)
-          };
-        });
+      fetchData(user.account).then((newListings) => {
         if (isActive) {
-          setListings((prevListings) => removeDuplicates([...prevListings, ...newListings]));
+          setListings((prevListings) => removeDuplicates([...prevListings, ...(newListings || [])]));
           setIsFetching(false);
           setCurrentPage((prevPage) => prevPage + 1);
         }

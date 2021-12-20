@@ -199,7 +199,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                     <PriceBox
                       justifyRight
                       price={data.metadata?.basePriceInEth}
-                      token='WETH'
+                      token="WETH"
                       expirationTime={data?.expirationTime}
                     />
                   </div>
@@ -247,7 +247,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 <Button type="submit" disabled={isSubmitting}>
                   Make an Offer
                 </Button>
-                <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose && onClose()}>
+                <Button disabled={isSubmitting} onClick={() => onClose && onClose()}>
                   Cancel
                 </Button>
 

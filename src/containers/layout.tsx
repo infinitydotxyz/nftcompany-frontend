@@ -7,7 +7,7 @@ import LandingFooter from 'components/LandingFooter/LandingFooter';
 import Header from 'components/Header/Header';
 import { isLocalhost } from 'utils/commonUtil';
 import LogRocket from 'logrocket';
-import { Background } from 'components/Background/Background';
+// import { Background } from 'components/Background/Background';
 import { useRouter } from 'next/router';
 import { useWindowSize } from '@react-hook/window-size';
 
@@ -27,7 +27,7 @@ const Layout: React.FC<IProps> = ({ connect, landing, children }: IProps) => {
   return (
     <>
       <AppChakraProvider>
-        {width > 768 && <Background />}
+        {/* {width > 768 && <Background />} */}
 
         <AppContextProvider>
           <SearchContextProvider>
