@@ -62,6 +62,7 @@ export class GameMessenger {
     for (const score of levelScores) {
       const { result, error } = await apiGet(`/nfts/doge2048/level-images`, {
         chainId: this.chainId,
+        tokenAddress: this.tokenAddress,
         score,
         numPlays: score,
         dogBalance: score
