@@ -68,7 +68,7 @@ export default function GameFrame() {
     if (error) {
       showAppError(error?.message);
     } else {
-      const nfts = result as UnmarshalNFTAsset[];
+      const nfts = result.assets as UnmarshalNFTAsset[];
       if (nfts && nfts.length > 0) {
         // get the last one by default
         const nft = nfts[nfts.length - 1];
