@@ -376,7 +376,7 @@ const FilterDrawer = ({ onToggle }: Props) => {
               <Button variant="outline" onClick={handleClickApply}>
                 Apply
               </Button>
-              <Button variant="outline" color="gray.500" ml={2} onClick={handleClickClear}>
+              <Button variant="outline" ml={2} onClick={handleClickClear}>
                 Clear
               </Button>
             </Box>

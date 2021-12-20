@@ -43,7 +43,7 @@ export default function ConnectWallet() {
           <div className={styles.center}>
             <Link href="/">
               <a>
-                <img alt="Infinity" src={dark ? '/img/logo-dark-mode.svg' : '/img/logo-light-mode.svg'} width={240} />
+                <img alt="Infinity" src={dark ? '/img/logo-new.svg' : '/img/logo-new.svg'} width={240} />
               </a>
             </Link>
 
