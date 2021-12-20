@@ -114,7 +114,7 @@ const Button = {
     return {
       // default is 1.2 and it makes the text a few pixels too high
       lineHeight: '1.0',
-      paddingBottom: '4px', // align button text vertically
+      paddingBottom: '4px', // align button text vertically for Futura font.
       fontWeight: 'normal',
       bg: '#222',
       backgroundColor: '#222',
