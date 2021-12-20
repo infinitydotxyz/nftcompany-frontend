@@ -118,7 +118,11 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     }
 
     if (name) {
-      return <Link onClick={handler}>{name}</Link>;
+      return (
+        <Link variant="underline" onClick={handler}>
+          {name}
+        </Link>
+      );
     }
 
     return null;
@@ -180,7 +184,9 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
 
       <div className={styles.buttons}>
         {actionButton()}
-        <Link onClick={() => setPreviewModalShowed(true)}>Preview</Link>
+        <Link variant="underline" onClick={() => setPreviewModalShowed(true)}>
+          Preview
+        </Link>
       </div>
 
       {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}

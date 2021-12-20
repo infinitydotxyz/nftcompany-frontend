@@ -196,8 +196,12 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                   <Label text={description} />
                   {showMore === 1 && <Link onClick={() => setShowMore(2)}>More...</Link>}
 
-                  <Label bold mt text="Traits" />
-                  <TraitBox data={data} contentOnly={true} />
+                  {(data.metadata?.asset?.traits || []).length > 0 && (
+                    <>
+                      <Label bold mt text="Traits" />
+                      <TraitBox data={data} contentOnly={true} />
+                    </>
+                  )}
 
                   {/* <div className={styles.buttons}>{purchaseButton}</div> */}
                 </div>

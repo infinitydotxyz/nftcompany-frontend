@@ -177,6 +177,19 @@ const Input = {
   }
 };
 
+const Link = {
+  baseStyle: (props: any) => {
+    return {
+      color: '#222'
+    };
+  },
+  variants: {
+    underline: {
+      textDecoration: 'underline'
+    }
+  }
+};
+
 const config: ThemeConfig = {
   useSystemColorMode: false,
   initialColorMode: 'light'
@@ -215,6 +228,7 @@ export const theme = extendTheme(
       Button,
       Table,
       Input,
+      Link,
       Drawer: {
         variants: {
           // custom theme for Filter Drawer to allow scrolling/interaction on the main body.
