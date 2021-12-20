@@ -181,23 +181,14 @@ function GameFrameContent({ gameUrl, chainId, tokenAddress, tokenId, dogTokenAdd
 
   React.useEffect(() => {
     let gm: any;
-    console.log('game frame', chainId);
     if (chainId && iframeRef && iframeRef.current) {
       const element = iframeRef.current;
-      console.log('game frame 155', chainId);
       const iframeWindow = element.contentWindow;
 
       if (iframeWindow) {
-        gm = new GameMessenger(
-          iframeWindow,
-          chainId,
-          tokenAddress,
-          tokenId,
-          dogTokenAddress,
-          (message) => {
-            // console.log(message);
-          }
-        );
+        gm = new GameMessenger(iframeWindow, chainId, tokenAddress, tokenId, dogTokenAddress, (message) => {
+          // console.log(message);
+        });
       }
     }
 

@@ -23,8 +23,6 @@ export class GameMessenger {
     dogTokenAddress: string,
     callback: (arg: object) => void
   ) {
-    console.log('GameMessenger constructor');
-
     this.callback = callback;
     this.chainId = chainId;
     this.tokenAddress = tokenAddress;
@@ -88,7 +86,6 @@ export class GameMessenger {
   };
 
   listener = async (event: any) => {
-    // console.log('listener', event);
     if (event.data && event.data.from === 'game') {
       const instanceAddress = await this.factoryContract.tokenIdToInstance(this.tokenId);
       const nftInstance = new ethers.Contract(instanceAddress, doge2048Abi, getEthersProvider().getSigner());
@@ -102,16 +99,11 @@ export class GameMessenger {
           this.sendToGame(event.source!, 'game-state', JSON.stringify({ address, highScore, numPlays, dogBalance }));
           break;
 
-        case 'game-results':
-          console.log('game result', event.data.param);
-          await nftInstance.saveState(
-            this.dogTokenAddress,
-            event.data.param.score
-          );
+        case 'save-state':
+          await nftInstance.saveState(this.dogTokenAddress, event.data.param.score);
           break;
 
         case 'deposit-dog':
-          console.log('deposit-dog', event.data.param);
           const amount = ethers.utils.parseEther(event.data.param.amount);
           await this.ierc20Instance.transfer(instanceAddress, amount); // todo: adi
           break;
