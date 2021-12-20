@@ -133,7 +133,8 @@ const Button = {
       return {
         bg: '#fff',
         backgroundColor: '#fff',
-        border: '2px solid'
+        border: '2px solid #222',
+        color: '#222'
       };
     },
     ghost: (props: any) => {
@@ -160,6 +161,7 @@ const Input = {
   variants: {
     outline: (props: any) => {
       return {
+        border: '1px solid #222',
         field: {
           border: '1px solid',
 
