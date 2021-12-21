@@ -158,11 +158,17 @@ const Button = {
 };
 
 const Input = {
+  baseStyle: (props: any) => {
+    return {
+      paddingBottom: '4px' // align button text vertically for Futura font.
+    };
+  },
   variants: {
     outline: (props: any) => {
       return {
         border: '1px solid #222',
         field: {
+          paddingBottom: '4px', // align button text vertically for Futura font.
           border: '1px solid',
 
           // not sure why you have to set this

@@ -53,7 +53,7 @@ export const ShortAddress = ({
     <div className={styles.link}>
       <Tooltip label={tooltip} hasArrow openDelay={1000}>
         <Link
-          color={dark ? 'white' : 'brandBlue'}
+          color={dark ? 'white' : '#222'}
           href={href}
           target={newTab ? '_blank' : ''}
           rel="noreferrer"
