@@ -13,6 +13,7 @@ import { LISTING_TYPE } from 'utils/constants';
 import { NftAction } from 'types';
 import styles from './CardList.module.scss';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
+import AppLink from 'components/AppLink/AppLink';
 
 type Props = {
   data: CardData;
@@ -157,13 +158,9 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           <div className={styles.cardTitle}>
             {collectionName && (
               <div className={styles.collectionRow}>
-                <Link
-                  color="gray"
-                  fontWeight="normal"
-                  onClick={() => router.push(`/collection/${getSearchFriendlyString(collectionName)}`)}
-                >
+                <AppLink type="secondary" href={`/collection/${getSearchFriendlyString(collectionName)}`}>
                   {collectionName}
-                </Link>
+                </AppLink>
 
                 <div style={{ paddingLeft: 6 }}>
                   <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
