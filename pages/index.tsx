@@ -6,12 +6,12 @@ import Image from 'next/image';
 import Layout from 'containers/layout';
 import { Box, Button } from '@chakra-ui/react';
 import { NextPage } from 'next';
-import styles from './home/Home.module.scss';
 import FaqAccordian from 'components/FaqAccordion/FaqAccordion';
 import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import { CheckShieldIcon } from 'components/Icons/Icons';
 import router from 'next/router';
+import styles from './home/Home.module.scss';
 
 export default function Home() {
   // -------------------------------
@@ -29,20 +29,10 @@ export default function Home() {
           </div>
 
           <div className={styles.buttons}>
-            <Button
-              size="lg"
-              className={styles.stadiumButtonBlue}
-              colorScheme="gray"
-              onClick={() => router.push('/explore')}
-            >
+            <Button size="lg" className={styles.stadiumButtonBlue} onClick={() => router.push('/explore')}>
               Explore
             </Button>
-            <Button
-              size="lg"
-              className={styles.stadiumButton}
-              colorScheme="grayish"
-              onClick={() => router.push('/my-nfts')}
-            >
+            <Button size="lg" color="gray.400" className={styles.stadiumButton} onClick={() => router.push('/my-nfts')}>
               List NFTs
             </Button>
           </div>
