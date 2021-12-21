@@ -103,10 +103,10 @@ const Menu = {
       item: {
         color: textColor,
 
-        _focus: { bg: bg, color: textColor },
-        _active: { bg: bg, color: textColor },
+        _focus: { bg: '#222', color: 'white' },
+        _active: { bg: '#222', color: 'white' },
 
-        _hover: { bg: 'brandBlue', color: 'white' }
+        _hover: { bg: '#222', color: 'white' }
       }
     };
   }

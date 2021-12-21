@@ -132,17 +132,19 @@
   transition: 0.1s all ease-in;
 
   :global(body.chakra-ui-dark) & {
-    color: #eee;
+    // color: #eee;
   }
 
   &:hover {
-    background-color: var(--chakra-colors-brandBlue, red);
+    // background-color: var(--chakra-colors-brandBlue, red);
+    background-color: #222;
     color: #fff;
   }
 
   &.active {
-    background-color: var(--chakra-colors-brandBlue, red);
-    color: #fff !important;
+    // background-color: var(--chakra-colors-brandBlue, red);
+    background-color: #222;
+    color: #fff;
   }
 }
 
