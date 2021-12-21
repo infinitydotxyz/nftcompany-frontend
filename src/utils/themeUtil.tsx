@@ -12,6 +12,9 @@ const darkGrayAlpha = '#1A202Ccc';
 const lightBg = '#fcfdfd';
 const lightBgAlpha = '#fcfdfdcc';
 
+const mainFont =
+  'Futura, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif';
+
 export const colors = {
   brandBlue: brandBlue,
   brandGray: brandGray,
@@ -205,9 +208,7 @@ const styles = {
   global: (props: any) => {
     return {
       body: {
-        fontFamily:
-          'Futura, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif',
-
+        fontFamily: mainFont,
         color: mode('gray.800', 'whiteAlpha.900')(props),
 
         // bg: mode('white', 'gray.800')(props)
@@ -226,6 +227,10 @@ const styles = {
 
 export const theme = extendTheme(
   {
+    fonts: {
+      heading: mainFont,
+      body: mainFont
+    },
     config,
     colors,
     styles,
