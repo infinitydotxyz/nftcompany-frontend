@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon, SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
 import * as React from 'react';
-import { useSearchContext } from 'utils/context/SearchContext';
+import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import { useEffect } from 'react';
 import CollectionNameFilter from './CollectionNameFilter';
 import { apiGet } from 'utils/apiUtil';
@@ -115,20 +115,15 @@ const FilterDrawer = ({ onToggle }: Props) => {
   };
 
   const handleClickClear = () => {
-    const newFilter = { ...filterState };
-    newFilter.listType = '';
-    newFilter.priceMin = '';
-    newFilter.priceMax = '';
-    newFilter.collectionName = '';
-    newFilter.collectionIds = '';
-    newFilter.traitType = '';
-    newFilter.traitValue = '';
+    const newFilter = getDefaultFilterState({ ...filterState });
     setMinPriceVal('');
     setMaxPriceVal('');
     setCollectionName('');
     setSelectedCollectionIds('CLEAR');
     setTraits([]);
+    setSelectedTraitValue('');
     setSelectedTraitType(undefined);
+    setSelectedTraits([EmptyTrait]);
     setFilterState(newFilter);
   };
 
