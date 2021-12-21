@@ -45,6 +45,11 @@ export default function GameFrame() {
       return;
     }
 
+    // Polygon only
+    if (chainId !== '137') {
+      return;
+    }
+
     // todo: adi
     // const contract = new ethers.Contract(
     //   '0x5b94d8F40D4ea284F42edBAdb15291e70332CC9E',
@@ -111,22 +116,41 @@ export default function GameFrame() {
 
   useEffect(() => {
     fetchData();
-  }, [user]);
+  }, [user, chainId]);
 
   let contents;
 
-  if (nftAddress && gameUrl) {
+  if (chainId !== '137') {
     contents = (
-      <GameFrameContent
-        gameUrl={gameUrl}
-        chainId={chainId}
-        tokenAddress={tokenAddress}
-        tokenId={tokenId}
-        dogTokenAddress={dogTokenAddress}
-      />
+      <div className={styles.switchToPolygon}>
+        <div className={styles.switchToPolyMessage}>This game runs on the Polygon chain</div>
+        <Button
+          variant="outline"
+          onClick={async () => {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x89' }]
+            });
+          }}
+        >
+          Switch to Polygon
+        </Button>
+      </div>
     );
   } else {
-    contents = <div>You need to mint an NFT to play the game</div>;
+    if (nftAddress && gameUrl) {
+      contents = (
+        <GameFrameContent
+          gameUrl={gameUrl}
+          chainId={chainId}
+          tokenAddress={tokenAddress}
+          tokenId={tokenId}
+          dogTokenAddress={dogTokenAddress}
+        />
+      );
+    } else {
+      contents = <div>You need to mint an NFT to play the game</div>;
+    }
   }
 
   return (
