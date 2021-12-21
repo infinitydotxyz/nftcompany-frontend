@@ -13,6 +13,7 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { UnmarshalNFTAsset } from 'types/rewardTypes';
 import { ethers } from 'ethers';
 import { getEthersProvider } from 'utils/ethersUtil';
+const ierc20Abi = require('./abis/ierc20.json');
 
 const doge2048Abi = require('./abis/doge2048.json'); // todo: adi
 const factoryAbi = require('./abis/infinityFactory.json'); // todo: adi
@@ -28,6 +29,8 @@ let gameUrl = 'http://localhost:8080/'; // todo: adi
 export default function GameFrame() {
   const { user, showAppError, chainId } = useAppContext();
   const [tokenId, setTokenId] = useState<number>(0);
+  const [dogBalance, setDogBalance] = useState<number>(0);
+
   const [nftAddress, setNftAddress] = useState<string>('');
   const [data, setData] = useState<UnmarshalNFTAsset[]>([]);
 
@@ -78,20 +81,26 @@ export default function GameFrame() {
         // get the last one by default
         const nft = nfts[nfts.length - 1];
         const _tokenId = parseInt(nft.token_id || '1');
+
         setTokenId(_tokenId);
+
         if (nft.asset_contract?.toLowerCase() === tokenAddress) {
           // TODO: Adi check for dog balance
           // TODO: Steve if dog balance below minimum then show deposit button
           // best score
           const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
           const instanceAddress = await factoryContract.tokenIdToInstance(_tokenId);
+
           console.log('token id and instance', _tokenId, instanceAddress);
           setNftAddress(instanceAddress);
+
           const nftInstance = new ethers.Contract(instanceAddress, doge2048Abi, getEthersProvider().getSigner());
           const numPlays = await nftInstance.numPlays();
           const score = await nftInstance.score();
-          let dogBalance = await nftInstance.getTokenBalance(dogTokenAddress);
-          dogBalance = ethers.utils.formatEther(dogBalance);
+          let balance = await nftInstance.getTokenBalance(dogTokenAddress);
+          balance = ethers.utils.formatEther(dogBalance);
+
+          setDogBalance(parseFloat(balance));
         } else {
           showAppError('Not the right contract ' + nft.asset_contract);
         }
@@ -134,6 +143,26 @@ export default function GameFrame() {
           }}
         >
           Switch to Polygon
+        </Button>
+      </div>
+    );
+  } else if (dogBalance < 1) {
+    contents = (
+      <div className={styles.switchToPolygon}>
+        <div className={styles.switchToPolyMessage}>You need at least one Dog token to play this game.</div>
+        <Button
+          variant="outline"
+          onClick={async () => {
+            const ierc20Instance = new ethers.Contract(dogTokenAddress, ierc20Abi, getEthersProvider().getSigner());
+
+            const amount = ethers.utils.parseEther('10');
+            const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
+            const instanceAddress = await factoryContract.tokenIdToInstance(tokenId);
+
+            ierc20Instance.transfer(instanceAddress, amount); // todo: adi
+          }}
+        >
+          Deposit Dog
         </Button>
       </div>
     );
