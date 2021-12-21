@@ -58,17 +58,15 @@
     left: 0;
     right: 0;
 
-    box-shadow: inset 0px -1px 0px #eaeaea;
     background-color: var(--chakra-colors-headerBg, red);
 
     :global(body.chakra-ui-dark) & {
-      box-shadow: inset 0px -1px 0px #444;
       background-color: var(--chakra-colors-headerBgDark, red);
     }
 
     backdrop-filter: blur(12px);
     z-index: 2;
-    padding: 10px 0;
+    padding: 20px 0;
   }
 
   .links {
