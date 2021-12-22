@@ -308,9 +308,7 @@ const Header = (): JSX.Element => {
 
             {signedIn && (
               <div className={styles.showExplore}>
-                <div key="Rewards" className={styles.exploreButton} onClick={() => router.push('/rewards')}>
-                  Rewards
-                </div>
+                <HoverMenuButton disabled={!signedIn} buttonTitle="Rewards" onClick={() => router.push('/rewards')} />
               </div>
             )}
 
