@@ -383,5 +383,13 @@ export const getNftDataSource = (chainId?: string): number => {
 };
 
 export const renderSpinner = (props?: any) => (
-  <Spinner color="#222" thickness="2px" height={26} width={26} emptyColor="gray.200" speed=".8s" {...props} />
+  <Spinner
+    color="var(--chakra-colors-brandColor)"
+    thickness="2px"
+    height={26}
+    width={26}
+    emptyColor="gray.200"
+    speed=".8s"
+    {...props}
+  />
 );

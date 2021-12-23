@@ -40,7 +40,7 @@
     height: 51px;
     left: 0px;
     top: 0px;
-    background: #222;
+    background: var(--chakra-colors-brandColor);
   }
 
   .lockout {
@@ -137,13 +137,13 @@
 
   &:hover {
     // background-color: var(--chakra-colors-brandBlue, red);
-    background-color: #222;
+    background-color: var(--chakra-colors-brandColor);
     color: #fff;
   }
 
   &.active {
     // background-color: var(--chakra-colors-brandBlue, red);
-    background-color: #222;
+    background-color: var(--chakra-colors-brandColor);
     color: #fff;
   }
 }

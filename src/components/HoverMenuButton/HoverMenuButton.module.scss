@@ -11,7 +11,7 @@
   }
 
   &.menuOpen {
-    background-color: #222;
+    background-color: var(--chakra-colors-brandColor);
     color: #fff;
   }
 
@@ -33,7 +33,7 @@
     border: 1px solid #333;
 
     &.menuOpen {
-      background-color: #222;
+      background-color: var(--chakra-colors-brandColor);
       color: #fff;
     }
 

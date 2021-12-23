@@ -150,7 +150,7 @@ export default function SearchBox() {
               <div className="m-auto w-1/2 mt-6">
                 <Input
                   ref={inputRef}
-                  placeholder="Search..."
+                  placeholder="Search"
                   className="w-full"
                   onKeyUp={async (ev) => {
                     if (ev.key === 'Enter') {

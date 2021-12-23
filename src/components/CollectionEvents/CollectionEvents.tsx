@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { apiGet } from 'utils/apiUtil';
-import { Table, Thead, Tbody, Tr, Th, Td, Link } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Link, Box } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { weiToEther } from 'utils/ethersUtil';
 import { ellipsisAddress, getChainScannerBase, renderSpinner } from 'utils/commonUtil';
@@ -175,6 +175,8 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
               </Tr>
             );
           })}
+
+          {dataLoaded && !isFetching && data.length === 0 && <Box p={6}>No data.</Box>}
 
           {dataLoaded && (
             <FetchMore

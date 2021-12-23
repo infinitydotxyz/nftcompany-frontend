@@ -2,6 +2,8 @@ import React from 'react';
 import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefaultColorScheme } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
 
+const brandColor = '#222';
+
 // const brandBlue = '#0000ff'; // #4047ff';
 // const brandGray = '#888A8C'; // #4047ff';
 const brandBlue = '#4047ff';
@@ -16,8 +18,10 @@ const mainFont =
   'Futura, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif';
 
 export const colors = {
-  brandBlue: brandBlue,
-  brandGray: brandGray,
+  brandColor, // currently: black #222
+
+  brandBlue,
+  brandGray,
 
   // custom colors
   windowBg: lightBg,
@@ -103,10 +107,10 @@ const Menu = {
       item: {
         color: textColor,
 
-        _focus: { bg: '#222', color: 'white' },
-        _active: { bg: '#222', color: 'white' },
+        _focus: { bg: 'var(--chakra-colors-brandColor)', color: 'white' },
+        _active: { bg: 'var(--chakra-colors-brandColor)', color: 'white' },
 
-        _hover: { bg: '#222', color: 'white' }
+        _hover: { bg: 'var(--chakra-colors-brandColor)', color: 'white' }
       }
     };
   }
@@ -119,15 +123,15 @@ const Button = {
       lineHeight: '1.0',
       paddingBottom: '4px', // align button text vertically for Futura font.
       fontWeight: 'normal',
-      bg: '#222',
-      backgroundColor: '#222',
+      bg: 'var(--chakra-colors-brandColor)',
+      backgroundColor: 'var(--chakra-colors-brandColor)',
       _hover: {
         bg: '#555',
         backgroundColor: '#555'
       },
       _active: {
-        bg: '#222',
-        backgroundColor: '#222'
+        bg: 'var(--chakra-colors-brandColor)',
+        backgroundColor: 'var(--chakra-colors-brandColor)'
       }
     };
   },
@@ -136,8 +140,8 @@ const Button = {
       return {
         bg: '#fff',
         backgroundColor: '#fff',
-        border: '2px solid #222',
-        color: '#222',
+        border: '2px solid var(--chakra-colors-brandColor)',
+        color: 'var(--chakra-colors-brandColor)',
         _hover: {
           color: '#fff'
         }
@@ -183,8 +187,8 @@ const Input = {
             border: '1px solid #aaa'
           },
           _focus: {
-            borderColor: '#222',
-            boxShadow: '0 0 0 1px #222'
+            borderColor: 'var(--chakra-colors-brandColor)',
+            boxShadow: '0 0 0 1px var(--chakra-colors-brandColor)'
           }
         }
       };
@@ -195,7 +199,7 @@ const Input = {
 const Link = {
   baseStyle: (props: any) => {
     return {
-      color: '#222'
+      color: 'var(--chakra-colors-brandColor)'
     };
   },
   variants: {
@@ -262,7 +266,7 @@ export const theme = extendTheme(
       }
     }
   },
-  withDefaultColorScheme({ colorScheme: 'blue' }),
+  withDefaultColorScheme({ colorScheme: 'black' }),
   baseTheme // optional
 );
 
