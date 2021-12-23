@@ -28,7 +28,7 @@ const dogTokensPerPlay = 1; // todo: adi
 let gameUrl = 'http://localhost:8080/'; // todo: adi
 
 export default function GameFrame() {
-  const { user, showAppError, chainId } = useAppContext();
+  const { user, showAppError, showAppMessage, chainId } = useAppContext();
   const [tokenId, setTokenId] = useState<number>(0);
   const [dogBalance, setDogBalance] = useState<number>(0);
   const [fetching, setFetching] = useState<boolean>(false);
@@ -224,6 +224,8 @@ export default function GameFrame() {
               onClick={async () => {
                 const factory = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
                 await factory.mint(variationName, numToMint);
+
+                showAppMessage('Mint has completed');
               }}
             >
               Mint Doge 2048 NFT
