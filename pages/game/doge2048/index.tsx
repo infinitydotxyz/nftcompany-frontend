@@ -4,7 +4,6 @@ import Head from 'next/head';
 import styles from './GameFrame.module.scss';
 import { GameMessenger } from '../../../src/utils/gameMessenger';
 import Layout from 'containers/layout';
-import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import { useRouter } from 'next/router';
 import { Button, Spacer } from '@chakra-ui/react';
@@ -143,7 +142,13 @@ export default function GameFrame() {
 
   let contents;
 
-  if (fetching) {
+  if (!user?.account) {
+    contents = (
+      <div className={styles.switchToPolygon}>
+        <div className={styles.switchToPolyMessage}>Please connect to your MetaMask wallet</div>
+      </div>
+    );
+  } else if (fetching) {
     contents = (
       <div className={styles.switchToPolygon}>
         <Spinner size="lg" color="teal" ml={4} />;
@@ -225,11 +230,7 @@ export default function GameFrame() {
             </Button>
           </div>
 
-          <div>
-            <PleaseConnectWallet account={user?.account} />
-
-            {contents}
-          </div>
+          <div>{contents}</div>
         </div>
       </div>
     </>
