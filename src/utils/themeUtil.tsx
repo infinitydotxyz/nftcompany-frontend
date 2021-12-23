@@ -137,7 +137,10 @@ const Button = {
         bg: '#fff',
         backgroundColor: '#fff',
         border: '2px solid #222',
-        color: '#222'
+        color: '#222',
+        _hover: {
+          color: '#fff'
+        }
       };
     },
     ghost: (props: any) => {
@@ -169,7 +172,6 @@ const Input = {
   variants: {
     outline: (props: any) => {
       return {
-        border: '1px solid #222',
         field: {
           paddingBottom: '4px', // align button text vertically for Futura font.
           border: '1px solid',
@@ -179,6 +181,10 @@ const Input = {
 
           _hover: {
             border: '1px solid #aaa'
+          },
+          _focus: {
+            borderColor: '#222',
+            boxShadow: '0 0 0 1px #222'
           }
         }
       };
