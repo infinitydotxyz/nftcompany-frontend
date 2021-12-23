@@ -13,6 +13,8 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { UnmarshalNFTAsset } from 'types/rewardTypes';
 import { ethers } from 'ethers';
 import { getEthersProvider } from 'utils/ethersUtil';
+import { Spinner } from '@chakra-ui/spinner';
+
 const ierc20Abi = require('./abis/ierc20.json');
 
 const doge2048Abi = require('./abis/doge2048.json'); // todo: adi
@@ -30,7 +32,7 @@ export default function GameFrame() {
   const { user, showAppError, chainId } = useAppContext();
   const [tokenId, setTokenId] = useState<number>(0);
   const [dogBalance, setDogBalance] = useState<number>(0);
-
+  const [fetching, setFetching] = useState<boolean>(false);
   const [nftAddress, setNftAddress] = useState<string>('');
   const [data, setData] = useState<UnmarshalNFTAsset[]>([]);
 
@@ -89,6 +91,7 @@ export default function GameFrame() {
     // const score = await contract.score();
     // let dogBalance = await contract.getTokenBalance(dogTokenAddress);
     // dogBalance = ethers.utils.formatEther(dogBalance);
+    setFetching(true);
 
     const address = user?.account;
     // todo: adi;
@@ -107,9 +110,6 @@ export default function GameFrame() {
         const nftInfo = await findBestNft(nfts);
 
         if (nftInfo) {
-          console.log(nftInfo.dogBalance);
-          console.log(nftInfo.instanceAddress);
-
           setTokenId(nftInfo.tokenId);
           setNftAddress(nftInfo.instanceAddress);
           setDogBalance(nftInfo.dogBalance);
@@ -133,6 +133,8 @@ export default function GameFrame() {
       // }
       setData(nfts || []);
     }
+
+    setFetching(false);
   };
 
   useEffect(() => {
@@ -141,7 +143,13 @@ export default function GameFrame() {
 
   let contents;
 
-  if (chainId !== '137') {
+  if (fetching) {
+    contents = (
+      <div className={styles.switchToPolygon}>
+        <Spinner size="lg" color="teal" ml={4} />;
+      </div>
+    );
+  } else if (chainId !== '137') {
     contents = (
       <div className={styles.switchToPolygon}>
         <div className={styles.switchToPolyMessage}>This game runs on the Polygon chain</div>
