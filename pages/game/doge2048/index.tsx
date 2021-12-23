@@ -43,6 +43,32 @@ export default function GameFrame() {
     gameUrl = url as string;
   }
 
+  const findBestNft = async (nfts: UnmarshalNFTAsset[]): Promise<NFTInfo | undefined> => {
+    const filtered = nfts.filter((e) => {
+      return e.asset_contract?.toLowerCase() === tokenAddress;
+    });
+
+    if (filtered.length > 0) {
+      let best: NFTInfo | undefined;
+
+      for (const item of filtered) {
+        const i = new NFTInfo(item);
+
+        await i.info();
+
+        if (!best) {
+          best = i;
+        } else {
+          if (i.dogBalance > best.dogBalance) {
+            best = i;
+          }
+        }
+      }
+
+      return best;
+    }
+  };
+
   const fetchData = async () => {
     if (!user || !user?.account) {
       return;
@@ -78,31 +104,17 @@ export default function GameFrame() {
     } else {
       const nfts = result.assets as UnmarshalNFTAsset[];
       if (nfts && nfts.length > 0) {
-        // get the last one by default
-        const nft = nfts[nfts.length - 1];
-        const _tokenId = parseInt(nft.token_id || '1');
+        const nftInfo = await findBestNft(nfts);
 
-        setTokenId(_tokenId);
+        if (nftInfo) {
+          console.log(nftInfo.dogBalance);
+          console.log(nftInfo.instanceAddress);
 
-        if (nft.asset_contract?.toLowerCase() === tokenAddress) {
-          // TODO: Adi check for dog balance
-          // TODO: Steve if dog balance below minimum then show deposit button
-          // best score
-          const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
-          const instanceAddress = await factoryContract.tokenIdToInstance(_tokenId);
-
-          console.log('token id and instance', _tokenId, instanceAddress);
-          setNftAddress(instanceAddress);
-
-          const nftInstance = new ethers.Contract(instanceAddress, doge2048Abi, getEthersProvider().getSigner());
-          const numPlays = await nftInstance.numPlays();
-          const score = await nftInstance.score();
-          let balance = await nftInstance.getTokenBalance(dogTokenAddress);
-          balance = ethers.utils.formatEther(dogBalance);
-
-          setDogBalance(parseFloat(balance));
+          setTokenId(nftInfo.tokenId);
+          setNftAddress(nftInfo.instanceAddress);
+          setDogBalance(nftInfo.dogBalance);
         } else {
-          showAppError('Not the right contract ' + nft.asset_contract);
+          showAppError('Not the right contract');
         }
       } else {
         // no doge2048 nfts found
@@ -255,4 +267,40 @@ function GameFrameContent({ gameUrl, chainId, tokenAddress, tokenId, dogTokenAdd
       <iframe ref={iframeRef} src={gameUrl} height="900px" width="100%" />
     </div>
   );
+}
+
+// ====================================================
+// ====================================================
+
+class NFTInfo {
+  constructor(nft: UnmarshalNFTAsset) {
+    this.nft = nft;
+  }
+
+  nft: UnmarshalNFTAsset;
+  tokenId: number = 1;
+  instanceAddress: string = '';
+  dogBalance: number = 0;
+  numPlays: number = 0;
+  score: number = 0;
+
+  info = async () => {
+    // only fetch once
+    if (!this.instanceAddress) {
+      this.tokenId = parseInt(this.nft.token_id || '1');
+
+      const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
+      this.instanceAddress = await factoryContract.tokenIdToInstance(this.tokenId);
+
+      // console.log('token id and instance', this.tokenId, this.instanceAddress);
+
+      const nftInstance = new ethers.Contract(this.instanceAddress, doge2048Abi, getEthersProvider().getSigner());
+      this.numPlays = await nftInstance.numPlays();
+      this.score = await nftInstance.score();
+
+      let balance = await nftInstance.getTokenBalance(dogTokenAddress);
+      balance = ethers.utils.formatEther(balance);
+      this.dogBalance = parseFloat(balance);
+    }
+  };
 }
