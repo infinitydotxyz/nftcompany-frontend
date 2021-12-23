@@ -127,13 +127,22 @@
     }
 
     .stadiumButton {
-      border-radius: 100px;
-      min-width: 160px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      min-width: 200px;
+      height: 70px;
+      background-color: #fff;
+      color: #222;
+      font-weight: 500;
+      font-size: 1.02em;
     }
 
-    .stadiumButtonBlue {
-      border-radius: 100px;
-      min-width: 160px;
+    .stadiumButtonMain {
+      border-radius: 10px;
+      min-width: 200px;
+      height: 70px;
+      font-weight: 500;
+      font-size: 1.02em;
     }
   }
 

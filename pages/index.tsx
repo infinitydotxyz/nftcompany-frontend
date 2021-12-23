@@ -20,17 +20,17 @@ export default function Home() {
       <div className={styles.containerAvg}>
         <div className={styles.topHeader}>
           <div className={styles.bigTitle}>
-            The NFT marketplace <br /> crypto needs is <div className={styles.bigTitleBlue}>here.</div>
+            Unlocking the next <br /> generation of NFTs
           </div>
 
           <div className={styles.subHeader}>
-            Earn rewards for your activity, list NFTs for free <br />
-            and pay low fees on sales.
+            Discover NFT communities, trade, <br />
+            and use dynamic NFTs all in one decentralized place..
           </div>
 
           <div className={styles.buttons}>
-            <Button size="lg" className={styles.stadiumButtonBlue} onClick={() => router.push('/explore')}>
-              Explore
+            <Button size="lg" className={styles.stadiumButtonMain} onClick={() => router.push('/explore')}>
+              Get started
             </Button>
             <Button size="lg" color="gray.400" className={styles.stadiumButton} onClick={() => router.push('/my-nfts')}>
               List NFTs
