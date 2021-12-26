@@ -1,0 +1,33 @@
+.title {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.row {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+
+  .fields {
+    display: flex;
+    margin: 12px 0;
+    align-items: center;
+    margin-bottom: 0px;
+
+    .left {
+      align-items: center;
+      display: flex;
+      flex: 1;
+      color: var(--text-secondary);
+      font-weight: 500;
+      max-width: 450px;
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
