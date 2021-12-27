@@ -10,7 +10,7 @@ import { Button, Spacer } from '@chakra-ui/react';
 import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { UnmarshalNFTAsset } from 'types/rewardTypes';
-import { ethers } from 'ethers';
+import { ethers, providers } from 'ethers';
 import { getEthersProvider } from 'utils/ethersUtil';
 import { Spinner } from '@chakra-ui/spinner';
 
@@ -28,7 +28,7 @@ const dogTokensPerPlay = 1; // todo: adi
 let gameUrl = 'http://localhost:8080/'; // todo: adi
 
 export default function GameFrame() {
-  const { user, showAppError, showAppMessage, chainId } = useAppContext();
+  const { user, showAppError, showAppMessage, chainId, provider } = useAppContext();
   const [tokenId, setTokenId] = useState<number>(0);
   const [dogBalance, setDogBalance] = useState<number>(0);
   const [fetching, setFetching] = useState<boolean>(false);
@@ -49,13 +49,22 @@ export default function GameFrame() {
       return e.asset_contract?.toLowerCase() === tokenAddress;
     });
 
+    if (!provider) {
+      showAppMessage('Please connect a wallet');
+    }
+    const ethersProvider = getEthersProvider(provider!);
+    if (!ethersProvider) {
+      showAppMessage('Please connect a wallet');
+      return;
+    }
+
     if (filtered.length > 0) {
       let best: NFTInfo | undefined;
 
       for (const item of filtered) {
         const i = new NFTInfo(item);
 
-        await i.info();
+        await i.info(ethersProvider);
 
         if (!best) {
           best = i;
@@ -161,7 +170,8 @@ export default function GameFrame() {
         <Button
           variant="outline"
           onClick={async () => {
-            await window.ethereum.request({
+            const ethereum = provider;
+            await ethereum?.request?.({
               method: 'wallet_switchEthereumChain',
               params: [{ chainId: '0x89' }]
             });
@@ -178,13 +188,24 @@ export default function GameFrame() {
         <Button
           variant="outline"
           onClick={async () => {
-            const ierc20Instance = new ethers.Contract(dogTokenAddress, ierc20Abi, getEthersProvider().getSigner());
+            if (provider) {
+              const ierc20Instance = new ethers.Contract(
+                dogTokenAddress,
+                ierc20Abi,
+                getEthersProvider(provider)?.getSigner()
+              );
+              const amount = ethers.utils.parseEther('10');
+              const factoryContract = new ethers.Contract(
+                tokenAddress,
+                factoryAbi,
+                getEthersProvider(provider)?.getSigner()
+              );
+              const instanceAddress = await factoryContract.tokenIdToInstance(tokenId);
 
-            const amount = ethers.utils.parseEther('10');
-            const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
-            const instanceAddress = await factoryContract.tokenIdToInstance(tokenId);
-
-            ierc20Instance.transfer(instanceAddress, amount); // todo: adi
+              ierc20Instance.transfer(instanceAddress, amount); // todo: adi
+            } else {
+              showAppMessage('Please connect a wallet');
+            }
           }}
         >
           Deposit Dog
@@ -222,10 +243,18 @@ export default function GameFrame() {
             <Button
               variant="outline"
               onClick={async () => {
-                const factory = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
-                await factory.mint(variationName, numToMint);
+                if (provider) {
+                  const factory = new ethers.Contract(
+                    tokenAddress,
+                    factoryAbi,
+                    getEthersProvider(provider)?.getSigner()
+                  );
+                  await factory.mint(variationName, numToMint);
 
-                showAppMessage('Mint has completed');
+                  showAppMessage('Mint has completed');
+                } else {
+                  showAppMessage('Please connect a wallet');
+                }
               }}
             >
               Mint Doge 2048 NFT
@@ -295,17 +324,17 @@ class NFTInfo {
   numPlays: number = 0;
   score: number = 0;
 
-  info = async () => {
+  info = async (provider: ethers.providers.Web3Provider) => {
     // only fetch once
     if (!this.instanceAddress) {
       this.tokenId = parseInt(this.nft.token_id || '1');
 
-      const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
+      const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, provider.getSigner());
       this.instanceAddress = await factoryContract.tokenIdToInstance(this.tokenId);
 
       // console.log('token id and instance', this.tokenId, this.instanceAddress);
 
-      const nftInstance = new ethers.Contract(this.instanceAddress, doge2048Abi, getEthersProvider().getSigner());
+      const nftInstance = new ethers.Contract(this.instanceAddress, doge2048Abi, provider.getSigner());
       this.numPlays = await nftInstance.numPlays();
       this.score = await nftInstance.score();
 

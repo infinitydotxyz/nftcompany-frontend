@@ -22,6 +22,7 @@
     "@emotion/react": "11",
     "@emotion/styled": "11",
     "@react-hook/window-size": "^3.0.7",
+    "@walletconnect/client": "^2.0.0-beta.21",
     "axios": "0.21.4",
     "bignumber.js": "4.1.0",
     "chart.js": "3.5.1",
@@ -58,6 +59,7 @@
     "timeago.js": "4.0.2",
     "use-resize-observer": "8.0.0",
     "validator": "13.6.0",
+    "walletlink": "^2.4.0",
     "web3": "0.20.7",
     "wyvern-js": "git+https://github.com/ProjectOpenSea/wyvern-js.git#v3.2.1",
     "wyvern-schemas": "git+https://github.com/ProjectOpenSea/wyvern-schemas.git#v0.11.1"
