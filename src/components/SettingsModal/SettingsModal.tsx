@@ -88,7 +88,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
   const _subscribeSection = showSubscribeSection ? (
     <div className={styles.subscribe}>
       <div>
-        <Link color="brandBlue" onClick={toggleSubscribe}>
+        <Link color="brandColor" onClick={toggleSubscribe}>
           {subscribed ? 'Unsubscribe' : 'Subscribe'}
         </Link>
         {` if you ${subscribed ? 'do not' : ''} want to receive emails about your account activity.`}

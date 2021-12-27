@@ -159,7 +159,7 @@ const Button = {
       // prevent chakra changing the button colors when in dark mode
       if (colorMode === 'dark' && colorScheme !== 'gray' && colorScheme !== 'grayish') {
         return {
-          bg: brandBlue,
+          bg: brandColor,
           color: 'white'
         };
       }
