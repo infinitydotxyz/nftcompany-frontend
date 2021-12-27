@@ -25,7 +25,7 @@ export default function Home() {
 
           <div className={styles.subHeader}>
             Discover NFT communities, trade, <br />
-            and use dynamic NFTs all in one decentralized place..
+            and use dynamic NFTs all in one place.
           </div>
 
           <div className={styles.buttons}>
