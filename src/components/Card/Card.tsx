@@ -14,6 +14,7 @@ import { NftAction } from 'types';
 import styles from './CardList.module.scss';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 import AppLink from 'components/AppLink/AppLink';
+import TransferNFTModal from 'components/TransferNFTModal/TransferNFTModal';
 
 type Props = {
   data: CardData;
@@ -31,6 +32,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
   const [order, setOrder] = useState<BaseCardData | undefined>();
   const [previewModalShowed, setPreviewModalShowed] = useState(false);
+  const [transferModalShowed, setTransferModalShowed] = useState(false);
 
   useEffect(() => {
     // prefer infinity listings
@@ -181,6 +183,9 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
 
       <div className={styles.buttons}>
         {actionButton()}
+        <Link variant="underline" onClick={() => setTransferModalShowed(true)}>
+          Transfer
+        </Link>
         <Link variant="underline" onClick={() => setPreviewModalShowed(true)}>
           Preview
         </Link>
@@ -189,6 +194,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
       {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
       {cancelOfferModalShowed && <CancelOfferModal data={data} onClose={() => setCancelOfferModalShowed(false)} />}
       {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
+      {transferModalShowed && <TransferNFTModal data={data} onClose={() => setTransferModalShowed(false)} />}
       {previewModalShowed && (
         <PreviewModal
           action={action}
