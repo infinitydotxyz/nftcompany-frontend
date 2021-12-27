@@ -11,11 +11,11 @@
     transition: 0.1s all ease-in;
   }
   li:hover {
-    background-color: var(--chakra-colors-brandBlue, red);
+    background-color: var(--chakra-colors-brandColor, red);
     color: #fff;
   }
   .active {
-    background-color: var(--chakra-colors-brandBlue, red);
+    background-color: var(--chakra-colors-brandColor, red);
     color: #fff !important;
   }
 }

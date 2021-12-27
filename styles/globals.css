@@ -117,7 +117,7 @@ svg {
 }
 
 .header-links li a:hover {
-  color: var(--chakra-colors-brandBlue, red);
+  color: var(--chakra-colors-brandColor, red);
 }
 
 .tg-hero-title {
@@ -154,7 +154,7 @@ svg {
 }
 
 .brand-color {
-  color: var(--chakra-colors-brandBlue, red);
+  color: var(--chakra-colors-brandColor, red);
 }
 
 .text-center {

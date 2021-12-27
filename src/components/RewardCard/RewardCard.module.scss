@@ -29,14 +29,14 @@
     background-color: #f5f5f5;
     font-weight: bold;
     // color: #777;
-    color: var(--chakra-colors-brandBlue, red);
+    color: var(--chakra-colors-brandColor, red);
 
     :global(body.chakra-ui-dark) & {
       background-color: #222;
     }
 
     .icon {
-      color: var(--chakra-colors-brandBlue, red);
+      color: var(--chakra-colors-brandColor, red);
       margin-right: 12px;
     }
   }
