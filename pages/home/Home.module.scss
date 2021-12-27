@@ -127,25 +127,22 @@
     }
 
     .stadiumButton {
-      border-radius: 100px;
-      min-width: 160px;
-      box-shadow: 0 16px 28px var(--chakra-colors-brandBlueShadow, red);
-      &:hover {
-        background-color: var(--chakra-colors-brandBlue, red);
-        color: white;
-      }
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      min-width: 200px;
+      height: 70px;
+      background-color: #fff;
+      color: #222;
+      font-weight: 500;
+      font-size: 1.02em;
     }
 
-    .stadiumButtonBlue {
-      background-color: var(--chakra-colors-brandBlue, red);
-      color: white;
-      border-radius: 100px;
-      min-width: 160px;
-      box-shadow: 0 16px 28px var(--chakra-colors-brandBlueShadow, red);
-      &:hover {
-        background-color: blue;
-        color: white;
-      }
+    .stadiumButtonMain {
+      border-radius: 10px;
+      min-width: 200px;
+      height: 70px;
+      font-weight: 500;
+      font-size: 1.02em;
     }
   }
 

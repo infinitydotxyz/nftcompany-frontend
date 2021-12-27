@@ -15,12 +15,14 @@ import { CloseIcon } from '@chakra-ui/icons';
 import styles from './Header.module.scss';
 import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 import { MenuIcons } from 'components/Icons/MenuIcons';
+import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 
 let isChangingAccount = false;
 
 const Header = (): JSX.Element => {
   const router = useRouter();
   const { user, signIn, signOut, chainId, setHeaderPosition } = useAppContext();
+  const { filterState, setFilterState } = useSearchContext();
   const [showBanner, setShowBanner] = useState(true);
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [lockout, setLockout] = useState(false);
@@ -80,6 +82,11 @@ const Header = (): JSX.Element => {
     };
   }, []);
 
+  const onClickExplore = () => {
+    setFilterState(getDefaultFilterState()); // clear filters
+    router.push('/explore');
+  };
+
   const ntfItems = [
     <MenuItem key="nfts" icon={MenuIcons.imageIcon} onClick={() => router.push('/my-nfts')}>
       All NFTs
@@ -99,7 +106,7 @@ const Header = (): JSX.Element => {
   ];
 
   const exploreItems = [
-    <MenuItem key="made" icon={MenuIcons.exploreIcon} onClick={() => router.push('/explore')}>
+    <MenuItem key="made" icon={MenuIcons.exploreIcon} onClick={onClickExplore}>
       Explore
     </MenuItem>,
     <MenuItem key="received" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
@@ -169,7 +176,7 @@ const Header = (): JSX.Element => {
 
   const mobileNavMenu = () => {
     let result = [
-      <MenuItem key="explore-menu" icon={MenuIcons.imageSearchIcon} onClick={() => router.push('/explore')}>
+      <MenuItem key="explore-menu" icon={MenuIcons.imageSearchIcon} onClick={onClickExplore}>
         Explore
       </MenuItem>,
       <MenuItem key="collections" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
@@ -282,7 +289,7 @@ const Header = (): JSX.Element => {
 
           <div className={styles.links}>
             <div className={styles.showExplore}>
-              <HoverMenuButton buttonTitle="Explore" onClick={() => router.push('/explore')}>
+              <HoverMenuButton buttonTitle="Explore" onClick={onClickExplore}>
                 {exploreItems}
               </HoverMenuButton>
             </div>
@@ -301,9 +308,7 @@ const Header = (): JSX.Element => {
 
             {signedIn && (
               <div className={styles.showExplore}>
-                <div key="Rewards" className={styles.exploreButton} onClick={() => router.push('/rewards')}>
-                  Rewards
-                </div>
+                <HoverMenuButton disabled={!signedIn} buttonTitle="Rewards" onClick={() => router.push('/rewards')} />
               </div>
             )}
 

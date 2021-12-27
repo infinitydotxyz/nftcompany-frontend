@@ -4,7 +4,6 @@ import Head from 'next/head';
 import styles from './GameFrame.module.scss';
 import { GameMessenger } from '../../../src/utils/gameMessenger';
 import Layout from 'containers/layout';
-import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import { useRouter } from 'next/router';
 import { Button, Spacer } from '@chakra-ui/react';
@@ -13,6 +12,9 @@ import { ITEMS_PER_PAGE } from 'utils/constants';
 import { UnmarshalNFTAsset } from 'types/rewardTypes';
 import { ethers } from 'ethers';
 import { getEthersProvider } from 'utils/ethersUtil';
+import { Spinner } from '@chakra-ui/spinner';
+
+const ierc20Abi = require('./abis/ierc20.json');
 
 const doge2048Abi = require('./abis/doge2048.json'); // todo: adi
 const factoryAbi = require('./abis/infinityFactory.json'); // todo: adi
@@ -25,8 +27,10 @@ const dogTokensPerPlay = 1; // todo: adi
 let gameUrl = 'https://pleasr.infinity.xyz/';
 
 export default function GameFrame() {
-  const { user, showAppError, chainId } = useAppContext();
+  const { user, showAppError, showAppMessage, chainId } = useAppContext();
   const [tokenId, setTokenId] = useState<number>(0);
+  const [dogBalance, setDogBalance] = useState<number>(0);
+  const [fetching, setFetching] = useState<boolean>(false);
   const [nftAddress, setNftAddress] = useState<string>('');
   const [data, setData] = useState<UnmarshalNFTAsset[]>([]);
 
@@ -39,8 +43,39 @@ export default function GameFrame() {
     gameUrl = url as string;
   }
 
+  const findBestNft = async (nfts: UnmarshalNFTAsset[]): Promise<NFTInfo | undefined> => {
+    const filtered = nfts.filter((e) => {
+      return e.asset_contract?.toLowerCase() === tokenAddress;
+    });
+
+    if (filtered.length > 0) {
+      let best: NFTInfo | undefined;
+
+      for (const item of filtered) {
+        const i = new NFTInfo(item);
+
+        await i.info();
+
+        if (!best) {
+          best = i;
+        } else {
+          if (i.dogBalance > best.dogBalance) {
+            best = i;
+          }
+        }
+      }
+
+      return best;
+    }
+  };
+
   const fetchData = async () => {
     if (!user || !user?.account) {
+      return;
+    }
+
+    // Polygon only
+    if (chainId !== '137') {
       return;
     }
 
@@ -54,6 +89,7 @@ export default function GameFrame() {
     // const score = await contract.score();
     // let dogBalance = await contract.getTokenBalance(dogTokenAddress);
     // dogBalance = ethers.utils.formatEther(dogBalance);
+    setFetching(true);
 
     const address = user?.account;
     // todo: adi;
@@ -69,25 +105,14 @@ export default function GameFrame() {
     } else {
       const nfts = result.assets as UnmarshalNFTAsset[];
       if (nfts && nfts.length > 0) {
-        // get the last one by default
-        const nft = nfts[nfts.length - 1];
-        const _tokenId = parseInt(nft.token_id || '1');
-        setTokenId(_tokenId);
-        if (nft.asset_contract?.toLowerCase() === tokenAddress) {
-          // TODO: Adi check for dog balance
-          // TODO: Steve if dog balance below minimum then show deposit button
-          // best score
-          const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
-          const instanceAddress = await factoryContract.tokenIdToInstance(_tokenId);
-          console.log('token id and instance', _tokenId, instanceAddress);
-          setNftAddress(instanceAddress);
-          const nftInstance = new ethers.Contract(instanceAddress, doge2048Abi, getEthersProvider().getSigner());
-          const numPlays = await nftInstance.numPlays();
-          const score = await nftInstance.score();
-          let dogBalance = await nftInstance.getTokenBalance(dogTokenAddress);
-          dogBalance = ethers.utils.formatEther(dogBalance);
+        const nftInfo = await findBestNft(nfts);
+
+        if (nftInfo) {
+          setTokenId(nftInfo.tokenId);
+          setNftAddress(nftInfo.instanceAddress);
+          setDogBalance(nftInfo.dogBalance);
         } else {
-          showAppError('Not the right contract ' + nft.asset_contract);
+          showAppError('Not the right contract');
         }
       } else {
         // no doge2048 nfts found
@@ -106,26 +131,79 @@ export default function GameFrame() {
       // }
       setData(nfts || []);
     }
+
+    setFetching(false);
   };
 
   useEffect(() => {
     fetchData();
-  }, [user]);
+  }, [user, chainId]);
 
   let contents;
 
-  if (nftAddress && gameUrl) {
+  if (!user?.account) {
     contents = (
-      <GameFrameContent
-        gameUrl={gameUrl}
-        chainId={chainId}
-        tokenAddress={tokenAddress}
-        tokenId={tokenId}
-        dogTokenAddress={dogTokenAddress}
-      />
+      <div className={styles.switchToPolygon}>
+        <div className={styles.switchToPolyMessage}>Please connect to your MetaMask wallet</div>
+      </div>
+    );
+  } else if (fetching) {
+    contents = (
+      <div className={styles.switchToPolygon}>
+        <Spinner size="lg" color="teal" ml={4} />;
+      </div>
+    );
+  } else if (chainId !== '137') {
+    contents = (
+      <div className={styles.switchToPolygon}>
+        <div className={styles.switchToPolyMessage}>This game runs on the Polygon chain</div>
+        <Button
+          variant="outline"
+          onClick={async () => {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x89' }]
+            });
+          }}
+        >
+          Switch to Polygon
+        </Button>
+      </div>
+    );
+  } else if (dogBalance < 1) {
+    contents = (
+      <div className={styles.switchToPolygon}>
+        <div className={styles.switchToPolyMessage}>You need at least one Dog token to play this game.</div>
+        <Button
+          variant="outline"
+          onClick={async () => {
+            const ierc20Instance = new ethers.Contract(dogTokenAddress, ierc20Abi, getEthersProvider().getSigner());
+
+            const amount = ethers.utils.parseEther('10');
+            const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
+            const instanceAddress = await factoryContract.tokenIdToInstance(tokenId);
+
+            ierc20Instance.transfer(instanceAddress, amount); // todo: adi
+          }}
+        >
+          Deposit Dog
+        </Button>
+      </div>
     );
   } else {
-    contents = <div>You need to mint an NFT to play the game</div>;
+    if (nftAddress && gameUrl) {
+      contents = (
+        <GameFrameContent
+          gameUrl={gameUrl}
+          chainId={chainId}
+          tokenAddress={tokenAddress}
+          tokenId={tokenId}
+          dogTokenAddress={dogTokenAddress}
+        />
+      );
+    } else {
+      contents = <div>You need to mint an NFT to play the game</div>;
+    }
   }
 
   return (
@@ -145,17 +223,15 @@ export default function GameFrame() {
               onClick={async () => {
                 const factory = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
                 await factory.mint(variationName, numToMint);
+
+                showAppMessage('Mint has completed');
               }}
             >
               Mint Doge 2048 NFT
             </Button>
           </div>
 
-          <div>
-            <PleaseConnectWallet account={user?.account} />
-
-            {contents}
-          </div>
+          <div>{contents}</div>
         </div>
       </div>
     </>
@@ -201,4 +277,40 @@ function GameFrameContent({ gameUrl, chainId, tokenAddress, tokenId, dogTokenAdd
       <iframe ref={iframeRef} src={gameUrl} height="900px" width="100%" />
     </div>
   );
+}
+
+// ====================================================
+// ====================================================
+
+class NFTInfo {
+  constructor(nft: UnmarshalNFTAsset) {
+    this.nft = nft;
+  }
+
+  nft: UnmarshalNFTAsset;
+  tokenId: number = 1;
+  instanceAddress: string = '';
+  dogBalance: number = 0;
+  numPlays: number = 0;
+  score: number = 0;
+
+  info = async () => {
+    // only fetch once
+    if (!this.instanceAddress) {
+      this.tokenId = parseInt(this.nft.token_id || '1');
+
+      const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
+      this.instanceAddress = await factoryContract.tokenIdToInstance(this.tokenId);
+
+      // console.log('token id and instance', this.tokenId, this.instanceAddress);
+
+      const nftInstance = new ethers.Contract(this.instanceAddress, doge2048Abi, getEthersProvider().getSigner());
+      this.numPlays = await nftInstance.numPlays();
+      this.score = await nftInstance.score();
+
+      let balance = await nftInstance.getTokenBalance(dogTokenAddress);
+      balance = ethers.utils.formatEther(balance);
+      this.dogBalance = parseFloat(balance);
+    }
+  };
 }

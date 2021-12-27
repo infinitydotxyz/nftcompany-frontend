@@ -96,3 +96,15 @@ export type SearchContextType = {
 export function useSearchContext(): SearchContextType {
   return useContext(SearchContext);
 }
+
+export const getDefaultFilterState = (existingFilterState = {}) => {
+  const newFilter: any = { ...existingFilterState };
+  newFilter.listType = '';
+  newFilter.priceMin = '';
+  newFilter.priceMax = '';
+  newFilter.collectionName = '';
+  newFilter.collectionIds = '';
+  newFilter.traitType = '';
+  newFilter.traitValue = '';
+  return newFilter;
+};

@@ -12,6 +12,7 @@ import NFTEvents from 'components/NFTEvents/NFTEvents';
 import { getSearchFriendlyString } from 'utils/commonUtil';
 import { TraitBox } from 'components/PurchaseAccordion/TraitBox';
 import { NftAction } from 'types';
+import AppLink from 'components/AppLink/AppLink';
 
 type Props = {
   tokenId: string;
@@ -76,9 +77,13 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
               <div className={styles.imgFooter}>
                 <div className={styles.infoColumn}>
                   <div className={styles.collectionRow}>
-                    <Link color="gray" className={styles.collection} href={`${window.origin}/collection/${name}`}>
+                    <AppLink
+                      type="secondary"
+                      className={styles.collection}
+                      href={`${window.origin}/collection/${name}`}
+                    >
                       {data?.collectionName}
-                    </Link>
+                    </AppLink>
 
                     <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
                   </div>

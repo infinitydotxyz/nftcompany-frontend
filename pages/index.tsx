@@ -6,12 +6,12 @@ import Image from 'next/image';
 import Layout from 'containers/layout';
 import { Box, Button } from '@chakra-ui/react';
 import { NextPage } from 'next';
-import styles from './home/Home.module.scss';
 import FaqAccordian from 'components/FaqAccordion/FaqAccordion';
 import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import { CheckShieldIcon } from 'components/Icons/Icons';
 import router from 'next/router';
+import styles from './home/Home.module.scss';
 
 export default function Home() {
   // -------------------------------
@@ -20,29 +20,19 @@ export default function Home() {
       <div className={styles.containerAvg}>
         <div className={styles.topHeader}>
           <div className={styles.bigTitle}>
-            The NFT marketplace <br /> crypto needs is <div className={styles.bigTitleBlue}>here.</div>
+            Unlocking the next <br /> generation of NFTs
           </div>
 
           <div className={styles.subHeader}>
-            Earn rewards for your activity, list NFTs for free <br />
-            and pay low fees on sales.
+            Discover NFT communities, trade, <br />
+            and use dynamic NFTs all in one decentralized place..
           </div>
 
           <div className={styles.buttons}>
-            <Button
-              size="lg"
-              className={styles.stadiumButtonBlue}
-              colorScheme="gray"
-              onClick={() => router.push('/explore')}
-            >
-              Explore
+            <Button size="lg" className={styles.stadiumButtonMain} onClick={() => router.push('/explore')}>
+              Get started
             </Button>
-            <Button
-              size="lg"
-              className={styles.stadiumButton}
-              colorScheme="grayish"
-              onClick={() => router.push('/my-nfts')}
-            >
+            <Button size="lg" color="gray.400" className={styles.stadiumButton} onClick={() => router.push('/my-nfts')}>
               List NFTs
             </Button>
           </div>

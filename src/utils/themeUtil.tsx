@@ -2,6 +2,8 @@ import React from 'react';
 import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefaultColorScheme } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
 
+const brandColor = '#222';
+
 // const brandBlue = '#0000ff'; // #4047ff';
 // const brandGray = '#888A8C'; // #4047ff';
 const brandBlue = '#4047ff';
@@ -12,9 +14,14 @@ const darkGrayAlpha = '#1A202Ccc';
 const lightBg = '#fcfdfd';
 const lightBgAlpha = '#fcfdfdcc';
 
+const mainFont =
+  'Futura, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif';
+
 export const colors = {
-  brandBlue: brandBlue,
-  brandGray: brandGray,
+  brandColor, // currently: black #222
+
+  brandBlue,
+  brandGray,
 
   // custom colors
   windowBg: lightBg,
@@ -100,10 +107,10 @@ const Menu = {
       item: {
         color: textColor,
 
-        _focus: { bg: bg, color: textColor },
-        _active: { bg: bg, color: textColor },
+        _focus: { bg: 'var(--chakra-colors-brandColor)', color: 'white' },
+        _active: { bg: 'var(--chakra-colors-brandColor)', color: 'white' },
 
-        _hover: { bg: 'brandBlue', color: 'white' }
+        _hover: { bg: 'var(--chakra-colors-brandColor)', color: 'white' }
       }
     };
   }
@@ -114,17 +121,17 @@ const Button = {
     return {
       // default is 1.2 and it makes the text a few pixels too high
       lineHeight: '1.0',
-      paddingBottom: '4px', // align button text vertically
+      paddingBottom: '4px', // align button text vertically for Futura font.
       fontWeight: 'normal',
-      bg: '#222',
-      backgroundColor: '#222',
+      bg: 'var(--chakra-colors-brandColor)',
+      backgroundColor: 'var(--chakra-colors-brandColor)',
       _hover: {
         bg: '#555',
         backgroundColor: '#555'
       },
       _active: {
-        bg: '#222',
-        backgroundColor: '#222'
+        bg: 'var(--chakra-colors-brandColor)',
+        backgroundColor: 'var(--chakra-colors-brandColor)'
       }
     };
   },
@@ -133,8 +140,11 @@ const Button = {
       return {
         bg: '#fff',
         backgroundColor: '#fff',
-        border: '2px solid #222',
-        color: '#222'
+        border: '2px solid var(--chakra-colors-brandColor)',
+        color: 'var(--chakra-colors-brandColor)',
+        _hover: {
+          color: '#fff'
+        }
       };
     },
     ghost: (props: any) => {
@@ -158,11 +168,16 @@ const Button = {
 };
 
 const Input = {
+  baseStyle: (props: any) => {
+    return {
+      paddingBottom: '4px' // align button text vertically for Futura font.
+    };
+  },
   variants: {
     outline: (props: any) => {
       return {
-        border: '1px solid #222',
         field: {
+          paddingBottom: '4px', // align button text vertically for Futura font.
           border: '1px solid',
 
           // not sure why you have to set this
@@ -170,9 +185,26 @@ const Input = {
 
           _hover: {
             border: '1px solid #aaa'
+          },
+          _focus: {
+            borderColor: 'var(--chakra-colors-brandColor)',
+            boxShadow: '0 0 0 1px var(--chakra-colors-brandColor)'
           }
         }
       };
+    }
+  }
+};
+
+const Link = {
+  baseStyle: (props: any) => {
+    return {
+      color: 'var(--chakra-colors-brandColor)'
+    };
+  },
+  variants: {
+    underline: {
+      textDecoration: 'underline'
     }
   }
 };
@@ -186,9 +218,7 @@ const styles = {
   global: (props: any) => {
     return {
       body: {
-        fontFamily:
-          'Futura, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif',
-
+        fontFamily: mainFont,
         color: mode('gray.800', 'whiteAlpha.900')(props),
 
         // bg: mode('white', 'gray.800')(props)
@@ -207,6 +237,10 @@ const styles = {
 
 export const theme = extendTheme(
   {
+    fonts: {
+      heading: mainFont,
+      body: mainFont
+    },
     config,
     colors,
     styles,
@@ -215,6 +249,7 @@ export const theme = extendTheme(
       Button,
       Table,
       Input,
+      Link,
       Drawer: {
         variants: {
           // custom theme for Filter Drawer to allow scrolling/interaction on the main body.
@@ -231,7 +266,7 @@ export const theme = extendTheme(
       }
     }
   },
-  withDefaultColorScheme({ colorScheme: 'blue' }),
+  withDefaultColorScheme({ colorScheme: 'black' }),
   baseTheme // optional
 );
 

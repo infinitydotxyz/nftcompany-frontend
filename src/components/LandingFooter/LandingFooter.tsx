@@ -12,7 +12,7 @@ const LandingFooter = () => {
       <div className="grid-footer">
         <Box className="col-sm-12 col-md-6">
           <Link href="/">
-            <img alt="Infinity" src={dark ? '/img/logo-dark-mode.svg' : '/img/logo-light-mode.svg'} width={130} />
+            <img alt="Infinity" src={dark ? '/img/logo-text.svg' : '/img/logo-text.svg'} width={130} />
           </Link>
 
           <p className={styles.paragraph}>
@@ -66,9 +66,9 @@ const LandingFooter = () => {
           <a href="https://twitter.com/infinitydotxyz" target="_blank" rel="noreferrer">
             <Image alt="Twitter" src="/img/twitter.svg" width={30} height={30} />
           </a>
-          <a href="https://www.instagram.com/infinitydotxyz/" target="_blank" rel="noreferrer">
+          {/* <a href="https://www.instagram.com/infinitydotxyz/" target="_blank" rel="noreferrer">
             <Image alt="Instagram" src="/img/instagram.svg" width={30} height={30} />
-          </a>
+          </a> */}
         </div>
       </div>
     </div>

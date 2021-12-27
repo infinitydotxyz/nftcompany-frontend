@@ -32,7 +32,7 @@ export const TraitBox: React.FC<Props> = ({ data, contentOnly }: Props) => {
 
   return (
     <div className={styles.infoBox}>
-      <SingleAccordion defaultExpandedIndex={-1}>
+      <SingleAccordion defaultExpandedIndex={0}>
         <PurchaseAccordionItem dark={dark} title="Properties" icon={LargeIcons.listIcon}>
           {content}
         </PurchaseAccordionItem>
