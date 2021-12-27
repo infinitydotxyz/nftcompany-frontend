@@ -25,7 +25,7 @@ export default function Home() {
 
           <div className={styles.subHeader}>
             Discover NFT communities, trade, <br />
-            and use dynamic NFTs all in one decentralized place..
+            and use dynamic NFTs all in one place.
           </div>
 
           <div className={styles.buttons}>
@@ -48,9 +48,9 @@ export default function Home() {
         <div className={styles.infoHomepage}>
           <div className={styles.bigTitle}>
             Infinity is fully compatible with OpenSea. It uses the same contracts, not forks.
-            <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
+            <div className={[styles.bigTitleHighlight, styles.alignCenter].join(' ')}>
               <div>
-                No new smart contract risks. <CheckShieldIcon />
+                No new smart contract risks.
               </div>
             </div>
           </div>
