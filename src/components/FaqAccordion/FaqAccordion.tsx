@@ -41,7 +41,7 @@ const Accordion = ({ i, expanded, setExpanded, q, a }: IProps2) => {
           <circle cx={18} cy={18} r={18} fill="url(#paint0_linear)" />
           <path
             d="M23 16.5l-5 5-5-5"
-            stroke={colors.brandBlue}
+            stroke={colors.brandColor}
             strokeWidth={2}
             strokeLinecap="round"
             strokeLinejoin="round"

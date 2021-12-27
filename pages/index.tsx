@@ -48,9 +48,9 @@ export default function Home() {
         <div className={styles.infoHomepage}>
           <div className={styles.bigTitle}>
             Infinity is fully compatible with OpenSea. It uses the same contracts, not forks.
-            <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
+            <div className={[styles.bigTitleHighlight, styles.alignCenter].join(' ')}>
               <div>
-                No new smart contract risks. <CheckShieldIcon />
+                No new smart contract risks.
               </div>
             </div>
           </div>
