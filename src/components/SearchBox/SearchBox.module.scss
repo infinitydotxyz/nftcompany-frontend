@@ -46,7 +46,7 @@
     cursor: pointer;
   }
   li[aria-selected='true'] {
-    background-color: var(--chakra-colors-brandBlue, red);
+    background-color: var(--chakra-colors-brandColor, red);
     color: #eee;
   }
 }

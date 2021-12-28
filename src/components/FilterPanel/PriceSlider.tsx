@@ -43,19 +43,19 @@ const PriceSlider = () => {
           [getMaxMarker(sliderMax)]: `${getMaxMarker(sliderMax) - 1}`
         }}
         railStyle={{
-          color: colors.brandBlue,
+          color: colors.brandColor,
           backgroundColor: 'gray'
         }}
         trackStyle={[
           {
-            backgroundColor: colors.brandBlue,
+            backgroundColor: colors.brandColor,
             border: 0
           }
         ]}
         handleStyle={[
           {
             backgroundColor: 'blue',
-            color: colors.brandBlue,
+            color: colors.brandColor,
             border: 0
           }
         ]}

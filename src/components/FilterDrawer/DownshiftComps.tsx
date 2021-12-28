@@ -73,7 +73,7 @@ type ListItemContainerProps = {
 const ListItemContainer = styled.div`
   font-weight: ${(props: ListItemContainerProps) => (props.selected ? 'bold' : 'normal')};
   background-color: ${(props: ListItemContainerProps) =>
-    props.highlighted ? 'var(--chakra-colors-brandBlue, red)' : 'transparent'};
+    props.highlighted ? 'var(--chakra-colors-brandColor, red)' : 'transparent'};
   color: ${(props: ListItemContainerProps) => (props.highlighted ? 'white' : 'inherit')};
   white-space: nowrap;
   overflow: hidden;
