@@ -61,20 +61,20 @@ export function AppContextProvider({ children }: any) {
   }, []);
 
   const connectWallet = async (walletType: WalletType) => {
-    // const prevProvider = getProvider();
-    // prevProvider?.close?.();
+    let walletLink;
     if (walletType === WalletType.WalletLink) {
       const APP_NAME = 'infinity.xyz';
-      const APP_LOGO_URL = `${SITE_HOST}/img/logo-mini-new.svg`;
+      const APP_LOGO_URL = `${SITE_HOST}/favicon.ico`;
       const ETH_JSONRPC_URL = PROVIDER_URL_MAINNET;
       const CHAIN_ID = 1;
 
-      // Initialize WalletLink
-      const walletLink = new WalletLink({
+      walletLink = new WalletLink({
         appName: APP_NAME,
-        appLogoUrl: APP_LOGO_URL,
+        appLogoUrl: APP_LOGO_URL, // todo doesn't work https://github.com/walletlink/walletlink/issues/199
         darkMode: false
       });
+
+      (window?.walletLinkExtension as any)?.setAppInfo?.(APP_NAME, APP_LOGO_URL);
 
       const ethereum = walletLink.makeWeb3Provider(ETH_JSONRPC_URL, CHAIN_ID);
       await ethereum.send('eth_requestAccounts');
@@ -83,10 +83,9 @@ export function AppContextProvider({ children }: any) {
     }
 
     setPreferredWallet(walletType);
-    const p = getProvider();
-    console.log(p);
-    setProvider(p);
-    signIn(p).catch((e) => {
+    const provider = getProvider();
+    setProvider(provider);
+    signIn().catch((e) => {
       console.error(e);
       setPreferredWallet();
     });
@@ -96,17 +95,11 @@ export function AppContextProvider({ children }: any) {
     let isChangingAccount = false;
     const handleAccountChange = async (accounts: string[]) => {
       isChangingAccount = true;
-
       window.onfocus = async () => {
         if (isChangingAccount) {
           setTimeout(async () => {
             isChangingAccount = false;
-
-            // reload below makes this worthless. code left for documentation
-            // if we didn't page reload, we would signIn again
             await signIn();
-
-            // use page reload for now to avoid complicated logic in other comps.
             window.location.reload();
           }, 500);
         }
@@ -124,7 +117,6 @@ export function AppContextProvider({ children }: any) {
     }
 
     return () => {
-      // on unmounting
       if (provider && provider.isMetaMask) {
         (provider as any).removeListener('accountsChanged', handleAccountChange);
         (provider as any).removeListener('chainChanged', handleNetworkChange);
@@ -177,6 +169,7 @@ export function AppContextProvider({ children }: any) {
       let account;
       account = await getAccount(selectedProvider);
       if (!account) {
+        // wallet locked, use this to open the wallet
         const accounts = await selectedProvider.send('eth_requestAccounts');
         account = accounts.result[0];
       }
