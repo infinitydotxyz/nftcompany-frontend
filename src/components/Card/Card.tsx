@@ -131,6 +131,9 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     return null;
   };
 
+  const shouldShowTransferButton =
+    data.owner && userAccount && (data.owner ?? '').toLowerCase() === userAccount?.toLowerCase();
+
   const getToken = () => {
     if (data.chainId === '1') {
       return data?.order?.metadata?.listingType !== LISTING_TYPE.ENGLISH_AUCTION ? 'ETH' : 'WETH';
@@ -183,9 +186,11 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
 
       <div className={styles.buttons}>
         {actionButton()}
-        <Link variant="underline" onClick={() => setTransferModalShowed(true)}>
-          Transfer
-        </Link>
+        {shouldShowTransferButton && (
+          <Link variant="underline" onClick={() => setTransferModalShowed(true)}>
+            Transfer
+          </Link>
+        )}
         <Link variant="underline" onClick={() => setPreviewModalShowed(true)}>
           Preview
         </Link>

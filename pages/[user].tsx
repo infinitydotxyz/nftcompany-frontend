@@ -86,7 +86,7 @@ export default function UserPage() {
             <NoData isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
 
-            <CardList data={data} showItems={[]} />
+            <CardList data={data} showItems={[]} userAccount={user?.account} />
           </div>
         </div>
 

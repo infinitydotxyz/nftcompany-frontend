@@ -83,6 +83,7 @@ export default function MyNFTs() {
             <CardList
               data={data}
               showItems={[]}
+              userAccount={user?.account}
               action={NftAction.ListNft}
               onClickAction={(item) => {
                 setListModalItem(item);
