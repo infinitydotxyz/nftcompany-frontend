@@ -28,18 +28,9 @@ export default function ConnectWallet() {
     await connectWallet(WalletType.MetaMask);
   };
 
-  const connectWalletConnect = async () => {
-    // const client = await WalletConnectClient.init({
-    //   projectId: '39fc7c6d7ac0424064f6a7c1cb4d8d46',
-    //   relayUrl: 'wss://relay.walletconnect.com',
-    //   metadata: {
-    //     name: 'Infinity.xyz',
-    //     description: 'Decentralized NFT super app that enables discovering, developing, trading, and managing NFTs.',
-    //     url: 'https://infinity.xyz',
-    //     icons: []
-    //   }
-    // });
-  };
+  // const connectWalletConnect = async () => {
+  //   await connectWallet(WalletType.WalletConnect);
+  // };
 
   const dark = colorMode === 'dark';
 
@@ -105,7 +96,7 @@ export default function ConnectWallet() {
                   ></path>
                 </svg>
               </div>
-              {/* <div className={styles.item}>
+              {/* <div className={styles.item} onClick={connectWalletConnect}>
                 <div className="logo-metamask d-flex align-self-center">
                   <Image
                     alt="Infinity"
@@ -129,7 +120,7 @@ export default function ConnectWallet() {
                     strokeLinejoin="round"
                   ></path>
                 </svg>
-  </div> */}
+              </div> */}
               <div className={styles.item} onClick={connectCoinbase}>
                 <div className="logo-metamask d-flex align-self-center">
                   <Image alt="Infinity" src="/img/coinbase.svg" width={56} height={56} className="align-self-center" />

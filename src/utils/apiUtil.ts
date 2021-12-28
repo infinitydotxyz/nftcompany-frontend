@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { Account } from 'ethereumjs-util';
 import { ethers } from 'ethers';
 import qs from 'query-string';
 import { API_BASE } from './constants';
@@ -27,7 +28,8 @@ export async function saveAuthHeaders(address: string, provider: ethers.provider
   const currentUser = localStorage.getItem('CURRENT_USER');
 
   if (currentUser !== user) {
-    const sign = await personalSignAsync(getWeb3(provider), loginMessage, address);
+    const web3 = getWeb3(provider);
+    const sign = await personalSignAsync(web3, loginMessage, address);
     const sig = JSON.stringify(sign);
     localStorage.setItem('CURRENT_USER', user);
     localStorage.setItem('X-AUTH-SIGNATURE', sig);
@@ -51,18 +53,22 @@ export async function getAuthHeaders(provider?: ethers.providers.ExternalProvide
   let sig = localStorage.getItem('X-AUTH-SIGNATURE') || '';
   const msg = localStorage.getItem('X-AUTH-MESSAGE') || loginMessage;
   // if they are empty, resign and store
+  let account;
   if (!sig) {
     console.log('No auth found, re logging in');
-    const web3 = getWeb3();
+    const selectedProvider = provider ?? getProvider();
+    const web3 = getWeb3(selectedProvider);
     if (web3) {
-      const selectedProvider = provider ?? getProvider();
-      const sign = await personalSignAsync(getWeb3(selectedProvider), msg, await getAccount(selectedProvider));
+      account = await getAccount(selectedProvider);
+      const sign = await personalSignAsync(web3, msg, account);
       sig = JSON.stringify(sign);
+      localStorage.setItem('CURRENT_USER', account);
       localStorage.setItem('X-AUTH-SIGNATURE', sig);
       localStorage.setItem('X-AUTH-MESSAGE', msg);
     }
   }
   return {
+    ...(account ? { CURRENT_USER: account } : {}),
     'X-AUTH-SIGNATURE': sig,
     'X-AUTH-MESSAGE': msg
   };

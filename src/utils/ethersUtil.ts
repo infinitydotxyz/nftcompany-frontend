@@ -1,8 +1,6 @@
 import { getWyvernChainName } from './commonUtil';
 
 import * as ethers from 'ethers';
-import WalletLink from 'walletlink';
-import { PROVIDER_URL_MAINNET, SITE_HOST } from './constants';
 import { ExternalProvider } from '.pnpm/@ethersproject+providers@5.4.5/node_modules/@ethersproject/providers';
 import { WalletType } from './context/AppContext';
 
@@ -28,11 +26,12 @@ export const getProvider = () => {
   }
   switch (preferredWallet) {
     case WalletType.MetaMask:
-      return (window.ethereum as any).providers.find((p: any) => p.isMetaMask);
+      return ((window.ethereum as any)?.providers ?? [window.ethereum]).find((p: any) => p.isMetaMask);
     case WalletType.WalletLink:
-      return (window.ethereum as any).providers.find((p: any) => p.isCoinbaseWallet);
+      return ((window.ethereum as any)?.providers ?? [window.ethereum]).find((p: any) => p.isCoinbaseWallet);
+    case WalletType.WalletConnect:
+      return ((window.ethereum as any)?.providers ?? [window.ethereum]).find((p: any) => p.isWalletConnect);
     default:
-    // return window.ethereum;
   }
 };
 
@@ -41,10 +40,8 @@ export const setPreferredWallet = (walletType?: WalletType) => {
   localStorage.setItem('WALLET', preferredWallet ?? '');
 };
 
-export const getEthersProvider = (provider: ethers.providers.ExternalProvider) => {
-  if (provider) {
-    return new ethers.providers.Web3Provider(provider);
-  }
+export const getEthersProvider = (provider?: ethers.providers.ExternalProvider) => {
+  return new ethers.providers.Web3Provider(provider ?? getProvider());
 };
 
 type initEthersArgs = {
@@ -54,7 +51,6 @@ type initEthersArgs = {
 };
 
 export async function initEthers({ provider, onError, onPending }: initEthersArgs) {
-  console.log('init ethers');
   try {
     if (provider) {
       await provider.request?.({ method: 'eth_requestAccounts' });
@@ -84,7 +80,7 @@ export async function initEthers({ provider, onError, onPending }: initEthersArg
   return ethersProvider;
 }
 
-export const getAccount = async (provider: ethers.providers.ExternalProvider) => {
+export const getAccount = async (provider?: ethers.providers.ExternalProvider) => {
   try {
     const ethersProvider = getEthersProvider(provider);
     if (!ethersProvider) {
@@ -150,12 +146,12 @@ export const getWeb3 = (provider?: ethers.providers.ExternalProvider) => {
   return web3;
 };
 
-export const getOpenSeaportForChain = (chainId: string = '', provider: ethers.providers.ExternalProvider) => {
+export const getOpenSeaportForChain = (chainId: string = '', provider?: ethers.providers.ExternalProvider) => {
   let network = getWyvernChainName(chainId);
   if (!network) {
     network = 'main';
   }
-  const openSeaPortForChain = new OpenSeaPort(getWeb3(provider).currentProvider, {
+  const openSeaPortForChain = new OpenSeaPort(getWeb3(provider ?? getProvider()).currentProvider, {
     networkName: network
   });
   return openSeaPortForChain;

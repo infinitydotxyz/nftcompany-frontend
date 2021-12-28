@@ -5,7 +5,7 @@ import { deleteAuthHeaders, getAuthHeaders, saveAuthHeaders } from 'utils/apiUti
 const { EventType } = require('../../../opensea/types');
 import { errorToast, infoToast, Toast } from 'components/Toast/Toast';
 import { ReactNode } from '.pnpm/@types+react@17.0.24/node_modules/@types/react';
-import { ethers, Wallet } from 'ethers';
+import { ethers } from 'ethers';
 import WalletLink from 'walletlink';
 import { PROVIDER_URL_MAINNET, SITE_HOST } from 'utils/constants';
 
@@ -35,7 +35,6 @@ export enum WalletType {
 
 const AppContext = React.createContext<AppContextType | null>(null);
 
-// let lastError = '';
 let isListenerAdded = false; // set up event listeners once.
 
 export function AppContextProvider({ children }: any) {
@@ -55,14 +54,15 @@ export function AppContextProvider({ children }: any) {
     setProvider(windowProvider);
     if (windowProvider) {
       signIn(windowProvider).catch((e) => {
+        console.error(e);
         setPreferredWallet();
       });
     }
   }, []);
 
   const connectWallet = async (walletType: WalletType) => {
-    const prevProvider = getProvider();
-    prevProvider?.close?.();
+    // const prevProvider = getProvider();
+    // prevProvider?.close?.();
     if (walletType === WalletType.WalletLink) {
       const APP_NAME = 'infinity.xyz';
       const APP_LOGO_URL = `${SITE_HOST}/img/logo-mini-new.svg`;
@@ -76,29 +76,25 @@ export function AppContextProvider({ children }: any) {
         darkMode: false
       });
 
-      // Initialize a Web3 Provider object
       const ethereum = walletLink.makeWeb3Provider(ETH_JSONRPC_URL, CHAIN_ID);
-      const accounts = await ethereum.send('eth_requestAccounts');
-
-      console.log(`User's address is ${accounts[0]}`);
-
-      // Optionally, have the default account set for web3.js
-      console.log(accounts[0]);
+      await ethereum.send('eth_requestAccounts');
+    } else if (walletType === WalletType.WalletConnect) {
+      throw new Error('Wallet connect not yet supported');
     }
 
     setPreferredWallet(walletType);
     const p = getProvider();
+    console.log(p);
     setProvider(p);
     signIn(p).catch((e) => {
+      console.error(e);
       setPreferredWallet();
     });
   };
 
   React.useEffect(() => {
-    console.log('provider changed');
     let isChangingAccount = false;
     const handleAccountChange = async (accounts: string[]) => {
-      console.log(`account changed: ${accounts[0]}`);
       isChangingAccount = true;
 
       window.onfocus = async () => {
@@ -118,11 +114,11 @@ export function AppContextProvider({ children }: any) {
     };
 
     const handleNetworkChange = (chainId: string) => {
-      console.log('network changed');
+      setChainId(chainId);
       window.location.reload();
     };
 
-    if (provider && provider.isMetaMask) {
+    if (provider) {
       (provider as any).on('accountsChanged', handleAccountChange);
       (provider as any).on('chainChanged', handleNetworkChange);
     }
@@ -137,8 +133,6 @@ export function AppContextProvider({ children }: any) {
   }, [provider]);
 
   React.useEffect(() => {
-    console.log(`user: ${user?.account}`);
-
     const listener = (eventName: any, data: any) => {
       const msg = getCustomMessage(eventName, data);
       if (msg === null) {
@@ -147,15 +141,16 @@ export function AppContextProvider({ children }: any) {
       showAppMessage(msg);
     };
 
-    // const debouncedListener = debounce((eventName: any, data: any) => listener(eventName, data), 300); // didn't work.
-
+    const subscriptions: any[] = [];
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
     if (user?.account && !isListenerAdded && provider) {
       isListenerAdded = true;
       const seaport = getOpenSeaportForChain(chainId, provider);
       Object.values(EventType).forEach((eventName: any) => {
-        seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
+        const subscription = seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
+        subscriptions.push(subscription);
       });
+
       // for testing: simulate OpenSea event:
       // const emitter = seaport.getEmitter();
       // console.log('emitter', emitter);
@@ -164,6 +159,11 @@ export function AppContextProvider({ children }: any) {
       //   accountAddress: '0x123',
       //   transactionHash: '0x67e01ca68c5ef37ebea8889da25849e3e5efcde6ca7fbef14fb1bc966ca4b9d0'
       // });
+      return () => {
+        for (const subscription of subscriptions) {
+          seaport.removeListener(subscription);
+        }
+      };
     }
   }, [user]);
 
@@ -172,12 +172,16 @@ export function AppContextProvider({ children }: any) {
     walletType?: WalletType
   ): Promise<void> => {
     setUserReady(false);
-    console.log(`signing in`);
-    const selectedProvider = optionalProvider ?? provider;
+    const selectedProvider = optionalProvider ?? getProvider();
     if (selectedProvider) {
-      const account = await getAccount(selectedProvider);
+      let account;
+      account = await getAccount(selectedProvider);
+      if (!account) {
+        const accounts = await selectedProvider.send('eth_requestAccounts');
+        account = accounts.result[0];
+      }
 
-      const res = await getAuthHeaders();
+      const res = await getAuthHeaders(selectedProvider);
       const msg = res['X-AUTH-MESSAGE'];
       const sig = res['X-AUTH-SIGNATURE'];
       let signedAccount = '';
@@ -190,7 +194,6 @@ export function AppContextProvider({ children }: any) {
       }
 
       const chainId = await getChainId(selectedProvider);
-      console.log(`Setting user to: ${account}`);
       setUser({ account });
       setChainId(chainId);
       if (walletType) {
@@ -205,8 +208,6 @@ export function AppContextProvider({ children }: any) {
   const signOut = async (): Promise<void> => {
     setUser(null);
     deleteAuthHeaders();
-    const provider = getProvider();
-    provider?.close?.();
     setPreferredWallet();
   };
 
