@@ -11,12 +11,13 @@ import { useAppContext } from 'utils/context/AppContext';
 import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
-import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box, Spinner } from '@chakra-ui/react';
+import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box, Spinner, propNames } from '@chakra-ui/react';
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 import styles from './Collection.module.scss';
 import { NftAction } from 'types';
-import { CollectionInfo, getCollectionInfo } from 'services/Collections.service';
+import { CollectionData, getCollectionInfo } from 'services/Collections.service';
 import CollectionOverview from 'components/CollectionOverview/CollectionOverview';
+import CollectionStats from 'components/CollectionStats/CollectionStats';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -25,7 +26,7 @@ const Collection = (): JSX.Element => {
   const router = useRouter();
   const { name } = router.query;
 
-  const [collectionInfo, setCollectionInfo] = useState<CollectionInfo | undefined>();
+  const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -72,7 +73,7 @@ const Collection = (): JSX.Element => {
                   description={collectionInfo?.description}
                 />
               </Box>
-              <Box maxWidth={'45%'}></Box>
+              <Box width="45%">{collectionInfo?.stats && <CollectionStats stats={collectionInfo.stats} />}</Box>
             </Box>
           </Box>
         )}

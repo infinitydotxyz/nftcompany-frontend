@@ -70,8 +70,55 @@ export const getCollectionInfo = async (collectionName: string): Promise<Collect
     return;
   }
 
-  return result as CollectionInfo;
+  return result as CollectionData;
 };
+
+export type CollectionData = CollectionInfo & { links?: Links; stats?: CollectionStats };
+
+export interface CollectionStats {
+  oneDay: {
+    volume: number;
+    change: number;
+    sales: number;
+    averagePrice: number;
+  };
+  sevenDay: {
+    volume: number;
+    change: number;
+    sales: number;
+    averagePrice: number;
+  };
+  thrityDay: {
+    volume: number;
+    change: number;
+    sales: number;
+    averagePrice: number;
+  };
+  total: {
+    volume: number;
+    sales: number;
+    supply: number;
+  };
+  count: number;
+  owners: number;
+  averagePrice: number;
+  reports: number;
+  marketCap: number;
+  floorPrice: number;
+  timestamp: number;
+}
+
+export interface Links {
+  timestamp: number;
+  twitter?: string;
+  discord?: string;
+  external?: string;
+  medium?: string;
+  slug?: string;
+  telegram?: string;
+  instagram?: string;
+  wiki?: string;
+}
 
 export interface CollectionInfo {
   chain: 'Ethereum' | string;
