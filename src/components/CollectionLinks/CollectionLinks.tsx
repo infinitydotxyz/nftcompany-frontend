@@ -8,7 +8,6 @@ import {
   FaMedium,
   FaTelegram,
   FaWikipediaW,
-  FaLink,
   FaExternalLinkAlt
 } from 'react-icons/fa';
 
@@ -25,11 +24,9 @@ enum SocialMedia {
   Telegram,
   Wiki,
   External
-  // external??
 }
 
 function SocialMediaIcon(props: { link: string; type: SocialMedia }) {
-  // const props = {}
   const iconProps = { size: '32px' };
   let icon;
   switch (props.type) {
@@ -90,9 +87,10 @@ function CollectionLinks(props: CollectionLinksProps) {
   );
   const wiki = props.links.wiki && <SocialMediaIcon key="wiki" link={props.links.wiki} type={SocialMedia.Wiki} />;
 
-  const links = [external, twitter, discord, instagram, medium, telegram, wiki].filter((item) => item);
+  const links = [twitter, discord, instagram, medium, telegram, wiki, external].filter((item) => item);
+
   return (
-    <InfoGroup title="Follow us" minChildWidth="32px">
+    <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px">
       {links}
     </InfoGroup>
   );

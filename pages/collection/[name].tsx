@@ -11,7 +11,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
-import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box, Spinner, propNames } from '@chakra-ui/react';
+import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box, Spinner, propNames, SimpleGrid } from '@chakra-ui/react';
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 import styles from './Collection.module.scss';
 import { NftAction } from 'types';
@@ -65,7 +65,7 @@ const Collection = (): JSX.Element => {
         ) : (
           <Box display="flex" flexDirection="column">
             <Box display="flex" flexDirection="row" justifyContent="space-between">
-              <Box maxWidth={'45%'}>
+              <Box maxWidth={'440px'} marginRight="32px">
                 <CollectionOverview
                   collectionName={collectionInfo?.name ?? ''}
                   hasBlueCheck={collectionInfo?.hasBlueCheck ?? false}
@@ -75,7 +75,7 @@ const Collection = (): JSX.Element => {
                   description={collectionInfo?.description}
                 />
               </Box>
-              <Box width="45%">
+              <Box maxWidth={'440px'} flexGrow={1}>
                 <Box marginBottom={'32px'}>
                   {collectionInfo?.stats && <CollectionStats stats={collectionInfo.stats} />}
                 </Box>

@@ -16,7 +16,7 @@ function CollectionStats(props: { stats: CollectionStatsType }) {
   );
   const items = [statsCount, owners, floorPrice, volumeTraded].filter((item) => item);
   return (
-    <InfoGroup title="Collection Stats" minChildWidth="80px">
+    <InfoGroup title="Collection Stats" minChildWidth="80px" maxChildWidth="80px">
       {items}
     </InfoGroup>
   );

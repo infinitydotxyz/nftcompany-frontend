@@ -10,13 +10,18 @@ interface InfoGroupProps {
   children: ReactNode[];
 
   minChildWidth: string;
+  maxChildWidth?: string;
 }
 
 function InfoGroup(props: InfoGroupProps) {
   return (
     <Box display="flex" flexDirection={'column'} justifyContent={'space-between'}>
       <p className={styles.title}>{props.title}</p>
-      <SimpleGrid minChildWidth={props.minChildWidth} spacing="10px" marginBottom={'32px'}>
+      <SimpleGrid
+        spacing="10px"
+        marginBottom={'32px'}
+        templateColumns={`repeat(auto-fit, minmax(${props.minChildWidth}, ${props.maxChildWidth ?? '1fr'}));`}
+      >
         {props.children}
       </SimpleGrid>
       <HorizontalLine />
