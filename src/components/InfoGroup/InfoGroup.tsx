@@ -6,7 +6,8 @@ import styles from './InfoGroup.module.scss';
 interface InfoGroupProps {
   title: string;
 
-  infoChildren: ReactNode[];
+  //   infoChildren: ReactNode[];
+  children: ReactNode[];
 
   minChildWidth: string;
 }
@@ -16,7 +17,7 @@ function InfoGroup(props: InfoGroupProps) {
     <Box display="flex" flexDirection={'column'} justifyContent={'space-between'}>
       <p className={styles.title}>{props.title}</p>
       <SimpleGrid minChildWidth={props.minChildWidth} spacing="10px" marginBottom={'32px'}>
-        {props.infoChildren}
+        {props.children}
       </SimpleGrid>
       <HorizontalLine />
     </Box>

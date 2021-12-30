@@ -18,6 +18,8 @@ import { NftAction } from 'types';
 import { CollectionData, getCollectionInfo } from 'services/Collections.service';
 import CollectionOverview from 'components/CollectionOverview/CollectionOverview';
 import CollectionStats from 'components/CollectionStats/CollectionStats';
+import CollectionLinks from 'components/CollectionLinks/CollectionLinks';
+import { renderSpinner } from 'utils/commonUtil';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -37,8 +39,8 @@ const Collection = (): JSX.Element => {
     getCollectionInfo(name as string)
       .then((collectionInfo) => {
         if (isActive) {
-          setIsLoading(false);
           setCollectionInfo(collectionInfo);
+          setIsLoading(false);
         }
       })
       .catch((err: any) => {
@@ -57,8 +59,8 @@ const Collection = (): JSX.Element => {
       </Head>
       <div className="page-container" style={{ paddingTop: '40px' }}>
         {isLoading ? (
-          <Box display="flex" justifyContent={'center'}>
-            <Spinner color="cyan" />
+          <Box display="flex" justifyContent={'center'} alignItems={'center'} height="400px">
+            <div>{renderSpinner()}</div>
           </Box>
         ) : (
           <Box display="flex" flexDirection="column">
@@ -73,7 +75,14 @@ const Collection = (): JSX.Element => {
                   description={collectionInfo?.description}
                 />
               </Box>
-              <Box width="45%">{collectionInfo?.stats && <CollectionStats stats={collectionInfo.stats} />}</Box>
+              <Box width="45%">
+                <Box marginBottom={'32px'}>
+                  {collectionInfo?.stats && <CollectionStats stats={collectionInfo.stats} />}
+                </Box>
+                <Box marginBottom={'32px'}>
+                  {collectionInfo?.links && <CollectionLinks links={collectionInfo.links} />}
+                </Box>
+              </Box>
             </Box>
           </Box>
         )}

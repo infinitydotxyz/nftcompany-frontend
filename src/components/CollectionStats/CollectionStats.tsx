@@ -4,16 +4,22 @@ import { CollectionStats as CollectionStatsType } from 'services/Collections.ser
 import CollectionStat from './CollectionStat';
 
 function CollectionStats(props: { stats: CollectionStatsType }) {
-  const statsCount = props.stats.count && <CollectionStat name="Items" value={props.stats.count} />;
-  const owners = props.stats.owners && <CollectionStat name="Owners" value={props.stats.owners} />;
+  const statsCount = props.stats.count && (
+    <CollectionStat key="total-num-items" name="Items" value={props.stats.count} />
+  );
+  const owners = props.stats.owners && <CollectionStat key="total-owners" name="Owners" value={props.stats.owners} />;
   const floorPrice = props.stats.floorPrice && (
-    <CollectionStat name="Floor price" value={Math.floor(props.stats.floorPrice * 1000) / 1000} />
+    <CollectionStat key="floor-price" name="Floor price" value={Math.floor(props.stats.floorPrice * 1000) / 1000} />
   );
   const volumeTraded = props.stats.total.volume && (
-    <CollectionStat name="Volume traded" value={Math.floor(props.stats.total.volume)} />
+    <CollectionStat key="volume-traded" name="Volume traded" value={Math.floor(props.stats.total.volume)} />
   );
   const items = [statsCount, owners, floorPrice, volumeTraded].filter((item) => item);
-  return <InfoGroup title="Collection Stats" infoChildren={items} minChildWidth="80px"></InfoGroup>;
+  return (
+    <InfoGroup title="Collection Stats" minChildWidth="80px">
+      {items}
+    </InfoGroup>
+  );
 }
 
 export default CollectionStats;

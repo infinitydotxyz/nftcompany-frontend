@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styles from './CollectionCards.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet, apiPost } from 'utils/apiUtil';
-import { Spinner } from '@chakra-ui/spinner';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { CollectionsTable } from 'components/CollectionsTable/CollectionsTable';
 import { CollectionCardEntry } from 'types/rewardTypes';
