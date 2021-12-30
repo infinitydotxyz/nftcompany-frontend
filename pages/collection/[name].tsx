@@ -11,46 +11,72 @@ import { useAppContext } from 'utils/context/AppContext';
 import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
-import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box } from '@chakra-ui/react';
+import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box, Spinner } from '@chakra-ui/react';
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 import styles from './Collection.module.scss';
 import { NftAction } from 'types';
 import { CollectionInfo, getCollectionInfo } from 'services/Collections.service';
+import CollectionOverview from 'components/CollectionOverview/CollectionOverview';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
   const [address, setAddress] = useState('');
   const [tabIndex, setTabIndex] = useState(0);
   const router = useRouter();
-  const {
-    query: { name }
-  } = router;
+  const { name } = router.query;
 
   const [collectionInfo, setCollectionInfo] = useState<CollectionInfo | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   let isActive = true;
-  //   getCollectionInfo(name as string)
-  //     .then((collectionInfo) => {
-  //       if (isActive) {
-  //         setCollectionInfo(collectionInfo);
-  //       }
-  //     })
-  //     .catch((err: any) => {
-  //       console.error(err);
-  //     });
+  useEffect(() => {
+    console.log(router.query);
+    console.log(name);
+    let isActive = true;
+    setIsLoading(true);
+    getCollectionInfo(name as string)
+      .then((collectionInfo) => {
+        if (isActive) {
+          setIsLoading(false);
+          setCollectionInfo(collectionInfo);
+        }
+      })
+      .catch((err: any) => {
+        console.error(err);
+      });
 
-  //   return () => {
-  //     isActive = false;
-  //   };
-  // }, []);
+    return () => {
+      isActive = false;
+    };
+  }, [name]);
 
   return (
     <>
       <Head>
         <title>{title || name}</title>
       </Head>
-      <Box display="flex" flexDirection={'column'}></Box>
+      <div className="page-container" style={{ paddingTop: '40px' }}>
+        {isLoading ? (
+          <Box display="flex" justifyContent={'center'}>
+            <Spinner color="cyan" />
+          </Box>
+        ) : (
+          <Box display="flex" flexDirection="column">
+            <Box display="flex" flexDirection="row" justifyContent="space-between">
+              <Box maxWidth={'45%'}>
+                <CollectionOverview
+                  collectionName={collectionInfo?.name ?? ''}
+                  hasBlueCheck={collectionInfo?.hasBlueCheck ?? false}
+                  profileImage={collectionInfo?.profileImage ?? ''}
+                  hasBeenClaimed={false}
+                  creator={'ArtBlocks_Admin'}
+                  description={collectionInfo?.description}
+                />
+              </Box>
+              <Box maxWidth={'45%'}></Box>
+            </Box>
+          </Box>
+        )}
+      </div>
     </>
   );
   // return (
