@@ -15,6 +15,7 @@ import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box } from '@chakra-ui
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 import styles from './Collection.module.scss';
 import { NftAction } from 'types';
+import { CollectionInfo, getCollectionInfo } from 'services/Collections.service';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -25,82 +26,109 @@ const Collection = (): JSX.Element => {
     query: { name }
   } = router;
 
+  const [collectionInfo, setCollectionInfo] = useState<CollectionInfo | undefined>();
+
+  // useEffect(() => {
+  //   let isActive = true;
+  //   getCollectionInfo(name as string)
+  //     .then((collectionInfo) => {
+  //       if (isActive) {
+  //         setCollectionInfo(collectionInfo);
+  //       }
+  //     })
+  //     .catch((err: any) => {
+  //       console.error(err);
+  //     });
+
+  //   return () => {
+  //     isActive = false;
+  //   };
+  // }, []);
+
   return (
     <>
       <Head>
         <title>{title || name}</title>
       </Head>
-      <div>
-        <div className="page-container">
-          <div className="section-bar">
-            <div className="tg-title">{title || name}</div>
-
-            <Spacer />
-
-            {tabIndex === 0 ? <SortMenuButton /> : <Box height={10}>&nbsp;</Box>}
-          </div>
-
-          <div className="center">
-            <Tabs onChange={(index) => setTabIndex(index)}>
-              <TabList className={styles.tabList}>
-                <Tab>NFTs</Tab>
-                <Tab isDisabled={!address}>Sales</Tab>
-                <Tab isDisabled={!address}>Transfers</Tab>
-                <Tab isDisabled={!address}>Offers</Tab>
-              </TabList>
-
-              <TabPanels>
-                <TabPanel>
-                  {name && tabIndex === 0 && (
-                    <CollectionContents
-                      name={name as string}
-                      onTitle={(newTitle) => {
-                        if (!title) {
-                          setTitle(newTitle);
-                        }
-                      }}
-                      onLoaded={({ address }) => setAddress(address)}
-                      listingSource={ListingSource.Infinity}
-                    />
-                  )}
-                </TabPanel>
-                <TabPanel>
-                  {tabIndex === 1 && (
-                    <CollectionEvents
-                      address={address}
-                      eventType="successful"
-                      activityType="sale"
-                      pageType="collection"
-                    />
-                  )}
-                </TabPanel>
-                <TabPanel>
-                  {tabIndex === 2 && (
-                    <CollectionEvents
-                      address={address}
-                      eventType="transfer"
-                      activityType="transfer"
-                      pageType="collection"
-                    />
-                  )}
-                </TabPanel>
-                <TabPanel>
-                  {tabIndex === 3 && (
-                    <CollectionEvents
-                      address={address}
-                      eventType="bid_entered"
-                      activityType="offer"
-                      pageType="collection"
-                    />
-                  )}
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-          </div>
-        </div>
-      </div>
+      <Box display="flex" flexDirection={'column'}></Box>
     </>
   );
+  // return (
+  //   <>
+  //     <Head>
+  //       <title>{title || name}</title>
+  //     </Head>
+  //     <div>
+  //       <div className="page-container">
+  //         <div className="section-bar">
+  //           <div className="tg-title">{title || name}</div>
+
+  //           <Spacer />
+
+  //           {tabIndex === 0 ? <SortMenuButton /> : <Box height={10}>&nbsp;</Box>}
+  //         </div>
+
+  //         <div className="center">
+  //           <Tabs onChange={(index) => setTabIndex(index)}>
+  //             <TabList className={styles.tabList}>
+  //               <Tab>NFTs</Tab>
+  //               <Tab isDisabled={!address}>Sales</Tab>
+  //               <Tab isDisabled={!address}>Transfers</Tab>
+  //               <Tab isDisabled={!address}>Offers</Tab>
+  //             </TabList>
+
+  //             <TabPanels>
+  //               <TabPanel>
+  //                 {name && tabIndex === 0 && (
+  //                   <CollectionContents
+  //                     name={name as string}
+  //                     onTitle={(newTitle) => {
+  //                       if (!title) {
+  //                         setTitle(newTitle);
+  //                       }
+  //                     }}
+  //                     onLoaded={({ address }) => setAddress(address)}
+  //                     listingSource={ListingSource.Infinity}
+  //                   />
+  //                 )}
+  //               </TabPanel>
+  //               <TabPanel>
+  //                 {tabIndex === 1 && (
+  //                   <CollectionEvents
+  //                     address={address}
+  //                     eventType="successful"
+  //                     activityType="sale"
+  //                     pageType="collection"
+  //                   />
+  //                 )}
+  //               </TabPanel>
+  //               <TabPanel>
+  //                 {tabIndex === 2 && (
+  //                   <CollectionEvents
+  //                     address={address}
+  //                     eventType="transfer"
+  //                     activityType="transfer"
+  //                     pageType="collection"
+  //                   />
+  //                 )}
+  //               </TabPanel>
+  //               <TabPanel>
+  //                 {tabIndex === 3 && (
+  //                   <CollectionEvents
+  //                     address={address}
+  //                     eventType="bid_entered"
+  //                     activityType="offer"
+  //                     pageType="collection"
+  //                   />
+  //                 )}
+  //               </TabPanel>
+  //             </TabPanels>
+  //           </Tabs>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </>
+  // );
 };
 
 // eslint-disable-next-line react/display-name
