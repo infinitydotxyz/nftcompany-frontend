@@ -24,8 +24,8 @@ const dogTokenAddress = '0x3604035F54e5fe0875652842024b49D1Fea11C7C'; // todo: a
 // lower case
 const tokenAddress = '0xde945603aa3c9bc22610957dce5646ac6e770e6c'; // todo: adi
 const dogTokensPerPlay = 1; // todo: adi
-// let gameUrl = 'https://pleasr.infinity.xyz/';
-let gameUrl = 'http://localhost:8080/'; // todo: adi
+let gameUrl = 'https://pleasr.infinity.xyz/';
+// let gameUrl = 'http://localhost:8080/'; // todo: adi
 
 export default function GameFrame() {
   const { user, showAppError, showAppMessage, chainId } = useAppContext();
