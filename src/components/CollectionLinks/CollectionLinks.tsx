@@ -8,7 +8,7 @@ import {
   FaMedium,
   FaTelegram,
   FaWikipediaW,
-  FaExternalLinkAlt
+  FaLink
 } from 'react-icons/fa';
 
 interface CollectionLinksProps {
@@ -52,7 +52,7 @@ function SocialMediaIcon(props: { link: string; type: SocialMedia }) {
       icon = <FaWikipediaW {...iconProps} />;
       break;
     case SocialMedia.External:
-      icon = <FaExternalLinkAlt {...iconProps} />;
+      icon = <FaLink {...iconProps} />;
       break;
     default:
       throw new Error('Invalid icon requested');

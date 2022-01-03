@@ -21,6 +21,13 @@ import CollectionStats from 'components/CollectionStats/CollectionStats';
 import CollectionLinks from 'components/CollectionLinks/CollectionLinks';
 import { renderSpinner } from 'utils/commonUtil';
 import InfoGroup from 'components/InfoGroup/InfoGroup';
+import CollectionBenefits from 'components/CollectionBenefits.tsx/CollectionBenefits';
+import IconWithText from 'components/IconWithText/IconWithText';
+import { FiCheck } from 'react-icons/fi';
+
+const testData = {
+  benefits: ['Access', 'Royalties', 'IP rights']
+};
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -89,7 +96,13 @@ const Collection = (): JSX.Element => {
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
                 )}
-
+                {testData?.benefits && (
+                  <CollectionInfoGroupWrapper>
+                    <InfoGroup title="Benfits of holding the NFTs" minChildWidth="100px" maxChildWidth="100px">
+                      <CollectionBenefits benefits={testData.benefits} />
+                    </InfoGroup>
+                  </CollectionInfoGroupWrapper>
+                )}
                 {collectionInfo?.links && (
                   <CollectionInfoGroupWrapper>
                     <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px">
