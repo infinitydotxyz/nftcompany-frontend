@@ -48,15 +48,16 @@ function CollectionOverview(props: CollectionOverviewProps) {
       </Box>
       <p className={styles.description}>{props.description}</p>
       <Button
-        backgroundColor={'#E9E9EB'}
-        color="#000000"
-        maxWidth={'150px'}
+        variant={'alt'}
+        paddingY="16px"
+        paddingX="32px"
+        width="max-content"
         fontSize="12px"
         onClick={(e) => {
           throw new Error('Not yet implemented');
         }}
       >
-        {props.hasBeenClaimed ? 'Claim Collection' : 'Edit information'}
+        {props.hasBeenClaimed ? 'Claim collection' : 'Edit collection'}
       </Button>
     </Box>
   );

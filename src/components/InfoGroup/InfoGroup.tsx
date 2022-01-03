@@ -6,8 +6,7 @@ import styles from './InfoGroup.module.scss';
 interface InfoGroupProps {
   title: string;
 
-  //   infoChildren: ReactNode[];
-  children: ReactNode[];
+  children: ReactNode;
 
   minChildWidth: string;
   maxChildWidth?: string;

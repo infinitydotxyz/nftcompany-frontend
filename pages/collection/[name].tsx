@@ -20,6 +20,7 @@ import CollectionOverview from 'components/CollectionOverview/CollectionOverview
 import CollectionStats from 'components/CollectionStats/CollectionStats';
 import CollectionLinks from 'components/CollectionLinks/CollectionLinks';
 import { renderSpinner } from 'utils/commonUtil';
+import InfoGroup from 'components/InfoGroup/InfoGroup';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -30,6 +31,10 @@ const Collection = (): JSX.Element => {
 
   const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
   const [isLoading, setIsLoading] = useState(false);
+
+  const CollectionInfoGroupWrapper = (props: { children: React.ReactNode }) => {
+    return <Box marginBottom={'32px'}>{props.children}</Box>;
+  };
 
   useEffect(() => {
     console.log(router.query);
@@ -65,7 +70,7 @@ const Collection = (): JSX.Element => {
         ) : (
           <Box display="flex" flexDirection="column">
             <Box display="flex" flexDirection="row" justifyContent="space-between">
-              <Box maxWidth={'440px'} marginRight="32px">
+              <Box marginRight="32px" flexGrow={4} flexBasis={0}>
                 <CollectionOverview
                   collectionName={collectionInfo?.name ?? ''}
                   hasBlueCheck={collectionInfo?.hasBlueCheck ?? false}
@@ -75,13 +80,23 @@ const Collection = (): JSX.Element => {
                   description={collectionInfo?.description}
                 />
               </Box>
-              <Box maxWidth={'440px'} flexGrow={1}>
-                <Box marginBottom={'32px'}>
-                  {collectionInfo?.stats && <CollectionStats stats={collectionInfo.stats} />}
-                </Box>
-                <Box marginBottom={'32px'}>
-                  {collectionInfo?.links && <CollectionLinks links={collectionInfo.links} />}
-                </Box>
+              <Spacer />
+              <Box flexGrow={3} flexBasis={0}>
+                {collectionInfo?.stats && (
+                  <CollectionInfoGroupWrapper>
+                    <InfoGroup title="Collection Stats" minChildWidth="80px" maxChildWidth="80px">
+                      <CollectionStats stats={collectionInfo.stats} />
+                    </InfoGroup>
+                  </CollectionInfoGroupWrapper>
+                )}
+
+                {collectionInfo?.links && (
+                  <CollectionInfoGroupWrapper>
+                    <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px">
+                      <CollectionLinks links={collectionInfo.links} />
+                    </InfoGroup>
+                  </CollectionInfoGroupWrapper>
+                )}
               </Box>
             </Box>
           </Box>

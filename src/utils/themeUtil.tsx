@@ -14,6 +14,18 @@ const darkGrayAlpha = '#1A202Ccc';
 const lightBg = '#fcfdfd';
 const lightBgAlpha = '#fcfdfdcc';
 
+/**
+ * gray used for alt actions buttons
+ */
+const actionLight = '#E9E9EB';
+const hoverActionLight = '#E5E5E5';
+
+/**
+ * toggle colors
+ */
+const inactiveActionLight = '#E5E5E5';
+const activeActionLight = '#000000';
+
 const mainFont =
   'Futura, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif';
 
@@ -26,6 +38,12 @@ export const colors = {
   // custom colors
   windowBg: lightBg,
   windowBgDark: darkGray,
+
+  actionLight,
+  hoverActionLight,
+
+  inactiveActionLight,
+  activeActionLight,
 
   cardBgLight: '#f3f3f3',
   cardBgDark: '#111',
@@ -163,6 +181,16 @@ const Button = {
           color: 'white'
         };
       }
+    },
+    alt: (props: any) => {
+      return {
+        bg: 'var(--chakra-colors-actionLight)',
+        backgroundColor: 'var(--chakra-colors-actionLight)',
+        _hover: {
+          bg: 'var(--chakra-colors-hoverActionLight)',
+          backgroundColor: 'var(--chakra-colors-hoverActionLight)'
+        }
+      };
     }
   }
 };

@@ -15,11 +15,7 @@ function CollectionStats(props: { stats: CollectionStatsType }) {
     <CollectionStat key="volume-traded" name="Volume traded" value={Math.floor(props.stats.total.volume)} />
   );
   const items = [statsCount, owners, floorPrice, volumeTraded].filter((item) => item);
-  return (
-    <InfoGroup title="Collection Stats" minChildWidth="80px" maxChildWidth="80px">
-      {items}
-    </InfoGroup>
-  );
+  return <>{items}</>;
 }
 
 export default CollectionStats;

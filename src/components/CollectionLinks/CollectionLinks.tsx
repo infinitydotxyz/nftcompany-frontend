@@ -89,11 +89,7 @@ function CollectionLinks(props: CollectionLinksProps) {
 
   const links = [twitter, discord, instagram, medium, telegram, wiki, external].filter((item) => item);
 
-  return (
-    <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px">
-      {links}
-    </InfoGroup>
-  );
+  return <>{links}</>;
 }
 
 export default CollectionLinks;
