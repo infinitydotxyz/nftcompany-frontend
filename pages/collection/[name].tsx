@@ -15,7 +15,12 @@ import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box, Spinner, propName
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 import styles from './Collection.module.scss';
 import { NftAction } from 'types';
-import { CollectionData, getCollectionInfo } from 'services/Collections.service';
+import {
+  CollectionData,
+  getCollectionInfo,
+  getHistoricalDiscordData,
+  getHistoricalTwitterData
+} from 'services/Collections.service';
 import CollectionOverview from 'components/CollectionOverview/CollectionOverview';
 import CollectionStats from 'components/CollectionStats/CollectionStats';
 import CollectionLinks from 'components/CollectionLinks/CollectionLinks';
@@ -24,6 +29,11 @@ import InfoGroup from 'components/InfoGroup/InfoGroup';
 import CollectionBenefits from 'components/CollectionBenefits.tsx/CollectionBenefits';
 import IconWithText from 'components/IconWithText/IconWithText';
 import { FiCheck } from 'react-icons/fi';
+// import LineChart from 'components/LineChart/LineChart';
+import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import LineGraph from 'components/LineGraph/LineGraph';
+import { number } from 'prop-types';
+import { add } from 'lodash';
 
 const testData = {
   benefits: ['Access', 'Royalties', 'IP rights']
@@ -39,13 +49,54 @@ const Collection = (): JSX.Element => {
   const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
+  const [twitterData, setTwitterData] = useState<{ followersCount: number; timestamp: number }[]>([]);
+  const [discordData, setDiscordData] = useState<{ membersCount: number; presenceCount: number; timestamp: number }[]>(
+    []
+  );
+  // const twitterData = (collectionInfo?.twitterSnippet as any)?.aggregated?.weekly
+  //   .sort((itemA: any, itemB: any) => {
+  //     return itemA.timestamp - itemB.timestamp;
+  //   })
+  //   .map((item: any) => {
+  //     return { timestamp: item.timestamp, followersCount: item.averages.followersCount };
+  //   });
+
+  useEffect(() => {
+    let isActive = true;
+    if (address) {
+      getHistoricalTwitterData(address)
+        .then((data) => {
+          if (isActive && data) {
+            setTwitterData(data);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      getHistoricalDiscordData(address)
+        .then((data) => {
+          if (isActive && data) {
+            setDiscordData(data);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
+      setTwitterData([]);
+      setDiscordData([]);
+    }
+
+    return () => {
+      isActive = false;
+    };
+  }, [address]);
+
   const CollectionInfoGroupWrapper = (props: { children: React.ReactNode }) => {
     return <Box marginBottom={'32px'}>{props.children}</Box>;
   };
 
   useEffect(() => {
-    console.log(router.query);
-    console.log(name);
     let isActive = true;
     setIsLoading(true);
     getCollectionInfo(name as string)
@@ -53,6 +104,9 @@ const Collection = (): JSX.Element => {
         if (isActive) {
           setCollectionInfo(collectionInfo);
           setIsLoading(false);
+          if (collectionInfo?.address) {
+            setAddress(collectionInfo?.address);
+          }
         }
       })
       .catch((err: any) => {
@@ -109,6 +163,30 @@ const Collection = (): JSX.Element => {
                       <CollectionLinks links={collectionInfo.links} />
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
+                )}
+
+                {twitterData?.length > 0 && (
+                  <LineGraph
+                    width={100}
+                    height={100}
+                    data={twitterData}
+                    displayProps={{ followersCount: { label: 'followers', strokeColor: '#CED6DC' } }}
+                    labelFormatter={() => 'Twitter'}
+                    tooltip={true}
+                  />
+                )}
+                {discordData?.length > 0 && (
+                  <LineGraph
+                    width={200}
+                    height={100}
+                    data={discordData}
+                    displayProps={{
+                      membersCount: { label: 'members', strokeColor: '#CED6DC' },
+                      presenceCount: { label: 'active', strokeColor: '#CED6DC' }
+                    }}
+                    labelFormatter={(label: string, payload) => 'Discord'}
+                    tooltip={true}
+                  />
                 )}
               </Box>
             </Box>
