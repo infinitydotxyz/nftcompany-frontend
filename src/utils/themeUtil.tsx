@@ -156,6 +156,14 @@ const Button = {
       }
     };
   },
+  sizes: {
+    sm: (props: any) => {
+      return {
+        fontSize: '12px',
+        lineHeight: '14px'
+      };
+    }
+  },
   variants: {
     outline: (props: any) => {
       return {

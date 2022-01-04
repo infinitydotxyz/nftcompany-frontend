@@ -81,7 +81,6 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
       alignItems="flex-start"
       padding="16px"
       width="180px"
-      maxHeight="140px"
     >
       <p className={styles.label}>{props.label}</p>
       <Box
@@ -123,8 +122,8 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
       )}
 
       {'link' in props && (
-        <Link marginTop="16px" width="100%" href={props.link} target="_blank">
-          <Button width="100%" type="submit">
+        <Link marginTop="16px" width="100%" href={props.link} target="_blank" _hover={{ textDecoration: 'none' }}>
+          <Button size="sm" width="100%" type="submit">
             {props.linkText}
           </Button>
         </Link>

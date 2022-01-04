@@ -10,10 +10,7 @@ import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
 import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
-import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
-import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box, Spinner, propNames, SimpleGrid } from '@chakra-ui/react';
-import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
-import styles from './Collection.module.scss';
+import { Spacer, Box } from '@chakra-ui/react';
 import { NftAction } from 'types';
 import {
   CollectionData,
@@ -24,20 +21,25 @@ import {
 import CollectionOverview from 'components/CollectionOverview/CollectionOverview';
 import CollectionStats from 'components/CollectionStats/CollectionStats';
 import CollectionLinks from 'components/CollectionLinks/CollectionLinks';
-import { renderSpinner } from 'utils/commonUtil';
+import { numStr, renderSpinner } from 'utils/commonUtil';
 import InfoGroup from 'components/InfoGroup/InfoGroup';
 import CollectionBenefits from 'components/CollectionBenefits.tsx/CollectionBenefits';
-import IconWithText from 'components/IconWithText/IconWithText';
-import { FiCheck } from 'react-icons/fi';
-// import LineChart from 'components/LineChart/LineChart';
-import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
-import LineGraph from 'components/LineGraph/LineGraph';
-import { number } from 'prop-types';
-import { add } from 'lodash';
 import GraphPreview from 'components/GraphPreview/GraphPreview';
+import TextToggle from 'components/TextToggle/TextToggle';
+import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
+import ExternalLinkCard from 'components/ExternalLinkCard/ExternalLinkCard';
+import WithTitle from 'components/WithTitle/WithTitle';
 
 const testData = {
-  benefits: ['Access', 'Royalties', 'IP rights']
+  benefits: ['Access', 'Royalties', 'IP rights'],
+  partnerships: [
+    { name: 'OpenSea', link: 'blah.com' },
+    { name: 'Nike', link: 'blah.com' },
+    { name: 'The Garrets', link: 'blah.com' },
+    { name: 'Some Really long partner name that no one would ever use', link: 'blah.com' },
+    { name: 'OpenSea', link: 'blah.com' },
+    { name: 'OpenSea', link: 'blah.com' }
+  ]
 };
 
 const Collection = (): JSX.Element => {
@@ -54,6 +56,8 @@ const Collection = (): JSX.Element => {
   const [discordData, setDiscordData] = useState<{ membersCount: number; presenceCount: number; timestamp: number }[]>(
     []
   );
+
+  const [toggleState, setToggleState] = useState(false);
 
   useEffect(() => {
     let isActive = true;
@@ -184,6 +188,55 @@ const Collection = (): JSX.Element => {
                 </Box>
               </Box>
             </Box>
+
+            <Box marginTop={'72px'} marginBottom={'16px'}>
+              <TextToggle
+                unCheckedText="NFT"
+                checkedText="Community"
+                checked={toggleState}
+                onClick={() => setToggleState((prev) => !prev)}
+              />
+            </Box>
+
+            <HorizontalLine />
+
+            <Box display={'flex'} flexDirection={'row'} marginTop="56px" justifyContent={'space-between'}>
+              <WithTitle title="Twitter mentions">
+                <Box maxHeight={'240'} overflowY="scroll">
+                  {collectionInfo?.twitterSnippet?.topMentions?.map((mention) => {
+                    return (
+                      <Box key={mention.id} marginY="8px">
+                        <ExternalLinkCard
+                          title={mention.name}
+                          subtitle={`Followers: ${numStr(mention.followersCount)}`}
+                          link={`https://twitter.com/${mention.username}`}
+                          linkText="View Profile"
+                        />
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </WithTitle>
+
+              <WithTitle title="Partnerships">
+                <Box maxHeight={'240'} overflowY="scroll">
+                  {testData.partnerships?.map((partnership) => {
+                    return (
+                      <Box key={partnership.name} marginY="8px">
+                        <ExternalLinkCard
+                          title={partnership.name}
+                          subtitle={'Team'}
+                          link={partnership.link}
+                          linkText="Partner"
+                        />
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </WithTitle>
+            </Box>
+
+            {/* <TwitterFeed /> */}
           </Box>
         )}
       </div>
