@@ -166,7 +166,7 @@ const Header = (): JSX.Element => {
               fill="#333"
             />
           </svg>
-          Connect
+          <span>Connect</span>
         </div>
       </Link>
     );

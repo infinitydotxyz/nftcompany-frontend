@@ -96,6 +96,10 @@
     box-shadow: 0px 6px 6px rgba(64, 71, 255, 0.15);
     border: 1px solid #eee;
 
+    span {
+      margin-top: -5px;
+    }
+
     :global(body.chakra-ui-dark) & {
       background-color: var(--chakra-colors-brandGray, red);
       color: #333;
