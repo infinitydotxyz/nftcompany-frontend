@@ -17,8 +17,6 @@ import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 import { MenuIcons } from 'components/Icons/MenuIcons';
 import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 
-let isChangingAccount = false;
-
 const Header = (): JSX.Element => {
   const router = useRouter();
   const { user, signIn, signOut, chainId, setHeaderPosition } = useAppContext();
@@ -40,47 +38,6 @@ const Header = (): JSX.Element => {
   const { colorMode } = useColorMode();
 
   const signedIn = !!user?.account;
-
-  useEffect(() => {
-    const handleAccountChange = async (accounts: string[]) => {
-      isChangingAccount = true;
-
-      window.onfocus = async () => {
-        if (isChangingAccount) {
-          setTimeout(async () => {
-            isChangingAccount = false;
-            await saveAuthHeaders(accounts[0]);
-
-            // reload below makes this worthless. code left for documentation
-            // if we didn't page reload, we would signIn again
-            // signIn();
-
-            // use page reload for now to avoid complicated logic in other comps.
-            window.location.reload();
-          }, 500);
-        }
-      };
-    };
-
-    const handleNetworkChange = (chainId: string) => {
-      window.location.reload();
-    };
-
-    signIn();
-
-    if (window?.ethereum) {
-      window.ethereum.on('accountsChanged', handleAccountChange);
-      window.ethereum.on('chainChanged', handleNetworkChange);
-    }
-
-    return () => {
-      // on unmounting
-      if (window?.ethereum) {
-        window.ethereum.removeListener('accountsChanged', handleAccountChange);
-        window.ethereum.removeListener('chainChanged', handleNetworkChange);
-      }
-    };
-  }, []);
 
   const onClickExplore = () => {
     setFilterState(getDefaultFilterState()); // clear filters

@@ -10,7 +10,7 @@ import { Button, Spacer } from '@chakra-ui/react';
 import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { UnmarshalNFTAsset } from 'types/rewardTypes';
-import { ethers } from 'ethers';
+import { ethers, providers } from 'ethers';
 import { getEthersProvider } from 'utils/ethersUtil';
 import { Spinner } from '@chakra-ui/spinner';
 import { ellipsisString } from 'utils/commonUtil';
@@ -31,7 +31,7 @@ const gameUrl = 'https://pleasr.infinity.xyz/';
 // const gameUrl = 'http://localhost:8080/'; // todo: adi
 
 export default function GameFrame() {
-  const { user, showAppError, showAppMessage, chainId } = useAppContext();
+  const { user, showAppError, showAppMessage, chainId, provider } = useAppContext();
   const [tokenId, setTokenId] = useState<number>(0);
   const [dogBalance, setDogBalance] = useState<number>(-1);
   const [fetching, setFetching] = useState<boolean>(false);
@@ -44,6 +44,7 @@ export default function GameFrame() {
     if (nfts.length > 0) {
       for (const item of nfts) {
         const i = new NFTInfo(item);
+
         await i.info();
 
         result.push(i);
@@ -157,7 +158,8 @@ export default function GameFrame() {
         <Button
           variant="outline"
           onClick={async () => {
-            await window.ethereum.request({
+            const ethereum = provider;
+            await ethereum?.request?.({
               method: 'wallet_switchEthereumChain',
               params: [{ chainId: '0x89' }]
             });
@@ -212,13 +214,24 @@ export default function GameFrame() {
         <Button
           variant="outline"
           onClick={async () => {
-            const ierc20Instance = new ethers.Contract(dogTokenAddress, ierc20Abi, getEthersProvider().getSigner());
+            if (provider) {
+              const ierc20Instance = new ethers.Contract(
+                dogTokenAddress,
+                ierc20Abi,
+                getEthersProvider(provider)?.getSigner()
+              );
+              const amount = ethers.utils.parseEther('10');
+              const factoryContract = new ethers.Contract(
+                tokenAddress,
+                factoryAbi,
+                getEthersProvider(provider)?.getSigner()
+              );
+              const instanceAddress = await factoryContract.tokenIdToInstance(tokenId);
 
-            const amount = ethers.utils.parseEther('10');
-            const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
-            const instanceAddress = await factoryContract.tokenIdToInstance(tokenId);
-
-            ierc20Instance.transfer(instanceAddress, amount); // todo: adi
+              ierc20Instance.transfer(instanceAddress, amount); // todo: adi
+            } else {
+              showAppMessage('Please connect a wallet');
+            }
           }}
         >
           Deposit Dog
@@ -270,10 +283,18 @@ export default function GameFrame() {
             <Button
               variant="outline"
               onClick={async () => {
-                const factory = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
-                await factory.mint(variationName, numToMint);
+                if (provider) {
+                  const factory = new ethers.Contract(
+                    tokenAddress,
+                    factoryAbi,
+                    getEthersProvider(provider)?.getSigner()
+                  );
+                  await factory.mint(variationName, numToMint);
 
-                showAppMessage('Mint has completed');
+                  showAppMessage('Mint has completed');
+                } else {
+                  showAppMessage('Please connect a wallet');
+                }
               }}
             >
               Mint Doge 2048 NFT
