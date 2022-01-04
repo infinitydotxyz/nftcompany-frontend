@@ -54,13 +54,6 @@ const Collection = (): JSX.Element => {
   const [discordData, setDiscordData] = useState<{ membersCount: number; presenceCount: number; timestamp: number }[]>(
     []
   );
-  // const twitterData = (collectionInfo?.twitterSnippet as any)?.aggregated?.weekly
-  //   .sort((itemA: any, itemB: any) => {
-  //     return itemA.timestamp - itemB.timestamp;
-  //   })
-  //   .map((item: any) => {
-  //     return { timestamp: item.timestamp, followersCount: item.averages.followersCount };
-  //   });
 
   useEffect(() => {
     let isActive = true;
@@ -165,39 +158,30 @@ const Collection = (): JSX.Element => {
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
                 )}
-
-                {twitterData?.length > 0 && (
-                  <LineGraph
-                    width={100}
-                    height={100}
-                    data={twitterData}
-                    displayProps={{ followersCount: { label: 'followers', strokeColor: '#CED6DC' } }}
-                    labelFormatter={() => 'Twitter'}
-                    tooltip={true}
+                <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'}>
+                  <Box marginRight="20px">
+                    <GraphPreview
+                      label="Twitter followers"
+                      changeInterval={24}
+                      link={collectionInfo?.links?.twitter}
+                      linkText="Follow"
+                      data={twitterData.map((item) => {
+                        return { ...item, y: item.followersCount };
+                      })}
+                      dataUnits="followers"
+                    />
+                  </Box>
+                  <GraphPreview
+                    label="Discord members"
+                    changeInterval={24}
+                    link={collectionInfo?.links?.discord}
+                    linkText="Join"
+                    data={discordData.map((item) => {
+                      return { ...item, y: item.membersCount };
+                    })}
+                    dataUnits="members"
                   />
-                )}
-                {discordData?.length > 0 && (
-                  <LineGraph
-                    width={200}
-                    height={100}
-                    data={discordData}
-                    displayProps={{
-                      membersCount: { label: 'members', strokeColor: '#CED6DC' },
-                      presenceCount: { label: 'active', strokeColor: '#CED6DC' }
-                    }}
-                    labelFormatter={(label: string, payload) => 'Discord'}
-                    tooltip={true}
-                  />
-                )}
-                <GraphPreview
-                  label="Twitter Followers"
-                  total={100000}
-                  change={5000}
-                  changeInterval={24}
-                  changeIntervalUnits="hr"
-                  link="https://twitter.com"
-                  linkText="Follow"
-                />
+                </Box>
               </Box>
             </Box>
           </Box>

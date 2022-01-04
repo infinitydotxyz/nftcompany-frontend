@@ -74,11 +74,9 @@ export const getCollectionInfo = async (collectionName: string): Promise<Collect
 };
 
 export const getHistoricalTwitterData = async (collectionAddress: string) => {
-  console.log('geeting historical twitter data');
   const path = `/collections/${collectionAddress}/twitter`;
   const { result, error }: { result: any; error: any } = (await apiGet(path)) as any;
 
-  console.log(result, error);
   if (error !== undefined) {
     return;
   }
