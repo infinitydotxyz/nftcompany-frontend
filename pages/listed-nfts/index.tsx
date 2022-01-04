@@ -125,6 +125,7 @@ export default function ListNFTs() {
           <CardList
             data={listings}
             action={action}
+            userAccount={user?.account}
             onClickAction={async (item, action) => {
               if (action === NftAction.ImportOrder) {
                 importOrder(item);

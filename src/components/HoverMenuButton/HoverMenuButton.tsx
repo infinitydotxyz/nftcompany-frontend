@@ -106,6 +106,7 @@ export const HoverMenuButton = ({
             onMouseEnter={() => {
               clearTimeout(hoverTimer);
             }}
+            className={styles.menuList}
           >
             {children}
           </MenuList>
@@ -122,6 +123,7 @@ export const HoverMenuButton = ({
             onMouseEnter={() => {
               clearTimeout(hoverTimer);
             }}
+            className={styles.menuList}
           >
             {children}
           </MenuList>
