@@ -1,10 +1,13 @@
 import * as React from 'react';
-import { getAccount, getChainId, getOpenSeaportForChain } from 'utils/ethersUtil';
+import { getAccount, getChainId, getOpenSeaportForChain, getProvider, setPreferredWallet } from 'utils/ethersUtil';
 import { getCustomMessage, getCustomExceptionMsg } from 'utils/commonUtil';
-import { deleteAuthHeaders } from 'utils/apiUtil';
+import { deleteAuthHeaders, getAuthHeaders, saveAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
 import { errorToast, infoToast, Toast } from 'components/Toast/Toast';
 import { ReactNode } from '.pnpm/@types+react@17.0.24/node_modules/@types/react';
+import { ethers } from 'ethers';
+import WalletLink from 'walletlink';
+import { PROVIDER_URL_MAINNET, SITE_HOST } from 'utils/constants';
 
 export type User = {
   account: string;
@@ -20,11 +23,18 @@ export type AppContextType = {
   showAppMessage: (msg: string) => void;
   headerPosition: number;
   setHeaderPosition: (bottom: number) => void;
+  provider?: ethers.providers.ExternalProvider;
+  connectWallet: (walletType: WalletType) => Promise<void>;
 };
+
+export enum WalletType {
+  MetaMask = 'MetaMask',
+  WalletLink = 'WalletLink',
+  WalletConnect = 'WalletConnect'
+}
 
 const AppContext = React.createContext<AppContextType | null>(null);
 
-// let lastError = '';
 let isListenerAdded = false; // set up event listeners once.
 
 export function AppContextProvider({ children }: any) {
@@ -37,32 +47,84 @@ export function AppContextProvider({ children }: any) {
     errorToast(msg);
   };
   const showAppMessage = (message: ReactNode) => infoToast(message);
-
-  // const connectMetaMask = async () => {
-  //   // show MetaMask's errors:
-  //   const onError = (error: any) => {
-  //     const errorMsg = error?.message;
-  //     if (errorMsg === lastError) {
-  //       return; // to avoid showing the same error message so many times.
-  //     }
-  //     if (errorMsg.indexOf('The method does not exist') >= 0) {
-  //       return; // TODO: ignore this error for now.
-  //     }
-  //     lastError = errorMsg;
-  //     showToast(toast, 'error', `MetaMask RPC Error: ${errorMsg}` || 'MetaMask RPC Error');
-  //   };
-
-  //   const res = await initEthers({ onError }); // returns provider
-  //   if (res && res.getSigner) {
-  //     await saveAuthHeaders(await res.getSigner().getAddress());
-  //   } else {
-  //     showAppError('Failed to connect');
-  //   }
-  // };
+  const [provider, setProvider] = React.useState<ethers.providers.ExternalProvider | undefined>();
 
   React.useEffect(() => {
-    // connectMetaMask(); // don't auto connect on page load.
+    const windowProvider = getProvider();
+    setProvider(windowProvider);
+    if (windowProvider) {
+      signIn(windowProvider).catch((e) => {
+        console.error(e);
+        setPreferredWallet();
+      });
+    }
+  }, []);
 
+  const connectWallet = async (walletType: WalletType) => {
+    let walletLink;
+    if (walletType === WalletType.WalletLink) {
+      const APP_NAME = 'infinity.xyz';
+      const APP_LOGO_URL = `${SITE_HOST}/favicon.ico`;
+      const ETH_JSONRPC_URL = PROVIDER_URL_MAINNET;
+      const CHAIN_ID = 1;
+
+      walletLink = new WalletLink({
+        appName: APP_NAME,
+        appLogoUrl: APP_LOGO_URL, // todo doesn't work https://github.com/walletlink/walletlink/issues/199
+        darkMode: false
+      });
+
+      (window?.walletLinkExtension as any)?.setAppInfo?.(APP_NAME, APP_LOGO_URL);
+
+      const ethereum = walletLink.makeWeb3Provider(ETH_JSONRPC_URL, CHAIN_ID);
+      await ethereum.send('eth_requestAccounts');
+    } else if (walletType === WalletType.WalletConnect) {
+      throw new Error('Wallet connect not yet supported');
+    }
+
+    setPreferredWallet(walletType);
+    const provider = getProvider();
+    setProvider(provider);
+    signIn().catch((e) => {
+      console.error(e);
+      setPreferredWallet();
+    });
+  };
+
+  React.useEffect(() => {
+    let isChangingAccount = false;
+    const handleAccountChange = async (accounts: string[]) => {
+      isChangingAccount = true;
+      window.onfocus = async () => {
+        if (isChangingAccount) {
+          setTimeout(async () => {
+            isChangingAccount = false;
+            await signIn();
+            window.location.reload();
+          }, 500);
+        }
+      };
+    };
+
+    const handleNetworkChange = (chainId: string) => {
+      setChainId(chainId);
+      window.location.reload();
+    };
+
+    if (provider) {
+      (provider as any).on('accountsChanged', handleAccountChange);
+      (provider as any).on('chainChanged', handleNetworkChange);
+    }
+
+    return () => {
+      if (provider && provider.isMetaMask) {
+        (provider as any).removeListener('accountsChanged', handleAccountChange);
+        (provider as any).removeListener('chainChanged', handleNetworkChange);
+      }
+    };
+  }, [provider]);
+
+  React.useEffect(() => {
     const listener = (eventName: any, data: any) => {
       const msg = getCustomMessage(eventName, data);
       if (msg === null) {
@@ -71,15 +133,16 @@ export function AppContextProvider({ children }: any) {
       showAppMessage(msg);
     };
 
-    // const debouncedListener = debounce((eventName: any, data: any) => listener(eventName, data), 300); // didn't work.
-
+    const subscriptions: any[] = [];
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
-    if (user?.account && !isListenerAdded) {
+    if (user?.account && !isListenerAdded && provider) {
       isListenerAdded = true;
-      const seaport = getOpenSeaportForChain(chainId);
+      const seaport = getOpenSeaportForChain(chainId, provider);
       Object.values(EventType).forEach((eventName: any) => {
-        seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
+        const subscription = seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
+        subscriptions.push(subscription);
       });
+
       // for testing: simulate OpenSea event:
       // const emitter = seaport.getEmitter();
       // console.log('emitter', emitter);
@@ -88,13 +151,47 @@ export function AppContextProvider({ children }: any) {
       //   accountAddress: '0x123',
       //   transactionHash: '0x67e01ca68c5ef37ebea8889da25849e3e5efcde6ca7fbef14fb1bc966ca4b9d0'
       // });
+      return () => {
+        for (const subscription of subscriptions) {
+          seaport.removeListener(subscription);
+        }
+      };
     }
   }, [user]);
 
-  const signIn = async (): Promise<void> => {
-    if (window.ethereum) {
-      setUser({ account: await getAccount() });
-      setChainId(await getChainId());
+  const signIn = async (
+    optionalProvider?: ethers.providers.ExternalProvider,
+    walletType?: WalletType
+  ): Promise<void> => {
+    setUserReady(false);
+    const selectedProvider = optionalProvider ?? getProvider();
+    if (selectedProvider) {
+      let account;
+      account = await getAccount(selectedProvider);
+      if (!account) {
+        // wallet locked, use this to open the wallet
+        const accounts = await selectedProvider.send('eth_requestAccounts');
+        account = accounts.result[0];
+      }
+
+      const res = await getAuthHeaders(selectedProvider);
+      const msg = res['X-AUTH-MESSAGE'];
+      const sig = res['X-AUTH-SIGNATURE'];
+      let signedAccount = '';
+      if (msg && sig) {
+        const parsed = JSON.parse(sig);
+        signedAccount = ethers.utils.verifyMessage(msg, parsed);
+      }
+      if (signedAccount !== account) {
+        await saveAuthHeaders(account, selectedProvider);
+      }
+
+      const chainId = await getChainId(selectedProvider);
+      setUser({ account });
+      setChainId(chainId);
+      if (walletType) {
+        setPreferredWallet(walletType);
+      }
     }
 
     // views can avoid drawing until a login attempt was made to avoid a user=null and user='xx' refresh
@@ -104,6 +201,7 @@ export function AppContextProvider({ children }: any) {
   const signOut = async (): Promise<void> => {
     setUser(null);
     deleteAuthHeaders();
+    setPreferredWallet();
   };
 
   const value: AppContextType = {
@@ -115,7 +213,9 @@ export function AppContextProvider({ children }: any) {
     showAppError,
     showAppMessage,
     headerPosition,
-    setHeaderPosition
+    setHeaderPosition,
+    provider,
+    connectWallet
   };
 
   return (

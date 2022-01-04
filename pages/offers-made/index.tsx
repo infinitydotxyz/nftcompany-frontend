@@ -71,7 +71,7 @@ export default function OffersMade() {
             <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
             {data?.length === 0 && isFetching && <LoadingCardList />}
 
-            <CardList data={data} action={NftAction.CancelOffer} />
+            <CardList data={data} action={NftAction.CancelOffer} userAccount={user?.account} />
           </div>
 
           {dataLoaded && (

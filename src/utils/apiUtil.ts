@@ -1,7 +1,9 @@
 import axios, { AxiosInstance } from 'axios';
+import { Account } from 'ethereumjs-util';
+import { ethers } from 'ethers';
 import qs from 'query-string';
 import { API_BASE } from './constants';
-import { getAccount, getWeb3 } from './ethersUtil';
+import { getAccount, getProvider, getWeb3 } from './ethersUtil';
 const personalSignAsync = require('../../opensea/utils/utils').personalSignAsync;
 
 const loginMessage =
@@ -15,7 +17,7 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export async function saveAuthHeaders(address: string) {
+export async function saveAuthHeaders(address: string, provider: ethers.providers.ExternalProvider) {
   if (!address) {
     console.log('use deleteAuthHeaders is you want to sign out');
     return;
@@ -26,7 +28,8 @@ export async function saveAuthHeaders(address: string) {
   const currentUser = localStorage.getItem('CURRENT_USER');
 
   if (currentUser !== user) {
-    const sign = await personalSignAsync(getWeb3(), loginMessage, address);
+    const web3 = getWeb3(provider);
+    const sign = await personalSignAsync(web3, loginMessage, address);
     const sig = JSON.stringify(sign);
     localStorage.setItem('CURRENT_USER', user);
     localStorage.setItem('X-AUTH-SIGNATURE', sig);
@@ -44,20 +47,28 @@ export async function deleteAuthHeaders() {
   // need to tell metamask? not fully working SNG
 }
 
-export async function getAuthHeaders() {
+export async function getAuthHeaders(provider?: ethers.providers.ExternalProvider) {
   // fetch auth signature and message from local storage
   const localStorage = window.localStorage;
   let sig = localStorage.getItem('X-AUTH-SIGNATURE') || '';
   const msg = localStorage.getItem('X-AUTH-MESSAGE') || loginMessage;
   // if they are empty, resign and store
+  let account;
   if (!sig) {
     console.log('No auth found, re logging in');
-    const sign = await personalSignAsync(getWeb3(), msg, await getAccount());
-    sig = JSON.stringify(sign);
-    localStorage.setItem('X-AUTH-SIGNATURE', sig);
-    localStorage.setItem('X-AUTH-MESSAGE', msg);
+    const selectedProvider = provider ?? getProvider();
+    const web3 = getWeb3(selectedProvider);
+    if (web3) {
+      account = await getAccount(selectedProvider);
+      const sign = await personalSignAsync(web3, msg, account);
+      sig = JSON.stringify(sign);
+      localStorage.setItem('CURRENT_USER', account);
+      localStorage.setItem('X-AUTH-SIGNATURE', sig);
+      localStorage.setItem('X-AUTH-MESSAGE', msg);
+    }
   }
   return {
+    ...(account ? { CURRENT_USER: account } : {}),
     'X-AUTH-SIGNATURE': sig,
     'X-AUTH-MESSAGE': msg
   };

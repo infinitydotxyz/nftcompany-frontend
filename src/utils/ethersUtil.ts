@@ -1,6 +1,8 @@
 import { getWyvernChainName } from './commonUtil';
 
 import * as ethers from 'ethers';
+import { ExternalProvider } from '.pnpm/@ethersproject+providers@5.4.5/node_modules/@ethersproject/providers';
+import { WalletType } from './context/AppContext';
 
 // OpenSea's dependencies:
 const Web3 = require('web3');
@@ -9,23 +11,59 @@ const WyvernSchemaName = require('../../opensea').WyvernSchemaName;
 
 declare global {
   interface Window {
+    // @ts-ignore walletlink defines this as well
     ethereum: any;
   }
 }
 
+let preferredWallet: WalletType | undefined = undefined;
+export const getProvider = () => {
+  if (!preferredWallet) {
+    const res = localStorage.getItem('WALLET');
+    if (res === WalletType.MetaMask || res === WalletType.WalletConnect || res === WalletType.WalletLink) {
+      preferredWallet = res;
+    }
+  }
+  switch (preferredWallet) {
+    case WalletType.MetaMask:
+      return ((window.ethereum as any)?.providers ?? [window.ethereum]).find((p: any) => p.isMetaMask);
+    case WalletType.WalletLink:
+      return ((window.ethereum as any)?.providers ?? [window.ethereum]).find((p: any) => p.isCoinbaseWallet);
+    case WalletType.WalletConnect:
+      return ((window.ethereum as any)?.providers ?? [window.ethereum]).find((p: any) => p.isWalletConnect);
+    default:
+  }
+};
+
+export const setPreferredWallet = (walletType?: WalletType) => {
+  preferredWallet = walletType;
+  localStorage.setItem('WALLET', preferredWallet ?? '');
+};
+
+export const getEthersProvider = (provider?: ethers.providers.ExternalProvider) => {
+  return new ethers.providers.Web3Provider(provider ?? getProvider());
+};
+
 type initEthersArgs = {
+  provider: ExternalProvider;
   onError?: (tx: any) => void;
   onPending?: (tx: any) => void;
 };
 
-export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
+export async function initEthers({ provider, onError, onPending }: initEthersArgs) {
   try {
-    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    if (provider) {
+      await provider.request?.({ method: 'eth_requestAccounts' });
+    }
   } catch (err: any) {
     console.log(err);
     return;
   }
-  const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+  const ethersProvider = getEthersProvider(provider);
+
+  if (!ethersProvider) {
+    return;
+  }
 
   ethersProvider.on('pending', (tx: any) => {
     // Emitted when any new pending transaction is noticed
@@ -42,11 +80,9 @@ export async function initEthers({ onError, onPending }: initEthersArgs = {}) {
   return ethersProvider;
 }
 
-export const getEthersProvider = () => new ethers.providers.Web3Provider(window.ethereum);
-
-export const getAccount = async () => {
+export const getAccount = async (provider?: ethers.providers.ExternalProvider) => {
   try {
-    const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const ethersProvider = getEthersProvider(provider);
     if (!ethersProvider) {
       return '';
     }
@@ -57,9 +93,13 @@ export const getAccount = async () => {
   }
 };
 
-export const getChainId = async () => {
+export const getChainId = async (provider: ethers.providers.ExternalProvider) => {
   try {
-    const chainIdLoc = await window.ethereum.request({ method: 'eth_chainId' });
+    if (!provider) {
+      return '';
+    }
+
+    const chainIdLoc = await provider?.request?.({ method: 'eth_chainId' });
     console.log('chain id loc', chainIdLoc);
     if (chainIdLoc === '0x1') {
       // eth main
@@ -77,9 +117,12 @@ export const getChainId = async () => {
   return '';
 };
 
-export const getAddressBalance = async (address: string) => {
+export const getAddressBalance = async (address: string, provider: ethers.providers.ExternalProvider) => {
   try {
-    const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const ethersProvider = getEthersProvider(provider);
+    if (!ethersProvider) {
+      return;
+    }
     const balance = await ethersProvider.getBalance(address);
     const ret = ethers.utils.formatEther(balance);
     return ret;
@@ -91,10 +134,10 @@ export const getAddressBalance = async (address: string) => {
 
 /* ------------ web3 utils ------------ */
 
-export const getWeb3 = () => {
+export const getWeb3 = (provider?: ethers.providers.ExternalProvider) => {
   let web3 = new Web3();
-  if (window.ethereum) {
-    web3 = new Web3(window.ethereum);
+  if (provider) {
+    web3 = new Web3(provider);
   } else if ((window as any).web3) {
     web3 = new Web3(web3.currentProvider);
   } else {
@@ -103,12 +146,12 @@ export const getWeb3 = () => {
   return web3;
 };
 
-export const getOpenSeaportForChain = (chainId?: string) => {
+export const getOpenSeaportForChain = (chainId: string = '', provider?: ethers.providers.ExternalProvider) => {
   let network = getWyvernChainName(chainId);
   if (!network) {
     network = 'main';
   }
-  const openSeaPortForChain = new OpenSeaPort(getWeb3().currentProvider, {
+  const openSeaPortForChain = new OpenSeaPort(getWeb3(provider ?? getProvider()).currentProvider, {
     networkName: network
   });
   return openSeaPortForChain;
