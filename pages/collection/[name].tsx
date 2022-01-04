@@ -29,6 +29,7 @@ import TextToggle from 'components/TextToggle/TextToggle';
 import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import ExternalLinkCard from 'components/ExternalLinkCard/ExternalLinkCard';
 import WithTitle from 'components/WithTitle/WithTitle';
+import { TwitterFeed } from 'components/TwitterFeed/TwitterFeed';
 
 const testData = {
   benefits: ['Access', 'Royalties', 'IP rights'],
@@ -37,8 +38,8 @@ const testData = {
     { name: 'Nike', link: 'blah.com' },
     { name: 'The Garrets', link: 'blah.com' },
     { name: 'Some Really long partner name that no one would ever use', link: 'blah.com' },
-    { name: 'OpenSea', link: 'blah.com' },
-    { name: 'OpenSea', link: 'blah.com' }
+    { name: 'OpenSea2', link: 'blah.com' },
+    { name: 'OpenSea3', link: 'blah.com' }
   ]
 };
 
@@ -201,42 +202,55 @@ const Collection = (): JSX.Element => {
             <HorizontalLine />
 
             <Box display={'flex'} flexDirection={'row'} marginTop="56px" justifyContent={'space-between'}>
-              <WithTitle title="Twitter mentions">
-                <Box maxHeight={'240'} overflowY="scroll">
-                  {collectionInfo?.twitterSnippet?.topMentions?.map((mention) => {
-                    return (
-                      <Box key={mention.id} marginY="8px">
+              <Box display={'flex'} flexDirection={'row'}>
+                <WithTitle title="Twitter mentions">
+                  <Box maxHeight={'240'} overflowY="scroll">
+                    {collectionInfo?.twitterSnippet?.topMentions?.map((mention) => {
+                      return (
                         <ExternalLinkCard
+                          key={mention.id}
+                          marginY="8px"
                           title={mention.name}
                           subtitle={`Followers: ${numStr(mention.followersCount)}`}
                           link={`https://twitter.com/${mention.username}`}
                           linkText="View Profile"
                         />
-                      </Box>
-                    );
-                  })}
-                </Box>
-              </WithTitle>
+                      );
+                    })}
+                  </Box>
+                </WithTitle>
 
-              <WithTitle title="Partnerships">
-                <Box maxHeight={'240'} overflowY="scroll">
-                  {testData.partnerships?.map((partnership) => {
-                    return (
-                      <Box key={partnership.name} marginY="8px">
+                <Spacer width={'56px'} />
+
+                <WithTitle title="Partnerships">
+                  <Box maxHeight={'240'} overflowY="scroll">
+                    {testData.partnerships?.map((partnership) => {
+                      return (
                         <ExternalLinkCard
+                          key={partnership.name}
+                          marginY="8px"
                           title={partnership.name}
                           subtitle={'Team'}
                           link={partnership.link}
                           linkText="Partner"
                         />
-                      </Box>
-                    );
-                  })}
-                </Box>
-              </WithTitle>
-            </Box>
+                      );
+                    })}
+                  </Box>
+                </WithTitle>
+              </Box>
 
-            {/* <TwitterFeed /> */}
+              {collectionInfo?.twitterSnippet?.recentTweets?.length && (
+                <Box marginLeft={'56px'}>
+                  <WithTitle title={'Twitter feed'}>
+                    <TwitterFeed
+                      width={500}
+                      tweetIds={collectionInfo?.twitterSnippet?.recentTweets?.map((item) => item.tweetId)}
+                    />
+                  </WithTitle>
+                </Box>
+              )}
+            </Box>
           </Box>
         )}
       </div>

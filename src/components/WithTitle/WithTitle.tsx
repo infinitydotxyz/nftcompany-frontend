@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React from 'react';
 import { Box } from '@chakra-ui/layout';
 import styles from './WithTitle.module.scss';
 import { ChakraProps } from '@chakra-ui/react';

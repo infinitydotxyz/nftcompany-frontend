@@ -1,5 +1,6 @@
 import { Button } from '@chakra-ui/button';
 import { Box, Link, Text } from '@chakra-ui/layout';
+import { ChakraProps } from '@chakra-ui/react';
 import { Tooltip } from '@chakra-ui/tooltip';
 import React, { useRef, useState } from 'react';
 import styles from './ExternalLinkCard.module.scss';
@@ -10,13 +11,13 @@ interface ExternalLinkCardProps {
   link: string;
   linkText: string;
 }
-function ExternalLinkCard(props: ExternalLinkCardProps) {
+
+function ExternalLinkCard({ title, subtitle, link, linkText, ...rest }: ExternalLinkCardProps & ChakraProps) {
   const [isTooltipDisabled, setIsTooltipDisabled] = useState(true);
   const textRef = useRef<any>();
   const maxWidth = 180;
 
   React.useEffect(() => {
-    console.log(textRef.current.offsetWidth);
     if (textRef.current?.offsetWidth && textRef.current?.offsetWidth >= maxWidth) {
       setIsTooltipDisabled(false);
     }
@@ -32,17 +33,18 @@ function ExternalLinkCard(props: ExternalLinkCardProps) {
       padding="16px"
       minWidth={'250px'}
       maxWidth={'300px'}
+      {...rest}
     >
       <Box display="flex" flexDirection="column" justifyContent="space-between">
-        <Tooltip label={props.title} isDisabled={isTooltipDisabled} hasArrow>
+        <Tooltip label={title} isDisabled={isTooltipDisabled} hasArrow>
           <Text ref={textRef} className={styles.titls} maxWidth={`${maxWidth}px`} isTruncated marginRight="16px">
-            {props.title}
+            {title}
           </Text>
         </Tooltip>
-        <p className={styles.subtitle}>{props.subtitle}</p>
+        <p className={styles.subtitle}>{subtitle}</p>
       </Box>
-      <Link _hover={{ textDecoration: 'none' }} href={props.link} target={'_blank'}>
-        <Button size="sm">{props.linkText}</Button>
+      <Link _hover={{ textDecoration: 'none' }} href={link} target={'_blank'}>
+        <Button size="sm">{linkText}</Button>
       </Link>
     </Box>
   );
