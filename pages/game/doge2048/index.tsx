@@ -13,6 +13,7 @@ import { UnmarshalNFTAsset } from 'types/rewardTypes';
 import { ethers, providers } from 'ethers';
 import { getEthersProvider } from 'utils/ethersUtil';
 import { Spinner } from '@chakra-ui/spinner';
+import { ellipsisString } from 'utils/commonUtil';
 
 const ierc20Abi = require('./abis/ierc20.json');
 
@@ -24,59 +25,33 @@ const dogTokenAddress = '0x3604035F54e5fe0875652842024b49D1Fea11C7C'; // todo: a
 // lower case
 const tokenAddress = '0xde945603aa3c9bc22610957dce5646ac6e770e6c'; // todo: adi
 const dogTokensPerPlay = 1; // todo: adi
-// let gameUrl = 'https://pleasr.infinity.xyz/';
-let gameUrl = 'http://localhost:8080/'; // todo: adi
+
+// switch for local testing of game
+const gameUrl = 'https://pleasr.infinity.xyz/';
+// const gameUrl = 'http://localhost:8080/'; // todo: adi
 
 export default function GameFrame() {
   const { user, showAppError, showAppMessage, chainId, provider } = useAppContext();
   const [tokenId, setTokenId] = useState<number>(0);
-  const [dogBalance, setDogBalance] = useState<number>(0);
+  const [dogBalance, setDogBalance] = useState<number>(-1);
   const [fetching, setFetching] = useState<boolean>(false);
   const [nftAddress, setNftAddress] = useState<string>('');
-  const [data, setData] = useState<UnmarshalNFTAsset[]>([]);
+  const [usersNfts, setUsersNfts] = useState<NFTInfo[]>([]);
 
-  const router = useRouter();
-  const {
-    query: { url }
-  } = router;
+  const nftInfoArray = async (nfts: UnmarshalNFTAsset[]): Promise<NFTInfo[]> => {
+    const result: NFTInfo[] = [];
 
-  if (url) {
-    gameUrl = url as string;
-  }
-
-  const findBestNft = async (nfts: UnmarshalNFTAsset[]): Promise<NFTInfo | undefined> => {
-    const filtered = nfts.filter((e) => {
-      return e.asset_contract?.toLowerCase() === tokenAddress;
-    });
-
-    if (!provider) {
-      showAppMessage('Please connect a wallet');
-    }
-    const ethersProvider = getEthersProvider(provider!);
-    if (!ethersProvider) {
-      showAppMessage('Please connect a wallet');
-      return;
-    }
-
-    if (filtered.length > 0) {
-      let best: NFTInfo | undefined;
-
-      for (const item of filtered) {
+    if (nfts.length > 0) {
+      for (const item of nfts) {
         const i = new NFTInfo(item);
 
-        await i.info(ethersProvider);
+        await i.info();
 
-        if (!best) {
-          best = i;
-        } else {
-          if (i.dogBalance > best.dogBalance) {
-            best = i;
-          }
-        }
+        result.push(i);
       }
-
-      return best;
     }
+
+    return result;
   };
 
   const fetchData = async () => {
@@ -113,20 +88,34 @@ export default function GameFrame() {
     if (error) {
       showAppError(error?.message);
     } else {
-      const nfts = result.assets as UnmarshalNFTAsset[];
-      if (nfts && nfts.length > 0) {
-        const nftInfo = await findBestNft(nfts);
+      const nfts: UnmarshalNFTAsset[] = result.assets as UnmarshalNFTAsset[];
 
-        if (nftInfo) {
-          setTokenId(nftInfo.tokenId);
-          setNftAddress(nftInfo.instanceAddress);
-          setDogBalance(nftInfo.dogBalance);
+      if (nfts && nfts.length > 0) {
+        const filtered = nfts.filter((e) => {
+          return e.asset_contract?.toLowerCase() === tokenAddress;
+        });
+
+        if (filtered.length > 0) {
+          const infoArray = await nftInfoArray(filtered);
+
+          if (infoArray.length === 1) {
+            const n = infoArray[0];
+
+            setTokenId(n.tokenId);
+            setNftAddress(n.instanceAddress);
+            setDogBalance(n.dogBalance);
+          } else if (filtered.length > 1) {
+            // more than one, let the user choose
+            setUsersNfts(infoArray);
+          }
         } else {
           showAppError('Not the right contract');
         }
       } else {
         // no doge2048 nfts found
         showAppError('No Doge2048 NFTs');
+
+        setUsersNfts([]);
       }
       // for (const nft of nfts) {
       //   console.log(nft.asset_contract);
@@ -139,7 +128,6 @@ export default function GameFrame() {
       //     break;
       //   }
       // }
-      setData(nfts || []);
     }
 
     setFetching(false);
@@ -160,7 +148,7 @@ export default function GameFrame() {
   } else if (fetching) {
     contents = (
       <div className={styles.switchToPolygon}>
-        <Spinner size="lg" color="teal" ml={4} />;
+        <Spinner size="lg" color="teal" ml={4} />
       </div>
     );
   } else if (chainId !== '137') {
@@ -181,6 +169,44 @@ export default function GameFrame() {
         </Button>
       </div>
     );
+  } else if (dogBalance === -1) {
+    if (usersNfts.length > 0) {
+      const children = usersNfts.map((n, index) => {
+        return (
+          <Button
+            style={{ height: 'auto', marginBottom: 8 }}
+            key={n.instanceAddress}
+            variant="outline"
+            onClick={async () => {
+              setTokenId(n.tokenId);
+              setNftAddress(n.instanceAddress);
+              setDogBalance(n.dogBalance);
+            }}
+          >
+            <div className={styles.chooseNftCard}>
+              <div className={styles.chooseNftCardIndex}>{index}.</div>
+              <div className={styles.chooseNftCardBody}>
+                <div>{ellipsisString(n.instanceAddress)}</div>
+                <div>Token Id: {n.tokenId}</div>
+                <div>Dog Balance: {n.dogBalance}</div>
+                <div>
+                  Plays: {n.numPlays}, Score: {n.score}
+                </div>
+              </div>
+            </div>
+          </Button>
+        );
+      });
+
+      contents = (
+        <div className={styles.centeredChooseNft}>
+          <div className={styles.chooseNft}>
+            <div className={styles.title}>Pick an NFT to play the game</div>
+            <div className={styles.chooseNftGrid}>{children}</div>
+          </div>
+        </div>
+      );
+    }
   } else if (dogBalance < 1) {
     contents = (
       <div className={styles.switchToPolygon}>
@@ -210,6 +236,20 @@ export default function GameFrame() {
         >
           Deposit Dog
         </Button>
+
+        {usersNfts.length > 1 && (
+          <>
+            <div style={{ height: 10 }} />
+            <Button
+              variant="outline"
+              onClick={async () => {
+                setDogBalance(-1);
+              }}
+            >
+              Choose Another NFT
+            </Button>
+          </>
+        )}
       </div>
     );
   } else {
@@ -323,20 +363,22 @@ class NFTInfo {
   dogBalance: number = 0;
   numPlays: number = 0;
   score: number = 0;
+  imageUrl?: string = '';
 
-  info = async (provider: ethers.providers.Web3Provider) => {
+  info = async () => {
     // only fetch once
     if (!this.instanceAddress) {
       this.tokenId = parseInt(this.nft.token_id || '1');
 
-      const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, provider.getSigner());
+      const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
       this.instanceAddress = await factoryContract.tokenIdToInstance(this.tokenId);
 
       // console.log('token id and instance', this.tokenId, this.instanceAddress);
 
-      const nftInstance = new ethers.Contract(this.instanceAddress, doge2048Abi, provider.getSigner());
+      const nftInstance = new ethers.Contract(this.instanceAddress, doge2048Abi, getEthersProvider().getSigner());
       this.numPlays = await nftInstance.numPlays();
       this.score = await nftInstance.score();
+      this.imageUrl = this.nft.issuer_specific_data?.image_url;
 
       let balance = await nftInstance.getTokenBalance(dogTokenAddress);
       balance = ethers.utils.formatEther(balance);
