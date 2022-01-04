@@ -34,6 +34,7 @@ import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
 import LineGraph from 'components/LineGraph/LineGraph';
 import { number } from 'prop-types';
 import { add } from 'lodash';
+import GraphPreview from 'components/GraphPreview/GraphPreview';
 
 const testData = {
   benefits: ['Access', 'Royalties', 'IP rights']
@@ -188,6 +189,15 @@ const Collection = (): JSX.Element => {
                     tooltip={true}
                   />
                 )}
+                <GraphPreview
+                  label="Twitter Followers"
+                  total={100000}
+                  change={5000}
+                  changeInterval={24}
+                  changeIntervalUnits="hr"
+                  link="https://twitter.com"
+                  linkText="Follow"
+                />
               </Box>
             </Box>
           </Box>
