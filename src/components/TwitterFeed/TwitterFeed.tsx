@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/layout';
-import { useColorMode } from '@chakra-ui/react';
+import { ChakraProps, useColorMode } from '@chakra-ui/react';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useEffect, useState } from 'react';
 import { renderSpinner } from 'utils/commonUtil';
@@ -30,8 +30,8 @@ interface TwitterFeedProps {
   width: number;
 }
 
-export function TwitterFeed(props: TwitterFeedProps) {
-  const [hiddenTweets, setHiddenTweets] = useState<string[]>(props.tweetIds);
+export function TwitterFeed({ tweetIds, width, ...rest }: TwitterFeedProps & ChakraProps) {
+  const [hiddenTweets, setHiddenTweets] = useState<string[]>(tweetIds);
   const [displayedTweets, setDisplayedTweets] = useState<string[]>([]);
   const { colorMode } = useColorMode();
   const [isLoading, setIsLoading] = useState(false);
@@ -69,14 +69,14 @@ export function TwitterFeed(props: TwitterFeedProps) {
   };
 
   return (
-    <Box height="300px" maxHeight={'400px'} overflowY="scroll">
+    <Box {...rest}>
       {displayedTweets.map((item) => {
         return (
           <Tweet
             key={item}
             tweetId={item}
             isDarkMode={colorMode === 'dark'}
-            width={props.width}
+            width={width}
             onLoaded={() => setIsLoading(false)}
             onFailed={() => setIsLoading(false)}
           />
@@ -84,7 +84,7 @@ export function TwitterFeed(props: TwitterFeedProps) {
       })}
 
       {isLoading && (
-        <Box display="flex" flexDirection={'column'} justifyContent={'center'} alignItems={'center'} height={'100px'}>
+        <Box display="flex" flexDirection={'column'} justifyContent={'center'} alignItems={'center'} height={'50px'}>
           {renderSpinner()}
         </Box>
       )}

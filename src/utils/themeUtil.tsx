@@ -162,6 +162,9 @@ const Button = {
         fontSize: '12px',
         lineHeight: '14px'
       };
+    },
+    md: (props: any) => {
+      return { fontSize: '12px', lineHeight: '14px' };
     }
   },
   variants: {

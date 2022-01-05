@@ -30,6 +30,7 @@ import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import ExternalLinkCard from 'components/ExternalLinkCard/ExternalLinkCard';
 import WithTitle from 'components/WithTitle/WithTitle';
 import { TwitterFeed } from 'components/TwitterFeed/TwitterFeed';
+import VoteCard from 'components/VoteCard/VoteCard';
 
 const testData = {
   benefits: ['Access', 'Royalties', 'IP rights'],
@@ -122,7 +123,7 @@ const Collection = (): JSX.Element => {
       <Head>
         <title>{title || name}</title>
       </Head>
-      <div className="page-container" style={{ paddingTop: '40px' }}>
+      <div className="page-container" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
         {isLoading ? (
           <Box display="flex" justifyContent={'center'} alignItems={'center'} height="400px">
             <div>{renderSpinner()}</div>
@@ -246,10 +247,26 @@ const Collection = (): JSX.Element => {
                     <TwitterFeed
                       width={500}
                       tweetIds={collectionInfo?.twitterSnippet?.recentTweets?.map((item) => item.tweetId)}
+                      height="300px"
+                      overflowY="scroll"
                     />
                   </WithTitle>
                 </Box>
               )}
+            </Box>
+
+            <Box display={'flex'} flexDirection={'row'} marginTop="56px" justifyContent={'space-between'}>
+              <WithTitle title="Vote">
+                <VoteCard
+                  prompt="How do you like this collection?"
+                  subtitle="Vote to see the community results"
+                  positiveButtonLabel="Good"
+                  negativeButtonLabel="Bad"
+                  onVote={(vote: boolean) => console.log(`user voted ${vote}`)}
+                  allowChangeVote={true}
+                  height="223px"
+                />
+              </WithTitle>
             </Box>
           </Box>
         )}
