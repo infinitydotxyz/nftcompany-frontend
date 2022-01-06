@@ -14,7 +14,7 @@ body {
   margin: 0;
 }
 html {
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 /* Remove focus border on buttons */
