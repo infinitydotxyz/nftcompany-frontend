@@ -51,7 +51,7 @@ const fetchData = async (
     tokenAddress: typeAhead?.address ?? '',
     collectionName,
     text,
-    priceMax: collectionName?.length > 0 ? '1000000' : filter.priceMax, // SNG,
+    priceMax: filter.priceMax, // SNG,
     offset,
     listingSource
   });

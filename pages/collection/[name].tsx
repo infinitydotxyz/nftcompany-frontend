@@ -15,8 +15,10 @@ import { Spacer, Tabs, TabPanels, TabPanel, TabList, Tab, Box } from '@chakra-ui
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 import styles from './Collection.module.scss';
 import { NftAction } from 'types';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 
 const Collection = (): JSX.Element => {
+  const [isFilterOpened, setIsFilterOpened] = React.useState(false);
   const [title, setTitle] = useState<string | undefined>();
   const [address, setAddress] = useState('');
   const [tabIndex, setTabIndex] = useState(0);
@@ -98,6 +100,10 @@ const Collection = (): JSX.Element => {
             </Tabs>
           </div>
         </div>
+      </div>
+
+      <div className="filter-panel-explore-page">
+        <FilterDrawer showCollection={false} onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
       </div>
     </>
   );
