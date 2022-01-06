@@ -1,11 +1,9 @@
 import React from 'react';
-import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import router from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { getChainScannerBase, getSearchFriendlyString, uuidv4 } from 'utils/commonUtil';
+import { getSearchFriendlyString, uuidv4 } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
-import { Button } from '@chakra-ui/react';
 import styles from './CollectionCards.module.scss';
 
 type Props = {
@@ -19,11 +17,6 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
   if (!entry) {
     return <div>Nothing found</div>;
   }
-
-  const clickButton = () => {
-    // name could have # and other url reseved characters
-    router.push(`/collection/${cleanCollectionName(entry.name)}`);
-  };
 
   const cleanCollectionName = (input: string) => {
     if (!input) {
@@ -77,7 +70,7 @@ type xProps = {
 
 export const CardGrid = ({ data, isFeatured = false }: xProps): JSX.Element => {
   return (
-    <div className={`${styles.cardList}`}>
+    <div className={styles.cardList}>
       {(data || []).map((item) => {
         if (!item) {
           return null;

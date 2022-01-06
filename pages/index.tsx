@@ -244,7 +244,7 @@ export default function Home() {
                 {
                   question: 'How do I earn $NFT tokens?',
                   answer:
-                    'We are airdropping $NFT tokens to OpenSea users. We have different volume tiers to ensure a wide distribution. The airdropped $NFT tokens become claimable after performing some activity on the Infinity marketplace - selling/buying. Head over to the rewards page to check out how many tokens you are eligible to earn.'
+                    'Please see our Medium for more details on this.'
                 },
                 {
                   question: 'How is Infinity different from other NFT marketplaces?',

@@ -14,7 +14,7 @@ body {
   margin: 0;
 }
 html {
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 /* Remove focus border on buttons */
@@ -134,7 +134,7 @@ svg {
   font-weight: 500;
   margin: 0;
   letter-spacing: 0.05em;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .tg-desc {

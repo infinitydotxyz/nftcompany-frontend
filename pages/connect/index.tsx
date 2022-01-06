@@ -1,35 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { initEthers } from '../../src/utils/ethersUtil';
 import styles from './Connect.module.scss';
-import { saveAuthHeaders } from '../../src/utils/apiUtil';
 import { NextPage } from 'next';
 import Layout from 'containers/layout';
 import { useColorMode } from '@chakra-ui/react';
-import { useAppContext } from 'utils/context/AppContext';
+import { useAppContext, WalletType } from 'utils/context/AppContext';
 import { colors } from 'utils/themeUtil';
-
 export default function ConnectWallet() {
   const router = useRouter();
-  const { showAppError } = useAppContext();
+  const { showAppError, connectWallet, provider, user, userReady } = useAppContext();
   const { colorMode } = useColorMode();
 
-  const connectMetaMask = async () => {
-    const res = await initEthers();
-
-    if (res && res.getSigner) {
-      await saveAuthHeaders(await res.getSigner().getAddress());
-
-      // just go back, not sure how to check if back is valid.
-      // maybe we should check first, but I think it should be OK.
+  useEffect(() => {
+    if (user && userReady) {
       router.back();
-    } else {
-      showAppError('Failed to connect');
     }
+  }, [userReady, user]);
+
+  const connectCoinbase = async () => {
+    await connectWallet(WalletType.WalletLink);
   };
+
+  const connectMetaMask = async () => {
+    await connectWallet(WalletType.MetaMask);
+  };
+
+  // const connectWalletConnect = async () => {
+  //   await connectWallet(WalletType.WalletConnect);
+  // };
 
   const dark = colorMode === 'dark';
 
@@ -95,7 +96,7 @@ export default function ConnectWallet() {
                   ></path>
                 </svg>
               </div>
-              {/* <div className={styles.item}>
+              {/* <div className={styles.item} onClick={connectWalletConnect}>
                 <div className="logo-metamask d-flex align-self-center">
                   <Image
                     alt="Infinity"
@@ -119,16 +120,10 @@ export default function ConnectWallet() {
                     strokeLinejoin="round"
                   ></path>
                 </svg>
-              </div>
-              <div className={styles.item}>
+              </div> */}
+              <div className={styles.item} onClick={connectCoinbase}>
                 <div className="logo-metamask d-flex align-self-center">
-                  <Image
-                    alt="Infinity"
-                    src="/img/coinbase.svg"
-                    width={56}
-                    height={56}
-                    className="align-self-center"
-                  />
+                  <Image alt="Infinity" src="/img/coinbase.svg" width={56} height={56} className="align-self-center" />
                 </div>
                 <div className="d-flex flex-column text-left align-self-center pl-20">
                   <p className="tg-desc">Coinbase</p>
@@ -144,7 +139,7 @@ export default function ConnectWallet() {
                     strokeLinejoin="round"
                   ></path>
                 </svg>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

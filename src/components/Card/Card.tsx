@@ -4,7 +4,7 @@ import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import { BaseCardData, CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { PriceBox } from 'components/PriceBox/PriceBox';
+import { PriceBoxFloater } from 'components/PriceBoxFloater/';
 import { addressesEqual, getSearchFriendlyString } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
@@ -131,6 +131,9 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     return null;
   };
 
+  const shouldShowTransferButton =
+    data.owner && userAccount && (data.owner ?? '').toLowerCase() === userAccount?.toLowerCase();
+
   const getToken = () => {
     if (data.chainId === '1') {
       return data?.order?.metadata?.listingType !== LISTING_TYPE.ENGLISH_AUCTION ? 'ETH' : 'WETH';
@@ -147,12 +150,23 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   }
   return (
     <div ref={ref} id={`id_${data.id}`} className={styles.card}>
-      {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
+      <div className={styles.cardPreviewWrap}>
+        <div className={styles.cardPreview} onClick={onClickCard}>
+          <img src={data.image} alt="NFT image" />
 
-      <div className={styles.cardPreview} onClick={onClickCard}>
-        <img src={data.image} alt="NFT image" />
+          <div className={styles.cardControls}></div>
+        </div>
 
-        <div className={styles.cardControls}></div>
+        {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
+
+        <div className={styles.priceFloater}>
+          <PriceBoxFloater
+            justifyRight
+            price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
+            token={getToken()}
+            expirationTime={data?.expirationTime}
+          />
+        </div>
       </div>
 
       <div className={styles.cardBody}>
@@ -164,28 +178,24 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
                   {collectionName}
                 </AppLink>
 
-                <div style={{ paddingLeft: 6 }}>
+                <div style={{ paddingLeft: 6, paddingBottom: 2 }}>
                   <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
                 </div>
               </div>
             )}
             <div className={styles.title}>{data.title}</div>
           </div>
-          <PriceBox
-            justifyRight
-            price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
-            token={getToken()}
-            expirationTime={data?.expirationTime}
-          />
         </div>
       </div>
       <Spacer />
 
       <div className={styles.buttons}>
         {actionButton()}
-        <Link variant="underline" onClick={() => setTransferModalShowed(true)}>
-          Transfer
-        </Link>
+        {shouldShowTransferButton && (
+          <Link variant="underline" onClick={() => setTransferModalShowed(true)}>
+            Transfer
+          </Link>
+        )}
         <Link variant="underline" onClick={() => setPreviewModalShowed(true)}>
           Preview
         </Link>

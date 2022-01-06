@@ -32,6 +32,7 @@ import WithTitle from 'components/WithTitle/WithTitle';
 import { TwitterFeed } from 'components/TwitterFeed/TwitterFeed';
 import VoteCard from 'components/VoteCard/VoteCard';
 import CollectionCommunity from 'components/CollectionCommunity/CollectionCommunity';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 
 const testData = {
   benefits: ['Access', 'Royalties', 'IP rights'],
@@ -46,6 +47,7 @@ const testData = {
 };
 
 const Collection = (): JSX.Element => {
+  const [isFilterOpened, setIsFilterOpened] = React.useState(false);
   const [title, setTitle] = useState<string | undefined>();
   const [address, setAddress] = useState('');
   const [tabIndex, setTabIndex] = useState(0);
@@ -273,6 +275,10 @@ const Collection = (): JSX.Element => {
             </Box> */}
           </Box>
         )}
+      </div>
+
+      <div className="filter-panel-explore-page">
+        <FilterDrawer showCollection={false} onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
       </div>
     </>
   );

@@ -28,6 +28,7 @@ export type SearchFilter = {
   limit: string;
   user: string;
   id: string;
+  chainId: string;
   tokenId: string;
   tokenAddress: string;
   tokenAddresses?: string[];
@@ -64,6 +65,7 @@ export const defaultFilterState: SearchFilter = {
   startAfterUser: '',
   id: '',
   user: '',
+  chainId: '',
   tokenAddress: '',
   tokenId: '',
   startAfterSearchTitle: '',
