@@ -77,7 +77,7 @@ type xProps = {
 
 export const CardGrid = ({ data, isFeatured = false }: xProps): JSX.Element => {
   return (
-    <div className={`${styles.cardList}`}>
+    <div className={styles.cardList}>
       {(data || []).map((item) => {
         if (!item) {
           return null;

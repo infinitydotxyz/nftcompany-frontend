@@ -29,10 +29,12 @@ export const CollectionCards = ({ rows = 0, featuredCollections = false, listMod
   let colsPerRow = 4;
   if (rows !== 0) {
     if (width > 1245) {
-      colsPerRow = 4;
+      colsPerRow = 5;
     } else if (width > 925) {
-      colsPerRow = 3;
+      colsPerRow = 4;
     } else if (width > 650) {
+      colsPerRow = 3;
+    } else if (width > 500) {
       colsPerRow = 2;
     } else {
       colsPerRow = 1;

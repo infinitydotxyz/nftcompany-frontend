@@ -2,7 +2,7 @@
 
 @include cardList();
 
-$cardHeight: 420px;
+$cardHeight: 330px;
 
 .button {
   display: inline-flex;
@@ -50,17 +50,6 @@ $cardHeight: 420px;
   z-index: 1;
 }
 
-.cardList {
-  display: grid;
-
-  // the minmax(0, 1fr) rather than 1fr keeps the cards from growing past their initial width
-  // https://stackoverflow.com/questions/43311943/prevent-content-from-expanding-grid-items?rq=1
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-gap: 56px;
-
-  margin: 10px 0 40px 0;
-}
-
 .card {
   position: relative;
   padding: 12px;
@@ -78,7 +67,7 @@ $cardHeight: 420px;
     position: relative;
     border-radius: 16px;
     overflow: hidden;
-    height: 280px;
+    height: 220px;
     cursor: pointer;
 
     img {
@@ -140,9 +129,6 @@ $cardHeight: 420px;
     }
   }
 
-  .cardBody {
-    // padding: 10px 0;
-  }
   .cardLine {
     display: flex;
     justify-content: space-between;
@@ -186,43 +172,4 @@ $cardHeight: 420px;
 
 .featuredCard {
   background-image: linear-gradient(140deg, #ffffff 0%, #ffffff 50%, #d2fffb 75%);
-}
-
-@media only screen and (min-width: 1000px) and (max-width: 1400px) {
-  .cardList {
-    grid-gap: 36px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-
-    .card {
-      .cardPreview {
-        max-height: inherit;
-      }
-    }
-  }
-}
-
-@media only screen and (min-width: 700px) and (max-width: 1000px) {
-  .cardList {
-    grid-gap: 36px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    .card {
-      .cardPreview {
-        max-height: inherit;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 700px) {
-  .cardList {
-    grid-gap: 36px;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-
-    .card {
-      .cardPreview {
-        max-height: inherit;
-      }
-    }
-  }
 }
