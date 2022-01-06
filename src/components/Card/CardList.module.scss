@@ -20,20 +20,6 @@ $cardHeight: 332px;
   color: #fcfcfd;
   transition: all 0.2s;
 }
-.ownedTag {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-
-  background-color: var(--chakra-colors-brandBlueAlpha, red);
-  color: white;
-  padding: 4px 10px;
-  font-size: 0.8rem;
-  border-radius: 4px;
-  text-transform: uppercase;
-  font-weight: bold;
-  z-index: 1;
-}
 
 .featured {
   position: absolute;
@@ -77,6 +63,21 @@ $cardHeight: 332px;
         background-color: rgba(235, 235, 235, 0.8);
         border-radius: 8px;
       }
+    }
+
+    .ownedTag {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+
+      background-color: var(--chakra-colors-brandBlueAlpha, red);
+      color: white;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+      text-transform: uppercase;
+      font-weight: bold;
+      z-index: 1;
     }
   }
 

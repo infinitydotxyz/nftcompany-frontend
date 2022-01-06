@@ -150,14 +150,14 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
   }
   return (
     <div ref={ref} id={`id_${data.id}`} className={styles.card}>
-      {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
-
       <div className={styles.cardPreviewWrap}>
         <div className={styles.cardPreview} onClick={onClickCard}>
           <img src={data.image} alt="NFT image" />
 
           <div className={styles.cardControls}></div>
         </div>
+
+        {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
 
         <div className={styles.priceFloater}>
           <PriceBoxFloater
