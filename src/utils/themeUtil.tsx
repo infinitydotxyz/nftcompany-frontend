@@ -58,6 +58,7 @@ export const colors = {
 
   brandGreen: '#15a456',
   brandRed: '#A10000',
+  brandRedBright: '#D91D19',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   blue: {

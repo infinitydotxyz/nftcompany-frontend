@@ -3,9 +3,10 @@ import ExternalLinkCard from 'components/ExternalLinkCard/ExternalLinkCard';
 import { TwitterFeed } from 'components/TwitterFeed/TwitterFeed';
 import VoteCard from 'components/VoteCard/VoteCard';
 import WithTitle from 'components/WithTitle/WithTitle';
+import { number } from 'prop-types';
 import { useEffect, useState } from 'react';
 import { CollectionData } from 'services/Collections.service';
-import { apiGet } from 'utils/apiUtil';
+import { apiGet, apiPost } from 'utils/apiUtil';
 import { numStr } from 'utils/commonUtil';
 import { useAppContext } from 'utils/context/AppContext';
 
@@ -26,14 +27,42 @@ const testData = {
 };
 
 function CollectionCommunity({ collectionInfo }: CollectionCommunityProps) {
-  const { user } = useAppContext();
+  const { user, showAppError } = useAppContext();
 
+  //   userVotedFor: boolean;
+  //   totalFor: number;
+  //   totalAgainst: number;
+  const [votes, setVotes] = useState<{ userVotedFor: boolean; votesFor: number; votesAgainst: number } | undefined>();
   const [userVote, setUserVote] = useState<any>();
   const [collectionVotes, setCollectionVotes] = useState<any>();
+  const [isVotesLoading, setIsVotesLoading] = useState(false);
+
+  const onVote = async (votedFor: boolean) => {
+    setIsVotesLoading(true);
+    try {
+      if (collectionInfo?.address && user?.account) {
+        const response = await apiPost(`/u/${user.account}/vote`, undefined, {
+          votedFor,
+          collectionAddress: collectionInfo.address
+        });
+        if (response.status === 200) {
+          // vote successful
+          await getUserVote();
+        } else if (response.status !== 429) {
+          showAppError('Failed to save vote. Please try again in a few seconds');
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      showAppError('Failed to save vote. Please try again in a few seconds');
+    } finally {
+      setIsVotesLoading(false);
+    }
+  };
 
   const getUserVote = async () => {
     if (collectionInfo?.address && user?.account) {
-      const vote = await apiGet(
+      const response = await apiGet(
         `/u/${user.account}/vote`,
         {
           collectionAddress: collectionInfo.address
@@ -41,7 +70,12 @@ function CollectionCommunity({ collectionInfo }: CollectionCommunityProps) {
         undefined,
         false
       );
-      console.log(vote?.result, vote?.error, vote?.status);
+
+      const userVote: boolean | undefined = response.result?.userVote?.votedFor;
+      const totals = response?.result?.votes;
+      if (userVote !== undefined && totals) {
+        setVotes({ userVotedFor: userVote, votesFor: totals.votesFor, votesAgainst: totals.votesAgainst });
+      }
     }
   };
 
@@ -111,10 +145,13 @@ function CollectionCommunity({ collectionInfo }: CollectionCommunityProps) {
             subtitle="Vote to see the community results"
             positiveButtonLabel="Good"
             negativeButtonLabel="Bad"
-            onVote={(vote: boolean) => console.log(`user voted ${vote}`)}
+            onVote={onVote}
             allowChangeVote={true}
+            onChangeVote={() => setVotes(undefined)}
             height="223px"
             disabled={!user?.account && 'You must be logged in to vote.'}
+            results={votes}
+            isLoading={isVotesLoading}
           />
         </WithTitle>
       </Box>

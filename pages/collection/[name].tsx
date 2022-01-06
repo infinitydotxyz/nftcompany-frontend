@@ -21,16 +21,12 @@ import {
 import CollectionOverview from 'components/CollectionOverview/CollectionOverview';
 import CollectionStats from 'components/CollectionStats/CollectionStats';
 import CollectionLinks from 'components/CollectionLinks/CollectionLinks';
-import { numStr, renderSpinner } from 'utils/commonUtil';
+import { renderSpinner } from 'utils/commonUtil';
 import InfoGroup from 'components/InfoGroup/InfoGroup';
 import CollectionBenefits from 'components/CollectionBenefits.tsx/CollectionBenefits';
 import GraphPreview from 'components/GraphPreview/GraphPreview';
 import TextToggle from 'components/TextToggle/TextToggle';
 import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
-import ExternalLinkCard from 'components/ExternalLinkCard/ExternalLinkCard';
-import WithTitle from 'components/WithTitle/WithTitle';
-import { TwitterFeed } from 'components/TwitterFeed/TwitterFeed';
-import VoteCard from 'components/VoteCard/VoteCard';
 import CollectionCommunity from 'components/CollectionCommunity/CollectionCommunity';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 
@@ -205,74 +201,7 @@ const Collection = (): JSX.Element => {
 
             <HorizontalLine />
 
-            <CollectionCommunity collectionInfo={collectionInfo} />
-
-            {/* <Box display={'flex'} flexDirection={'row'} marginTop="56px" justifyContent={'space-between'}>
-              <Box display={'flex'} flexDirection={'row'}>
-                <WithTitle title="Twitter mentions">
-                  <Box maxHeight={'300'} overflowY="auto">
-                    {collectionInfo?.twitterSnippet?.topMentions?.map((mention) => {
-                      return (
-                        <ExternalLinkCard
-                          key={mention.id}
-                          marginY="8px"
-                          title={mention.name}
-                          subtitle={`Followers: ${numStr(mention.followersCount)}`}
-                          link={`https://twitter.com/${mention.username}`}
-                          linkText="View Profile"
-                        />
-                      );
-                    })}
-                  </Box>
-                </WithTitle>
-
-                <Spacer width={'56px'} />
-
-                <WithTitle title="Partnerships">
-                  <Box maxHeight={'300'} overflowY="auto">
-                    {testData.partnerships?.map((partnership) => {
-                      return (
-                        <ExternalLinkCard
-                          key={partnership.name}
-                          marginY="8px"
-                          title={partnership.name}
-                          subtitle={'Team'}
-                          link={partnership.link}
-                          linkText="Partner"
-                        />
-                      );
-                    })}
-                  </Box>
-                </WithTitle>
-              </Box>
-
-              {collectionInfo?.twitterSnippet?.recentTweets?.length && (
-                <Box marginLeft={'56px'}>
-                  <WithTitle title={'Twitter feed'}>
-                    <TwitterFeed
-                      width={500}
-                      tweetIds={collectionInfo?.twitterSnippet?.recentTweets?.map((item) => item.tweetId)}
-                      height="300px"
-                      overflowY="auto"
-                    />
-                  </WithTitle>
-                </Box>
-              )}
-            </Box>
-
-            <Box display={'flex'} flexDirection={'row'} marginTop="56px" justifyContent={'space-between'}>
-              <WithTitle title="Vote">
-                <VoteCard
-                  prompt="How do you like this collection?"
-                  subtitle="Vote to see the community results"
-                  positiveButtonLabel="Good"
-                  negativeButtonLabel="Bad"
-                  onVote={(vote: boolean) => console.log(`user voted ${vote}`)}
-                  allowChangeVote={true}
-                  height="223px"
-                />
-              </WithTitle>
-            </Box> */}
+            {collectionInfo && <CollectionCommunity collectionInfo={collectionInfo} />}
           </Box>
         )}
       </div>

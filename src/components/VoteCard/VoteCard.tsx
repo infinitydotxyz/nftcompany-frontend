@@ -1,5 +1,6 @@
 import { Box, Button, ChakraProps, propNames, Spacer, Text, Tooltip } from '@chakra-ui/react';
-import { renderSpinner } from 'utils/commonUtil';
+import { useEffect } from 'react';
+import { numStr, renderSpinner } from 'utils/commonUtil';
 import styles from './VoteCard.module.scss';
 
 interface VoteCardProps {
@@ -32,9 +33,14 @@ interface VoteCardProps {
 
   isLoading?: boolean;
 
-  results?: { userVotedFor: boolean; totalFor: number; totalAgainst: number };
+  results?: { userVotedFor: boolean; votesFor: number; votesAgainst: number };
 
   disabled?: boolean | string;
+
+  /**
+   * reset the results
+   */
+  onChangeVote: () => void;
 }
 
 function VoteCard({
@@ -42,20 +48,97 @@ function VoteCard({
   subtitle,
   positiveButtonLabel,
   negativeButtonLabel,
-  onVote,
   allowChangeVote,
   results,
   isLoading,
   disabled,
+  onVote,
+  onChangeVote,
   ...rest
 }: VoteCardProps & ChakraProps) {
   const hasVoted = results;
 
+  const VoteButtons = () => (
+    <Tooltip label={disabled} isDisabled={!disabled}>
+      <Box display="flex" flexDirection={'row'} width="100%">
+        <Button
+          flexBasis={0}
+          flexGrow={1}
+          height="72px"
+          marginRight="5px"
+          disabled={!!disabled}
+          onClick={() => onVote(true)}
+        >
+          {positiveButtonLabel}
+        </Button>
+        <Button
+          flexBasis={0}
+          flexGrow={1}
+          height="72px"
+          marginLeft="5px"
+          disabled={!!disabled}
+          onClick={() => onVote(false)}
+        >
+          {negativeButtonLabel}
+        </Button>
+      </Box>
+    </Tooltip>
+  );
+
+  const Loading = () => (
+    <Box display="flex" flexDirection={'column'} width="100%" justifyContent={'center'} alignItems={'center'}>
+      {renderSpinner()}
+      <Text className={styles.subtitle} paddingTop="4px">
+        Submitting vote
+      </Text>
+    </Box>
+  );
+
+  const Votes = (props: { results: { userVotedFor: boolean; votesFor: number; votesAgainst: number } }) => {
+    const totalVotes = props.results.votesAgainst + props.results.votesFor;
+
+    const percentFor = (props.results.votesFor / totalVotes) * 100;
+    const percentAgainst = (props.results.votesAgainst / totalVotes) * 100;
+    console.log(percentFor, percentAgainst, totalVotes);
+
+    return (
+      <Box display="flex" flexDirection={'column'} width="100%" minWidth={'475px'}>
+        <Box position="relative" width="100%">
+          <Box
+            position="absolute"
+            backgroundColor={'brandRedBright'}
+            width="100%"
+            height="72px"
+            top={'-72px'}
+            borderRadius={'8px'}
+          />
+          <Box
+            position="absolute"
+            backgroundColor={'brandGreen'}
+            width={`${percentFor}%`}
+            height="72px"
+            top={'-72px'}
+            borderLeftRadius={'8px'}
+            borderRightRadius={percentFor > 98 ? '8px' : '0px'}
+          />
+        </Box>
+
+        <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} width="100%">
+          <Text>
+            {numStr(percentFor)}% - {positiveButtonLabel}
+          </Text>
+          <Text>
+            {numStr(percentAgainst)}% - {negativeButtonLabel}
+          </Text>
+        </Box>
+      </Box>
+    );
+  };
+
   return (
     <Box
       backgroundColor={'cardBgLight'}
-      paddingX="52px"
-      paddingY="30px"
+      padding="24px"
       display="flex"
       flexDirection="column"
       justifyContent={'space-between'}
@@ -63,57 +146,35 @@ function VoteCard({
       borderRadius="8px"
       {...rest}
     >
-      <Box display="flex" flexDirection="column" alignItems="flex-start" justifyContent={'flex-start'}>
+      <Box display="flex" flexDirection="column" alignItems="flex-start" justifyContent={'flex-start'} width="100%">
         {hasVoted ? (
-          <Box display="flex" flexDirection={'row'}>
+          <Box
+            display="flex"
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+            alignItems={'space-between'}
+            width="100%"
+          >
             <Text className={styles.title}>{`You voted ${
               results.userVotedFor ? positiveButtonLabel : negativeButtonLabel
             }`}</Text>
-            {allowChangeVote && <Button>I made a mistake</Button>}
+            {allowChangeVote && (
+              <Button size="sm" variant={'alt'} onClick={onChangeVote}>
+                I made a mistake
+              </Button>
+            )}
           </Box>
         ) : (
           <Text className={styles.title}>{prompt}</Text>
         )}
-        {!results && (
+        {!hasVoted && (
           <Text className={styles.subtitle} paddingTop="4px">
             {subtitle}
           </Text>
         )}
       </Box>
 
-      {isLoading ? (
-        <Box display="flex" flexDirection={'column'} width="100%" justifyContent={'center'} alignItems={'center'}>
-          {renderSpinner()}
-          <Text className={styles.subtitle} paddingTop="4px">
-            Submitting vote
-          </Text>
-        </Box>
-      ) : (
-        <Tooltip label={disabled} isDisabled={!disabled}>
-          <Box display="flex" flexDirection={'row'} width="100%">
-            <Button
-              flexBasis={0}
-              flexGrow={1}
-              height="72px"
-              marginRight="5px"
-              disabled={!!disabled}
-              onClick={() => onVote(true)}
-            >
-              {positiveButtonLabel}
-            </Button>
-            <Button
-              flexBasis={0}
-              flexGrow={1}
-              height="72px"
-              marginLeft="5px"
-              disabled={!!disabled}
-              onClick={() => onVote(false)}
-            >
-              {negativeButtonLabel}
-            </Button>
-          </Box>
-        </Tooltip>
-      )}
+      {isLoading ? <Loading /> : hasVoted ? <Votes results={results} /> : <VoteButtons />}
     </Box>
   );
 }

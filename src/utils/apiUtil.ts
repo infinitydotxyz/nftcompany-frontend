@@ -120,9 +120,13 @@ export const apiPost = async (path: string, query?: any, payload?: any) => {
       headers: await getAuthHeaders(),
       data: payload
     });
+
     return { result: data, status };
   } catch (err: any) {
     const { error, status } = catchError(err);
+    if (status === 429) {
+      errorToast("You've been rate limited, please try again in a few minutes");
+    }
     return { error, status };
   }
 };
