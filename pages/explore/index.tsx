@@ -104,7 +104,7 @@ export default function ExplorePage() {
       </Head>
 
       <div className={`${styles.main} page-wrapper`}>
-        {isFilterOpened && <div className={styles.filterPlaceholder}></div>}
+        {isFilterOpened && <div className="filter-placeholder"></div>}
 
         <div className="page-container">
           {!searchMode && <FeaturedCollections />}
