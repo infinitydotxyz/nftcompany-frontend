@@ -99,10 +99,9 @@ function VoteCard({
 
     const percentFor = (props.results.votesFor / totalVotes) * 100;
     const percentAgainst = (props.results.votesAgainst / totalVotes) * 100;
-    console.log(percentFor, percentAgainst, totalVotes);
 
     return (
-      <Box display="flex" flexDirection={'column'} width="100%" minWidth={'475px'}>
+      <Box display="flex" flexDirection={'column'} width="100%" minWidth={'400px'}>
         <Box position="relative" width="100%">
           <Box
             position="absolute"

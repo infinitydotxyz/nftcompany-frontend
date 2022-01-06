@@ -4,7 +4,7 @@ import { TwitterFeed } from 'components/TwitterFeed/TwitterFeed';
 import VoteCard from 'components/VoteCard/VoteCard';
 import WithTitle from 'components/WithTitle/WithTitle';
 import { number } from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CollectionData } from 'services/Collections.service';
 import { apiGet, apiPost } from 'utils/apiUtil';
 import { numStr } from 'utils/commonUtil';
@@ -28,6 +28,21 @@ const testData = {
 
 function CollectionCommunity({ collectionInfo }: CollectionCommunityProps) {
   const { user, showAppError } = useAppContext();
+  const twitterFeedContainerRef = useRef<any>();
+  const [twitterFeedWidth, setTwitterFeedWidth] = useState(500);
+
+  useEffect(() => {
+    const resizeTwitterFeed = () => {
+      let width = twitterFeedContainerRef.current?.getBoundingClientRect?.()?.width ?? 500;
+      width = width > 430 ? 430 : width;
+      setTwitterFeedWidth(width);
+    };
+    window.addEventListener('resize', resizeTwitterFeed);
+
+    return () => {
+      window.removeEventListener('resize', resizeTwitterFeed);
+    };
+  }, []);
 
   //   userVotedFor: boolean;
   //   totalFor: number;
@@ -85,8 +100,13 @@ function CollectionCommunity({ collectionInfo }: CollectionCommunityProps) {
 
   return (
     <Box>
-      <Box display={'flex'} flexDirection={'row'} marginTop="56px" justifyContent={'space-between'}>
-        <Box display={'flex'} flexDirection={'row'}>
+      <Box
+        display={'flex'}
+        flexDirection={['column', 'column', 'column', 'row']}
+        marginTop="56px"
+        justifyContent={'space-between'}
+      >
+        <Box display={'flex'} flexDirection={'row'} width={['100%', '100%', '100%', '50%']} alignItems={'flex-start'}>
           <WithTitle title="Twitter mentions">
             <Box maxHeight={'300'} overflowY="auto">
               {collectionInfo?.twitterSnippet?.topMentions?.map((mention) => {
@@ -104,7 +124,7 @@ function CollectionCommunity({ collectionInfo }: CollectionCommunityProps) {
             </Box>
           </WithTitle>
 
-          <Spacer width={'56px'} />
+          <Spacer width={['32px', '32px', '32px', '56px']} maxWidth={['32px', '32px', '32px', '56px']} />
 
           <WithTitle title="Partnerships">
             <Box maxHeight={'300'} overflowY="auto">
@@ -124,11 +144,13 @@ function CollectionCommunity({ collectionInfo }: CollectionCommunityProps) {
           </WithTitle>
         </Box>
 
+        <Spacer width={{ md: '32px', lg: '32px', xl: '56px' }} />
+
         {collectionInfo?.twitterSnippet?.recentTweets?.length && (
-          <Box marginLeft={'56px'}>
+          <Box flexBasis={0} flexGrow={1} ref={twitterFeedContainerRef} marginTop={['56px', '56px', '56px', 0]}>
             <WithTitle title={'Twitter feed'}>
               <TwitterFeed
-                width={500}
+                width={twitterFeedWidth}
                 tweetIds={collectionInfo?.twitterSnippet?.recentTweets?.map((item) => item.tweetId)}
                 height="300px"
                 overflowY="auto"

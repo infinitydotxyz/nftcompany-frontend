@@ -69,7 +69,7 @@ export function TwitterFeed({ tweetIds, width, ...rest }: TwitterFeedProps & Cha
   };
 
   return (
-    <Box {...rest}>
+    <Box {...rest} width={width + 20}>
       {displayedTweets.map((item) => {
         return (
           <Tweet

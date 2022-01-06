@@ -15,7 +15,7 @@ interface ExternalLinkCardProps {
 function ExternalLinkCard({ title, subtitle, link, linkText, ...rest }: ExternalLinkCardProps & ChakraProps) {
   const [isTooltipDisabled, setIsTooltipDisabled] = useState(true);
   const textRef = useRef<any>();
-  const maxWidth = 160;
+  const maxWidth = 100;
 
   React.useEffect(() => {
     if (textRef.current?.offsetWidth && textRef.current?.offsetWidth >= maxWidth) {
@@ -31,8 +31,8 @@ function ExternalLinkCard({ title, subtitle, link, linkText, ...rest }: External
       borderRadius={'8px'}
       backgroundColor={'cardBgLight'}
       padding="16px"
-      minWidth={'250px'}
-      maxWidth={'300px'}
+      minWidth={'200px'}
+      maxWidth={'250px'}
       {...rest}
     >
       <Box display="flex" flexDirection="column" justifyContent="space-between" flexBasis={0} flexGrow={2}>
