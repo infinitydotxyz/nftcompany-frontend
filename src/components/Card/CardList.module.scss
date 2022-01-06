@@ -2,7 +2,7 @@
 
 @include cardList();
 
-$cardHeight: 330px;
+$cardHeight: 332px;
 
 .button {
   display: inline-flex;
@@ -181,8 +181,10 @@ $cardHeight: 330px;
         // keeps long titles from flowing outside the card bounds
         white-space: nowrap;
         max-width: 20ch;
+        line-height: 1;
         text-overflow: ellipsis;
         overflow: hidden;
+        margin-bottom: 6px;
       }
     }
   }
