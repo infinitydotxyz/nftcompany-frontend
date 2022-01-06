@@ -33,6 +33,7 @@ const fetchData = async (
   text: string,
   typeAhead: TypeAheadOption | undefined,
   listingSource: ListingSource,
+  chainId: string,
   offset?: number
 ): Promise<CardData[]> => {
   const result = await getListings({
@@ -41,6 +42,7 @@ const fetchData = async (
     startAfterUser: user ? startAfterUser : '',
     startAfterMillis,
     startAfterPrice,
+    chainId,
     startAfterSearchTitle,
     startAfterSearchCollectionName,
     startAfterBlueCheck,
@@ -79,7 +81,7 @@ export function useCardProvider(
   const [savedCollectionName, setSavedCollectionName] = useState<string | undefined>();
   const [savedListingSource, setSavedListingSource] = useState<ListingSource | undefined>();
   const [savedSearchContext, setSavedSearchContext] = useState(searchContext);
-  const { user, userReady } = useAppContext();
+  const { user, userReady, chainId } = useAppContext();
 
   useEffect(() => {
     if (searchContext !== savedSearchContext) {
@@ -152,6 +154,7 @@ export function useCardProvider(
       text,
       selectedOption,
       listingSource,
+      chainId,
       offset
     );
 

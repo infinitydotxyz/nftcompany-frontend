@@ -4,7 +4,7 @@ import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import { BaseCardData, CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { PriceBox } from 'components/PriceBox/PriceBox';
+import { PriceBoxFloater } from 'components/PriceBoxFloater/';
 import { addressesEqual, getSearchFriendlyString } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
@@ -152,10 +152,21 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     <div ref={ref} id={`id_${data.id}`} className={styles.card}>
       {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
 
-      <div className={styles.cardPreview} onClick={onClickCard}>
-        <img src={data.image} alt="NFT image" />
+      <div className={styles.cardPreviewWrap}>
+        <div className={styles.cardPreview} onClick={onClickCard}>
+          <img src={data.image} alt="NFT image" />
 
-        <div className={styles.cardControls}></div>
+          <div className={styles.cardControls}></div>
+        </div>
+
+        <div className={styles.priceFloater}>
+          <PriceBoxFloater
+            justifyRight
+            price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
+            token={getToken()}
+            expirationTime={data?.expirationTime}
+          />
+        </div>
       </div>
 
       <div className={styles.cardBody}>
@@ -174,12 +185,6 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
             )}
             <div className={styles.title}>{data.title}</div>
           </div>
-          <PriceBox
-            justifyRight
-            price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
-            token={getToken()}
-            expirationTime={data?.expirationTime}
-          />
         </div>
       </div>
       <Spacer />

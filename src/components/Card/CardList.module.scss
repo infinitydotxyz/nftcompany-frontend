@@ -63,6 +63,23 @@ $cardHeight: 330px;
     background-color: var(--chakra-colors-cardBgDark, red);
   }
 
+  .cardPreviewWrap {
+    position: relative;
+
+    .priceFloater {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      z-index: 100;
+
+      & > div {
+        overflow: visible;
+        background-color: rgba(235, 235, 235, 0.8);
+        border-radius: 8px;
+      }
+    }
+  }
+
   .cardPreview {
     position: relative;
     border-radius: 16px;
@@ -80,6 +97,7 @@ $cardHeight: 330px;
       transform: scale(1.1);
     }
   }
+
   &:hover {
     .buttons {
       display: flex;
