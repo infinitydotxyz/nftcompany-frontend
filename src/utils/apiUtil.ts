@@ -87,10 +87,10 @@ const catchError = (err: any) => {
 export const apiGet = async (path: string, query?: any, options?: any, doNotAttemptLogin?: boolean) => {
   const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
-    const isAuthenticated = path.indexOf('/u/') >= 0;
+    const requiresAuth = path.indexOf('/u/') >= 0;
 
     let authHeaders = {};
-    if (isAuthenticated) {
+    if (requiresAuth) {
       authHeaders = await getAuthHeaders(undefined, doNotAttemptLogin);
     }
 

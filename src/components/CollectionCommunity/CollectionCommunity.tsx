@@ -1,9 +1,9 @@
 import { Box, Spacer } from '@chakra-ui/layout';
+import { ChakraProps } from '@chakra-ui/react';
 import ExternalLinkCard from 'components/ExternalLinkCard/ExternalLinkCard';
 import { TwitterFeed } from 'components/TwitterFeed/TwitterFeed';
 import VoteCard from 'components/VoteCard/VoteCard';
 import WithTitle from 'components/WithTitle/WithTitle';
-import { number } from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import { CollectionData } from 'services/Collections.service';
 import { apiGet, apiPost } from 'utils/apiUtil';
@@ -26,14 +26,14 @@ const testData = {
   ]
 };
 
-function CollectionCommunity({ collectionInfo }: CollectionCommunityProps) {
+function CollectionCommunity({ collectionInfo, ...rest }: CollectionCommunityProps & ChakraProps) {
   const { user, showAppError } = useAppContext();
   const twitterFeedContainerRef = useRef<any>();
-  const [twitterFeedWidth, setTwitterFeedWidth] = useState(500);
+  const [twitterFeedWidth, setTwitterFeedWidth] = useState(430);
 
   useEffect(() => {
     const resizeTwitterFeed = () => {
-      let width = twitterFeedContainerRef.current?.getBoundingClientRect?.()?.width ?? 500;
+      let width = twitterFeedContainerRef.current?.getBoundingClientRect?.()?.width ?? 430;
       width = width > 430 ? 430 : width;
       setTwitterFeedWidth(width);
     };
@@ -44,12 +44,7 @@ function CollectionCommunity({ collectionInfo }: CollectionCommunityProps) {
     };
   }, []);
 
-  //   userVotedFor: boolean;
-  //   totalFor: number;
-  //   totalAgainst: number;
   const [votes, setVotes] = useState<{ userVotedFor: boolean; votesFor: number; votesAgainst: number } | undefined>();
-  const [userVote, setUserVote] = useState<any>();
-  const [collectionVotes, setCollectionVotes] = useState<any>();
   const [isVotesLoading, setIsVotesLoading] = useState(false);
 
   const onVote = async (votedFor: boolean) => {
@@ -61,7 +56,6 @@ function CollectionCommunity({ collectionInfo }: CollectionCommunityProps) {
           collectionAddress: collectionInfo.address
         });
         if (response.status === 200) {
-          // vote successful
           await getUserVote();
         } else if (response.status !== 429) {
           showAppError('Failed to save vote. Please try again in a few seconds');
@@ -99,7 +93,7 @@ function CollectionCommunity({ collectionInfo }: CollectionCommunityProps) {
   }, [user?.account, collectionInfo?.address]);
 
   return (
-    <Box>
+    <Box {...rest}>
       <Box
         display={'flex'}
         flexDirection={['column', 'column', 'column', 'row']}
@@ -169,7 +163,6 @@ function CollectionCommunity({ collectionInfo }: CollectionCommunityProps) {
             negativeButtonLabel="Bad"
             onVote={onVote}
             allowChangeVote={true}
-            onChangeVote={() => setVotes(undefined)}
             height="223px"
             disabled={!user?.account && 'You must be logged in to vote.'}
             results={votes}

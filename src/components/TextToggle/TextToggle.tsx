@@ -1,3 +1,4 @@
+import { ChakraProps, Box } from '@chakra-ui/react';
 import React, { MouseEventHandler, useState } from 'react';
 import styles from './TextToggle.module.scss';
 
@@ -8,19 +9,13 @@ interface TextToggleProps {
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-function TextToggle(props: TextToggleProps) {
-  const toggleSwitch = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    props.onClick(event);
-  };
-
+function TextToggle({ checkedText, unCheckedText, checked, onClick, ...rest }: TextToggleProps & ChakraProps) {
   return (
-    <div className={styles.wrapper} onClick={(event) => props.onClick(event)}>
-      <div className={`${styles.option} ${styles.slide} ${!props.checked ? styles.selected : ''}`}>
-        {props.unCheckedText}
-      </div>
+    <Box className={styles.wrapper} onClick={(event) => onClick(event)} {...rest}>
+      <div className={`${styles.option} ${styles.slide} ${!checked ? styles.selected : ''}`}>{unCheckedText}</div>
 
-      <div className={`${styles.option} ${props.checked ? styles.selected : ''}`}>{props.checkedText}</div>
-    </div>
+      <div className={`${styles.option} ${checked ? styles.selected : ''}`}>{checkedText}</div>
+    </Box>
   );
 }
 

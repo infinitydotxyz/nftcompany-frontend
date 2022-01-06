@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
@@ -10,7 +10,7 @@ import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
 import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
-import { Spacer, Box } from '@chakra-ui/react';
+import { Spacer, Box, Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import { NftAction } from 'types';
 import {
   CollectionData,
@@ -29,6 +29,7 @@ import TextToggle from 'components/TextToggle/TextToggle';
 import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import CollectionCommunity from 'components/CollectionCommunity/CollectionCommunity';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
+import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 
 const testData = {
   benefits: ['Access', 'Royalties', 'IP rights'],
@@ -135,7 +136,7 @@ const Collection = (): JSX.Element => {
                   collectionName={collectionInfo?.name ?? ''}
                   hasBlueCheck={collectionInfo?.hasBlueCheck ?? false}
                   profileImage={collectionInfo?.profileImage ?? ''}
-                  hasBeenClaimed={false}
+                  hasBeenClaimed={false} // TODO
                   creator={'ArtBlocks_Admin'}
                   description={collectionInfo?.description}
                 />
@@ -190,7 +191,7 @@ const Collection = (): JSX.Element => {
               </Box>
             </Box>
 
-            <Box marginTop={'72px'} marginBottom={'16px'}>
+            <Box marginTop={'72px'} width="min-content">
               <TextToggle
                 unCheckedText="NFT"
                 checkedText="Community"
@@ -199,9 +200,42 @@ const Collection = (): JSX.Element => {
               />
             </Box>
 
-            <HorizontalLine />
+            <HorizontalLine display={!toggleState ? 'none' : ''} marginTop={'40px'} />
 
-            {collectionInfo && <CollectionCommunity collectionInfo={collectionInfo} />}
+            {collectionInfo && (
+              <CollectionCommunity collectionInfo={collectionInfo} display={!toggleState ? 'none' : ''} />
+            )}
+
+            <Tabs align={'center'} display={toggleState ? 'none' : ''}>
+              <TabList>
+                <Tab>NFTs</Tab>
+                <Tab isDisabled={!address}>Activity</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <CollectionContents
+                    name={name as string}
+                    onTitle={(newTitle) => {
+                      if (!title) {
+                        setTitle(newTitle);
+                      }
+                    }}
+                    onLoaded={({ address }) => setAddress(address)}
+                    listingSource={ListingSource.Infinity}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  {address && (
+                    <CollectionEvents
+                      address={address}
+                      eventType="successful"
+                      activityType="sale"
+                      pageType="collection"
+                    />
+                  )}
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </Box>
         )}
       </div>

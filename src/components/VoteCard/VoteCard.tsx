@@ -1,5 +1,5 @@
-import { Box, Button, ChakraProps, propNames, Spacer, Text, Tooltip } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { Box, Button, ChakraProps, Text, Tooltip } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { numStr, renderSpinner } from 'utils/commonUtil';
 import styles from './VoteCard.module.scss';
 
@@ -27,8 +27,6 @@ interface VoteCardProps {
    */
   negativeButtonLabel: string;
 
-  onVote: (votedForPrompt: boolean) => void;
-
   allowChangeVote: boolean;
 
   isLoading?: boolean;
@@ -37,10 +35,7 @@ interface VoteCardProps {
 
   disabled?: boolean | string;
 
-  /**
-   * reset the results
-   */
-  onChangeVote: () => void;
+  onVote: (votedForPrompt: boolean) => void;
 }
 
 function VoteCard({
@@ -53,10 +48,13 @@ function VoteCard({
   isLoading,
   disabled,
   onVote,
-  onChangeVote,
   ...rest
 }: VoteCardProps & ChakraProps) {
-  const hasVoted = results;
+  const [votes, setVotes] = useState(results);
+
+  useEffect(() => {
+    setVotes(results);
+  }, [results]);
 
   const VoteButtons = () => (
     <Tooltip label={disabled} isDisabled={!disabled}>
@@ -72,6 +70,7 @@ function VoteCard({
           {positiveButtonLabel}
         </Button>
         <Button
+          size="md"
           flexBasis={0}
           flexGrow={1}
           height="72px"
@@ -146,7 +145,7 @@ function VoteCard({
       {...rest}
     >
       <Box display="flex" flexDirection="column" alignItems="flex-start" justifyContent={'flex-start'} width="100%">
-        {hasVoted ? (
+        {votes ? (
           <Box
             display="flex"
             flexDirection={'row'}
@@ -155,10 +154,10 @@ function VoteCard({
             width="100%"
           >
             <Text className={styles.title}>{`You voted ${
-              results.userVotedFor ? positiveButtonLabel : negativeButtonLabel
+              votes.userVotedFor ? positiveButtonLabel : negativeButtonLabel
             }`}</Text>
             {allowChangeVote && (
-              <Button size="sm" variant={'alt'} onClick={onChangeVote}>
+              <Button size="sm" variant={'alt'} onClick={() => setVotes(undefined)}>
                 I made a mistake
               </Button>
             )}
@@ -166,14 +165,14 @@ function VoteCard({
         ) : (
           <Text className={styles.title}>{prompt}</Text>
         )}
-        {!hasVoted && (
+        {!votes && (
           <Text className={styles.subtitle} paddingTop="4px">
             {subtitle}
           </Text>
         )}
       </Box>
 
-      {isLoading ? <Loading /> : hasVoted ? <Votes results={results} /> : <VoteButtons />}
+      {isLoading ? <Loading /> : votes ? <Votes results={votes} /> : <VoteButtons />}
     </Box>
   );
 }

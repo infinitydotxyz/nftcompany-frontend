@@ -52,6 +52,8 @@ export const colors = {
   headerBg: lightBgAlpha,
   headerBgDark: darkGrayAlpha,
 
+  separator: '#E2E8F0',
+
   brandBlueAlpha: brandBlue + 'aa',
   brandBlueLight: brandBlue + '14',
   brandBlueShadow: brandBlue + '44',
@@ -98,6 +100,7 @@ export const colors = {
 };
 
 const Table = {
+  parts: ['table', 'thead', 'tr', 'tbody', 'tfoot', 'td'],
   sizes: {
     md: {
       th: {

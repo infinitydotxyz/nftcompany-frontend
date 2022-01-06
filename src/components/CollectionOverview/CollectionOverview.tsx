@@ -57,7 +57,7 @@ function CollectionOverview(props: CollectionOverviewProps) {
           throw new Error('Not yet implemented');
         }}
       >
-        {props.hasBeenClaimed ? 'Claim collection' : 'Edit collection'}
+        {props.hasBeenClaimed ? 'Edit collection' : 'Claim collection'}
       </Button>
     </Box>
   );

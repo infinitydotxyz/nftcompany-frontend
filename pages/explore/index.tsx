@@ -43,9 +43,10 @@ export default function ExplorePage() {
   const Explore = (props: { listingSource: ListingSource }) => {
     const cardProvider = useCardProvider(props.listingSource, searchContext);
     const [collectionCards, setCollectionCards] = useState<CollectionCardEntry[]>([]);
+
     useEffect(() => {
       let isMounted = true;
-
+      console.log(cardProvider);
       if (isMounted) {
         const collCards = cardProvider.list.map((x) => {
           return {
