@@ -15,7 +15,7 @@ interface ExternalLinkCardProps {
 function ExternalLinkCard({ title, subtitle, link, linkText, ...rest }: ExternalLinkCardProps & ChakraProps) {
   const [isTooltipDisabled, setIsTooltipDisabled] = useState(true);
   const textRef = useRef<any>();
-  const maxWidth = 180;
+  const maxWidth = 160;
 
   React.useEffect(() => {
     if (textRef.current?.offsetWidth && textRef.current?.offsetWidth >= maxWidth) {
@@ -35,7 +35,7 @@ function ExternalLinkCard({ title, subtitle, link, linkText, ...rest }: External
       maxWidth={'300px'}
       {...rest}
     >
-      <Box display="flex" flexDirection="column" justifyContent="space-between">
+      <Box display="flex" flexDirection="column" justifyContent="space-between" flexBasis={0} flexGrow={2}>
         <Tooltip label={title} isDisabled={isTooltipDisabled} hasArrow>
           <Text ref={textRef} className={styles.titls} maxWidth={`${maxWidth}px`} isTruncated marginRight="16px">
             {title}
@@ -44,7 +44,9 @@ function ExternalLinkCard({ title, subtitle, link, linkText, ...rest }: External
         <p className={styles.subtitle}>{subtitle}</p>
       </Box>
       <Link _hover={{ textDecoration: 'none' }} href={link} target={'_blank'}>
-        <Button size="sm">{linkText}</Button>
+        <Button size="sm" flexBasis={0} flexGrow={1}>
+          {linkText}
+        </Button>
       </Link>
     </Box>
   );

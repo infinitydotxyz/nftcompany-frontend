@@ -1,4 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
+import { errorToast } from 'components/Toast/Toast';
+import { attempt } from 'lodash';
 import qs from 'query-string';
 import { API_BASE } from './constants';
 import { getAccount, getWeb3 } from './ethersUtil';
@@ -44,18 +46,20 @@ export async function deleteAuthHeaders() {
   // need to tell metamask? not fully working SNG
 }
 
-export async function getAuthHeaders() {
+export async function getAuthHeaders(attemptLogin: boolean = true) {
   // fetch auth signature and message from local storage
   const localStorage = window.localStorage;
   let sig = localStorage.getItem('X-AUTH-SIGNATURE') || '';
   const msg = localStorage.getItem('X-AUTH-MESSAGE') || loginMessage;
   // if they are empty, resign and store
-  if (!sig) {
+  if (!sig && attemptLogin) {
     console.log('No auth found, re logging in');
     const sign = await personalSignAsync(getWeb3(), msg, await getAccount());
     sig = JSON.stringify(sign);
     localStorage.setItem('X-AUTH-SIGNATURE', sig);
     localStorage.setItem('X-AUTH-MESSAGE', msg);
+  } else if (!sig && !attemptLogin) {
+    return {};
   }
   return {
     'X-AUTH-SIGNATURE': sig,
@@ -73,18 +77,29 @@ const catchError = (err: any) => {
   return { error: { message: typeof err === 'object' ? err?.message : err }, status: err?.response?.status };
 };
 
-export const apiGet = async (path: string, query?: any, options?: any) => {
+export const apiGet = async (path: string, query?: any, options?: any, attemptLogin?: boolean) => {
   const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
+    const isAuthenticated = path.indexOf('/u/') >= 0;
+
+    let authHeaders = {};
+    if (isAuthenticated) {
+      authHeaders = await getAuthHeaders(attemptLogin);
+    }
+
     const { data, status } = await axiosApi({
       url: path.startsWith('http') ? path : `${API_BASE}${path}${queryStr}`,
       method: 'GET',
-      headers: path.indexOf('/u/') >= 0 ? await getAuthHeaders() : {},
+      headers: authHeaders,
       ...options
     });
     return { result: data, status };
   } catch (err: any) {
     const { error, status } = catchError(err);
+    if (status === 401) {
+      errorToast('Please login');
+      return { error: new Error('User not logged in'), status };
+    }
     return { error, status };
   }
 };

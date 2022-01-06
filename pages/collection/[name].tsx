@@ -31,6 +31,7 @@ import ExternalLinkCard from 'components/ExternalLinkCard/ExternalLinkCard';
 import WithTitle from 'components/WithTitle/WithTitle';
 import { TwitterFeed } from 'components/TwitterFeed/TwitterFeed';
 import VoteCard from 'components/VoteCard/VoteCard';
+import CollectionCommunity from 'components/CollectionCommunity/CollectionCommunity';
 
 const testData = {
   benefits: ['Access', 'Royalties', 'IP rights'],
@@ -202,10 +203,12 @@ const Collection = (): JSX.Element => {
 
             <HorizontalLine />
 
-            <Box display={'flex'} flexDirection={'row'} marginTop="56px" justifyContent={'space-between'}>
+            <CollectionCommunity collectionInfo={collectionInfo} />
+
+            {/* <Box display={'flex'} flexDirection={'row'} marginTop="56px" justifyContent={'space-between'}>
               <Box display={'flex'} flexDirection={'row'}>
                 <WithTitle title="Twitter mentions">
-                  <Box maxHeight={'240'} overflowY="scroll">
+                  <Box maxHeight={'300'} overflowY="auto">
                     {collectionInfo?.twitterSnippet?.topMentions?.map((mention) => {
                       return (
                         <ExternalLinkCard
@@ -224,7 +227,7 @@ const Collection = (): JSX.Element => {
                 <Spacer width={'56px'} />
 
                 <WithTitle title="Partnerships">
-                  <Box maxHeight={'240'} overflowY="scroll">
+                  <Box maxHeight={'300'} overflowY="auto">
                     {testData.partnerships?.map((partnership) => {
                       return (
                         <ExternalLinkCard
@@ -248,7 +251,7 @@ const Collection = (): JSX.Element => {
                       width={500}
                       tweetIds={collectionInfo?.twitterSnippet?.recentTweets?.map((item) => item.tweetId)}
                       height="300px"
-                      overflowY="scroll"
+                      overflowY="auto"
                     />
                   </WithTitle>
                 </Box>
@@ -267,7 +270,7 @@ const Collection = (): JSX.Element => {
                   height="223px"
                 />
               </WithTitle>
-            </Box>
+            </Box> */}
           </Box>
         )}
       </div>
