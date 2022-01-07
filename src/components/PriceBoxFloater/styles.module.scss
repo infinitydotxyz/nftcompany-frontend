@@ -1,28 +1,20 @@
 .priceBox {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   flex-direction: column;
-
-  // keeps long prices from flowing outside the card bounds
-  overflow: hidden;
-
-  &.onRight {
-    align-items: flex-end;
-  }
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  padding: 0px 4px 3px 8px;
+  background-color: rgba(235, 235, 235, 0.9);
 
   .price {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #bbb;
-    border-radius: 8px;
     color: #333;
-    padding: 0px 10px 0px 10px;
     font-weight: 600;
-    flex-shrink: 0;
     min-width: 40px;
-    cursor: default;
-    font-size: 1rem;
+    line-height: 1;
 
     :global(body.chakra-ui-dark) & {
       color: #ddd;
@@ -30,14 +22,8 @@
     }
 
     svg {
-      margin-left: 4px;
-      margin-top: 1px;
+      margin-left: 2px;
+      margin-top: 3px;
     }
-  }
-
-  .expTime {
-    margin-top: 4px;
-    color: #aaa;
-    text-align: center;
   }
 }
