@@ -104,8 +104,8 @@ export const apiGet = async (path: string, query?: any, options?: any, doNotAtte
   } catch (err: any) {
     const { error, status } = catchError(err);
     if (status === 401) {
-      errorToast('Please login');
-      return { error: new Error('User not logged in'), status };
+      errorToast('Unauthorized');
+      return { error: new Error('Unauthorized'), status };
     }
     return { error, status };
   }

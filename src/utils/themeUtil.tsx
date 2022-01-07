@@ -213,6 +213,33 @@ const Button = {
   }
 };
 
+const Text = {
+  sizes: {
+    md: {
+      fontSize: '12px',
+      lineHeight: '14px'
+    },
+    lg: {
+      fontSize: '16px',
+      lineHeigt: '19px'
+    },
+    xl: {
+      fontSize: '24px',
+      lineHeigt: '29px'
+    },
+    '2xl': {
+      fontSize: '36px',
+      lineHeight: '44px'
+    }
+  },
+
+  variants: {
+    bold: {
+      fontWeight: 500
+    }
+  }
+};
+
 const Input = {
   baseStyle: (props: any) => {
     return {
@@ -296,6 +323,7 @@ export const theme = extendTheme(
       Table,
       Input,
       Link,
+      Text,
       Drawer: {
         variants: {
           // custom theme for Filter Drawer to allow scrolling/interaction on the main body.

@@ -61,9 +61,23 @@ export const getFeaturedCollections = async (): Promise<FeaturedCollectionRespon
   return result.collections;
 };
 
-export const getCollectionInfo = async (collectionName: string): Promise<CollectionInfo | undefined> => {
+export const getCollectionInfo = async (collectionName: string): Promise<CollectionData | undefined> => {
   const path = `/collections/${getSearchFriendlyString(collectionName)}`;
 
+  const { result, error }: { result: any; error: any } = (await apiGet(path)) as any;
+
+  if (error !== undefined) {
+    return;
+  }
+
+  return result as CollectionData;
+};
+
+export const getAuthenticatedCollectionInfo = async (
+  collectionAddress: string,
+  userAddress: string
+): Promise<CollectionData | undefined> => {
+  const path = `/collection/u/${userAddress}/${collectionAddress}`;
   const { result, error }: { result: any; error: any } = (await apiGet(path)) as any;
 
   if (error !== undefined) {

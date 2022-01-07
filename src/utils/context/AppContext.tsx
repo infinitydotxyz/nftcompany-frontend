@@ -52,7 +52,6 @@ export function AppContextProvider({ children }: any) {
   React.useEffect(() => {
     const windowProvider = getProvider();
     setProvider(windowProvider);
-    console.log(windowProvider);
     if (windowProvider) {
       signIn(windowProvider).catch((e) => {
         console.error(e);

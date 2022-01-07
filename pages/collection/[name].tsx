@@ -139,6 +139,7 @@ const Collection = (): JSX.Element => {
                   hasBeenClaimed={false} // TODO
                   creator={'ArtBlocks_Admin'}
                   description={collectionInfo?.description}
+                  collectionAddress={collectionInfo?.address ?? ''}
                 />
               </Box>
               <Spacer />

@@ -1,12 +1,14 @@
-import { Box, Image, Text, Button } from '@chakra-ui/react';
-
+import { Box, Image, Button } from '@chakra-ui/react';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import styles from './CollectionOverview.module.scss';
+import { useRouter } from 'next/router';
 interface CollectionOverviewProps {
   /**
    * name of the collection
    */
   collectionName: string;
+
+  collectionAddress: string;
 
   /**
    * whether the collection is verified
@@ -32,6 +34,7 @@ interface CollectionOverviewProps {
 }
 
 function CollectionOverview(props: CollectionOverviewProps) {
+  const router = useRouter();
   return (
     <Box display="flex" flexDirection="column">
       <Box display="flex" flexDirection="row" marginBottom="32px">
@@ -53,8 +56,8 @@ function CollectionOverview(props: CollectionOverviewProps) {
         paddingX="32px"
         width="max-content"
         fontSize="12px"
-        onClick={(e) => {
-          throw new Error('Not yet implemented');
+        onClick={() => {
+          router.push(`/collection/edit/${props.collectionAddress}`);
         }}
       >
         {props.hasBeenClaimed ? 'Edit collection' : 'Claim collection'}
