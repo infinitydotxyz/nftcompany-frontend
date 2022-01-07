@@ -164,38 +164,44 @@ export function AppContextProvider({ children }: any) {
     walletType?: WalletType
   ): Promise<void> => {
     setUserReady(false);
-    const selectedProvider = optionalProvider ?? getProvider();
-    if (selectedProvider) {
-      let account;
-      account = await getAccount(selectedProvider);
-      if (!account) {
-        // wallet locked, use this to open the wallet
-        const accounts = await selectedProvider.send('eth_requestAccounts');
-        account = accounts.result[0];
-      }
 
-      const res = await getAuthHeaders(selectedProvider);
-      const msg = res['X-AUTH-MESSAGE'];
-      const sig = res['X-AUTH-SIGNATURE'];
-      let signedAccount = '';
-      if (msg && sig) {
-        const parsed = JSON.parse(sig);
-        signedAccount = ethers.utils.verifyMessage(msg, parsed);
-      }
-      if (signedAccount !== account) {
-        await saveAuthHeaders(account, selectedProvider);
-      }
+    try {
+      const selectedProvider = optionalProvider ?? getProvider();
+      if (selectedProvider) {
+        let account;
+        account = await getAccount(selectedProvider);
+        if (!account) {
+          // wallet locked, use this to open the wallet
+          const accounts = await selectedProvider.send('eth_requestAccounts');
+          account = accounts.result[0];
+        }
 
-      const chainId = await getChainId(selectedProvider);
-      setUser({ account });
-      setChainId(chainId);
-      if (walletType) {
-        setPreferredWallet(walletType);
+        const res = await getAuthHeaders(selectedProvider);
+        const msg = res['X-AUTH-MESSAGE'];
+        const sig = res['X-AUTH-SIGNATURE'];
+        let signedAccount = '';
+        if (msg && sig) {
+          const parsed = JSON.parse(sig);
+          signedAccount = ethers.utils.verifyMessage(msg, parsed);
+        }
+        if (signedAccount !== account) {
+          await saveAuthHeaders(account, selectedProvider);
+        }
+
+        const chainId = await getChainId(selectedProvider);
+        setUser({ account });
+        setChainId(chainId);
+        if (walletType) {
+          setPreferredWallet(walletType);
+        }
       }
+      // views can avoid drawing until a login attempt was made to avoid a user=null and user='xx' refresh
+      setUserReady(true);
+    } catch (err) {
+      // views can avoid drawing until a login attempt was made to avoid a user=null and user='xx' refresh
+      setUserReady(true);
+      throw err;
     }
-
-    // views can avoid drawing until a login attempt was made to avoid a user=null and user='xx' refresh
-    setUserReady(true);
   };
 
   const signOut = async (): Promise<void> => {
