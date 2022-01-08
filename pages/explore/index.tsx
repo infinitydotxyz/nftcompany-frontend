@@ -104,7 +104,9 @@ export default function ExplorePage() {
       </Head>
 
       <div className={`${styles.main} page-wrapper`}>
-        {isFilterOpened && <div className="filter-placeholder"></div>}
+        <div className="filter-placeholder">
+          <FilterDrawer renderContent={true} onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
+        </div>
 
         <div className="page-container">
           {!searchMode && <FeaturedCollections />}
@@ -112,9 +114,9 @@ export default function ExplorePage() {
         </div>
       </div>
 
-      <div className="filter-panel-explore-page">
+      {/* <div className="filter-panel-explore-page">
         <FilterDrawer onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
-      </div>
+      </div> */}
     </>
   );
 }
