@@ -9,6 +9,7 @@ import {
   useMediaQuery,
   ButtonProps,
   Heading,
+  Text,
   IconButton,
   DrawerOverlay,
   Table,
@@ -139,41 +140,64 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
   const buttonProps3 = filterState.listType === LISTING_TYPE.ENGLISH_AUCTION ? activeButtonProps : normalButtonProps;
 
   const content = (
-    <>
-      <Heading size="sm" mb={4}>
-        Sale Type
-      </Heading>
-      <p />
-      <Button
-        {...buttonProps}
-        mr={4}
-        isActive={filterState.listType === LISTING_TYPE.FIXED_PRICE}
-        onClick={() => handleClickListType('fixedPrice')}
-      >
-        Fixed Price
-      </Button>
-      <Button
-        {...buttonProps2}
-        mr={4}
-        isActive={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
-        onClick={() => handleClickListType('dutchAuction')}
-      >
-        Declining Price
-      </Button>
-      <Button
-        {...buttonProps3}
-        mr={4}
-        mt={2}
-        isActive={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
-        onClick={() => handleClickListType('englishAuction')}
-      >
-        On Auction
-      </Button>
-
-      <Heading size="sm" mt={8} mb={4}>
-        Price (ETH)
-      </Heading>
-      <Box>
+    <div className={styles.main}>
+      <div className={styles.bottomBorder}>
+        <Text mb={4} mt={4}>
+          Sale Type
+        </Text>
+        <Button
+          {...buttonProps}
+          mr={4}
+          isActive={filterState.listType === LISTING_TYPE.FIXED_PRICE}
+          onClick={() => handleClickListType('fixedPrice')}
+        >
+          Fixed Price
+        </Button>
+        <Button
+          {...buttonProps2}
+          mr={4}
+          isActive={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
+          onClick={() => handleClickListType('dutchAuction')}
+        >
+          Declining Price
+        </Button>
+        <Button
+          {...buttonProps3}
+          mr={4}
+          mt={2}
+          isActive={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
+          onClick={() => handleClickListType('englishAuction')}
+        >
+          On Auction
+        </Button>
+      </div>
+      <div className={styles.bottomBorder}>
+        <Text mt={8} mb={4}>
+          Price (ETH)
+        </Text>
+        <div className={styles.price}>
+          <Input
+            className={styles.priceInput}
+            placeholder={'Min Price'}
+            value={minPriceVal}
+            onChange={(ev) => {
+              setMinPriceVal(ev.target.value);
+              filterState.priceMin = ev.target.value;
+            }}
+          />
+          <div className={styles.divider} />
+          <Input
+            className={styles.priceInput}
+            placeholder={'Max Price'}
+            value={maxPriceVal}
+            onChange={(ev) => {
+              setMaxPriceVal(ev.target.value);
+              filterState.priceMax = ev.target.value;
+            }}
+          />
+        </div>
+      </div>
+      {/* <Box>
         <Input
           variant="outline"
           placeholder={'Min Price'}
@@ -195,13 +219,13 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
             filterState.priceMax = ev.target.value;
           }}
         />
-      </Box>
+      </Box> */}
 
       {showCollection !== false ? (
         <>
-          <Heading size="sm" mt={8} mb={4}>
+          <Text mt={8} mb={4}>
             Collections
-          </Heading>
+          </Text>
           <Box>
             <CollectionNameFilter
               value={selectedCollectionIds}
@@ -308,7 +332,6 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
                           />
                         </Td>
                         <Td pl={0} pr={1} d={'flex'} border="none" mt={3}>
-                          {' '}
                           <SmallCloseIcon
                             className={styles.traitActionIcon}
                             onClick={() => {
@@ -322,7 +345,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
                                 }, 10);
                               }
                             }}
-                          />{' '}
+                          />
                           <SmallAddIcon
                             className={styles.traitActionIcon}
                             onClick={() => {
@@ -350,27 +373,29 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
           Clear
         </Button>
       </Box>
-    </>
+    </div>
   );
   if (renderContent === true) {
     return (
       <>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
+        {/* <Box display="flex" justifyContent="space-between" alignItems="center">
           {isOpen ? <Heading size="sm">Filter</Heading> : null}
 
           <IconButton aria-label="" variant="ghost" size="lg" colorScheme="gray" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <ArrowBackIcon /> : <ArrowForwardIcon />}
           </IconButton>
-        </Box>
+        </Box> */}
 
-        {isOpen ? content : null}
+        {/* {isOpen ? content : null} */}
+
+        {content}
       </>
     );
   }
 
   return (
     <>
-      <IconButton
+      {/* <IconButton
         aria-label=""
         position="fixed"
         size="lg"
@@ -380,7 +405,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
         onClick={() => setIsOpen(!isOpen)}
       >
         <ArrowForwardIcon />
-      </IconButton>
+      </IconButton> */}
 
       <Drawer
         isOpen={isOpen}
@@ -393,12 +418,12 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
         {/* <DrawerOverlay backgroundColor="rgba(0,0,0,0)" /> */}
 
         <DrawerContent shadow="lg" mt={headerPosition + 12}>
-          <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
+          {/* <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
             <Heading size="sm">Filter</Heading>
             <IconButton aria-label="" variant="ghost" size="lg" colorScheme="gray" onClick={() => setIsOpen(false)}>
               <ArrowBackIcon />
             </IconButton>
-          </DrawerHeader>
+          </DrawerHeader> */}
 
           <DrawerBody>{content}</DrawerBody>
         </DrawerContent>

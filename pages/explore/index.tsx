@@ -72,27 +72,34 @@ export default function ExplorePage() {
           <Spacer />
           <SortMenuButton disabled={!searchMode || props.listingSource === ListingSource.OpenSea} />
         </div>
-        <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
-        {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
+        <div className={styles.col}>
+          <div className={styles.col1}>
+            <FilterDrawer renderContent={true} onToggle={(isOpen) => setIsFilterOpened(true)} />
+          </div>
+          <div className={styles.col2}>
+            <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
+            {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
-        {searchMode ? (
-          <CardList
-            showItems={['PRICE']}
-            userAccount={user?.account}
-            data={cardProvider.list}
-            action={NftAction.BuyNft}
-          />
-        ) : (
-          <CardGrid data={collectionCards} />
-        )}
+            {searchMode ? (
+              <CardList
+                showItems={['PRICE']}
+                userAccount={user?.account}
+                data={cardProvider.list}
+                action={NftAction.BuyNft}
+              />
+            ) : (
+              <CardGrid data={collectionCards} />
+            )}
 
-        {cardProvider.hasData() && (
-          <ScrollLoader
-            onFetchMore={async () => {
-              cardProvider.loadNext();
-            }}
-          />
-        )}
+            {cardProvider.hasData() && (
+              <ScrollLoader
+                onFetchMore={async () => {
+                  cardProvider.loadNext();
+                }}
+              />
+            )}
+          </div>
+        </div>
       </>
     );
   };
@@ -104,19 +111,11 @@ export default function ExplorePage() {
       </Head>
 
       <div className={`${styles.main}`}>
-        <div className="filter-placeholder">
-          <FilterDrawer renderContent={true} onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
-        </div>
-
         <div className="page-container">
           {/* {!searchMode && <FeaturedCollections />} */}
           <Explore listingSource={ListingSource.Infinity} />
         </div>
       </div>
-
-      {/* <div className="filter-panel-explore-page">
-        <FilterDrawer onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
-      </div> */}
     </>
   );
 }

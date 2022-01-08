@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefaultColorScheme } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
+import { capitalize } from 'lodash';
 
 const brandColor = '#222';
 
@@ -90,6 +91,9 @@ const Table = {
     table: {
       // turned this off, it uses an ugly font
       fontVariantNumeric: 'none'
+    },
+    th: {
+      textTransform: capitalize
     }
   }
 };
@@ -140,10 +144,11 @@ const Button = {
       return {
         bg: '#fff',
         backgroundColor: '#fff',
-        border: '2px solid var(--chakra-colors-brandColor)',
+        border: '1px solid var(--chakra-colors-brandColor)',
         color: 'var(--chakra-colors-brandColor)',
         _hover: {
-          color: '#fff'
+          color: '#fff',
+          backgroundColor: 'var(--chakra-colors-brandColor)'
         }
       };
     },

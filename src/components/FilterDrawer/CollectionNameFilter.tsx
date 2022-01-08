@@ -130,7 +130,7 @@ export default function CollectionNameFilter({ value, onClear, onChange }: Colle
               <div className="m-auto w-1/2 mt-6">
                 <Input
                   ref={inputRef}
-                  placeholder="Search by name..."
+                  placeholder="Collection name"
                   className="w-full"
                   onKeyUp={async (ev) => {
                     if (ev.key === 'Enter') {

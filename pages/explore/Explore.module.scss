@@ -10,3 +10,16 @@
 .main {
   display: flex;
 }
+
+.col {
+  display: inline-flex;
+}
+
+.col1 {
+  width: 16%;
+  margin-right: 90px;
+}
+
+.col2 {
+  width: 80%;
+}
