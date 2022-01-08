@@ -6,16 +6,6 @@
     flex: 1;
     position: relative;
   }
-  & > div > input {
-    border-radius: 24px;
-    padding-bottom: 4px;
-    width: 100%;
-
-    border: 1px solid #ccc;
-    :global(body.chakra-ui-dark) & {
-      border: 1px solid #555;
-    }
-  }
 
   .clearButton {
     position: absolute;
@@ -26,6 +16,41 @@
     display: flex;
     align-items: center;
   }
+}
+
+.searchBox {
+  border-radius: 24px !important;
+  padding-bottom: 4px;
+  width: 100%;
+
+  border: 1px solid #ccc;
+  :global(body.chakra-ui-dark) & {
+    border: 1px solid #555;
+  }
+}
+
+.searchIcon {
+  color: var(--chakra-colors-brandColor);
+  margin-left: 10px;
+  margin-top: 1px;
+}
+
+.searchBox::-webkit-input-placeholder {
+  /* WebKit browsers */
+  font-size: 0.8em;
+  color: var(--chakra-colors-brandColor);
+}
+
+.searchBox:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  font-size: 0.8em;
+  color: var(--chakra-colors-brandColor);
+}
+
+.searchBox::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  font-size: 0.8em;
+  color: var(--chakra-colors-brandColor);
 }
 
 .dropPanel {
