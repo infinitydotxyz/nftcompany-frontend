@@ -44,13 +44,13 @@ type FProps = {
 
 export const IconViewButton = ({ disabled = false, tooltip, onClick, selected, icon }: FProps) => {
   return (
-    <div className={styles.shareIcon}>
+    <div>
       <Tooltip label={tooltip} placement="top" hasArrow>
         <IconButton
           disabled={disabled}
           size="md"
           variant="ghost"
-          color={selected ? 'blue' : 'gray'}
+          color={selected ? '#222' : 'lightgray'}
           aria-label="Open link"
           icon={icon}
           onClick={(e) => {

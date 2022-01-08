@@ -126,8 +126,8 @@ const Button = {
       bg: 'var(--chakra-colors-brandColor)',
       backgroundColor: 'var(--chakra-colors-brandColor)',
       _hover: {
-        bg: '#555',
-        backgroundColor: '#555'
+        bg: 'none',
+        backgroundColor: 'none'
       },
       _active: {
         bg: 'var(--chakra-colors-brandColor)',
