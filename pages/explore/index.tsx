@@ -103,7 +103,7 @@ export default function ExplorePage() {
         <title>Explore</title>
       </Head>
 
-      <div className={`${styles.main} page-wrapper`}>
+      <div className={`${styles.main}`}>
         <div className="filter-placeholder">
           <FilterDrawer renderContent={true} onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
         </div>
