@@ -225,6 +225,9 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  padding-top: 40px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgb(228, 228, 228);
 
   .left {
     display: flex;
