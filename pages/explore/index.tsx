@@ -20,9 +20,7 @@ import styles from './Explore.module.scss';
 
 export default function ExplorePage() {
   const searchContext = useSearchContext();
-  const [tabIndex, setTabIndex] = useState(0);
   const { user } = useAppContext();
-  const [isFilterOpened, setIsFilterOpened] = React.useState(false);
 
   const [searchMode, setSearchMode] = useState(false);
 
@@ -68,11 +66,6 @@ export default function ExplorePage() {
 
     return (
       <>
-        <div className="section-bar">
-          <div className="tg-title">Explore</div>
-          <Spacer />
-          <SortMenuButton disabled={!searchMode || props.listingSource === ListingSource.OpenSea} />
-        </div>
         <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
         {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
@@ -104,17 +97,25 @@ export default function ExplorePage() {
         <title>Explore</title>
       </Head>
 
-      <div className={`${styles.main} page-wrapper`}>
-        {isFilterOpened && <div className={styles.filterPlaceholder}></div>}
-
+      <div className={`${styles.main}`}>
         <div className="page-container">
-          {!searchMode && <FeaturedCollections />}
-          <Explore listingSource={ListingSource.Infinity} />
-        </div>
-      </div>
+          {/* {!searchMode && <FeaturedCollections />} */}
 
-      <div className="filter-panel-explore-page">
-        <FilterDrawer onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
+          <div className="section-bar">
+            <div className="tg-title">Explore</div>
+            <Spacer />
+            <SortMenuButton disabled={!searchMode} />
+          </div>
+
+          <div className={styles.col}>
+            <div className={styles.col1}>
+              <FilterDrawer renderContent={true} />
+            </div>
+            <div className={styles.col2}>
+              <Explore listingSource={ListingSource.Infinity} />
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

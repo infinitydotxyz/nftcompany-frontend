@@ -77,9 +77,9 @@ export const EthToken = (props: Record<string, unknown>): JSX.Element => (
 );
 
 export const WEthToken = (props: Record<string, unknown>): JSX.Element => (
-  <span style={{ color: '#DA3979' }}>
+  <div style={{ color: '#DA3979', display: 'flex' }}>
     <EthToken />
-  </span>
+  </div>
 );
 
 export const ImageIcon = (props: Record<string, unknown>): JSX.Element => (

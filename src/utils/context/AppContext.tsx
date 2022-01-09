@@ -57,6 +57,8 @@ export function AppContextProvider({ children }: any) {
         console.error(e);
         setPreferredWallet();
       });
+    } else {
+      setUserReady(true);
     }
   }, []);
 
@@ -164,7 +166,6 @@ export function AppContextProvider({ children }: any) {
     walletType?: WalletType
   ): Promise<void> => {
     setUserReady(false);
-
     try {
       const selectedProvider = optionalProvider ?? getProvider();
       if (selectedProvider) {

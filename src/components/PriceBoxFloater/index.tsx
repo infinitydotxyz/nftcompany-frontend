@@ -33,12 +33,6 @@ export const PriceBoxFloater = ({ justifyRight = false, price, expirationTime = 
       priceStr = newPrice.toString();
     }
 
-    const priceStyle = [styles.priceBox];
-
-    if (justifyRight) {
-      priceStyle.push(styles.onRight);
-    }
-
     const expDate = parseTimestampString(expirationTime, true);
     return (
       <Tooltip
@@ -54,7 +48,7 @@ export const PriceBoxFloater = ({ justifyRight = false, price, expirationTime = 
           </div>
         }
       >
-        <div className={priceStyle.join(' ')}>
+        <div className={styles.priceBox}>
           <div className={styles.price}>
             <Box>{priceStr}</Box> {token === 'ETH' ? <EthToken /> : <WEthToken />}
           </div>

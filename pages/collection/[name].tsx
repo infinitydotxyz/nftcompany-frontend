@@ -31,18 +31,6 @@ import CollectionCommunity from 'components/CollectionCommunity/CollectionCommun
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 
-// const testData = {
-//   benefits: ['Access', 'Royalties', 'IP rights'],
-//   partnerships: [
-//     { name: 'OpenSea', link: 'blah.com' },
-//     { name: 'Nike', link: 'blah.com' },
-//     { name: 'The Garrets', link: 'blah.com' },
-//     { name: 'Some Really long partner name that no one would ever use', link: 'blah.com' },
-//     { name: 'OpenSea2', link: 'blah.com' },
-//     { name: 'OpenSea3', link: 'blah.com' }
-//   ]
-// };
-
 const Collection = (): JSX.Element => {
   const [isFilterOpened, setIsFilterOpened] = React.useState(false);
   const [title, setTitle] = useState<string | undefined>();
@@ -206,121 +194,46 @@ const Collection = (): JSX.Element => {
               <CollectionCommunity collectionInfo={collectionInfo} display={!toggleState ? 'none' : ''} />
             )}
 
-            <Tabs align={'center'} display={toggleState ? 'none' : ''}>
-              <TabList>
-                <Tab>NFTs</Tab>
-                <Tab isDisabled={!address}>Activity</Tab>
-              </TabList>
-              <TabPanels>
-                <TabPanel>
-                  <CollectionContents
-                    name={name as string}
-                    onTitle={(newTitle) => {
-                      if (!title) {
-                        setTitle(newTitle);
-                      }
-                    }}
-                    onLoaded={({ address }) => setAddress(address)}
-                    listingSource={ListingSource.Infinity}
-                  />
-                </TabPanel>
-                <TabPanel>
-                  {address && (
-                    <CollectionEvents
-                      address={address}
-                      eventType="successful"
-                      activityType="sale"
-                      pageType="collection"
+            <Box className="center" display={toggleState ? 'none' : 'flex'}>
+              <Box width="16%" mr={4} mt={'40px'}>
+                <FilterDrawer renderContent={true} showCollection={false} />
+              </Box>
+              <Tabs align={'center'} display={toggleState ? 'none' : ''} width="82%">
+                <TabList>
+                  <Tab>NFTs</Tab>
+                  <Tab isDisabled={!address}>Activity</Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    <CollectionContents
+                      name={name as string}
+                      onTitle={(newTitle) => {
+                        if (!title) {
+                          setTitle(newTitle);
+                        }
+                      }}
+                      onLoaded={({ address }) => setAddress(address)}
+                      listingSource={ListingSource.Infinity}
                     />
-                  )}
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
+                  </TabPanel>
+                  <TabPanel>
+                    {address && (
+                      <CollectionEvents
+                        address={address}
+                        eventType="successful"
+                        activityType="sale"
+                        pageType="collection"
+                      />
+                    )}
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </Box>
           </Box>
         )}
       </div>
-
-      <div className="filter-panel-explore-page">
-        <FilterDrawer showCollection={false} onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
-      </div>
     </>
   );
-  // return (
-  //   <>
-  //     <Head>
-  //       <title>{title || name}</title>
-  //     </Head>
-  //     <div>
-  //       <div className="page-container">
-  //         <div className="section-bar">
-  //           <div className="tg-title">{title || name}</div>
-
-  //           <Spacer />
-
-  //           {tabIndex === 0 ? <SortMenuButton /> : <Box height={10}>&nbsp;</Box>}
-  //         </div>
-
-  //         <div className="center">
-  //           <Tabs onChange={(index) => setTabIndex(index)}>
-  //             <TabList className={styles.tabList}>
-  //               <Tab>NFTs</Tab>
-  //               <Tab isDisabled={!address}>Sales</Tab>
-  //               <Tab isDisabled={!address}>Transfers</Tab>
-  //               <Tab isDisabled={!address}>Offers</Tab>
-  //             </TabList>
-
-  //             <TabPanels>
-  //               <TabPanel>
-  //                 {name && tabIndex === 0 && (
-  //                   <CollectionContents
-  //                     name={name as string}
-  //                     onTitle={(newTitle) => {
-  //                       if (!title) {
-  //                         setTitle(newTitle);
-  //                       }
-  //                     }}
-  //                     onLoaded={({ address }) => setAddress(address)}
-  //                     listingSource={ListingSource.Infinity}
-  //                   />
-  //                 )}
-  //               </TabPanel>
-  //               <TabPanel>
-  //                 {tabIndex === 1 && (
-  //                   <CollectionEvents
-  //                     address={address}
-  //                     eventType="successful"
-  //                     activityType="sale"
-  //                     pageType="collection"
-  //                   />
-  //                 )}
-  //               </TabPanel>
-  //               <TabPanel>
-  //                 {tabIndex === 2 && (
-  //                   <CollectionEvents
-  //                     address={address}
-  //                     eventType="transfer"
-  //                     activityType="transfer"
-  //                     pageType="collection"
-  //                   />
-  //                 )}
-  //               </TabPanel>
-  //               <TabPanel>
-  //                 {tabIndex === 3 && (
-  //                   <CollectionEvents
-  //                     address={address}
-  //                     eventType="bid_entered"
-  //                     activityType="offer"
-  //                     pageType="collection"
-  //                   />
-  //                 )}
-  //               </TabPanel>
-  //             </TabPanels>
-  //           </Tabs>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </>
-  // );
 };
 
 // eslint-disable-next-line react/display-name

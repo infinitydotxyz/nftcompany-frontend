@@ -216,15 +216,19 @@
   }
 }
 
-.page-wrapper {
-  margin-top: 5rem;
-}
 .section-bar {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  padding-top: 40px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgb(228, 228, 228);
+
+  @media screen and (max-width: 500px) {
+    padding-top: 0px;
+  }
 
   .left {
     display: flex;
@@ -291,6 +295,15 @@
 }
 .can-click {
   cursor: pointer;
+}
+
+.filter-placeholder {
+  max-width: 300px;
+  padding-left: 20px;
+
+  // @media only screen and (min-width: 1000px) and (max-width: 1400px) {
+  //   width: 0; // for small screen: no placeholder width. Otherwise, the cards will look squeezed.
+  // }
 }
 
 .filter-panel-explore-page {
