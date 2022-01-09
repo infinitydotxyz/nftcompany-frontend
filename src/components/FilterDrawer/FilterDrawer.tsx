@@ -179,7 +179,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
           <Input
             className={styles.priceInput}
             placeholder={'Min Price'}
-            value={minPriceVal}
+            value={filterState.priceMin === `${DEFAULT_MIN_PRICE}` ? '' : filterState.priceMin}
             onChange={(ev) => {
               setMinPriceVal(ev.target.value);
               filterState.priceMin = ev.target.value;
@@ -189,7 +189,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
           <Input
             className={styles.priceInput}
             placeholder={'Max Price'}
-            value={maxPriceVal}
+            value={filterState.priceMax}
             onChange={(ev) => {
               setMaxPriceVal(ev.target.value);
               filterState.priceMax = ev.target.value;
@@ -197,29 +197,6 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
           />
         </div>
       </div>
-      {/* <Box>
-        <Input
-          variant="outline"
-          placeholder={'Min Price'}
-          width={120}
-          value={minPriceVal}
-          onChange={(ev) => {
-            setMinPriceVal(ev.target.value);
-            filterState.priceMin = ev.target.value;
-          }}
-        />
-        <Input
-          variant="outline"
-          ml={4}
-          placeholder={'Max Price'}
-          width={120}
-          value={maxPriceVal}
-          onChange={(ev) => {
-            setMaxPriceVal(ev.target.value);
-            filterState.priceMax = ev.target.value;
-          }}
-        />
-      </Box> */}
 
       {showCollection !== false ? (
         <>
