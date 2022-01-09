@@ -44,7 +44,6 @@ export default function ExplorePage() {
 
     useEffect(() => {
       let isMounted = true;
-      console.log(cardProvider);
       if (isMounted) {
         const collCards = cardProvider.list.map((x) => {
           return {
