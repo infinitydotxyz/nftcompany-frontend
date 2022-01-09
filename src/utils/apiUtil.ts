@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { Account } from 'ethereumjs-util';
+import { errorToast } from 'components/Toast/Toast';
 import { ethers } from 'ethers';
 import qs from 'query-string';
 import { API_BASE } from './constants';
@@ -47,14 +47,14 @@ export async function deleteAuthHeaders() {
   // need to tell metamask? not fully working SNG
 }
 
-export async function getAuthHeaders(provider?: ethers.providers.ExternalProvider) {
+export async function getAuthHeaders(provider?: ethers.providers.ExternalProvider, doNotAttemptLogin?: boolean) {
   // fetch auth signature and message from local storage
   const localStorage = window.localStorage;
   let sig = localStorage.getItem('X-AUTH-SIGNATURE') || '';
   const msg = localStorage.getItem('X-AUTH-MESSAGE') || loginMessage;
   // if they are empty, resign and store
   let account;
-  if (!sig) {
+  if (!sig && !doNotAttemptLogin) {
     console.log('No auth found, re logging in');
     const selectedProvider = provider ?? getProvider();
     const web3 = getWeb3(selectedProvider);
@@ -84,18 +84,29 @@ const catchError = (err: any) => {
   return { error: { message: typeof err === 'object' ? err?.message : err }, status: err?.response?.status };
 };
 
-export const apiGet = async (path: string, query?: any, options?: any) => {
+export const apiGet = async (path: string, query?: any, options?: any, doNotAttemptLogin?: boolean) => {
   const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
+    const requiresAuth = path.indexOf('/u/') >= 0;
+
+    let authHeaders = {};
+    if (requiresAuth) {
+      authHeaders = await getAuthHeaders(undefined, doNotAttemptLogin);
+    }
+
     const { data, status } = await axiosApi({
       url: path.startsWith('http') ? path : `${API_BASE}${path}${queryStr}`,
       method: 'GET',
-      headers: path.indexOf('/u/') >= 0 ? await getAuthHeaders() : {},
+      headers: authHeaders,
       ...options
     });
     return { result: data, status };
   } catch (err: any) {
     const { error, status } = catchError(err);
+    if (status === 401) {
+      errorToast('Unauthorized');
+      return { error: new Error('Unauthorized'), status };
+    }
     return { error, status };
   }
 };
@@ -109,9 +120,13 @@ export const apiPost = async (path: string, query?: any, payload?: any) => {
       headers: await getAuthHeaders(),
       data: payload
     });
+
     return { result: data, status };
   } catch (err: any) {
     const { error, status } = catchError(err);
+    if (status === 429) {
+      errorToast("You've been rate limited, please try again in a few minutes");
+    }
     return { error, status };
   }
 };
