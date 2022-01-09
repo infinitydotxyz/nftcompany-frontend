@@ -18,7 +18,8 @@ import {
   Td,
   Tbody,
   Thead,
-  Select
+  Select,
+  Checkbox
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon, SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
 import * as React from 'react';
@@ -131,30 +132,27 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
         </Text>
 
         <Box display="flex" flexDirection="column" gridGap={2}>
-          <label>
-            <input
-              type="checkbox"
-              checked={filterState.listType === LISTING_TYPE.FIXED_PRICE}
-              onClick={() => handleClickListType('fixedPrice')}
-            />{' '}
+          <Checkbox
+            colorScheme="blackAlpha"
+            isChecked={filterState.listType === LISTING_TYPE.FIXED_PRICE}
+            onChange={() => handleClickListType('fixedPrice')}
+          >
             Fixed Price
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
-              onClick={() => handleClickListType('dutchAuction')}
-            />{' '}
+          </Checkbox>
+          <Checkbox
+            colorScheme="blackAlpha"
+            isChecked={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
+            onChange={() => handleClickListType('dutchAuction')}
+          >
             Declining Price
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
-              onClick={() => handleClickListType('englishAuction')}
-            />{' '}
+          </Checkbox>
+          <Checkbox
+            colorScheme="blackAlpha"
+            isChecked={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
+            onChange={() => handleClickListType('englishAuction')}
+          >
             On Auction
-          </label>
+          </Checkbox>
         </Box>
       </div>
       <div className={styles.bottomBorder}>
