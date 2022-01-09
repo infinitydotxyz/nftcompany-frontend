@@ -78,20 +78,6 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
 
-  // useEffect(() => {
-  //   const showDrawer = localStorage.getItem('didShowDrawerFirstTime');
-
-  //   if (showDrawer !== 'true') {
-  //     setIsOpen(true);
-
-  //     localStorage.setItem('didShowDrawerFirstTime', 'true');
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   onToggle(isOpen);
-  // }, [isOpen]);
-
   const getNewFilterState = () => {
     updateTraitFilterState();
     const newFilter = { ...filterState };
@@ -137,41 +123,39 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
     filterState.traitValue = selectedTraits.map((o) => o.value).join(',');
   };
 
-  const buttonProps = filterState.listType === LISTING_TYPE.FIXED_PRICE ? activeButtonProps : normalButtonProps;
-  const buttonProps2 = filterState.listType === LISTING_TYPE.DUTCH_AUCTION ? activeButtonProps : normalButtonProps;
-  const buttonProps3 = filterState.listType === LISTING_TYPE.ENGLISH_AUCTION ? activeButtonProps : normalButtonProps;
-
   const content = (
     <div className={styles.main}>
       <div className={styles.bottomBorder}>
         <Text mb={4} mt={4}>
           Sale Type
         </Text>
-        <Button
-          {...buttonProps}
-          mr={4}
-          isActive={filterState.listType === LISTING_TYPE.FIXED_PRICE}
-          onClick={() => handleClickListType('fixedPrice')}
-        >
-          Fixed Price
-        </Button>
-        <Button
-          {...buttonProps2}
-          mr={4}
-          isActive={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
-          onClick={() => handleClickListType('dutchAuction')}
-        >
-          Declining Price
-        </Button>
-        <Button
-          {...buttonProps3}
-          mr={4}
-          mt={2}
-          isActive={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
-          onClick={() => handleClickListType('englishAuction')}
-        >
-          On Auction
-        </Button>
+
+        <Box display="flex" flexDirection="column" gridGap={2}>
+          <label>
+            <input
+              type="checkbox"
+              checked={filterState.listType === LISTING_TYPE.FIXED_PRICE}
+              onClick={() => handleClickListType('fixedPrice')}
+            />{' '}
+            Fixed Price
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
+              onClick={() => handleClickListType('dutchAuction')}
+            />{' '}
+            Declining Price
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
+              onClick={() => handleClickListType('englishAuction')}
+            />{' '}
+            On Auction
+          </label>
+        </Box>
       </div>
       <div className={styles.bottomBorder}>
         <Text mt={8} mb={4}>
