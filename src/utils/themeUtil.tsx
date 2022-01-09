@@ -189,10 +189,10 @@ const Input = {
           borderColor: '#aaa',
 
           _hover: {
-            border: '1px solid #aaa'
+            border: '1px thin #aaa'
           },
           _focus: {
-            borderColor: 'var(--chakra-colors-brandColor)',
+            border: '1px thin var(--chakra-colors-brandColor)',
             boxShadow: '0 0 0 1px var(--chakra-colors-brandColor)'
           }
         }
