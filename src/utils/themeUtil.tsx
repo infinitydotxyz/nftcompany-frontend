@@ -26,6 +26,7 @@ const hoverActionLight = '#E5E5E5';
 const inactiveActionLight = '#E5E5E5';
 const activeActionLight = '#000000';
 
+const lightText = '#6F6F6F';
 const mainFont =
   'Futura, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif';
 
@@ -169,6 +170,9 @@ const Button = {
     },
     md: (props: any) => {
       return { fontSize: '12px', lineHeight: '14px' };
+    },
+    lg: (props: any) => {
+      return { fontSize: '16px', lineHeight: '19px', paddingY: '22.5px', paddingX: '16px', minWidth: '157px' };
     }
   },
   variants: {
@@ -213,6 +217,38 @@ const Button = {
   }
 };
 
+const FormLabel = {
+  baseStyle: (props: any) => {
+    return {
+      color: '#000000',
+      fontStyle: 'normal',
+      fontWeight: 'normal'
+    };
+  },
+  sizes: {
+    md: {
+      fontSize: '12px',
+      lineHeight: '14px',
+      marginBottom: '16px'
+    },
+    lg: {
+      fontSize: '16px',
+      lineHeight: '19px',
+      marginBottom: '16px'
+    },
+    xl: {
+      fontSize: '24px',
+      lineHeight: '29px',
+      marginBottom: '16px'
+    },
+    '2xl': {
+      fontSize: '36px',
+      lineHeight: '44px',
+      marginBottom: '16px'
+    }
+  }
+};
+
 const Text = {
   sizes: {
     md: {
@@ -234,8 +270,25 @@ const Text = {
   },
 
   variants: {
-    bold: {
-      fontWeight: 500
+    bold: () => {
+      return {
+        fontWeight: 500
+      };
+    },
+    close: () => {
+      return { letterSpacing: '-1px' };
+    },
+    light: () => {
+      return {
+        fontFamily: 'Helvetica Neue',
+        color: '#6f6f6f'
+      };
+    },
+    dark: () => {
+      return {
+        lineHeight: '140%',
+        color: '#000000'
+      };
     }
   }
 };
@@ -266,6 +319,28 @@ const Input = {
         }
       };
     }
+  }
+};
+
+const Textarea = {
+  baseStyle: (props: any) => {
+    return {
+      paddingBottom: '4px', // align button text vertically for Futura font.
+      border: '1px solid',
+      borderColor: '#aaa',
+
+      _hover: {
+        border: '1px solid #aaa'
+      },
+      _focus: {
+        borderColor: 'var(--chakra-colors-brandColor)',
+        boxShadow: '0 0 0 1px var(--chakra-colors-brandColor)'
+      }
+    };
+  },
+  defaultProps: {
+    size: 'md',
+    variant: ''
   }
 };
 
@@ -322,8 +397,10 @@ export const theme = extendTheme(
       Button,
       Table,
       Input,
+      Textarea,
       Link,
       Text,
+      FormLabel,
       Drawer: {
         variants: {
           // custom theme for Filter Drawer to allow scrolling/interaction on the main body.

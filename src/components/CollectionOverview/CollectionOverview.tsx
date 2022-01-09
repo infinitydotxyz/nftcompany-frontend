@@ -1,6 +1,5 @@
-import { Box, Image, Button } from '@chakra-ui/react';
+import { Box, Image, Button, Text } from '@chakra-ui/react';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import styles from './CollectionOverview.module.scss';
 import { useRouter } from 'next/router';
 interface CollectionOverviewProps {
   /**
@@ -41,15 +40,23 @@ function CollectionOverview(props: CollectionOverviewProps) {
         <Image src={props.profileImage} alt="" maxHeight="78px" marginRight="40px" />
         <Box display="flex" flexDirection="column" justifyContent={'space-between'}>
           <Box display="flex" flexDirection={'row'} alignItems={'center'}>
-            <p className={styles.title}>{props.collectionName}</p>
+            <Text size="2xl" variant="close">
+              {props.collectionName}
+            </Text>
             <div style={{ paddingLeft: '16px', verticalAlign: 'middle' }}>
               <BlueCheckIcon hasBlueCheck={props.hasBlueCheck === true} large />
             </div>
           </Box>
-          {props.creator && <p className={styles.subtitle}>Created by: {props.creator}</p>}
+          {props.creator && (
+            <Text size="lg" variant="light">
+              Created By: {props.creator}
+            </Text>
+          )}
         </Box>
       </Box>
-      <p className={styles.description}>{props.description}</p>
+      <Text size={'lg'} variant="dark" marginBottom={'40px'}>
+        {props.description}
+      </Text>
       <Button
         variant={'alt'}
         paddingY="16px"

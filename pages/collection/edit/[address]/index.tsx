@@ -1,12 +1,15 @@
-import { Box } from '@chakra-ui/layout';
-import { Text, useDisclosure, Image, Button } from '@chakra-ui/react';
+import { Box, SimpleGrid, Spacer } from '@chakra-ui/layout';
+import { Text, useDisclosure, Image, Button, Input, FormLabel, Textarea } from '@chakra-ui/react';
+import EditCollectionForm from 'components/EditCollectionForm/EditCollectionForm';
 import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import UnauthorizedModal from 'components/UnauthorizedModal/UnauthorizedModal';
 import Layout from 'containers/layout';
+import { reject } from 'lodash';
 import { NextPage } from 'next';
+import { resolveHref } from 'next/dist/shared/lib/router/router';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import { CollectionData, getAuthenticatedCollectionInfo, getCollectionInfo } from 'services/Collections.service';
 import { renderSpinner } from 'utils/commonUtil';
 import { useAppContext } from 'utils/context/AppContext';
@@ -16,17 +19,25 @@ const Edit = (): JSX.Element => {
   const { address } = router.query;
   const [title, setTitle] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(false);
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, userReady } = useAppContext();
   const [isAuthorized, setIsAuthorized] = useState(true);
 
+  const [profileImage, setProfileImage] = useState('');
+
   const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
+
+  useEffect(() => {
+    setProfileImage(collectionInfo?.profileImage ?? '');
+  }, [collectionInfo?.profileImage]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleClose = () => {
+    // return to the previous page on close
     router.back();
     onClose();
   };
+
   useEffect(() => {
     if (!isAuthorized) {
       onOpen();
@@ -54,7 +65,7 @@ const Edit = (): JSX.Element => {
         .finally(() => {
           setIsLoading(false);
         });
-    } else {
+    } else if (userReady) {
       setIsAuthorized(false);
       setIsLoading(false);
     }
@@ -62,7 +73,7 @@ const Edit = (): JSX.Element => {
     return () => {
       isActive = false;
     };
-  }, [address, user?.account]);
+  }, [address, user?.account, userReady]);
 
   return (
     <>
@@ -75,39 +86,7 @@ const Edit = (): JSX.Element => {
             <div>{renderSpinner()}</div>
           </Box>
         ) : (
-          <Box
-            display="flex"
-            flexDirection={'column'}
-            justifyContent={'center'}
-            alignItems={'flex-start'}
-            maxWidth={'750px'}
-            margin="auto"
-          >
-            <Box display="flex" flexDirection={'row'} justifyContent={'center'} alignItems={'center'}>
-              <Image
-                alt="collection profile image"
-                src={collectionInfo?.profileImage}
-                height={'104px'}
-                marginRight={'48px'}
-              />
-              <Box display="flex" flexDirection={'row'} minWidth={'300px'}>
-                <Button marginRight={'16px'} flexBasis={0} flexGrow={1}>
-                  Upload new picture
-                </Button>
-                <Button variant={'alt'} flexBasis={0} flexGrow={1}>
-                  Delete
-                </Button>
-              </Box>
-            </Box>
-
-            <HorizontalLine marginY="72px" />
-
-            <Box>
-              <Text size="xl" variant="bold">
-                Edit Collection
-              </Text>
-            </Box>
-          </Box>
+          <EditCollectionForm collectionInfo={collectionInfo} />
         )}
       </div>
       <UnauthorizedModal

@@ -47,7 +47,6 @@ const Collection = (): JSX.Element => {
   const [isFilterOpened, setIsFilterOpened] = React.useState(false);
   const [title, setTitle] = useState<string | undefined>();
   const [address, setAddress] = useState('');
-  const [tabIndex, setTabIndex] = useState(0);
   const router = useRouter();
   const { name } = router.query;
 
