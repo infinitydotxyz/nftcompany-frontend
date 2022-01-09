@@ -64,11 +64,13 @@ interface Props {
 const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
   const { showAppError, headerPosition } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
-  const [minPriceVal, setMinPriceVal] = React.useState('');
-  const [maxPriceVal, setMaxPriceVal] = React.useState('');
+  const [minPriceVal, setMinPriceVal] = React.useState(
+    filterState.priceMin === `${DEFAULT_MIN_PRICE}` ? '' : filterState.priceMin
+  );
+  const [maxPriceVal, setMaxPriceVal] = React.useState(filterState.priceMax);
   const [collectionName, setCollectionName] = React.useState('');
   const [collectionAddress, setCollectionAddress] = React.useState('');
-  const [selectedCollectionIds, setSelectedCollectionIds] = React.useState('');
+  const [selectedCollectionIds, setSelectedCollectionIds] = React.useState(filterState.collectionIds);
   const [traits, setTraits] = React.useState<Trait[]>([]);
   const [selectedTraitType, setSelectedTraitType] = React.useState<Trait | undefined>(undefined);
   const [selectedTraits, setSelectedTraits] = React.useState<any[]>([EmptyTrait]);
@@ -179,7 +181,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
           <Input
             className={styles.priceInput}
             placeholder={'Min Price'}
-            value={filterState.priceMin === `${DEFAULT_MIN_PRICE}` ? '' : filterState.priceMin}
+            value={minPriceVal}
             onChange={(ev) => {
               setMinPriceVal(ev.target.value);
               filterState.priceMin = ev.target.value;
@@ -189,7 +191,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
           <Input
             className={styles.priceInput}
             placeholder={'Max Price'}
-            value={filterState.priceMax}
+            value={maxPriceVal}
             onChange={(ev) => {
               setMaxPriceVal(ev.target.value);
               filterState.priceMax = ev.target.value;
