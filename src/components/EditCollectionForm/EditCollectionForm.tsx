@@ -6,8 +6,8 @@ import { Button } from '@chakra-ui/button';
 import { Box, SimpleGrid, Text } from '@chakra-ui/layout';
 import { FormLabel, Input, Textarea, Image } from '@chakra-ui/react';
 import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
-import { reject } from 'lodash';
-import Collection from '../../../pages/collection/[name]';
+import { FaImage } from 'react-icons/fa';
+import { apiPost } from 'utils/apiUtil';
 
 enum CollectionFormField {
   ProfileImage = 'profileImage',
@@ -72,6 +72,30 @@ interface CollectionFormData {
   [CollectionFormField.Partnerships]: NameAndLinkInputs;
 }
 
+interface FormBody {
+  profileImage: {
+    /**
+     * file is passed through req.files.profileImage
+     */
+    /**
+     * whether the image was deleted
+     */
+    isDeleted: boolean;
+  };
+  name: string;
+  description: string;
+  twitter: string;
+  discord: string;
+  instagram: string;
+  facebook: string;
+  external: string;
+  medium: string;
+  wiki: string;
+  telegram: string;
+  benefits: string[];
+  partnerships: Array<{ name: string; link: string }>;
+}
+
 const InputGroupWrapper = (props: { title?: string; children: ReactNode }) => {
   return (
     <Box
@@ -106,22 +130,105 @@ const InputWithLabel = (props: {
   placeholder: string;
   value: string;
   name: string;
+  datakey?: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
     <Box display="flex" flexDirection={'column'} width="100%" key={props.name}>
       <FormLabel size="lg">{props.title}</FormLabel>
-      <Input placeholder={props.placeholder} value={props.value} name={props.name} onChange={props.onChange} />
+      <Input
+        placeholder={props.placeholder}
+        value={props.value}
+        name={props.name}
+        onChange={props.onChange}
+        datakey={props.datakey}
+      />
     </Box>
   );
 };
 
-const EditCollectionForm: FC<{ collectionInfo?: CollectionData }> = ({ collectionInfo }): JSX.Element => {
+const EditCollectionForm: FC<{ collectionInfo?: CollectionData; userAddress?: string }> = ({
+  collectionInfo,
+  userAddress
+}): JSX.Element => {
   const [formData, setFormData] = useState<CollectionFormData>({} as any);
   const inputFileRef = useRef<any>();
-  const { showAppError } = useAppContext();
+  const { showAppError, showAppMessage } = useAppContext();
+
+  const postForm = async () => {
+    try {
+      const form = new FormData();
+      const profileImageFile = formData[CollectionFormField.ProfileImage].value;
+      if (profileImageFile) {
+        form.append('profileImage', profileImageFile);
+      }
+
+      if (userAddress && collectionInfo?.address) {
+        const update: FormBody = {
+          profileImage: {
+            isDeleted: formData[CollectionFormField.ProfileImage].isDeleted
+          },
+          name: formData[CollectionFormField.Name].value,
+          description: formData[CollectionFormField.Description].value,
+          twitter: formData[CollectionFormField.Twitter].value,
+          discord: formData[CollectionFormField.Discord].value,
+          instagram: formData[CollectionFormField.Instagram].value,
+          facebook: formData[CollectionFormField.Facebook].value,
+          external: formData[CollectionFormField.External].value,
+          medium: formData[CollectionFormField.Medium].value,
+          wiki: formData[CollectionFormField.Wiki].value,
+          telegram: formData[CollectionFormField.Telegram].value,
+          benefits: Object.values(formData[CollectionFormField.Benefits].value ?? {})
+            .map((item) => item.value)
+            .filter((item) => item),
+          partnerships: Object.values(formData[CollectionFormField.Partnerships].value ?? {}).filter(
+            (item) => item.name && item.link
+          )
+        };
+        form.append('data', JSON.stringify(update));
+        const res = await apiPost(`/collection/u/${userAddress}/${collectionInfo?.address}`, undefined, form);
+        if (res.error) {
+          throw res.error;
+        } else if (res.status === 201 || res.status === 200) {
+          showAppMessage('Collection updated!');
+        } else {
+          throw new Error(`Unknown error ${res.status}`);
+        }
+      } else if (!userAddress) {
+        throw new Error('Please login');
+      } else if (!collectionInfo?.address) {
+        throw new Error('Invalid contract address. Please refresh the page');
+      }
+    } catch (err: any) {
+      console.error(err);
+      if (err.message) {
+        showAppError(`Failed to update collection: ${err.message}`);
+      } else {
+        showAppError(`Failed to update collection`);
+      }
+    }
+  };
 
   const getFormDataFromCollectionInfo = (collectionInfo?: CollectionData) => {
+    let partnerships = (collectionInfo?.partnerships ?? [])?.reduce(
+      (acc: { [id: string]: { name: string; link: string } }, item) => {
+        return { ...acc, [uniqueId()]: item };
+      },
+      {}
+    );
+
+    while (Object.keys(partnerships).length < 4) {
+      partnerships = { ...partnerships, ...getEmptyNameAndLinkInput() };
+    }
+
+    let benefits = (collectionInfo?.benefits ?? [])?.reduce((acc: { [id: string]: { value: string } }, item) => {
+      return { ...acc, [uniqueId()]: { value: item } };
+    }, {});
+
+    while (Object.keys(benefits).length < 3) {
+      benefits = { ...benefits, ...getEmptyMultipleTextInput() };
+    }
+
     const formData: CollectionFormData = {
       [CollectionFormField.ProfileImage]: {
         type: InputType.Image,
@@ -147,8 +254,7 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData }> = ({ collectio
       },
       [CollectionFormField.Facebook]: {
         type: InputType.Text,
-        // value: collectionInfo?.links?.facebook ?? "",
-        value: '' // TODO
+        value: collectionInfo?.links?.facebook ?? ''
       },
       [CollectionFormField.Discord]: {
         type: InputType.Text,
@@ -172,37 +278,11 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData }> = ({ collectio
       },
       [CollectionFormField.Benefits]: {
         type: InputType.ArrayOfText,
-        // value: collectionInfo?.benefits
-        value: {
-          blasdhf: {
-            value: 'Access'
-          },
-          blasdhf1: {
-            value: 'Royalties'
-          },
-          blasdhf2: {
-            value: 'IP rights'
-          }
-        } // TODO
+        value: benefits
       },
       [CollectionFormField.Partnerships]: {
         type: InputType.NameAndLinkArray,
-        // value: collectionInfo?.partnerships
-        value: {
-          asdf: {
-            name: 'OpenSea',
-            link: 'https://opensea.io'
-          },
-          asdf1: {
-            name: 'Nikes',
-            link: 'https://nike.com'
-          },
-          asdf2: {
-            name: 'The Garrets',
-            link: 'https://opensea.io'
-          }
-        } // TODO
-        // value: collectionInfo?.partnerships?.reduce((acc, item) =>  return { ...acc, [uniqueId()]: {value: item}} , {}); // something like this
+        value: partnerships
       }
     };
 
@@ -248,13 +328,19 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData }> = ({ collectio
     });
   };
 
-  const addEmptyNameAndLinkThunked = (name: CollectionFormField) => () => {
+  const getEmptyNameAndLinkInput = () => {
     const emptyNameAndLink: NameAndLinkInput = {
       name: '',
       link: ''
     };
-    const id = uniqueId();
 
+    return {
+      [uniqueId()]: emptyNameAndLink
+    };
+  };
+
+  const addEmptyNameAndLinkThunked = (name: CollectionFormField) => () => {
+    const emptyState = getEmptyNameAndLinkInput();
     setFormData((prev) => {
       return {
         ...prev,
@@ -262,7 +348,33 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData }> = ({ collectio
           ...prev[name],
           value: {
             ...((prev[name] as NameAndLinkInputs)?.value ?? {}),
-            [id]: emptyNameAndLink
+            ...emptyState
+          }
+        }
+      };
+    });
+  };
+
+  const getEmptyMultipleTextInput = () => {
+    const emptyText = {
+      value: ''
+    };
+    return {
+      [uniqueId()]: emptyText
+    };
+  };
+
+  const addEmptyMultipleTextThunked = (name: CollectionFormField) => () => {
+    const emptyState = getEmptyMultipleTextInput();
+
+    setFormData((prev) => {
+      return {
+        ...prev,
+        [name]: {
+          ...prev[name],
+          value: {
+            ...((prev[name] as MultipleTextInputs)?.value ?? {}),
+            ...emptyState
           }
         }
       };
@@ -317,7 +429,11 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData }> = ({ collectio
           return {
             ...prev,
             [name]: {
-              [id]: { value }
+              ...prev[name],
+              value: {
+                ...((prev[name] as MultipleTextInputs)?.value ?? {}),
+                [id]: { value }
+              }
             }
           };
         });
@@ -351,12 +467,18 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData }> = ({ collectio
       <Box display="flex" flexDirection={'column'} justifyContent={'center'} alignItems={'center'} margin="auto">
         <InputGroupWrapper>
           <Box display="flex" flexDirection={'row'} alignItems={'center'}>
-            <Image
-              alt="collection profile image"
-              src={formData[CollectionFormField.ProfileImage]?.src ?? ''}
-              height={'104px'}
-              marginRight={'48px'}
-            />
+            {formData[CollectionFormField.ProfileImage]?.src ? (
+              <Image
+                alt="collection profile image"
+                src={formData[CollectionFormField.ProfileImage]?.src ?? ''}
+                height={'104px'}
+                marginRight={'48px'}
+              />
+            ) : (
+              <Box width="104px" height={'104px'} marginRight={'48px'}>
+                <FaImage size="104px" />
+              </Box>
+            )}
             <Box display="flex" flexDirection={'row'} minWidth={'300px'}>
               <Button
                 marginRight={'16px'}
@@ -418,9 +540,13 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData }> = ({ collectio
           <SimpleGrid spacingY="32px" columns={2} spacingX={'32px'} width="100%">
             {[
               { title: 'Twitter', placeholder: 'Twitter link', name: CollectionFormField.Twitter },
+              { title: 'Discord', placeholder: 'Discord link', name: CollectionFormField.Discord },
+              { title: 'External', placeholder: 'External link', name: CollectionFormField.External },
+              { title: 'Medium', placeholder: 'Medium link', name: CollectionFormField.Medium },
               { title: 'Instagram', placeholder: 'Instagram link', name: CollectionFormField.Instagram },
               { title: 'Facebook', placeholder: 'Facebook link', name: CollectionFormField.Facebook },
-              { title: 'Discord', placeholder: 'Discord link', name: CollectionFormField.Discord }
+              { title: 'Telegram', placeholder: 'Telegram link', name: CollectionFormField.Telegram },
+              { title: 'Wiki', placeholder: 'Wiki link', name: CollectionFormField.Wiki }
             ].map((item) => {
               return (
                 <InputWithLabel
@@ -443,6 +569,7 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData }> = ({ collectio
               return (
                 <InputWithLabel
                   key={key}
+                  datakey={key}
                   title={`Benefit`}
                   placeholder={`Benefit ${index + 1}`}
                   name={CollectionFormField.Benefits}
@@ -457,32 +584,30 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData }> = ({ collectio
 
         <InputGroupWrapper title={'Partnerships'}>
           <SimpleGrid spacingY="32px" columns={2} spacingX={'32px'} width="100%" marginBottom={'32px'}>
-            {Object.entries(formData[CollectionFormField.Partnerships]?.value ?? {})
-              .reverse()
-              .map(([key, value]) => {
-                return (
-                  <Box display="flex" flexDirection={'column'} width="100%" key={key}>
-                    <FormLabel size="lg">Partner</FormLabel>
-                    <Input
-                      placeholder={'Partner name'}
-                      value={value?.name ?? ''}
-                      name={CollectionFormField.Partnerships}
-                      onChange={onChangeHandler}
-                      marginBottom={'16px'}
-                      datakey={key}
-                      dataproperty={'name'}
-                    />
-                    <Input
-                      placeholder={'Partnership website link'}
-                      value={value?.link ?? ''}
-                      name={CollectionFormField.Partnerships}
-                      onChange={onChangeHandler}
-                      datakey={key}
-                      dataproperty={'link'}
-                    />
-                  </Box>
-                );
-              })}
+            {Object.entries(formData[CollectionFormField.Partnerships]?.value ?? {}).map(([key, value]) => {
+              return (
+                <Box display="flex" flexDirection={'column'} width="100%" key={key}>
+                  <FormLabel size="lg">Partner</FormLabel>
+                  <Input
+                    placeholder={'Partner name'}
+                    value={value?.name ?? ''}
+                    name={CollectionFormField.Partnerships}
+                    onChange={onChangeHandler}
+                    marginBottom={'16px'}
+                    datakey={key}
+                    dataproperty={'name'}
+                  />
+                  <Input
+                    placeholder={'Partnership website link'}
+                    value={value?.link ?? ''}
+                    name={CollectionFormField.Partnerships}
+                    onChange={onChangeHandler}
+                    datakey={key}
+                    dataproperty={'link'}
+                  />
+                </Box>
+              );
+            })}
           </SimpleGrid>
           <Button variant={'alt'} size="lg" onClick={addEmptyNameAndLinkThunked(CollectionFormField.Partnerships)}>
             Add more partnerships
@@ -508,7 +633,7 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData }> = ({ collectio
             <Button
               size="lg"
               onClick={() => {
-                throw new Error('not yet implemented');
+                postForm();
               }}
             >
               Save

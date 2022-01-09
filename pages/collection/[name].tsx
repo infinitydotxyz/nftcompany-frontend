@@ -31,17 +31,17 @@ import CollectionCommunity from 'components/CollectionCommunity/CollectionCommun
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
 
-const testData = {
-  benefits: ['Access', 'Royalties', 'IP rights'],
-  partnerships: [
-    { name: 'OpenSea', link: 'blah.com' },
-    { name: 'Nike', link: 'blah.com' },
-    { name: 'The Garrets', link: 'blah.com' },
-    { name: 'Some Really long partner name that no one would ever use', link: 'blah.com' },
-    { name: 'OpenSea2', link: 'blah.com' },
-    { name: 'OpenSea3', link: 'blah.com' }
-  ]
-};
+// const testData = {
+//   benefits: ['Access', 'Royalties', 'IP rights'],
+//   partnerships: [
+//     { name: 'OpenSea', link: 'blah.com' },
+//     { name: 'Nike', link: 'blah.com' },
+//     { name: 'The Garrets', link: 'blah.com' },
+//     { name: 'Some Really long partner name that no one would ever use', link: 'blah.com' },
+//     { name: 'OpenSea2', link: 'blah.com' },
+//     { name: 'OpenSea3', link: 'blah.com' }
+//   ]
+// };
 
 const Collection = (): JSX.Element => {
   const [isFilterOpened, setIsFilterOpened] = React.useState(false);
@@ -135,7 +135,7 @@ const Collection = (): JSX.Element => {
                   collectionName={collectionInfo?.name ?? ''}
                   hasBlueCheck={collectionInfo?.hasBlueCheck ?? false}
                   profileImage={collectionInfo?.profileImage ?? ''}
-                  hasBeenClaimed={false} // TODO
+                  hasBeenClaimed={collectionInfo?.isClaimed ?? false}
                   creator={'ArtBlocks_Admin'}
                   description={collectionInfo?.description}
                   collectionAddress={collectionInfo?.address ?? ''}
@@ -150,10 +150,10 @@ const Collection = (): JSX.Element => {
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
                 )}
-                {testData?.benefits && (
+                {collectionInfo?.benefits && collectionInfo?.benefits?.length > 0 && (
                   <CollectionInfoGroupWrapper>
                     <InfoGroup title="Benfits of holding the NFTs" minChildWidth="100px" maxChildWidth="100px">
-                      <CollectionBenefits benefits={testData.benefits} />
+                      <CollectionBenefits benefits={collectionInfo.benefits} />
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
                 )}

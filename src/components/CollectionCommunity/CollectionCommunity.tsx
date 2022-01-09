@@ -14,18 +14,6 @@ interface CollectionCommunityProps {
   collectionInfo?: CollectionData;
 }
 
-const testData = {
-  benefits: ['Access', 'Royalties', 'IP rights'],
-  partnerships: [
-    { name: 'OpenSea', link: 'blah.com' },
-    { name: 'Nike', link: 'blah.com' },
-    { name: 'The Garrets', link: 'blah.com' },
-    { name: 'Some Really long partner name that no one would ever use', link: 'blah.com' },
-    { name: 'OpenSea2', link: 'blah.com' },
-    { name: 'OpenSea3', link: 'blah.com' }
-  ]
-};
-
 function CollectionCommunity({ collectionInfo, ...rest }: CollectionCommunityProps & ChakraProps) {
   const { user, showAppError } = useAppContext();
   const twitterFeedContainerRef = useRef<any>();
@@ -122,7 +110,7 @@ function CollectionCommunity({ collectionInfo, ...rest }: CollectionCommunityPro
 
           <WithTitle title="Partnerships">
             <Box maxHeight={'300'} overflowY="auto">
-              {testData.partnerships?.map((partnership) => {
+              {collectionInfo?.partnerships?.map((partnership) => {
                 return (
                   <ExternalLinkCard
                     key={partnership.name}

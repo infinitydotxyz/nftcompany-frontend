@@ -110,22 +110,36 @@ export const getHistoricalDiscordData = async (collectionAddress: string) => {
 export type CollectionData = CollectionInfo & { links?: CollectionLinks; stats?: CollectionStats };
 
 export interface CollectionInfo {
+  isClaimed?: boolean;
+
   chain: 'Ethereum' | string;
+
   searchCollectionName: string;
+
   description: string;
+
   bannerImage: string;
+
   profileImage: string;
+
   traits: WyvernTraitWithValues[];
+
   hasBlueCheck: boolean;
+
   address: string;
+
   name: string;
+
   cardImage: string;
+
   openseaUrl: string;
+
   chainId: '1' | string;
-  /**
-   * link to the collections twitter
-   */
-  twitter?: string;
+
+  benefits?: string[];
+
+  partnerships?: Array<{ name: string; link: string }>;
+
   twitterSnippet?: TwitterSnippet;
 
   discordSnippet?: DiscordSnippet;
@@ -229,6 +243,7 @@ export interface CollectionLinks {
   telegram?: string;
   instagram?: string;
   wiki?: string;
+  facebook?: string;
 }
 
 export interface InfinityTwitterAccount {

@@ -86,7 +86,7 @@ const Edit = (): JSX.Element => {
             <div>{renderSpinner()}</div>
           </Box>
         ) : (
-          <EditCollectionForm collectionInfo={collectionInfo} />
+          <EditCollectionForm collectionInfo={collectionInfo} userAddress={user?.account} />
         )}
       </div>
       <UnauthorizedModal
