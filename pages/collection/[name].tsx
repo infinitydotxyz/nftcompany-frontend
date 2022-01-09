@@ -42,8 +42,12 @@ const Collection = (): JSX.Element => {
             {tabIndex === 0 ? <SortMenuButton /> : <Box height={10}>&nbsp;</Box>}
           </div>
 
-          <div className="center">
-            <Tabs onChange={(index) => setTabIndex(index)}>
+          <Box display="flex" className="center">
+            <Box width="16%" mr={4}>
+              <FilterDrawer renderContent={true} showCollection={false} />
+            </Box>
+
+            <Tabs onChange={(index) => setTabIndex(index)} style={{ width: '82%' }}>
               <TabList className={styles.tabList}>
                 <Tab>NFTs</Tab>
                 <Tab isDisabled={!address}>Sales</Tab>
@@ -98,12 +102,8 @@ const Collection = (): JSX.Element => {
                 </TabPanel>
               </TabPanels>
             </Tabs>
-          </div>
+          </Box>
         </div>
-      </div>
-
-      <div className="filter-panel-explore-page">
-        <FilterDrawer showCollection={false} onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
       </div>
     </>
   );

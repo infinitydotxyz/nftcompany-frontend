@@ -9,6 +9,7 @@ import {
   useMediaQuery,
   ButtonProps,
   Heading,
+  Text,
   IconButton,
   DrawerOverlay,
   Table,
@@ -17,7 +18,8 @@ import {
   Td,
   Tbody,
   Thead,
-  Select
+  Select,
+  Checkbox
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon, SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
 import * as React from 'react';
@@ -55,15 +57,18 @@ type Trait = {
 const EmptyTrait = { type: '', value: '', traitData: undefined };
 
 interface Props {
-  onToggle: (isOpen: boolean) => void;
+  onToggle?: (isOpen: boolean) => void;
   showCollection?: boolean;
+  renderContent?: boolean;
 }
 
-const FilterDrawer = ({ onToggle, showCollection }: Props) => {
+const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
   const { showAppError, headerPosition } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
-  const [minPriceVal, setMinPriceVal] = React.useState('');
-  const [maxPriceVal, setMaxPriceVal] = React.useState('');
+  const [minPriceVal, setMinPriceVal] = React.useState(
+    filterState.priceMin === `${DEFAULT_MIN_PRICE}` ? '' : filterState.priceMin
+  );
+  const [maxPriceVal, setMaxPriceVal] = React.useState(filterState.priceMax);
   const [collectionName, setCollectionName] = React.useState('');
   const [collectionAddress, setCollectionAddress] = React.useState('');
   const [selectedCollectionIds, setSelectedCollectionIds] = React.useState('');
@@ -73,20 +78,6 @@ const FilterDrawer = ({ onToggle, showCollection }: Props) => {
   const [selectedTraitValue, setSelectedTraitValue] = React.useState('');
   const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
-
-  useEffect(() => {
-    const showDrawer = localStorage.getItem('didShowDrawerFirstTime');
-
-    if (showDrawer !== 'true') {
-      setIsOpen(true);
-
-      localStorage.setItem('didShowDrawerFirstTime', 'true');
-    }
-  }, []);
-
-  useEffect(() => {
-    onToggle(isOpen);
-  }, [isOpen]);
 
   const getNewFilterState = () => {
     updateTraitFilterState();
@@ -133,13 +124,239 @@ const FilterDrawer = ({ onToggle, showCollection }: Props) => {
     filterState.traitValue = selectedTraits.map((o) => o.value).join(',');
   };
 
-  const buttonProps = filterState.listType === LISTING_TYPE.FIXED_PRICE ? activeButtonProps : normalButtonProps;
-  const buttonProps2 = filterState.listType === LISTING_TYPE.DUTCH_AUCTION ? activeButtonProps : normalButtonProps;
-  const buttonProps3 = filterState.listType === LISTING_TYPE.ENGLISH_AUCTION ? activeButtonProps : normalButtonProps;
+  const content = (
+    <div className={styles.main}>
+      <div className={styles.bottomBorder}>
+        <Text mb={4} mt={4}>
+          Sale Type
+        </Text>
+
+        <Box display="flex" flexDirection="column" gridGap={2}>
+          <Checkbox
+            colorScheme="blackAlpha"
+            isChecked={filterState.listType === LISTING_TYPE.FIXED_PRICE}
+            onChange={() => handleClickListType('fixedPrice')}
+          >
+            Fixed Price
+          </Checkbox>
+          <Checkbox
+            colorScheme="blackAlpha"
+            isChecked={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
+            onChange={() => handleClickListType('dutchAuction')}
+          >
+            Declining Price
+          </Checkbox>
+          <Checkbox
+            colorScheme="blackAlpha"
+            isChecked={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
+            onChange={() => handleClickListType('englishAuction')}
+          >
+            On Auction
+          </Checkbox>
+        </Box>
+      </div>
+      <div className={styles.bottomBorder}>
+        <Text mt={8} mb={4}>
+          Price (ETH)
+        </Text>
+        <div className={styles.price}>
+          <Input
+            className={styles.priceInput}
+            placeholder={'Min Price'}
+            value={minPriceVal}
+            onChange={(ev) => {
+              setMinPriceVal(ev.target.value);
+              filterState.priceMin = ev.target.value;
+            }}
+          />
+          <div className={styles.divider} />
+          <Input
+            className={styles.priceInput}
+            placeholder={'Max Price'}
+            value={maxPriceVal}
+            onChange={(ev) => {
+              setMaxPriceVal(ev.target.value);
+              filterState.priceMax = ev.target.value;
+            }}
+          />
+        </div>
+      </div>
+
+      {showCollection !== false ? (
+        <>
+          <Text mt={8} mb={4}>
+            Collections
+          </Text>
+          <Box>
+            <CollectionNameFilter
+              value={selectedCollectionIds}
+              onClear={() => {
+                setCollectionName('');
+                setSelectedCollectionIds('');
+                setTraits([]);
+                setSelectedTraitValue('');
+                setSelectedTraitType(undefined);
+              }}
+              onChange={async (val, address, selectedCollectionIds) => {
+                // setCollectionName(val);
+                // setCollectionAddress(address);
+                setSelectedCollectionIds(selectedCollectionIds);
+                const selectedCollectionIdsArr = selectedCollectionIds.split(',');
+
+                // fetch collection traits
+                if (address && selectedCollectionIdsArr.length === 1) {
+                  const { result, error } = await apiGet(`/collections/${address}/traits`);
+                  if (result?.traits) {
+                    setTraits(result.traits);
+                    setSelectedTraits([{ ...EmptyTrait }]);
+                  } else {
+                    showAppError(`Failed to fetch traits. ${error?.message}`);
+                  }
+                } else {
+                  setTraits([]);
+                  setSelectedTraitValue('');
+                  setSelectedTraitType(undefined);
+                  setSelectedTraits([{ ...EmptyTrait }]);
+                  filterState.traitType = '';
+                  filterState.traitValue = '';
+                }
+              }}
+            />
+
+            {selectedCollectionIds.split(',').length === 1 && traits.length > 0 && (
+              <Table size="sm" mt={4}>
+                <Thead>
+                  <Tr>
+                    <Th pl={0}>Attribute</Th>
+                    <Th pl={0}>Value</Th>
+                    <Th></Th>
+                  </Tr>
+                </Thead>
+
+                <Tbody>
+                  {selectedTraits.map((pair, selTraitIdx) => {
+                    const selectedTraitValues = selectedTraits[selTraitIdx]?.traitData?.values || [];
+                    const traitValueOptions = selectedTraitValues.map((str: string) => ({ label: str, id: str }));
+
+                    const selectedTraitValuesArr: SelectItem[] = selectedTraits[selTraitIdx]?.value
+                      ? selectedTraits[selTraitIdx]?.value.split('|').map((str: string) => ({ id: str, label: str }))
+                      : [];
+                    return (
+                      <Tr key={selTraitIdx}>
+                        <Td pl={0} pr={1} width={50} border="none">
+                          <Select
+                            size="sm"
+                            placeholder="Type"
+                            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                              const traitType = event.target.value;
+                              const traitData = traits.find((t: Trait) => t.trait_type === traitType);
+                              setSelectedTraitType(traitData);
+
+                              const newArr = [...selectedTraits];
+                              newArr[selTraitIdx].type = traitType;
+                              newArr[selTraitIdx].traitData = traitData;
+                              setSelectedTraits(newArr);
+                            }}
+                          >
+                            <option value=""></option>
+                            {traits.map((item: any) => {
+                              return (
+                                <option key={item.trait_type} value={item.trait_type}>
+                                  {item.trait_type}
+                                </option>
+                              );
+                            })}
+                          </Select>
+                        </Td>
+
+                        <Td pl={0} pr={1} width={140} border="none">
+                          <DownshiftSelect
+                            placeholder="Trait(s)"
+                            isMulti={true}
+                            options={traitValueOptions}
+                            selectedItems={selectedTraitValuesArr}
+                            onChange={(params: SelectItem[]) => {
+                              const item = params.slice(-1)[0]; // current item = last item of params array
+
+                              const found = selectedTraitValuesArr.find((obj) => obj.id === item.id);
+                              let arr = selectedTraitValuesArr;
+                              if (found) {
+                                arr = selectedTraitValuesArr.filter((obj) => obj.id !== item.id);
+                              } else {
+                                arr.push(item);
+                              }
+
+                              const newArr = [...selectedTraits];
+                              newArr[selTraitIdx].value = arr.map((obj) => obj.id).join('|');
+                              setSelectedTraits(newArr);
+                            }}
+                          />
+                        </Td>
+                        <Td pl={0} pr={1} d={'flex'} border="none" mt={3}>
+                          <SmallCloseIcon
+                            className={styles.traitActionIcon}
+                            onClick={() => {
+                              if (selTraitIdx > 0) {
+                                const newArr = selectedTraits.filter((_, index) => index !== selTraitIdx);
+                                setSelectedTraits(newArr);
+                              } else {
+                                setSelectedTraits([]);
+                                setTimeout(() => {
+                                  setSelectedTraits([{ ...EmptyTrait }]);
+                                }, 10);
+                              }
+                            }}
+                          />
+                          <SmallAddIcon
+                            className={styles.traitActionIcon}
+                            onClick={() => {
+                              const newArr = [...selectedTraits];
+                              newArr.push({ ...EmptyTrait });
+                              setSelectedTraits(newArr);
+                            }}
+                          />
+                        </Td>
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+              </Table>
+            )}
+          </Box>
+        </>
+      ) : null}
+
+      <Box mt={8}>
+        <Button variant="outline" onClick={handleClickApply}>
+          Apply
+        </Button>
+        <Button variant="outline" ml={2} onClick={handleClickClear}>
+          Clear
+        </Button>
+      </Box>
+    </div>
+  );
+  if (renderContent === true) {
+    return (
+      <>
+        {/* <Box display="flex" justifyContent="space-between" alignItems="center">
+          {isOpen ? <Heading size="sm">Filter</Heading> : null}
+
+          <IconButton aria-label="" variant="ghost" size="lg" colorScheme="gray" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <ArrowBackIcon /> : <ArrowForwardIcon />}
+          </IconButton>
+        </Box> */}
+
+        {/* {isOpen ? content : null} */}
+
+        {content}
+      </>
+    );
+  }
 
   return (
     <>
-      <IconButton
+      {/* <IconButton
         aria-label=""
         position="fixed"
         size="lg"
@@ -149,7 +366,7 @@ const FilterDrawer = ({ onToggle, showCollection }: Props) => {
         onClick={() => setIsOpen(!isOpen)}
       >
         <ArrowForwardIcon />
-      </IconButton>
+      </IconButton> */}
 
       <Drawer
         isOpen={isOpen}
@@ -162,227 +379,14 @@ const FilterDrawer = ({ onToggle, showCollection }: Props) => {
         {/* <DrawerOverlay backgroundColor="rgba(0,0,0,0)" /> */}
 
         <DrawerContent shadow="lg" mt={headerPosition + 12}>
-          <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
+          {/* <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
             <Heading size="sm">Filter</Heading>
             <IconButton aria-label="" variant="ghost" size="lg" colorScheme="gray" onClick={() => setIsOpen(false)}>
               <ArrowBackIcon />
             </IconButton>
-          </DrawerHeader>
+          </DrawerHeader> */}
 
-          <DrawerBody>
-            <Heading size="sm" mb={4}>
-              Sale Type
-            </Heading>
-            <p />
-            <Button
-              {...buttonProps}
-              mr={4}
-              isActive={filterState.listType === LISTING_TYPE.FIXED_PRICE}
-              onClick={() => handleClickListType('fixedPrice')}
-            >
-              Fixed Price
-            </Button>
-            <Button
-              {...buttonProps2}
-              mr={4}
-              isActive={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
-              onClick={() => handleClickListType('dutchAuction')}
-            >
-              Declining Price
-            </Button>
-            <Button
-              {...buttonProps3}
-              mr={4}
-              mt={2}
-              isActive={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
-              onClick={() => handleClickListType('englishAuction')}
-            >
-              On Auction
-            </Button>
-
-            <Heading size="sm" mt={8} mb={4}>
-              Price (ETH)
-            </Heading>
-            <Box>
-              <Input
-                variant="outline"
-                placeholder={'Min Price'}
-                width={120}
-                value={minPriceVal}
-                onChange={(ev) => {
-                  setMinPriceVal(ev.target.value);
-                  filterState.priceMin = ev.target.value;
-                }}
-              />
-              <Input
-                variant="outline"
-                ml={4}
-                placeholder={'Max Price'}
-                width={120}
-                value={maxPriceVal}
-                onChange={(ev) => {
-                  setMaxPriceVal(ev.target.value);
-                  filterState.priceMax = ev.target.value;
-                }}
-              />
-            </Box>
-
-            {showCollection !== false ? (
-              <>
-                <Heading size="sm" mt={8} mb={4}>
-                  Collections
-                </Heading>
-                <Box>
-                  <CollectionNameFilter
-                    value={selectedCollectionIds}
-                    onClear={() => {
-                      setCollectionName('');
-                      setSelectedCollectionIds('');
-                      setTraits([]);
-                      setSelectedTraitValue('');
-                      setSelectedTraitType(undefined);
-                    }}
-                    onChange={async (val, address, selectedCollectionIds) => {
-                      // setCollectionName(val);
-                      // setCollectionAddress(address);
-                      setSelectedCollectionIds(selectedCollectionIds);
-                      const selectedCollectionIdsArr = selectedCollectionIds.split(',');
-
-                      // fetch collection traits
-                      if (address && selectedCollectionIdsArr.length === 1) {
-                        const { result, error } = await apiGet(`/collections/${address}/traits`);
-                        if (result?.traits) {
-                          setTraits(result.traits);
-                          setSelectedTraits([{ ...EmptyTrait }]);
-                        } else {
-                          showAppError(`Failed to fetch traits. ${error?.message}`);
-                        }
-                      } else {
-                        setTraits([]);
-                        setSelectedTraitValue('');
-                        setSelectedTraitType(undefined);
-                        setSelectedTraits([{ ...EmptyTrait }]);
-                        filterState.traitType = '';
-                        filterState.traitValue = '';
-                      }
-                    }}
-                  />
-
-                  {selectedCollectionIds.split(',').length === 1 && traits.length > 0 && (
-                    <Table size="sm" mt={4}>
-                      <Thead>
-                        <Tr>
-                          <Th pl={0}>Attribute</Th>
-                          <Th pl={0}>Value</Th>
-                          <Th></Th>
-                        </Tr>
-                      </Thead>
-
-                      <Tbody>
-                        {selectedTraits.map((pair, selTraitIdx) => {
-                          const selectedTraitValues = selectedTraits[selTraitIdx]?.traitData?.values || [];
-                          const traitValueOptions = selectedTraitValues.map((str: string) => ({ label: str, id: str }));
-
-                          const selectedTraitValuesArr: SelectItem[] = selectedTraits[selTraitIdx]?.value
-                            ? selectedTraits[selTraitIdx]?.value
-                                .split('|')
-                                .map((str: string) => ({ id: str, label: str }))
-                            : [];
-                          return (
-                            <Tr key={selTraitIdx}>
-                              <Td pl={0} pr={1} width={50} border="none">
-                                <Select
-                                  size="sm"
-                                  placeholder="Type"
-                                  onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                                    const traitType = event.target.value;
-                                    const traitData = traits.find((t: Trait) => t.trait_type === traitType);
-                                    setSelectedTraitType(traitData);
-
-                                    const newArr = [...selectedTraits];
-                                    newArr[selTraitIdx].type = traitType;
-                                    newArr[selTraitIdx].traitData = traitData;
-                                    setSelectedTraits(newArr);
-                                  }}
-                                >
-                                  <option value=""></option>
-                                  {traits.map((item: any) => {
-                                    return (
-                                      <option key={item.trait_type} value={item.trait_type}>
-                                        {item.trait_type}
-                                      </option>
-                                    );
-                                  })}
-                                </Select>
-                              </Td>
-
-                              <Td pl={0} pr={1} width={140} border="none">
-                                <DownshiftSelect
-                                  placeholder="Trait(s)"
-                                  isMulti={true}
-                                  options={traitValueOptions}
-                                  selectedItems={selectedTraitValuesArr}
-                                  onChange={(params: SelectItem[]) => {
-                                    const item = params.slice(-1)[0]; // current item = last item of params array
-
-                                    const found = selectedTraitValuesArr.find((obj) => obj.id === item.id);
-                                    let arr = selectedTraitValuesArr;
-                                    if (found) {
-                                      arr = selectedTraitValuesArr.filter((obj) => obj.id !== item.id);
-                                    } else {
-                                      arr.push(item);
-                                    }
-
-                                    const newArr = [...selectedTraits];
-                                    newArr[selTraitIdx].value = arr.map((obj) => obj.id).join('|');
-                                    setSelectedTraits(newArr);
-                                  }}
-                                />
-                              </Td>
-                              <Td pl={0} pr={1} d={'flex'} border="none" mt={3}>
-                                {' '}
-                                <SmallCloseIcon
-                                  className={styles.traitActionIcon}
-                                  onClick={() => {
-                                    if (selTraitIdx > 0) {
-                                      const newArr = selectedTraits.filter((_, index) => index !== selTraitIdx);
-                                      setSelectedTraits(newArr);
-                                    } else {
-                                      setSelectedTraits([]);
-                                      setTimeout(() => {
-                                        setSelectedTraits([{ ...EmptyTrait }]);
-                                      }, 10);
-                                    }
-                                  }}
-                                />{' '}
-                                <SmallAddIcon
-                                  className={styles.traitActionIcon}
-                                  onClick={() => {
-                                    const newArr = [...selectedTraits];
-                                    newArr.push({ ...EmptyTrait });
-                                    setSelectedTraits(newArr);
-                                  }}
-                                />
-                              </Td>
-                            </Tr>
-                          );
-                        })}
-                      </Tbody>
-                    </Table>
-                  )}
-                </Box>
-              </>
-            ) : null}
-
-            <Box mt={8}>
-              <Button variant="outline" onClick={handleClickApply}>
-                Apply
-              </Button>
-              <Button variant="outline" ml={2} onClick={handleClickClear}>
-                Clear
-              </Button>
-            </Box>
-          </DrawerBody>
+          <DrawerBody>{content}</DrawerBody>
         </DrawerContent>
       </Drawer>
     </>

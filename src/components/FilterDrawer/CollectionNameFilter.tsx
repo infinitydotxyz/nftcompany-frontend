@@ -130,7 +130,7 @@ export default function CollectionNameFilter({ value, onClear, onChange }: Colle
               <div className="m-auto w-1/2 mt-6">
                 <Input
                   ref={inputRef}
-                  placeholder="Search by name..."
+                  placeholder="Collection name"
                   className="w-full"
                   onKeyUp={async (ev) => {
                     if (ev.key === 'Enter') {
@@ -154,26 +154,6 @@ export default function CollectionNameFilter({ value, onClear, onChange }: Colle
                   onChange={inputProps.onChange}
                   onBlur={inputProps.onBlur}
                 />
-                {/* {isOpen ? (
-                  <ul
-                    className={styles.dropPanel + ' ' + (options.length > 0 && styles.dropPanelOpened)}
-                    {...getMenuProps()}
-                  >
-                    {options.map((item, index) => (
-                      <li
-                        key={item.value + index}
-                        {...getItemProps({
-                          key: item.value + index,
-                          index,
-                          item: [item.value],
-                          className: `py-2 px-2 ${highlightedIndex === index ? styles.bold : 'bg-gray-100'}`
-                        })}
-                      >
-                        {item.label}
-                      </li>
-                    ))}
-                  </ul>
-                ) : null} */}
               </div>
               {inputValue && (
                 <button
