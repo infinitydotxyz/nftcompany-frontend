@@ -72,6 +72,7 @@ export default function ExplorePage() {
           <Spacer />
           <SortMenuButton disabled={!searchMode || props.listingSource === ListingSource.OpenSea} />
         </div>
+
         <div className={styles.col}>
           <div className={styles.col1}>
             <FilterDrawer renderContent={true} onToggle={(isOpen) => setIsFilterOpened(true)} />
