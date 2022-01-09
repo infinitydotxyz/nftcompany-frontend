@@ -56,7 +56,7 @@ type Trait = {
 const EmptyTrait = { type: '', value: '', traitData: undefined };
 
 interface Props {
-  onToggle: (isOpen: boolean) => void;
+  onToggle?: (isOpen: boolean) => void;
   showCollection?: boolean;
   renderContent?: boolean;
 }
@@ -70,7 +70,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
   const [maxPriceVal, setMaxPriceVal] = React.useState(filterState.priceMax);
   const [collectionName, setCollectionName] = React.useState('');
   const [collectionAddress, setCollectionAddress] = React.useState('');
-  const [selectedCollectionIds, setSelectedCollectionIds] = React.useState(filterState.collectionIds);
+  const [selectedCollectionIds, setSelectedCollectionIds] = React.useState('');
   const [traits, setTraits] = React.useState<Trait[]>([]);
   const [selectedTraitType, setSelectedTraitType] = React.useState<Trait | undefined>(undefined);
   const [selectedTraits, setSelectedTraits] = React.useState<any[]>([EmptyTrait]);
@@ -78,19 +78,19 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
 
-  useEffect(() => {
-    const showDrawer = localStorage.getItem('didShowDrawerFirstTime');
+  // useEffect(() => {
+  //   const showDrawer = localStorage.getItem('didShowDrawerFirstTime');
 
-    if (showDrawer !== 'true') {
-      setIsOpen(true);
+  //   if (showDrawer !== 'true') {
+  //     setIsOpen(true);
 
-      localStorage.setItem('didShowDrawerFirstTime', 'true');
-    }
-  }, []);
+  //     localStorage.setItem('didShowDrawerFirstTime', 'true');
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    onToggle(isOpen);
-  }, [isOpen]);
+  // useEffect(() => {
+  //   onToggle(isOpen);
+  // }, [isOpen]);
 
   const getNewFilterState = () => {
     updateTraitFilterState();

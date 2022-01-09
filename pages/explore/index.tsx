@@ -20,9 +20,7 @@ import styles from './Explore.module.scss';
 
 export default function ExplorePage() {
   const searchContext = useSearchContext();
-  const [tabIndex, setTabIndex] = useState(0);
   const { user } = useAppContext();
-  const [isFilterOpened, setIsFilterOpened] = React.useState(false);
 
   const [searchMode, setSearchMode] = useState(false);
 
@@ -67,40 +65,27 @@ export default function ExplorePage() {
 
     return (
       <>
-        <div className="section-bar">
-          <div className="tg-title">Explore</div>
-          <Spacer />
-          <SortMenuButton disabled={!searchMode || props.listingSource === ListingSource.OpenSea} />
-        </div>
+        <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
+        {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
-        <div className={styles.col}>
-          <div className={styles.col1}>
-            <FilterDrawer renderContent={true} onToggle={(isOpen) => setIsFilterOpened(true)} />
-          </div>
-          <div className={styles.col2}>
-            <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
-            {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
+        {searchMode ? (
+          <CardList
+            showItems={['PRICE']}
+            userAccount={user?.account}
+            data={cardProvider.list}
+            action={NftAction.BuyNft}
+          />
+        ) : (
+          <CardGrid data={collectionCards} />
+        )}
 
-            {searchMode ? (
-              <CardList
-                showItems={['PRICE']}
-                userAccount={user?.account}
-                data={cardProvider.list}
-                action={NftAction.BuyNft}
-              />
-            ) : (
-              <CardGrid data={collectionCards} />
-            )}
-
-            {cardProvider.hasData() && (
-              <ScrollLoader
-                onFetchMore={async () => {
-                  cardProvider.loadNext();
-                }}
-              />
-            )}
-          </div>
-        </div>
+        {cardProvider.hasData() && (
+          <ScrollLoader
+            onFetchMore={async () => {
+              cardProvider.loadNext();
+            }}
+          />
+        )}
       </>
     );
   };
@@ -114,7 +99,21 @@ export default function ExplorePage() {
       <div className={`${styles.main}`}>
         <div className="page-container">
           {/* {!searchMode && <FeaturedCollections />} */}
-          <Explore listingSource={ListingSource.Infinity} />
+
+          <div className="section-bar">
+            <div className="tg-title">Explore</div>
+            <Spacer />
+            <SortMenuButton disabled={!searchMode} />
+          </div>
+
+          <div className={styles.col}>
+            <div className={styles.col1}>
+              <FilterDrawer renderContent={true} />
+            </div>
+            <div className={styles.col2}>
+              <Explore listingSource={ListingSource.Infinity} />
+            </div>
+          </div>
         </div>
       </div>
     </>
