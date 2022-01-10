@@ -65,23 +65,23 @@ export const colors = {
   brandRedBright: '#D91D19',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
-  blue: {
-    50: '#e8e9ff',
-    100: '#c6c8ff',
-    200: '#a0a3ff',
-    300: '#797eff',
-    400: '#5d63ff',
-    500: '#4047ff',
-    600: '#3a40ff',
-    700: '#3237ff',
-    800: '#2a2fff',
-    900: '#1c20ff',
-    A100: '#ffffff',
-    A200: '#ffffff',
-    A400: '#cdcdff',
-    A700: '#b3b4ff',
-    contrastDefaultColor: 'light'
-  },
+  // blue: {
+  //   50: '#e8e9ff',
+  //   100: '#c6c8ff',
+  //   200: '#a0a3ff',
+  //   300: '#797eff',
+  //   400: '#5d63ff',
+  //   500: '#4047ff',
+  //   600: '#3a40ff',
+  //   700: '#3237ff',
+  //   800: '#2a2fff',
+  //   900: '#1c20ff',
+  //   A100: '#ffffff',
+  //   A200: '#ffffff',
+  //   A400: '#cdcdff',
+  //   A700: '#b3b4ff',
+  //   contrastDefaultColor: 'light'
+  // },
 
   grayish: {
     50: brandGray,
@@ -173,7 +173,7 @@ const Button = {
       };
     },
     md: (props: any) => {
-      return { fontSize: '12px', lineHeight: '14px' };
+      return { fontSize: '14px', lineHeight: '16px' };
     },
     lg: (props: any) => {
       return { fontSize: '16px', lineHeight: '19px', paddingY: '22.5px', paddingX: '16px', minWidth: '157px' };
@@ -339,7 +339,8 @@ const Checkbox = {
         padding: '1px'
       },
       label: {
-        paddingBottom: '1px'
+        paddingBottom: '1px',
+        marginLeft: '6px'
       }
     };
   }

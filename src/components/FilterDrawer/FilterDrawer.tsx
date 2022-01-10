@@ -242,8 +242,9 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
                       <Tr key={selTraitIdx}>
                         <Td pl={0} pr={1} width={50} border="none">
                           <Select
+                            className={styles.selectBox}
                             size="sm"
-                            placeholder="Type"
+                            placeholder="Select:"
                             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                               const traitType = event.target.value;
                               const traitData = traits.find((t: Trait) => t.trait_type === traitType);
@@ -255,7 +256,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
                               setSelectedTraits(newArr);
                             }}
                           >
-                            <option value=""></option>
+                            {/* <option value=""></option> */}
                             {traits.map((item: any) => {
                               return (
                                 <option key={item.trait_type} value={item.trait_type}>
