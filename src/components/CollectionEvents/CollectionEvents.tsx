@@ -73,15 +73,21 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
 
   return (
     <Box display="flex" flexDirection={'column'} justifyContent={'space-between'} alignItems={'center'} {...rest}>
-      <Table>
+      <Table size="sm">
         <Thead>
           <Tr>
-            {pageType === 'collection' && <Th style={{ width: '20%' }}>Token</Th>}
-            <Th>From</Th>
-            <Th>To</Th>
-            <Th minWidth={'150px'}>Date</Th>
-            <Th>Price (ETH)</Th>
-            <Th>Link</Th>
+            {pageType === 'collection' && (
+              <Th fontSize="md" style={{ width: '20%' }}>
+                Token
+              </Th>
+            )}
+            <Th fontSize="md">From</Th>
+            <Th fontSize="md">To</Th>
+            <Th fontSize="md" minWidth={'150px'}>
+              Date
+            </Th>
+            <Th fontSize="md">Price (ETH)</Th>
+            <Th fontSize="md">Link</Th>
           </Tr>
         </Thead>
         <Tbody>
