@@ -124,7 +124,7 @@ const Collection = (): JSX.Element => {
                   hasBlueCheck={collectionInfo?.hasBlueCheck ?? false}
                   profileImage={collectionInfo?.profileImage ?? ''}
                   hasBeenClaimed={collectionInfo?.isClaimed ?? false}
-                  creator={'ArtBlocks_Admin'}
+                  creator={''}
                   description={collectionInfo?.description}
                   collectionAddress={collectionInfo?.address ?? ''}
                 />
@@ -133,7 +133,7 @@ const Collection = (): JSX.Element => {
               <Box flexGrow={3} flexBasis={0}>
                 {collectionInfo?.stats && (
                   <CollectionInfoGroupWrapper>
-                    <InfoGroup title="Collection Stats" minChildWidth="80px" maxChildWidth="80px">
+                    <InfoGroup title="Collection Stats" minChildWidth="80px" maxChildWidth="80px" spacing="20px">
                       <CollectionStats stats={collectionInfo.stats} />
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
@@ -191,7 +191,7 @@ const Collection = (): JSX.Element => {
             <HorizontalLine display={!toggleState ? 'none' : ''} marginTop={'40px'} />
 
             {collectionInfo && (
-              <CollectionCommunity collectionInfo={collectionInfo} display={!toggleState ? 'none' : ''} />
+              <CollectionCommunity collectionInfo={collectionInfo} display={!toggleState ? 'none' : 'flex'} />
             )}
 
             <Box className="center" display={toggleState ? 'none' : 'flex'}>

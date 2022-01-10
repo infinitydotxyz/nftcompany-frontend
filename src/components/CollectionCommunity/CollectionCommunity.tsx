@@ -81,16 +81,23 @@ function CollectionCommunity({ collectionInfo, ...rest }: CollectionCommunityPro
   }, [user?.account, collectionInfo?.address]);
 
   return (
-    <Box {...rest}>
+    <Box
+      display="flex"
+      flexDirection={['column', 'column', 'column', 'row']}
+      justifyContent={'space-between'}
+      alignItems={'space-between'}
+      {...rest}
+    >
       <Box
         display={'flex'}
-        flexDirection={['column', 'column', 'column', 'row']}
+        flexDirection={['column']}
+        width={['50%', '50%', '50%', '100%']}
         marginTop="56px"
-        justifyContent={'space-between'}
+        // justifyContent={'space-between'}
       >
-        <Box display={'flex'} flexDirection={'row'} width={['100%', '100%', '100%', '50%']} alignItems={'flex-start'}>
+        <Box display={'flex'} flexDirection={'column'} width={'100%'} alignItems={'flex-start'}>
           <WithTitle title="Twitter mentions">
-            <Box maxHeight={'300'} overflowY="auto">
+            <Box maxHeight={'300'} overflowY="scroll">
               {collectionInfo?.twitterSnippet?.topMentions?.map((mention) => {
                 return (
                   <ExternalLinkCard
@@ -108,55 +115,65 @@ function CollectionCommunity({ collectionInfo, ...rest }: CollectionCommunityPro
 
           <Spacer width={['32px', '32px', '32px', '56px']} maxWidth={['32px', '32px', '32px', '56px']} />
 
-          <WithTitle title="Partnerships">
-            <Box maxHeight={'300'} overflowY="auto">
-              {collectionInfo?.partnerships?.map((partnership) => {
-                return (
-                  <ExternalLinkCard
-                    key={partnership.name}
-                    marginY="8px"
-                    title={partnership.name}
-                    subtitle={'Team'}
-                    link={partnership.link}
-                    linkText="Website"
-                  />
-                );
-              })}
-            </Box>
-          </WithTitle>
+          {collectionInfo?.partnerships && collectionInfo?.partnerships?.length > 0 && (
+            <WithTitle title="Partnerships">
+              <Box maxHeight={'300'} overflowY="scroll">
+                {collectionInfo?.partnerships?.map((partnership) => {
+                  return (
+                    <ExternalLinkCard
+                      key={partnership.name}
+                      marginY="8px"
+                      title={partnership.name}
+                      subtitle={'Team'}
+                      link={partnership.link}
+                      linkText="Website"
+                    />
+                  );
+                })}
+              </Box>
+            </WithTitle>
+          )}
         </Box>
 
         <Spacer width={{ md: '32px', lg: '32px', xl: '56px' }} />
 
+        <Box display={'flex'} flexDirection={'row'} marginTop="56px" justifyContent={'space-between'}>
+          <WithTitle title="Vote">
+            <VoteCard
+              prompt="How do you like this collection?"
+              subtitle="Vote to see the community results"
+              positiveButtonLabel="Good"
+              negativeButtonLabel="Bad"
+              onVote={onVote}
+              allowChangeVote={true}
+              height="223px"
+              disabled={!user?.account && 'You must be logged in to vote.'}
+              results={votes}
+              isLoading={isVotesLoading}
+            />
+          </WithTitle>
+        </Box>
+      </Box>
+
+      <Box
+        display={'flex'}
+        flexDirection={['column']}
+        width={['100%', '100%', '100%', '50%']}
+        marginTop={[0, 0, 0, '56px']}
+        alignItems={['flex-start', 'flex-start', 'flex-start', 'flex-end']}
+      >
         {collectionInfo?.twitterSnippet?.recentTweets?.length && (
           <Box flexBasis={0} flexGrow={1} ref={twitterFeedContainerRef} marginTop={['56px', '56px', '56px', 0]}>
             <WithTitle title={'Twitter feed'}>
               <TwitterFeed
                 width={twitterFeedWidth}
                 tweetIds={collectionInfo?.twitterSnippet?.recentTweets?.map((item) => item.tweetId)}
-                height="300px"
-                overflowY="auto"
+                height="600px"
+                overflowY="scroll"
               />
             </WithTitle>
           </Box>
         )}
-      </Box>
-
-      <Box display={'flex'} flexDirection={'row'} marginTop="56px" justifyContent={'space-between'}>
-        <WithTitle title="Vote">
-          <VoteCard
-            prompt="How do you like this collection?"
-            subtitle="Vote to see the community results"
-            positiveButtonLabel="Good"
-            negativeButtonLabel="Bad"
-            onVote={onVote}
-            allowChangeVote={true}
-            height="223px"
-            disabled={!user?.account && 'You must be logged in to vote.'}
-            results={votes}
-            isLoading={isVotesLoading}
-          />
-        </WithTitle>
       </Box>
     </Box>
   );

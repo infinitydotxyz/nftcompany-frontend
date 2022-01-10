@@ -143,7 +143,7 @@ export const orderToCardData = (order: Order): CardData => {
     hasBonusReward: order.metadata.hasBonusReward,
     hasBlueCheck: order.metadata.hasBlueCheck,
     collectionName: order.metadata.asset.collectionName,
-    owner: order.maker,
+    owner: order.metadata.asset.owner,
     metadata: order.metadata,
     schemaName: order.metadata.schema,
     expirationTime: order.expirationTime,

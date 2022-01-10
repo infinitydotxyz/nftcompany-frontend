@@ -65,7 +65,7 @@ export const addressesEqual = (left?: string, right?: string): boolean => {
     return left.toLowerCase() === right.toLowerCase();
   }
 
-  return left === right;
+  return false;
 };
 
 export const ellipsisString = (inString?: string, left: number = 6, right: number = 4): string => {
