@@ -82,17 +82,19 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
             return (
               <Tr key={`${address}_${item?.asset?.token_id}_${item.created_date}`}>
                 {pageType === 'collection' && (
-                  <Td>
+                  <Td display={'flex'} flexDirection={'column'} alignItems={'flex-start'}>
                     {item?.asset?.image_thumbnail_url && (
-                      <>
+                      <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
                         <img
                           src={`${item.asset.image_thumbnail_url}`}
                           alt={item?.asset?.token_id}
                           className={styles.thumb}
                         />
                         <br />
-                        <p>{item?.asset?.name ? item?.asset?.name : item?.asset?.token_id}</p>
-                      </>
+                        <p className={styles.tokenName}>
+                          {item?.asset?.name ? item?.asset?.name : item?.asset?.token_id}
+                        </p>
+                      </Box>
                     )}
                   </Td>
                 )}

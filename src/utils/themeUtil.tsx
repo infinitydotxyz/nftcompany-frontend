@@ -15,6 +15,19 @@ const darkGrayAlpha = '#1A202Ccc';
 const lightBg = '#fcfdfd';
 const lightBgAlpha = '#fcfdfdcc';
 
+/**
+ * gray used for alt actions buttons
+ */
+const actionLight = '#E9E9EB';
+const hoverActionLight = '#E5E5E5';
+
+/**
+ * toggle colors
+ */
+const inactiveActionLight = '#E5E5E5';
+const activeActionLight = '#000000';
+
+const lightText = '#6F6F6F';
 const mainFont =
   'Futura, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif';
 
@@ -28,6 +41,12 @@ export const colors = {
   windowBg: lightBg,
   windowBgDark: darkGray,
 
+  actionLight,
+  hoverActionLight,
+
+  inactiveActionLight,
+  activeActionLight,
+
   cardBgLight: '#f3f3f3',
   cardBgDark: '#111',
 
@@ -35,9 +54,15 @@ export const colors = {
   headerBg: lightBgAlpha,
   headerBgDark: darkGrayAlpha,
 
+  separator: '#E2E8F0',
+
   brandBlueAlpha: brandBlue + 'aa',
   brandBlueLight: brandBlue + '14',
   brandBlueShadow: brandBlue + '44',
+
+  brandGreen: '#15a456',
+  brandRed: '#A10000',
+  brandRedBright: '#D91D19',
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   blue: {
@@ -77,6 +102,7 @@ export const colors = {
 };
 
 const Table = {
+  parts: ['table', 'thead', 'tr', 'tbody', 'tfoot', 'td'],
   sizes: {
     md: {
       th: {
@@ -139,6 +165,20 @@ const Button = {
       }
     };
   },
+  sizes: {
+    sm: (props: any) => {
+      return {
+        fontSize: '12px',
+        lineHeight: '14px'
+      };
+    },
+    md: (props: any) => {
+      return { fontSize: '12px', lineHeight: '14px' };
+    },
+    lg: (props: any) => {
+      return { fontSize: '16px', lineHeight: '19px', paddingY: '22.5px', paddingX: '16px', minWidth: '157px' };
+    }
+  },
   variants: {
     outline: (props: any) => {
       return {
@@ -168,6 +208,91 @@ const Button = {
           color: 'white'
         };
       }
+    },
+    alt: (props: any) => {
+      return {
+        bg: 'var(--chakra-colors-actionLight)',
+        backgroundColor: 'var(--chakra-colors-actionLight)',
+        _hover: {
+          bg: 'var(--chakra-colors-hoverActionLight)',
+          backgroundColor: 'var(--chakra-colors-hoverActionLight)'
+        }
+      };
+    }
+  }
+};
+
+const FormLabel = {
+  baseStyle: (props: any) => {
+    return {
+      color: '#000000',
+      fontStyle: 'normal',
+      fontWeight: 'normal'
+    };
+  },
+  sizes: {
+    md: {
+      fontSize: '12px',
+      lineHeight: '14px',
+      marginBottom: '16px'
+    },
+    lg: {
+      fontSize: '16px',
+      lineHeight: '19px',
+      marginBottom: '16px'
+    },
+    xl: {
+      fontSize: '24px',
+      lineHeight: '29px',
+      marginBottom: '16px'
+    },
+    '2xl': {
+      fontSize: '36px',
+      lineHeight: '44px',
+      marginBottom: '16px'
+    }
+  }
+};
+
+const Text = {
+  sizes: {
+    md: {
+      fontSize: '12px',
+      lineHeight: '14px'
+    },
+    lg: {
+      fontSize: '16px',
+      lineHeigt: '19px'
+    },
+    xl: {
+      fontSize: '24px',
+      lineHeigt: '29px'
+    },
+    '2xl': {
+      fontSize: '36px',
+      lineHeight: '44px'
+    }
+  },
+
+  variants: {
+    bold: () => {
+      return {
+        fontWeight: 500
+      };
+    },
+    close: () => {
+      return { letterSpacing: '-1px' };
+    },
+    light: () => {
+      return {
+        color: '#6f6f6f'
+      };
+    },
+    dark: () => {
+      return {
+        lineHeight: '140%',
+        color: '#000000'
+      };
     }
   }
 };
@@ -189,15 +314,56 @@ const Input = {
           borderColor: '#aaa',
 
           _hover: {
-            border: '1px solid #aaa'
+            border: '1px thin #aaa'
           },
           _focus: {
-            borderColor: 'var(--chakra-colors-brandColor)',
+            border: '1px thin var(--chakra-colors-brandColor)',
             boxShadow: '0 0 0 1px var(--chakra-colors-brandColor)'
           }
         }
       };
     }
+  }
+};
+
+const Checkbox = {
+  parts: ['control', 'icon', 'label'],
+  baseStyle: (props: any) => {
+    return {
+      control: {
+        border: '1px solid',
+        borderColor: 'var(--chakra-colors-brandColor)'
+      },
+      icon: {
+        color: 'var(--chakra-colors-brandColor)',
+        padding: '1px'
+      },
+      label: {
+        paddingBottom: '1px'
+      }
+    };
+  }
+};
+
+const Textarea = {
+  baseStyle: (props: any) => {
+    return {
+      paddingBottom: '4px', // align button text vertically for Futura font.
+      border: '1px solid',
+      borderColor: '#aaa',
+
+      _hover: {
+        border: '1px solid #aaa'
+      },
+      _focus: {
+        borderColor: 'var(--chakra-colors-brandColor)',
+        boxShadow: '0 0 0 1px var(--chakra-colors-brandColor)'
+      }
+    };
+  },
+  defaultProps: {
+    size: 'md',
+    variant: ''
   }
 };
 
@@ -254,7 +420,11 @@ export const theme = extendTheme(
       Button,
       Table,
       Input,
+      Checkbox,
+      Textarea,
       Link,
+      Text,
+      FormLabel,
       Drawer: {
         variants: {
           // custom theme for Filter Drawer to allow scrolling/interaction on the main body.

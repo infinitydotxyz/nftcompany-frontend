@@ -101,7 +101,6 @@ export const getChainId = async (provider: ethers.providers.ExternalProvider) =>
     }
 
     const chainIdLoc = await provider?.request?.({ method: 'eth_chainId' });
-    console.log('chain id loc', chainIdLoc);
     if (chainIdLoc === '0x1') {
       // eth main
       return '1';

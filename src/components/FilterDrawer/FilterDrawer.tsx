@@ -24,13 +24,13 @@ import {
 import { ArrowBackIcon, ArrowForwardIcon, SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
 import * as React from 'react';
 import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
-import { useEffect } from 'react';
 import CollectionNameFilter from './CollectionNameFilter';
 import { apiGet } from 'utils/apiUtil';
 import { LISTING_TYPE } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from './FilterDrawer.module.scss';
 import { DownshiftSelect, SelectItem } from './DownshiftSelect';
+import { renderSpinner } from 'utils/commonUtil';
 
 const DEFAULT_MIN_PRICE = 0.0000000001;
 
@@ -70,7 +70,6 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
   );
   const [maxPriceVal, setMaxPriceVal] = React.useState(filterState.priceMax);
   const [collectionName, setCollectionName] = React.useState('');
-  const [collectionAddress, setCollectionAddress] = React.useState('');
   const [selectedCollectionIds, setSelectedCollectionIds] = React.useState('');
   const [traits, setTraits] = React.useState<Trait[]>([]);
   const [selectedTraitType, setSelectedTraitType] = React.useState<Trait | undefined>(undefined);
@@ -78,6 +77,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
   const [selectedTraitValue, setSelectedTraitValue] = React.useState('');
   const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
+  const [isFetchingTraits, setIsFetchingTraits] = React.useState(false);
 
   const getNewFilterState = () => {
     updateTraitFilterState();
@@ -124,6 +124,19 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
     filterState.traitValue = selectedTraits.map((o) => o.value).join(',');
   };
 
+  const fetchTraits = async (address: string) => {
+    setIsFetchingTraits(true);
+    const { result, error } = await apiGet(`/collections/${address}/traits`);
+    setIsFetchingTraits(false);
+    if (result?.traits) {
+      setTraits(result.traits);
+      setSelectedTraits([{ ...EmptyTrait }]);
+    } else {
+      showAppError(`Failed to fetch traits. ${error?.message}`);
+    }
+  };
+  const shouldFetchTraits = selectedCollectionIds.split(',').length === 1;
+
   const content = (
     <div className={styles.main}>
       <div className={styles.bottomBorder}>
@@ -133,25 +146,22 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
 
         <Box display="flex" flexDirection="column" gridGap={2}>
           <Checkbox
-            colorScheme="blackAlpha"
             isChecked={filterState.listType === LISTING_TYPE.FIXED_PRICE}
             onChange={() => handleClickListType('fixedPrice')}
           >
-            Fixed Price
+            <Text className={styles.main}>Fixed Price</Text>
           </Checkbox>
           <Checkbox
-            colorScheme="blackAlpha"
             isChecked={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
             onChange={() => handleClickListType('dutchAuction')}
           >
-            Declining Price
+            <Text className={styles.main}>Declining Price</Text>
           </Checkbox>
           <Checkbox
-            colorScheme="blackAlpha"
             isChecked={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
             onChange={() => handleClickListType('englishAuction')}
           >
-            On Auction
+            <Text className={styles.main}>On Auction</Text>
           </Checkbox>
         </Box>
       </div>
@@ -198,20 +208,12 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
                 setSelectedTraitType(undefined);
               }}
               onChange={async (val, address, selectedCollectionIds) => {
-                // setCollectionName(val);
-                // setCollectionAddress(address);
                 setSelectedCollectionIds(selectedCollectionIds);
                 const selectedCollectionIdsArr = selectedCollectionIds.split(',');
 
                 // fetch collection traits
                 if (address && selectedCollectionIdsArr.length === 1) {
-                  const { result, error } = await apiGet(`/collections/${address}/traits`);
-                  if (result?.traits) {
-                    setTraits(result.traits);
-                    setSelectedTraits([{ ...EmptyTrait }]);
-                  } else {
-                    showAppError(`Failed to fetch traits. ${error?.message}`);
-                  }
+                  fetchTraits(address);
                 } else {
                   setTraits([]);
                   setSelectedTraitValue('');
@@ -223,7 +225,9 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
               }}
             />
 
-            {selectedCollectionIds.split(',').length === 1 && traits.length > 0 && (
+            {shouldFetchTraits && isFetchingTraits && renderSpinner()}
+
+            {shouldFetchTraits && traits.length > 0 && (
               <Table size="sm" mt={4}>
                 <Thead>
                   <Tr>

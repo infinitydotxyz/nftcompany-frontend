@@ -159,7 +159,9 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
               {content}
               <div className={styles.buttons}>
                 <Button onClick={() => saveEmail()}>Save</Button>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button variant="outline" onClick={onClose}>
+                  Cancel
+                </Button>
               </div>
             </div>
           </div>
