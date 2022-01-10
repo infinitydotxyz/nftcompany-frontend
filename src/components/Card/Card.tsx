@@ -178,7 +178,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
           <div className={styles.cardTitle}>
             {collectionName && (
               <div className={styles.collectionRow}>
-                <AppLink type="secondary" href={`/collection/${getSearchFriendlyString(collectionName)}`}>
+                <AppLink href={`/collection/${getSearchFriendlyString(collectionName)}`}>
                   {collectionName}
                 </AppLink>
 

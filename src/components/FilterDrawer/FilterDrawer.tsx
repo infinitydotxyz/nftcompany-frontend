@@ -231,8 +231,12 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
               <Table size="sm" mt={4}>
                 <Thead>
                   <Tr>
-                    <Th pl={0}>Attribute</Th>
-                    <Th pl={0}>Value</Th>
+                    <Th pl={0} fontSize="1em">
+                      Attribute
+                    </Th>
+                    <Th pl={0} fontSize="1em">
+                      Value
+                    </Th>
                     <Th></Th>
                   </Tr>
                 </Thead>
@@ -248,7 +252,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
                     return (
                       <Tr key={selTraitIdx}>
                         <Td pl={0} pr={1} width={50} border="none">
-                          <Select
+                          {/* <Select
                             className={styles.selectBox}
                             size="sm"
                             placeholder="Select:"
@@ -263,7 +267,6 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
                               setSelectedTraits(newArr);
                             }}
                           >
-                            {/* <option value=""></option> */}
                             {traits.map((item: any) => {
                               return (
                                 <option key={item.trait_type} value={item.trait_type}>
@@ -271,7 +274,25 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
                                 </option>
                               );
                             })}
-                          </Select>
+                          </Select> */}
+                          <DownshiftSelect
+                            placeholder="Select"
+                            isMulti={false}
+                            options={traits.map((item: any) => {
+                              return { label: item.trait_type, id: item.trait_type };
+                            })}
+                            selectedItems={selectedTraitValuesArr}
+                            onChange={(selectedItem: SelectItem | SelectItem[]) => {
+                              const traitType = (selectedItem as SelectItem).id;
+                              const traitData = traits.find((t: Trait) => t.trait_type === traitType);
+                              setSelectedTraitType(traitData);
+
+                              const newArr = [...selectedTraits];
+                              newArr[selTraitIdx].type = traitType;
+                              newArr[selTraitIdx].traitData = traitData;
+                              setSelectedTraits(newArr);
+                            }}
+                          />
                         </Td>
 
                         <Td pl={0} pr={1} width={140} border="none">
@@ -280,8 +301,8 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
                             isMulti={true}
                             options={traitValueOptions}
                             selectedItems={selectedTraitValuesArr}
-                            onChange={(params: SelectItem[]) => {
-                              const item = params.slice(-1)[0]; // current item = last item of params array
+                            onChange={(params: SelectItem | SelectItem[]) => {
+                              const item = (params as SelectItem[]).slice(-1)[0]; // current item = last item of params array
 
                               const found = selectedTraitValuesArr.find((obj) => obj.id === item.id);
                               let arr = selectedTraitValuesArr;

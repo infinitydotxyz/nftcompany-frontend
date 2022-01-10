@@ -43,9 +43,18 @@ function CollectionOverview(props: CollectionOverviewProps) {
             <Text size="2xl" variant="close">
               {props.collectionName}
             </Text>
-            <div style={{ paddingLeft: '16px', verticalAlign: 'middle' }}>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="28px"
+              m={1}
+              paddingTop={2}
+              paddingLeft={2}
+              verticalAlign={'middle'}
+            >
               <BlueCheckIcon hasBlueCheck={props.hasBlueCheck === true} large />
-            </div>
+            </Box>
           </Box>
           {props.creator && (
             <Text size="lg" variant="light">

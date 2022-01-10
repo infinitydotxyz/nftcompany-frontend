@@ -83,22 +83,22 @@ export const colors = {
   //   contrastDefaultColor: 'light'
   // },
 
-  grayish: {
-    50: brandGray,
-    100: brandGray,
-    200: brandGray,
-    300: brandGray,
-    400: brandGray,
-    500: brandGray,
-    600: brandGray,
-    700: brandGray,
-    800: brandGray,
-    900: brandGray,
-    A100: brandGray,
-    A200: brandGray,
-    A400: brandGray,
-    A700: brandGray
-  }
+  // grayish: {
+  //   50: brandGray,
+  //   100: brandGray,
+  //   200: brandGray,
+  //   300: brandGray,
+  //   400: brandGray,
+  //   500: brandGray,
+  //   600: brandGray,
+  //   700: brandGray,
+  //   800: brandGray,
+  //   900: brandGray,
+  //   A100: brandGray,
+  //   A200: brandGray,
+  //   A400: brandGray,
+  //   A700: brandGray
+  // }
 };
 
 const Table = {
