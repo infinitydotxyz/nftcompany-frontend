@@ -7,7 +7,7 @@ export const SelectWrapper = styled.div`
   min-width: 6rem;
   max-width: 25rem;
   margin-right: 5px;
-  width: 150px;
+  width: 100px;
 `;
 
 export const Control = styled.div`
@@ -26,6 +26,8 @@ export const Label = styled.label`
   max-width: calc(100% - 30px);
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
+  height: 100%;
 `;
 
 export const DropdownButton = styled.button`
@@ -56,9 +58,9 @@ export function ArrowIcon({ isOpen }: { isOpen: boolean }) {
 
 export const Menu = styled.div`
   position: absolute;
-  width: 100%;
-  border: 1px solid inherit;
-  box-shadow: 0 2px 3px inherit;
+  width: 120%;
+  border: 1px solid;
+  // box-shadow: 0 2px 3px inherit;
   background-color: white;
   z-index: 1 !important;
 `;
@@ -115,6 +117,14 @@ export function ListItem({ children, ...containerProps }: any) {
   return (
     <ListItemContainer {...containerProps} title={children}>
       <Checkbox type="checkbox" readOnly checked={selected} {...highlighted} />
+      {children}
+    </ListItemContainer>
+  );
+}
+
+export function SimpleListItem({ children, ...containerProps }: any) {
+  return (
+    <ListItemContainer {...containerProps} title={children}>
       {children}
     </ListItemContainer>
   );
