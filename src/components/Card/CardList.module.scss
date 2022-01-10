@@ -128,11 +128,6 @@ $cardHeight: 332px;
     margin-top: 10px;
     font-size: 14px;
     align-items: flex-start;
-    // keeps long titles from flowing outside the card bounds
-    white-space: nowrap;
-    max-width: 20ch;
-    text-overflow: ellipsis;
-    overflow: hidden;
 
     .collectionRow {
       display: flex;
