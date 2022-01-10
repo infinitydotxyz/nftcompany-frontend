@@ -1,8 +1,18 @@
 import React, { Component, createRef } from 'react';
 import Downshift from 'downshift';
 import { FixedSizeList } from 'react-window';
-import { ListItem, Label, Menu, DropdownButton, ArrowIcon, SelectWrapper, Control } from './DownshiftComps';
+import {
+  ListItem,
+  Label,
+  Menu,
+  DropdownButton,
+  ArrowIcon,
+  SelectWrapper,
+  Control,
+  SimpleListItem
+} from './DownshiftComps';
 import memoizeOne from 'memoize-one';
+import styles from './FilterDrawer.module.scss';
 
 // DownshiftSelect - multi-select. Example: https://codesandbox.io/s/567w0rj74?file=/components.js
 
@@ -11,10 +21,9 @@ export type SelectItem = {
   id: string; // value
 };
 
-const ItemRenderer = ({ data, index, style }: any) => {
+const CheckboxItemRenderer = ({ data, index, style }: any) => {
   const { getItemProps, items, highlightedIndex, isItemSelected } = data;
   const item = items[index];
-
   return (
     <ListItem
       {...getItemProps({
@@ -26,12 +35,31 @@ const ItemRenderer = ({ data, index, style }: any) => {
         selected: isItemSelected(item)
       })}
     >
-      {item.label}
+      <span className={styles.dropdownCheckboxItem}>{item.label}</span>
     </ListItem>
   );
 };
 
-const ITEM_HEIGHT = 20;
+const ItemRenderer = ({ data, index, style }: any) => {
+  const { getItemProps, items, highlightedIndex, isItemSelected } = data;
+  const item = items[index];
+  return (
+    <SimpleListItem
+      {...getItemProps({
+        style,
+        index,
+        item,
+        key: item.id,
+        highlighted: highlightedIndex === index,
+        selected: isItemSelected(item)
+      })}
+    >
+      <span className={styles.dropdownItem}>{item.label}</span>
+    </SimpleListItem>
+  );
+};
+
+const ITEM_HEIGHT = 30;
 const MAX_LIST_HEIGHT = 240;
 
 interface Props {
@@ -39,7 +67,7 @@ interface Props {
   placeholder?: string;
   isMulti?: boolean;
   selectedItems?: SelectItem[];
-  onChange?: (items: SelectItem[]) => void;
+  onChange?: (items: SelectItem | SelectItem[]) => void;
 }
 
 export class DownshiftSelect extends Component<Props> {
@@ -198,7 +226,7 @@ export class DownshiftSelect extends Component<Props> {
                     ref={this.listRef}
                     style={{ zIndex: 1 }}
                   >
-                    {ItemRenderer}
+                    {this.props.isMulti === true ? CheckboxItemRenderer : ItemRenderer}
                   </FixedSizeList>
                 </Menu>
               )}

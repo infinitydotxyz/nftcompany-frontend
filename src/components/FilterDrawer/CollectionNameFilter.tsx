@@ -177,7 +177,7 @@ export default function CollectionNameFilter({ value, onClear, onChange }: Colle
           return (
             <div key={item.value + index} className={styles.resultRow}>
               <label>
-                <Box d="flex" alignItems="center" textAlign="left">
+                <Box d="flex" alignItems="center" textAlign="left" className={styles.checkBox}>
                   <input
                     type="checkbox"
                     checked={!!selectedItem}
