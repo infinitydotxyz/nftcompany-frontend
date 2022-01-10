@@ -17,7 +17,6 @@ function InfoGroup(props: InfoGroupProps) {
   return (
     <Box display="flex" flexDirection={'column'} justifyContent={'space-between'}>
       <p className={styles.title}>{props.title}</p>
-
       {props.space === 'evenly' ? (
         <Box
           display="flex"
