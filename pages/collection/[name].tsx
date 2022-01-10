@@ -189,32 +189,34 @@ const Collection = (): JSX.Element => {
             </Box>
 
             <HorizontalLine display={!toggleState ? 'none' : ''} marginTop={'40px'} />
-
             {collectionInfo && (
               <CollectionCommunity collectionInfo={collectionInfo} display={!toggleState ? 'none' : 'flex'} />
             )}
-
             <Box className="center" display={toggleState ? 'none' : 'flex'}>
-              <Box width="16%" mr={4} mt={'40px'}>
-                <FilterDrawer renderContent={true} showCollection={false} />
-              </Box>
-              <Tabs align={'center'} display={toggleState ? 'none' : ''} width="82%">
+              <Tabs align={'center'} display={toggleState ? 'none' : ''}>
                 <TabList>
                   <Tab>NFTs</Tab>
                   <Tab isDisabled={!address}>Activity</Tab>
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <CollectionContents
-                      name={name as string}
-                      onTitle={(newTitle) => {
-                        if (!title) {
-                          setTitle(newTitle);
-                        }
-                      }}
-                      onLoaded={({ address }) => setAddress(address)}
-                      listingSource={ListingSource.Infinity}
-                    />
+                    <Box display="flex" flexDirection={'row'}>
+                      <Box width="16%" mt={'40px'} mr={4}>
+                        <FilterDrawer renderContent={true} showCollection={false} />
+                      </Box>
+                      <Box width="82%">
+                        <CollectionContents
+                          name={name as string}
+                          onTitle={(newTitle) => {
+                            if (!title) {
+                              setTitle(newTitle);
+                            }
+                          }}
+                          onLoaded={({ address }) => setAddress(address)}
+                          listingSource={ListingSource.Infinity}
+                        />
+                      </Box>
+                    </Box>
                   </TabPanel>
                   <TabPanel>
                     {address && (

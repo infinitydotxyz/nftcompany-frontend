@@ -56,6 +56,9 @@ const Edit = (): JSX.Element => {
           if (isActive) {
             setCollectionInfo(collectionInfo);
             setIsAuthorized(true);
+          } else {
+            setIsAuthorized(false);
+            onOpen();
           }
         })
         .catch((err: any) => {
