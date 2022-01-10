@@ -32,7 +32,6 @@ export const getProvider = () => {
     case WalletType.WalletConnect:
       return ((window.ethereum as any)?.providers ?? [window.ethereum]).find((p: any) => p.isWalletConnect);
     default:
-      return ((window.ethereum as any)?.providers ?? [window.ethereum]).find((p: any) => p.isMetaMask);
   }
 };
 
