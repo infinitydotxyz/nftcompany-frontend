@@ -6,6 +6,10 @@ export const NFTC_FEE_RECIPIENT = '0xAAdd54c429a6eEBD4514135EaD53d98D0Cc57d57';
 export const ITEMS_PER_PAGE = 50;
 export const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 
+export const PAGE_NAMES = {
+  MY_NFTS: 'my-nfts'
+};
+
 export const LISTING_TYPE = {
   FIXED_PRICE: 'fixedPrice',
   DUTCH_AUCTION: 'dutchAuction',

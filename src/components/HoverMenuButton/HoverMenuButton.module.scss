@@ -2,7 +2,7 @@
   padding: 8px 14px;
   padding-top: 4px;
   border-radius: 100px;
-  color: #333;
+  color: var(--chakra-colors-brandColor);
   cursor: pointer;
 
   :global(body.chakra-ui-dark) & {
@@ -29,7 +29,7 @@
   border: 1px solid #eee;
 
   :global(body.chakra-ui-dark) & {
-    border: 1px solid #333;
+    border: 1px solid var(--chakra-colors-brandColor);
 
     &.menuOpen {
       background-color: var(--chakra-colors-brandColor);
@@ -37,7 +37,7 @@
     }
 
     background-color: var(--chakra-colors-brandGray, red);
-    color: #333;
+    color: var(--chakra-colors-brandColor);
   }
 }
 
