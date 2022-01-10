@@ -24,7 +24,7 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
 
-  const fetchData = async () => {
+  const fetchData = async (isActiveWrapper?: { isActive: boolean }) => {
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
     const offset = newCurrentPage * ITEMS_PER_PAGE;
@@ -39,13 +39,20 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
 
     const moreData = result?.asset_events || [];
 
+    if (isActiveWrapper && !isActiveWrapper.isActive) {
+      return;
+    }
     setIsFetching(false);
     setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);
   };
 
   React.useEffect(() => {
-    fetchData();
+    const isActiveWrapper = { isActive: true };
+    fetchData(isActiveWrapper);
+    return () => {
+      isActiveWrapper.isActive = false;
+    };
   }, []);
 
   React.useEffect(() => {

@@ -85,25 +85,28 @@ const Collection = (): JSX.Element => {
 
   useEffect(() => {
     let isActive = true;
-    setIsLoading(true);
-    getCollectionInfo(name as string)
-      .then((collectionInfo) => {
-        if (isActive) {
-          setCollectionInfo(collectionInfo);
-          setIsLoading(false);
-          if (collectionInfo?.address) {
-            setAddress(collectionInfo?.address);
-          }
-        }
-      })
-      .catch((err: any) => {
-        console.error(err);
-      });
 
+    const query = address || name;
+    // console.log({ query }, collectionInfo);
+    if (query && !collectionInfo?.address) {
+      setIsLoading(true);
+      console.log(`Getting ${query}`);
+      getCollectionInfo(query as string)
+        .then((collectionInfo) => {
+          if (isActive) {
+            setCollectionInfo(collectionInfo);
+            setIsLoading(false);
+          }
+          console.log(isActive, collectionInfo);
+        })
+        .catch((err: any) => {
+          console.error(err);
+        });
+    }
     return () => {
       isActive = false;
     };
-  }, [name]);
+  }, [name, address]);
 
   return (
     <>
