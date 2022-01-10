@@ -133,25 +133,22 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
 
         <Box display="flex" flexDirection="column" gridGap={2}>
           <Checkbox
-            colorScheme="blackAlpha"
             isChecked={filterState.listType === LISTING_TYPE.FIXED_PRICE}
             onChange={() => handleClickListType('fixedPrice')}
           >
-            Fixed Price
+            <Text className={styles.main}>Fixed Price</Text>
           </Checkbox>
           <Checkbox
-            colorScheme="blackAlpha"
             isChecked={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
             onChange={() => handleClickListType('dutchAuction')}
           >
-            Declining Price
+            <Text className={styles.main}>Declining Price</Text>
           </Checkbox>
           <Checkbox
-            colorScheme="blackAlpha"
             isChecked={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
             onChange={() => handleClickListType('englishAuction')}
           >
-            On Auction
+            <Text className={styles.main}>On Auction</Text>
           </Checkbox>
         </Box>
       </div>

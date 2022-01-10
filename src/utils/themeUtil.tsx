@@ -326,6 +326,25 @@ const Input = {
   }
 };
 
+const Checkbox = {
+  parts: ['control', 'icon', 'label'],
+  baseStyle: (props: any) => {
+    return {
+      control: {
+        border: '1px solid',
+        borderColor: 'var(--chakra-colors-brandColor)'
+      },
+      icon: {
+        color: 'var(--chakra-colors-brandColor)',
+        padding: '1px'
+      },
+      label: {
+        paddingBottom: '1px'
+      }
+    };
+  }
+};
+
 const Textarea = {
   baseStyle: (props: any) => {
     return {
@@ -401,6 +420,7 @@ export const theme = extendTheme(
       Button,
       Table,
       Input,
+      Checkbox,
       Textarea,
       Link,
       Text,
