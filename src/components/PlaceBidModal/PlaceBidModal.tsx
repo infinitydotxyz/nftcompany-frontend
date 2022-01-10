@@ -247,7 +247,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 <Button type="submit" disabled={isSubmitting}>
                   Make an Offer
                 </Button>
-                <Button disabled={isSubmitting} onClick={() => onClose && onClose()}>
+                <Button disabled={isSubmitting} variant="outline" onClick={() => onClose && onClose()}>
                   Cancel
                 </Button>
 
