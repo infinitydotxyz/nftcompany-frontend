@@ -8,7 +8,7 @@ function CollectionStat(props: { name: string; value: string | number; unit?: 'E
       <p className={styles.name}>{props.name}</p>
       <Box display="flex" flexDirection={'row'} alignItems={'center'}>
         {props.unit === 'ETH' && (
-          <Box paddingBottom={'4px'} paddingRight="2px">
+          <Box paddingBottom={'4px'}>
             <EthToken />
           </Box>
         )}

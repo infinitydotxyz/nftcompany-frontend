@@ -133,7 +133,7 @@ const Collection = (): JSX.Element => {
               <Box flexGrow={3} flexBasis={0}>
                 {collectionInfo?.stats && (
                   <CollectionInfoGroupWrapper>
-                    <InfoGroup title="Collection Stats" minChildWidth="80px" maxChildWidth="80px">
+                    <InfoGroup title="Collection Stats" minChildWidth="80px" maxChildWidth="80px" spacing="20px">
                       <CollectionStats stats={collectionInfo.stats} />
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
