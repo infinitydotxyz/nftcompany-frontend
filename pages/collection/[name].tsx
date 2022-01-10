@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
@@ -30,6 +30,7 @@ import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import CollectionCommunity from 'components/CollectionCommunity/CollectionCommunity';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
+import { IoConstructOutline } from 'react-icons/io5';
 
 const Collection = (): JSX.Element => {
   const [isFilterOpened, setIsFilterOpened] = React.useState(false);
@@ -39,7 +40,7 @@ const Collection = (): JSX.Element => {
   const { name } = router.query;
 
   const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [twitterData, setTwitterData] = useState<{ followersCount: number; timestamp: number }[]>([]);
   const [discordData, setDiscordData] = useState<{ membersCount: number; presenceCount: number; timestamp: number }[]>(
@@ -47,6 +48,10 @@ const Collection = (): JSX.Element => {
   );
 
   const [toggleState, setToggleState] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(!collectionInfo);
+  }, []);
 
   useEffect(() => {
     let isActive = true;
@@ -90,11 +95,10 @@ const Collection = (): JSX.Element => {
       setIsLoading(true);
       getCollectionInfo(query as string)
         .then((collectionInfo) => {
-          if (isActive) {
+          if (isActive && collectionInfo?.address) {
             setCollectionInfo(collectionInfo);
             setIsLoading(false);
           }
-          console.log(isActive, collectionInfo);
         })
         .catch((err: any) => {
           console.error(err);
@@ -111,12 +115,12 @@ const Collection = (): JSX.Element => {
         <title>{title || name}</title>
       </Head>
       <div className="page-container" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-        {isLoading ? (
-          <Box display="flex" justifyContent={'center'} alignItems={'center'} height="400px">
-            <div>{renderSpinner()}</div>
+        <>
+          <Box display={isLoading ? 'flex' : 'none'} justifyContent={'center'} alignItems={'center'} height="400px">
+            {isLoading && <div>{renderSpinner()}</div>}
           </Box>
-        ) : (
-          <Box display="flex" flexDirection="column">
+
+          <Box display={isLoading ? 'none' : 'flex'} flexDirection="column">
             <Box display="flex" flexDirection="row" justifyContent="space-between">
               <Box marginRight="32px" flexGrow={4} flexBasis={0}>
                 <CollectionOverview
@@ -243,7 +247,7 @@ const Collection = (): JSX.Element => {
               </Tabs>
             </Box>
           </Box>
-        )}
+        </>
       </div>
     </>
   );
