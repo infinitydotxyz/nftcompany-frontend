@@ -10,7 +10,7 @@ $cardHeight: 332px;
   align-items: center;
   height: 48px;
   padding: 0 24px;
-  background: #4047ff;
+  background: var(--chakra-colors-brandColor);
   border-radius: 24px;
   font-family: 'DM Sans', sans-serif;
   font-size: 16px;
@@ -92,32 +92,13 @@ $cardHeight: 332px;
     }
   }
 
-  &:hover {
-    .buttons {
-      display: flex;
-    }
-  }
-
   .buttons {
-    display: none;
+    display: flex;
     gap: 10px;
     // padding: 10px 20px 20px 20px;
     padding: 0;
     width: 100%;
     flex: 0;
-    color: blue;
-
-    .stadiumButtonGray,
-    .stadiumButtonBlue {
-      background-color: var(--chakra-colors-brandColor, red);
-      color: white;
-      border-radius: 100px;
-      flex: 1;
-      &:hover {
-        background-color: blue;
-        color: white;
-      }
-    }
 
     .stadiumButtonGray {
       background-color: #bbb;
@@ -168,17 +149,14 @@ $cardHeight: 332px;
       font-size: 16px;
       font-weight: 500;
       display: flex;
-      gap: 7px;
       flex-direction: column;
 
       .title {
         // keeps long titles from flowing outside the card bounds
         white-space: nowrap;
         max-width: 20ch;
-        line-height: 1;
         text-overflow: ellipsis;
         overflow: hidden;
-        margin-bottom: 6px;
       }
     }
   }
