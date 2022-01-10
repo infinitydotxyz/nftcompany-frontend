@@ -109,17 +109,15 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
         </Box>
       </Box>
 
-      {data?.length > 0 && (
-        <LineGraph
-          width={dimensions.width}
-          height={20}
-          data={data}
-          displayProps={{
-            y: { label: props.dataUnits, strokeColor: '#CED6DC' }
-          }}
-          tooltip={false}
-        />
-      )}
+      <LineGraph
+        width={dimensions.width}
+        height={20}
+        data={data}
+        displayProps={{
+          y: { label: props.dataUnits, strokeColor: '#CED6DC' }
+        }}
+        tooltip={false}
+      />
 
       {'link' in props && (
         <Link marginTop="16px" width="100%" href={props.link} target="_blank" _hover={{ textDecoration: 'none' }}>
