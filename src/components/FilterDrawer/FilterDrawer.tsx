@@ -22,7 +22,7 @@ import {
   Checkbox,
   ChakraProps
 } from '@chakra-ui/react';
-import { ArrowBackIcon, ArrowForwardIcon, SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
+import { SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
 import * as React from 'react';
 import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import CollectionNameFilter from './CollectionNameFilter';

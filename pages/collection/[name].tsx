@@ -29,8 +29,8 @@ import TextToggle from 'components/TextToggle/TextToggle';
 import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import CollectionCommunity from 'components/CollectionCommunity/CollectionCommunity';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
-import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
-import { IoConstructOutline } from 'react-icons/io5';
+import CollectionEvents, { EventType } from 'components/CollectionEvents/CollectionEvents';
+import CollectionEventsFilter from 'components/CollectionEventsFilter/CollectionEventsFilter';
 
 const Collection = (): JSX.Element => {
   const [isFilterOpened, setIsFilterOpened] = React.useState(false);
@@ -46,6 +46,8 @@ const Collection = (): JSX.Element => {
   const [discordData, setDiscordData] = useState<{ membersCount: number; presenceCount: number; timestamp: number }[]>(
     []
   );
+
+  const [eventFilterState, setEventFilterState] = useState(EventType.Sale);
 
   const [toggleState, setToggleState] = useState(false);
 
@@ -216,7 +218,7 @@ const Collection = (): JSX.Element => {
                 <TabPanels>
                   <TabPanel>
                     <Box display="flex" flexDirection={'row'} width="100%">
-                      <Box width="16%" mr={4} minWidth={'150px'}>
+                      <Box width="16%" mr={4} minWidth={'180px'}>
                         <FilterDrawer renderContent={true} showCollection={false} />
                       </Box>
                       <Box width="82%">
@@ -234,14 +236,27 @@ const Collection = (): JSX.Element => {
                     </Box>
                   </TabPanel>
                   <TabPanel>
-                    {address && (
-                      <CollectionEvents
-                        address={address}
-                        eventType="successful"
-                        activityType="sale"
-                        pageType="collection"
+                    <Box display="flex" flexDirection={'row'}>
+                      <CollectionEventsFilter
+                        filterState={eventFilterState}
+                        setFilterState={setEventFilterState}
+                        width="16%"
+                        mr={4}
+                        minWidth={'180px'}
+                        paddingBottom="30px"
+                        borderBottom="1px solid #ccc"
                       />
-                    )}
+
+                      {address && (
+                        <CollectionEvents
+                          address={address}
+                          eventType={eventFilterState}
+                          pageType="collection"
+                          width="82%"
+                          overflow="hidden"
+                        />
+                      )}
+                    </Box>
                   </TabPanel>
                 </TabPanels>
               </Tabs>

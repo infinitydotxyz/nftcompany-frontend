@@ -1,36 +1,40 @@
 import React, { useState } from 'react';
 import { apiGet } from 'utils/apiUtil';
-import { Table, Thead, Tbody, Tr, Th, Td, Link, Box } from '@chakra-ui/react';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { Table, Thead, Tbody, Tr, Th, Td, Link, Box, Text, Checkbox, ChakraProps } from '@chakra-ui/react';
 import { weiToEther } from 'utils/ethersUtil';
-import { ellipsisAddress, getChainScannerBase, renderSpinner } from 'utils/commonUtil';
+import { ellipsisAddress, getChainScannerBase, numStr, renderSpinner } from 'utils/commonUtil';
 import styles from './CollectionEvents.module.scss';
 import { FetchMore } from 'components/FetchMore/FetchMore';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import { EthToken } from 'components/Icons/Icons';
 
+export enum EventType {
+  Sale = 'successful',
+  Transfer = 'transfer',
+  Offer = 'bid_entered'
+}
 interface Props {
   address: string;
   tokenId?: string;
-  eventType: 'successful' | 'transfer' | 'bid_entered';
-  activityType: 'sale' | 'transfer' | 'offer';
   pageType: 'nft' | 'collection';
+  eventType: EventType;
 }
 
-function CollectionEvents({ address, tokenId, eventType, activityType, pageType }: Props) {
+function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Props & ChakraProps) {
   const { showAppError } = useAppContext();
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
 
-  const fetchData = async (isActiveWrapper?: { isActive: boolean }) => {
+  const fetchData = async (isActiveWrapper?: { isActive: boolean }, reset?: boolean) => {
     setIsFetching(true);
-    const newCurrentPage = currentPage + 1;
+    const newCurrentPage = reset ? 0 : currentPage + 1;
     const offset = newCurrentPage * ITEMS_PER_PAGE;
     const tokenIdParam = tokenId ? `&token_id=${tokenId}` : '';
     const addressLowerCase = address.trim().toLowerCase();
+
     const { result, error } = await apiGet(
       `/events?asset_contract_address=${addressLowerCase}${tokenIdParam}&event_type=${eventType}&only_opensea=false&offset=${offset}&limit=${ITEMS_PER_PAGE}`
     );
@@ -44,17 +48,21 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
       return;
     }
     setIsFetching(false);
-    setData([...data, ...moreData]);
+    const prevData = reset ? [] : data;
+    setData([...prevData, ...moreData]);
     setCurrentPage(newCurrentPage);
   };
 
   React.useEffect(() => {
     const isActiveWrapper = { isActive: true };
-    fetchData(isActiveWrapper);
+    setData([]);
+    setCurrentPage(-1);
+
+    fetchData(isActiveWrapper, true);
     return () => {
       isActiveWrapper.isActive = false;
     };
-  }, []);
+  }, [eventType]);
 
   React.useEffect(() => {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
@@ -64,7 +72,7 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
   }, [currentPage]);
 
   return (
-    <div>
+    <Box display="flex" flexDirection={'column'} justifyContent={'space-between'} alignItems={'center'} {...rest}>
       <Table>
         <Thead>
           <Tr>
@@ -104,7 +112,9 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {item?.seller?.user?.username || ellipsisAddress(item?.seller?.address)}
+                    {item?.seller?.user?.username ||
+                      ellipsisAddress(item?.seller?.address) ||
+                      ellipsisAddress(item?.from_account?.address)}
                   </Link>
                 </Td>
 
@@ -115,7 +125,9 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {item?.winner_account?.user?.username || ellipsisAddress(item?.winner_account?.address)}
+                    {item?.winner_account?.user?.username ||
+                      ellipsisAddress(item?.winner_account?.address) ||
+                      ellipsisAddress(item?.asset?.owner?.address)}
                   </Link>
                 </Td>
                 <Td>
@@ -124,32 +136,32 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
                   <p>{new Date(item?.created_date).toLocaleTimeString()}</p>
                 </Td>
 
-                {activityType === 'sale' && (
+                {item?.event_type === EventType.Sale && (
                   <Td>
                     {item?.total_price ? (
-                      <>
-                        <EthToken marginBottom="6px" /> {weiToEther(item?.total_price)}
-                      </>
+                      <Box display="flex" flexDirection={'row'} alignItems="center">
+                        <EthToken marginBottom={'-2px'} /> {numStr(weiToEther(item?.total_price))}{' '}
+                      </Box>
                     ) : (
                       '---'
                     )}
                   </Td>
                 )}
-                {activityType === 'offer' && (
+                {item.event_type === EventType.Offer && (
                   <Td>
                     {item?.bid_amount ? (
-                      <>
-                        <EthToken marginBottom="6px" /> {weiToEther(item?.bid_amount)}{' '}
-                      </>
+                      <Box display="flex" flexDirection={'row'} alignItems="center">
+                        <EthToken marginBottom={'-2px'} /> {numStr(weiToEther(item?.bid_amount))}{' '}
+                      </Box>
                     ) : (
                       '---'
                     )}
                   </Td>
                 )}
-                {activityType !== 'sale' && activityType !== 'offer' && <Td>{'---'}</Td>}
+                {item.event_type !== EventType.Sale && item.event_type !== EventType.Offer && <Td>{'---'}</Td>}
 
                 <Td>
-                  {activityType === 'sale' || activityType === 'transfer' ? (
+                  {item.event_type === EventType.Sale || item.event_type === EventType.Transfer ? (
                     <Link
                       className={styles.underline}
                       href={`${getChainScannerBase(item?.chainId)}/tx/${item.transaction?.transaction_hash}`}
@@ -180,7 +192,7 @@ function CollectionEvents({ address, tokenId, eventType, activityType, pageType 
           }}
         />
       )}
-    </div>
+    </Box>
   );
 }
 
