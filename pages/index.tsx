@@ -47,32 +47,23 @@ export default function Home() {
       <div className={styles.containerAvg}>
         <div className={styles.infoHomepage}>
           <div className={styles.bigTitle}>
-            Infinity is fully compatible with OpenSea. It uses the same contracts, not forks.
-            <div className={[styles.bigTitleHighlight, styles.alignCenter].join(' ')}>
-              <div>
-                No new smart contract risks.
-              </div>
-            </div>
+            Infinity is completely decentralized with a token for both governance & utility within the platform
           </div>
 
           <div className={styles.checklist}>
+            <div className={styles.subHeader}>Staking Infinity tokens provides</div>
+
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>Low fees of 1.5%, go to a community-controlled treasury</div>
+              <div>Zero fees</div>
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>
-                List your NFTs without re-initiating your wallet or re-approving tokens (if already done on OpenSea)
-              </div>
+              <div>NFT community curation</div>
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>Earn governance tokens for activity on the marketplace</div>
-            </div>
-            <div className={styles.checklistRow}>
-              <CheckCircleIcon className={styles.icon} />
-              <div>Vote on all aspects of the marketplace and fee treasury as the token holder</div>
+              <div>Powering NFT communities</div>
             </div>
           </div>
         </div>
@@ -243,8 +234,7 @@ export default function Home() {
                 },
                 {
                   question: 'How do I earn $NFT tokens?',
-                  answer:
-                    'Please see our Medium for more details on this.'
+                  answer: 'Please see our Medium for more details on this.'
                 },
                 {
                   question: 'How is Infinity different from other NFT marketplaces?',

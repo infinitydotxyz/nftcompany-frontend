@@ -10,6 +10,10 @@
   min-width: 470px;
 }
 
+.Toastify__toast-body div:nth-child(2) {
+  margin-bottom: 5px;
+}
+
 .Toastify__toast--info {
   word-break: break-all !important;
   background-color: var(--chakra-colors-brandColor, red) !important;

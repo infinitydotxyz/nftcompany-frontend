@@ -1,5 +1,5 @@
-import 'isomorphic-unfetch'
-import * as QueryString from 'query-string'
+import 'isomorphic-unfetch';
+import * as QueryString from 'query-string';
 import {
   Network,
   OpenSeaAPIConfig,
@@ -13,7 +13,7 @@ import {
   OrderbookResponse,
   OrderJSON,
   OrderQuery
-} from './types'
+} from './types';
 import {
   assetBundleFromJSON,
   assetFromJSON,
@@ -21,7 +21,7 @@ import {
   orderFromJSON,
   tokenFromJSON,
   personalSignAsync
-} from './utils/utils'
+} from './utils/utils';
 import {
   API_BASE_MAINNET,
   API_BASE_RINKEBY,
@@ -30,31 +30,28 @@ import {
   ORDERBOOK_VERSION,
   SITE_HOST_MAINNET,
   SITE_HOST_RINKEBY
-} from './constants'
-import {
-  getAuthHeaders
-} from '../src/utils/apiUtil'
+} from './constants';
+import { getAuthHeaders } from '../src/utils/apiUtil';
 
 export class OpenSeaAPI {
-
   /**
    * Host url for OpenSea
    */
-  public readonly hostUrl: string
+  public readonly hostUrl: string;
   /**
    * Base url for the API
    */
-  public readonly apiBaseUrl: string
+  public readonly apiBaseUrl: string;
   /**
    * Page size to use for fetching orders
    */
-  public pageSize = 20
+  public pageSize = 20;
   /**
    * Logger function to use when debugging
    */
-  public logger: (arg: string) => void
+  public logger: (arg: string) => void;
 
-  private apiKey: string | undefined
+  private apiKey: string | undefined;
 
   /**
    * Create an instance of the OpenSea API
@@ -62,22 +59,22 @@ export class OpenSeaAPI {
    * @param logger Optional function for logging debug strings before and after requests are made
    */
   constructor(config: OpenSeaAPIConfig, logger?: (arg: string) => void) {
-    this.apiKey = config.apiKey
+    this.apiKey = config.apiKey;
 
     switch (config.networkName) {
       case Network.Rinkeby:
-        this.apiBaseUrl = config.apiBaseUrl || API_BASE_RINKEBY
-        this.hostUrl = SITE_HOST_RINKEBY
-        break
+        this.apiBaseUrl = config.apiBaseUrl || API_BASE_RINKEBY;
+        this.hostUrl = SITE_HOST_RINKEBY;
+        break;
       case Network.Main:
       default:
-        this.apiBaseUrl = config.apiBaseUrl || API_BASE_MAINNET
-        this.hostUrl = SITE_HOST_MAINNET
-        break
+        this.apiBaseUrl = config.apiBaseUrl || API_BASE_MAINNET;
+        this.hostUrl = SITE_HOST_MAINNET;
+        break;
     }
 
     // Debugging: default to nothing
-    this.logger = logger || ((arg: string) => arg)
+    this.logger = logger || ((arg: string) => arg);
   }
 
   /**
@@ -88,17 +85,17 @@ export class OpenSeaAPI {
    * @param retries Number of times to retry if the service is unavailable for any reason
    */
   public async postOrder(order: OrderJSON, retries = 2): Promise<Order> {
-    let json
-    let user = order.maker.trim().toLowerCase()
-    let path = '/u/' + user + `${ORDERBOOK_PATH}/orders`
+    let json;
+    const user = order.maker.trim().toLowerCase();
+    const path = '/u/' + user + `${ORDERBOOK_PATH}/orders`;
     try {
-      json = await this.post(path, order) as OrderJSON
+      json = (await this.post(path, order)) as OrderJSON;
     } catch (error) {
-      _throwOrContinue(error, retries)
-      await delay(3000)
-      return this.postOrder(order, retries - 1)
+      _throwOrContinue(error, retries);
+      await delay(3000);
+      return this.postOrder(order, retries - 1);
     }
-    return orderFromJSON(json)
+    return orderFromJSON(json);
   }
 
   /**
@@ -110,17 +107,12 @@ export class OpenSeaAPI {
    * @param tokenId The asset's token ID
    * @param email The email allowed to buy.
    */
-  public async postAssetWhitelist(
-      tokenAddress: string,
-      tokenId: string | number,
-      email: string
-    ): Promise<boolean> {
-
+  public async postAssetWhitelist(tokenAddress: string, tokenId: string | number, email: string): Promise<boolean> {
     const json = await this.post(`${API_PATH}/asset/${tokenAddress}/${tokenId}/whitelist/`, {
       email
-    })
+    });
 
-    return !!json.success
+    return !!json.success;
   }
 
   /**
@@ -129,26 +121,24 @@ export class OpenSeaAPI {
    *  on the `OrderJSON` type is supported
    */
   public async getOrder(query: OrderQuery): Promise<Order> {
-    let path = `${ORDERBOOK_PATH}/orders`
-    const result = await this.get(
-      path, {
-        limit: 1,
-        ...query
-      }
-    )
+    const path = `${ORDERBOOK_PATH}/orders`;
+    const result = await this.get(path, {
+      limit: 1,
+      ...query
+    });
 
-    let orderJSON
+    let orderJSON;
     if (ORDERBOOK_VERSION == 0) {
-      const json = result as OrderJSON[]
-      orderJSON = json[0]
+      const json = result as OrderJSON[];
+      orderJSON = json[0];
     } else {
-      const json = result as OrderbookResponse
-      orderJSON = json.orders[0]
+      const json = result as OrderbookResponse;
+      orderJSON = json.orders[0];
     }
     if (!orderJSON) {
-      throw new Error(`Not found: no matching order found`)
+      throw new Error(`Not found: no matching order found`);
     }
-    return orderFromJSON(orderJSON)
+    return orderFromJSON(orderJSON);
   }
 
   /**
@@ -159,33 +149,26 @@ export class OpenSeaAPI {
    * @param page Page number, defaults to 1. Can be overridden by
    * `limit` and `offset` attributes from OrderQuery
    */
-  public async getOrders(
-      query: OrderQuery = {},
-      page = 1
-    ): Promise<{orders: Order[]; count: number}> {
-
-    let path = `${ORDERBOOK_PATH}/orders`
-    const result = await this.get(
-      path,
-      {
-        limit: this.pageSize,
-        offset: (page - 1) * this.pageSize,
-        ...query,
-      }
-    )
+  public async getOrders(query: OrderQuery = {}, page = 1): Promise<{ orders: Order[]; count: number }> {
+    const path = `${ORDERBOOK_PATH}/orders`;
+    const result = await this.get(path, {
+      limit: this.pageSize,
+      offset: (page - 1) * this.pageSize,
+      ...query
+    });
 
     if (ORDERBOOK_VERSION == 0) {
-      const json = result as OrderJSON[]
+      const json = result as OrderJSON[];
       return {
-        orders: json.map(j => orderFromJSON(j)),
+        orders: json.map((j) => orderFromJSON(j)),
         count: json.length
-      }
+      };
     } else {
-      const json = result as OrderbookResponse
+      const json = result as OrderbookResponse;
       return {
-        orders: json.orders.map(j => orderFromJSON(j)),
+        orders: json.orders.map((j) => orderFromJSON(j)),
         count: json.count
-      }
+      };
     }
   }
 
@@ -195,25 +178,26 @@ export class OpenSeaAPI {
    * @param tokenId The asset's token ID, or null if ERC-20
    * @param retries Number of times to retry if the service is unavailable for any reason
    */
-  public async getAsset({
-      tokenAddress, tokenId
+  public async getAsset(
+    {
+      tokenAddress,
+      tokenId
     }: {
-      tokenAddress: string,
-      tokenId: string | number | null,
+      tokenAddress: string;
+      tokenId: string | number | null;
     },
-                        retries = 1
-    ): Promise<OpenSeaAsset> {
-
-    let json
+    retries = 1
+  ): Promise<OpenSeaAsset> {
+    let json;
     try {
-      json = await this.get(`${API_PATH}/asset/${tokenAddress}/${tokenId || 0}/`)
+      json = await this.get(`${API_PATH}/asset/${tokenAddress}/${tokenId || 0}/`);
     } catch (error) {
-      _throwOrContinue(error, retries)
-      await delay(1000)
-      return this.getAsset({ tokenAddress, tokenId }, retries - 1)
+      _throwOrContinue(error, retries);
+      await delay(1000);
+      return this.getAsset({ tokenAddress, tokenId }, retries - 1);
     }
 
-    return assetFromJSON(json)
+    return assetFromJSON(json);
   }
 
   /**
@@ -223,20 +207,19 @@ export class OpenSeaAPI {
    * `limit` and `offset` attributes from OpenSeaAssetQuery
    */
   public async getAssets(
-      query: OpenSeaAssetQuery = {},
-      page = 1
-    ): Promise<{assets: OpenSeaAsset[]; estimatedCount: number}> {
-
+    query: OpenSeaAssetQuery = {},
+    page = 1
+  ): Promise<{ assets: OpenSeaAsset[]; estimatedCount: number }> {
     const json = await this.get(`${API_PATH}/assets/`, {
       limit: this.pageSize,
       offset: (page - 1) * this.pageSize,
       ...query
-    })
+    });
 
     return {
       assets: json.assets.map((j: any) => assetFromJSON(j)),
       estimatedCount: json.estimated_count
-    }
+    };
   }
 
   /**
@@ -247,40 +230,36 @@ export class OpenSeaAPI {
    * @param retries Number of times to retry if the service is unavailable for any reason
    */
   public async getPaymentTokens(
-      query: OpenSeaFungibleTokenQuery = {},
-      page = 1,
-      retries = 1
-    ): Promise<{tokens: OpenSeaFungibleToken[]}> {
-
-    let json
+    query: OpenSeaFungibleTokenQuery = {},
+    page = 1,
+    retries = 1
+  ): Promise<{ tokens: OpenSeaFungibleToken[] }> {
+    let json;
     try {
       json = await this.get(`${API_PATH}/tokens/`, {
         ...query,
         limit: this.pageSize,
         offset: (page - 1) * this.pageSize
-      })
+      });
     } catch (error) {
-      _throwOrContinue(error, retries)
-      await delay(1000)
-      return this.getPaymentTokens(query, page, retries - 1)
+      _throwOrContinue(error, retries);
+      await delay(1000);
+      return this.getPaymentTokens(query, page, retries - 1);
     }
 
     return {
       tokens: json.map((t: any) => tokenFromJSON(t))
-    }
+    };
   }
 
   /**
    * Fetch an bundle from the API, return null if it isn't found
    * @param slug The bundle's identifier
    */
-  public async getBundle({ slug }: {
-      slug: string
-    }): Promise<OpenSeaAssetBundle | null> {
+  public async getBundle({ slug }: { slug: string }): Promise<OpenSeaAssetBundle | null> {
+    const json = await this.get(`${API_PATH}/bundle/${slug}/`);
 
-    const json = await this.get(`${API_PATH}/bundle/${slug}/`)
-
-    return json ? assetBundleFromJSON(json) : null
+    return json ? assetBundleFromJSON(json) : null;
   }
 
   /**
@@ -290,20 +269,19 @@ export class OpenSeaAPI {
    * `limit` and `offset` attributes from OpenSeaAssetBundleQuery
    */
   public async getBundles(
-      query: OpenSeaAssetBundleQuery = {},
-      page = 1
-    ): Promise<{bundles: OpenSeaAssetBundle[]; estimatedCount: number}> {
-
+    query: OpenSeaAssetBundleQuery = {},
+    page = 1
+  ): Promise<{ bundles: OpenSeaAssetBundle[]; estimatedCount: number }> {
     const json = await this.get(`${API_PATH}/bundles/`, {
       ...query,
       limit: this.pageSize,
       offset: (page - 1) * this.pageSize
-    })
+    });
 
     return {
       bundles: json.bundles.map((j: any) => assetBundleFromJSON(j)),
       estimatedCount: json.estimated_count
-    }
+    };
   }
 
   /**
@@ -312,12 +290,11 @@ export class OpenSeaAPI {
    * @param query Data to send. Will be stringified using QueryString
    */
   public async get(apiPath: string, query: object = {}): Promise<any> {
+    const qs = QueryString.stringify(query);
+    const url = `${apiPath}?${qs}`;
 
-    const qs = QueryString.stringify(query)
-    const url = `${apiPath}?${qs}`
-
-    const response = await this._fetch(url)
-    return response.json()
+    const response = await this._fetch(url);
+    return response.json();
   }
 
   /**
@@ -328,19 +305,18 @@ export class OpenSeaAPI {
    *  a body, it won't be stringified.
    */
   public async post(apiPath: string, body?: object, opts: RequestInit = {}): Promise<any> {
-
     const fetchOpts = {
       method: 'POST',
       body: body ? JSON.stringify(body) : undefined,
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       ...opts
-    }
+    };
 
-    const response = await this._fetch(apiPath, fetchOpts)
-    return response.json()
+    const response = await this._fetch(apiPath, fetchOpts);
+    return response.json();
   }
 
   /**
@@ -351,11 +327,10 @@ export class OpenSeaAPI {
    *  a body, it won't be stringified.
    */
   public async put(apiPath: string, body: object, opts: RequestInit = {}) {
-
     return this.post(apiPath, body, {
       method: 'PUT',
       ...opts
-    })
+    });
   }
 
   /**
@@ -386,55 +361,55 @@ export class OpenSeaAPI {
 
   private async _handleApiResponse(response: Response) {
     if (response.ok) {
-      this.logger(`Got success: ${response.status}`)
-      return response
+      this.logger(`Got success: ${response.status}`);
+      return response;
     }
 
-    let result
-    let errorMessage
+    let result;
+    let errorMessage;
     try {
-      result = await response.text()
-      result = JSON.parse(result)
+      result = await response.text();
+      result = JSON.parse(result);
     } catch {
       // Result will be undefined or text
     }
 
-    this.logger(`Got error ${response.status}: ${JSON.stringify(result)}`)
+    this.logger(`Got error ${response.status}: ${JSON.stringify(result)}`);
 
     switch (response.status) {
       case 400:
-        errorMessage = result && result.errors
-          ? result.errors.join(', ')
-          : `Invalid request: ${JSON.stringify(result)}`
-        break
+        errorMessage =
+          result && result.errors ? result.errors.join(', ') : `Invalid request: ${JSON.stringify(result)}`;
+        break;
       case 401:
       case 403:
-        errorMessage = `Unauthorized. Full message was '${JSON.stringify(result)}'`
-        break
+        errorMessage = `Unauthorized. Full message was '${JSON.stringify(result)}'`;
+        break;
       case 404:
-        errorMessage = `Not found. Full message was '${JSON.stringify(result)}'`
-        break
+        errorMessage = `Not found. Full message was '${JSON.stringify(result)}'`;
+        break;
       case 500:
-        errorMessage = `Internal server error. Please contact us via Discord: https://discord.gg/SefzVZU72S - full message was ${JSON.stringify(result)}`
-        break
+        errorMessage = `Internal server error. Please contact us via Discord: https://discord.gg/SefzVZU72S - full message was ${JSON.stringify(
+          result
+        )}`;
+        break;
       case 503:
-        errorMessage = `Service unavailable. Please try again in a few minutes. If the problem persists please contact us via Discord: https://discord.gg/SefzVZU72S - full message was ${JSON.stringify(result)}`
-        break
+        errorMessage = `Service unavailable. Please try again in a few minutes. If the problem persists please contact us via Discord: https://discord.gg/SefzVZU72S - full message was ${JSON.stringify(
+          result
+        )}`;
+        break;
       default:
-        errorMessage = `Message: ${JSON.stringify(result)}`
-        break
+        errorMessage = `Message: ${JSON.stringify(result)}`;
+        break;
     }
 
-    throw new Error(`API Error ${response.status}: ${errorMessage}`)
+    throw new Error(`API Error ${response.status}: ${errorMessage}`);
   }
 }
 
 function _throwOrContinue(error: Error, retries: number) {
-  const isUnavailable = !!error.message && (
-    error.message.includes('503') ||
-    error.message.includes('429')
-  )
+  const isUnavailable = !!error.message && (error.message.includes('503') || error.message.includes('429'));
   if (retries <= 0 || !isUnavailable) {
-    throw error
+    throw error;
   }
 }

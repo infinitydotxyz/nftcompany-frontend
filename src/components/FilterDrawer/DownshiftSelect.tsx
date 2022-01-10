@@ -3,6 +3,7 @@ import Downshift from 'downshift';
 import { FixedSizeList } from 'react-window';
 import { ListItem, Label, Menu, DropdownButton, ArrowIcon, SelectWrapper, Control } from './DownshiftComps';
 import memoizeOne from 'memoize-one';
+import styles from './FilterDrawer.module.scss';
 
 // DownshiftSelect - multi-select. Example: https://codesandbox.io/s/567w0rj74?file=/components.js
 
@@ -26,12 +27,12 @@ const ItemRenderer = ({ data, index, style }: any) => {
         selected: isItemSelected(item)
       })}
     >
-      {item.label}
+      <span className={styles.dropdownItem}>{item.label}</span>
     </ListItem>
   );
 };
 
-const ITEM_HEIGHT = 20;
+const ITEM_HEIGHT = 30;
 const MAX_LIST_HEIGHT = 240;
 
 interface Props {

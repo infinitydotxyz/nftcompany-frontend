@@ -11,10 +11,16 @@
   display: flex;
 }
 
-.filterPlaceholder {
-  width: 300px;
+.col {
+  width: 100%;
+  display: inline-flex;
+}
 
-  @media only screen and (min-width: 1000px) and (max-width: 1400px) {
-    width: 0; // for small screen: no placeholder width. Otherwise, the cards will look squeezed.
-  }
+.col1 {
+  width: 16%;
+  margin-right: 90px;
+}
+
+.col2 {
+  width: 80%;
 }

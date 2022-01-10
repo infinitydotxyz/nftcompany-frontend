@@ -13,6 +13,7 @@ import { getSearchFriendlyString } from 'utils/commonUtil';
 import { TraitBox } from 'components/PurchaseAccordion/TraitBox';
 import { NftAction } from 'types';
 import AppLink from 'components/AppLink/AppLink';
+import { useAppContext } from 'utils/context/AppContext';
 
 type Props = {
   tokenId: string;
@@ -23,6 +24,7 @@ type Props = {
 export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Element => {
   const [data, setData] = useState<CardData | undefined>();
   const [title, setTitle] = useState('');
+  const { chainId } = useAppContext();
 
   const action = NftAction.BuyNft;
 
@@ -36,7 +38,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
     filter.tokenAddress = tokenAddress;
     filter.tokenId = tokenId;
 
-    const result = await getListings({ ...filter, listingSource: ListingSource.Infinity });
+    const result = await getListings({ ...filter, chainId, listingSource: ListingSource.Infinity });
 
     if (result && result.length > 0) {
       let theData = result[0];

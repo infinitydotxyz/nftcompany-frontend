@@ -14,7 +14,7 @@ body {
   margin: 0;
 }
 html {
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 /* Remove focus border on buttons */
@@ -129,12 +129,12 @@ svg {
 }
 
 .tg-title {
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   line-height: 1.25;
   font-weight: 500;
   margin: 0;
   letter-spacing: 0.05em;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .tg-desc {
@@ -173,6 +173,10 @@ svg {
 @media (max-width: 500px) {
   .footer {
     width: 105%;
+  }
+
+  .tg-title {
+    font-size: 1.5rem;
   }
 }
 

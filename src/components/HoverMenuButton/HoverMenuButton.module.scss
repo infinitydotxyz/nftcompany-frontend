@@ -4,7 +4,6 @@
   border-radius: 100px;
   color: #333;
   cursor: pointer;
-  font-weight: bold;
 
   :global(body.chakra-ui-dark) & {
     color: #eee;
@@ -45,6 +44,10 @@
 .buttonContent {
   display: flex;
   white-space: nowrap;
+
+  @media screen and (max-width: 500px) {
+    font-size: 0.8rem;
+  }
 
   // switch svgs to white
   img {

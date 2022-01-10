@@ -5,7 +5,7 @@ import Layout from 'containers/layout';
 import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import { apiGet } from 'utils/apiUtil';
-import { ITEMS_PER_PAGE, NFT_DATA_SOURCES } from 'utils/constants';
+import { ITEMS_PER_PAGE, NFT_DATA_SOURCES, PAGE_NAMES } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
@@ -85,6 +85,7 @@ export default function MyNFTs() {
               showItems={[]}
               userAccount={user?.account}
               action={NftAction.ListNft}
+              pageName={PAGE_NAMES.MY_NFTS}
               onClickAction={(item) => {
                 setListModalItem(item);
               }}
