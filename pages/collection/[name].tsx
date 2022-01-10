@@ -85,12 +85,9 @@ const Collection = (): JSX.Element => {
 
   useEffect(() => {
     let isActive = true;
-
     const query = address || name;
-    // console.log({ query }, collectionInfo);
     if (query && !collectionInfo?.address) {
       setIsLoading(true);
-      console.log(`Getting ${query}`);
       getCollectionInfo(query as string)
         .then((collectionInfo) => {
           if (isActive) {
@@ -136,21 +133,32 @@ const Collection = (): JSX.Element => {
               <Box flexGrow={3} flexBasis={0}>
                 {collectionInfo?.stats && (
                   <CollectionInfoGroupWrapper>
-                    <InfoGroup title="Collection Stats" minChildWidth="80px" maxChildWidth="80px" spacing="20px">
+                    <InfoGroup
+                      title="Collection Stats"
+                      minChildWidth="85px"
+                      maxChildWidth="85px"
+                      spacing="20px"
+                      space="evenly"
+                    >
                       <CollectionStats stats={collectionInfo.stats} />
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
                 )}
                 {collectionInfo?.benefits && collectionInfo?.benefits?.length > 0 && (
                   <CollectionInfoGroupWrapper>
-                    <InfoGroup title="Benfits of holding the NFTs" minChildWidth="100px" maxChildWidth="100px">
+                    <InfoGroup
+                      title="Benfits of holding the NFTs"
+                      minChildWidth="100px"
+                      maxChildWidth="100px"
+                      space="evenly"
+                    >
                       <CollectionBenefits benefits={collectionInfo.benefits} />
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
                 )}
                 {collectionInfo?.links && (
                   <CollectionInfoGroupWrapper>
-                    <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px">
+                    <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px" space="start">
                       <CollectionLinks links={collectionInfo.links} />
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
@@ -195,16 +203,16 @@ const Collection = (): JSX.Element => {
             {collectionInfo && (
               <CollectionCommunity collectionInfo={collectionInfo} display={!toggleState ? 'none' : 'flex'} />
             )}
-            <Box className="center" display={toggleState ? 'none' : 'flex'}>
-              <Tabs align={'center'} display={toggleState ? 'none' : ''}>
+            <Box className="center" display={toggleState ? 'none' : 'flex'} width="100%">
+              <Tabs align={'center'} display={toggleState ? 'none' : ''} width="100%">
                 <TabList>
                   <Tab>NFTs</Tab>
                   <Tab isDisabled={!address}>Activity</Tab>
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <Box display="flex" flexDirection={'row'}>
-                      <Box width="16%" mt={'40px'} mr={4}>
+                    <Box display="flex" flexDirection={'row'} width="100%">
+                      <Box width="16%" mr={4} minWidth={'150px'}>
                         <FilterDrawer renderContent={true} showCollection={false} />
                       </Box>
                       <Box width="82%">
