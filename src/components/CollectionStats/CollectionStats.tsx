@@ -10,7 +10,12 @@ function CollectionStats(props: { stats: CollectionStatsType }) {
     <CollectionStat key="total-owners" name="Owners" value={numStr(props.stats.owners)} />
   );
   const floorPrice = props.stats.floorPrice && (
-    <CollectionStat key="floor-price" name="Floor price" value={numStr(props.stats.floorPrice)} unit="ETH" />
+    <CollectionStat
+      key="floor-price"
+      name="Floor price"
+      value={numStr(Math.floor(props.stats.floorPrice * 1000) / 1000)}
+      unit="ETH"
+    />
   );
   const volumeTraded = props.stats.total.volume && (
     <CollectionStat
