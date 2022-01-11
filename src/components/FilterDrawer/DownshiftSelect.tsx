@@ -68,6 +68,7 @@ interface Props {
   isMulti?: boolean;
   selectedItems?: SelectItem[];
   onChange?: (items: SelectItem | SelectItem[]) => void;
+  disabled?: boolean;
 }
 
 export class DownshiftSelect extends Component<Props> {
@@ -187,6 +188,7 @@ export class DownshiftSelect extends Component<Props> {
                     title: labelText,
                     tabIndex: 0
                   })}
+                  disabled={this.props.disabled}
                 >
                   {labelText || this.props.placeholder}
                 </Label>

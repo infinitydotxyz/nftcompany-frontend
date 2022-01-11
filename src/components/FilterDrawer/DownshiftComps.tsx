@@ -22,12 +22,14 @@ export const Control = styled.div`
 
 export const Label = styled.label`
   display: inline-block;
-  cursor: pointer;
   max-width: calc(100% - 30px);
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
   height: 100%;
+  position: absolute;
+  color: ${(props: any) => (props.disabled === true ? 'lightgray' : 'inherit')};
+  cursor: ${(props: any) => (props.disabled === true ? 'default' : 'pointer')};
 `;
 
 export const DropdownButton = styled.button`
