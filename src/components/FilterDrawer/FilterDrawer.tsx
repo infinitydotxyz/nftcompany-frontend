@@ -146,7 +146,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, collection }: P
   const shouldFetchTraits = selectedCollectionIds.split(',').length === 1;
 
   const content = (
-    <div className={styles.main}>
+    <Box className={styles.main} mt={6}>
       <div className={styles.bottomBorder}>
         <Text mb={4} mt={4}>
           Sale Type
@@ -373,7 +373,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, collection }: P
           Clear
         </Button>
       </Box>
-    </div>
+    </Box>
   );
   if (renderContent === true) {
     return (
