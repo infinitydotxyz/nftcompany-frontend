@@ -12,9 +12,10 @@ import { useAppContext } from 'utils/context/AppContext';
 
 interface CollectionCommunityProps {
   collectionInfo?: CollectionData;
+  onClickEdit: () => void;
 }
 
-function CollectionCommunity({ collectionInfo, ...rest }: CollectionCommunityProps & ChakraProps) {
+function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: CollectionCommunityProps & ChakraProps) {
   const { user, showAppError } = useAppContext();
   const twitterFeedContainerRef = useRef<any>();
   const [twitterFeedWidth, setTwitterFeedWidth] = useState(430);
@@ -88,37 +89,42 @@ function CollectionCommunity({ collectionInfo, ...rest }: CollectionCommunityPro
       alignItems={'space-between'}
       {...rest}
     >
-      <Box
-        display={'flex'}
-        flexDirection={['column']}
-        width={['50%', '50%', '50%', '100%']}
-        marginTop="56px"
-        // justifyContent={'space-between'}
-      >
-        <Box display={'flex'} flexDirection={'column'} width={'100%'} alignItems={'flex-start'}>
+      <Box display={'flex'} flexDirection={['column']} width={['50%', '50%', '50%', '100%']} marginTop="56px">
+        <Box display={'flex'} flexDirection={'row'} width={'100%'} alignItems={'flex-start'}>
           <WithTitle title="Twitter mentions">
             <Box maxHeight={'300'} overflowY="scroll">
-              {collectionInfo?.twitterSnippet?.topMentions?.map((mention) => {
-                return (
-                  <ExternalLinkCard
-                    key={mention.id}
-                    marginY="8px"
-                    title={mention.name}
-                    subtitle={`Followers: ${numStr(mention.followersCount)}`}
-                    link={`https://twitter.com/${mention.username}`}
-                    linkText="View Profile"
-                  />
-                );
-              })}
+              {collectionInfo?.twitterSnippet?.topMentions && collectionInfo?.twitterSnippet?.topMentions.length > 0 ? (
+                collectionInfo?.twitterSnippet?.topMentions?.map((mention) => {
+                  return (
+                    <ExternalLinkCard
+                      key={mention.id}
+                      marginY="8px"
+                      title={mention.name}
+                      subtitle={`Followers: ${numStr(mention.followersCount)}`}
+                      link={`https://twitter.com/${mention.username}`}
+                      linkText="View Profile"
+                    />
+                  );
+                })
+              ) : (
+                <ExternalLinkCard
+                  key={'default-twitter-mention'}
+                  marginY="8px"
+                  title={'Name'}
+                  subtitle={``}
+                  linkText="Add Twitter"
+                  onClick={onClickEdit}
+                />
+              )}
             </Box>
           </WithTitle>
 
           <Spacer width={['32px', '32px', '32px', '56px']} maxWidth={['32px', '32px', '32px', '56px']} />
 
-          {collectionInfo?.partnerships && collectionInfo?.partnerships?.length > 0 && (
-            <WithTitle title="Partnerships">
-              <Box maxHeight={'300'} overflowY="scroll">
-                {collectionInfo?.partnerships?.map((partnership) => {
+          <WithTitle title="Partnerships">
+            <Box maxHeight={'300'} overflowY="auto">
+              {collectionInfo?.partnerships && collectionInfo?.partnerships?.length > 0 ? (
+                collectionInfo?.partnerships?.map((partnership) => {
                   return (
                     <ExternalLinkCard
                       key={partnership.name}
@@ -129,13 +135,22 @@ function CollectionCommunity({ collectionInfo, ...rest }: CollectionCommunityPro
                       linkText="Website"
                     />
                   );
-                })}
-              </Box>
-            </WithTitle>
-          )}
+                })
+              ) : (
+                <ExternalLinkCard
+                  key={'default-partnership'}
+                  marginY="8px"
+                  title={'Name'}
+                  subtitle={''}
+                  linkText="Add partnership"
+                  onClick={onClickEdit}
+                />
+              )}
+            </Box>
+          </WithTitle>
         </Box>
 
-        <Spacer width={{ md: '32px', lg: '32px', xl: '56px' }} />
+        <Spacer maxHeight={{ md: '32px', lg: '32px', xl: '56px' }} />
 
         <Box display={'flex'} flexDirection={'row'} marginTop="56px" justifyContent={'space-between'}>
           <WithTitle title="Vote">

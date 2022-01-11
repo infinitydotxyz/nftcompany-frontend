@@ -66,9 +66,7 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
 
   useEffect(() => {
     const { width, height } = containerRef?.current?.getBoundingClientRect();
-    if (width && height) {
-      setDimensions({ width, height });
-    }
+    setDimensions({ width: width || 140, height: height || 25 });
   }, [containerRef?.current]);
 
   return (
@@ -111,7 +109,7 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
 
       <LineGraph
         width={dimensions.width}
-        height={20}
+        height={25}
         data={data}
         displayProps={{
           y: { label: props.dataUnits, strokeColor: '#CED6DC' }

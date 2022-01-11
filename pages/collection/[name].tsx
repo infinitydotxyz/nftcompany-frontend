@@ -33,11 +33,14 @@ import CollectionEvents, { EventType } from 'components/CollectionEvents/Collect
 import CollectionEventsFilter from 'components/CollectionEventsFilter/CollectionEventsFilter';
 
 const Collection = (): JSX.Element => {
-  const [isFilterOpened, setIsFilterOpened] = React.useState(false);
   const [title, setTitle] = useState<string | undefined>();
   const [address, setAddress] = useState('');
   const router = useRouter();
   const { name } = router.query;
+
+  const onEdit = () => {
+    router.push(`/collection/edit/${address}`);
+  };
 
   const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
   const [isLoading, setIsLoading] = useState(true);
@@ -133,6 +136,8 @@ const Collection = (): JSX.Element => {
                   creator={''}
                   description={collectionInfo?.description}
                   collectionAddress={collectionInfo?.address ?? ''}
+                  onClickEdit={onEdit}
+                  isClaimed={collectionInfo?.isClaimed ?? false}
                 />
               </Box>
               <Spacer />
@@ -162,13 +167,17 @@ const Collection = (): JSX.Element => {
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
                 )}
-                {collectionInfo?.links && (
-                  <CollectionInfoGroupWrapper>
-                    <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px" space="start">
-                      <CollectionLinks links={collectionInfo.links} />
-                    </InfoGroup>
-                  </CollectionInfoGroupWrapper>
-                )}
+
+                <CollectionInfoGroupWrapper>
+                  <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px" space="start">
+                    <CollectionLinks
+                      links={collectionInfo?.links ?? {}}
+                      onClickEdit={onEdit}
+                      isClaimed={collectionInfo?.isClaimed ?? false}
+                    />
+                  </InfoGroup>
+                </CollectionInfoGroupWrapper>
+
                 <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                   <Box marginRight="20px">
                     <GraphPreview
@@ -207,7 +216,11 @@ const Collection = (): JSX.Element => {
 
             <HorizontalLine display={!toggleState ? 'none' : ''} marginTop={'40px'} />
             {collectionInfo && (
-              <CollectionCommunity collectionInfo={collectionInfo} display={!toggleState ? 'none' : 'flex'} />
+              <CollectionCommunity
+                collectionInfo={collectionInfo}
+                display={!toggleState ? 'none' : 'flex'}
+                onClickEdit={onEdit}
+              />
             )}
             <Box className="center" display={toggleState ? 'none' : 'flex'} width="100%">
               <Tabs align={'center'} display={toggleState ? 'none' : ''} width="100%">
