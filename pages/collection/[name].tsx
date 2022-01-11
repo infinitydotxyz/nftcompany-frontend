@@ -46,6 +46,7 @@ const Collection = (): JSX.Element => {
 
   const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
   const [isLoading, setIsLoading] = useState(true);
+  const [isCardsLoading, setIsCardsLoading] = useState(true);
 
   const [twitterData, setTwitterData] = useState<{ followersCount: number; timestamp: number }[]>([]);
   const [discordData, setDiscordData] = useState<{ membersCount: number; presenceCount: number; timestamp: number }[]>(
@@ -55,6 +56,7 @@ const Collection = (): JSX.Element => {
   const [eventFilterState, setEventFilterState] = useState(EventType.Sale);
 
   const [toggleState, setToggleState] = useState(false);
+  const [failedWithSlug, setFailedWithSlug] = useState(false);
 
   useEffect(() => {
     setIsLoading(!collectionInfo);
@@ -64,6 +66,7 @@ const Collection = (): JSX.Element => {
     if (address) {
       setAddress(address);
     }
+    setIsCardsLoading(false);
   };
 
   useEffect(() => {
@@ -80,41 +83,47 @@ const Collection = (): JSX.Element => {
      * collection was not found
      */
     let isActive = true;
-    const query = address || name;
-    if (query && !collectionInfo?.address) {
+
+    if (address && !collectionInfo?.address) {
+      console.log('using address');
       setIsLoading(true);
-      getCollectionInfo(query as string)
+      getCollectionInfo(address as string)
+        .then((collectionInfo) => {
+          if (isActive && collectionInfo?.address) {
+            setCollectionInfo(collectionInfo);
+          }
+          if (isActive) {
+            setIsLoading(false);
+          }
+        })
+        .catch((err: any) => {
+          console.error(err);
+          if (isActive) {
+            setIsLoading(false);
+          }
+        });
+    } else if (name && !collectionInfo?.address) {
+      setIsLoading(true);
+      getCollectionInfo(name as string)
         .then((collectionInfo) => {
           if (isActive && collectionInfo?.address) {
             setCollectionInfo(collectionInfo);
             setIsLoading(false);
-          } else {
-            return new Promise<void>((resolve, reject) => {
-              setTimeout(() => {
-                if (isLoading) {
-                  reject(new Error('Collection not found'));
-                } else {
-                  resolve();
-                }
-              }, 4000);
-            });
+          } else if (isActive) {
+            setIsLoading(isCardsLoading);
           }
-        })
-        .then(() => {
-          setIsLoading(false);
         })
         .catch((err: any) => {
-          if (err?.message) {
-            showAppError(err.message);
-          }
           console.error(err);
-          setIsLoading(false);
+          if (isActive) {
+            setIsLoading(isCardsLoading);
+          }
         });
     }
     return () => {
       isActive = false;
     };
-  }, [name, address]);
+  }, [name, address, isCardsLoading]);
 
   useEffect(() => {
     let isActive = true;
@@ -286,7 +295,7 @@ const Collection = (): JSX.Element => {
                     </Box>
                   </TabPanel>
                   <TabPanel>
-                    <Box display="flex" flexDirection={'row'}>
+                    <Box display="flex" flexDirection={'row'} marginTop={2}>
                       <CollectionEventsFilter
                         filterState={eventFilterState}
                         setFilterState={setEventFilterState}
@@ -346,6 +355,10 @@ const CollectionContents = ({ name, onTitle, onLoaded, listingSource }: Props): 
         }
         if (title) {
           onTitle(title);
+        }
+      } else {
+        if (onLoaded) {
+          onLoaded({ address: '' });
         }
       }
     }
