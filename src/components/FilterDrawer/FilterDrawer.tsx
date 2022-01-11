@@ -61,9 +61,10 @@ interface Props {
   onToggle?: (isOpen: boolean) => void;
   showCollection?: boolean;
   renderContent?: boolean;
+  collection?: string;
 }
 
-const FilterDrawer = ({ onToggle, showCollection, renderContent, ...rest }: Props & ChakraProps) => {
+const FilterDrawer = ({ onToggle, showCollection, renderContent, collection, ...rest }: Props & ChakraProps) => {
   const { showAppError, headerPosition } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
   const [minPriceVal, setMinPriceVal] = React.useState(
@@ -79,6 +80,13 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, ...rest }: Prop
   const [isOpen, setIsOpen] = React.useState(false);
   const [isMobile] = useMediaQuery('(max-width: 600px)');
   const [isFetchingTraits, setIsFetchingTraits] = React.useState(false);
+
+  React.useEffect(() => {
+    console.log('useEffect collection', collection);
+    if (collection) {
+      fetchTraits(collection);
+    }
+  }, [collection]);
 
   const getNewFilterState = () => {
     updateTraitFilterState();
@@ -139,7 +147,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, ...rest }: Prop
   const shouldFetchTraits = selectedCollectionIds.split(',').length === 1;
 
   const content = (
-    <div className={styles.main}>
+    <Box className={styles.main} mt={6}>
       <div className={styles.bottomBorder}>
         <Text mb={4} mt={4}>
           Sale Type
@@ -181,6 +189,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, ...rest }: Prop
             }}
           />
           <div className={styles.divider} />
+
           <Input
             className={styles.priceInput}
             placeholder={'Max Price'}
@@ -193,12 +202,15 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, ...rest }: Prop
         </div>
       </div>
 
-      {showCollection !== false ? (
-        <>
+      <>
+        {showCollection === false ? null : (
           <Text mt={8} mb={4}>
             Collections
           </Text>
-          <Box>
+        )}
+
+        <Box>
+          {showCollection === false ? null : (
             <CollectionNameFilter
               value={selectedCollectionIds}
               onClear={() => {
@@ -225,35 +237,36 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, ...rest }: Prop
                 }
               }}
             />
+          )}
 
-            {shouldFetchTraits && isFetchingTraits && renderSpinner()}
+          {shouldFetchTraits && isFetchingTraits && renderSpinner()}
 
-            {shouldFetchTraits && traits.length > 0 && (
-              <Table size="sm" mt={4}>
-                <Thead>
-                  <Tr>
-                    <Th pl={0} fontSize="1em">
-                      Attribute
-                    </Th>
-                    <Th pl={0} fontSize="1em">
-                      Value
-                    </Th>
-                    <Th></Th>
-                  </Tr>
-                </Thead>
+          {shouldFetchTraits && traits.length > 0 && (
+            <Table size="sm" mt={4}>
+              <Thead>
+                <Tr>
+                  <Th pl={0} fontSize="1em" color="inherit" fontWeight="normal" border="none">
+                    Attribute
+                  </Th>
+                  <Th pl={0} fontSize="1em" color="inherit" fontWeight="normal" border="none">
+                    Value
+                  </Th>
+                  <Th border="none"></Th>
+                </Tr>
+              </Thead>
 
-                <Tbody>
-                  {selectedTraits.map((pair, selTraitIdx) => {
-                    const selectedTraitValues = selectedTraits[selTraitIdx]?.traitData?.values || [];
-                    const traitValueOptions = selectedTraitValues.map((str: string) => ({ label: str, id: str }));
+              <Tbody>
+                {selectedTraits.map((pair, selTraitIdx) => {
+                  const selectedTraitValues = selectedTraits[selTraitIdx]?.traitData?.values || [];
+                  const traitValueOptions = selectedTraitValues.map((str: string) => ({ label: str, id: str }));
 
-                    const selectedTraitValuesArr: SelectItem[] = selectedTraits[selTraitIdx]?.value
-                      ? selectedTraits[selTraitIdx]?.value.split('|').map((str: string) => ({ id: str, label: str }))
-                      : [];
-                    return (
-                      <Tr key={selTraitIdx}>
-                        <Td pl={0} pr={1} width={50} border="none">
-                          {/* <Select
+                  const selectedTraitValuesArr: SelectItem[] = selectedTraits[selTraitIdx]?.value
+                    ? selectedTraits[selTraitIdx]?.value.split('|').map((str: string) => ({ id: str, label: str }))
+                    : [];
+                  return (
+                    <Tr key={selTraitIdx}>
+                      <Td pl={0} pr={1} width={50} border="none">
+                        {/* <Select
                             className={styles.selectBox}
                             size="sm"
                             placeholder="Select:"
@@ -276,82 +289,82 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, ...rest }: Prop
                               );
                             })}
                           </Select> */}
-                          <DownshiftSelect
-                            placeholder="Select"
-                            isMulti={false}
-                            options={traits.map((item: any) => {
-                              return { label: item.trait_type, id: item.trait_type };
-                            })}
-                            selectedItems={selectedTraitValuesArr}
-                            onChange={(selectedItem: SelectItem | SelectItem[]) => {
-                              const traitType = (selectedItem as SelectItem).id;
-                              const traitData = traits.find((t: Trait) => t.trait_type === traitType);
-                              setSelectedTraitType(traitData);
+                        <DownshiftSelect
+                          placeholder="Select"
+                          isMulti={false}
+                          options={traits.map((item: any) => {
+                            return { label: item.trait_type, id: item.trait_type };
+                          })}
+                          selectedItems={selectedTraitValuesArr}
+                          onChange={(selectedItem: SelectItem | SelectItem[]) => {
+                            const traitType = (selectedItem as SelectItem).id;
+                            const traitData = traits.find((t: Trait) => t.trait_type === traitType);
+                            setSelectedTraitType(traitData);
 
-                              const newArr = [...selectedTraits];
-                              newArr[selTraitIdx].type = traitType;
-                              newArr[selTraitIdx].traitData = traitData;
+                            const newArr = [...selectedTraits];
+                            newArr[selTraitIdx].type = traitType;
+                            newArr[selTraitIdx].traitData = traitData;
+                            setSelectedTraits(newArr);
+                          }}
+                        />
+                      </Td>
+
+                      <Td pl={0} pr={1} width={140} border="none">
+                        <DownshiftSelect
+                          placeholder="Trait(s)"
+                          isMulti={true}
+                          options={traitValueOptions}
+                          selectedItems={selectedTraitValuesArr}
+                          disabled={traitValueOptions.length === 0}
+                          onChange={(params: SelectItem | SelectItem[]) => {
+                            const item = (params as SelectItem[]).slice(-1)[0]; // current item = last item of params array
+
+                            const found = selectedTraitValuesArr.find((obj) => obj.id === item.id);
+                            let arr = selectedTraitValuesArr;
+                            if (found) {
+                              arr = selectedTraitValuesArr.filter((obj) => obj.id !== item.id);
+                            } else {
+                              arr.push(item);
+                            }
+
+                            const newArr = [...selectedTraits];
+                            newArr[selTraitIdx].value = arr.map((obj) => obj.id).join('|');
+                            setSelectedTraits(newArr);
+                          }}
+                        />
+                      </Td>
+                      <Td pl={0} pr={1} d={'flex'} border="none" mt={3}>
+                        <SmallCloseIcon
+                          className={styles.traitActionIcon}
+                          onClick={() => {
+                            if (selTraitIdx > 0) {
+                              const newArr = selectedTraits.filter((_, index) => index !== selTraitIdx);
                               setSelectedTraits(newArr);
-                            }}
-                          />
-                        </Td>
-
-                        <Td pl={0} pr={1} width={140} border="none">
-                          <DownshiftSelect
-                            placeholder="Trait(s)"
-                            isMulti={true}
-                            options={traitValueOptions}
-                            selectedItems={selectedTraitValuesArr}
-                            onChange={(params: SelectItem | SelectItem[]) => {
-                              const item = (params as SelectItem[]).slice(-1)[0]; // current item = last item of params array
-
-                              const found = selectedTraitValuesArr.find((obj) => obj.id === item.id);
-                              let arr = selectedTraitValuesArr;
-                              if (found) {
-                                arr = selectedTraitValuesArr.filter((obj) => obj.id !== item.id);
-                              } else {
-                                arr.push(item);
-                              }
-
-                              const newArr = [...selectedTraits];
-                              newArr[selTraitIdx].value = arr.map((obj) => obj.id).join('|');
-                              setSelectedTraits(newArr);
-                            }}
-                          />
-                        </Td>
-                        <Td pl={0} pr={1} d={'flex'} border="none" mt={3}>
-                          <SmallCloseIcon
-                            className={styles.traitActionIcon}
-                            onClick={() => {
-                              if (selTraitIdx > 0) {
-                                const newArr = selectedTraits.filter((_, index) => index !== selTraitIdx);
-                                setSelectedTraits(newArr);
-                              } else {
-                                setSelectedTraits([]);
-                                setTimeout(() => {
-                                  setSelectedTraits([{ ...EmptyTrait }]);
-                                }, 10);
-                              }
-                            }}
-                          />
-                          <SmallAddIcon
-                            className={styles.traitActionIcon}
-                            onClick={() => {
-                              const newArr = [...selectedTraits];
-                              newArr.push({ ...EmptyTrait });
-                              setSelectedTraits(newArr);
-                            }}
-                          />
-                        </Td>
-                      </Tr>
-                    );
-                  })}
-                </Tbody>
-              </Table>
-            )}
-          </Box>
-        </>
-      ) : null}
+                            } else {
+                              setSelectedTraits([]);
+                              setTimeout(() => {
+                                setSelectedTraits([{ ...EmptyTrait }]);
+                              }, 10);
+                            }
+                          }}
+                        />
+                        <SmallAddIcon
+                          className={styles.traitActionIcon}
+                          onClick={() => {
+                            const newArr = [...selectedTraits];
+                            newArr.push({ ...EmptyTrait });
+                            setSelectedTraits(newArr);
+                          }}
+                        />
+                      </Td>
+                    </Tr>
+                  );
+                })}
+              </Tbody>
+            </Table>
+          )}
+        </Box>
+      </>
 
       <Box mt={8}>
         <Button variant="outline" onClick={handleClickApply}>
@@ -361,7 +374,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, ...rest }: Prop
           Clear
         </Button>
       </Box>
-    </div>
+    </Box>
   );
   if (renderContent === true) {
     return (

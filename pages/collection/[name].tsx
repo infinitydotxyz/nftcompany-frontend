@@ -269,7 +269,7 @@ const Collection = (): JSX.Element => {
                   <TabPanel>
                     <Box display="flex" flexDirection={'row'} width="100%">
                       <Box width="16%" mr={4} minWidth={'180px'}>
-                        <FilterDrawer renderContent={true} showCollection={false} />
+                        <FilterDrawer collection={address} renderContent={true} showCollection={false} />
                       </Box>
                       <Box width="82%">
                         <CollectionContents
