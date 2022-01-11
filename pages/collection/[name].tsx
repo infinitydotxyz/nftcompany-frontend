@@ -196,7 +196,7 @@ const Collection = (): JSX.Element => {
 
             <Box className="center" display={toggleState ? 'none' : 'flex'}>
               <Box width="16%" mr={4} mt={'40px'}>
-                <FilterDrawer renderContent={true} showCollection={false} />
+                <FilterDrawer collection={address} renderContent={true} showCollection={false} />
               </Box>
               <Tabs align={'center'} display={toggleState ? 'none' : ''} width="82%">
                 <TabList>
