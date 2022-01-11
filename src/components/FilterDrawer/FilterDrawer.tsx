@@ -301,6 +301,7 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent }: Props) => {
                             isMulti={true}
                             options={traitValueOptions}
                             selectedItems={selectedTraitValuesArr}
+                            disabled={traitValueOptions.length === 0}
                             onChange={(params: SelectItem | SelectItem[]) => {
                               const item = (params as SelectItem[]).slice(-1)[0]; // current item = last item of params array
 
