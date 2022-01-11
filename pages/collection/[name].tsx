@@ -42,6 +42,8 @@ const Collection = (): JSX.Element => {
     router.push(`/collection/edit/${address}`);
   };
 
+  const { showAppError } = useAppContext();
+
   const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -57,6 +59,62 @@ const Collection = (): JSX.Element => {
   useEffect(() => {
     setIsLoading(!collectionInfo);
   }, []);
+
+  const onLoaded = (address: string) => {
+    if (address) {
+      setAddress(address);
+    }
+  };
+
+  useEffect(() => {
+    /**
+     * there is a discrepancy between the searchCollectionName
+     * for listings/assets and collections.
+     *
+     * all navigation to this page should come from clicking on an listing or asset
+     * so we first attempt to load the collection info using the searchCollectionName from
+     * the url
+     * if the listings load and we get the address, then we try again using
+     * that address
+     * if neither load in 4 seconds we throw an error and display that the
+     * collection was not found
+     */
+    let isActive = true;
+    const query = address || name;
+    if (query && !collectionInfo?.address) {
+      setIsLoading(true);
+      getCollectionInfo(query as string)
+        .then((collectionInfo) => {
+          if (isActive && collectionInfo?.address) {
+            setCollectionInfo(collectionInfo);
+            setIsLoading(false);
+          } else {
+            return new Promise<void>((resolve, reject) => {
+              setTimeout(() => {
+                if (isLoading) {
+                  reject(new Error('Collection not found'));
+                } else {
+                  resolve();
+                }
+              }, 4000);
+            });
+          }
+        })
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((err: any) => {
+          if (err?.message) {
+            showAppError(err.message);
+          }
+          console.error(err);
+          setIsLoading(false);
+        });
+    }
+    return () => {
+      isActive = false;
+    };
+  }, [name, address]);
 
   useEffect(() => {
     let isActive = true;
@@ -92,27 +150,6 @@ const Collection = (): JSX.Element => {
   const CollectionInfoGroupWrapper = (props: { children: React.ReactNode }) => {
     return <Box marginBottom={'32px'}>{props.children}</Box>;
   };
-
-  useEffect(() => {
-    let isActive = true;
-    const query = address || name;
-    if (query && !collectionInfo?.address) {
-      setIsLoading(true);
-      getCollectionInfo(query as string)
-        .then((collectionInfo) => {
-          if (isActive && collectionInfo?.address) {
-            setCollectionInfo(collectionInfo);
-            setIsLoading(false);
-          }
-        })
-        .catch((err: any) => {
-          console.error(err);
-        });
-    }
-    return () => {
-      isActive = false;
-    };
-  }, [name, address]);
 
   return (
     <>
@@ -242,7 +279,7 @@ const Collection = (): JSX.Element => {
                               setTitle(newTitle);
                             }
                           }}
-                          onLoaded={({ address }) => setAddress(address)}
+                          onLoaded={({ address }) => onLoaded(address)}
                           listingSource={ListingSource.Infinity}
                         />
                       </Box>
