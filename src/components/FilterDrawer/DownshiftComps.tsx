@@ -11,8 +11,8 @@ export const SelectWrapper = styled.div`
 `;
 
 export const Control = styled.div`
-  border: 1px solid #e2e8f0;
-  border-radius: 2px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   padding: 7px 5px 5px 5px;
   margin-top: 2px;
   white-space: nowrap;

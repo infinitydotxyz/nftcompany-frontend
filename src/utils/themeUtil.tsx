@@ -3,7 +3,7 @@ import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefau
 import { mode } from '@chakra-ui/theme-tools';
 import { capitalize } from 'lodash';
 
-const brandColor = '#222';
+const brandColor = '#222'; // main brand color
 
 // const brandBlue = '#0000ff'; // #4047ff';
 // const brandGray = '#888A8C'; // #4047ff';
@@ -62,7 +62,7 @@ export const colors = {
 
   brandGreen: '#15a456',
   brandRed: '#A10000',
-  brandRedBright: '#D91D19',
+  brandRedBright: '#D91D19'
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   // blue: {

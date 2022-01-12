@@ -244,13 +244,13 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, collection }: P
             <Table size="sm" mt={4}>
               <Thead>
                 <Tr>
-                  <Th pl={0} fontSize="1em" color="inherit" fontWeight="normal" border="none">
+                  <Th pl={0} fontSize="1em" color="inherit" fontWeight="normal" border="none" letterSpacing={0}>
                     Attribute
                   </Th>
-                  <Th pl={0} fontSize="1em" color="inherit" fontWeight="normal" border="none">
+                  <Th pl={0} fontSize="1em" color="inherit" fontWeight="normal" border="none" letterSpacing={0}>
                     Value
                   </Th>
-                  <Th border="none"></Th>
+                  <Th border="none" letterSpacing={0}></Th>
                 </Tr>
               </Thead>
 
