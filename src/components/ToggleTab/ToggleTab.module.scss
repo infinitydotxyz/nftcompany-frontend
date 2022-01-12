@@ -23,11 +23,16 @@
   flex-basis: 0;
   flex-grow: 1;
   border-radius: 8px;
-  width: 100px;
+  // width: 100px;
   display: flex;
   text-align: center;
   align-items: center;
   justify-content: center;
+}
+
+.sm {
+  width: 80px;
+  font-size: 14px;
 }
 
 .selected {

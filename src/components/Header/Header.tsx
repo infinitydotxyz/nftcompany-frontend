@@ -257,6 +257,10 @@ const Header = (): JSX.Element => {
               </HoverMenuButton>
             </div>
 
+            <div className={styles.showExplore}>
+              <HoverMenuButton buttonTitle="Discover" onClick={() => router.push('/discover')} />
+            </div>
+
             <div className={styles.showMediumNav}>
               <HoverMenuButton disabled={!signedIn} buttonTitle="My NFTs" onClick={() => router.push('/my-nfts')}>
                 {medNavMenu}

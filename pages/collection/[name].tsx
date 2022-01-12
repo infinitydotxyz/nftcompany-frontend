@@ -25,12 +25,17 @@ import { renderSpinner } from 'utils/commonUtil';
 import InfoGroup from 'components/InfoGroup/InfoGroup';
 import CollectionBenefits from 'components/CollectionBenefits.tsx/CollectionBenefits';
 import GraphPreview from 'components/GraphPreview/GraphPreview';
-import TextToggle from 'components/TextToggle/TextToggle';
 import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import CollectionCommunity from 'components/CollectionCommunity/CollectionCommunity';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import CollectionEvents, { EventType } from 'components/CollectionEvents/CollectionEvents';
 import CollectionEventsFilter from 'components/CollectionEventsFilter/CollectionEventsFilter';
+import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
+
+enum CollectionTabs {
+  NFTs = 'NFTs',
+  Community = 'Community'
+}
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -41,6 +46,11 @@ const Collection = (): JSX.Element => {
   const onEdit = () => {
     router.push(`/collection/edit/${address}`);
   };
+
+  const { options, onChange, selected } = useToggleTab(
+    [CollectionTabs.NFTs, CollectionTabs.Community],
+    CollectionTabs.NFTs
+  );
 
   const { showAppError } = useAppContext();
 
@@ -54,9 +64,6 @@ const Collection = (): JSX.Element => {
   );
 
   const [eventFilterState, setEventFilterState] = useState(EventType.Sale);
-
-  const [toggleState, setToggleState] = useState(false);
-  const [failedWithSlug, setFailedWithSlug] = useState(false);
 
   useEffect(() => {
     setIsLoading(!collectionInfo);
@@ -252,24 +259,19 @@ const Collection = (): JSX.Element => {
             </Box>
 
             <Box marginTop={'72px'} width="min-content">
-              <TextToggle
-                unCheckedText="NFT"
-                checkedText="Community"
-                checked={toggleState}
-                onClick={() => setToggleState((prev) => !prev)}
-              />
+              <ToggleTab options={options} selected={selected} onChange={onChange} />
             </Box>
 
-            <HorizontalLine display={!toggleState ? 'none' : ''} marginTop={'40px'} />
+            <HorizontalLine display={selected === CollectionTabs.Community ? '' : 'none'} marginTop={'40px'} />
             {collectionInfo && (
               <CollectionCommunity
                 collectionInfo={collectionInfo}
-                display={!toggleState ? 'none' : 'flex'}
+                display={selected === CollectionTabs.Community ? 'flex' : 'none'}
                 onClickEdit={onEdit}
               />
             )}
-            <Box className="center" display={toggleState ? 'none' : 'flex'} width="100%">
-              <Tabs align={'center'} display={toggleState ? 'none' : ''} width="100%">
+            <Box className="center" display={selected === CollectionTabs.NFTs ? 'flex' : 'none'} width="100%">
+              <Tabs align={'center'} display={selected === CollectionTabs.NFTs ? '' : 'none'} width="100%">
                 <TabList>
                   <Tab>NFTs</Tab>
                   <Tab isDisabled={!address}>Activity</Tab>
