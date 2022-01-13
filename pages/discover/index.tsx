@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/layout';
 import { Image, Progress, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue } from '@chakra-ui/react';
 import { useWindowWidth } from '@react-hook/window-size';
 import { EthToken } from 'components/Icons/Icons';
+import IntervalChange from 'components/IntervalChange/IntervalChange';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import Layout from 'containers/layout';
 import { NextPage } from 'next';
@@ -204,11 +205,31 @@ export default function Discover() {
                       </Td>
 
                       <Td>
-                        <Text variant="bold">{numStr(item.twitterFollowers)}</Text>
+                        <Box display="flex" flexDirection={['column', 'column', 'column', 'row']}>
+                          <Text variant="bold">{numStr(item.twitterFollowers)}</Text>
+                          <IntervalChange
+                            marginLeft={[0, 0, 0, 2]}
+                            marginTop={[2, 2, 2, 0]}
+                            change={item.twitterFollowersChange}
+                            interval={24}
+                            intervalUnits={'hrs'}
+                            justifyContent={'flex-start'}
+                          />
+                        </Box>
                       </Td>
 
                       <Td>
-                        <Text variant="bold">{numStr(item.discordMembers)}</Text>
+                        <Box display="flex" flexDirection={['column', 'column', 'column', 'row']}>
+                          <Text variant="bold">{numStr(item.discordMembers)}</Text>
+                          <IntervalChange
+                            change={item.discordMemberChange}
+                            marginTop={[2, 2, 2, 0]}
+                            marginLeft={[0, 0, 0, 2]}
+                            interval={24}
+                            intervalUnits={'hrs'}
+                            justifyContent={'flex-start'}
+                          />
+                        </Box>
                       </Td>
 
                       <Td min>

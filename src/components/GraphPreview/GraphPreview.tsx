@@ -5,6 +5,7 @@ import { Button } from '@chakra-ui/button';
 import { numStr } from 'utils/commonUtil';
 import LineGraph from 'components/LineGraph/LineGraph';
 import React, { useEffect, useRef, useState } from 'react';
+import IntervalChange from 'components/IntervalChange/IntervalChange';
 
 interface GraphPreviewProps {
   /**
@@ -91,20 +92,7 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
         alignItems="center"
       >
         <p className={styles.total}>{numStr(total)}</p>
-        <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-          <IoTriangleSharp
-            className={`${styles.triangle} ${intervalChange > 0 ? styles.green : `${styles.red} ${styles.flip}`}`}
-          />
-          <Box display={'flex'} flexDirection={'row'}>
-            <p className={`${styles.change} ${intervalChange > 0 ? styles.green : styles.red}`}>
-              {numStr(Math.abs(intervalChange))}
-            </p>
-            <p className={`${styles.unit} ${intervalChange > 0 ? styles.green : styles.red}`}>
-              {props.changeInterval}
-              hrs
-            </p>
-          </Box>
-        </Box>
+        <IntervalChange change={intervalChange} interval={props.changeInterval} intervalUnits="hrs" />
       </Box>
 
       <LineGraph
