@@ -63,10 +63,13 @@ const Header = (): JSX.Element => {
   ];
 
   const exploreItems = [
-    <MenuItem key="made" icon={MenuIcons.exploreIcon} onClick={onClickExplore}>
+    <MenuItem key="explore-item" icon={MenuIcons.exploreIcon} onClick={onClickExplore}>
       Explore
     </MenuItem>,
-    <MenuItem key="received" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
+    <MenuItem key="trending-item" icon={MenuIcons.trendingIcon} onClick={() => router.push('/trending')}>
+      Trending
+    </MenuItem>,
+    <MenuItem key="verified-item" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
       Verified Collections
     </MenuItem>
   ];
@@ -264,7 +267,7 @@ const Header = (): JSX.Element => {
             </div>
 
             <div className={styles.showExplore}>
-              <HoverMenuButton buttonTitle="Discover" onClick={() => router.push('/discover')} />
+              <HoverMenuButton buttonTitle="Trending" onClick={() => router.push('/trending')} />
             </div>
 
             {signedIn && (

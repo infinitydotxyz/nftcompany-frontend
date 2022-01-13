@@ -1,6 +1,6 @@
 import { apiGet } from 'utils/apiUtil';
 
-enum OrderBy {
+export enum OrderBy {
   Twitter = 'twitter',
   Discord = 'discord',
   Volume = 'volume',
