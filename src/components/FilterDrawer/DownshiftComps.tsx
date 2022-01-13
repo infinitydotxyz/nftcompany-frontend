@@ -40,6 +40,9 @@ export const DropdownButton = styled.button`
   background: none;
   cursor: pointer;
   margin-top: -2px;
+  svg {
+    stroke: ${(props: any) => (props.disabled === true ? 'lightgray' : '')};
+  }
 `;
 
 export function ArrowIcon({ isOpen }: { isOpen: boolean }) {
