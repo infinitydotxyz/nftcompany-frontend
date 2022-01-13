@@ -8,116 +8,65 @@ import Layout from 'containers/layout';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
+import { CollectionStats } from 'services/Collections.service';
+import { getStats, OrderDirection, StatInterval } from 'services/Stats.service';
 import { numStr, renderSpinner } from 'utils/commonUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 
 enum Period {
-  Hour
+  OneDay = '1 day',
+  SevenDays = '7 days',
+  ThirtyDays = '30 days',
+  Total = 'Total'
 }
 
-interface DiscoverData {
-  address: string;
-  name: string;
-  profileImage: string;
-  searchCollectionName: string;
-  owners: number;
+enum OrderBy {
+  Twitter = 'twitter',
+  Discord = 'discord',
+  Volume = 'volume'
+  // AveragePrice = 'averagePrice'
+}
+
+const periodToInterval: Record<Period, StatInterval> = {
+  [Period.OneDay]: StatInterval.OneDay,
+  [Period.SevenDays]: StatInterval.SevenDay,
+  [Period.ThirtyDays]: StatInterval.ThirtyDay,
+  [Period.Total]: StatInterval.Total
+};
+
+interface IntervalStats {
+  sales: number;
+  volume: number;
+  volumeChange: number;
+  averagePrice: number;
+  averagePriceChange: number;
   twitterFollowers: number;
   twitterFollowersChange: number;
   discordMembers: number;
-  discordMemberChange: number;
-  votesFor: number;
-  votesAgainst: number;
-  floorPrice: number;
-  floorPriceChange: number;
-  volume: number;
-  volumeChange: number;
+  discordMembersChange: number;
+  votePercentFor: number;
 }
+
+type DiscoverData = IntervalStats &
+  Pick<
+    CollectionStats,
+    'collectionAddress' | 'name' | 'profileImage' | 'votesAgainst' | 'votesFor' | 'floorPrice' | 'owners' | 'count'
+  >;
+
 export default function Discover() {
-  const { options, onChange, selected } = useToggleTab(['1 hr', '12 hrs', '1 day', '7 day', '30 days'], '12 hrs');
+  const {
+    options,
+    onChange,
+    selected: period
+  } = useToggleTab([Period.OneDay, Period.SevenDays, Period.ThirtyDays, Period.Total], Period.OneDay);
   const [isLoading, setIsLoading] = useState(true);
 
   const tableSize = useBreakpointValue({ base: 'sm', lg: 'md' });
 
   const [data, setData] = useState<DiscoverData[]>([]);
 
-  const testData: DiscoverData[] = [
-    {
-      address: '0x3bf2922f4520a8ba0c2efc3d2a1539678dad5e9d',
-      name: '0n1 Force',
-      profileImage:
-        'https://lh3.googleusercontent.com/7gOej3SUvqALR-qkqL_ApAt97SpUKQOZQe88p8jPjeiDDcqITesbAdsLcWlsIg8oh7SRrTpUPfPlm12lb4xDahgP2h32pQQYCsuOM_s=s0',
-
-      searchCollectionName: '0n1-force',
-      owners: 4200,
-      twitterFollowers: 60000,
-      twitterFollowersChange: 0.05,
-      discordMembers: 30000,
-      discordMemberChange: 0.03,
-      votesFor: 39,
-      votesAgainst: 6,
-      floorPrice: 0.81,
-      floorPriceChange: 0.03,
-      volume: 45700,
-      volumeChange: 0.08
-    },
-    {
-      address: '0x3bf2922f4520a8ba0c2efc3d2a1539678dad5e9a',
-      name: '0n1 Force',
-      profileImage:
-        'https://lh3.googleusercontent.com/7gOej3SUvqALR-qkqL_ApAt97SpUKQOZQe88p8jPjeiDDcqITesbAdsLcWlsIg8oh7SRrTpUPfPlm12lb4xDahgP2h32pQQYCsuOM_s=s0',
-
-      searchCollectionName: '0n1-force',
-      owners: 4200,
-      twitterFollowers: 60000,
-      twitterFollowersChange: 0.05,
-      discordMembers: 30000,
-      discordMemberChange: 0.03,
-      votesFor: 39,
-      votesAgainst: 6,
-      floorPrice: 0.81,
-      floorPriceChange: 0.03,
-      volume: 45700,
-      volumeChange: 0.08
-    },
-    {
-      address: '0x3bf2922f4520a8ba0c2efc3d2a1539678dad5e9s',
-      name: '0n1 Force',
-      profileImage:
-        'https://lh3.googleusercontent.com/7gOej3SUvqALR-qkqL_ApAt97SpUKQOZQe88p8jPjeiDDcqITesbAdsLcWlsIg8oh7SRrTpUPfPlm12lb4xDahgP2h32pQQYCsuOM_s=s0',
-
-      searchCollectionName: '0n1-force',
-      owners: 4200,
-      twitterFollowers: 60000,
-      twitterFollowersChange: 0.05,
-      discordMembers: 30000,
-      discordMemberChange: 0.03,
-      votesFor: 39,
-      votesAgainst: 6,
-      floorPrice: 0.81,
-      floorPriceChange: 0.03,
-      volume: 45700,
-      volumeChange: 0.08
-    },
-    {
-      address: '0x3bf2922f4520a8ba0c2efc3d2a1539678dad5e9f',
-      name: '0n1 Force',
-      profileImage:
-        'https://lh3.googleusercontent.com/7gOej3SUvqALR-qkqL_ApAt97SpUKQOZQe88p8jPjeiDDcqITesbAdsLcWlsIg8oh7SRrTpUPfPlm12lb4xDahgP2h32pQQYCsuOM_s=s0',
-
-      searchCollectionName: '0n1-force',
-      owners: 4200,
-      twitterFollowers: 60000,
-      twitterFollowersChange: 0.05,
-      discordMembers: 30000,
-      discordMemberChange: 0.03,
-      votesFor: 39,
-      votesAgainst: 6,
-      floorPrice: 0.81,
-      floorPriceChange: 0.03,
-      volume: 45700,
-      volumeChange: 0.08
-    }
-  ];
+  const [orderBy, setOrderBy] = useState<OrderBy>(OrderBy.Volume);
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.Descending);
 
   useEffect(() => {
     const isActive = true;
@@ -135,11 +84,61 @@ export default function Discover() {
   }, []);
 
   const fetchData = async () => {
-    return new Promise<DiscoverData[]>((resolve) => {
-      setTimeout(() => {
-        resolve(testData);
-      }, 3000);
-    });
+    const interval: StatInterval = periodToInterval[period as Period];
+    try {
+      const collectionStats: CollectionStats[] = await getStats(orderBy, interval, orderDirection, 50, '');
+
+      const discoverData = (collectionStats ?? []).map((item: any) => {
+        const { collectionAddress, name, profileImage, votesAgainst, votesFor, floorPrice, owners, count } = item;
+
+        const intervalData: any = item[interval as string];
+        const volume = intervalData?.volume;
+        const volumeChange = intervalData?.change ?? 0;
+        const sales = intervalData?.sales;
+
+        const averagePrice = item?.averagePrice;
+        const discordMembers = item?.discordMembers;
+        const twitterFollowers = item?.twitterFollowers;
+
+        let averagePriceChange = intervalData?.averagePrice;
+        let twitterFollowersChange = intervalData?.twitterFollowers;
+        let discordMembersChange = intervalData?.discordMembers;
+        if (interval === StatInterval.Total) {
+          averagePriceChange = averagePrice;
+          twitterFollowersChange = twitterFollowers;
+          discordMembersChange = discordMembers;
+        }
+
+        const votePercentFor = ((item.votesFor ?? 0) / ((item.votesAgainst ?? 0) + (item.votesFor ?? 0))) * 100;
+
+        return {
+          collectionAddress,
+          name,
+          profileImage,
+          votesAgainst,
+          votesFor,
+          floorPrice,
+          owners,
+          count,
+          volume,
+          volumeChange,
+          sales,
+          twitterFollowers,
+          twitterFollowersChange,
+          discordMembers,
+          discordMembersChange,
+          averagePrice,
+          averagePriceChange,
+          votePercentFor
+        };
+      });
+
+      console.log(discoverData);
+      return discoverData;
+    } catch (err) {
+      console.error(err);
+      return [];
+    }
   };
 
   return (
@@ -160,7 +159,7 @@ export default function Discover() {
             <Text size="lg" paddingBottom={'4px'}>
               Period:
             </Text>
-            <ToggleTab options={options} selected={selected} onChange={onChange} size="sm" />
+            <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
           </Box>
 
           <Box
@@ -185,25 +184,24 @@ export default function Discover() {
                 </Tr>
               </Thead>
               <Tbody>
-                {data.map((item) => {
+                {data.map((item: DiscoverData) => {
                   return (
-                    <Tr key={item.address}>
+                    <Tr key={item.collectionAddress}>
                       <Td
                         display="flex"
-                        flexDirection={['column', 'column', 'column', 'row']}
+                        flexDirection={['column', 'column', 'column', 'column', 'row']}
                         alignItems="center"
-                        justifyContent={['center', 'center', 'center', 'flex-start']}
+                        justifyContent={['center', 'center', 'center', 'center', 'flex-start']}
                       >
                         <Image
                           width="48px"
-                          alt={item.name}
+                          alt={'collection profile image'}
                           src={item.profileImage}
-                          marginRight={[0, 0, 0, '16px']}
-                          marginBottom={[2, 2, 2, 0]}
+                          marginRight={[0, 0, 0, 0, '16px']}
+                          marginBottom={[2, 2, 2, 2, 0]}
                         />
-                        <Text>{item.name}</Text>
+                        <Text textAlign={['center', 'center', 'center', 'left']}>{item.name}</Text>
                       </Td>
-
                       <Td>
                         <Box display="flex" flexDirection={['column', 'column', 'column', 'row']}>
                           <Text variant="bold">{numStr(item.twitterFollowers)}</Text>
@@ -222,7 +220,7 @@ export default function Discover() {
                         <Box display="flex" flexDirection={['column', 'column', 'column', 'row']}>
                           <Text variant="bold">{numStr(item.discordMembers)}</Text>
                           <IntervalChange
-                            change={item.discordMemberChange}
+                            change={item.discordMembersChange}
                             marginTop={[2, 2, 2, 0]}
                             marginLeft={[0, 0, 0, 2]}
                             interval={24}
@@ -232,10 +230,10 @@ export default function Discover() {
                         </Box>
                       </Td>
 
-                      <Td min>
+                      <Td minWidth={'140px'}>
                         <Progress
-                          value={(item.votesFor / (item.votesAgainst + item.votesFor)) * 100}
-                          variant={'sentiment'}
+                          value={Number.isNaN(item.votePercentFor) ? 100 : item.votePercentFor}
+                          variant={Number.isNaN(item.votePercentFor) ? 'grey' : 'sentiment'}
                           borderRightRadius="8px"
                           borderLeftRadius={'8px'}
                           marginBottom="12px"
@@ -243,7 +241,9 @@ export default function Discover() {
                           width="88px"
                         />
                         <Text variant="bold">
-                          {numStr(Math.floor((item.votesFor / (item.votesAgainst + item.votesFor)) * 100))}% Good
+                          {Number.isNaN(item.votePercentFor)
+                            ? 'No votes'
+                            : `${numStr(Math.floor(item.votePercentFor))}% Good`}
                         </Text>
                       </Td>
 
