@@ -63,7 +63,7 @@ interface Props {
   collection?: string;
 }
 
-const FilterDrawer = ({ onToggle, showCollection, renderContent, collection }: Props) => {
+const FilterDrawer = ({ onToggle, showCollection, collection }: Props) => {
   const { showAppError, headerPosition } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
   const [minPriceVal, setMinPriceVal] = React.useState(
@@ -77,11 +77,11 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, collection }: P
   const [selectedTraits, setSelectedTraits] = React.useState<any[]>([EmptyTrait]);
   const [selectedTraitValue, setSelectedTraitValue] = React.useState('');
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isMobile] = useMediaQuery('(max-width: 600px)');
+  const [isMobile] = useMediaQuery('(max-width: 1024px)'); // same as css .filter-container
+  const [isMobileSmall] = useMediaQuery('(max-width: 600px)');
   const [isFetchingTraits, setIsFetchingTraits] = React.useState(false);
 
   React.useEffect(() => {
-    console.log('useEffect collection', collection);
     if (collection) {
       fetchTraits(collection);
     }
@@ -375,55 +375,46 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, collection }: P
       </Box>
     </Box>
   );
-  if (renderContent === true) {
-    return (
-      <>
-        {/* <Box display="flex" justifyContent="space-between" alignItems="center">
-          {isOpen ? <Heading size="sm">Filter</Heading> : null}
 
-          <IconButton aria-label="" variant="ghost" size="lg" colorScheme="gray" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <ArrowBackIcon /> : <ArrowForwardIcon />}
-          </IconButton>
-        </Box> */}
-
-        {/* {isOpen ? content : null} */}
-
-        {content}
-      </>
-    );
+  // for desktop width => render content directly without Drawer:
+  if (!isMobile) {
+    return <>{content}</>;
   }
 
   return (
     <>
-      {/* <IconButton
-        aria-label=""
-        position="fixed"
-        size="lg"
-        top={headerPosition + 24}
-        variant="ghost"
-        colorScheme="gray"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <ArrowForwardIcon />
-      </IconButton> */}
+      <Box>
+        <IconButton
+          aria-label=""
+          position="fixed"
+          width={70}
+          top={headerPosition + 12}
+          variant="outline"
+          colorScheme="gray"
+          onClick={() => setIsOpen(!isOpen)}
+          zIndex={1}
+        >
+          <ArrowForwardIcon />
+        </IconButton>
+      </Box>
 
       <Drawer
         isOpen={isOpen}
         placement="left"
         onClose={() => undefined}
-        size={isMobile ? 'full' : 'xs'}
+        size={isMobileSmall ? 'full' : 'xs'}
         blockScrollOnMount={false}
         trapFocus={false}
       >
-        {/* <DrawerOverlay backgroundColor="rgba(0,0,0,0)" /> */}
+        <DrawerOverlay backgroundColor="rgba(0,0,0,0)" />
 
         <DrawerContent shadow="lg" mt={headerPosition + 12}>
-          {/* <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
+          <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
             <Heading size="sm">Filter</Heading>
             <IconButton aria-label="" variant="ghost" size="lg" colorScheme="gray" onClick={() => setIsOpen(false)}>
               <ArrowBackIcon />
             </IconButton>
-          </DrawerHeader> */}
+          </DrawerHeader>
 
           <DrawerBody>{content}</DrawerBody>
         </DrawerContent>
