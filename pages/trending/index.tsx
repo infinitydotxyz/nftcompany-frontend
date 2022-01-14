@@ -60,6 +60,7 @@ export interface DataColumn {
   isSelected: boolean;
   isDisabled: boolean;
   type: DataColumnType;
+  unit?: string;
 }
 
 const defaultDataColumns: DataColumns = {
@@ -68,7 +69,8 @@ const defaultDataColumns: DataColumns = {
       name: 'Average price',
       isSelected: false,
       isDisabled: false,
-      type: DataColumnType.Amount
+      type: DataColumnType.Amount,
+      unit: 'ETH'
     },
     [SecondaryOrderBy.AveragePriceChange]: {
       name: 'Change in average price',
@@ -80,7 +82,8 @@ const defaultDataColumns: DataColumns = {
       name: 'Floor price',
       isSelected: false,
       isDisabled: false,
-      type: DataColumnType.Amount
+      type: DataColumnType.Amount,
+      unit: 'ETH'
     },
     [SecondaryOrderBy.FloorPriceChange]: {
       name: 'Change in floor price',
@@ -104,7 +107,8 @@ const defaultDataColumns: DataColumns = {
       name: 'Volume',
       isSelected: true,
       isDisabled: false,
-      type: DataColumnType.Amount
+      type: DataColumnType.Amount,
+      unit: 'ETH'
     },
     [SecondaryOrderBy.VolumeChange]: {
       name: 'Change in volume',
@@ -289,14 +293,6 @@ function TrendingContents(props: { statsFilter: StatsFilter; dataColumns: DataCo
             {columns.map(([key, value]) => {
               return <Th key={key}>{value.name}</Th>;
             })}
-
-            {/* <Th>Twitter followers</Th>
-            <Th>Discord members</Th>
-            <Th>Trust score</Th>
-            <Th>Floor price</Th>
-            <Th>Volume</Th>
-            <Th>Items</Th>
-            <Th>Owners</Th> */}
           </Tr>
         </Thead>
         <Tbody>
@@ -330,29 +326,17 @@ function TrendingContents(props: { statsFilter: StatsFilter; dataColumns: DataCo
                     case DataColumnType.Amount:
                       return (
                         <Td key={key}>
-                          <Box display="flex" flexDirection={['column', 'column', 'column', 'column', 'row']}>
-                            {value ? (
-                              <>
-                                <Text variant="bold">{numStr(value)}</Text>
-                                {/* <IntervalChange
-                                marginLeft={[0, 0, 0, 0, 2]}
-                                marginTop={[2, 2, 2, 2, 0]}
-                                change={item.twitterFollowersChange}
-                                interval={24}
-                                intervalUnits={'hrs'}
-                                justifyContent={'flex-start'}
-                              /> */}
-                              </>
-                            ) : (
-                              <Text variant="bold">---</Text>
-                            )}
+                          <Box display="flex" flexDirection={'row'} alignItems={'center'}>
+                            {item.unit === 'ETH' && <EthToken marginBottom={'-2px'} />}
+
+                            {value ? <Text variant="bold">{numStr(value)}</Text> : <Text variant="bold">---</Text>}
                           </Box>
                         </Td>
                       );
                     case DataColumnType.Change:
                       return (
                         <Td key={key}>
-                          <Box display="flex" flexDirection={['column', 'column', 'column', 'column', 'row']}>
+                          <Box display="flex" flexDirection={'row'} alignItems={'center'}>
                             {value ? (
                               <>
                                 <IntervalChange
@@ -391,94 +375,6 @@ function TrendingContents(props: { statsFilter: StatsFilter; dataColumns: DataCo
                       return <></>;
                   }
                 })}
-                {/* {Object.values(props.dataColumns).map((item) => {
-                  return Object.values(item)
-                    .filter((item) => item.isSelected)
-                    .map((column) => {
-                      switch (column.type) {
-                        case DataColumnType.Amount:
-                          return;
-                      }
-                    });
-                })} */}
-                {/* <Td>
-                  <Box display="flex" flexDirection={['column', 'column', 'column', 'column', 'row']}>
-                    {item.twitterFollowers ? (
-                      <>
-                        <Text variant="bold">{numStr(item.twitterFollowers)}</Text>
-                        <IntervalChange
-                          marginLeft={[0, 0, 0, 0, 2]}
-                          marginTop={[2, 2, 2, 2, 0]}
-                          change={item.twitterFollowersChange}
-                          interval={24}
-                          intervalUnits={'hrs'}
-                          justifyContent={'flex-start'}
-                        />
-                      </>
-                    ) : (
-                      <Text variant="bold">---</Text>
-                    )}
-                  </Box>
-                </Td> */}
-
-                {/* <Td>
-                  <Box display="flex" flexDirection={['column', 'column', 'column', 'column', 'row']}>
-                    {item.discordMembers ? (
-                      <>
-                        <Text variant="bold">{numStr(item.discordMembers)}</Text>
-                        <IntervalChange
-                          change={item.discordMembersChange}
-                          marginLeft={[0, 0, 0, 0, 2]}
-                          marginTop={[2, 2, 2, 2, 0]}
-                          interval={24}
-                          intervalUnits={'hrs'}
-                          justifyContent={'flex-start'}
-                        />
-                      </>
-                    ) : (
-                      <Text variant="bold">---</Text>
-                    )}
-                  </Box>
-                </Td>
-
-                <Td minWidth={'140px'}>
-                  <Progress
-                    value={Number.isNaN(item.votePercentFor) ? 100 : item.votePercentFor}
-                    variant={Number.isNaN(item.votePercentFor) ? 'grey' : 'sentiment'}
-                    borderRightRadius="8px"
-                    borderLeftRadius={'8px'}
-                    marginBottom="12px"
-                    height="8px"
-                    width="88px"
-                  />
-                  <Text variant="bold">
-                    {Number.isNaN(item.votePercentFor)
-                      ? 'No votes'
-                      : `${numStr(Math.floor(item.votePercentFor))}% Good`}
-                  </Text>
-                </Td>
-
-                <Td>
-                  <Box display="flex" flexDirection={'row'} alignItems={'center'}>
-                    <EthToken marginBottom={'-2px'} />
-                    <Text variant="bold">{numStr(item.floorPrice)}</Text>
-                  </Box>
-                </Td>
-
-                <Td>
-                  <Box display="flex" flexDirection={'row'} alignItems={'center'}>
-                    <EthToken marginBottom={'-2px'} />
-                    <Text variant="bold">{numStr(Math.floor(item.volume))}</Text>
-                  </Box>
-                </Td>
-
-                <Td>
-                  <Text variant="bold">{numStr(item.count)}</Text>
-                </Td>
-
-                <Td>
-                  <Text variant="bold">{numStr(item.owners)}</Text>
-                </Td> */}
               </Tr>
             );
           })}

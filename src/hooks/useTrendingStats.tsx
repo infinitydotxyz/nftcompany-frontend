@@ -182,14 +182,17 @@ export function useTrendingStats(filter: StatsFilter) {
       const averagePrice = item?.averagePrice;
       const discordMembers = item?.discordMembers;
       const twitterFollowers = item?.twitterFollowers;
+      const discordPresence = item?.discordPresence;
 
       let averagePriceChange = intervalData?.averagePrice;
       let twitterFollowersChange = intervalData?.twitterFollowers;
       let discordMembersChange = intervalData?.discordMembers;
+      let discordPresenceChange = intervalData?.discordPresence;
       if (interval === StatInterval.Total) {
         averagePriceChange = averagePrice;
         twitterFollowersChange = twitterFollowers;
         discordMembersChange = discordMembers;
+        discordPresenceChange = discordPresence;
       }
 
       const votePercentFor = ((item.votesFor ?? 0) / ((item.votesAgainst ?? 0) + (item.votesFor ?? 0))) * 100;
@@ -213,7 +216,9 @@ export function useTrendingStats(filter: StatsFilter) {
         averagePrice,
         averagePriceChange,
         votePercentFor,
-        searchCollectionName: item.searchCollectionName
+        searchCollectionName: item.searchCollectionName,
+        discordPresence,
+        discordPresenceChange
       };
     });
 
