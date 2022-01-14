@@ -3,6 +3,7 @@ import { startsWith } from 'lodash';
 import { startNewSession } from 'logrocket';
 import React from 'react';
 import { BsGraphUp } from 'react-icons/bs';
+import styles from './Icons.module.scss';
 
 // Find icons here (download source is easier to view them all)
 // https://github.com/mui-org/material-ui/tree/master/packages/mui-icons-material/material-icons
@@ -426,6 +427,28 @@ export const TrendingIcon = (props: Record<string, unknown>): JSX.Element => (
     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
       <path d="M0 0h24v24H0z" fill="none" />
       <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z" />
+    </svg>
+  </Icon>
+);
+
+export const CarrotUp = (props: Record<string, unknown>): JSX.Element => (
+  <Icon viewBox="0 0 24 24" className={styles.rotate90} {...props}>
+    <svg xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24">
+      <rect fill="none" height="24" width="24" />
+      <g>
+        <polygon points="17.77,3.77 16,2 6,12 16,22 17.77,20.23 9.54,12" />
+      </g>
+    </svg>
+  </Icon>
+);
+
+export const CarrotDown = (props: Record<string, unknown>): JSX.Element => (
+  <Icon viewBox="0 0 24 24" className={styles.rotate270} {...props}>
+    <svg xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24">
+      <rect fill="none" height="24" width="24" />
+      <g>
+        <polygon points="17.77,3.77 16,2 6,12 16,22 17.77,20.23 9.54,12" />
+      </g>
     </svg>
   </Icon>
 );

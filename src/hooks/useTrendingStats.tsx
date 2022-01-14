@@ -144,7 +144,7 @@ export function useTrendingStats(filter: StatsFilter) {
         return -1;
       }
 
-      if (filter.secondaryOrderDirection === OrderDirection.Descending) {
+      if (filter.secondaryOrderDirection === OrderDirection.Ascending) {
         return itemBField - itemAField;
       }
       return itemAField - itemBField;

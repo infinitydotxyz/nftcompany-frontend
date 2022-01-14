@@ -14,10 +14,9 @@ import {
   useBreakpointValue,
   useDisclosure
 } from '@chakra-ui/react';
-import { useWindowWidth } from '@react-hook/window-size';
-import { ArrowIcon } from 'components/FilterDrawer/DownshiftComps';
-import { EthToken } from 'components/Icons/Icons';
+import { CarrotDown, CarrotUp, EthToken } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
+import SortButton from 'components/SortButton/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import TrendingFilterDrawer from 'components/TrendingFilterDrawer/TrendingFilterDrawer';
 import Layout from 'containers/layout';
@@ -25,7 +24,7 @@ import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'h
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { OrderBy, OrderDirection, StatInterval } from 'services/Stats.service';
 import { numStr, renderSpinner } from 'utils/commonUtil';
 
@@ -179,6 +178,7 @@ const defaultDataColumns: DataColumns = {
 };
 
 export type DataColumns = Record<DataColumnGroup, Record<SecondaryOrderBy, DataColumn>>;
+
 export default function Trending() {
   const {
     options,
@@ -193,7 +193,7 @@ export default function Trending() {
     primaryOrderDirection: OrderDirection.Descending,
     primaryInterval: StatInterval.OneDay,
     secondaryOrderBy: SecondaryOrderBy.Volume,
-    secondaryOrderDirection: OrderDirection.Descending
+    secondaryOrderDirection: OrderDirection.Ascending
   });
 
   useEffect(() => {
@@ -207,10 +207,6 @@ export default function Trending() {
   }, [period]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  useEffect(() => {
-    onOpen();
-  }, []);
 
   return (
     <>
@@ -253,21 +249,23 @@ export default function Trending() {
             <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
           </Box>
 
-          <TrendingContents statsFilter={statsFilter} dataColumns={dataColumns} />
+          <TrendingContents statsFilter={statsFilter} dataColumns={dataColumns} setStatsFilter={setStatsFilter} />
         </Box>
       </div>
     </>
   );
 }
 
-function TrendingContents(props: { statsFilter: StatsFilter; dataColumns: DataColumns }) {
+function TrendingContents(props: {
+  statsFilter: StatsFilter;
+  dataColumns: DataColumns;
+  setStatsFilter: Dispatch<SetStateAction<StatsFilter>>;
+}) {
   const router = useRouter();
   const tableSize = useBreakpointValue({ base: 'sm', lg: 'md' });
   const { trendingData, isLoading, fetchMoreData } = useTrendingStats(props.statsFilter);
 
   const [columns, setColumns] = useState<[SecondaryOrderBy, DataColumn][]>([]);
-
-  console.log(trendingData);
 
   useEffect(() => {
     const selectedItemsOrderedByGroup: [SecondaryOrderBy, DataColumn][] = Object.values(props.dataColumns).flatMap(
@@ -291,7 +289,42 @@ function TrendingContents(props: { statsFilter: StatsFilter; dataColumns: DataCo
           <Tr>
             <Th>Collection</Th>
             {columns.map(([key, value]) => {
-              return <Th key={key}>{value.name}</Th>;
+              let direction = '';
+              const isSelected = props.statsFilter.secondaryOrderBy === key;
+
+              if (isSelected) {
+                direction = props.statsFilter.secondaryOrderDirection;
+              }
+
+              return (
+                <Th key={key}>
+                  <SortButton
+                    state={direction as '' | OrderDirection}
+                    onClick={() => {
+                      if (isSelected) {
+                        props.setStatsFilter((prev) => {
+                          return {
+                            ...prev,
+                            secondaryOrderDirection:
+                              prev.secondaryOrderDirection === OrderDirection.Ascending
+                                ? OrderDirection.Descending
+                                : OrderDirection.Ascending
+                          };
+                        });
+                      } else {
+                        props.setStatsFilter((prev) => {
+                          return {
+                            ...prev,
+                            secondaryOrderBy: key
+                          };
+                        });
+                      }
+                      console.log('click');
+                    }}
+                    label={value.name}
+                  />
+                </Th>
+              );
             })}
           </Tr>
         </Thead>
