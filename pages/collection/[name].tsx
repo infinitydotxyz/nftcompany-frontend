@@ -52,8 +52,6 @@ const Collection = (): JSX.Element => {
     CollectionTabs.NFTs
   );
 
-  const { showAppError } = useAppContext();
-
   const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
   const [isLoading, setIsLoading] = useState(true);
   const [isCardsLoading, setIsCardsLoading] = useState(true);

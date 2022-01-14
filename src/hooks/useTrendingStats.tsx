@@ -30,24 +30,37 @@ export type TrendingData = IntervalStats &
   >;
 
 export enum SecondaryOrderBy {
-  FloorPrice = 'floorPrice',
-  FloorPriceChange = 'floorPriceChange',
+  /**
+   * general
+   */
   Owners = 'owners',
   Items = 'count',
+
+  /**
+   * transactions
+   */
+  FloorPrice = 'floorPrice',
+  FloorPriceChange = 'floorPriceChange',
   Volume = 'volume',
   VolumeChange = 'volumeChange',
   Sales = 'sales',
   SalesChange = 'salesChange',
+  AveragePrice = 'averagePrice',
+  AveragePriceChange = 'averagePriceChange',
+
+  /**
+   * community
+   */
   TwitterFollowers = 'twitterFollowers',
   TwitterFollowersChange = 'twitterFollowersChange',
   DiscordMembers = 'discordMembers',
   DiscordMembersChange = 'discordMembersChange',
-  AveragePrice = 'averagePrice',
-  AveragePriceChange = 'averagePriceChange',
+  DiscordPresence = 'discordPresence',
+  DiscordPresenceChange = 'discordPresenceChange',
   VotePercentFor = 'votePercentFor'
 }
 
-interface StatsFilter {
+export interface StatsFilter {
   primaryOrderBy: OrderBy;
   primaryOrderDirection: OrderDirection;
   primaryInterval: StatInterval;
@@ -117,8 +130,25 @@ export function useTrendingStats(filter: StatsFilter) {
   useEffect(() => {
     const selectedIntervalData = getIntervalData(collectionStats, filter.primaryInterval);
     const sortedData = (selectedIntervalData as any as Record<SecondaryOrderBy, number>[]).sort((itemA, itemB) => {
-      return itemA[filter.secondaryOrderBy] - itemB[filter.secondaryOrderBy];
-    }); // todo sort by secondary orderDirection
+      const itemAField = itemA[filter.secondaryOrderBy];
+      const itemBField = itemB[filter.secondaryOrderBy];
+
+      /**
+       * always show NaN fields at the end of the list
+       */
+      if (Number.isNaN(itemAField) && Number.isNaN(itemBField)) {
+        return 0;
+      } else if (Number.isNaN(itemAField)) {
+        return 1;
+      } else if (Number.isNaN(itemBField)) {
+        return -1;
+      }
+
+      if (filter.secondaryOrderDirection === OrderDirection.Descending) {
+        return itemBField - itemAField;
+      }
+      return itemAField - itemBField;
+    });
     setTrendingData(sortedData as any as TrendingData[]);
   }, [filter.secondaryOrderBy, filter.secondaryOrderDirection, collectionStats]);
 
