@@ -14,7 +14,7 @@ import {
   useBreakpointValue,
   useDisclosure
 } from '@chakra-ui/react';
-import { CarrotDown, CarrotUp, EthToken } from 'components/Icons/Icons';
+import { EthToken } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import SortButton from 'components/SortButton/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
@@ -54,12 +54,19 @@ export enum DataColumnType {
   Change = 'change'
 }
 
-export interface DataColumn {
+interface BaseDataColumn {
   name: string;
-  isSelected: boolean;
   isDisabled: boolean;
   type: DataColumnType;
   unit?: string;
+}
+export interface DataColumn extends BaseDataColumn {
+  isSelected: boolean;
+  /**
+   * additional columns that will be displayed
+   * if this column is selected
+   */
+  additionalColumns?: [SecondaryOrderBy, BaseDataColumn][];
 }
 
 const defaultDataColumns: DataColumns = {
@@ -69,51 +76,67 @@ const defaultDataColumns: DataColumns = {
       isSelected: false,
       isDisabled: false,
       type: DataColumnType.Amount,
-      unit: 'ETH'
-    },
-    [SecondaryOrderBy.AveragePriceChange]: {
-      name: 'Change in average price',
-      isSelected: false,
-      isDisabled: false,
-      type: DataColumnType.Change
+      unit: 'ETH',
+      additionalColumns: [
+        [
+          SecondaryOrderBy.AveragePriceChange,
+          {
+            name: 'Change in average price',
+            isDisabled: false,
+            type: DataColumnType.Change
+          }
+        ]
+      ]
     },
     [SecondaryOrderBy.FloorPrice]: {
       name: 'Floor price',
       isSelected: false,
       isDisabled: false,
       type: DataColumnType.Amount,
-      unit: 'ETH'
-    },
-    [SecondaryOrderBy.FloorPriceChange]: {
-      name: 'Change in floor price',
-      isSelected: false,
-      isDisabled: false,
-      type: DataColumnType.Change
+      unit: 'ETH',
+      additionalColumns: [
+        [
+          SecondaryOrderBy.FloorPriceChange,
+          {
+            name: 'Change in floor price',
+            isDisabled: false,
+            type: DataColumnType.Change
+          }
+        ]
+      ]
     },
     [SecondaryOrderBy.Sales]: {
       name: 'Sales',
       isSelected: false,
       isDisabled: false,
-      type: DataColumnType.Amount
-    },
-    [SecondaryOrderBy.SalesChange]: {
-      name: 'Change in sales',
-      isSelected: false,
-      isDisabled: false,
-      type: DataColumnType.Change
+      type: DataColumnType.Amount,
+      additionalColumns: [
+        [
+          SecondaryOrderBy.SalesChange,
+          {
+            name: 'Change in sales',
+            isDisabled: false,
+            type: DataColumnType.Change
+          }
+        ]
+      ]
     },
     [SecondaryOrderBy.Volume]: {
       name: 'Volume',
       isSelected: true,
       isDisabled: false,
       type: DataColumnType.Amount,
-      unit: 'ETH'
-    },
-    [SecondaryOrderBy.VolumeChange]: {
-      name: 'Change in volume',
-      isSelected: true,
-      isDisabled: false,
-      type: DataColumnType.Change
+      unit: 'ETH',
+      additionalColumns: [
+        [
+          SecondaryOrderBy.VolumeChange,
+          {
+            name: 'Change in volume',
+            isDisabled: false,
+            type: DataColumnType.Change
+          }
+        ]
+      ]
     }
   } as Record<SecondaryOrderBy, DataColumn>,
   [DataColumnGroup.Community]: {
@@ -121,38 +144,50 @@ const defaultDataColumns: DataColumns = {
       name: 'Discord presence',
       isSelected: false,
       isDisabled: false,
-      type: DataColumnType.Amount
-    },
-    [SecondaryOrderBy.DiscordPresenceChange]: {
-      name: 'Change in discord presence',
-      isSelected: false,
-      isDisabled: false,
-      type: DataColumnType.Change
+      type: DataColumnType.Amount,
+      additionalColumns: [
+        [
+          SecondaryOrderBy.DiscordPresenceChange,
+          {
+            name: 'Change in discord presence',
+            isDisabled: false,
+            type: DataColumnType.Change
+          }
+        ]
+      ]
     },
     [SecondaryOrderBy.DiscordMembers]: {
       name: 'Discord members',
       isSelected: false,
       isDisabled: false,
-      type: DataColumnType.Amount
-    },
-    [SecondaryOrderBy.DiscordMembersChange]: {
-      name: 'Change in discord members',
-      isSelected: false,
-      isDisabled: false,
-      type: DataColumnType.Change
+      type: DataColumnType.Amount,
+      additionalColumns: [
+        [
+          SecondaryOrderBy.DiscordMembersChange,
+          {
+            name: 'Change in discord members',
+            isDisabled: false,
+            type: DataColumnType.Change
+          }
+        ]
+      ]
     },
 
     [SecondaryOrderBy.TwitterFollowers]: {
       name: 'Twitter followers',
       isSelected: true,
       isDisabled: false,
-      type: DataColumnType.Amount
-    },
-    [SecondaryOrderBy.TwitterFollowersChange]: {
-      name: 'Change in twitter followers',
-      isSelected: true,
-      isDisabled: false,
-      type: DataColumnType.Change
+      type: DataColumnType.Amount,
+      additionalColumns: [
+        [
+          SecondaryOrderBy.TwitterFollowersChange,
+          {
+            name: 'Change in twitter followers',
+            isDisabled: false,
+            type: DataColumnType.Change
+          }
+        ]
+      ]
     },
     [SecondaryOrderBy.VotePercentFor]: {
       name: 'Community score',
@@ -268,14 +303,18 @@ function TrendingContents(props: {
   setStatsFilter: Dispatch<SetStateAction<StatsFilter>>;
 }) {
   const router = useRouter();
-  // const tableSize = useBreakpointValue({ base: 'sm', lg: 'md' });
   const { trendingData, isLoading, fetchMoreData } = useTrendingStats(props.statsFilter);
 
   const [columns, setColumns] = useState<[SecondaryOrderBy, DataColumn][]>([]);
 
   useEffect(() => {
     const selectedItemsOrderedByGroup: [SecondaryOrderBy, DataColumn][] = Object.values(props.dataColumns).flatMap(
-      (group) => Object.entries(group).filter(([itemKey, item]) => item.isSelected)
+      (group) =>
+        Object.entries(group)
+          .filter(([itemKey, item]) => item.isSelected)
+          .flatMap(([key, mainColumn]) => {
+            return [[key, mainColumn], ...(mainColumn.additionalColumns ?? [])];
+          })
     ) as [SecondaryOrderBy, DataColumn][];
     setColumns(selectedItemsOrderedByGroup);
   }, [props.dataColumns]);
@@ -293,7 +332,7 @@ function TrendingContents(props: {
       <Table colorScheme="gray" marginTop={4} size={'sm'}>
         <Thead>
           <Tr>
-            <Th>Collection</Th>
+            <Th paddingBottom={'8px'}>Collection</Th>
             {columns.map(([key, value]) => {
               let direction = '';
               const isSelected = props.statsFilter.secondaryOrderBy === key;
@@ -303,7 +342,7 @@ function TrendingContents(props: {
               }
 
               return (
-                <Th key={key}>
+                <Th paddingBottom={'8px'} key={key}>
                   <SortButton
                     state={direction as '' | OrderDirection}
                     onClick={() => {
@@ -325,7 +364,6 @@ function TrendingContents(props: {
                           };
                         });
                       }
-                      console.log('click');
                     }}
                     label={value.name}
                   />
