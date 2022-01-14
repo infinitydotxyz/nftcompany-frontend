@@ -30,8 +30,21 @@ function TrendingFilterDrawer(props: Props) {
 
   return (
     <>
-      <IconButton aria-label="" variant="ghost" size="md" maxWidth="48px" colorScheme="gray" onClick={props.onOpen}>
-        <ArrowForwardIcon />
+      <IconButton
+        aria-label=""
+        variant="ghost"
+        size="md"
+        maxWidth="48px"
+        colorScheme="gray"
+        onClick={() => {
+          if (props.isOpen) {
+            props.onClose();
+          } else {
+            props.onOpen();
+          }
+        }}
+      >
+        {props.isOpen ? <ArrowBackIcon /> : <ArrowForwardIcon />}
       </IconButton>
 
       <Drawer

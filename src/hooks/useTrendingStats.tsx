@@ -87,6 +87,7 @@ export function useTrendingStats(filter: StatsFilter) {
     fetchData()
       .then((collectionStats) => {
         if (isActive) {
+          console.log(collectionStats);
           setCollectionStats(collectionStats);
         }
       })

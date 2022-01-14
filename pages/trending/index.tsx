@@ -215,27 +215,33 @@ export default function Trending() {
       </Head>
 
       <div className="page-container">
-        <TrendingFilterDrawer
-          isOpen={isOpen}
-          onClose={onClose}
-          onOpen={onOpen}
-          dataColumns={dataColumns}
-          toggleDataColumn={(group: DataColumnGroup, column: SecondaryOrderBy) => {
-            setDataColumns((prev) => {
-              return {
-                ...prev,
-                [group]: {
-                  ...prev[group],
-                  [column]: {
-                    ...prev[group][column],
-                    isSelected: !prev[group][column].isSelected
+        <Box
+          display="flex"
+          flexDirection={'column'}
+          justifyContent={'flex-start'}
+          marginTop={'80px'}
+          marginLeft={isOpen ? '320px' : '0px'}
+        >
+          <TrendingFilterDrawer
+            isOpen={isOpen}
+            onClose={onClose}
+            onOpen={onOpen}
+            dataColumns={dataColumns}
+            toggleDataColumn={(group: DataColumnGroup, column: SecondaryOrderBy) => {
+              setDataColumns((prev) => {
+                return {
+                  ...prev,
+                  [group]: {
+                    ...prev[group],
+                    [column]: {
+                      ...prev[group][column],
+                      isSelected: !prev[group][column].isSelected
+                    }
                   }
-                }
-              };
-            });
-          }}
-        />
-        <Box display="flex" flexDirection={'column'} justifyContent={'flex-start'} marginTop={'80px'}>
+                };
+              });
+            }}
+          />
           <Box
             display="flex"
             flexDirection={'row'}
@@ -262,7 +268,7 @@ function TrendingContents(props: {
   setStatsFilter: Dispatch<SetStateAction<StatsFilter>>;
 }) {
   const router = useRouter();
-  const tableSize = useBreakpointValue({ base: 'sm', lg: 'md' });
+  // const tableSize = useBreakpointValue({ base: 'sm', lg: 'md' });
   const { trendingData, isLoading, fetchMoreData } = useTrendingStats(props.statsFilter);
 
   const [columns, setColumns] = useState<[SecondaryOrderBy, DataColumn][]>([]);
@@ -282,9 +288,9 @@ function TrendingContents(props: {
       display={'flex'}
       flexDirection={'column'}
       alignItems="center"
-      minWidth={'680px'}
+      minWidth={`${110 * (columns.length + 1)}px`}
     >
-      <Table colorScheme="gray" marginTop={4} size={tableSize}>
+      <Table colorScheme="gray" marginTop={4} size={'sm'}>
         <Thead>
           <Tr>
             <Th>Collection</Th>
