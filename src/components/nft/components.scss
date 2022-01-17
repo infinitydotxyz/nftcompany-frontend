@@ -297,13 +297,21 @@
   cursor: pointer;
 }
 
-.filter-placeholder {
-  max-width: 300px;
-  padding-left: 20px;
+.filter-container {
+  max-width: 260px;
+  margin-right: 40px;
 
-  // @media only screen and (min-width: 1000px) and (max-width: 1400px) {
-  //   width: 0; // for small screen: no placeholder width. Otherwise, the cards will look squeezed.
-  // }
+  @media only screen and (max-width: 1024px) {
+    width: 0; // for small screen: no placeholder width. Otherwise, the cards will look squeezed.
+  }
+}
+
+.content-container {
+  width: calc(100% - 260px);
+
+  @media only screen and (max-width: 1024px) {
+    width: 100%;
+  }
 }
 
 .filter-panel-explore-page {
