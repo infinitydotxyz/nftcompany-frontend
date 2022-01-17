@@ -195,10 +195,10 @@ const Collection = (): JSX.Element => {
             )}
 
             <Box className="center" display={toggleState ? 'none' : 'flex'}>
-              <Box width="16%" mr={4} mt={'40px'}>
-                <FilterDrawer renderContent={true} showCollection={false} />
+              <Box className="filter-container">
+                <FilterDrawer collection={address} renderContent={true} showCollection={false} />
               </Box>
-              <Tabs align={'center'} display={toggleState ? 'none' : ''} width="82%">
+              <Tabs align={'center'} display={toggleState ? 'none' : ''} className="content-container">
                 <TabList>
                   <Tab>NFTs</Tab>
                   <Tab isDisabled={!address}>Activity</Tab>

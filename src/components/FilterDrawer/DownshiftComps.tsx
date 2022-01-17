@@ -11,8 +11,8 @@ export const SelectWrapper = styled.div`
 `;
 
 export const Control = styled.div`
-  border: 1px solid #e2e8f0;
-  border-radius: 2px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   padding: 7px 5px 5px 5px;
   margin-top: 2px;
   white-space: nowrap;
@@ -22,12 +22,14 @@ export const Control = styled.div`
 
 export const Label = styled.label`
   display: inline-block;
-  cursor: pointer;
   max-width: calc(100% - 30px);
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
   height: 100%;
+  position: absolute;
+  color: ${(props: any) => (props.disabled === true ? 'lightgray' : 'inherit')};
+  cursor: ${(props: any) => (props.disabled === true ? 'default' : 'pointer')};
 `;
 
 export const DropdownButton = styled.button`
@@ -38,6 +40,9 @@ export const DropdownButton = styled.button`
   background: none;
   cursor: pointer;
   margin-top: -2px;
+  svg {
+    stroke: ${(props: any) => (props.disabled === true ? 'lightgray' : '')};
+  }
 `;
 
 export function ArrowIcon({ isOpen }: { isOpen: boolean }) {

@@ -12,7 +12,7 @@ import { CardGrid } from 'components/CollectionCards/CollectionCard';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import CardList from 'components/Card/CardList';
-import { Spacer } from '@chakra-ui/react';
+import { Spacer, Box } from '@chakra-ui/react';
 import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollections';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { NftAction } from 'types';
@@ -21,7 +21,6 @@ import styles from './Explore.module.scss';
 export default function ExplorePage() {
   const searchContext = useSearchContext();
   const { user } = useAppContext();
-
   const [searchMode, setSearchMode] = useState(false);
 
   useEffect(() => {
@@ -106,14 +105,14 @@ export default function ExplorePage() {
             <SortMenuButton disabled={!searchMode} />
           </div>
 
-          <div className={styles.col}>
-            <div className={styles.col1}>
-              <FilterDrawer renderContent={true} />
-            </div>
-            <div className={styles.col2}>
+          <Box className={styles.col}>
+            <Box className="filter-container">
+              <FilterDrawer />
+            </Box>
+            <Box className="content-container">
               <Explore listingSource={ListingSource.Infinity} />
-            </div>
-          </div>
+            </Box>
+          </Box>
         </div>
       </div>
     </>
