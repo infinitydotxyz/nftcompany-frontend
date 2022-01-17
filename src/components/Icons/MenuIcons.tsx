@@ -103,6 +103,7 @@ export class LargeIcons {
   static sortIcon = LargeIcons.wrap(<SortIcon boxSize={LargeIcons.bs} />);
   static collectionsIcon = LargeIcons.wrap(<CollectionsIcon boxSize={LargeIcons.bs} />);
   static exploreIcon = LargeIcons.wrap(<ExploreIcon boxSize={LargeIcons.bs} />);
+  static trendingIcon = LargeIcons.wrap(<TrendingIcon boxSize={LargeIcons.bs} />);
 
   // these are too large at bs, so use sbs
   static closeIcon = LargeIcons.wrap(<CloseIcon boxSize={LargeIcons.sbs} />);

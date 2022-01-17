@@ -1,8 +1,5 @@
 import { Icon } from '@chakra-ui/icons';
-import { startsWith } from 'lodash';
-import { startNewSession } from 'logrocket';
 import React from 'react';
-import { BsGraphUp } from 'react-icons/bs';
 import styles from './Icons.module.scss';
 
 // Find icons here (download source is easier to view them all)
@@ -424,31 +421,31 @@ export const IconViewIcon = (props: Record<string, unknown>): JSX.Element => (
 
 export const TrendingIcon = (props: Record<string, unknown>): JSX.Element => (
   <Icon viewBox="0 0 24 24" {...props}>
-    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+    <g fill="currentColor">
       <path d="M0 0h24v24H0z" fill="none" />
       <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z" />
-    </svg>
+    </g>
   </Icon>
 );
 
 export const CarrotUp = (props: Record<string, unknown>): JSX.Element => (
   <Icon viewBox="0 0 24 24" className={styles.rotate90} {...props}>
-    <svg xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24">
+    <g fill="currentColor">
       <rect fill="none" height="24" width="24" />
       <g>
         <polygon points="17.77,3.77 16,2 6,12 16,22 17.77,20.23 9.54,12" />
       </g>
-    </svg>
+    </g>
   </Icon>
 );
 
 export const CarrotDown = (props: Record<string, unknown>): JSX.Element => (
   <Icon viewBox="0 0 24 24" className={styles.rotate270} {...props}>
-    <svg xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24">
+    <g fill="currentColor">
       <rect fill="none" height="24" width="24" />
       <g>
         <polygon points="17.77,3.77 16,2 6,12 16,22 17.77,20.23 9.54,12" />
       </g>
-    </svg>
+    </g>
   </Icon>
 );
