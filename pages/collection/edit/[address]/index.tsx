@@ -15,7 +15,7 @@ const Edit = (): JSX.Element => {
   const router = useRouter();
   const { address } = router.query;
   const [title, setTitle] = useState<string | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { user, showAppError, userReady } = useAppContext();
   const [isAuthorized, setIsAuthorized] = useState(true);
 

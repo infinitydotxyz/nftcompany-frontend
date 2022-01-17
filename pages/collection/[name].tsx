@@ -25,12 +25,12 @@ import { renderSpinner } from 'utils/commonUtil';
 import InfoGroup from 'components/InfoGroup/InfoGroup';
 import CollectionBenefits from 'components/CollectionBenefits.tsx/CollectionBenefits';
 import GraphPreview from 'components/GraphPreview/GraphPreview';
-import TextToggle from 'components/TextToggle/TextToggle';
 import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import CollectionCommunity from 'components/CollectionCommunity/CollectionCommunity';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import CollectionEvents, { EventType } from 'components/CollectionEvents/CollectionEvents';
 import CollectionEventsFilter from 'components/CollectionEventsFilter/CollectionEventsFilter';
+import ToggleTab from 'components/ToggleTab/ToggleTab';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -55,7 +55,7 @@ const Collection = (): JSX.Element => {
 
   const [eventFilterState, setEventFilterState] = useState(EventType.Sale);
 
-  const [toggleState, setToggleState] = useState(false);
+  const [toggleTab, setToggleTab] = useState<'NFTs' | 'Community'>('NFTs');
   const [failedWithSlug, setFailedWithSlug] = useState(false);
 
   useEffect(() => {
@@ -252,24 +252,23 @@ const Collection = (): JSX.Element => {
             </Box>
 
             <Box marginTop={'72px'} width="min-content">
-              <TextToggle
-                unCheckedText="NFT"
-                checkedText="Community"
-                checked={toggleState}
-                onClick={() => setToggleState((prev) => !prev)}
+              <ToggleTab
+                options={['NFTs', 'Community']}
+                selected={toggleTab}
+                onChange={(opt: string) => setToggleTab(opt as any)}
               />
             </Box>
 
-            <HorizontalLine display={!toggleState ? 'none' : ''} marginTop={'40px'} />
+            <HorizontalLine display={toggleTab === 'NFTs' ? 'none' : ''} marginTop={'40px'} />
             {collectionInfo && (
               <CollectionCommunity
                 collectionInfo={collectionInfo}
-                display={!toggleState ? 'none' : 'flex'}
+                display={toggleTab === 'NFTs' ? 'none' : 'flex'}
                 onClickEdit={onEdit}
               />
             )}
-            <Box className="center" display={toggleState ? 'none' : 'flex'} width="100%">
-              <Tabs align={'center'} display={toggleState ? 'none' : ''} width="100%">
+            <Box className="center" display={toggleTab === 'Community' ? 'none' : 'flex'} width="100%">
+              <Tabs align={'center'} display={toggleTab === 'Community' ? 'none' : ''} width="100%">
                 <TabList>
                   <Tab>NFTs</Tab>
                   <Tab isDisabled={!address}>Activity</Tab>

@@ -62,7 +62,7 @@ export const colors = {
 
   brandGreen: '#15a456',
   brandRed: '#A10000',
-  brandRedBright: '#D91D19',
+  brandRedBright: '#D91D19'
 
   // http://mcg.mbitson.com/#!?mcgpalette0=%234047ff
   // blue: {
@@ -176,7 +176,14 @@ const Button = {
       return { fontSize: '14px', lineHeight: '16px' };
     },
     lg: (props: any) => {
-      return { fontSize: '16px', lineHeight: '19px', paddingY: '22.5px', paddingX: '16px', minWidth: '157px' };
+      return {
+        fontSize: '16px',
+        lineHeight: '19px',
+        paddingTop: '22.5px',
+        paddingBottom: '26.5px', // align button text vertically for Futura font
+        paddingX: '16px',
+        minWidth: '157px'
+      };
     }
   },
   variants: {
