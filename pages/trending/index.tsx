@@ -1,6 +1,7 @@
 import { ArrowForwardIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import { Box, Link } from '@chakra-ui/layout';
 import {
+  Button,
   IconButton,
   Image,
   Progress,
@@ -18,7 +19,7 @@ import { EthToken } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import SortButton from 'components/SortButton/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
-import TrendingFilterDrawer from 'components/TrendingFilterDrawer/TrendingFilterDrawer';
+import DiscoverSelectionModal from 'components/DiscoverSelectionModal/DiscoverSelectionModal';
 import Layout from 'containers/layout';
 import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'hooks/useTrendingStats';
 import { NextPage } from 'next';
@@ -250,33 +251,30 @@ export default function Trending() {
       </Head>
 
       <div className="page-container">
-        <Box
-          display="flex"
-          flexDirection={'column'}
-          justifyContent={'flex-start'}
-          marginTop={'80px'}
-          marginLeft={isOpen ? '320px' : '0px'}
-        >
-          <TrendingFilterDrawer
-            isOpen={isOpen}
-            onClose={onClose}
-            onOpen={onOpen}
-            dataColumns={dataColumns}
-            toggleDataColumn={(group: DataColumnGroup, column: SecondaryOrderBy) => {
-              setDataColumns((prev) => {
-                return {
-                  ...prev,
-                  [group]: {
-                    ...prev[group],
-                    [column]: {
-                      ...prev[group][column],
-                      isSelected: !prev[group][column].isSelected
+        <Box display="flex" flexDirection={'column'} justifyContent={'flex-start'} marginTop={'80px'}>
+          <Button onClick={onOpen}>Open</Button>
+          {isOpen && (
+            <DiscoverSelectionModal
+              isOpen={isOpen}
+              onClose={onClose}
+              onOpen={onOpen}
+              dataColumns={dataColumns}
+              toggleDataColumn={(group: DataColumnGroup, column: SecondaryOrderBy) => {
+                setDataColumns((prev) => {
+                  return {
+                    ...prev,
+                    [group]: {
+                      ...prev[group],
+                      [column]: {
+                        ...prev[group][column],
+                        isSelected: !prev[group][column].isSelected
+                      }
                     }
-                  }
-                };
-              });
-            }}
-          />
+                  };
+                });
+              }}
+            />
+          )}
           <Box
             display="flex"
             flexDirection={'row'}
@@ -327,9 +325,11 @@ function TrendingContents(props: {
       display={'flex'}
       flexDirection={'column'}
       alignItems="center"
-      minWidth={`${110 * (columns.length + 1)}px`}
+      // minWidth={`${110 * (columns.length + 1)}px`}
+      // maxWidth={'100vw'}
+      overflowX={'auto'}
     >
-      <Table colorScheme="gray" marginTop={4} size={'sm'}>
+      <Table colorScheme="gray" marginTop={4} size={'sm'} overflowX={'auto'} maxWidth={'100%'}>
         <Thead>
           <Tr>
             <Th paddingBottom={'8px'}>Collection</Th>
