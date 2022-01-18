@@ -87,7 +87,6 @@ export function useTrendingStats(filter: StatsFilter) {
     fetchData()
       .then((collectionStats) => {
         if (isActive) {
-          console.log(collectionStats);
           setCollectionStats(collectionStats);
         }
       })
@@ -137,11 +136,14 @@ export function useTrendingStats(filter: StatsFilter) {
       /**
        * always show NaN fields at the end of the list
        */
-      if (Number.isNaN(itemAField) && Number.isNaN(itemBField)) {
+      if (
+        (Number.isNaN(itemAField) || typeof itemAField !== 'number') &&
+        (Number.isNaN(itemBField) || typeof itemBField !== 'number')
+      ) {
         return 0;
-      } else if (Number.isNaN(itemAField)) {
+      } else if (Number.isNaN(itemAField) || typeof itemAField !== 'number') {
         return 1;
-      } else if (Number.isNaN(itemBField)) {
+      } else if (Number.isNaN(itemBField) || typeof itemBField !== 'number') {
         return -1;
       }
 

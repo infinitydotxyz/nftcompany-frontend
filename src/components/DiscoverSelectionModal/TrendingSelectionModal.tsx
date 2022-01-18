@@ -1,27 +1,7 @@
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Checkbox,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerHeader,
-  Heading,
-  IconButton,
-  Stack,
-  useMediaQuery,
-  Text,
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalOverlay,
-  ModalHeader
-} from '@chakra-ui/react';
+import { Box, Checkbox, Stack, Text, Button } from '@chakra-ui/react';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { SecondaryOrderBy } from 'hooks/useTrendingStats';
-import { useAppContext } from 'utils/context/AppContext';
 import { DataColumnGroup, DataColumns } from '../../../pages/trending';
 
 interface Props {
@@ -32,7 +12,7 @@ interface Props {
   onOpen: () => void;
 }
 
-function DiscoverSelectionModal(props: Props) {
+function TrendingSelectionModal(props: Props) {
   return (
     <ModalDialog onClose={props.onClose}>
       <Box display="flex" flexDirection={'column'}>
@@ -43,7 +23,6 @@ function DiscoverSelectionModal(props: Props) {
           Select up to <b>5</b> categories to be displayed.
         </Text>
       </Box>
-      {/* </ModalHeader> */}
       <Box paddingY="42.5px">
         <Stack spacing={2} direction="column">
           {Object.entries(props.dataColumns).map(([groupKey, group]) => {
@@ -85,4 +64,4 @@ function DiscoverSelectionModal(props: Props) {
   );
 }
 
-export default DiscoverSelectionModal;
+export default TrendingSelectionModal;

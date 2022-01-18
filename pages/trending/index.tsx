@@ -1,4 +1,3 @@
-import { ArrowForwardIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import { Box, Link } from '@chakra-ui/layout';
 import {
   Button,
@@ -12,14 +11,13 @@ import {
   Th,
   Thead,
   Tr,
-  useBreakpointValue,
   useDisclosure
 } from '@chakra-ui/react';
 import { EthToken } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import SortButton from 'components/SortButton/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
-import DiscoverSelectionModal from 'components/DiscoverSelectionModal/DiscoverSelectionModal';
+import TrendingSelectionModal from 'components/TrendingSelectionModal/TrendingSelectionModal';
 import Layout from 'containers/layout';
 import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'hooks/useTrendingStats';
 import { NextPage } from 'next';
@@ -91,20 +89,20 @@ const defaultDataColumns: DataColumns = {
     },
     [SecondaryOrderBy.FloorPrice]: {
       name: 'Floor price',
-      isSelected: false,
+      isSelected: true,
       isDisabled: false,
       type: DataColumnType.Amount,
-      unit: 'ETH',
-      additionalColumns: [
-        [
-          SecondaryOrderBy.FloorPriceChange,
-          {
-            name: 'Change in floor price',
-            isDisabled: false,
-            type: DataColumnType.Change
-          }
-        ]
-      ]
+      unit: 'ETH'
+      // additionalColumns: [
+      // [
+      //   SecondaryOrderBy.FloorPriceChange,
+      //   {
+      //     name: 'Change in floor price',
+      //     isDisabled: false,
+      //     type: DataColumnType.Change
+      //   }
+      // ]
+      // ]
     },
     [SecondaryOrderBy.Sales]: {
       name: 'Sales',
@@ -159,7 +157,7 @@ const defaultDataColumns: DataColumns = {
     },
     [SecondaryOrderBy.DiscordMembers]: {
       name: 'Discord members',
-      isSelected: false,
+      isSelected: true,
       isDisabled: false,
       type: DataColumnType.Amount,
       additionalColumns: [
@@ -252,40 +250,31 @@ export default function Trending() {
 
       <div className="page-container">
         <Box display="flex" flexDirection={'column'} justifyContent={'flex-start'} marginTop={'80px'}>
-          <Button onClick={onOpen}>Open</Button>
           {isOpen && (
-            <DiscoverSelectionModal
+            <TrendingSelectionModal
               isOpen={isOpen}
               onClose={onClose}
               onOpen={onOpen}
               dataColumns={dataColumns}
-              toggleDataColumn={(group: DataColumnGroup, column: SecondaryOrderBy) => {
-                setDataColumns((prev) => {
-                  return {
-                    ...prev,
-                    [group]: {
-                      ...prev[group],
-                      [column]: {
-                        ...prev[group][column],
-                        isSelected: !prev[group][column].isSelected
-                      }
-                    }
-                  };
-                });
-              }}
+              setDataColumns={setDataColumns}
             />
           )}
           <Box
             display="flex"
             flexDirection={'row'}
-            justifyContent={'flex-start'}
+            justifyContent={'space-between'}
             alignItems={'center'}
             marginBottom="16px"
           >
-            <Text size="lg" paddingBottom={'4px'}>
-              Period:
-            </Text>
-            <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
+            <Box display="flex" flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'}>
+              <Text size="lg" paddingBottom={'4px'}>
+                Period:
+              </Text>
+              <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
+            </Box>
+            <Button variant="outline" size="sm" onClick={onOpen}>
+              Select Categories
+            </Button>
           </Box>
 
           <TrendingContents statsFilter={statsFilter} dataColumns={dataColumns} setStatsFilter={setStatsFilter} />
@@ -325,22 +314,19 @@ function TrendingContents(props: {
       display={'flex'}
       flexDirection={'column'}
       alignItems="center"
-      // minWidth={`${110 * (columns.length + 1)}px`}
-      // maxWidth={'100vw'}
+      maxWidth={'100%'}
       overflowX={'auto'}
     >
-      <Table colorScheme="gray" marginTop={4} size={'sm'} overflowX={'auto'} maxWidth={'100%'}>
+      <Table colorScheme="gray" marginTop={4} size={'sm'} display={'block'}>
         <Thead>
           <Tr>
             <Th paddingBottom={'8px'}>Collection</Th>
             {columns.map(([key, value]) => {
               let direction = '';
               const isSelected = props.statsFilter.secondaryOrderBy === key;
-
               if (isSelected) {
                 direction = props.statsFilter.secondaryOrderDirection;
               }
-
               return (
                 <Th paddingBottom={'8px'} key={key}>
                   <SortButton
@@ -394,7 +380,9 @@ function TrendingContents(props: {
                       router.push(`/collection/${collectionData.searchCollectionName}`);
                     }}
                   >
-                    <Text textAlign={['left', 'left']}>{collectionData.name}</Text>
+                    <Text textAlign={['left', 'left']} maxWidth={'80px'} isTruncated>
+                      {collectionData.name}
+                    </Text>
                   </Link>
                 </Td>
                 {columns.map(([key, item]) => {
