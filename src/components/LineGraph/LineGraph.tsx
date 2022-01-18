@@ -26,7 +26,6 @@ function LineGraph(props: LineGraphProps) {
             const date = new Date(props.payload.timestamp);
             const month = date.getMonth() + 1;
             const day = date.getDate();
-            console.log(props.value);
             return [`${name} ${Math.floor(value)}`, `${month}/${day}`];
           }}
           labelFormatter={props.labelFormatter}

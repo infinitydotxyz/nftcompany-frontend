@@ -1,6 +1,5 @@
 import { Box, Image, Button, Text } from '@chakra-ui/react';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { useRouter } from 'next/router';
 interface CollectionOverviewProps {
   /**
    * name of the collection
@@ -30,12 +29,15 @@ interface CollectionOverviewProps {
   creator?: string;
 
   description?: string;
+
+  isClaimed: boolean;
+
+  onClickEdit: () => void;
 }
 
 function CollectionOverview(props: CollectionOverviewProps) {
-  const router = useRouter();
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" minWidth={'300px'}>
       <Box display="flex" flexDirection="row" marginBottom="32px">
         <Image src={props.profileImage} alt="" maxHeight="78px" marginRight="40px" />
         <Box display="flex" flexDirection="column" justifyContent={'space-between'}>
@@ -72,9 +74,7 @@ function CollectionOverview(props: CollectionOverviewProps) {
         paddingX="32px"
         width="max-content"
         fontSize="12px"
-        onClick={() => {
-          router.push(`/collection/edit/${props.collectionAddress}`);
-        }}
+        onClick={props.onClickEdit}
       >
         {props.hasBeenClaimed ? 'Edit collection' : 'Claim collection'}
       </Button>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
@@ -25,28 +25,105 @@ import { renderSpinner } from 'utils/commonUtil';
 import InfoGroup from 'components/InfoGroup/InfoGroup';
 import CollectionBenefits from 'components/CollectionBenefits.tsx/CollectionBenefits';
 import GraphPreview from 'components/GraphPreview/GraphPreview';
-import TextToggle from 'components/TextToggle/TextToggle';
 import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import CollectionCommunity from 'components/CollectionCommunity/CollectionCommunity';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
-import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
+import CollectionEvents, { EventType } from 'components/CollectionEvents/CollectionEvents';
+import CollectionEventsFilter from 'components/CollectionEventsFilter/CollectionEventsFilter';
+import ToggleTab from 'components/ToggleTab/ToggleTab';
 
 const Collection = (): JSX.Element => {
-  const [isFilterOpened, setIsFilterOpened] = React.useState(false);
   const [title, setTitle] = useState<string | undefined>();
   const [address, setAddress] = useState('');
   const router = useRouter();
   const { name } = router.query;
 
+  const onEdit = () => {
+    router.push(`/collection/edit/${address}`);
+  };
+
+  const { showAppError } = useAppContext();
+
   const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isCardsLoading, setIsCardsLoading] = useState(true);
 
   const [twitterData, setTwitterData] = useState<{ followersCount: number; timestamp: number }[]>([]);
   const [discordData, setDiscordData] = useState<{ membersCount: number; presenceCount: number; timestamp: number }[]>(
     []
   );
 
-  const [toggleState, setToggleState] = useState(false);
+  const [eventFilterState, setEventFilterState] = useState(EventType.Sale);
+
+  const [toggleTab, setToggleTab] = useState<'NFTs' | 'Community'>('NFTs');
+  const [failedWithSlug, setFailedWithSlug] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(!collectionInfo);
+  }, []);
+
+  const onLoaded = (address: string) => {
+    if (address) {
+      setAddress(address);
+    }
+    setIsCardsLoading(false);
+  };
+
+  useEffect(() => {
+    /**
+     * there is a discrepancy between the searchCollectionName
+     * for listings/assets and collections.
+     *
+     * all navigation to this page should come from clicking on an listing or asset
+     * so we first attempt to load the collection info using the searchCollectionName from
+     * the url
+     * if the listings load and we get the address, then we try again using
+     * that address
+     * if neither load in 4 seconds we throw an error and display that the
+     * collection was not found
+     */
+    let isActive = true;
+
+    if (address && !collectionInfo?.address) {
+      console.log('using address');
+      setIsLoading(true);
+      getCollectionInfo(address as string)
+        .then((collectionInfo) => {
+          if (isActive && collectionInfo?.address) {
+            setCollectionInfo(collectionInfo);
+          }
+          if (isActive) {
+            setIsLoading(false);
+          }
+        })
+        .catch((err: any) => {
+          console.error(err);
+          if (isActive) {
+            setIsLoading(false);
+          }
+        });
+    } else if (name && !collectionInfo?.address) {
+      setIsLoading(true);
+      getCollectionInfo(name as string)
+        .then((collectionInfo) => {
+          if (isActive && collectionInfo?.address) {
+            setCollectionInfo(collectionInfo);
+            setIsLoading(false);
+          } else if (isActive) {
+            setIsLoading(isCardsLoading);
+          }
+        })
+        .catch((err: any) => {
+          console.error(err);
+          if (isActive) {
+            setIsLoading(isCardsLoading);
+          }
+        });
+    }
+    return () => {
+      isActive = false;
+    };
+  }, [name, address, isCardsLoading]);
 
   useEffect(() => {
     let isActive = true;
@@ -83,40 +160,18 @@ const Collection = (): JSX.Element => {
     return <Box marginBottom={'32px'}>{props.children}</Box>;
   };
 
-  useEffect(() => {
-    let isActive = true;
-    setIsLoading(true);
-    getCollectionInfo(name as string)
-      .then((collectionInfo) => {
-        if (isActive) {
-          setCollectionInfo(collectionInfo);
-          setIsLoading(false);
-          if (collectionInfo?.address) {
-            setAddress(collectionInfo?.address);
-          }
-        }
-      })
-      .catch((err: any) => {
-        console.error(err);
-      });
-
-    return () => {
-      isActive = false;
-    };
-  }, [name]);
-
   return (
     <>
       <Head>
         <title>{title || name}</title>
       </Head>
       <div className="page-container" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-        {isLoading ? (
-          <Box display="flex" justifyContent={'center'} alignItems={'center'} height="400px">
-            <div>{renderSpinner()}</div>
+        <>
+          <Box display={isLoading ? 'flex' : 'none'} justifyContent={'center'} alignItems={'center'} height="400px">
+            {isLoading && <div>{renderSpinner()}</div>}
           </Box>
-        ) : (
-          <Box display="flex" flexDirection="column">
+
+          <Box display={isLoading ? 'none' : 'flex'} flexDirection="column">
             <Box display="flex" flexDirection="row" justifyContent="space-between">
               <Box marginRight="32px" flexGrow={4} flexBasis={0}>
                 <CollectionOverview
@@ -127,31 +182,48 @@ const Collection = (): JSX.Element => {
                   creator={''}
                   description={collectionInfo?.description}
                   collectionAddress={collectionInfo?.address ?? ''}
+                  onClickEdit={onEdit}
+                  isClaimed={collectionInfo?.isClaimed ?? false}
                 />
               </Box>
               <Spacer />
               <Box flexGrow={3} flexBasis={0}>
                 {collectionInfo?.stats && (
                   <CollectionInfoGroupWrapper>
-                    <InfoGroup title="Collection Stats" minChildWidth="80px" maxChildWidth="80px" spacing="20px">
+                    <InfoGroup
+                      title="Collection Stats"
+                      minChildWidth="85px"
+                      maxChildWidth="85px"
+                      spacing="20px"
+                      space="evenly"
+                    >
                       <CollectionStats stats={collectionInfo.stats} />
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
                 )}
                 {collectionInfo?.benefits && collectionInfo?.benefits?.length > 0 && (
                   <CollectionInfoGroupWrapper>
-                    <InfoGroup title="Benfits of holding the NFTs" minChildWidth="100px" maxChildWidth="100px">
+                    <InfoGroup
+                      title="Benfits of holding the NFTs"
+                      minChildWidth="100px"
+                      maxChildWidth="100px"
+                      space="evenly"
+                    >
                       <CollectionBenefits benefits={collectionInfo.benefits} />
                     </InfoGroup>
                   </CollectionInfoGroupWrapper>
                 )}
-                {collectionInfo?.links && (
-                  <CollectionInfoGroupWrapper>
-                    <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px">
-                      <CollectionLinks links={collectionInfo.links} />
-                    </InfoGroup>
-                  </CollectionInfoGroupWrapper>
-                )}
+
+                <CollectionInfoGroupWrapper>
+                  <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px" space="start">
+                    <CollectionLinks
+                      links={collectionInfo?.links ?? {}}
+                      onClickEdit={onEdit}
+                      isClaimed={collectionInfo?.isClaimed ?? false}
+                    />
+                  </InfoGroup>
+                </CollectionInfoGroupWrapper>
+
                 <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                   <Box marginRight="20px">
                     <GraphPreview
@@ -180,57 +252,75 @@ const Collection = (): JSX.Element => {
             </Box>
 
             <Box marginTop={'72px'} width="min-content">
-              <TextToggle
-                unCheckedText="NFT"
-                checkedText="Community"
-                checked={toggleState}
-                onClick={() => setToggleState((prev) => !prev)}
+              <ToggleTab
+                options={['NFTs', 'Community']}
+                selected={toggleTab}
+                onChange={(opt: string) => setToggleTab(opt as any)}
               />
             </Box>
 
-            <HorizontalLine display={!toggleState ? 'none' : ''} marginTop={'40px'} />
-
+            <HorizontalLine display={toggleTab === 'NFTs' ? 'none' : ''} marginTop={'40px'} />
             {collectionInfo && (
-              <CollectionCommunity collectionInfo={collectionInfo} display={!toggleState ? 'none' : 'flex'} />
+              <CollectionCommunity
+                collectionInfo={collectionInfo}
+                display={toggleTab === 'NFTs' ? 'none' : 'flex'}
+                onClickEdit={onEdit}
+              />
             )}
-
-            <Box className="center" display={toggleState ? 'none' : 'flex'}>
-              <Box className="filter-container">
-                <FilterDrawer collection={address} renderContent={true} showCollection={false} />
-              </Box>
-              <Tabs align={'center'} display={toggleState ? 'none' : ''} className="content-container">
+            <Box className="center" display={toggleTab === 'Community' ? 'none' : 'flex'} width="100%">
+              <Tabs align={'center'} display={toggleTab === 'Community' ? 'none' : ''} width="100%">
                 <TabList>
                   <Tab>NFTs</Tab>
                   <Tab isDisabled={!address}>Activity</Tab>
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <CollectionContents
-                      name={name as string}
-                      onTitle={(newTitle) => {
-                        if (!title) {
-                          setTitle(newTitle);
-                        }
-                      }}
-                      onLoaded={({ address }) => setAddress(address)}
-                      listingSource={ListingSource.Infinity}
-                    />
+                    <Box display="flex" flexDirection={'row'} width="100%">
+                      <Box className="filter-container">
+                        <FilterDrawer collection={address} renderContent={true} showCollection={false} />
+                      </Box>
+                      <Box width="82%">
+                        <CollectionContents
+                          name={name as string}
+                          onTitle={(newTitle) => {
+                            if (!title) {
+                              setTitle(newTitle);
+                            }
+                          }}
+                          onLoaded={({ address }) => onLoaded(address)}
+                          listingSource={ListingSource.Infinity}
+                        />
+                      </Box>
+                    </Box>
                   </TabPanel>
                   <TabPanel>
-                    {address && (
-                      <CollectionEvents
-                        address={address}
-                        eventType="successful"
-                        activityType="sale"
-                        pageType="collection"
-                      />
-                    )}
+                    <Box display="flex" flexDirection={'row'} marginTop={2}>
+                      <Box className="filter-container">
+                        <CollectionEventsFilter
+                          filterState={eventFilterState}
+                          setFilterState={setEventFilterState}
+                          minWidth={'180px'}
+                          paddingBottom="30px"
+                          borderBottom="1px solid #ccc"
+                        />
+                      </Box>
+
+                      {address && (
+                        <CollectionEvents
+                          address={address}
+                          eventType={eventFilterState}
+                          pageType="collection"
+                          width="82%"
+                          overflow="hidden"
+                        />
+                      )}
+                    </Box>
                   </TabPanel>
                 </TabPanels>
               </Tabs>
             </Box>
           </Box>
-        )}
+        </>
       </div>
     </>
   );
@@ -264,6 +354,10 @@ const CollectionContents = ({ name, onTitle, onLoaded, listingSource }: Props): 
         }
         if (title) {
           onTitle(title);
+        }
+      } else {
+        if (onLoaded) {
+          onLoaded({ address: '' });
         }
       }
     }

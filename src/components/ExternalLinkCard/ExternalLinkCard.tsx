@@ -5,14 +5,51 @@ import { Tooltip } from '@chakra-ui/tooltip';
 import React, { useRef, useState } from 'react';
 import styles from './ExternalLinkCard.module.scss';
 
-interface ExternalLinkCardProps {
+interface BaseProps {
   title: string;
   subtitle: string;
-  link: string;
   linkText: string;
 }
+interface ExternalLinkCardProps extends BaseProps {
+  link: string;
+}
 
-function ExternalLinkCard({ title, subtitle, link, linkText, ...rest }: ExternalLinkCardProps & ChakraProps) {
+interface ExternalLinkCardButtonProps extends BaseProps {
+  onClick: () => void;
+}
+
+type Props = (ExternalLinkCardButtonProps | ExternalLinkCardProps) & ChakraProps;
+
+function ExternalLinkCard(props: Props) {
+  let link, linkText, title, subtitle, onClick;
+  let rest;
+  if ('onClick' in props) {
+    const {
+      title: buttonTitle,
+      subtitle: buttonSubtitle,
+      onClick: onButtonClick,
+      linkText: buttonText,
+      ...propsRest
+    } = props;
+    title = buttonTitle;
+    subtitle = buttonSubtitle;
+    onClick = onButtonClick;
+    linkText = buttonText;
+    rest = propsRest;
+  } else {
+    const {
+      title: buttonTitle,
+      subtitle: buttonSubtitle,
+      link: buttonLink,
+      linkText: buttonText,
+      ...propsRest
+    } = props;
+    title = buttonTitle;
+    subtitle = buttonSubtitle;
+    link = buttonLink;
+    linkText = buttonText;
+    rest = propsRest;
+  }
   const [isTooltipDisabled, setIsTooltipDisabled] = useState(true);
   const textRef = useRef<any>();
   const maxWidth = 100;
@@ -43,11 +80,19 @@ function ExternalLinkCard({ title, subtitle, link, linkText, ...rest }: External
         </Tooltip>
         <p className={styles.subtitle}>{subtitle}</p>
       </Box>
-      <Link _hover={{ textDecoration: 'none' }} href={link} target={'_blank'}>
-        <Button size="sm" flexBasis={0} flexGrow={1}>
-          {linkText}
-        </Button>
-      </Link>
+      {'onClick' in props ? (
+        <Link _hover={{ textDecoration: 'none' }}>
+          <Button size="sm" _hover={{ textDecoration: 'none' }} flexBasis={0} flexGrow={1} onClick={onClick}>
+            {linkText}
+          </Button>
+        </Link>
+      ) : (
+        <Link _hover={{ textDecoration: 'none' }} href={link} target={'_blank'}>
+          <Button size="sm" flexBasis={0} flexGrow={1}>
+            {linkText}
+          </Button>
+        </Link>
+      )}
     </Box>
   );
 }

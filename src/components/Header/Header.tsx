@@ -32,7 +32,7 @@ const Header = (): JSX.Element => {
     if (!position) {
       position = 76;
     }
-    setHeaderPosition(position);
+    setHeaderPosition(position > 0 ? position : 76);
   }, [headerRef?.current?.getBoundingClientRect?.()?.bottom, showBanner]);
 
   const { colorMode } = useColorMode();

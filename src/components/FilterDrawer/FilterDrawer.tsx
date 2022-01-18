@@ -19,7 +19,8 @@ import {
   Tbody,
   Thead,
   Select,
-  Checkbox
+  Checkbox,
+  ChakraProps
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon, SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
 import * as React from 'react';
@@ -63,7 +64,7 @@ interface Props {
   collection?: string;
 }
 
-const FilterDrawer = ({ onToggle, showCollection, collection }: Props) => {
+const FilterDrawer = ({ onToggle, showCollection, renderContent, collection, ...rest }: Props & ChakraProps) => {
   const { showAppError, headerPosition } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
   const [minPriceVal, setMinPriceVal] = React.useState(
@@ -382,6 +383,7 @@ const FilterDrawer = ({ onToggle, showCollection, collection }: Props) => {
         size={isMobileSmall ? 'full' : 'xs'}
         blockScrollOnMount={false}
         trapFocus={false}
+        {...rest}
       >
         <DrawerOverlay backgroundColor="rgba(0,0,0,0)" />
 
