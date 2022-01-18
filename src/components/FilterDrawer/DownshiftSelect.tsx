@@ -35,7 +35,9 @@ const CheckboxItemRenderer = ({ data, index, style }: any) => {
         selected: isItemSelected(item)
       })}
     >
-      <span className={styles.dropdownCheckboxItem}>{item.label}</span>
+      <span className={styles.dropdownCheckboxItem} title="">
+        {item.label}
+      </span>
     </ListItem>
   );
 };
@@ -54,7 +56,9 @@ const ItemRenderer = ({ data, index, style }: any) => {
         selected: isItemSelected(item)
       })}
     >
-      <span className={styles.dropdownItem}>{item.label}</span>
+      <span className={styles.dropdownItem} title="">
+        {item.label}
+      </span>
     </SimpleListItem>
   );
 };
@@ -192,12 +196,19 @@ export class DownshiftSelect extends Component<Props> {
                 >
                   {labelText || this.props.placeholder}
                 </Label>
-                <DropdownButton {...d.getToggleButtonProps()}>
-                  <ArrowIcon isOpen={d.isOpen} />
-                </DropdownButton>
+
+                {this.props.disabled ? (
+                  <DropdownButton disabled={true}>
+                    <ArrowIcon isOpen={false} />
+                  </DropdownButton>
+                ) : (
+                  <DropdownButton {...d.getToggleButtonProps()} disabled={false}>
+                    <ArrowIcon isOpen={d.isOpen} />
+                  </DropdownButton>
+                )}
               </Control>
 
-              {d.isOpen && (
+              {d.isOpen && !this.props.disabled && (
                 <Menu>
                   {/* <SearchField
                     {...d.getInputProps({

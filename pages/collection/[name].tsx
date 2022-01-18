@@ -276,7 +276,7 @@ const Collection = (): JSX.Element => {
                 <TabPanels>
                   <TabPanel>
                     <Box display="flex" flexDirection={'row'} width="100%">
-                      <Box width="16%" mr={4} minWidth={'180px'}>
+                      <Box className="filter-container">
                         <FilterDrawer collection={address} renderContent={true} showCollection={false} />
                       </Box>
                       <Box width="82%">
@@ -295,15 +295,15 @@ const Collection = (): JSX.Element => {
                   </TabPanel>
                   <TabPanel>
                     <Box display="flex" flexDirection={'row'} marginTop={2}>
-                      <CollectionEventsFilter
-                        filterState={eventFilterState}
-                        setFilterState={setEventFilterState}
-                        width="16%"
-                        mr={4}
-                        minWidth={'180px'}
-                        paddingBottom="30px"
-                        borderBottom="1px solid #ccc"
-                      />
+                      <Box className="filter-container">
+                        <CollectionEventsFilter
+                          filterState={eventFilterState}
+                          setFilterState={setEventFilterState}
+                          minWidth={'180px'}
+                          paddingBottom="30px"
+                          borderBottom="1px solid #ccc"
+                        />
+                      </Box>
 
                       {address && (
                         <CollectionEvents
