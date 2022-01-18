@@ -66,9 +66,7 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
 
   useEffect(() => {
     const { width, height } = containerRef?.current?.getBoundingClientRect();
-    if (width && height) {
-      setDimensions({ width, height });
-    }
+    setDimensions({ width: width || 140, height: height || 25 });
   }, [containerRef?.current]);
 
   return (
@@ -109,17 +107,15 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
         </Box>
       </Box>
 
-      {data?.length > 0 && (
-        <LineGraph
-          width={dimensions.width}
-          height={20}
-          data={data}
-          displayProps={{
-            y: { label: props.dataUnits, strokeColor: '#CED6DC' }
-          }}
-          tooltip={false}
-        />
-      )}
+      <LineGraph
+        width={dimensions.width}
+        height={25}
+        data={data}
+        displayProps={{
+          y: { label: props.dataUnits, strokeColor: '#CED6DC' }
+        }}
+        tooltip={false}
+      />
 
       {'link' in props && (
         <Link marginTop="16px" width="100%" href={props.link} target="_blank" _hover={{ textDecoration: 'none' }}>
