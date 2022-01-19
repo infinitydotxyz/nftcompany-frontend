@@ -108,17 +108,17 @@ const defaultDataColumns: DataColumns = {
       name: 'Sales',
       isSelected: false,
       isDisabled: false,
-      type: DataColumnType.Amount,
-      additionalColumns: [
-        [
-          SecondaryOrderBy.SalesChange,
-          {
-            name: 'Change in sales',
-            isDisabled: false,
-            type: DataColumnType.Change
-          }
-        ]
-      ]
+      type: DataColumnType.Amount
+      // additionalColumns: [
+      //   [
+      //     SecondaryOrderBy.SalesChange,
+      //     {
+      //       name: 'Change in sales',
+      //       isDisabled: false,
+      //       type: DataColumnType.Change
+      //     }
+      //   ]
+      // ]
     },
     [SecondaryOrderBy.Volume]: {
       name: 'Volume',
