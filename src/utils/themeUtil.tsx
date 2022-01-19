@@ -3,7 +3,7 @@ import { ChakraProvider, theme as baseTheme, extendTheme, ThemeConfig, withDefau
 import { mode } from '@chakra-ui/theme-tools';
 import { capitalize } from 'lodash';
 
-const brandColor = '#222';
+const brandColor = '#222'; // main brand color
 
 // const brandBlue = '#0000ff'; // #4047ff';
 // const brandGray = '#888A8C'; // #4047ff';
@@ -197,7 +197,14 @@ const Button = {
       return { fontSize: '14px', lineHeight: '16px' };
     },
     lg: (props: any) => {
-      return { fontSize: '16px', lineHeight: '19px', paddingY: '22.5px', paddingX: '16px', minWidth: '157px' };
+      return {
+        fontSize: '16px',
+        lineHeight: '19px',
+        paddingTop: '22.5px',
+        paddingBottom: '26.5px', // align button text vertically for Futura font
+        paddingX: '16px',
+        minWidth: '157px'
+      };
     }
   },
   variants: {

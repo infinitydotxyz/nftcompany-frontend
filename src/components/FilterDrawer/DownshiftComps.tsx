@@ -11,8 +11,8 @@ export const SelectWrapper = styled.div`
 `;
 
 export const Control = styled.div`
-  border: 1px solid #e2e8f0;
-  border-radius: 2px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   padding: 7px 5px 5px 5px;
   margin-top: 2px;
   white-space: nowrap;
@@ -40,6 +40,9 @@ export const DropdownButton = styled.button`
   background: none;
   cursor: pointer;
   margin-top: -2px;
+  svg {
+    stroke: ${(props: any) => (props.disabled === true ? 'lightgray' : '')};
+  }
 `;
 
 export function ArrowIcon({ isOpen }: { isOpen: boolean }) {

@@ -1,16 +1,13 @@
-import { Box, SimpleGrid, Spacer } from '@chakra-ui/layout';
-import { Text, useDisclosure, Image, Button, Input, FormLabel, Textarea } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/layout';
+import { useDisclosure } from '@chakra-ui/react';
 import EditCollectionForm from 'components/EditCollectionForm/EditCollectionForm';
-import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import UnauthorizedModal from 'components/UnauthorizedModal/UnauthorizedModal';
 import Layout from 'containers/layout';
-import { reject } from 'lodash';
 import { NextPage } from 'next';
-import { resolveHref } from 'next/dist/shared/lib/router/router';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
-import { CollectionData, getAuthenticatedCollectionInfo, getCollectionInfo } from 'services/Collections.service';
+import { useEffect, useState } from 'react';
+import { CollectionData, getAuthenticatedCollectionInfo } from 'services/Collections.service';
 import { renderSpinner } from 'utils/commonUtil';
 import { useAppContext } from 'utils/context/AppContext';
 
@@ -18,7 +15,7 @@ const Edit = (): JSX.Element => {
   const router = useRouter();
   const { address } = router.query;
   const [title, setTitle] = useState<string | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { user, showAppError, userReady } = useAppContext();
   const [isAuthorized, setIsAuthorized] = useState(true);
 
@@ -95,9 +92,7 @@ const Edit = (): JSX.Element => {
       <UnauthorizedModal
         isOpen={isOpen}
         onClose={handleClose}
-        message={
-          'You are not authorized to view this page. Please login with the account used to publish the contract.'
-        }
+        message={'Only the creator of the contract can edit the collection.'}
       />
     </>
   );
