@@ -33,7 +33,15 @@ interface GraphPreviewPropsWithLink extends GraphPreviewProps {
   linkText?: string;
 }
 
-function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
+interface GraphPreviewPropsWithButton extends GraphPreviewProps {
+  onClick: () => void;
+  /**
+   * text on the button
+   */
+  buttonText?: string;
+}
+
+function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink | GraphPreviewPropsWithButton) {
   const containerRef = useRef<any>();
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [intervalChange, setIntervalChange] = useState(0);
@@ -61,7 +69,11 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
           break;
         }
       }
-      setIntervalChange(mostRecentDataPoint.y - oldestDataPointWithinInterval.y);
+      const percentChange = (value: number, change: number) => {
+        return 100 * (change / value);
+      };
+      const change = mostRecentDataPoint.y - oldestDataPointWithinInterval.y;
+      setIntervalChange(percentChange(oldestDataPointWithinInterval.y, change));
     }
   }, [props.data]);
 
@@ -79,7 +91,7 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
       justifyContent="space-between"
       alignItems="flex-start"
       padding="16px"
-      width="180px"
+      width="200px"
     >
       <p className={styles.label}>{props.label}</p>
       <Box
@@ -92,7 +104,11 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
         alignItems="center"
       >
         <p className={styles.total}>{numStr(total)}</p>
-        <IntervalChange change={intervalChange} interval={props.changeInterval} intervalUnits="hrs" />
+        <IntervalChange
+          change={`${numStr(Math.floor(intervalChange * 1000) / 1000)}%`}
+          interval={props.changeInterval}
+          intervalUnits="hrs"
+        />
       </Box>
 
       <LineGraph
@@ -109,6 +125,14 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink) {
         <Link marginTop="16px" width="100%" href={props.link} target="_blank" _hover={{ textDecoration: 'none' }}>
           <Button size="sm" width="100%" type="submit">
             {props.linkText}
+          </Button>
+        </Link>
+      )}
+
+      {'onClick' in props && (
+        <Link marginTop="16px" width="100%" onClick={props.onClick} target="_blank" _hover={{ textDecoration: 'none' }}>
+          <Button size="sm" width="100%" type="submit">
+            {props.buttonText}
           </Button>
         </Link>
       )}

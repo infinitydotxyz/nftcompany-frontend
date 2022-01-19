@@ -403,16 +403,12 @@ function TrendingContents(props: {
                         <Td key={key}>
                           <Box display="flex" flexDirection={'row'} alignItems={'center'}>
                             {value ? (
-                              <>
-                                <IntervalChange
-                                  marginLeft={[0, 0, 0, 0, 2]}
-                                  marginTop={[2, 2, 2, 2, 0]}
-                                  change={value}
-                                  interval={24}
-                                  intervalUnits={'hrs'}
-                                  justifyContent={'flex-start'}
-                                />
-                              </>
+                              <IntervalChange
+                                marginLeft={[0, 0, 0, 0, 2]}
+                                marginTop={[2, 2, 2, 2, 0]}
+                                change={`${numStr(Math.abs(value))}%`}
+                                justifyContent={'flex-start'}
+                              />
                             ) : (
                               <Text variant="bold">---</Text>
                             )}

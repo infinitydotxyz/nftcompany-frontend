@@ -152,6 +152,7 @@ export function useTrendingStats(filter: StatsFilter) {
       }
       return itemAField - itemBField;
     });
+
     setTrendingData(sortedData as any as TrendingData[]);
   }, [filter.secondaryOrderBy, filter.secondaryOrderDirection, collectionStats]);
 
@@ -174,12 +175,16 @@ export function useTrendingStats(filter: StatsFilter) {
   };
 
   const getIntervalData = (collectionStats: CollectionStats[], interval: StatInterval) => {
+    const percentChange = (value: number, change: number) => {
+      return 100 * (change / value);
+    };
+
     const trendingData = (collectionStats ?? []).map((item: any) => {
       const { collectionAddress, name, profileImage, votesAgainst, votesFor, floorPrice, owners, count } = item;
 
       const intervalData: any = item[interval];
       const volume = intervalData?.volume;
-      const volumeChange = intervalData?.change ?? 0;
+      const volumeChange = percentChange(volume, intervalData?.change ?? intervalData?.volume);
       const sales = intervalData?.sales;
 
       const averagePrice = item?.averagePrice;
@@ -197,6 +202,10 @@ export function useTrendingStats(filter: StatsFilter) {
         discordMembersChange = discordMembers;
         discordPresenceChange = discordPresence;
       }
+      averagePriceChange = percentChange(averagePrice, averagePriceChange);
+      twitterFollowersChange = percentChange(twitterFollowers, twitterFollowersChange);
+      discordMembersChange = percentChange(discordMembers, discordMembersChange);
+      discordPresenceChange = percentChange(discordPresence, discordPresenceChange);
 
       const votePercentFor = ((item.votesFor ?? 0) / ((item.votesAgainst ?? 0) + (item.votesFor ?? 0))) * 100;
 
