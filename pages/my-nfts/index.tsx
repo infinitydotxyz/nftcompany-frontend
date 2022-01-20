@@ -12,6 +12,8 @@ import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { transformOpenSea, transformCovalent, getNftDataSource, transformUnmarshal } from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
 import { NftAction } from 'types';
+import { Box } from '@chakra-ui/layout';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 
 export default function MyNFTs() {
   const { user, showAppError, chainId } = useAppContext();
@@ -20,6 +22,7 @@ export default function MyNFTs() {
   const [listModalItem, setListModalItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [filter, setFilter] = useState({});
 
   const fetchData = async () => {
     if (!user || !user?.account || !chainId) {
@@ -33,7 +36,8 @@ export default function MyNFTs() {
     const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
       offset: newCurrentPage * ITEMS_PER_PAGE, // not "startAfter" because this is not firebase query.
       limit: ITEMS_PER_PAGE,
-      source
+      source,
+      ...filter
     });
     if (error) {
       showAppError(`${error.message}`);
@@ -55,7 +59,7 @@ export default function MyNFTs() {
 
   React.useEffect(() => {
     fetchData();
-  }, [user, chainId]);
+  }, [user, chainId, filter]);
 
   React.useEffect(() => {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
@@ -75,22 +79,35 @@ export default function MyNFTs() {
             <div className="tg-title">My NFTs</div>
           </div>
 
-          <div>
-            <PleaseConnectWallet account={user?.account} />
-            <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
-            {data?.length === 0 && isFetching && <LoadingCardList />}
+          <Box display="flex">
+            {/* --- disable until /assets api (OS/alchemy/unmarshall...) can support filters */}
+            {/* <Box className="filter-container">
+              <FilterDrawer
+                showSaleTypes={false}
+                showPrices={false}
+                onChange={(filter: any) => {
+                  console.log('filter', filter);
+                  setFilter(filter);
+                }}
+              />
+            </Box> */}
+            <Box>
+              <PleaseConnectWallet account={user?.account} />
+              <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
+              {data?.length === 0 && isFetching && <LoadingCardList />}
 
-            <CardList
-              data={data}
-              showItems={[]}
-              userAccount={user?.account}
-              action={NftAction.ListNft}
-              pageName={PAGE_NAMES.MY_NFTS}
-              onClickAction={(item) => {
-                setListModalItem(item);
-              }}
-            />
-          </div>
+              <CardList
+                data={data}
+                showItems={[]}
+                userAccount={user?.account}
+                action={NftAction.ListNft}
+                pageName={PAGE_NAMES.MY_NFTS}
+                onClickAction={(item) => {
+                  setListModalItem(item);
+                }}
+              />
+            </Box>
+          </Box>
         </div>
 
         {dataLoaded && (
