@@ -10,15 +10,20 @@ import { useAppContext } from 'utils/context/AppContext';
 import { ordersToCardData } from 'services/Listings.service';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { NftAction } from 'types';
+import { Box } from '@chakra-ui/react';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
+import styles from './OffersMade.module.scss';
+import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
 
 export default function OffersMade() {
   const { user, showAppError } = useAppContext();
+  const searchContext = useSearchContext();
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
 
-  const fetchData = async () => {
+  const fetchData = async (searchFilter: SearchFilter) => {
     if (!user?.account) {
       setData([]);
       return;
@@ -28,8 +33,7 @@ export default function OffersMade() {
     const newCurrentPage = currentPage + 1;
     try {
       const { result, error } = await apiGet(`/u/${user?.account}/offersmade`, {
-        startAfter: getLastItemCreatedAt(data),
-        limit: ITEMS_PER_PAGE
+        ...searchFilter
       });
       if (error) {
         showAppError(`${error?.message}`);
@@ -46,8 +50,8 @@ export default function OffersMade() {
   };
 
   React.useEffect(() => {
-    fetchData();
-  }, [user]);
+    fetchData(searchContext.filterState);
+  }, [user, searchContext]);
 
   React.useEffect(() => {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
@@ -55,6 +59,7 @@ export default function OffersMade() {
     }
     setDataLoaded(true); // current page's data loaded & rendered.
   }, [currentPage]);
+
   return (
     <>
       <Head>
@@ -66,24 +71,31 @@ export default function OffersMade() {
             <div className="tg-title">Offers Made</div>
           </div>
 
-          <div>
-            <PleaseConnectWallet account={user?.account} />
-            <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
-            {data?.length === 0 && isFetching && <LoadingCardList />}
+          <Box className={styles.col}>
+            <Box className="filter-container">
+              <FilterDrawer showSaleTypes={false} />
+            </Box>
+            <Box className="content-container">
+              <div>
+                <PleaseConnectWallet account={user?.account} />
+                <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
+                {data?.length === 0 && isFetching && <LoadingCardList />}
 
-            <CardList data={data} action={NftAction.CancelOffer} userAccount={user?.account} />
-          </div>
+                <CardList data={data} action={NftAction.CancelOffer} userAccount={user?.account} />
+              </div>
 
-          {dataLoaded && (
-            <FetchMore
-              currentPage={currentPage}
-              data={data}
-              onFetchMore={async () => {
-                setDataLoaded(false);
-                await fetchData();
-              }}
-            />
-          )}
+              {dataLoaded && (
+                <FetchMore
+                  currentPage={currentPage}
+                  data={data}
+                  onFetchMore={async () => {
+                    setDataLoaded(false);
+                    await fetchData(searchContext.filterState);
+                  }}
+                />
+              )}
+            </Box>
+          </Box>
         </div>
       </div>
     </>

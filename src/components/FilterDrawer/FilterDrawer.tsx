@@ -59,6 +59,7 @@ const EmptyTrait = { type: '', value: '', traitData: undefined };
 
 interface Props {
   onToggle?: (isOpen: boolean) => void;
+  pageName?: string;
   showSaleTypes?: boolean;
   showPrices?: boolean;
   showCollection?: boolean;
@@ -69,6 +70,7 @@ interface Props {
 
 const FilterDrawer = ({
   onToggle,
+  pageName,
   showSaleTypes,
   showPrices,
   showCollection,
