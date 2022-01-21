@@ -15,6 +15,23 @@ enum StorageKeys {
   AuthMessage = 'X-AUTH-MESSAGE',
   Wallet = 'WALLET'
 }
+
+/**
+ * provider manager acts as a proxy for the underlying wallet(s)
+ *
+ * responsibilities:
+ * - connect to a new wallet
+ * - provide wallet agnostic events and rpc methods
+ * - implement the opensea provider interface so that it can be passed to instantiate
+ * the seaport
+ * - handles saving/refreshing the wallet from localstorage
+ * - provide access to auth headers
+ * - provides an ethers provider through getEthersProvider
+ *
+ * to add support for another wallet, implement an AbstractProvider
+ *
+ * specific wallet implementations should not be used directly by a client
+ */
 export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'> {
   private _provider?: Provider;
 
@@ -92,6 +109,15 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
     throw new Error('No provider');
   }
 
+  private async jsonRpcFetchFunc(method: string, params?: any[]) {
+    const response = await this.request({ method, params: params ?? [], id: Date.now(), jsonrpc: '' });
+    return response.result;
+  }
+
+  getEthersProvider = () => {
+    return new ethers.providers.Web3Provider(this.jsonRpcFetchFunc.bind(this));
+  };
+
   sendAsync(request: JSONRPCRequestPayload, callback: (error?: any, response?: JSONRPCResponsePayload) => void) {
     if (this._provider) {
       this._provider.sendAsync(request, callback);
@@ -139,6 +165,7 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
    * @param walletType
    */
   async connectWallet(walletType: WalletType) {
+    this._provider?.disconnect?.();
     try {
       const provider = this.createProvider(walletType);
 

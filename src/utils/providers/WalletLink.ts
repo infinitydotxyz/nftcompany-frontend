@@ -82,7 +82,7 @@ export class WalletLink extends AbstractProvider {
 
   async request(request: JSONRPCRequestPayload) {
     const response = await this.web3Provider.request(request);
-    return { result: response, id: request.id, jsonrpc: request.jsonrpc };
+    return { result: response, id: request?.id ?? '', jsonrpc: request?.jsonrpc ?? '' };
   }
 
   disconnect(): void {

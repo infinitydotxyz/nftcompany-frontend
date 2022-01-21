@@ -36,13 +36,13 @@ const TransferNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
     let fromAddress = user.account;
     let toAddress = transferTo;
 
-    if (fromAddress.endsWith('.eth')) {
-      const provider = getEthersProvider();
+    if (fromAddress.endsWith('.eth') && providerManager) {
+      const provider = providerManager.getEthersProvider();
       fromAddress = await provider.resolveName(fromAddress);
     }
 
-    if (toAddress.endsWith('.eth')) {
-      const provider = getEthersProvider();
+    if (toAddress.endsWith('.eth') && providerManager) {
+      const provider = providerManager.getEthersProvider();
       toAddress = await provider.resolveName(toAddress);
     }
 

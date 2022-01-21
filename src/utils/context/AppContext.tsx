@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getOpenSeaportForChain, getProvider } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { getCustomMessage, getCustomExceptionMsg } from 'utils/commonUtil';
 const { EventType } = require('../../../opensea/types');
 import { errorToast, infoToast, Toast } from 'components/Toast/Toast';
@@ -68,7 +68,6 @@ export function AppContextProvider({ children }: any) {
   }, []);
 
   const connectWallet = async (walletType: WalletType) => {
-    providerManager?.disconnect();
     if (providerManager?.connectWallet) {
       try {
         await providerManager.connectWallet(walletType);
@@ -178,6 +177,7 @@ export function AppContextProvider({ children }: any) {
   const signOut = async (): Promise<void> => {
     setUser(null);
     providerManager?.disconnect();
+    window.location.reload();
   };
 
   const value: AppContextType = {

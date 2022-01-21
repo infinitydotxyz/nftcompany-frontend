@@ -5,15 +5,14 @@ import styles from './GameFrame.module.scss';
 import { GameMessenger } from '../../../src/utils/gameMessenger';
 import Layout from 'containers/layout';
 import { useAppContext } from 'utils/context/AppContext';
-import { useRouter } from 'next/router';
 import { Button, Spacer } from '@chakra-ui/react';
 import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { UnmarshalNFTAsset } from 'types/rewardTypes';
-import { ethers, providers } from 'ethers';
-import { getEthersProvider, getProvider } from 'utils/ethersUtil';
+import { ethers } from 'ethers';
 import { Spinner } from '@chakra-ui/spinner';
 import { ellipsisString } from 'utils/commonUtil';
+import { ProviderManager } from 'utils/providers/ProviderManager';
 
 const ierc20Abi = require('./abis/ierc20.json');
 
@@ -31,7 +30,7 @@ const gameUrl = 'https://pleasr.infinity.xyz/';
 // const gameUrl = 'http://localhost:8080/'; // todo: adi
 
 export default function GameFrame() {
-  const { user, showAppError, showAppMessage, chainId } = useAppContext();
+  const { user, showAppError, showAppMessage, chainId, providerManager } = useAppContext();
   const [tokenId, setTokenId] = useState<number>(0);
   const [dogBalance, setDogBalance] = useState<number>(-1);
   const [fetching, setFetching] = useState<boolean>(false);
@@ -45,7 +44,9 @@ export default function GameFrame() {
       for (const item of nfts) {
         const i = new NFTInfo(item);
 
-        await i.info();
+        if (providerManager) {
+          await i.info(providerManager);
+        }
 
         result.push(i);
       }
@@ -158,11 +159,10 @@ export default function GameFrame() {
         <Button
           variant="outline"
           onClick={async () => {
-            const ethereum = getProvider();
-            await ethereum?.request?.({
+            await providerManager?.request?.({
               method: 'wallet_switchEthereumChain',
               params: [{ chainId: '0x89' }]
-            });
+            } as any);
           }}
         >
           Switch to Polygon
@@ -214,18 +214,17 @@ export default function GameFrame() {
         <Button
           variant="outline"
           onClick={async () => {
-            const provider = getProvider();
-            if (provider) {
+            if (providerManager) {
               const ierc20Instance = new ethers.Contract(
                 dogTokenAddress,
                 ierc20Abi,
-                getEthersProvider(provider)?.getSigner()
+                providerManager.getEthersProvider().getSigner()
               );
               const amount = ethers.utils.parseEther('10');
               const factoryContract = new ethers.Contract(
                 tokenAddress,
                 factoryAbi,
-                getEthersProvider(provider)?.getSigner()
+                providerManager.getEthersProvider().getSigner()
               );
               const instanceAddress = await factoryContract.tokenIdToInstance(tokenId);
 
@@ -284,12 +283,11 @@ export default function GameFrame() {
             <Button
               variant="outline"
               onClick={async () => {
-                const provider = getProvider();
-                if (provider) {
+                if (providerManager) {
                   const factory = new ethers.Contract(
                     tokenAddress,
                     factoryAbi,
-                    getEthersProvider(provider)?.getSigner()
+                    providerManager.getEthersProvider().getSigner()
                   );
                   await factory.mint(variationName, numToMint);
 
@@ -325,6 +323,7 @@ type Props = {
 
 function GameFrameContent({ gameUrl, chainId, tokenAddress, tokenId, dogTokenAddress }: Props) {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
+  const { providerManager } = useAppContext();
 
   React.useEffect(() => {
     let gm: any;
@@ -332,17 +331,25 @@ function GameFrameContent({ gameUrl, chainId, tokenAddress, tokenId, dogTokenAdd
       const element = iframeRef.current;
       const iframeWindow = element.contentWindow;
 
-      if (iframeWindow) {
-        gm = new GameMessenger(iframeWindow, chainId, tokenAddress, tokenId, dogTokenAddress, (message) => {
-          // console.log(message);
-        });
+      if (iframeWindow && providerManager) {
+        gm = new GameMessenger(
+          providerManager,
+          iframeWindow,
+          chainId,
+          tokenAddress,
+          tokenId,
+          dogTokenAddress,
+          (message) => {
+            // console.log(message);
+          }
+        );
       }
     }
 
     return () => {
       gm?.dispose();
     };
-  }, [iframeRef, chainId]);
+  }, [iframeRef, chainId, providerManager]);
 
   return (
     <div className={styles.gameFrame}>
@@ -367,17 +374,25 @@ class NFTInfo {
   score: number = 0;
   imageUrl?: string = '';
 
-  info = async () => {
+  info = async (providerManager: ProviderManager) => {
     // only fetch once
     if (!this.instanceAddress) {
       this.tokenId = parseInt(this.nft.token_id || '1');
 
-      const factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
+      const factoryContract = new ethers.Contract(
+        tokenAddress,
+        factoryAbi,
+        providerManager.getEthersProvider().getSigner()
+      );
       this.instanceAddress = await factoryContract.tokenIdToInstance(this.tokenId);
 
       // console.log('token id and instance', this.tokenId, this.instanceAddress);
 
-      const nftInstance = new ethers.Contract(this.instanceAddress, doge2048Abi, getEthersProvider().getSigner());
+      const nftInstance = new ethers.Contract(
+        this.instanceAddress,
+        doge2048Abi,
+        providerManager.getEthersProvider().getSigner()
+      );
       this.numPlays = await nftInstance.numPlays();
       this.score = await nftInstance.score();
       this.imageUrl = this.nft.issuer_specific_data?.image_url;

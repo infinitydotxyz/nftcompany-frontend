@@ -91,7 +91,7 @@ export class MetaMask extends AbstractProvider {
 
   async request(request: JSONRPCRequestPayload): Promise<JSONRPCResponsePayload> {
     const response = await this._provider.request({ method: request.method, params: request.params });
-    return { result: response, id: request.id, jsonrpc: request.jsonrpc };
+    return { result: response, id: request?.id ?? '', jsonrpc: request?.jsonrpc ?? '' };
   }
 
   registerListeners(): void {
