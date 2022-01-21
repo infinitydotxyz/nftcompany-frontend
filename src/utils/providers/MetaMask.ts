@@ -37,7 +37,9 @@ export class MetaMask extends AbstractProvider {
     this.registerListeners();
     try {
       const accounts = await this.getAccounts();
+      const chainId = await this.getChainId();
 
+      this.chainId = chainId;
       this.account = accounts[0];
 
       if (!this.account) {
@@ -54,6 +56,12 @@ export class MetaMask extends AbstractProvider {
 
   async getAccounts() {
     return await this._provider.request({ method: 'eth_requestAccounts' });
+  }
+
+  async getChainId() {
+    const hexChainId = await this._provider.request({ method: 'eth_chainId' });
+    const chainId = parseInt(hexChainId, 16);
+    return chainId;
   }
 
   async personalSign(message: string): Promise<Signature> {
@@ -86,7 +94,7 @@ export class MetaMask extends AbstractProvider {
     });
     this._provider.on('chainChanged', (chainIdHex: string) => {
       const chainId = parseInt(chainIdHex, 16);
-      this.chainId = `${chainId}`;
+      this.chainId = chainId;
     });
 
     this._provider.on('disconnect', (code: number, reason: string) => {

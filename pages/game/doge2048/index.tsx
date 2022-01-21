@@ -11,7 +11,7 @@ import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { UnmarshalNFTAsset } from 'types/rewardTypes';
 import { ethers, providers } from 'ethers';
-import { getEthersProvider } from 'utils/ethersUtil';
+import { getEthersProvider, getProvider } from 'utils/ethersUtil';
 import { Spinner } from '@chakra-ui/spinner';
 import { ellipsisString } from 'utils/commonUtil';
 
@@ -31,7 +31,7 @@ const gameUrl = 'https://pleasr.infinity.xyz/';
 // const gameUrl = 'http://localhost:8080/'; // todo: adi
 
 export default function GameFrame() {
-  const { user, showAppError, showAppMessage, chainId, provider } = useAppContext();
+  const { user, showAppError, showAppMessage, chainId } = useAppContext();
   const [tokenId, setTokenId] = useState<number>(0);
   const [dogBalance, setDogBalance] = useState<number>(-1);
   const [fetching, setFetching] = useState<boolean>(false);
@@ -158,7 +158,7 @@ export default function GameFrame() {
         <Button
           variant="outline"
           onClick={async () => {
-            const ethereum = provider;
+            const ethereum = getProvider();
             await ethereum?.request?.({
               method: 'wallet_switchEthereumChain',
               params: [{ chainId: '0x89' }]
@@ -214,6 +214,7 @@ export default function GameFrame() {
         <Button
           variant="outline"
           onClick={async () => {
+            const provider = getProvider();
             if (provider) {
               const ierc20Instance = new ethers.Contract(
                 dogTokenAddress,
@@ -283,6 +284,7 @@ export default function GameFrame() {
             <Button
               variant="outline"
               onClick={async () => {
+                const provider = getProvider();
                 if (provider) {
                   const factory = new ethers.Contract(
                     tokenAddress,

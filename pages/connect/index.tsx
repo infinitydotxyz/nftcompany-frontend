@@ -12,7 +12,7 @@ import { colors } from 'utils/themeUtil';
 import { WalletType } from 'utils/providers/AbstractProvider';
 export default function ConnectWallet() {
   const router = useRouter();
-  const { showAppError, connectWallet, provider, user, userReady } = useAppContext();
+  const { showAppError, connectWallet, user, userReady } = useAppContext();
   const { colorMode } = useColorMode();
 
   useEffect(() => {

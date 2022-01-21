@@ -1,7 +1,7 @@
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers, Signature } from 'ethers';
 import { PROVIDER_URL_MAINNET, PROVIDER_URL_POLYGON } from 'utils/constants';
-import { AbstractProvider, ProviderEvents, WalletType } from './AbstractProvider';
+import { AbstractProvider, WalletType } from './AbstractProvider';
 import { UserRejectException } from './UserRejectException';
 const Web3 = require('web3');
 export class WalletConnect extends AbstractProvider {
@@ -28,6 +28,8 @@ export class WalletConnect extends AbstractProvider {
     try {
       const accounts = await this._provider.enable();
       this.account = accounts[0];
+      const chainId = await this.getChainId();
+      this.chainId = chainId;
     } catch (err: Error | any) {
       if (err.message === 'Failed or Rejected Request') {
         throw new UserRejectException(this.type);
@@ -38,6 +40,11 @@ export class WalletConnect extends AbstractProvider {
 
   async getAccounts() {
     return await this._provider.request({ method: 'eth_accounts' });
+  }
+
+  async getChainId() {
+    const chainId = await this._provider.request({ method: 'eth_chainId' });
+    return chainId;
   }
 
   async personalSign(message: string): Promise<Signature> {
@@ -89,7 +96,7 @@ export class WalletConnect extends AbstractProvider {
       this.account = accounts[0];
     });
     this._provider.on('chainChanged', (chainId: number) => {
-      this.chainId = `${chainId}`;
+      this.chainId = chainId;
     });
 
     this._provider.on('disconnect', (code: number, reason: string) => {

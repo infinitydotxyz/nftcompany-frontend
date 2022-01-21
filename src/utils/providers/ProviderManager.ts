@@ -47,7 +47,7 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
   }
 
   get chainId() {
-    return this._provider?.chainId ?? '';
+    return this._provider?.chainId ?? 1;
   }
 
   get isConnected() {
@@ -69,6 +69,13 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
   getAccounts(): Promise<string[]> {
     if (this._provider) {
       return this._provider.getAccounts();
+    }
+    throw new Error('No provider');
+  }
+
+  getChainId() {
+    if (this._provider) {
+      return this._provider.getChainId();
     }
     throw new Error('No provider');
   }
@@ -113,7 +120,7 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
           }
         });
 
-        this._provider.on(ProviderEvents.ChainChanged, (chainId: string) => {
+        this._provider.on(ProviderEvents.ChainChanged, (chainId: number) => {
           if (chainId !== prevChainId) {
             this._emitter.emit(ProviderEvents.ChainChanged, chainId);
             prevChainId = chainId;

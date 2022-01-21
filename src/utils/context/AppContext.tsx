@@ -1,15 +1,8 @@
 import * as React from 'react';
-import { getAccount, getChainId, getOpenSeaportForChain, getProvider, setPreferredWallet } from 'utils/ethersUtil';
+import { getOpenSeaportForChain, getProvider } from 'utils/ethersUtil';
 import { getCustomMessage, getCustomExceptionMsg } from 'utils/commonUtil';
-import { deleteAuthHeaders, getAuthHeaders, saveAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
 import { errorToast, infoToast, Toast } from 'components/Toast/Toast';
-import { ReactNode } from '.pnpm/@types+react@17.0.24/node_modules/@types/react';
-import { ethers } from 'ethers';
-import WalletLink from 'walletlink';
-import { LOGIN_MESSAGE, PROVIDER_URL_MAINNET, PROVIDER_URL_POLYGON, SITE_HOST } from 'utils/constants';
-import WalletConnectProvider from '@walletconnect/web3-provider';
-import { WalletConnectProxy } from 'utils/WalletConnectProxy';
 import { ProviderEvents, WalletType } from 'utils/providers/AbstractProvider';
 import { UserRejectException } from 'utils/providers/UserRejectException';
 import { ProviderManager } from 'utils/providers/ProviderManager';
@@ -27,7 +20,6 @@ export type AppContextType = {
   showAppMessage: (msg: string) => void;
   headerPosition: number;
   setHeaderPosition: (bottom: number) => void;
-  provider?: ethers.providers.ExternalProvider;
   connectWallet: (walletType: WalletType) => Promise<void>;
   providerManager?: ProviderManager;
 };
@@ -41,14 +33,13 @@ export function AppContextProvider({ children }: any) {
   const [userReady, setUserReady] = React.useState(false);
   const [chainId, setChainId] = React.useState('');
   const [headerPosition, setHeaderPosition] = React.useState(0);
-  const showAppError = (message: ReactNode) => {
+  const showAppError = (message: React.ReactNode) => {
     const msg = getCustomExceptionMsg(message);
     errorToast(msg);
   };
   const [providerManager, setProviderManager] = React.useState<ProviderManager | undefined>();
 
-  const showAppMessage = (message: ReactNode) => infoToast(message);
-  const [provider, setProvider] = React.useState<ethers.providers.ExternalProvider | undefined>();
+  const showAppMessage = (message: React.ReactNode) => infoToast(message);
 
   React.useEffect(() => {
     let isActive = true;
@@ -77,6 +68,7 @@ export function AppContextProvider({ children }: any) {
   const connectWallet = async (walletType: WalletType) => {
     if (providerManager?.connectWallet) {
       try {
+        // const chainId = await providerManager.getChainId(); // metamask hex wallet connect base 10 wallet link hex
         await providerManager.connectWallet(walletType);
         await providerManager.signIn();
       } catch (err) {}
@@ -91,8 +83,8 @@ export function AppContextProvider({ children }: any) {
   };
 
   React.useEffect(() => {
-    const handleNetworkChange = (chainId: string) => {
-      setChainId(chainId);
+    const handleNetworkChange = (chainId: number) => {
+      setChainId(`${chainId}`);
       window.location.reload();
     };
 
@@ -143,39 +135,6 @@ export function AppContextProvider({ children }: any) {
     };
   }, [providerManager]);
 
-  // React.useEffect(() => {
-  //   let isChangingAccount = false;
-  //   const handleAccountChange = async (accounts: string[]) => {
-  //     isChangingAccount = true;
-  //     window.onfocus = async () => {
-  //       if (isChangingAccount) {
-  //         setTimeout(async () => {
-  //           isChangingAccount = false;
-  //           await signIn();
-  //           window.location.reload();
-  //         }, 500);
-  //       }
-  //     };
-  //   };
-
-  //   const handleNetworkChange = (chainId: string) => {
-  //     setChainId(chainId);
-  //     window.location.reload();
-  //   };
-
-  //   if (provider && !(provider as any).isWalletConnect) {
-  //     (provider as any).on('accountsChanged', handleAccountChange);
-  //     (provider as any).on('chainChanged', handleNetworkChange);
-  //   }
-
-  //   return () => {
-  //     if (provider && provider.isMetaMask) {
-  //       (provider as any).removeListener('accountsChanged', handleAccountChange);
-  //       (provider as any).removeListener('chainChanged', handleNetworkChange);
-  //     }
-  //   };
-  // }, [provider]);
-
   React.useEffect(() => {
     const listener = (eventName: any, data: any) => {
       const msg = getCustomMessage(eventName, data);
@@ -187,6 +146,7 @@ export function AppContextProvider({ children }: any) {
 
     const subscriptions: any[] = [];
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
+    const provider = getProvider();
     if (user?.account && !isListenerAdded && provider) {
       isListenerAdded = true;
       const seaport = getOpenSeaportForChain(chainId, provider);
@@ -225,7 +185,6 @@ export function AppContextProvider({ children }: any) {
     showAppMessage,
     headerPosition,
     setHeaderPosition,
-    provider,
     connectWallet,
     providerManager
   };

@@ -35,6 +35,8 @@ export class WalletLink extends AbstractProvider {
     try {
       const accounts = await this.getAccounts();
       this.account = accounts[0];
+      const chainId = await this.getChainId();
+      this.chainId = chainId;
       if (this.account) {
         this.isConnected = true;
       }
@@ -48,6 +50,12 @@ export class WalletLink extends AbstractProvider {
 
   async getAccounts() {
     return await this.web3Provider.send('eth_requestAccounts');
+  }
+
+  async getChainId() {
+    const hexChainId = await this.web3Provider.send('eth_chainId');
+    const chainId = parseInt(hexChainId, 16);
+    return chainId;
   }
 
   async personalSign(message: string): Promise<Signature> {

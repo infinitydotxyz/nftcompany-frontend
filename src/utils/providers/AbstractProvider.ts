@@ -21,7 +21,7 @@ export abstract class AbstractProvider implements Provider {
   abstract type: WalletType;
 
   private _account?: string;
-  private _chainId?: string;
+  private _chainId?: number;
   private _state: 'connected' | 'disconnected' = 'disconnected';
 
   get account() {
@@ -29,7 +29,7 @@ export abstract class AbstractProvider implements Provider {
   }
 
   get chainId() {
-    return this._chainId ?? '';
+    return this._chainId ?? 1;
   }
 
   get isConnected() {
@@ -49,12 +49,15 @@ export abstract class AbstractProvider implements Provider {
     }
   }
 
-  protected set chainId(chainId: string) {
+  protected set chainId(chainId: number) {
+    const shouldEmit = typeof this._chainId === 'number';
     if (this._chainId === chainId) {
       return;
     }
     this._chainId = chainId;
-    this.emit(ProviderEvents.ChainChanged, chainId);
+    if (shouldEmit) {
+      this.emit(ProviderEvents.ChainChanged, chainId);
+    }
   }
 
   protected set isConnected(isConnected: boolean) {
@@ -92,6 +95,11 @@ export abstract class AbstractProvider implements Provider {
   abstract personalSign(message: string): Promise<Signature>;
 
   abstract getAccounts(): Promise<string[]>;
+
+  /**
+   * returns a promise for the chainId as a base 10 number
+   */
+  abstract getChainId(): Promise<number>;
 
   /**
    * disconnects the wallet

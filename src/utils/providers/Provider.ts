@@ -4,7 +4,7 @@ import { ProviderEvents, WalletType } from './AbstractProvider';
 export interface Provider {
   account: string;
 
-  chainId: string;
+  chainId: number;
 
   isConnected: boolean;
 
@@ -15,6 +15,8 @@ export interface Provider {
   personalSign(message: string): Promise<Signature>;
 
   getAccounts(): Promise<string[]>;
+
+  getChainId(): Promise<number>;
 
   disconnect(): void;
 
