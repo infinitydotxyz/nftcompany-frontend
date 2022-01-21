@@ -78,8 +78,6 @@ export abstract class AbstractProvider implements Provider {
     this.emitter = new EventEmitter();
   }
 
-  abstract get web3Provider(): Web3Provider;
-
   /**
    * handles initializing the wallet
    * (i.e. connect/open/prompt unlock)
@@ -101,6 +99,12 @@ export abstract class AbstractProvider implements Provider {
    */
   abstract getChainId(): Promise<number>;
 
+  /**
+   * concrete providers only need to implement the request method
+   * send and sendAsync are handled using request
+   */
+  abstract request(request: JSONRPCRequestPayload): Promise<JSONRPCResponsePayload>;
+
   sendAsync(request: JSONRPCRequestPayload, callback: (error?: any, response?: JSONRPCResponsePayload) => void) {
     this.request(request)
       .then((response) => {
@@ -120,8 +124,6 @@ export abstract class AbstractProvider implements Provider {
         callback(err);
       });
   }
-
-  abstract request(request: JSONRPCRequestPayload): Promise<JSONRPCResponsePayload>;
 
   /**
    * disconnects the wallet

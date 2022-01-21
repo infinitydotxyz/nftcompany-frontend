@@ -21,16 +21,13 @@ export class WalletConnect extends AbstractProvider {
     });
   }
 
-  get web3Provider(): any {
-    return new Web3(this._provider);
-  }
-
   async init() {
     this.registerListeners();
     try {
       const accounts = await this._provider.enable();
       this.account = accounts[0];
       const chainId = await this.getChainId();
+      await this.getAccounts();
       this.chainId = chainId;
     } catch (err: Error | any) {
       if (err.message === 'Failed or Rejected Request') {

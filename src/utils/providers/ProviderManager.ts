@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-constructor */
 import { ethers, Signature } from 'ethers';
 import { LOGIN_MESSAGE } from 'utils/constants';
 import { Optional } from 'utils/typeUtils';
@@ -9,7 +8,6 @@ import { UserRejectException } from './UserRejectException';
 import { WalletConnect } from './WalletConnect';
 import { WalletLink } from './WalletLink';
 import EventEmitter from 'events';
-import { relativeTimeThreshold } from 'moment';
 
 enum StorageKeys {
   CurrentUser = 'CURRENT_USER',
@@ -22,7 +20,6 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
 
   private _emitter: EventEmitter;
 
-  private currentUser?: string;
   private authSignature?: Signature;
   private authMessage?: string;
 
@@ -59,18 +56,25 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
     return this._provider?.type;
   }
 
-  get web3Provider() {
-    if (this._provider) {
-      return this._provider.web3Provider;
+  getAuthHeaders = async (attemptSignIn = true) => {
+    if (attemptSignIn) {
+      await this.signIn();
+    } else {
+      const requiresSignIn = !this.isLoggedInAndAuthenticated;
+      if (requiresSignIn) {
+        throw new Error('Please login');
+      }
     }
-    throw new Error('No provider');
-  }
+    return {
+      [StorageKeys.AuthMessage]: this.authMessage,
+      [StorageKeys.AuthSignature]: JSON.stringify(this.authSignature)
+    };
+  };
 
   personalSign(message: string): Promise<Signature> {
     if (this._provider) {
       return this._provider.personalSign(message);
     }
-
     throw new Error('No provider');
   }
 
@@ -174,27 +178,28 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
     }
   }
 
-  async signIn() {
-    /**
-     *
-     *
-     *
-     * // TODO get chain id
-     *
-     *
-     */
-
+  private get isLoggedInAndAuthenticated(): boolean {
     const currentUser = this.account.toLowerCase();
     if (currentUser && this.authMessage && this.authSignature) {
       try {
         const signer = ethers.utils.verifyMessage(this.authMessage, this.authSignature).toLowerCase();
         if (currentUser === signer) {
-          return;
+          return true;
         }
       } catch (err) {
         console.log(err);
-        return;
+        return false;
       }
+    }
+
+    return false;
+  }
+
+  async signIn() {
+    const requiresSignature = !this.isLoggedInAndAuthenticated;
+
+    if (!requiresSignature) {
+      return;
     }
 
     const signature = await this.personalSign(LOGIN_MESSAGE);
@@ -226,6 +231,7 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
    * persist wallet type
    */
   private save() {
+    const localStorage = window.localStorage;
     localStorage.setItem(StorageKeys.Wallet, this._provider?.type ?? '');
     localStorage.setItem(StorageKeys.AuthSignature, JSON.stringify(this.authSignature ?? {}));
     localStorage.setItem(StorageKeys.AuthMessage, this.authMessage ?? '');
@@ -236,6 +242,7 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
    * initialize a wallet
    */
   private async refresh() {
+    const localStorage = window.localStorage;
     const preferredWallet = localStorage.getItem(StorageKeys.Wallet);
     const authSignature = localStorage.getItem(StorageKeys.AuthSignature);
     const authMessage = localStorage.getItem(StorageKeys.AuthMessage);

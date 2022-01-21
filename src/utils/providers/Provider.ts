@@ -23,8 +23,6 @@ export interface Provider {
 
   type: WalletType;
 
-  web3Provider: Web3Provider;
-
   init(): Promise<void>;
 
   personalSign(message: string): Promise<Signature>;
@@ -39,11 +37,12 @@ export interface Provider {
 
   removeListener(event: ProviderEvents, listener: (data: any) => void): void;
 
-  // sendAsync(payload: JSONRPCRequestPayload, callback: (err?: Error, result?: JSONRPCResponsePayload) => void): void;
   sendAsync: (
     request: JSONRPCRequestPayload,
     callback: (error?: any, response?: JSONRPCResponsePayload) => void
   ) => void;
+
   send: (request: JSONRPCRequestPayload, callback: (error?: any, response?: JSONRPCResponsePayload) => void) => void;
+
   request(request: JSONRPCRequestPayload): Promise<JSONRPCResponsePayload>;
 }

@@ -68,9 +68,9 @@ export function AppContextProvider({ children }: any) {
   }, []);
 
   const connectWallet = async (walletType: WalletType) => {
+    providerManager?.disconnect();
     if (providerManager?.connectWallet) {
       try {
-        // const chainId = await providerManager.getChainId(); // metamask hex wallet connect base 10 wallet link hex
         await providerManager.connectWallet(walletType);
         await providerManager.signIn();
       } catch (err) {}
@@ -122,7 +122,6 @@ export function AppContextProvider({ children }: any) {
     };
 
     const onDisconnect = () => {
-      showAppMessage(`${providerManager?.type} disconnected`);
       signOut();
     };
 
@@ -154,7 +153,6 @@ export function AppContextProvider({ children }: any) {
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
     if (user?.account && !isListenerAdded && providerManager) {
       isListenerAdded = true;
-      console.log(providerManager.web3Provider);
       const seaport = getOpenSeaportForChain(chainId, providerManager);
       Object.values(EventType).forEach((eventName: any) => {
         const subscription = seaport.addListener(eventName, (data: any) => listener(eventName, data), true);

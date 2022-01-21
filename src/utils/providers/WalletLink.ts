@@ -3,7 +3,7 @@ import { PROVIDER_URL_MAINNET, SITE_HOST } from 'utils/constants';
 import WalletLinkProvider from 'walletlink';
 import { WalletLinkOptions } from 'walletlink/dist/WalletLink';
 import { AbstractProvider, WalletType } from './AbstractProvider';
-import { JSONRPCRequestPayload, JSONRPCResponsePayload } from './Provider';
+import { JSONRPCRequestPayload } from './Provider';
 import { UserRejectException } from './UserRejectException';
 
 const APP_NAME = 'infinity.xyz';

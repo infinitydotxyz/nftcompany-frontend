@@ -1,5 +1,5 @@
 import { ethers, Signature } from 'ethers';
-import { AbstractProvider, ProviderEvents, WalletType } from './AbstractProvider';
+import { AbstractProvider, WalletType } from './AbstractProvider';
 import { JSONRPCRequestPayload, JSONRPCResponsePayload } from './Provider';
 import { UserRejectException } from './UserRejectException';
 const Web3 = require('web3');
