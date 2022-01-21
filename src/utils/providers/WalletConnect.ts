@@ -2,8 +2,10 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers, Signature } from 'ethers';
 import { PROVIDER_URL_MAINNET, PROVIDER_URL_POLYGON } from 'utils/constants';
 import { AbstractProvider, WalletType } from './AbstractProvider';
+import { JSONRPCRequestPayload, JSONRPCResponsePayload } from './Provider';
 import { UserRejectException } from './UserRejectException';
 const Web3 = require('web3');
+
 export class WalletConnect extends AbstractProvider {
   private _provider: WalletConnectProvider;
 
@@ -39,7 +41,7 @@ export class WalletConnect extends AbstractProvider {
   }
 
   async getAccounts() {
-    return await this._provider.request({ method: 'eth_accounts' });
+    return await this._provider.request({ method: 'eth_requestAccounts' });
   }
 
   async getChainId() {
@@ -79,6 +81,11 @@ export class WalletConnect extends AbstractProvider {
       }
       throw err;
     }
+  }
+
+  async request(request: JSONRPCRequestPayload): Promise<JSONRPCResponsePayload> {
+    const response = await this._provider.request({ method: request.method, params: request.params });
+    return { result: response, id: request.id, jsonrpc: request.jsonrpc };
   }
 
   disconnect(): void {

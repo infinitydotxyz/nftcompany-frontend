@@ -1,5 +1,18 @@
 import { Signature } from 'ethers';
 import { ProviderEvents, WalletType } from './AbstractProvider';
+type Web3Provider = any;
+export interface JSONRPCRequestPayload {
+  params: any[];
+  method: string;
+  id: number;
+  jsonrpc: string;
+}
+
+export interface JSONRPCResponsePayload {
+  result: any;
+  id: number;
+  jsonrpc: string;
+}
 
 export interface Provider {
   account: string;
@@ -9,6 +22,8 @@ export interface Provider {
   isConnected: boolean;
 
   type: WalletType;
+
+  web3Provider: Web3Provider;
 
   init(): Promise<void>;
 
@@ -23,4 +38,12 @@ export interface Provider {
   on(event: ProviderEvents, listener: (data: any) => void): void;
 
   removeListener(event: ProviderEvents, listener: (data: any) => void): void;
+
+  // sendAsync(payload: JSONRPCRequestPayload, callback: (err?: Error, result?: JSONRPCResponsePayload) => void): void;
+  sendAsync: (
+    request: JSONRPCRequestPayload,
+    callback: (error?: any, response?: JSONRPCResponsePayload) => void
+  ) => void;
+  send: (request: JSONRPCRequestPayload, callback: (error?: any, response?: JSONRPCResponsePayload) => void) => void;
+  request(request: JSONRPCRequestPayload): Promise<JSONRPCResponsePayload>;
 }

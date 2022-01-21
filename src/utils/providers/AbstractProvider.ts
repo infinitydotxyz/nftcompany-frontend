@@ -1,6 +1,6 @@
-import { ethers, Signature } from 'ethers';
+import { Signature } from 'ethers';
 import EventEmitter from 'events';
-import { Provider } from './Provider';
+import { JSONRPCRequestPayload, JSONRPCResponsePayload, Provider } from './Provider';
 
 export enum WalletType {
   MetaMask = 'MetaMask',
@@ -100,6 +100,28 @@ export abstract class AbstractProvider implements Provider {
    * returns a promise for the chainId as a base 10 number
    */
   abstract getChainId(): Promise<number>;
+
+  sendAsync(request: JSONRPCRequestPayload, callback: (error?: any, response?: JSONRPCResponsePayload) => void) {
+    this.request(request)
+      .then((response) => {
+        callback(null, response);
+      })
+      .catch((err) => {
+        callback(err);
+      });
+  }
+
+  send(request: JSONRPCRequestPayload, callback: (error?: any, response?: JSONRPCResponsePayload) => void) {
+    this.request(request)
+      .then((response) => {
+        callback(null, response);
+      })
+      .catch((err) => {
+        callback(err);
+      });
+  }
+
+  abstract request(request: JSONRPCRequestPayload): Promise<JSONRPCResponsePayload>;
 
   /**
    * disconnects the wallet

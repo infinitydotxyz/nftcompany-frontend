@@ -5,6 +5,8 @@ import { ExternalProvider } from '.pnpm/@ethersproject+providers@5.4.5/node_modu
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { WalletConnectProxy } from './WalletConnectProxy';
 import { WalletType } from './providers/AbstractProvider';
+import { Provider } from './providers/Provider';
+import { ProviderManager } from './providers/ProviderManager';
 
 // OpenSea's dependencies:
 const Web3 = require('web3');
@@ -153,21 +155,14 @@ export const getWeb3 = (provider?: ethers.providers.ExternalProvider) => {
   return web3;
 };
 
-export const getOpenSeaportForChain = (chainId: string = '', provider?: ethers.providers.ExternalProvider) => {
+export const getOpenSeaportForChain = (chainId: string = '', providerManager?: ProviderManager) => {
   let network = getWyvernChainName(chainId);
   if (!network) {
     network = 'main';
   }
-  const p = getWeb3(provider ?? getProvider());
 
-  console.log({ p });
-  let web3Provider;
-  if (p.isWalletConnect) {
-    web3Provider = new WalletConnectProxy(p);
-  } else {
-    web3Provider = p.currentProvider;
-  }
-  console.log({ web3Provider });
+  const web3Provider = providerManager;
+
   const openSeaPortForChain = new OpenSeaPort(web3Provider, {
     networkName: network
   });

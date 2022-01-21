@@ -1,5 +1,6 @@
 import { ethers, Signature } from 'ethers';
 import { AbstractProvider, ProviderEvents, WalletType } from './AbstractProvider';
+import { JSONRPCRequestPayload, JSONRPCResponsePayload } from './Provider';
 import { UserRejectException } from './UserRejectException';
 const Web3 = require('web3');
 
@@ -15,7 +16,7 @@ export class MetaMask extends AbstractProvider {
      * by checking for overrideIsMetaMask we won't open wallet link when we
      * want to open MetaMask
      */
-    if (window.ethereum?.isMetaMask && !window.ethereum.overrideIsMetaMask) {
+    if (window.ethereum?.isMetaMask && !(window.ethereum as any).overrideIsMetaMask) {
       this._provider = window.ethereum;
     } else {
       const metamaskProvider = ((window.ethereum as any)?.providers || []).find(
@@ -86,6 +87,11 @@ export class MetaMask extends AbstractProvider {
 
   disconnect(): void {
     this._provider?.close?.();
+  }
+
+  async request(request: JSONRPCRequestPayload): Promise<JSONRPCResponsePayload> {
+    const response = await this._provider.request({ method: request.method, params: request.params });
+    return { result: response, id: request.id, jsonrpc: request.jsonrpc };
   }
 
   registerListeners(): void {

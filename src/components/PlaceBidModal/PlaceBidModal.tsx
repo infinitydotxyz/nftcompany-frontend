@@ -21,7 +21,7 @@ interface IProps {
 }
 
 const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
-  const { user, showAppError, showAppMessage } = useAppContext();
+  const { user, showAppError, showAppMessage, providerManager } = useAppContext();
   const [isBuying, setIsBuying] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
@@ -50,7 +50,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     }
 
     try {
-      const seaport = getOpenSeaportForChain(data?.chainId);
+      const seaport = getOpenSeaportForChain(data?.chainId, providerManager);
       const order: Order = await seaport.api.getOrder(orderParams);
       setOrder(order);
     } catch (err: any) {
@@ -68,7 +68,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       // another user or cancelled by the creator
       if (order) {
         setIsBuying(true);
-        const seaport = getOpenSeaportForChain(data?.chainId);
+        const seaport = getOpenSeaportForChain(data?.chainId, providerManager);
 
         const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
           order: order,
@@ -117,7 +117,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     }
     try {
       setIsSubmitting(true);
-      const seaport = getOpenSeaportForChain(data?.chainId);
+      const seaport = getOpenSeaportForChain(data?.chainId, providerManager);
       seaport
         .createBuyOrder({
           asset: {

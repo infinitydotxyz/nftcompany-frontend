@@ -17,7 +17,7 @@ interface IProps {
 }
 
 export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IProps) => {
-  const { user, showAppError, showAppMessage } = useAppContext();
+  const { user, showAppError, showAppMessage, providerManager } = useAppContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [expiryTimeSeconds, setExpiryTimeSeconds] = useState(0);
   const [expiryDate, setExpiryDate] = useState<Date | undefined>();
@@ -38,7 +38,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
     }
     try {
       setIsSubmitting(true);
-      const seaport = getOpenSeaportForChain(data?.chainId);
+      const seaport = getOpenSeaportForChain(data?.chainId, providerManager);
       seaport
         .createBuyOrder({
           asset: {
@@ -85,7 +85,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
             <PriceBox
               justifyRight
               price={data.metadata?.basePriceInEth}
-              token='WETH'
+              token="WETH"
               expirationTime={data?.expirationTime}
             />
           </div>

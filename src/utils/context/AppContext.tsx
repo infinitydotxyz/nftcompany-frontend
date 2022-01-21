@@ -51,6 +51,8 @@ export function AppContextProvider({ children }: any) {
           .signIn()
           .then(() => {
             setUser({ account: providerManagerInstance.account });
+            const chainId = providerManagerInstance.chainId ?? 1;
+            setChainId(`${chainId}`);
           })
           .catch((err) => {
             console.error(err);
@@ -74,6 +76,8 @@ export function AppContextProvider({ children }: any) {
       } catch (err) {}
 
       setUser({ account: providerManager.account ?? '' });
+      const chainId = providerManager.chainId ?? 1;
+      setChainId(`${chainId}`);
       setUserReady(true);
 
       return;
@@ -98,6 +102,8 @@ export function AppContextProvider({ children }: any) {
             try {
               await providerManager?.signIn();
               setUser({ account: providerManager?.account ?? '' });
+              const chainId = providerManager?.chainId ?? 1;
+              setChainId(`${chainId}`);
             } catch (err) {
               if (err instanceof UserRejectException) {
                 showAppError(err.message);
@@ -146,10 +152,10 @@ export function AppContextProvider({ children }: any) {
 
     const subscriptions: any[] = [];
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
-    const provider = getProvider();
-    if (user?.account && !isListenerAdded && provider) {
+    if (user?.account && !isListenerAdded && providerManager) {
       isListenerAdded = true;
-      const seaport = getOpenSeaportForChain(chainId, provider);
+      console.log(providerManager.web3Provider);
+      const seaport = getOpenSeaportForChain(chainId, providerManager);
       Object.values(EventType).forEach((eventName: any) => {
         const subscription = seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
         subscriptions.push(subscription);

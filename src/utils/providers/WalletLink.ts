@@ -3,6 +3,7 @@ import { PROVIDER_URL_MAINNET, SITE_HOST } from 'utils/constants';
 import WalletLinkProvider from 'walletlink';
 import { WalletLinkOptions } from 'walletlink/dist/WalletLink';
 import { AbstractProvider, WalletType } from './AbstractProvider';
+import { JSONRPCRequestPayload, JSONRPCResponsePayload } from './Provider';
 import { UserRejectException } from './UserRejectException';
 
 const APP_NAME = 'infinity.xyz';
@@ -77,6 +78,11 @@ export class WalletLink extends AbstractProvider {
       }
       throw err;
     }
+  }
+
+  async request(request: JSONRPCRequestPayload) {
+    const response = await this.web3Provider.request(request);
+    return { result: response, id: request.id, jsonrpc: request.jsonrpc };
   }
 
   disconnect(): void {

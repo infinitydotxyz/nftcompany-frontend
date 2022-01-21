@@ -19,7 +19,7 @@ interface IProps {
 }
 
 const TransferNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
-  const { user, showAppError, showAppMessage } = useAppContext();
+  const { user, showAppError, showAppMessage, providerManager } = useAppContext();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [transferTo, setTransferTo] = React.useState('');
 
@@ -84,7 +84,7 @@ const TransferNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
       const quantity: number = 1;
 
       const transferAsset = async (fromAddress: string, toAddress: string, asset: Asset, quantity: number) => {
-        const seaport = getOpenSeaportForChain(data.chainId);
+        const seaport = getOpenSeaportForChain(data.chainId, providerManager);
 
         const isTransferrable = await seaport.isAssetTransferrable({ asset, fromAddress, toAddress, quantity });
         if (!isTransferrable) {

@@ -16,14 +16,14 @@ interface IProps {
 }
 
 const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, providerManager } = useAppContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const acceptOffer = async () => {
     setIsSubmitting(true);
 
     try {
-      const seaport = getOpenSeaportForChain(data?.chainId);
+      const seaport = getOpenSeaportForChain(data?.chainId, providerManager);
       const order = await seaport.api.getOrder({
         maker: data.maker,
         id: data.id,

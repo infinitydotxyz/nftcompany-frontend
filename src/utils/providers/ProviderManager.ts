@@ -4,11 +4,12 @@ import { LOGIN_MESSAGE } from 'utils/constants';
 import { Optional } from 'utils/typeUtils';
 import { ProviderEvents, WalletType } from './AbstractProvider';
 import { MetaMask } from './MetaMask';
-import { Provider } from './Provider';
+import { JSONRPCRequestPayload, JSONRPCResponsePayload, Provider } from './Provider';
 import { UserRejectException } from './UserRejectException';
 import { WalletConnect } from './WalletConnect';
 import { WalletLink } from './WalletLink';
 import EventEmitter from 'events';
+import { relativeTimeThreshold } from 'moment';
 
 enum StorageKeys {
   CurrentUser = 'CURRENT_USER',
@@ -58,6 +59,13 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
     return this._provider?.type;
   }
 
+  get web3Provider() {
+    if (this._provider) {
+      return this._provider.web3Provider;
+    }
+    throw new Error('No provider');
+  }
+
   personalSign(message: string): Promise<Signature> {
     if (this._provider) {
       return this._provider.personalSign(message);
@@ -78,6 +86,30 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
       return this._provider.getChainId();
     }
     throw new Error('No provider');
+  }
+
+  sendAsync(request: JSONRPCRequestPayload, callback: (error?: any, response?: JSONRPCResponsePayload) => void) {
+    if (this._provider) {
+      this._provider.sendAsync(request, callback);
+    } else {
+      callback(new Error('Please login'));
+    }
+  }
+
+  send(request: JSONRPCRequestPayload, callback: (error?: any, response?: JSONRPCResponsePayload) => void) {
+    if (this._provider) {
+      this._provider.send(request, callback);
+    } else {
+      callback(new Error('Please login'));
+    }
+  }
+
+  request(request: JSONRPCRequestPayload) {
+    if (this._provider) {
+      return this._provider.request(request);
+    } else {
+      throw new Error('Please login');
+    }
   }
 
   disconnect(): void {
