@@ -31,19 +31,23 @@ export class WalletLink extends AbstractProvider {
   }
 
   async init() {
-    console.log('init wallet link');
+    this.registerListeners();
     try {
-      // const enable = await (this._provider as any).enable();
-      // console.log({ enable });
-      const accounts = await this.web3Provider.send('eth_requestAccounts');
+      const accounts = await this.getAccounts();
       this.account = accounts[0];
+      if (this.account) {
+        this.isConnected = true;
+      }
     } catch (err: Error | any) {
-      console.log(err);
       if (err?.code === 4001) {
         throw new UserRejectException(this.type);
       }
       throw new Error();
     }
+  }
+
+  async getAccounts() {
+    return await this.web3Provider.send('eth_requestAccounts');
   }
 
   async personalSign(message: string): Promise<Signature> {
@@ -62,10 +66,23 @@ export class WalletLink extends AbstractProvider {
       if (err?.code === 4001) {
         // EIP-1193 userRejectedRequest error
         throw new UserRejectException(this.type);
-      } else {
-        console.error(err);
       }
       throw err;
     }
+  }
+
+  disconnect(): void {
+    this._provider?.disconnect?.();
+    this.isConnected = false;
+  }
+
+  registerListeners(): void {
+    /**
+     * wallet link doesn't seem to support events
+     *
+     * instead we set isConnected after finding a wallet
+     * and after calling disconnect
+     *
+     */
   }
 }

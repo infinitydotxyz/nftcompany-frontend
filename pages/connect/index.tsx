@@ -16,21 +16,21 @@ export default function ConnectWallet() {
   const { colorMode } = useColorMode();
 
   useEffect(() => {
-    if (user && userReady) {
+    if (user?.account && userReady) {
       router.back();
     }
   }, [userReady, user]);
 
   const connectCoinbase = async () => {
-    await connectWallet(WalletType.WalletLink);
+    await connectWallet?.(WalletType.WalletLink);
   };
 
   const connectMetaMask = async () => {
-    await connectWallet(WalletType.MetaMask);
+    await connectWallet?.(WalletType.MetaMask);
   };
 
   const connectWalletConnect = async () => {
-    await connectWallet(WalletType.WalletConnect);
+    await connectWallet?.(WalletType.WalletConnect);
   };
 
   const dark = colorMode === 'dark';

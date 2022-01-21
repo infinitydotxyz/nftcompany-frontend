@@ -19,7 +19,7 @@ import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchCon
 
 const Header = (): JSX.Element => {
   const router = useRouter();
-  const { user, signIn, signOut, chainId, setHeaderPosition } = useAppContext();
+  const { user, signOut, chainId, setHeaderPosition } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
   const [showBanner, setShowBanner] = useState(true);
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);

@@ -10,9 +10,9 @@ import WalletLink from 'walletlink';
 import { LOGIN_MESSAGE, PROVIDER_URL_MAINNET, PROVIDER_URL_POLYGON, SITE_HOST } from 'utils/constants';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { WalletConnectProxy } from 'utils/WalletConnectProxy';
-import { WalletType } from 'utils/providers/AbstractProvider';
-import { createProvider } from 'utils/providers/ProviderFactory';
+import { ProviderEvents, WalletType } from 'utils/providers/AbstractProvider';
 import { UserRejectException } from 'utils/providers/UserRejectException';
+import { ProviderManager } from 'utils/providers/ProviderManager';
 
 export type User = {
   account: string;
@@ -20,7 +20,6 @@ export type User = {
 
 export type AppContextType = {
   user: User | null;
-  signIn: () => void;
   signOut: () => void;
   userReady: boolean;
   chainId: string;
@@ -30,6 +29,7 @@ export type AppContextType = {
   setHeaderPosition: (bottom: number) => void;
   provider?: ethers.providers.ExternalProvider;
   connectWallet: (walletType: WalletType) => Promise<void>;
+  providerManager?: ProviderManager;
 };
 
 const AppContext = React.createContext<AppContextType | null>(null);
@@ -45,122 +45,136 @@ export function AppContextProvider({ children }: any) {
     const msg = getCustomExceptionMsg(message);
     errorToast(msg);
   };
+  const [providerManager, setProviderManager] = React.useState<ProviderManager | undefined>();
+
   const showAppMessage = (message: ReactNode) => infoToast(message);
   const [provider, setProvider] = React.useState<ethers.providers.ExternalProvider | undefined>();
 
   React.useEffect(() => {
-    const windowProvider = getProvider();
-    setProvider(windowProvider);
-    if (windowProvider) {
-      signIn(windowProvider).catch((e) => {
-        console.error(e);
-        setPreferredWallet();
-      });
-    } else {
-      setUserReady(true);
-    }
+    let isActive = true;
+    ProviderManager.getInstance().then((providerManagerInstance) => {
+      if (isActive) {
+        setProviderManager(providerManagerInstance);
+
+        providerManagerInstance
+          .signIn()
+          .then(() => {
+            setUser({ account: providerManagerInstance.account });
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            setUserReady(true);
+          });
+      }
+    });
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   const connectWallet = async (walletType: WalletType) => {
-    const provider = createProvider(walletType);
-    console.log({ provider });
+    if (providerManager?.connectWallet) {
+      try {
+        await providerManager.connectWallet(walletType);
+        await providerManager.signIn();
+      } catch (err) {}
 
-    try {
-      await provider.init();
-      const sig = await provider.personalSign(LOGIN_MESSAGE);
-      console.log(sig);
-    } catch (err: Error | UserRejectException | any) {
-      if (err instanceof UserRejectException) {
-        showAppError(err.message);
-      } else {
-        showAppError(`Unknown error: ${err?.message}`);
-      }
+      setUser({ account: providerManager.account ?? '' });
+      setUserReady(true);
+
+      return;
+    } else {
+      console.log(`Provider not ready yet`);
     }
-
-    // let walletLink;
-    // if (walletType === WalletType.WalletLink) {
-    //   // walletLink = new WalletLink({
-    //   //   appName: APP_NAME,
-    //   //   appLogoUrl: APP_LOGO_URL, // todo doesn't work https://github.com/walletlink/walletlink/issues/199
-    //   //   darkMode: false
-    //   // });
-
-    //   // (window?.walletLinkExtension as any)?.setAppInfo?.(APP_NAME, APP_LOGO_URL);
-
-    //   // const ethereum = walletLink.makeWeb3Provider(ETH_JSONRPC_URL, CHAIN_ID);
-    //   // await ethereum.send('eth_requestAccounts');
-
-    // } else if (walletType === WalletType.WalletConnect) {
-    //   //  Create WalletConnect Provider
-    //   const provider = new WalletConnectProvider({
-    //     rpc: {
-    //       1: PROVIDER_URL_MAINNET,
-    //       137: PROVIDER_URL_POLYGON
-    //     }
-    //   });
-
-    //   console.log(window.ethereum);
-    //   //  Enable session (triggers QR Code modal)
-    //   const addresses = await provider.enable();
-    //   const address = addresses[0];
-
-    //   console.log(address);
-    //   console.log({ provider });
-    //   console.log('before', (window.ethereum as any)?.providers);
-    //   const walletConnectProxy = new WalletConnectProxy(provider);
-
-    //   if (!window.ethereum) {
-    //     window.ethereum = walletConnectProxy as any;
-    //     (window.ethereum as any).providers = [walletConnectProxy];
-    //   } else if (!(window.ethereum as any)?.providers) {
-    //     (window.ethereum as any).providers = [walletConnectProxy];
-    //   }
-
-    //   console.log('after', (window.ethereum as any)?.providers);
-    // }
-
-    // setPreferredWallet(walletType);
-    // const provider = getProvider();
-    // console.log('found', { provider });
-    // setProvider(provider);
-    // signIn().catch((e) => {
-    //   console.error(e);
-    //   setPreferredWallet();
-    // });
   };
 
   React.useEffect(() => {
+    const handleNetworkChange = (chainId: string) => {
+      setChainId(chainId);
+      window.location.reload();
+    };
+
     let isChangingAccount = false;
-    const handleAccountChange = async (accounts: string[]) => {
+    const handleAccountChange = async (account: string) => {
       isChangingAccount = true;
       window.onfocus = async () => {
         if (isChangingAccount) {
           setTimeout(async () => {
             isChangingAccount = false;
-            await signIn();
+            try {
+              await providerManager?.signIn();
+              setUser({ account: providerManager?.account ?? '' });
+            } catch (err) {
+              if (err instanceof UserRejectException) {
+                showAppError(err.message);
+                return;
+              }
+              console.error(err);
+            }
             window.location.reload();
           }, 500);
         }
       };
     };
 
-    const handleNetworkChange = (chainId: string) => {
-      setChainId(chainId);
-      window.location.reload();
+    const onConnect = () => {
+      return;
     };
 
-    if (provider && !(provider as any).isWalletConnect) {
-      (provider as any).on('accountsChanged', handleAccountChange);
-      (provider as any).on('chainChanged', handleNetworkChange);
+    const onDisconnect = () => {
+      showAppMessage(`${providerManager?.type} disconnected`);
+      signOut();
+    };
+
+    if (providerManager) {
+      providerManager.on(ProviderEvents.AccountsChanged, handleAccountChange);
+      providerManager.on(ProviderEvents.ChainChanged, handleNetworkChange);
+      providerManager.on(ProviderEvents.Connect, onConnect);
+      providerManager.on(ProviderEvents.Disconnect, onDisconnect);
     }
 
     return () => {
-      if (provider && provider.isMetaMask) {
-        (provider as any).removeListener('accountsChanged', handleAccountChange);
-        (provider as any).removeListener('chainChanged', handleNetworkChange);
-      }
+      providerManager?.removeListener?.(ProviderEvents.AccountsChanged, handleAccountChange);
+      providerManager?.removeListener?.(ProviderEvents.ChainChanged, handleNetworkChange);
+      providerManager?.removeListener?.(ProviderEvents.Connect, onConnect);
+      providerManager?.removeListener?.(ProviderEvents.Disconnect, onDisconnect);
     };
-  }, [provider]);
+  }, [providerManager]);
+
+  // React.useEffect(() => {
+  //   let isChangingAccount = false;
+  //   const handleAccountChange = async (accounts: string[]) => {
+  //     isChangingAccount = true;
+  //     window.onfocus = async () => {
+  //       if (isChangingAccount) {
+  //         setTimeout(async () => {
+  //           isChangingAccount = false;
+  //           await signIn();
+  //           window.location.reload();
+  //         }, 500);
+  //       }
+  //     };
+  //   };
+
+  //   const handleNetworkChange = (chainId: string) => {
+  //     setChainId(chainId);
+  //     window.location.reload();
+  //   };
+
+  //   if (provider && !(provider as any).isWalletConnect) {
+  //     (provider as any).on('accountsChanged', handleAccountChange);
+  //     (provider as any).on('chainChanged', handleNetworkChange);
+  //   }
+
+  //   return () => {
+  //     if (provider && provider.isMetaMask) {
+  //       (provider as any).removeListener('accountsChanged', handleAccountChange);
+  //       (provider as any).removeListener('chainChanged', handleNetworkChange);
+  //     }
+  //   };
+  // }, [provider]);
 
   React.useEffect(() => {
     const listener = (eventName: any, data: any) => {
@@ -197,61 +211,13 @@ export function AppContextProvider({ children }: any) {
     }
   }, [user]);
 
-  const signIn = async (
-    optionalProvider?: ethers.providers.ExternalProvider,
-    walletType?: WalletType
-  ): Promise<void> => {
-    setUserReady(false);
-    try {
-      const selectedProvider = optionalProvider ?? getProvider();
-      if (selectedProvider) {
-        let account;
-        account = await getAccount(selectedProvider);
-        console.log(`Using account: ${account}`);
-        if (!account) {
-          // wallet locked, use this to open the wallet
-          const accounts = await selectedProvider.send('eth_requestAccounts');
-          account = accounts.result[0];
-        }
-        console.log(`getting auth headers`);
-        const res = await getAuthHeaders(selectedProvider);
-        console.log({ res });
-        const msg = res['X-AUTH-MESSAGE'];
-        const sig = res['X-AUTH-SIGNATURE'];
-        let signedAccount = '';
-        if (msg && sig) {
-          const parsed = JSON.parse(sig);
-          signedAccount = ethers.utils.verifyMessage(msg, parsed);
-        }
-        if (signedAccount !== account) {
-          await saveAuthHeaders(account, selectedProvider);
-        }
-
-        const chainId = await getChainId(selectedProvider);
-        setUser({ account });
-        setChainId(chainId);
-        if (walletType) {
-          setPreferredWallet(walletType);
-        }
-      }
-      // views can avoid drawing until a login attempt was made to avoid a user=null and user='xx' refresh
-      setUserReady(true);
-    } catch (err) {
-      // views can avoid drawing until a login attempt was made to avoid a user=null and user='xx' refresh
-      setUserReady(true);
-      throw err;
-    }
-  };
-
   const signOut = async (): Promise<void> => {
     setUser(null);
-    deleteAuthHeaders();
-    setPreferredWallet();
+    providerManager?.disconnect();
   };
 
   const value: AppContextType = {
     user,
-    signIn,
     signOut,
     userReady,
     chainId,
@@ -260,7 +226,8 @@ export function AppContextProvider({ children }: any) {
     headerPosition,
     setHeaderPosition,
     provider,
-    connectWallet
+    connectWallet,
+    providerManager
   };
 
   return (

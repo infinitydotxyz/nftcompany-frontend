@@ -1,8 +1,7 @@
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers, Signature } from 'ethers';
 import { PROVIDER_URL_MAINNET, PROVIDER_URL_POLYGON } from 'utils/constants';
-import { Web3Method } from 'walletlink/dist/relay/Web3Method';
-import { AbstractProvider, WalletType } from './AbstractProvider';
+import { AbstractProvider, ProviderEvents, WalletType } from './AbstractProvider';
 import { UserRejectException } from './UserRejectException';
 const Web3 = require('web3');
 export class WalletConnect extends AbstractProvider {
@@ -25,6 +24,7 @@ export class WalletConnect extends AbstractProvider {
   }
 
   async init() {
+    this.registerListeners();
     try {
       const accounts = await this._provider.enable();
       this.account = accounts[0];
@@ -32,9 +32,12 @@ export class WalletConnect extends AbstractProvider {
       if (err.message === 'Failed or Rejected Request') {
         throw new UserRejectException(this.type);
       }
-      console.error(err);
       throw err;
     }
+  }
+
+  async getAccounts() {
+    return await this._provider.request({ method: 'eth_accounts' });
   }
 
   async personalSign(message: string): Promise<Signature> {
@@ -67,8 +70,34 @@ export class WalletConnect extends AbstractProvider {
       if (err.message === 'Failed or Rejected Request') {
         throw new UserRejectException(this.type);
       }
-      console.error(err);
       throw err;
     }
+  }
+
+  disconnect(): void {
+    /**
+     * throws an error when disconnecting
+     * it seems like it can safely be ignored
+     */
+    this._provider?.close?.().catch(() => {
+      return;
+    });
+  }
+
+  registerListeners(): void {
+    this._provider.on('accountsChanged', (accounts: string[]) => {
+      this.account = accounts[0];
+    });
+    this._provider.on('chainChanged', (chainId: number) => {
+      this.chainId = `${chainId}`;
+    });
+
+    this._provider.on('disconnect', (code: number, reason: string) => {
+      this.isConnected = false;
+    });
+
+    this._provider.onConnect(() => {
+      this.isConnected = true;
+    });
   }
 }
