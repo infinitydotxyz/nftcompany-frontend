@@ -7,7 +7,11 @@ import { errorToast, infoToast, Toast } from 'components/Toast/Toast';
 import { ReactNode } from '.pnpm/@types+react@17.0.24/node_modules/@types/react';
 import { ethers } from 'ethers';
 import WalletLink from 'walletlink';
-import { PROVIDER_URL_MAINNET, SITE_HOST } from 'utils/constants';
+import { LOGIN_MESSAGE, PROVIDER_URL_MAINNET, PROVIDER_URL_POLYGON, SITE_HOST } from 'utils/constants';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import { WalletConnectProxy } from 'utils/WalletConnectProxy';
+import { WalletType } from 'utils/providers/AbstractProvider';
+import { createProvider } from 'utils/providers/ProviderFactory';
 
 export type User = {
   account: string;
@@ -26,12 +30,6 @@ export type AppContextType = {
   provider?: ethers.providers.ExternalProvider;
   connectWallet: (walletType: WalletType) => Promise<void>;
 };
-
-export enum WalletType {
-  MetaMask = 'MetaMask',
-  WalletLink = 'WalletLink',
-  WalletConnect = 'WalletConnect'
-}
 
 const AppContext = React.createContext<AppContextType | null>(null);
 
@@ -63,34 +61,61 @@ export function AppContextProvider({ children }: any) {
   }, []);
 
   const connectWallet = async (walletType: WalletType) => {
-    let walletLink;
-    if (walletType === WalletType.WalletLink) {
-      const APP_NAME = 'infinity.xyz';
-      const APP_LOGO_URL = `${SITE_HOST}/favicon.ico`;
-      const ETH_JSONRPC_URL = PROVIDER_URL_MAINNET;
-      const CHAIN_ID = 1;
+    const provider = createProvider(walletType);
+    console.log({ provider });
+    await provider.init();
 
-      walletLink = new WalletLink({
-        appName: APP_NAME,
-        appLogoUrl: APP_LOGO_URL, // todo doesn't work https://github.com/walletlink/walletlink/issues/199
-        darkMode: false
-      });
+    await provider.personalSign(LOGIN_MESSAGE);
+    // let walletLink;
+    // if (walletType === WalletType.WalletLink) {
+    //   // walletLink = new WalletLink({
+    //   //   appName: APP_NAME,
+    //   //   appLogoUrl: APP_LOGO_URL, // todo doesn't work https://github.com/walletlink/walletlink/issues/199
+    //   //   darkMode: false
+    //   // });
 
-      (window?.walletLinkExtension as any)?.setAppInfo?.(APP_NAME, APP_LOGO_URL);
+    //   // (window?.walletLinkExtension as any)?.setAppInfo?.(APP_NAME, APP_LOGO_URL);
 
-      const ethereum = walletLink.makeWeb3Provider(ETH_JSONRPC_URL, CHAIN_ID);
-      await ethereum.send('eth_requestAccounts');
-    } else if (walletType === WalletType.WalletConnect) {
-      throw new Error('Wallet connect not yet supported');
-    }
+    //   // const ethereum = walletLink.makeWeb3Provider(ETH_JSONRPC_URL, CHAIN_ID);
+    //   // await ethereum.send('eth_requestAccounts');
 
-    setPreferredWallet(walletType);
-    const provider = getProvider();
-    setProvider(provider);
-    signIn().catch((e) => {
-      console.error(e);
-      setPreferredWallet();
-    });
+    // } else if (walletType === WalletType.WalletConnect) {
+    //   //  Create WalletConnect Provider
+    //   const provider = new WalletConnectProvider({
+    //     rpc: {
+    //       1: PROVIDER_URL_MAINNET,
+    //       137: PROVIDER_URL_POLYGON
+    //     }
+    //   });
+
+    //   console.log(window.ethereum);
+    //   //  Enable session (triggers QR Code modal)
+    //   const addresses = await provider.enable();
+    //   const address = addresses[0];
+
+    //   console.log(address);
+    //   console.log({ provider });
+    //   console.log('before', (window.ethereum as any)?.providers);
+    //   const walletConnectProxy = new WalletConnectProxy(provider);
+
+    //   if (!window.ethereum) {
+    //     window.ethereum = walletConnectProxy as any;
+    //     (window.ethereum as any).providers = [walletConnectProxy];
+    //   } else if (!(window.ethereum as any)?.providers) {
+    //     (window.ethereum as any).providers = [walletConnectProxy];
+    //   }
+
+    //   console.log('after', (window.ethereum as any)?.providers);
+    // }
+
+    // setPreferredWallet(walletType);
+    // const provider = getProvider();
+    // console.log('found', { provider });
+    // setProvider(provider);
+    // signIn().catch((e) => {
+    //   console.error(e);
+    //   setPreferredWallet();
+    // });
   };
 
   React.useEffect(() => {
@@ -113,7 +138,7 @@ export function AppContextProvider({ children }: any) {
       window.location.reload();
     };
 
-    if (provider) {
+    if (provider && !(provider as any).isWalletConnect) {
       (provider as any).on('accountsChanged', handleAccountChange);
       (provider as any).on('chainChanged', handleNetworkChange);
     }
@@ -171,13 +196,15 @@ export function AppContextProvider({ children }: any) {
       if (selectedProvider) {
         let account;
         account = await getAccount(selectedProvider);
+        console.log(`Using account: ${account}`);
         if (!account) {
           // wallet locked, use this to open the wallet
           const accounts = await selectedProvider.send('eth_requestAccounts');
           account = accounts.result[0];
         }
-
+        console.log(`getting auth headers`);
         const res = await getAuthHeaders(selectedProvider);
+        console.log({ res });
         const msg = res['X-AUTH-MESSAGE'];
         const sig = res['X-AUTH-SIGNATURE'];
         let signedAccount = '';

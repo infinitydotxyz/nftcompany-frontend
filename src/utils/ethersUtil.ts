@@ -2,7 +2,9 @@ import { getWyvernChainName } from './commonUtil';
 
 import * as ethers from 'ethers';
 import { ExternalProvider } from '.pnpm/@ethersproject+providers@5.4.5/node_modules/@ethersproject/providers';
-import { WalletType } from './context/AppContext';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import { WalletConnectProxy } from './WalletConnectProxy';
+import { WalletType } from './providers/AbstractProvider';
 
 // OpenSea's dependencies:
 const Web3 = require('web3');
@@ -81,6 +83,9 @@ export async function initEthers({ provider, onError, onPending }: initEthersArg
 }
 
 export const getAccount = async (provider?: ethers.providers.ExternalProvider) => {
+  if ((provider as any)?.isWalletConnect) {
+    return (provider as WalletConnectProvider)?.accounts?.[0] || '';
+  }
   try {
     const ethersProvider = getEthersProvider(provider);
     if (!ethersProvider) {
@@ -136,6 +141,9 @@ export const getAddressBalance = async (address: string, provider: ethers.provid
 export const getWeb3 = (provider?: ethers.providers.ExternalProvider) => {
   let web3 = new Web3();
   if (provider) {
+    if ((provider as any).isWalletConnect) {
+      return provider;
+    }
     web3 = new Web3(provider);
   } else if ((window as any).web3) {
     web3 = new Web3(web3.currentProvider);
@@ -150,7 +158,17 @@ export const getOpenSeaportForChain = (chainId: string = '', provider?: ethers.p
   if (!network) {
     network = 'main';
   }
-  const openSeaPortForChain = new OpenSeaPort(getWeb3(provider ?? getProvider()).currentProvider, {
+  const p = getWeb3(provider ?? getProvider());
+
+  console.log({ p });
+  let web3Provider;
+  if (p.isWalletConnect) {
+    web3Provider = new WalletConnectProxy(p);
+  } else {
+    web3Provider = p.currentProvider;
+  }
+  console.log({ web3Provider });
+  const openSeaPortForChain = new OpenSeaPort(web3Provider, {
     networkName: network
   });
   return openSeaPortForChain;

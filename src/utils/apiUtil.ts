@@ -2,12 +2,10 @@ import axios, { AxiosInstance } from 'axios';
 import { errorToast } from 'components/Toast/Toast';
 import { ethers } from 'ethers';
 import qs from 'query-string';
-import { API_BASE } from './constants';
+import { API_BASE, LOGIN_MESSAGE } from './constants';
 import { getAccount, getProvider, getWeb3 } from './ethersUtil';
+import { WalletConnectProxy } from './WalletConnectProxy';
 const personalSignAsync = require('../../opensea/utils/utils').personalSignAsync;
-
-const loginMessage =
-  'Welcome to Infinity. Click "Sign" to sign in. No password needed. This request will not trigger a blockchain transaction or cost any gas fees.';
 
 const axiosApi: AxiosInstance = axios.create({
   headers: {}
@@ -29,11 +27,18 @@ export async function saveAuthHeaders(address: string, provider: ethers.provider
 
   if (currentUser !== user) {
     const web3 = getWeb3(provider);
-    const sign = await personalSignAsync(web3, loginMessage, address);
+    let sign;
+    console.log(provider);
+    if ((provider as any).isWalletConnect) {
+      sign = await (provider as any as WalletConnectProxy).sign(LOGIN_MESSAGE);
+    } else {
+      sign = await personalSignAsync(web3, LOGIN_MESSAGE, address);
+    }
+
     const sig = JSON.stringify(sign);
     localStorage.setItem('CURRENT_USER', user);
     localStorage.setItem('X-AUTH-SIGNATURE', sig);
-    localStorage.setItem('X-AUTH-MESSAGE', loginMessage);
+    localStorage.setItem('X-AUTH-MESSAGE', LOGIN_MESSAGE);
   }
 }
 
@@ -51,17 +56,28 @@ export async function getAuthHeaders(provider?: ethers.providers.ExternalProvide
   // fetch auth signature and message from local storage
   const localStorage = window.localStorage;
   let sig = localStorage.getItem('X-AUTH-SIGNATURE') || '';
-  const msg = localStorage.getItem('X-AUTH-MESSAGE') || loginMessage;
+  const msg = localStorage.getItem('X-AUTH-MESSAGE') || LOGIN_MESSAGE;
   // if they are empty, resign and store
   let account;
   if (!sig && !doNotAttemptLogin) {
     console.log('No auth found, re logging in');
     const selectedProvider = provider ?? getProvider();
     const web3 = getWeb3(selectedProvider);
+    console.log({ web3 });
     if (web3) {
+      let sign;
       account = await getAccount(selectedProvider);
-      const sign = await personalSignAsync(web3, msg, account);
+      console.log(`signing with account: ${account}`);
+      console.log(provider);
+      if ((provider as any).isWalletConnect) {
+        const proxy = new WalletConnectProxy(provider as any);
+        sign = await proxy.sign(LOGIN_MESSAGE);
+      } else {
+        sign = await personalSignAsync(web3, LOGIN_MESSAGE, account);
+      }
+      // const sign = await personalSignAsync(web3, msg, account);
       sig = JSON.stringify(sign);
+      console.log(`signature: ${sig}`);
       localStorage.setItem('CURRENT_USER', account);
       localStorage.setItem('X-AUTH-SIGNATURE', sig);
       localStorage.setItem('X-AUTH-MESSAGE', msg);
