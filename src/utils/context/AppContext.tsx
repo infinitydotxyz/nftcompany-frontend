@@ -72,14 +72,18 @@ export function AppContextProvider({ children }: any) {
       try {
         await providerManager.connectWallet(walletType);
         await providerManager.signIn();
-      } catch (err) {}
+        setUser({ account: providerManager.account ?? '' });
+        const chainId = providerManager.chainId ?? 1;
+        setChainId(`${chainId}`);
+        setUserReady(true);
+      } catch (err: Error | any) {
+        console.log(err);
+        if (err instanceof UserRejectException) {
+          showAppError(err.message);
+        }
 
-      setUser({ account: providerManager.account ?? '' });
-      const chainId = providerManager.chainId ?? 1;
-      setChainId(`${chainId}`);
-      setUserReady(true);
-
-      return;
+        setUserReady(true);
+      }
     } else {
       console.log(`Provider not ready yet`);
     }

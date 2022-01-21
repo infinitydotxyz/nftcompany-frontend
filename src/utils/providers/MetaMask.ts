@@ -40,8 +40,8 @@ export class MetaMask extends AbstractProvider {
       const accounts = await this.getAccounts();
       const chainId = await this.getChainId();
 
-      this.chainId = chainId;
       this.account = accounts[0];
+      this.chainId = chainId;
 
       if (!this.account) {
         throw new Error('Please install MetaMask');

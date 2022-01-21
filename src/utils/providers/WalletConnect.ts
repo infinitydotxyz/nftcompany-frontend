@@ -38,7 +38,7 @@ export class WalletConnect extends AbstractProvider {
   }
 
   async getAccounts() {
-    return await this._provider.request({ method: 'eth_requestAccounts' });
+    return await this._provider.request({ method: 'eth_accounts' });
   }
 
   async getChainId() {
