@@ -25,24 +25,7 @@ export abstract class AbstractProvider {
    *
    * @param message to be signed
    */
-  async personalSign(message: string): Promise<Signature> {
-    const params = [message];
-    if (this.account) {
-      params.push(this.account);
-    }
-    try {
-      const response: { result: string } = await this.web3Provider.request({
-        method: 'personal_sign',
-        params
-      });
-      console.log({ response });
-      const signature = ethers.utils.splitSignature(response.result);
-      console.log({ signature });
-      return signature;
-    } catch (err) {
-      throw err;
-    }
-  }
+  abstract personalSign(message: string): Promise<Signature>;
 
   abstract get web3Provider(): Web3Provider;
 }

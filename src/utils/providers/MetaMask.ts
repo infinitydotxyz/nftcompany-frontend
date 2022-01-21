@@ -1,5 +1,6 @@
 import { ethers, Signature } from 'ethers';
 import { AbstractProvider, WalletType } from './AbstractProvider';
+import { UserRejectException } from './UserRejectException';
 const Web3 = require('web3');
 
 export class MetaMask extends AbstractProvider {
@@ -11,9 +12,14 @@ export class MetaMask extends AbstractProvider {
     super();
 
     if (window.ethereum?.isMetaMask) {
+      console.log(
+        `IsMeta: ${window.ethereum.isMetaMask} IsCoinbase: ${window.ethereum.IsCoinbase} ${window.ethereum.isCoinbaseWallet}`,
+        window.ethereum
+      );
       this._provider = window.ethereum;
     } else {
       const metamaskProvider = ((window.ethereum as any)?.providers || []).find((item: any) => item?.isMetaMask);
+      console.log(`Metamask: ${metamaskProvider.isMetaMask}`, metamaskProvider);
       if (metamaskProvider) {
         this._provider = metamaskProvider;
       } else {
@@ -34,7 +40,7 @@ export class MetaMask extends AbstractProvider {
     } catch (err: Error | any) {
       if (err?.code === 4001) {
         // EIP-1193 userRejectedRequest error
-        console.log('Please connect to MetaMask.');
+        throw new UserRejectException(this.type);
       } else {
         console.error(err);
       }
@@ -53,7 +59,10 @@ export class MetaMask extends AbstractProvider {
       });
       const signature = ethers.utils.splitSignature(response);
       return signature;
-    } catch (err) {
+    } catch (err: Error | any) {
+      if (err?.code === 4001) {
+        throw new UserRejectException(this.type);
+      }
       throw err;
     }
   }

@@ -12,6 +12,7 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import { WalletConnectProxy } from 'utils/WalletConnectProxy';
 import { WalletType } from 'utils/providers/AbstractProvider';
 import { createProvider } from 'utils/providers/ProviderFactory';
+import { UserRejectException } from 'utils/providers/UserRejectException';
 
 export type User = {
   account: string;
@@ -63,9 +64,19 @@ export function AppContextProvider({ children }: any) {
   const connectWallet = async (walletType: WalletType) => {
     const provider = createProvider(walletType);
     console.log({ provider });
-    await provider.init();
 
-    await provider.personalSign(LOGIN_MESSAGE);
+    try {
+      await provider.init();
+      const sig = await provider.personalSign(LOGIN_MESSAGE);
+      console.log(sig);
+    } catch (err: Error | UserRejectException | any) {
+      if (err instanceof UserRejectException) {
+        showAppError(err.message);
+      } else {
+        showAppError(`Unknown error: ${err?.message}`);
+      }
+    }
+
     // let walletLink;
     // if (walletType === WalletType.WalletLink) {
     //   // walletLink = new WalletLink({

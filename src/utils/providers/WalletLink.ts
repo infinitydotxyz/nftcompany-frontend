@@ -3,6 +3,7 @@ import { PROVIDER_URL_MAINNET, SITE_HOST } from 'utils/constants';
 import WalletLinkProvider from 'walletlink';
 import { WalletLinkOptions } from 'walletlink/dist/WalletLink';
 import { AbstractProvider, WalletType } from './AbstractProvider';
+import { UserRejectException } from './UserRejectException';
 
 const APP_NAME = 'infinity.xyz';
 const APP_LOGO_URL = `${SITE_HOST}/favicon.ico`;
@@ -30,16 +31,18 @@ export class WalletLink extends AbstractProvider {
   }
 
   async init() {
+    console.log('init wallet link');
     try {
+      // const enable = await (this._provider as any).enable();
+      // console.log({ enable });
       const accounts = await this.web3Provider.send('eth_requestAccounts');
       this.account = accounts[0];
     } catch (err: Error | any) {
+      console.log(err);
       if (err?.code === 4001) {
-        // EIP-1193 userRejectedRequest error
-        console.log('Please connect to WalletLink.');
-      } else {
-        console.error(err);
+        throw new UserRejectException(this.type);
       }
+      throw new Error();
     }
   }
 
@@ -55,7 +58,13 @@ export class WalletLink extends AbstractProvider {
       });
       const signature = ethers.utils.splitSignature(response);
       return signature;
-    } catch (err) {
+    } catch (err: Error | any) {
+      if (err?.code === 4001) {
+        // EIP-1193 userRejectedRequest error
+        throw new UserRejectException(this.type);
+      } else {
+        console.error(err);
+      }
       throw err;
     }
   }
