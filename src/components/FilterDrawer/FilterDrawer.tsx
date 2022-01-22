@@ -27,7 +27,7 @@ import * as React from 'react';
 import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import CollectionNameFilter from './CollectionNameFilter';
 import { apiGet } from 'utils/apiUtil';
-import { LISTING_TYPE } from 'utils/constants';
+import { LISTING_TYPE, PAGE_NAMES } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from './FilterDrawer.module.scss';
 import { DownshiftSelect, SelectItem } from './DownshiftSelect';
@@ -163,7 +163,7 @@ const FilterDrawer = ({
       showAppError(`Failed to fetch traits. ${error?.message}`);
     }
   };
-  const shouldFetchTraits = selectedCollectionIds.split(',').length === 1;
+  const shouldFetchTraits = pageName === PAGE_NAMES.EXPLORE && selectedCollectionIds.split(',').length === 1;
 
   const content = (
     <Box className={styles.main} mt={6}>
