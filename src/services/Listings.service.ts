@@ -48,7 +48,7 @@ export const getTokenAddress = async (collectionName: string): Promise<string> =
 };
 
 export const ordersToCardData = (listings: Order[], orderType: OrderType): CardData[] => {
-  const cards = listings.map((order, orderType) => {
+  const cards = listings.map((order) => {
     return orderToCardData(order, orderType);
   });
   return cards;

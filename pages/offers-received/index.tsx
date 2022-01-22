@@ -9,7 +9,7 @@ import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { SearchFilter } from 'utils/context/SearchContext';
 import { Box } from '@chakra-ui/react';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
-import styles from './OffersMade.module.scss';
+import styles from './OffersReceived.module.scss';
 import { useUserOffersReceived } from 'hooks/useUserOffersReceived';
 
 export default function OffersReceived() {

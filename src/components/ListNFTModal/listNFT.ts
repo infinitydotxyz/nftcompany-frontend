@@ -44,7 +44,7 @@ type Order = unknown;
 type VerifiedBonusResponse = { verified?: boolean; bonusReward?: boolean } | undefined;
 
 export async function fetchVerifiedBonusReward(tokenAddress: string): Promise<VerifiedBonusResponse> {
-  const { result } = await apiGet(`/token/${tokenAddress}/verfiedBonusReward`);
+  const { result } = await apiGet(`/token/${tokenAddress}/verifiedBonusReward`);
   return result;
 }
 
