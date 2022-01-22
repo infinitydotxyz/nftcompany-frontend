@@ -16,7 +16,7 @@ import { createSellOrder, fetchVerifiedBonusReward, SellOrderProps } from 'compo
 import { getPaymentTokenAddress } from 'utils/commonUtil';
 import { weiToEther } from 'utils/ethersUtil';
 import { NftAction } from 'types';
-import { ListingSource } from 'utils/context/SearchContext';
+import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
 import router from 'next/router';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 
@@ -24,7 +24,7 @@ export default function ListNFTs() {
   const { user, showAppError, showAppMessage, providerManager } = useAppContext();
   const [tabIndex, setTabIndex] = useState(0);
   const [deleteModalItem, setDeleteModalItem] = useState<CardData | null>(null);
-  const [filter, setFilter] = useState({});
+  const [filter, setFilter] = useState<SearchFilter | null>(null);
 
   useEffect(() => {
     if (router.query.tab === 'opensea') {
@@ -174,8 +174,8 @@ export default function ListNFTs() {
                     <Box className="filter-container">
                       <FilterDrawer
                         renderContent={true}
-                        showCollection={false}
-                        onChange={(filter: any) => {
+                        showCollection={true}
+                        onChange={(filter: SearchFilter) => {
                           setFilter(filter);
                         }}
                       />
