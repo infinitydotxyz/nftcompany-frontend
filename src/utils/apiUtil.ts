@@ -24,14 +24,19 @@ const catchError = (err: any) => {
 
 export const getAuthHeaders = async (attemptLogin = true) => {
   const providerManager = await ProviderManager.getInstance();
-  const authHeaders = await providerManager.getAuthHeaders(attemptLogin);
-  return authHeaders;
+  if (providerManager.account) {
+    const authHeaders = await providerManager.getAuthHeaders(attemptLogin);
+    return authHeaders;
+  }
+  return {};
 };
 
 export const apiGet = async (path: string, query?: any, options?: any, doNotAttemptLogin?: boolean) => {
   const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
-    const requiresAuth = path.indexOf('/u/') >= 0;
+    const userEndpointRegex = /\/u\//;
+    const publicUserEndpoint = /\/p\/u\//;
+    const requiresAuth = userEndpointRegex.test(path) && !publicUserEndpoint.test(path);
 
     let authHeaders = {};
     if (requiresAuth) {
