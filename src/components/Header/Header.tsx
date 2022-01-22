@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MenuItem, MenuDivider, Box, useColorMode, Alert, AlertIcon, CloseButton, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { saveAuthHeaders } from '../../../src/utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
@@ -19,7 +18,7 @@ import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchCon
 
 const Header = (): JSX.Element => {
   const router = useRouter();
-  const { user, signIn, signOut, chainId, setHeaderPosition } = useAppContext();
+  const { user, signOut, chainId, setHeaderPosition } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
   const [showBanner, setShowBanner] = useState(true);
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);

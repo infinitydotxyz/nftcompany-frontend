@@ -20,7 +20,7 @@ import { ListingSource } from 'utils/context/SearchContext';
 import router from 'next/router';
 
 export default function ListNFTs() {
-  const { user, showAppError, showAppMessage } = useAppContext();
+  const { user, showAppError, showAppMessage, providerManager } = useAppContext();
   const [tabIndex, setTabIndex] = useState(0);
   const [deleteModalItem, setDeleteModalItem] = useState<CardData | null>(null);
 
@@ -100,7 +100,7 @@ export default function ListNFTs() {
         obj.buyerAddress = order.taker;
       }
 
-      await createSellOrder(obj);
+      await createSellOrder(obj, providerManager);
     } catch (e: any) {
       err = e;
       console.error('ERROR: ', e, '   ', expirationTime);

@@ -13,7 +13,6 @@ import { CollectionCardEntry } from 'types/rewardTypes';
 import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import CardList from 'components/Card/CardList';
 import { Spacer, Box } from '@chakra-ui/react';
-import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollections';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { NftAction } from 'types';
 import styles from './Explore.module.scss';

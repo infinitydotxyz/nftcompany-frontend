@@ -85,7 +85,6 @@ const Collection = (): JSX.Element => {
     let isActive = true;
 
     if (address && !collectionInfo?.address) {
-      console.log('using address');
       setIsLoading(true);
       getCollectionInfo(address as string)
         .then((collectionInfo) => {
