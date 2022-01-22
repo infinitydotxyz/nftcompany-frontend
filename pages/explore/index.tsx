@@ -108,7 +108,7 @@ export default function ExplorePage() {
 
           <Box className={styles.col}>
             <Box className="filter-container">
-              <FilterDrawer />
+              <FilterDrawer pageName={PAGE_NAMES.EXPLORE} />
             </Box>
             <Box className="content-container">
               <Explore listingSource={ListingSource.Infinity} />
