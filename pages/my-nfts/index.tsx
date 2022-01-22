@@ -14,15 +14,17 @@ import { CardData } from 'types/Nft.interface';
 import { NftAction } from 'types';
 import { Box } from '@chakra-ui/layout';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
+import { SearchFilter } from 'utils/context/SearchContext';
 
 export default function MyNFTs() {
   const { user, showAppError, chainId } = useAppContext();
+  const [filter, setFilter] = useState<SearchFilter | null>(null);
+
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<CardData[]>([]);
   const [listModalItem, setListModalItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [filter, setFilter] = useState({});
 
   const fetchData = async () => {
     if (!user || !user?.account || !chainId) {
@@ -80,17 +82,15 @@ export default function MyNFTs() {
           </div>
 
           <Box display="flex">
-            {/* --- disable until /assets api (OS/alchemy/unmarshall...) can support filters */}
-            {/* <Box className="filter-container">
+            <Box className="filter-container">
               <FilterDrawer
                 showSaleTypes={false}
                 showPrices={false}
                 onChange={(filter: any) => {
-                  console.log('filter', filter);
                   setFilter(filter);
                 }}
               />
-            </Box> */}
+            </Box>
             <Box>
               <PleaseConnectWallet account={user?.account} />
               <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />

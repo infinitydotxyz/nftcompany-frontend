@@ -11,9 +11,13 @@ import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useRouter } from 'next/router';
 import { transformOpenSea, transformCovalent, getNftDataSource, transformUnmarshal } from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
+import { Box } from '@chakra-ui/layout';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
+import { SearchFilter } from 'utils/context/SearchContext';
 
 export default function UserPage() {
   const { user, showAppError, chainId } = useAppContext();
+  const [filter, setFilter] = useState<SearchFilter | null>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<CardData[]>([]);
   const [currentPage, setCurrentPage] = useState(-1);
@@ -37,7 +41,8 @@ export default function UserPage() {
     const { result, error } = await apiGet(`/p/u/${userParam}/assets`, {
       offset: newCurrentPage * ITEMS_PER_PAGE,
       limit: ITEMS_PER_PAGE,
-      source
+      source,
+      ...filter
     });
 
     if (error) {
@@ -60,7 +65,7 @@ export default function UserPage() {
 
   React.useEffect(() => {
     fetchData();
-  }, [userParam]);
+  }, [userParam, filter]);
 
   React.useEffect(() => {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
@@ -81,13 +86,23 @@ export default function UserPage() {
             <div className="tg-title">{"User's NFTs"}</div>
           </div>
 
-          <div>
-            <PleaseConnectWallet account={user?.account} />
-            <NoData isFetching={isFetching} data={data} />
-            {data?.length === 0 && isFetching && <LoadingCardList />}
+          <Box display="flex">
+            <Box className="filter-container">
+              <FilterDrawer
+                showSaleTypes={false}
+                showPrices={false}
+                onChange={(filter: any) => {
+                  setFilter(filter);
+                }}
+              />
+            </Box>
+            <Box>
+              <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
+              {data?.length === 0 && isFetching && <LoadingCardList />}
 
-            <CardList data={data} showItems={[]} userAccount={user?.account} />
-          </div>
+              <CardList data={data} showItems={[]} userAccount={user?.account} />
+            </Box>
+          </Box>
         </div>
 
         {dataLoaded && (
