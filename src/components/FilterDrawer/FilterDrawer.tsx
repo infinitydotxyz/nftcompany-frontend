@@ -140,6 +140,9 @@ const FilterDrawer = ({
     setSelectedTraitType(undefined);
     setSelectedTraits([EmptyTrait]);
     setFilterState(newFilter);
+    if (onChange) {
+      onChange(newFilter);
+    }
   };
 
   const updateTraitFilterState = () => {

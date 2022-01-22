@@ -7,7 +7,7 @@ import { apiGet } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { ListingSource } from 'utils/context/SearchContext';
 
-export function useUserListings(source: ListingSource) {
+export function useUserListings(source: ListingSource, filter: any) {
   const [listings, setListings] = useState<CardData[]>([]);
   const { user, showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
@@ -18,6 +18,7 @@ export function useUserListings(source: ListingSource) {
 
   const getInfinityListings = (address: string) => {
     return apiGet(`/u/${address}/listings`, {
+      ...filter,
       startAfter: getLastItemCreatedAt(listings),
       limit: ITEMS_PER_PAGE
     });
