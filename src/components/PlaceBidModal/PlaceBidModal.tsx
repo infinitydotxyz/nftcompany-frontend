@@ -12,6 +12,7 @@ import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { getToken, stringToFloat } from 'utils/commonUtil';
 import { DatePicker } from 'components/DatePicker/DatePicker';
 import { LISTING_TYPE } from 'utils/constants';
+import { fetchVerifiedBonusReward } from 'components/ListNFTModal/listNFT';
 
 const isServer = typeof window === 'undefined';
 
@@ -30,6 +31,15 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [offerPrice, setOfferPrice] = React.useState(0);
   const token = getToken(data.order?.metadata?.listingType, data.order?.metadata?.chainId);
   const listingType = data.order?.metadata?.listingType;
+  const [backendChecks, setBackendChecks] = React.useState({});
+
+  React.useEffect(() => {
+    const fetchBackendChecks = async () => {
+      const result = await fetchVerifiedBonusReward(data.tokenAddress ?? '');
+      setBackendChecks({ hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified });
+    };
+    fetchBackendChecks();
+  }, []);
 
   const loadOrder = useCallback(async () => {
     let orderParams: any;
@@ -128,7 +138,8 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           accountAddress: user!.account,
           startAmount: offerPrice,
           assetDetails: data,
-          expirationTime: expiryTimeSeconds
+          expirationTime: expiryTimeSeconds,
+          ...backendChecks
         })
         .then(() => {
           showAppMessage('Offer sent successfully.');

@@ -670,13 +670,26 @@ export class OpenSeaPort {
     (order.metadata as any).asset.collectionName = assetDetails?.collectionName;
     (order.metadata as any).asset.searchTitle = searchTitle;
     (order.metadata as any).asset.searchCollectionName = searchCollectionName;
-    (order.metadata as any).asset.owner = assetDetails?.owner;
-    (order.metadata as any).asset.schemaName = asset.schemaName;
+    (order.metadata as any).asset.owner = assetDetails?.owner ?? assetDetails?.maker;
     (order as any).metadata.hasBonusReward = hasBonusReward;
     (order as any).metadata.hasBlueCheck = hasBlueCheck;
     (order.metadata as any).asset.rawData = assetDetails?.data;
 
     (order as any).metadata.chainId = assetDetails?.chainId;
+
+    // traits
+    const rawTraits = assetDetails?.data?.traits;
+    let numTraits = 0;
+    const traits = [];
+    if (rawTraits) {
+      numTraits = rawTraits.length;
+      for (const rawTrait of rawTraits) {
+        traits.push({ traitType: rawTrait.trait_type, traitValue: String(rawTrait.value) });
+      }
+    }
+
+    (order.metadata as any).asset.traits = traits;
+    (order.metadata as any).asset.numTraits = numTraits;
 
     if (typeof hasBonusReward === 'undefined') {
       (order as any).metadata.checkBonusReward = true;
@@ -792,6 +805,7 @@ export class OpenSeaPort {
     (order.metadata as any).asset.collectionName = assetDetails?.collectionName;
     (order.metadata as any).asset.searchTitle = searchTitle;
     (order.metadata as any).asset.searchCollectionName = searchCollectionName;
+    (order.metadata as any).asset.owner = order.maker;
     (order as any).metadata.hasBonusReward = hasBonusReward;
     (order as any).metadata.hasBlueCheck = hasBlueCheck;
     (order.metadata as any).asset.rawData = assetDetails?.data;

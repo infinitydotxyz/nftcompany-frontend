@@ -9,6 +9,7 @@ import { PriceBox } from 'components/PriceBox/PriceBox';
 import { DatePicker } from 'components/DatePicker/DatePicker';
 import { Label, Title } from 'components/Text/Text';
 import { LISTING_TYPE } from 'utils/constants';
+import { fetchVerifiedBonusReward } from 'components/ListNFTModal/listNFT';
 
 interface IProps {
   data: CardData;
@@ -23,6 +24,15 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
   const [expiryDate, setExpiryDate] = useState<Date | undefined>();
   const [offerPrice, setOfferPrice] = useState(0);
   const listingType = data.order?.metadata?.listingType;
+  const [backendChecks, setBackendChecks] = React.useState({});
+
+  React.useEffect(() => {
+    const fetchBackendChecks = async () => {
+      const result = await fetchVerifiedBonusReward(data.tokenAddress ?? '');
+      setBackendChecks({ hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified });
+    };
+    fetchBackendChecks();
+  }, []);
 
   const makeAnOffer = () => {
     if (offerPrice <= 0) {
@@ -49,7 +59,8 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
           accountAddress: user!.account,
           startAmount: offerPrice,
           assetDetails: data,
-          expirationTime: expiryTimeSeconds
+          expirationTime: expiryTimeSeconds,
+          ...backendChecks
         })
         .then(() => {
           showAppMessage('Offer sent successfully.');

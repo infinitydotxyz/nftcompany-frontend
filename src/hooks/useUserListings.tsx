@@ -1,7 +1,7 @@
 import { ordersToCardData } from 'services/Listings.service';
 import { getLastItemBasePrice, getLastItemBlueCheck, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
 import { useState, useEffect, useRef } from 'react';
-import { CardData } from 'types/Nft.interface';
+import { CardData, OrderType } from 'types/Nft.interface';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { apiGet } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
@@ -67,7 +67,7 @@ export function useUserListings(source: ListingSource, filter: SearchFilter | nu
       console.error(err);
     }
 
-    const moreListings = ordersToCardData(listingData || []);
+    const moreListings = ordersToCardData(listingData || [], OrderType.SELL);
     return moreListings;
   };
 
