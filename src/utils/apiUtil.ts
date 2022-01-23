@@ -24,11 +24,8 @@ const catchError = (err: any) => {
 
 export const getAuthHeaders = async (attemptLogin = true) => {
   const providerManager = await ProviderManager.getInstance();
-  if (providerManager.account) {
-    const authHeaders = await providerManager.getAuthHeaders(attemptLogin);
-    return authHeaders;
-  }
-  return {};
+  const authHeaders = await providerManager.getAuthHeaders(attemptLogin);
+  return authHeaders;
 };
 
 export const apiGet = async (path: string, query?: any, options?: any, doNotAttemptLogin?: boolean) => {
