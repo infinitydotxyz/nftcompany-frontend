@@ -31,7 +31,9 @@ export const getAuthHeaders = async (attemptLogin = true) => {
 export const apiGet = async (path: string, query?: any, options?: any, doNotAttemptLogin?: boolean) => {
   const queryStr = query ? '?' + qs.stringify(query) : '';
   try {
-    const requiresAuth = path.indexOf('/u/') >= 0;
+    const userEndpointRegex = /\/u\//;
+    const publicUserEndpoint = /\/p\/u\//;
+    const requiresAuth = userEndpointRegex.test(path) && !publicUserEndpoint.test(path);
 
     let authHeaders = {};
     if (requiresAuth) {

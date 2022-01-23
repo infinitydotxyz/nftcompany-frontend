@@ -74,7 +74,7 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
   }
 
   getAuthHeaders = async (attemptSignIn = true) => {
-    if (attemptSignIn) {
+    if (attemptSignIn && this.account) {
       await this.signIn();
     } else {
       const requiresSignIn = !this.isLoggedInAndAuthenticated;
