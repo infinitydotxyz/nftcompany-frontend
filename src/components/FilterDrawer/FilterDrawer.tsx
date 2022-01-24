@@ -167,7 +167,7 @@ const FilterDrawer = ({
   const shouldFetchTraits = pageName === PAGE_NAMES.EXPLORE && selectedCollectionIds.split(',').length === 1;
 
   const content = (
-    <Box className={styles.main} mt={6}>
+    <Box className={styles.main} mt={6} position="sticky" top={headerPosition + 12}>
       {showSaleTypes === false ? null : (
         <div className={styles.bottomBorder}>
           <Text mb={4} mt={4}>
