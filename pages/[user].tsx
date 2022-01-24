@@ -39,10 +39,10 @@ export default function UserPage() {
     const source = getNftDataSource(chainId);
 
     const { result, error } = await apiGet(`/p/u/${userParam}/assets`, {
-      ...filter,
       offset: newCurrentPage * ITEMS_PER_PAGE,
       limit: ITEMS_PER_PAGE,
-      source
+      source,
+      ...filter
     });
 
     if (error) {
@@ -94,11 +94,7 @@ export default function UserPage() {
                 onChange={(filter: any, isClearing?: boolean) => {
                   setCurrentPage(-1);
                   setData([]);
-                  if (isClearing) {
-                    setFilter(null);
-                  } else {
-                    setFilter(filter);
-                  }
+                  setFilter(filter);
                 }}
               />
             </Box>
