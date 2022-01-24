@@ -18,7 +18,7 @@ interface IProps {
 }
 
 export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IProps) => {
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, providerManager } = useAppContext();
   const [isBuying, setIsBuying] = useState(false);
   const token = getToken(data.order?.metadata?.listingType, data.order?.metadata?.chainId);
   const listingType = order.metadata?.listingType;
@@ -29,7 +29,7 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
       // another user or cancelled by the creator
       if (order) {
         setIsBuying(true);
-        const seaport = getOpenSeaportForChain(data?.chainId);
+        const seaport = getOpenSeaportForChain(data?.chainId, providerManager);
 
         const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
           order: order,

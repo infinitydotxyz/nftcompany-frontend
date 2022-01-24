@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { getAccount, getChainId, getOpenSeaportForChain, getProvider, setPreferredWallet } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { getCustomMessage, getCustomExceptionMsg } from 'utils/commonUtil';
-import { deleteAuthHeaders, getAuthHeaders, saveAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
 import { errorToast, infoToast, Toast } from 'components/Toast/Toast';
-import { ReactNode } from '.pnpm/@types+react@17.0.24/node_modules/@types/react';
-import { ethers } from 'ethers';
-import WalletLink from 'walletlink';
-import { PROVIDER_URL_MAINNET, SITE_HOST } from 'utils/constants';
+import { ProviderEvents, WalletType } from 'utils/providers/AbstractProvider';
+import { UserRejectException } from 'utils/providers/UserRejectException';
+import { ProviderManager } from 'utils/providers/ProviderManager';
 
 export type User = {
   account: string;
@@ -15,7 +13,6 @@ export type User = {
 
 export type AppContextType = {
   user: User | null;
-  signIn: () => void;
   signOut: () => void;
   userReady: boolean;
   chainId: string;
@@ -23,15 +20,9 @@ export type AppContextType = {
   showAppMessage: (msg: string) => void;
   headerPosition: number;
   setHeaderPosition: (bottom: number) => void;
-  provider?: ethers.providers.ExternalProvider;
   connectWallet: (walletType: WalletType) => Promise<void>;
+  providerManager?: ProviderManager;
 };
-
-export enum WalletType {
-  MetaMask = 'MetaMask',
-  WalletLink = 'WalletLink',
-  WalletConnect = 'WalletConnect'
-}
 
 const AppContext = React.createContext<AppContextType | null>(null);
 
@@ -42,89 +33,115 @@ export function AppContextProvider({ children }: any) {
   const [userReady, setUserReady] = React.useState(false);
   const [chainId, setChainId] = React.useState('');
   const [headerPosition, setHeaderPosition] = React.useState(0);
-  const showAppError = (message: ReactNode) => {
+  const showAppError = (message: React.ReactNode) => {
     const msg = getCustomExceptionMsg(message);
     errorToast(msg);
   };
-  const showAppMessage = (message: ReactNode) => infoToast(message);
-  const [provider, setProvider] = React.useState<ethers.providers.ExternalProvider | undefined>();
+  const [providerManager, setProviderManager] = React.useState<ProviderManager | undefined>();
+
+  const showAppMessage = (message: React.ReactNode) => infoToast(message);
 
   React.useEffect(() => {
-    const windowProvider = getProvider();
-    setProvider(windowProvider);
-    if (windowProvider) {
-      signIn(windowProvider).catch((e) => {
-        console.error(e);
-        setPreferredWallet();
-      });
-    } else {
-      setUserReady(true);
-    }
+    let isActive = true;
+    ProviderManager.getInstance().then((providerManagerInstance) => {
+      if (isActive) {
+        setProviderManager(providerManagerInstance);
+
+        providerManagerInstance
+          .signIn()
+          .then(() => {
+            setUser({ account: providerManagerInstance.account });
+            const chainId = providerManagerInstance.chainId ?? 1;
+            setChainId(`${chainId}`);
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            setUserReady(true);
+          });
+      }
+    });
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   const connectWallet = async (walletType: WalletType) => {
-    let walletLink;
-    if (walletType === WalletType.WalletLink) {
-      const APP_NAME = 'infinity.xyz';
-      const APP_LOGO_URL = `${SITE_HOST}/favicon.ico`;
-      const ETH_JSONRPC_URL = PROVIDER_URL_MAINNET;
-      const CHAIN_ID = 1;
+    if (providerManager?.connectWallet) {
+      try {
+        await providerManager.connectWallet(walletType);
+        await providerManager.signIn();
+        setUser({ account: providerManager.account ?? '' });
+        const chainId = providerManager.chainId ?? 1;
+        setChainId(`${chainId}`);
+        setUserReady(true);
+      } catch (err: Error | any) {
+        console.log(err);
+        if (err instanceof UserRejectException) {
+          showAppError(err.message);
+        }
 
-      walletLink = new WalletLink({
-        appName: APP_NAME,
-        appLogoUrl: APP_LOGO_URL, // todo doesn't work https://github.com/walletlink/walletlink/issues/199
-        darkMode: false
-      });
-
-      (window?.walletLinkExtension as any)?.setAppInfo?.(APP_NAME, APP_LOGO_URL);
-
-      const ethereum = walletLink.makeWeb3Provider(ETH_JSONRPC_URL, CHAIN_ID);
-      await ethereum.send('eth_requestAccounts');
-    } else if (walletType === WalletType.WalletConnect) {
-      throw new Error('Wallet connect not yet supported');
+        setUserReady(true);
+      }
+    } else {
+      console.log(`Provider not ready yet`);
     }
-
-    setPreferredWallet(walletType);
-    const provider = getProvider();
-    setProvider(provider);
-    signIn().catch((e) => {
-      console.error(e);
-      setPreferredWallet();
-    });
   };
 
   React.useEffect(() => {
+    const handleNetworkChange = (chainId: number) => {
+      setChainId(`${chainId}`);
+      window.location.reload();
+    };
+
     let isChangingAccount = false;
-    const handleAccountChange = async (accounts: string[]) => {
+    const handleAccountChange = async (account: string) => {
       isChangingAccount = true;
       window.onfocus = async () => {
         if (isChangingAccount) {
           setTimeout(async () => {
             isChangingAccount = false;
-            await signIn();
+            try {
+              await providerManager?.signIn();
+              setUser({ account: providerManager?.account ?? '' });
+              const chainId = providerManager?.chainId ?? 1;
+              setChainId(`${chainId}`);
+            } catch (err) {
+              if (err instanceof UserRejectException) {
+                showAppError(err.message);
+                return;
+              }
+              console.error(err);
+            }
             window.location.reload();
           }, 500);
         }
       };
     };
 
-    const handleNetworkChange = (chainId: string) => {
-      setChainId(chainId);
-      window.location.reload();
+    const onConnect = () => {
+      return;
     };
 
-    if (provider) {
-      (provider as any).on('accountsChanged', handleAccountChange);
-      (provider as any).on('chainChanged', handleNetworkChange);
+    const onDisconnect = () => {
+      signOut();
+    };
+
+    if (providerManager) {
+      providerManager.on(ProviderEvents.AccountsChanged, handleAccountChange);
+      providerManager.on(ProviderEvents.ChainChanged, handleNetworkChange);
+      providerManager.on(ProviderEvents.Connect, onConnect);
+      providerManager.on(ProviderEvents.Disconnect, onDisconnect);
     }
 
     return () => {
-      if (provider && provider.isMetaMask) {
-        (provider as any).removeListener('accountsChanged', handleAccountChange);
-        (provider as any).removeListener('chainChanged', handleNetworkChange);
-      }
+      providerManager?.removeListener?.(ProviderEvents.AccountsChanged, handleAccountChange);
+      providerManager?.removeListener?.(ProviderEvents.ChainChanged, handleNetworkChange);
+      providerManager?.removeListener?.(ProviderEvents.Connect, onConnect);
+      providerManager?.removeListener?.(ProviderEvents.Disconnect, onDisconnect);
     };
-  }, [provider]);
+  }, [providerManager]);
 
   React.useEffect(() => {
     const listener = (eventName: any, data: any) => {
@@ -137,9 +154,9 @@ export function AppContextProvider({ children }: any) {
 
     const subscriptions: any[] = [];
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
-    if (user?.account && !isListenerAdded && provider) {
+    if (user?.account && !isListenerAdded && providerManager) {
       isListenerAdded = true;
-      const seaport = getOpenSeaportForChain(chainId, provider);
+      const seaport = getOpenSeaportForChain(chainId, providerManager);
       Object.values(EventType).forEach((eventName: any) => {
         const subscription = seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
         subscriptions.push(subscription);
@@ -161,59 +178,14 @@ export function AppContextProvider({ children }: any) {
     }
   }, [user]);
 
-  const signIn = async (
-    optionalProvider?: ethers.providers.ExternalProvider,
-    walletType?: WalletType
-  ): Promise<void> => {
-    setUserReady(false);
-    try {
-      const selectedProvider = optionalProvider ?? getProvider();
-      if (selectedProvider) {
-        let account;
-        account = await getAccount(selectedProvider);
-        if (!account) {
-          // wallet locked, use this to open the wallet
-          const accounts = await selectedProvider.send('eth_requestAccounts');
-          account = accounts.result[0];
-        }
-
-        const res = await getAuthHeaders(selectedProvider);
-        const msg = res['X-AUTH-MESSAGE'];
-        const sig = res['X-AUTH-SIGNATURE'];
-        let signedAccount = '';
-        if (msg && sig) {
-          const parsed = JSON.parse(sig);
-          signedAccount = ethers.utils.verifyMessage(msg, parsed);
-        }
-        if (signedAccount !== account) {
-          await saveAuthHeaders(account, selectedProvider);
-        }
-
-        const chainId = await getChainId(selectedProvider);
-        setUser({ account });
-        setChainId(chainId);
-        if (walletType) {
-          setPreferredWallet(walletType);
-        }
-      }
-      // views can avoid drawing until a login attempt was made to avoid a user=null and user='xx' refresh
-      setUserReady(true);
-    } catch (err) {
-      // views can avoid drawing until a login attempt was made to avoid a user=null and user='xx' refresh
-      setUserReady(true);
-      throw err;
-    }
-  };
-
   const signOut = async (): Promise<void> => {
     setUser(null);
-    deleteAuthHeaders();
-    setPreferredWallet();
+    providerManager?.disconnect();
+    window.location.reload();
   };
 
   const value: AppContextType = {
     user,
-    signIn,
     signOut,
     userReady,
     chainId,
@@ -221,8 +193,8 @@ export function AppContextProvider({ children }: any) {
     showAppMessage,
     headerPosition,
     setHeaderPosition,
-    provider,
-    connectWallet
+    connectWallet,
+    providerManager
   };
 
   return (

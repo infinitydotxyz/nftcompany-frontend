@@ -1,13 +1,13 @@
 import { ordersToCardData } from 'services/Listings.service';
-import { getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
+import { getLastItemBasePrice, getLastItemBlueCheck, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
 import { useState, useEffect, useRef } from 'react';
-import { CardData } from 'types/Nft.interface';
+import { CardData, OrderType } from 'types/Nft.interface';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { apiGet } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
-import { ListingSource } from 'utils/context/SearchContext';
+import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
 
-export function useUserListings(source: ListingSource) {
+export function useUserListings(source: ListingSource, filter: SearchFilter | null) {
   const [listings, setListings] = useState<CardData[]>([]);
   const { user, showAppError } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
@@ -18,7 +18,10 @@ export function useUserListings(source: ListingSource) {
 
   const getInfinityListings = (address: string) => {
     return apiGet(`/u/${address}/listings`, {
-      startAfter: getLastItemCreatedAt(listings),
+      ...filter,
+      startAfterMillis: getLastItemCreatedAt(listings),
+      startAfterPrice: getLastItemBasePrice(listings),
+      startAfterBlueCheck: getLastItemBlueCheck(listings),
       limit: ITEMS_PER_PAGE
     });
   };
@@ -64,7 +67,7 @@ export function useUserListings(source: ListingSource) {
       console.error(err);
     }
 
-    const moreListings = ordersToCardData(listingData || []);
+    const moreListings = ordersToCardData(listingData || [], OrderType.SELL);
     return moreListings;
   };
 
@@ -115,6 +118,10 @@ export function useUserListings(source: ListingSource) {
       isActive = false;
     };
   }, [source, user, fetchMore]);
+
+  useEffect(() => {
+    resetListings();
+  }, [filter]);
 
   return {
     listings,

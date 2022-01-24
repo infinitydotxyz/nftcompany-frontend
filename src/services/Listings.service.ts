@@ -1,4 +1,4 @@
-import { CardData, Order, Orders } from 'types/Nft.interface';
+import { CardData, Order, Orders, OrderType } from 'types/Nft.interface';
 import { weiToEther } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
@@ -28,7 +28,7 @@ async function getInfinityListings(listingFilter: SearchFilter & { offset?: stri
     return [];
   }
 
-  return ordersToCardData(result.listings);
+  return ordersToCardData(result.listings, OrderType.SELL);
 }
 
 export const getTokenAddress = async (collectionName: string): Promise<string> => {
@@ -47,8 +47,10 @@ export const getTokenAddress = async (collectionName: string): Promise<string> =
   return '';
 };
 
-export const ordersToCardData = (listings: Order[]): CardData[] => {
-  const cards = listings.map(orderToCardData);
+export const ordersToCardData = (listings: Order[], orderType: OrderType): CardData[] => {
+  const cards = listings.map((order) => {
+    return orderToCardData(order, orderType);
+  });
   return cards;
 };
 
@@ -127,8 +129,12 @@ export const getTypeAheadOptions = async (
   return { collectionNames, nftNames };
 };
 
-export const orderToCardData = (order: Order): CardData => {
+export const orderToCardData = (order: Order, orderType: OrderType): CardData => {
   const cheapestOpenseaOrder = getCheapestOpenseaOrder(order);
+  let owner = order.maker;
+  if (orderType === OrderType.BUY) {
+    owner = order.metadata.asset.owner;
+  }
   const cardData: CardData = {
     id: order.id,
     image: order.metadata.asset.image,
@@ -143,7 +149,7 @@ export const orderToCardData = (order: Order): CardData => {
     hasBonusReward: order.metadata.hasBonusReward,
     hasBlueCheck: order.metadata.hasBlueCheck,
     collectionName: order.metadata.asset.collectionName,
-    owner: order.metadata.asset.owner,
+    owner,
     metadata: order.metadata,
     schemaName: order.metadata.schema,
     expirationTime: order.expirationTime,

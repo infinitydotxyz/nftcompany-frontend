@@ -7,7 +7,12 @@ export const ITEMS_PER_PAGE = 50;
 export const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 export const PAGE_NAMES = {
-  MY_NFTS: 'my-nfts'
+  EXPLORE: 'explore',
+  MY_NFTS: 'my-nfts',
+  LISTED_NFTS: 'listed-nfts',
+  USER_NFTS: 'user-nfts',
+  OFFERS_MADE: 'offers-made',
+  OFFERS_RECEIVED: 'offers-received'
 };
 
 export const LISTING_TYPE = {
@@ -35,3 +40,6 @@ export const POLYGON_NETWORK_NAME = 'polygon';
 export const PROVIDER_URL_POLYGON = 'https://polygon-rpc.com/';
 export const POLYGON_CHAIN_SCANNER_BASE = 'https://polygonscan.com';
 export const POLYGON_WETH_ADDRESS = '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619';
+
+export const LOGIN_MESSAGE =
+  'Welcome to Infinity. Click "Sign" to sign in. No password needed. This request will not trigger a blockchain transaction or cost any gas fees.';

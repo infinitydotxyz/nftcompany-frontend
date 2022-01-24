@@ -34,6 +34,10 @@ export interface Order {
   makerReferrerFee: string;
 }
 
+export enum OrderType {
+  BUY, SELL
+}
+
 export interface TraitItem {
   traitType: string;
   traitValue: string;

@@ -2,6 +2,7 @@ import { TokenStandardVersion, WyvernSchemaName } from 'types/Nft.interface';
 import { apiGet } from 'utils/apiUtil';
 import { NFTC_FEE_RECIPIENT, NULL_ADDRESS } from 'utils/constants';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
+import { ProviderManager } from 'utils/providers/ProviderManager';
 
 export interface SellOrderProps {
   hasBonusReward?: boolean;
@@ -43,7 +44,7 @@ type Order = unknown;
 type VerifiedBonusResponse = { verified?: boolean; bonusReward?: boolean } | undefined;
 
 export async function fetchVerifiedBonusReward(tokenAddress: string): Promise<VerifiedBonusResponse> {
-  const { result } = await apiGet(`/token/${tokenAddress}/verfiedBonusReward`);
+  const { result } = await apiGet(`/token/${tokenAddress}/verifiedBonusReward`);
   return result;
 }
 
@@ -53,12 +54,15 @@ export async function fetchVerifiedBonusReward(tokenAddress: string): Promise<Ve
  * @returns a Promise of an OpenSea Order
  * @THROWS an error if we fail to create the sell order
  */
-export async function createSellOrder(data: SellOrderProps & { chainId?: string }): Promise<Order> {
+export async function createSellOrder(
+  data: SellOrderProps & { chainId?: string },
+  providerManager?: ProviderManager
+): Promise<Order> {
   if (!data.startAmount) {
     throw new Error('Please enter price');
   }
 
-  const seaport = getOpenSeaportForChain(data.chainId);
+  const seaport = getOpenSeaportForChain(data.chainId, providerManager);
 
   return seaport.createSellOrder(data);
 }

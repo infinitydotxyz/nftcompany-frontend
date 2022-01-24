@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
-import { getAccount, getEthersProvider } from 'utils/ethersUtil';
+import { getEthersProvider } from 'utils/ethersUtil';
 import { apiGet } from './apiUtil';
+import { ProviderManager } from './providers/ProviderManager';
 
 const doge2048Abi = require('../../pages/game/doge2048/abis/doge2048.json'); // todo: adi
 const factoryAbi = require('../../pages/game/doge2048/abis/infinityFactory.json'); // todo: adi
@@ -14,8 +15,10 @@ export class GameMessenger {
   tokenId: number;
   factoryContract: ethers.Contract;
   ierc20Instance: ethers.Contract;
+  providerManager: ProviderManager;
 
   constructor(
+    providerManager: ProviderManager,
     iframeWindow: Window,
     chainId: string,
     tokenAddress: string,
@@ -28,11 +31,20 @@ export class GameMessenger {
     this.tokenAddress = tokenAddress;
     this.tokenId = tokenId;
     this.dogTokenAddress = dogTokenAddress;
+    this.providerManager = providerManager;
 
     window.addEventListener('message', this.listener);
 
-    this.factoryContract = new ethers.Contract(tokenAddress, factoryAbi, getEthersProvider().getSigner());
-    this.ierc20Instance = new ethers.Contract(dogTokenAddress, ierc20Abi, getEthersProvider().getSigner());
+    this.factoryContract = new ethers.Contract(
+      tokenAddress,
+      factoryAbi,
+      this.providerManager.getEthersProvider().getSigner()
+    );
+    this.ierc20Instance = new ethers.Contract(
+      dogTokenAddress,
+      ierc20Abi,
+      this.providerManager.getEthersProvider().getSigner()
+    );
 
     // tell game we are ready
     this.sendToGame(iframeWindow, 'ready', '');
@@ -88,10 +100,14 @@ export class GameMessenger {
   listener = async (event: any) => {
     if (event.data && event.data.from === 'game') {
       const instanceAddress = await this.factoryContract.tokenIdToInstance(this.tokenId);
-      const nftInstance = new ethers.Contract(instanceAddress, doge2048Abi, getEthersProvider().getSigner());
+      const nftInstance = new ethers.Contract(
+        instanceAddress,
+        doge2048Abi,
+        this.providerManager.getEthersProvider().getSigner()
+      );
       switch (event.data.message) {
         case 'game-state':
-          const address = await getAccount();
+          const address = this.providerManager.account;
           const numPlays = await nftInstance.numPlays();
           const highScore = await nftInstance.score();
           let dogBalance = await nftInstance.getTokenBalance(this.dogTokenAddress);

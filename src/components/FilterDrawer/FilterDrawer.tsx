@@ -27,7 +27,7 @@ import * as React from 'react';
 import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import CollectionNameFilter from './CollectionNameFilter';
 import { apiGet } from 'utils/apiUtil';
-import { LISTING_TYPE } from 'utils/constants';
+import { LISTING_TYPE, PAGE_NAMES } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from './FilterDrawer.module.scss';
 import { DownshiftSelect, SelectItem } from './DownshiftSelect';
@@ -59,12 +59,25 @@ const EmptyTrait = { type: '', value: '', traitData: undefined };
 
 interface Props {
   onToggle?: (isOpen: boolean) => void;
+  pageName?: string;
+  showSaleTypes?: boolean;
+  showPrices?: boolean;
   showCollection?: boolean;
   renderContent?: boolean;
   collection?: string;
+  onChange?: (filter: any, isClearing?: boolean) => void;
 }
 
-const FilterDrawer = ({ onToggle, showCollection, renderContent, collection, ...rest }: Props & ChakraProps) => {
+const FilterDrawer = ({
+  onToggle,
+  pageName,
+  showSaleTypes,
+  showPrices,
+  showCollection,
+  collection,
+  onChange,
+  ...rest
+}: Props & ChakraProps) => {
   const { showAppError, headerPosition } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
   const [minPriceVal, setMinPriceVal] = React.useState(
@@ -113,10 +126,14 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, collection, ...
   const handleClickApply = () => {
     const newFilter = getNewFilterState();
     setFilterState(newFilter);
+    if (onChange) {
+      onChange(newFilter);
+    }
   };
 
   const handleClickClear = () => {
-    const newFilter = getDefaultFilterState({ ...filterState });
+    const emptyFilter = getDefaultFilterState({ ...filterState });
+    emptyFilter.collectionIds = '';
     setMinPriceVal('');
     setMaxPriceVal('');
     setCollectionName('');
@@ -125,7 +142,10 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, collection, ...
     setSelectedTraitValue('');
     setSelectedTraitType(undefined);
     setSelectedTraits([EmptyTrait]);
-    setFilterState(newFilter);
+    setFilterState(emptyFilter);
+    if (onChange) {
+      onChange(emptyFilter, true);
+    }
   };
 
   const updateTraitFilterState = () => {
@@ -144,63 +164,68 @@ const FilterDrawer = ({ onToggle, showCollection, renderContent, collection, ...
       showAppError(`Failed to fetch traits. ${error?.message}`);
     }
   };
-  const shouldFetchTraits = selectedCollectionIds.split(',').length === 1;
+  const shouldFetchTraits = pageName === PAGE_NAMES.EXPLORE && selectedCollectionIds.split(',').length === 1;
 
   const content = (
     <Box className={styles.main} mt={6}>
-      <div className={styles.bottomBorder}>
-        <Text mb={4} mt={4}>
-          Sale Type
-        </Text>
+      {showSaleTypes === false ? null : (
+        <div className={styles.bottomBorder}>
+          <Text mb={4} mt={4}>
+            Sale Type
+          </Text>
 
-        <Box display="flex" flexDirection="column" gridGap={2}>
-          <Checkbox
-            isChecked={filterState.listType === LISTING_TYPE.FIXED_PRICE}
-            onChange={() => handleClickListType('fixedPrice')}
-          >
-            <Text className={styles.main}>Fixed Price</Text>
-          </Checkbox>
-          <Checkbox
-            isChecked={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
-            onChange={() => handleClickListType('dutchAuction')}
-          >
-            <Text className={styles.main}>Declining Price</Text>
-          </Checkbox>
-          <Checkbox
-            isChecked={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
-            onChange={() => handleClickListType('englishAuction')}
-          >
-            <Text className={styles.main}>On Auction</Text>
-          </Checkbox>
-        </Box>
-      </div>
-      <div className={styles.bottomBorder}>
-        <Text mt={8} mb={4}>
-          Price (ETH)
-        </Text>
-        <div className={styles.price}>
-          <Input
-            className={styles.priceInput}
-            placeholder={'Min Price'}
-            value={minPriceVal}
-            onChange={(ev) => {
-              setMinPriceVal(ev.target.value);
-              filterState.priceMin = ev.target.value;
-            }}
-          />
-          <div className={styles.divider} />
-
-          <Input
-            className={styles.priceInput}
-            placeholder={'Max Price'}
-            value={maxPriceVal}
-            onChange={(ev) => {
-              setMaxPriceVal(ev.target.value);
-              filterState.priceMax = ev.target.value;
-            }}
-          />
+          <Box display="flex" flexDirection="column" gridGap={2}>
+            <Checkbox
+              isChecked={filterState.listType === LISTING_TYPE.FIXED_PRICE}
+              onChange={() => handleClickListType('fixedPrice')}
+            >
+              <Text className={styles.main}>Fixed Price</Text>
+            </Checkbox>
+            <Checkbox
+              isChecked={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
+              onChange={() => handleClickListType('dutchAuction')}
+            >
+              <Text className={styles.main}>Declining Price</Text>
+            </Checkbox>
+            <Checkbox
+              isChecked={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
+              onChange={() => handleClickListType('englishAuction')}
+            >
+              <Text className={styles.main}>On Auction</Text>
+            </Checkbox>
+          </Box>
         </div>
-      </div>
+      )}
+
+      {showPrices === false ? null : (
+        <div className={styles.bottomBorder}>
+          <Text mt={8} mb={4}>
+            Price (ETH)
+          </Text>
+          <div className={styles.price}>
+            <Input
+              className={styles.priceInput}
+              placeholder={'Min Price'}
+              value={minPriceVal}
+              onChange={(ev) => {
+                setMinPriceVal(ev.target.value);
+                filterState.priceMin = ev.target.value;
+              }}
+            />
+            <div className={styles.divider} />
+
+            <Input
+              className={styles.priceInput}
+              placeholder={'Max Price'}
+              value={maxPriceVal}
+              onChange={(ev) => {
+                setMaxPriceVal(ev.target.value);
+                filterState.priceMax = ev.target.value;
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       <>
         {showCollection === false ? null : (

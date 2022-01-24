@@ -17,13 +17,13 @@ interface IProps {
 
 const CancelListingModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, providerManager } = useAppContext();
 
   const cancelListing = async () => {
     setIsSubmitting(true);
 
     try {
-      const seaport = getOpenSeaportForChain(data?.chainId);
+      const seaport = getOpenSeaportForChain(data?.chainId, providerManager);
       const order = await seaport.api.getOrder({
         maker: user?.account,
         id: data?.id,

@@ -7,30 +7,31 @@ import styles from './Connect.module.scss';
 import { NextPage } from 'next';
 import Layout from 'containers/layout';
 import { useColorMode } from '@chakra-ui/react';
-import { useAppContext, WalletType } from 'utils/context/AppContext';
+import { useAppContext } from 'utils/context/AppContext';
 import { colors } from 'utils/themeUtil';
+import { WalletType } from 'utils/providers/AbstractProvider';
 export default function ConnectWallet() {
   const router = useRouter();
-  const { showAppError, connectWallet, provider, user, userReady } = useAppContext();
+  const { showAppError, connectWallet, user, userReady } = useAppContext();
   const { colorMode } = useColorMode();
 
   useEffect(() => {
-    if (user && userReady) {
+    if (user?.account && userReady) {
       router.back();
     }
   }, [userReady, user]);
 
   const connectCoinbase = async () => {
-    await connectWallet(WalletType.WalletLink);
+    await connectWallet?.(WalletType.WalletLink);
   };
 
   const connectMetaMask = async () => {
-    await connectWallet(WalletType.MetaMask);
+    await connectWallet?.(WalletType.MetaMask);
   };
 
-  // const connectWalletConnect = async () => {
-  //   await connectWallet(WalletType.WalletConnect);
-  // };
+  const connectWalletConnect = async () => {
+    await connectWallet?.(WalletType.WalletConnect);
+  };
 
   const dark = colorMode === 'dark';
 
@@ -96,7 +97,7 @@ export default function ConnectWallet() {
                   ></path>
                 </svg>
               </div>
-              {/* <div className={styles.item} onClick={connectWalletConnect}>
+              <div className={styles.item} onClick={connectWalletConnect}>
                 <div className="logo-metamask d-flex align-self-center">
                   <Image
                     alt="Infinity"
@@ -120,7 +121,7 @@ export default function ConnectWallet() {
                     strokeLinejoin="round"
                   ></path>
                 </svg>
-              </div> */}
+              </div>
               <div className={styles.item} onClick={connectCoinbase}>
                 <div className="logo-metamask d-flex align-self-center">
                   <Image alt="Infinity" src="/img/coinbase.svg" width={56} height={56} className="align-self-center" />

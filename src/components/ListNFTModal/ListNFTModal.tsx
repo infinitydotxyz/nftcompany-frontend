@@ -4,8 +4,6 @@ import TabBar from 'components/TabBar/TabBar';
 import { Button } from '@chakra-ui/button';
 import { Spinner } from '@chakra-ui/spinner';
 import HelpTooltip from 'components/HelpTooltip/HelpTooltip';
-import { getOpenSeaportForChain } from 'utils/ethersUtil';
-import { apiGet } from 'utils/apiUtil';
 import { LISTING_TYPE } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from './ListNFTModal.module.scss';
@@ -22,7 +20,7 @@ interface IProps {
 }
 
 const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
-  const { user, showAppError, showAppMessage } = useAppContext();
+  const { user, showAppError, showAppMessage, providerManager } = useAppContext();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [price, setPrice] = React.useState(0);
   const [endPriceShowed, setEndPriceShowed] = React.useState(false);
@@ -80,7 +78,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
         }
         obj.expirationTime = expiryTimeSeconds;
       }
-      await createSellOrder(obj);
+      await createSellOrder(obj, providerManager);
     } catch (e: any) {
       setIsSubmitting(false);
       err = e;

@@ -20,12 +20,11 @@ export default function Home() {
       <div className={styles.containerAvg}>
         <div className={styles.topHeader}>
           <div className={styles.bigTitle}>
-            Unlocking the next <br /> generation of NFTs
+            The home for NFT <br /> communities
           </div>
 
           <div className={styles.subHeader}>
-            Discover NFT communities, trade, <br />
-            and use dynamic NFTs all in one place.
+            Discover NFT communities, trade NFTs, and curate your favorite collections
           </div>
 
           <div className={styles.buttons}>
@@ -47,23 +46,23 @@ export default function Home() {
       <div className={styles.containerAvg}>
         <div className={styles.infoHomepage}>
           <div className={styles.bigTitle}>
-            Infinity is completely decentralized with a token for both governance & utility within the platform
+            Infinity is a decentralized marketplace with a token for utility and governance
           </div>
 
           <div className={styles.checklist}>
-            <div className={styles.subHeader}>Staking Infinity tokens provides</div>
+            <div className={styles.subHeader}>Benefits include:</div>
 
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>Zero fees</div>
+              <div>Rewards for listing</div>
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>NFT community curation</div>
+              <div>Fee distributions</div>
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>Powering NFT communities</div>
+              <div>NFT collection curation</div>
             </div>
           </div>
         </div>
