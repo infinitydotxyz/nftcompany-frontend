@@ -66,7 +66,6 @@ export function useUserOffersMade(filter: SearchFilter | null) {
 
   useEffect(() => {
     if (!user?.account) {
-      setCurrentPage(-1);
       resetOffersMade();
     } else {
       setIsFetching(true);
@@ -78,6 +77,10 @@ export function useUserOffersMade(filter: SearchFilter | null) {
       });
     }
   }, [user, fetchMore]);
+
+  useEffect(() => {
+    resetOffersMade();
+  }, [filter]);
 
   return {
     offers,

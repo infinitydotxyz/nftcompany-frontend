@@ -91,7 +91,7 @@ export default function UserPage() {
               <FilterDrawer
                 showSaleTypes={false}
                 showPrices={false}
-                onChange={(filter: any) => {
+                onChange={(filter: SearchFilter) => {
                   setCurrentPage(-1);
                   setData([]);
                   setFilter(filter);

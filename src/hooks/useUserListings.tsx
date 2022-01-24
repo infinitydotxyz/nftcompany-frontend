@@ -119,6 +119,10 @@ export function useUserListings(source: ListingSource, filter: SearchFilter | nu
     };
   }, [source, user, fetchMore]);
 
+  useEffect(() => {
+    resetListings();
+  }, [filter]);
+
   return {
     listings,
     isFetching,

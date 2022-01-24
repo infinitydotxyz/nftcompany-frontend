@@ -79,6 +79,10 @@ export function useUserOffersReceived(filter: SearchFilter | null) {
     }
   }, [user, fetchMore]);
 
+  useEffect(() => {
+    resetOffersReceived();
+  }, [filter]);
+
   return {
     offers,
     isFetching,
