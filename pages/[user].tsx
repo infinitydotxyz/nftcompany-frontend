@@ -92,8 +92,9 @@ export default function UserPage() {
                 showSaleTypes={false}
                 showPrices={false}
                 onChange={(filter: any, isClearing?: boolean) => {
+                  setCurrentPage(-1);
+                  setData([]);
                   if (isClearing) {
-                    setCurrentPage(-1);
                     setFilter(null);
                   } else {
                     setFilter(filter);
