@@ -14,7 +14,7 @@ import { CloseIcon } from '@chakra-ui/icons';
 import styles from './Header.module.scss';
 import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 import { MenuIcons } from 'components/Icons/MenuIcons';
-import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
+import { defaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 
 const Header = (): JSX.Element => {
   const router = useRouter();
@@ -39,7 +39,7 @@ const Header = (): JSX.Element => {
   const signedIn = !!user?.account;
 
   const onClickExplore = () => {
-    setFilterState(getDefaultFilterState()); // clear filters
+    setFilterState(defaultFilterState); // clear filters
     router.push('/explore');
   };
 

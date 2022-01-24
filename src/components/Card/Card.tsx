@@ -136,7 +136,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
     data.owner && userAccount && (data.owner ?? '').toLowerCase() === userAccount?.toLowerCase();
 
   const shouldShowOwnedByYou =
-    ownedByYou && pageName !== PAGE_NAMES.MY_NFTS;
+    ownedByYou && pageName === PAGE_NAMES.EXPLORE;
 
   const getToken = () => {
     if (data.chainId === '1') {

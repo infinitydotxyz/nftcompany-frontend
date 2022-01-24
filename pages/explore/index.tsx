@@ -16,6 +16,7 @@ import { Spacer, Box } from '@chakra-ui/react';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { NftAction } from 'types';
 import styles from './Explore.module.scss';
+import { PAGE_NAMES } from 'utils/constants';
 
 export default function ExplorePage() {
   const searchContext = useSearchContext();
@@ -72,6 +73,7 @@ export default function ExplorePage() {
             userAccount={user?.account}
             data={cardProvider.list}
             action={NftAction.BuyNft}
+            pageName={PAGE_NAMES.EXPLORE}
           />
         ) : (
           <CardGrid data={collectionCards} />
@@ -106,7 +108,7 @@ export default function ExplorePage() {
 
           <Box className={styles.col}>
             <Box className="filter-container">
-              <FilterDrawer />
+              <FilterDrawer pageName={PAGE_NAMES.EXPLORE} />
             </Box>
             <Box className="content-container">
               <Explore listingSource={ListingSource.Infinity} />

@@ -27,7 +27,7 @@ import * as React from 'react';
 import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import CollectionNameFilter from './CollectionNameFilter';
 import { apiGet } from 'utils/apiUtil';
-import { LISTING_TYPE } from 'utils/constants';
+import { LISTING_TYPE, PAGE_NAMES } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from './FilterDrawer.module.scss';
 import { DownshiftSelect, SelectItem } from './DownshiftSelect';
@@ -59,16 +59,18 @@ const EmptyTrait = { type: '', value: '', traitData: undefined };
 
 interface Props {
   onToggle?: (isOpen: boolean) => void;
+  pageName?: string;
   showSaleTypes?: boolean;
   showPrices?: boolean;
   showCollection?: boolean;
   renderContent?: boolean;
   collection?: string;
-  onChange?: (filter: any) => void;
+  onChange?: (filter: any, isClearing?: boolean) => void;
 }
 
 const FilterDrawer = ({
   onToggle,
+  pageName,
   showSaleTypes,
   showPrices,
   showCollection,
@@ -130,7 +132,8 @@ const FilterDrawer = ({
   };
 
   const handleClickClear = () => {
-    const newFilter = getDefaultFilterState({ ...filterState });
+    const emptyFilter = getDefaultFilterState({ ...filterState });
+    emptyFilter.collectionIds = '';
     setMinPriceVal('');
     setMaxPriceVal('');
     setCollectionName('');
@@ -139,9 +142,9 @@ const FilterDrawer = ({
     setSelectedTraitValue('');
     setSelectedTraitType(undefined);
     setSelectedTraits([EmptyTrait]);
-    setFilterState(newFilter);
+    setFilterState(emptyFilter);
     if (onChange) {
-      onChange(newFilter);
+      onChange(emptyFilter, true);
     }
   };
 
@@ -161,7 +164,7 @@ const FilterDrawer = ({
       showAppError(`Failed to fetch traits. ${error?.message}`);
     }
   };
-  const shouldFetchTraits = selectedCollectionIds.split(',').length === 1;
+  const shouldFetchTraits = pageName === PAGE_NAMES.EXPLORE && selectedCollectionIds.split(',').length === 1;
 
   const content = (
     <Box className={styles.main} mt={6}>

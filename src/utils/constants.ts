@@ -7,7 +7,12 @@ export const ITEMS_PER_PAGE = 50;
 export const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 export const PAGE_NAMES = {
-  MY_NFTS: 'my-nfts'
+  EXPLORE: 'explore',
+  MY_NFTS: 'my-nfts',
+  LISTED_NFTS: 'listed-nfts',
+  USER_NFTS: 'user-nfts',
+  OFFERS_MADE: 'offers-made',
+  OFFERS_RECEIVED: 'offers-received'
 };
 
 export const LISTING_TYPE = {
