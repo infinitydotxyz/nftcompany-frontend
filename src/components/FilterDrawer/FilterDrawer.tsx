@@ -65,7 +65,7 @@ interface Props {
   showCollection?: boolean;
   renderContent?: boolean;
   collection?: string;
-  onChange?: (filter: any) => void;
+  onChange?: (filter: any, isClearing?: false) => void;
 }
 
 const FilterDrawer = ({
@@ -143,7 +143,7 @@ const FilterDrawer = ({
     setSelectedTraits([EmptyTrait]);
     setFilterState(newFilter);
     if (onChange) {
-      onChange(newFilter);
+      onChange(newFilter, true);
     }
   };
 
