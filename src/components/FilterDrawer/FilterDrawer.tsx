@@ -65,7 +65,7 @@ interface Props {
   showCollection?: boolean;
   renderContent?: boolean;
   collection?: string;
-  onChange?: (filter: any, isClearing?: false) => void;
+  onChange?: (filter: any, isClearing?: boolean) => void;
 }
 
 const FilterDrawer = ({
