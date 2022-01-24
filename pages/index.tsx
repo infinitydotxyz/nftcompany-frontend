@@ -51,18 +51,17 @@ export default function Home() {
 
           <div className={styles.checklist}>
             <div className={styles.subHeader}>Benefits include:</div>
-
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>Rewards for listing</div>
+              <div>Token staking for curation power</div>
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>Fee distributions</div>
+              <div>Rewards for curation & trading</div>
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>NFT collection curation</div>
+              <div>Fee distributions for curators & for token liquidity</div>
             </div>
           </div>
         </div>
