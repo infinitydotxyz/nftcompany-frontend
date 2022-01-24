@@ -132,7 +132,8 @@ const FilterDrawer = ({
   };
 
   const handleClickClear = () => {
-    const newFilter = getDefaultFilterState({ ...filterState });
+    const emptyFilter = getDefaultFilterState({ ...filterState });
+    emptyFilter.collectionIds = '';
     setMinPriceVal('');
     setMaxPriceVal('');
     setCollectionName('');
@@ -141,9 +142,9 @@ const FilterDrawer = ({
     setSelectedTraitValue('');
     setSelectedTraitType(undefined);
     setSelectedTraits([EmptyTrait]);
-    setFilterState(newFilter);
+    setFilterState(emptyFilter);
     if (onChange) {
-      onChange(newFilter, true);
+      onChange(emptyFilter, true);
     }
   };
 
