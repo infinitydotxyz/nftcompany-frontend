@@ -31,7 +31,7 @@ let isListenerAdded = false; // set up event listeners once.
 export function AppContextProvider({ children }: any) {
   const [user, setUser] = React.useState<User | null>(null);
   const [userReady, setUserReady] = React.useState(false);
-  const [chainId, setChainId] = React.useState('');
+  const [chainId, setChainId] = React.useState('1');
   const [headerPosition, setHeaderPosition] = React.useState(0);
   const showAppError = (message: React.ReactNode) => {
     const msg = getCustomExceptionMsg(message);

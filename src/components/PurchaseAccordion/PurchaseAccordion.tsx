@@ -63,6 +63,7 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
   }, [loadOrder]);
 
   let showPurchase = false;
+  let showBuyNow = false;
 
   switch (action) {
     case NftAction.CancelListing:
@@ -77,6 +78,14 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
       const owner = data.owner ?? data.metadata?.asset?.owner;
       if (owner && addressesEqual(owner, user?.account)) {
         showPurchase = false;
+      }
+
+      /**
+       * to check if the NFT is for sale we check if
+       * basePriceInEth is defined
+       */
+      if (typeof (data.order?.metadata as any)?.basePriceInEth === 'number') {
+        showBuyNow = true;
       }
 
       break;
@@ -96,11 +105,13 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
         <>
           <ExtraSpace />
 
-          <SingleAccordion>
-            <PurchaseAccordionItem dark={dark} title="Buy Now" icon={LargeIcons.moneyIcon}>
-              <PurchaseForm order={order} {...props} />
-            </PurchaseAccordionItem>
-          </SingleAccordion>
+          {showBuyNow && (
+            <SingleAccordion>
+              <PurchaseAccordionItem dark={dark} title="Buy Now" icon={LargeIcons.moneyIcon}>
+                <PurchaseForm order={order} {...props} />
+              </PurchaseAccordionItem>
+            </SingleAccordion>
+          )}
 
           <ExtraSpace />
 
