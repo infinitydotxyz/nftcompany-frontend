@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import CardList from 'components/Card/CardList';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
-import { LISTING_TYPE, NULL_ADDRESS } from 'utils/constants';
+import { LISTING_TYPE, NULL_ADDRESS, PAGE_NAMES } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
@@ -173,6 +173,7 @@ export default function ListNFTs() {
                   <Box display="flex" flexDirection={'row'} width="100%">
                     <Box className="filter-container">
                       <FilterDrawer
+                        pageName={PAGE_NAMES.LISTED_NFTS}
                         renderContent={true}
                         showCollection={true}
                         onChange={(filter: SearchFilter) => {

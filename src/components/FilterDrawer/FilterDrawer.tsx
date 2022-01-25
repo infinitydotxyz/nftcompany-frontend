@@ -164,7 +164,9 @@ const FilterDrawer = ({
       showAppError(`Failed to fetch traits. ${error?.message}`);
     }
   };
-  const shouldFetchTraits = pageName === PAGE_NAMES.EXPLORE && selectedCollectionIds.split(',').length === 1;
+  const shouldFetchTraits =
+    (pageName === PAGE_NAMES.EXPLORE || pageName === PAGE_NAMES.LISTED_NFTS) &&
+    selectedCollectionIds.split(',').length === 1;
 
   const content = (
     <Box className={styles.main} mt={6} position="sticky" top={headerPosition + 12}>
