@@ -9,7 +9,7 @@ import { SearchFilter } from 'utils/context/SearchContext';
 
 export function useUserOffersReceived(filter: SearchFilter | null) {
   const [offers, setOffers] = useState<CardData[]>([]);
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, chainId } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [fetchMore, setFetchMore] = useState(1);
   const [currentPage, setCurrentPage] = useState(-1);
@@ -21,7 +21,8 @@ export function useUserOffersReceived(filter: SearchFilter | null) {
       startAfterMillis: getLastItemCreatedAt(offers),
       startAfterPrice: getLastItemBasePrice(offers),
       startAfterBlueCheck: getLastItemBlueCheck(offers),
-      limit: ITEMS_PER_PAGE
+      limit: ITEMS_PER_PAGE,
+      chainId
     });
   };
 

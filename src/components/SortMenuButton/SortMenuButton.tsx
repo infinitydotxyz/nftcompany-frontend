@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import { MenuDivider, MenuItem } from '@chakra-ui/react';
 import { MenuIcons } from 'components/Icons/MenuIcons';
 
-type Props = {
+interface Props {
   disabled?: boolean;
-};
+  setFilterState: (filterState: SearchFilter) => void;
+  filterState: SearchFilter | null;
+}
 
-const SortMenuButton = ({ disabled = false }: Props) => {
-  const { setFilterState, filterState } = useSearchContext();
+const SortMenuButton = ({ disabled = false, setFilterState, filterState }: Props) => {
   const [buttonTitle, setButtonTitle] = useState('Sort by price');
 
   const handleChanges = async (changes: SearchFilter) => {

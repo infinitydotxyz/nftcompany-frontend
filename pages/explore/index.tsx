@@ -103,7 +103,11 @@ export default function ExplorePage() {
           <div className="section-bar">
             <div className="tg-title">Explore</div>
             <Spacer />
-            <SortMenuButton disabled={!searchMode} />
+            <SortMenuButton
+              disabled={!searchMode}
+              filterState={searchContext.filterState}
+              setFilterState={searchContext.setFilterState}
+            />
           </div>
 
           <Box className={styles.col}>

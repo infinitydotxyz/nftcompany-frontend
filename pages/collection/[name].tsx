@@ -31,18 +31,21 @@ import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import CollectionEvents, { EventType } from 'components/CollectionEvents/CollectionEvents';
 import CollectionEventsFilter from 'components/CollectionEventsFilter/CollectionEventsFilter';
 import ToggleTab from 'components/ToggleTab/ToggleTab';
+import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 
 const Collection = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
   const [address, setAddress] = useState('');
   const router = useRouter();
   const { name } = router.query;
+  const searchContext = useSearchContext();
+  const [tabIndex, setTabIndex] = useState(0);
 
   const onEdit = () => {
     router.push(`/collection/edit/${address}`);
   };
 
-  const { showAppError } = useAppContext();
+  const { chainId } = useAppContext();
 
   const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
   const [isLoading, setIsLoading] = useState(true);
@@ -86,7 +89,7 @@ const Collection = (): JSX.Element => {
 
     if (address && !collectionInfo?.address) {
       setIsLoading(true);
-      getCollectionInfo(address as string)
+      getCollectionInfo(address as string, chainId)
         .then((collectionInfo) => {
           if (isActive && collectionInfo?.address) {
             setCollectionInfo(collectionInfo);
@@ -103,7 +106,7 @@ const Collection = (): JSX.Element => {
         });
     } else if (name && !collectionInfo?.address) {
       setIsLoading(true);
-      getCollectionInfo(name as string)
+      getCollectionInfo(name as string, chainId)
         .then((collectionInfo) => {
           if (isActive && collectionInfo?.address) {
             setCollectionInfo(collectionInfo);
@@ -250,12 +253,23 @@ const Collection = (): JSX.Element => {
               </Box>
             </Box>
 
-            <Box marginTop={'72px'} width="min-content">
+            <Box marginTop={'72px'} display={'flex'} flexDirection="row" width="100%" alignItems={'center'}>
               <ToggleTab
                 options={['NFTs', 'Community']}
                 selected={toggleTab}
                 onChange={(opt: string) => setToggleTab(opt as any)}
               />
+
+              {toggleTab === 'NFTs' && (
+                <>
+                  <Spacer />
+                  <SortMenuButton
+                    disabled={tabIndex === 1}
+                    setFilterState={searchContext.setFilterState}
+                    filterState={searchContext.filterState}
+                  />
+                </>
+              )}
             </Box>
 
             <HorizontalLine display={toggleTab === 'NFTs' ? 'none' : ''} marginTop={'40px'} />
@@ -267,7 +281,13 @@ const Collection = (): JSX.Element => {
               />
             )}
             <Box className="center" display={toggleTab === 'Community' ? 'none' : 'flex'} width="100%">
-              <Tabs align={'center'} display={toggleTab === 'Community' ? 'none' : ''} width="100%">
+              <Tabs
+                align={'center'}
+                display={toggleTab === 'Community' ? 'none' : ''}
+                width="100%"
+                index={tabIndex}
+                onChange={(index) => setTabIndex(index)}
+              >
                 <TabList>
                   <Tab>NFTs</Tab>
                   <Tab isDisabled={!address}>Activity</Tab>

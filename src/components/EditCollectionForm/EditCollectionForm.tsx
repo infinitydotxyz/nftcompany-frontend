@@ -153,7 +153,7 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData; userAddress?: st
 }): JSX.Element => {
   const [formData, setFormData] = useState<CollectionFormData>({} as any);
   const inputFileRef = useRef<any>();
-  const { showAppError, showAppMessage } = useAppContext();
+  const { showAppError, showAppMessage, chainId } = useAppContext();
 
   const postForm = async () => {
     try {
@@ -186,7 +186,11 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData; userAddress?: st
           )
         };
         form.append('data', JSON.stringify(update));
-        const res = await apiPost(`/collection/u/${userAddress}/${collectionInfo?.address}`, undefined, form);
+        const res = await apiPost(
+          `/collection/u/${userAddress}/${collectionInfo?.address}`,
+          { chainId: chainId || '1' },
+          form
+        );
         if (res.error) {
           throw res.error;
         } else if (res.status === 201 || res.status === 200) {

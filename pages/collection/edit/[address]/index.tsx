@@ -16,7 +16,7 @@ const Edit = (): JSX.Element => {
   const { address } = router.query;
   const [title, setTitle] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(true);
-  const { user, showAppError, userReady } = useAppContext();
+  const { user, showAppError, userReady, chainId } = useAppContext();
   const [isAuthorized, setIsAuthorized] = useState(true);
 
   const [profileImage, setProfileImage] = useState('');
@@ -48,7 +48,7 @@ const Edit = (): JSX.Element => {
 
     setIsLoading(true);
     if (address && user?.account) {
-      getAuthenticatedCollectionInfo(address as string, user?.account)
+      getAuthenticatedCollectionInfo(address as string, user?.account, chainId)
         .then((collectionInfo) => {
           if (isActive) {
             setCollectionInfo(collectionInfo);
