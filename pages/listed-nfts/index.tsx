@@ -9,7 +9,7 @@ import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/Fet
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { CardData, WyvernSchemaName } from 'types/Nft.interface';
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Box, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import styles from './ListNFTs.module.scss';
 import { useUserListings } from 'hooks/useUserListings';
 import { createSellOrder, fetchVerifiedBonusReward, SellOrderProps } from 'components/ListNFTModal/listNFT';
@@ -19,6 +19,7 @@ import { NftAction } from 'types';
 import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
 import router from 'next/router';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
+import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 
 export default function ListNFTs() {
   const { user, showAppError, showAppMessage, providerManager } = useAppContext();
@@ -159,6 +160,8 @@ export default function ListNFTs() {
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Listed NFTs</div>
+            <Spacer />
+            <SortMenuButton filterState={filter} setFilterState={setFilter} disabled={tabIndex === 1} />
           </div>
 
           <Box className="center">

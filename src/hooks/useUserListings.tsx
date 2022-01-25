@@ -9,7 +9,7 @@ import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
 
 export function useUserListings(source: ListingSource, filter: SearchFilter | null) {
   const [listings, setListings] = useState<CardData[]>([]);
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, chainId } = useAppContext();
   const [isFetching, setIsFetching] = useState(false);
   const [fetchMore, setFetchMore] = useState(1);
   const [currentPage, setCurrentPage] = useState(-1);
@@ -22,7 +22,8 @@ export function useUserListings(source: ListingSource, filter: SearchFilter | nu
       startAfterMillis: getLastItemCreatedAt(listings),
       startAfterPrice: getLastItemBasePrice(listings),
       startAfterBlueCheck: getLastItemBlueCheck(listings),
-      limit: ITEMS_PER_PAGE
+      limit: ITEMS_PER_PAGE,
+      chainId: chainId
     });
   };
 
@@ -31,7 +32,8 @@ export function useUserListings(source: ListingSource, filter: SearchFilter | nu
       maker: address,
       limit: ITEMS_PER_PAGE,
       side: '1',
-      offset: listings.length || 0
+      offset: listings.length || 0,
+      chainId: chainId
     });
     return {
       error,
