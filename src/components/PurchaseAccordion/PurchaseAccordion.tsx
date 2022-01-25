@@ -31,7 +31,7 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
       setOrder(data.order);
     } else {
       let orderParams: any;
-
+      const owner = data.owner ?? data.metadata?.asset?.owner;
       if (data.id && data.maker) {
         orderParams = {
           maker: data.maker,
@@ -40,7 +40,7 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
         };
       } else {
         orderParams = {
-          maker: data.owner,
+          maker: owner,
           tokenId: data.tokenId,
           tokenAddress: data.tokenAddress,
           side: 1 // sell order
@@ -73,8 +73,10 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
       break;
     case NftAction.BuyNft:
     default:
-      if (data.owner && !addressesEqual(data.owner, user?.account)) {
-        showPurchase = true;
+      showPurchase = true;
+      const owner = data.owner ?? data.metadata?.asset?.owner;
+      if (owner && addressesEqual(owner, user?.account)) {
+        showPurchase = false;
       }
 
       break;
