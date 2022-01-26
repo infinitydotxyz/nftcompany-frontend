@@ -121,6 +121,27 @@ const Table = {
     th: {
       textTransform: capitalize
     }
+  },
+  variants: {
+    bordered: {
+      table: {
+        borderCollapse: 'separate',
+        borderRadius: '8px',
+        border: '1px solid',
+        borderColor: 'separator'
+      },
+      tr: {
+        borderRadius: '8px',
+        overflow: 'hidden'
+      },
+      tbody: {
+        borderRadius: '8px',
+        overflow: 'hidden'
+      },
+      td: {
+        borderRadius: '8px'
+      }
+    }
   }
 };
 
@@ -388,6 +409,20 @@ const Link = {
   }
 };
 
+const Progress = {
+  parts: ['filledTrack', 'track'],
+  variants: {
+    sentiment: {
+      filledTrack: {
+        backgroundColor: 'brandGreen'
+      },
+      track: {
+        backgroundColor: 'brandRedBright'
+      }
+    }
+  }
+};
+
 const config: ThemeConfig = {
   useSystemColorMode: false,
   initialColorMode: 'light'
@@ -433,6 +468,7 @@ export const theme = extendTheme(
       Link,
       Text,
       FormLabel,
+      Progress,
       Drawer: {
         variants: {
           // custom theme for Filter Drawer to allow scrolling/interaction on the main body.

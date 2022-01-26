@@ -117,57 +117,31 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
                     )}
                   </Td>
                 )}
-                {item?.event_type === EventType.Offer ? (
-                  <Td>
-                    <Link
-                      className={styles.underline}
-                      href={`${getChainScannerBase(item?.chainId)}/address/${item?.from_account?.address}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {ellipsisAddress(item?.from_account?.address)}
-                    </Link>
-                  </Td>
-                ) : (
-                  <Td>
-                    <Link
-                      className={styles.underline}
-                      href={`${getChainScannerBase(item?.chainId)}/address/${item?.seller?.address}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {item?.seller?.user?.username ||
-                        ellipsisAddress(item?.seller?.address) ||
-                        ellipsisAddress(item?.from_account?.address)}
-                    </Link>
-                  </Td>
-                )}
+                <Td>
+                  <Link
+                    className={styles.underline}
+                    href={`${getChainScannerBase(item?.chainId)}/address/${item?.seller?.address}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item?.seller?.user?.username ||
+                      ellipsisAddress(item?.seller?.address) ||
+                      ellipsisAddress(item?.from_account?.address)}
+                  </Link>
+                </Td>
 
-                {item?.event_type === EventType.Offer ? (
-                  <Td>
-                    <Link
-                      className={styles.underline}
-                      href={`${getChainScannerBase(item?.chainId)}/address/${item?.to_account?.address}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {ellipsisAddress(item?.to_account?.address)}
-                    </Link>
-                  </Td>
-                ) : (
-                  <Td>
-                    <Link
-                      className={styles.underline}
-                      href={`${getChainScannerBase(item?.chainId)}/address/${item?.winner_account?.address}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {item?.winner_account?.user?.username ||
-                        ellipsisAddress(item?.winner_account?.address) ||
-                        ellipsisAddress(item?.asset?.owner?.address)}
-                    </Link>
-                  </Td>
-                )}
+                <Td>
+                  <Link
+                    className={styles.underline}
+                    href={`${getChainScannerBase(item?.chainId)}/address/${item?.winner_account?.address}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item?.winner_account?.user?.username ||
+                      ellipsisAddress(item?.winner_account?.address) ||
+                      ellipsisAddress(item?.asset?.owner?.address)}
+                  </Link>
+                </Td>
                 <Td>
                   <p>{`${new Date(item?.created_date).toLocaleDateString()}`}</p>
 

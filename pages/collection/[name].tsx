@@ -30,10 +30,16 @@ import CollectionCommunity from 'components/CollectionCommunity/CollectionCommun
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import CollectionEvents, { EventType } from 'components/CollectionEvents/CollectionEvents';
 import CollectionEventsFilter from 'components/CollectionEventsFilter/CollectionEventsFilter';
-import ToggleTab from 'components/ToggleTab/ToggleTab';
+import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 
+enum CollectionTabs {
+  NFTs = 'NFTs',
+  Community = 'Community'
+}
+
 const Collection = (): JSX.Element => {
+  const { chainId } = useAppContext();
   const [title, setTitle] = useState<string | undefined>();
   const [address, setAddress] = useState('');
   const router = useRouter();
@@ -45,7 +51,10 @@ const Collection = (): JSX.Element => {
     router.push(`/collection/edit/${address}`);
   };
 
-  const { chainId } = useAppContext();
+  const { options, onChange, selected } = useToggleTab(
+    [CollectionTabs.NFTs, CollectionTabs.Community],
+    CollectionTabs.NFTs
+  );
 
   const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
   const [isLoading, setIsLoading] = useState(true);
@@ -190,7 +199,7 @@ const Collection = (): JSX.Element => {
               </Box>
               <Spacer />
               <Box flexGrow={3} flexBasis={0}>
-                {collectionInfo?.stats && (
+                {typeof collectionInfo?.stats?.floorPrice === 'number' && (
                   <CollectionInfoGroupWrapper>
                     <InfoGroup
                       title="Collection Stats"
@@ -228,27 +237,53 @@ const Collection = (): JSX.Element => {
 
                 <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                   <Box marginRight="20px">
-                    <GraphPreview
-                      label="Twitter followers"
-                      changeInterval={24}
-                      link={collectionInfo?.links?.twitter}
-                      linkText="Follow"
-                      data={twitterData.map((item) => {
-                        return { ...item, y: item.followersCount };
-                      })}
-                      dataUnits="followers"
-                    />
+                    {collectionInfo?.links?.twitter ? (
+                      <GraphPreview
+                        label="Twitter followers"
+                        changeInterval={24}
+                        link={collectionInfo?.links?.twitter}
+                        linkText="Follow"
+                        data={twitterData.map((item) => {
+                          return { ...item, y: item.followersCount };
+                        })}
+                        dataUnits="followers"
+                      />
+                    ) : (
+                      <GraphPreview
+                        label="Twitter followers"
+                        changeInterval={24}
+                        onClick={onEdit}
+                        buttonText="Add Twitter"
+                        data={twitterData.map((item) => {
+                          return { ...item, y: item.followersCount };
+                        })}
+                        dataUnits="followers"
+                      />
+                    )}
                   </Box>
-                  <GraphPreview
-                    label="Discord members"
-                    changeInterval={24}
-                    link={collectionInfo?.links?.discord}
-                    linkText="Join"
-                    data={discordData.map((item) => {
-                      return { ...item, y: item.membersCount };
-                    })}
-                    dataUnits="members"
-                  />
+                  {collectionInfo?.links?.discord ? (
+                    <GraphPreview
+                      label="Discord members"
+                      changeInterval={24}
+                      link={collectionInfo?.links?.discord}
+                      linkText="Join"
+                      data={discordData.map((item) => {
+                        return { ...item, y: item.membersCount };
+                      })}
+                      dataUnits="members"
+                    />
+                  ) : (
+                    <GraphPreview
+                      label="Discord members"
+                      changeInterval={24}
+                      onClick={onEdit}
+                      buttonText="Add discord"
+                      data={discordData.map((item) => {
+                        return { ...item, y: item.membersCount };
+                      })}
+                      dataUnits="members"
+                    />
+                  )}
                 </Box>
               </Box>
             </Box>

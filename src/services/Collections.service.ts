@@ -210,18 +210,27 @@ export interface CollectionStats {
     change: number;
     sales: number;
     averagePrice: number;
+    discordMembers?: number;
+    discordPresence?: number;
+    twitterFollowers?: number;
   };
   sevenDay: {
     volume: number;
     change: number;
     sales: number;
     averagePrice: number;
+    discordMembers?: number;
+    discordPresence?: number;
+    twitterFollowers?: number;
   };
-  thrityDay: {
+  thirtyDay: {
     volume: number;
     change: number;
     sales: number;
     averagePrice: number;
+    discordMembers?: number;
+    discordPresence?: number;
+    twitterFollowers?: number;
   };
   total: {
     volume: number;
@@ -235,6 +244,15 @@ export interface CollectionStats {
   marketCap: number;
   floorPrice: number;
   timestamp: number;
+  collectionAddress?: string;
+  discordMembers?: number;
+  discordPresence?: number;
+  twitterFollowers?: number;
+  votesFor?: number;
+  votesAgainst?: number;
+  name?: string;
+  profileImage?: string;
+  searchCollectionName: string;
 }
 
 export interface CollectionLinks {
