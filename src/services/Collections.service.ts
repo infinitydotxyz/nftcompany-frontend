@@ -61,10 +61,13 @@ export const getFeaturedCollections = async (): Promise<FeaturedCollectionRespon
   return result.collections;
 };
 
-export const getCollectionInfo = async (collectionName: string): Promise<CollectionData | undefined> => {
+export const getCollectionInfo = async (
+  collectionName: string,
+  chainId: string
+): Promise<CollectionData | undefined> => {
   const path = `/collections/${getSearchFriendlyString(collectionName)}`;
 
-  const { result, error }: { result: any; error: any } = (await apiGet(path)) as any;
+  const { result, error }: { result: any; error: any } = (await apiGet(path, { chainId: chainId || '1' })) as any;
 
   if (error !== undefined) {
     return;
@@ -75,10 +78,11 @@ export const getCollectionInfo = async (collectionName: string): Promise<Collect
 
 export const getAuthenticatedCollectionInfo = async (
   collectionAddress: string,
-  userAddress: string
+  userAddress: string,
+  chainId?: string
 ): Promise<CollectionData | undefined> => {
   const path = `/collection/u/${userAddress}/${collectionAddress}`;
-  const { result, error }: { result: any; error: any } = (await apiGet(path)) as any;
+  const { result, error }: { result: any; error: any } = (await apiGet(path, { chainId: chainId || '1' })) as any;
 
   if (error !== undefined) {
     return;
@@ -206,18 +210,27 @@ export interface CollectionStats {
     change: number;
     sales: number;
     averagePrice: number;
+    discordMembers?: number;
+    discordPresence?: number;
+    twitterFollowers?: number;
   };
   sevenDay: {
     volume: number;
     change: number;
     sales: number;
     averagePrice: number;
+    discordMembers?: number;
+    discordPresence?: number;
+    twitterFollowers?: number;
   };
-  thrityDay: {
+  thirtyDay: {
     volume: number;
     change: number;
     sales: number;
     averagePrice: number;
+    discordMembers?: number;
+    discordPresence?: number;
+    twitterFollowers?: number;
   };
   total: {
     volume: number;
@@ -231,6 +244,15 @@ export interface CollectionStats {
   marketCap: number;
   floorPrice: number;
   timestamp: number;
+  collectionAddress?: string;
+  discordMembers?: number;
+  discordPresence?: number;
+  twitterFollowers?: number;
+  votesFor?: number;
+  votesAgainst?: number;
+  name?: string;
+  profileImage?: string;
+  searchCollectionName: string;
 }
 
 export interface CollectionLinks {

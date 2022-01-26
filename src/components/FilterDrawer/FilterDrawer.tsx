@@ -78,7 +78,7 @@ const FilterDrawer = ({
   onChange,
   ...rest
 }: Props & ChakraProps) => {
-  const { showAppError, headerPosition } = useAppContext();
+  const { showAppError, headerPosition, chainId } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
   const [minPriceVal, setMinPriceVal] = React.useState(
     filterState.priceMin === `${DEFAULT_MIN_PRICE}` ? '' : filterState.priceMin
@@ -107,6 +107,7 @@ const FilterDrawer = ({
     if (newFilter.priceMax) {
       newFilter.priceMin = newFilter.priceMin || DEFAULT_MIN_PRICE.toString();
     }
+    newFilter.chainId = chainId;
     newFilter.collectionName = collectionName;
     newFilter.tokenAddresses = selectedCollectionIds === 'CLEAR' ? [] : selectedCollectionIds.split(',');
     newFilter.collectionIds = selectedCollectionIds === 'CLEAR' ? '' : selectedCollectionIds;
@@ -164,7 +165,9 @@ const FilterDrawer = ({
       showAppError(`Failed to fetch traits. ${error?.message}`);
     }
   };
-  const shouldFetchTraits = pageName === PAGE_NAMES.EXPLORE && selectedCollectionIds.split(',').length === 1;
+  const shouldFetchTraits =
+    (pageName === PAGE_NAMES.EXPLORE || pageName === PAGE_NAMES.LISTED_NFTS) &&
+    selectedCollectionIds.split(',').length === 1;
 
   const content = (
     <Box className={styles.main} mt={6} position="sticky" top={headerPosition + 12}>

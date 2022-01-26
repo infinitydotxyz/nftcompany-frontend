@@ -19,5 +19,6 @@
       "background-image": "linear-gradient(45deg, #141414 25%, transparent 25%, transparent 75%, #141414 75%, #141414), linear-gradient(45deg, #141414 25%, transparent 25%, transparent 75%, #141414 75%, #141414)"
     }
   },
-  "svgPreview.autoOpen": true
+  "svgPreview.autoOpen": true,
+  "cSpell.words": ["chakra"]
 }

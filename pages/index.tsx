@@ -53,15 +53,17 @@ export default function Home() {
             <div className={styles.subHeader}>Benefits include:</div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>Token staking for curation power</div>
+              <div>0 fees</div>
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>Rewards for curation & trading</div>
+              <div>
+                List your NFTs without re-initiating your wallet or re-approving tokens (if already done on OpenSea)
+              </div>
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>Fee distributions for curators & for token liquidity</div>
+              <div>Vote on all aspects of the marketplace as the token holder</div>
             </div>
           </div>
         </div>

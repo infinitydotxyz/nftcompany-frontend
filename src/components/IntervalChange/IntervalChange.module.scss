@@ -1,0 +1,33 @@
+.triangle {
+  width: 10px;
+  margin-right: 2px;
+  margin-top: 4px;
+}
+
+.unit {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  /* identical to box height */
+
+  letter-spacing: -0.02em;
+
+  margin-left: 4px;
+}
+
+.green {
+  color: var(--chakra-colors-brandGreen);
+}
+
+.red {
+  color: var(--chakra-colors-brandRed);
+}
+
+.flip {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}

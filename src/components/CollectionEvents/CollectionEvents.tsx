@@ -22,7 +22,7 @@ interface Props {
 }
 
 function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Props & ChakraProps) {
-  const { showAppError } = useAppContext();
+  const { showAppError, chainId, userReady } = useAppContext();
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
@@ -32,12 +32,16 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
     setIsFetching(true);
     const newCurrentPage = reset ? 0 : currentPage + 1;
     const offset = newCurrentPage * ITEMS_PER_PAGE;
-    const tokenIdParam = tokenId ? `&token_id=${tokenId}` : '';
     const addressLowerCase = address.trim().toLowerCase();
 
-    const { result, error } = await apiGet(
-      `/events?asset_contract_address=${addressLowerCase}${tokenIdParam}&event_type=${eventType}&only_opensea=false&offset=${offset}&limit=${ITEMS_PER_PAGE}`
-    );
+    const { result, error } = await apiGet(`/events`, {
+      assetContractAddress: addressLowerCase,
+      tokenId: tokenId ?? '',
+      eventType: eventType,
+      offset: offset,
+      limit: ITEMS_PER_PAGE,
+      chainId: chainId
+    });
     if (error) {
       showAppError(`Error when fetching data. ${error.message}`);
     }
@@ -57,12 +61,14 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
     const isActiveWrapper = { isActive: true };
     setData([]);
     setCurrentPage(-1);
-
+    if (!userReady) {
+      return;
+    }
     fetchData(isActiveWrapper, true);
     return () => {
       isActiveWrapper.isActive = false;
     };
-  }, [eventType]);
+  }, [eventType, userReady]);
 
   React.useEffect(() => {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
