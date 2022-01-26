@@ -409,6 +409,19 @@ const Link = {
   }
 };
 
+const Switch = {
+  parts: ['container', 'track', 'thumb'],
+  baseStyle: (props: any) => {
+    return {
+      track: {
+        _checked: {
+          backgroundColor: 'var(--chakra-colors-brandColor)'
+        }
+      }
+    };
+  }
+};
+
 const Progress = {
   parts: ['filledTrack', 'track'],
   variants: {
@@ -469,6 +482,7 @@ export const theme = extendTheme(
       Text,
       FormLabel,
       Progress,
+      Switch,
       Drawer: {
         variants: {
           // custom theme for Filter Drawer to allow scrolling/interaction on the main body.
