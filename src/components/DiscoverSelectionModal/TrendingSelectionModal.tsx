@@ -2,7 +2,7 @@ import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, Checkbox, Stack, Text, Button } from '@chakra-ui/react';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { SecondaryOrderBy } from 'hooks/useTrendingStats';
-import { DataColumnGroup, DataColumns } from '../../../pages/trending';
+import { DataColumnGroup, DataColumns } from '../../unfinished/trending';
 
 interface Props {
   dataColumns: DataColumns;

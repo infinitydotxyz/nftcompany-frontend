@@ -3,7 +3,7 @@ import { Box, Checkbox, Stack, Text, Button, Tooltip } from '@chakra-ui/react';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { SecondaryOrderBy } from 'hooks/useTrendingStats';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { DataColumnGroup, DataColumns } from '../../../pages/trending';
+import { DataColumnGroup, DataColumns } from '../../unfinished/trending';
 
 interface Props {
   dataColumns: DataColumns;
