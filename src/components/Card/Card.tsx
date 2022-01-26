@@ -74,7 +74,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
           onClickAction(data, NftAction.ListNft);
         }
       };
-      name = 'List NFT';
+      name = 'List';
     } else if (action === NftAction.BuyNft && !ownedByYou) {
       handler = (ev) => {
         ev.preventDefault();
@@ -135,8 +135,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
   const shouldShowTransferButton =
     data.owner && userAccount && (data.owner ?? '').toLowerCase() === userAccount?.toLowerCase();
 
-  const shouldShowOwnedByYou =
-    ownedByYou && pageName === PAGE_NAMES.EXPLORE;
+  const shouldShowOwnedByYou = ownedByYou && pageName === PAGE_NAMES.EXPLORE;
 
   const getToken = () => {
     if (data.chainId === '1') {
@@ -178,9 +177,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
           <div className={styles.cardTitle}>
             {collectionName && (
               <div className={styles.collectionRow}>
-                <AppLink href={`/collection/${getSearchFriendlyString(collectionName)}`}>
-                  {collectionName}
-                </AppLink>
+                <AppLink href={`/collection/${getSearchFriendlyString(collectionName)}`}>{collectionName}</AppLink>
 
                 <div style={{ paddingLeft: 6, paddingBottom: 2 }}>
                   <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
