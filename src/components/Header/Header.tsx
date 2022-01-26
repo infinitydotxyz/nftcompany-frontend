@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MenuItem, MenuDivider, Box, useColorMode, Alert, AlertIcon, CloseButton, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { saveAuthHeaders } from '../../../src/utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
@@ -15,11 +14,11 @@ import { CloseIcon } from '@chakra-ui/icons';
 import styles from './Header.module.scss';
 import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 import { MenuIcons } from 'components/Icons/MenuIcons';
-import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
+import { defaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 
 const Header = (): JSX.Element => {
   const router = useRouter();
-  const { user, signIn, signOut, chainId, setHeaderPosition } = useAppContext();
+  const { user, signOut, chainId, setHeaderPosition } = useAppContext();
   const { filterState, setFilterState } = useSearchContext();
   const [showBanner, setShowBanner] = useState(true);
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
@@ -40,7 +39,7 @@ const Header = (): JSX.Element => {
   const signedIn = !!user?.account;
 
   const onClickExplore = () => {
-    setFilterState(getDefaultFilterState()); // clear filters
+    setFilterState(defaultFilterState); // clear filters
     router.push('/explore');
   };
 
@@ -66,9 +65,9 @@ const Header = (): JSX.Element => {
     <MenuItem key="explore-item" icon={MenuIcons.exploreIcon} onClick={onClickExplore}>
       Explore
     </MenuItem>,
-    <MenuItem key="trending-item" icon={MenuIcons.trendingIcon} onClick={() => router.push('/trending')}>
-      Trending
-    </MenuItem>,
+    // <MenuItem key="trending-item" icon={MenuIcons.trendingIcon} onClick={() => router.push('/trending')}>
+    //   Trending
+    // </MenuItem>,
     <MenuItem key="verified-item" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
       Verified Collections
     </MenuItem>

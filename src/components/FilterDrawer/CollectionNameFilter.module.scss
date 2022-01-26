@@ -1,6 +1,7 @@
 .container {
   display: flex;
   position: relative;
+  width: 260px;
 
   & > div {
     flex: 1;
@@ -70,12 +71,12 @@
   box-shadow: none;
 }
 
-.checkBox input[type="checkbox"]:before {
+.checkBox input[type='checkbox']:before {
   content: '';
   display: block;
 }
 
-.checkBox input[type="checkbox"]:checked:before {
+.checkBox input[type='checkbox']:checked:before {
   width: 4px;
   height: 9px;
   margin: 2px auto;

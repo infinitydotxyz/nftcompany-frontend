@@ -100,7 +100,7 @@ const Rewards = (): JSX.Element => {
                 <div className={styles.stuff}>
                   <div className={styles.title}>The Airdrop has ended</div>
                   <div className={styles.subtitle}>Here are your rewards</div>
-                  <div className={styles.subtitle}>Tokens claimable early Jan 2022</div>
+                  <div className={styles.subtitle}>Token claiming coming soon</div>
                   <RewardCard lines={false} items={items()} title="Rewards" icon={<GiftCardIcon boxSize={8} />} />
                 </div>
               </div>

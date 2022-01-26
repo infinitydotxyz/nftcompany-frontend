@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
+import { SearchFilter } from 'utils/context/SearchContext';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import { MenuDivider, MenuItem } from '@chakra-ui/react';
 import { MenuIcons } from 'components/Icons/MenuIcons';
 
-type Props = {
+interface Props {
   disabled?: boolean;
-};
+  setFilterState: (filterState: SearchFilter) => void;
+  filterState: SearchFilter | null;
+}
 
-const SortMenuButton = ({ disabled = false }: Props) => {
-  const { setFilterState, filterState } = useSearchContext();
+const SortMenuButton = ({ disabled = false, setFilterState, filterState }: Props) => {
   const [buttonTitle, setButtonTitle] = useState('Sort by price');
 
   const handleChanges = async (changes: SearchFilter) => {
@@ -23,7 +24,7 @@ const SortMenuButton = ({ disabled = false }: Props) => {
         icon={<div style={{ transform: 'scaleX(-1)' }}>{MenuIcons.sortIcon}</div>}
         onClick={() => {
           setButtonTitle('Highest price');
-          handleChanges({ ...filterState, sortByPrice: 'DESC' });
+          handleChanges({ ...(filterState || ({} as any)), sortByPrice: 'DESC' });
         }}
       >
         Highest price
@@ -33,8 +34,7 @@ const SortMenuButton = ({ disabled = false }: Props) => {
         icon={<div style={{ transform: 'scaleY(-1)' }}>{MenuIcons.sortIcon}</div>}
         onClick={() => {
           setButtonTitle('Lowest price');
-
-          handleChanges({ ...filterState, sortByPrice: 'ASC' });
+          handleChanges({ ...(filterState || ({} as any)), sortByPrice: 'ASC' });
         }}
       >
         Lowest price
@@ -46,8 +46,7 @@ const SortMenuButton = ({ disabled = false }: Props) => {
         icon={MenuIcons.closeIcon}
         onClick={() => {
           setButtonTitle('Sort by price');
-
-          return handleChanges({ ...filterState, sortByPrice: '' });
+          return handleChanges({ ...(filterState || ({} as any)), sortByPrice: '' });
         }}
       >
         Clear

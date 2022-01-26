@@ -13,10 +13,10 @@ import { CollectionCardEntry } from 'types/rewardTypes';
 import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import CardList from 'components/Card/CardList';
 import { Spacer, Box } from '@chakra-ui/react';
-import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollections';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { NftAction } from 'types';
 import styles from './Explore.module.scss';
+import { PAGE_NAMES } from 'utils/constants';
 
 export default function ExplorePage() {
   const searchContext = useSearchContext();
@@ -73,6 +73,7 @@ export default function ExplorePage() {
             userAccount={user?.account}
             data={cardProvider.list}
             action={NftAction.BuyNft}
+            pageName={PAGE_NAMES.EXPLORE}
           />
         ) : (
           <CardGrid data={collectionCards} />
@@ -102,12 +103,16 @@ export default function ExplorePage() {
           <div className="section-bar">
             <div className="tg-title">Explore</div>
             <Spacer />
-            <SortMenuButton disabled={!searchMode} />
+            <SortMenuButton
+              disabled={!searchMode}
+              filterState={searchContext.filterState}
+              setFilterState={searchContext.setFilterState}
+            />
           </div>
 
           <Box className={styles.col}>
             <Box className="filter-container">
-              <FilterDrawer />
+              <FilterDrawer pageName={PAGE_NAMES.EXPLORE} />
             </Box>
             <Box className="content-container">
               <Explore listingSource={ListingSource.Infinity} />

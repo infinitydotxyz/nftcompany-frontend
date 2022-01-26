@@ -127,7 +127,7 @@ export default function CollectionNameFilter({ value, onClear, onChange }: Colle
 
           return (
             <div className={styles.container}>
-              <div className="m-auto w-1/2 mt-6">
+              <div className="mt-6">
                 <Input
                   ref={inputRef}
                   placeholder="Collection name"

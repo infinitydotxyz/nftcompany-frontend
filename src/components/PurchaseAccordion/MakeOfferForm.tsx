@@ -9,6 +9,7 @@ import { PriceBox } from 'components/PriceBox/PriceBox';
 import { DatePicker } from 'components/DatePicker/DatePicker';
 import { Label, Title } from 'components/Text/Text';
 import { LISTING_TYPE } from 'utils/constants';
+import { fetchVerifiedBonusReward } from 'components/ListNFTModal/listNFT';
 
 interface IProps {
   data: CardData;
@@ -17,12 +18,21 @@ interface IProps {
 }
 
 export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IProps) => {
-  const { user, showAppError, showAppMessage } = useAppContext();
+  const { user, showAppError, showAppMessage, providerManager } = useAppContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [expiryTimeSeconds, setExpiryTimeSeconds] = useState(0);
   const [expiryDate, setExpiryDate] = useState<Date | undefined>();
   const [offerPrice, setOfferPrice] = useState(0);
   const listingType = data.order?.metadata?.listingType;
+  const [backendChecks, setBackendChecks] = React.useState({});
+
+  React.useEffect(() => {
+    const fetchBackendChecks = async () => {
+      const result = await fetchVerifiedBonusReward(data.tokenAddress ?? '');
+      setBackendChecks({ hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified });
+    };
+    fetchBackendChecks();
+  }, []);
 
   const makeAnOffer = () => {
     if (offerPrice <= 0) {
@@ -38,7 +48,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
     }
     try {
       setIsSubmitting(true);
-      const seaport = getOpenSeaportForChain(data?.chainId);
+      const seaport = getOpenSeaportForChain(data?.chainId, providerManager);
       seaport
         .createBuyOrder({
           asset: {
@@ -49,7 +59,8 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
           accountAddress: user!.account,
           startAmount: offerPrice,
           assetDetails: data,
-          expirationTime: expiryTimeSeconds
+          expirationTime: expiryTimeSeconds,
+          ...backendChecks
         })
         .then(() => {
           showAppMessage('Offer sent successfully.');
@@ -85,7 +96,7 @@ export const MakeOfferForm: React.FC<IProps> = ({ onComplete, data, order }: IPr
             <PriceBox
               justifyRight
               price={data.metadata?.basePriceInEth}
-              token='WETH'
+              token="WETH"
               expirationTime={data?.expirationTime}
             />
           </div>

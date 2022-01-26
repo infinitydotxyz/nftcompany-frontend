@@ -3,58 +3,45 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import CardList from 'components/Card/CardList';
-import { apiGet } from 'utils/apiUtil';
-import { ITEMS_PER_PAGE } from 'utils/constants';
-import { FetchMore, getLastItemCreatedAt, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
+import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
-import { ordersToCardData } from 'services/Listings.service';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
+import { SearchFilter } from 'utils/context/SearchContext';
+import { Box } from '@chakra-ui/react';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
+import styles from './OffersReceived.module.scss';
+import { useUserOffersReceived } from 'hooks/useUserOffersReceived';
 import { NftAction } from 'types';
 
 export default function OffersReceived() {
-  const { user, showAppError } = useAppContext();
-  const [isFetching, setIsFetching] = useState(false);
-  const [data, setData] = useState<any>([]);
-  const [currentPage, setCurrentPage] = useState(-1);
-  const [dataLoaded, setDataLoaded] = useState(false);
+  const { user } = useAppContext();
+  const [filter, setFilter] = useState<SearchFilter | null>(null);
 
-  const fetchData = async () => {
-    if (!user?.account) {
-      setData([]);
-      return;
-    }
-    setIsFetching(true);
-    let listingData = [];
-    const newCurrentPage = currentPage + 1;
-    try {
-      const { result, error } = await apiGet(`/u/${user?.account}/offersreceived`, {
-        startAfter: getLastItemCreatedAt(data),
-        limit: ITEMS_PER_PAGE
-      });
-      if (error) {
-        showAppError(`${error?.message}`);
-        return;
-      }
-      listingData = result?.listings || [];
-    } catch (e) {
-      console.error(e);
-    }
-    const moreData = ordersToCardData(listingData || []);
-    setIsFetching(false);
-    setData([...data, ...moreData]);
-    setCurrentPage(newCurrentPage);
+  const OffersReceived = () => {
+    const { offers, isFetching, fetchMore, currentPage, dataLoaded } = useUserOffersReceived(filter);
+
+    return (
+      <>
+        <div>
+          <PleaseConnectWallet account={user?.account} />
+          <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={offers} />
+          {offers?.length === 0 && isFetching && <LoadingCardList />}
+
+          <CardList data={offers} userAccount={user?.account} action={NftAction.AcceptOffer} />
+        </div>
+        {dataLoaded && (
+          <FetchMore
+            currentPage={currentPage}
+            data={offers}
+            onFetchMore={() => {
+              fetchMore();
+            }}
+          />
+        )}
+      </>
+    );
   };
 
-  React.useEffect(() => {
-    fetchData();
-  }, [user]);
-
-  React.useEffect(() => {
-    if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
-      return;
-    }
-    setDataLoaded(true); // current page's data loaded & rendered.
-  }, [currentPage]);
   return (
     <>
       <Head>
@@ -66,24 +53,19 @@ export default function OffersReceived() {
             <div className="tg-title">Offers Received</div>
           </div>
 
-          <div>
-            <PleaseConnectWallet account={user?.account} />
-            <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
-            {data?.length === 0 && isFetching && <LoadingCardList />}
-
-            <CardList data={data} action={NftAction.AcceptOffer} userAccount={user?.account} />
-          </div>
-
-          {dataLoaded && (
-            <FetchMore
-              currentPage={currentPage}
-              data={data}
-              onFetchMore={async () => {
-                setDataLoaded(false);
-                await fetchData();
-              }}
-            />
-          )}
+          <Box className={styles.col}>
+            <Box className="filter-container">
+              <FilterDrawer
+                showSaleTypes={false}
+                onChange={(filter: SearchFilter) => {
+                  setFilter(filter);
+                }}
+              />
+            </Box>
+            <Box className="content-container">
+              <OffersReceived />
+            </Box>
+          </Box>
         </div>
       </div>
     </>
