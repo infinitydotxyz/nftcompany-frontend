@@ -53,17 +53,13 @@ export default function Home() {
             <div className={styles.subHeader}>Benefits include:</div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>2% fee distributed to community</div>
+              <div>0 fees</div>
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
               <div>
                 List your NFTs without re-initiating your wallet or re-approving tokens (if already done on OpenSea)
               </div>
-            </div>
-            <div className={styles.checklistRow}>
-              <CheckCircleIcon className={styles.icon} />
-              <div>Trading rewards</div>
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
