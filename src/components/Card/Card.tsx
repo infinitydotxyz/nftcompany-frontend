@@ -123,7 +123,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
 
     if (name) {
       return (
-        <Link variant="underline" onClick={handler}>
+        <Link title={name} variant="underline" onClick={handler}>
           {name}
         </Link>
       );
@@ -177,7 +177,9 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
           <div className={styles.cardTitle}>
             {collectionName && (
               <div className={styles.collectionRow}>
-                <AppLink href={`/collection/${getSearchFriendlyString(collectionName)}`}>{collectionName}</AppLink>
+                <AppLink title={collectionName} href={`/collection/${getSearchFriendlyString(collectionName)}`}>
+                  {collectionName}
+                </AppLink>
 
                 <div style={{ paddingLeft: 6, paddingBottom: 2 }}>
                   <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
@@ -193,11 +195,11 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
       <div className={styles.buttons}>
         {actionButton()}
         {shouldShowTransferButton && (
-          <Link variant="underline" onClick={() => setTransferModalShowed(true)}>
+          <Link title="Transfer" variant="underline" onClick={() => setTransferModalShowed(true)}>
             Transfer
           </Link>
         )}
-        <Link variant="underline" onClick={() => setPreviewModalShowed(true)}>
+        <Link title="Preview" variant="underline" onClick={() => setPreviewModalShowed(true)}>
           Preview
         </Link>
       </div>

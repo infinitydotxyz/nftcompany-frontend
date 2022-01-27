@@ -9,7 +9,7 @@ type Props = {
   children?: string | ReactElement;
 };
 
-const AppLink = ({ type, href, className = '', children }: Props) => {
+const AppLink = ({ type, href, className = '', children, ...rest }: Props) => {
   const cn = [styles.main];
 
   if (type === 'secondary') {
@@ -19,7 +19,9 @@ const AppLink = ({ type, href, className = '', children }: Props) => {
 
   return (
     <NextLink href={href}>
-      <a className={cn.join(' ')}>{children}</a>
+      <a className={cn.join(' ')} {...rest}>
+        {children}
+      </a>
     </NextLink>
   );
 };
