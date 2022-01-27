@@ -136,7 +136,7 @@ const TransferNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 Transfer NFT
               </Button>
 
-              <Button disabled={isSubmitting} onClick={() => onClose && onClose()}>
+              <Button variant="outline" disabled={isSubmitting} onClick={() => onClose && onClose()}>
                 Cancel
               </Button>
 
