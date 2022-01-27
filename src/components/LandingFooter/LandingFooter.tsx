@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Box, Link, useColorMode } from '@chakra-ui/react';
 import styles from './LandingFooter.module.scss';
+import { FaDiscord, FaTwitter } from 'react-icons/fa';
 
 const LandingFooter = () => {
   const { colorMode } = useColorMode();
@@ -61,10 +62,10 @@ const LandingFooter = () => {
             <Image alt="Medium" src="/img/medium.svg" width={30} height={30} />
           </a>
           <a href="https://discord.gg/SefzVZU72S" target="_blank" rel="noreferrer">
-            <Image alt="Discord" src="/img/discord.svg" width={30} height={30} />
+            <FaDiscord size={30} />
           </a>
           <a href="https://twitter.com/infinitydotxyz" target="_blank" rel="noreferrer">
-            <Image alt="Twitter" src="/img/twitter.svg" width={30} height={30} />
+            <FaTwitter size={30} />
           </a>
           {/* <a href="https://www.instagram.com/infinitydotxyz/" target="_blank" rel="noreferrer">
             <Image alt="Instagram" src="/img/instagram.svg" width={30} height={30} />
