@@ -24,7 +24,7 @@ import {
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon, SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
 import * as React from 'react';
-import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
+import { defaultFilterState, getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import CollectionNameFilter from './CollectionNameFilter';
 import { apiGet } from 'utils/apiUtil';
 import { LISTING_TYPE, PAGE_NAMES } from 'utils/constants';
@@ -135,6 +135,8 @@ const FilterDrawer = ({
   const handleClickClear = () => {
     const emptyFilter = getDefaultFilterState({ ...filterState });
     emptyFilter.collectionIds = '';
+    emptyFilter.priceMax = '';
+    emptyFilter.priceMin = '';
     setMinPriceVal('');
     setMaxPriceVal('');
     setCollectionName('');
@@ -143,6 +145,7 @@ const FilterDrawer = ({
     setSelectedTraitValue('');
     setSelectedTraitType(undefined);
     setSelectedTraits([EmptyTrait]);
+
     setFilterState(emptyFilter);
     if (onChange) {
       onChange(emptyFilter, true);

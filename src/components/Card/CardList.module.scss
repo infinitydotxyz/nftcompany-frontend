@@ -43,6 +43,7 @@ $cardHeight: 332px;
   height: $cardHeight;
   @include lightShadow();
   background-color: var(--chakra-colors-cardBgLight, red);
+  overflow: hidden;
 
   :global(body.chakra-ui-dark) & {
     @include darkShadow();
@@ -134,6 +135,9 @@ $cardHeight: 332px;
       align-items: flex-end;
       font-weight: 500;
       font-size: 16px;
+      a {
+        white-space: nowrap;
+      }
     }
 
     .cardTitle {

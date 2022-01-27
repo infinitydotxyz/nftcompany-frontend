@@ -6,10 +6,11 @@ type Props = {
   type?: 'secondary';
   href: string;
   className?: string;
+  title?: string;
   children?: string | ReactElement;
 };
 
-const AppLink = ({ type, href, className = '', children }: Props) => {
+const AppLink = ({ type, href, className = '', title, children }: Props) => {
   const cn = [styles.main];
 
   if (type === 'secondary') {
