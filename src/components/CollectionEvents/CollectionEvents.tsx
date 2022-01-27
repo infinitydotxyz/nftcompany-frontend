@@ -98,9 +98,9 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
         </Thead>
         <Tbody>
           {data.map((item: any) => {
-            const from = item?.seller?.user?.username;
+            const from = item?.seller?.user?.username || item?.from_account?.user?.username;
             const fromAddress = item?.seller?.address || item?.from_account?.address;
-            const to = item?.winner_account?.user?.username;
+            const to = item?.winner_account?.user?.username ?? item?.to_account?.user?.username;
             const toAddress = item?.winner_account?.address || item?.to_account?.address;
             return (
               <Tr key={`${address}_${item?.asset?.token_id}_${item.created_date}`}>
