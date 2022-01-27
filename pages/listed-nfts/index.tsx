@@ -34,6 +34,7 @@ export default function ListNFTs() {
   }, []);
 
   const importOrder = async (item: CardData) => {
+    console.log(`importing`);
     const order = item.order;
     if (!order) {
       showAppError('Invalid Listing');
