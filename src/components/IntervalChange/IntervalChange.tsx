@@ -5,7 +5,7 @@ import { numStr } from 'utils/commonUtil';
 import styles from './IntervalChange.module.scss';
 
 interface IntervalChangeProps {
-  change: number | string;
+  change: number;
   interval?: string | number;
   intervalUnits?: string;
 }
@@ -16,7 +16,7 @@ function IntervalChange({ change, interval, intervalUnits, ...rest }: IntervalCh
       <IoTriangleSharp className={`${styles.triangle} ${change > 0 ? styles.green : `${styles.red} ${styles.flip}`}`} />
       <Box display={'flex'} flexDirection={'row'}>
         <p className={`${styles.change} ${change > 0 ? styles.green : styles.red}`}>
-          {typeof change === 'number' ? numStr(Math.abs(change)) : change}
+          {numStr(Math.abs(Math.round(change * 100) / 100))}%
         </p>
         {interval !== undefined && (
           <p className={`${styles.unit} ${change > 0 ? styles.green : styles.red}`}>

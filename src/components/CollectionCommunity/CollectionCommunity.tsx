@@ -81,6 +81,27 @@ function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: Collectio
     getUserVote();
   }, [user?.account, collectionInfo?.address]);
 
+  const DefaultMention = () =>
+    collectionInfo?.twitterSnippet?.account?.username ? (
+      <ExternalLinkCard
+        key={'default-twitter-mention'}
+        marginY="8px"
+        title={'None'}
+        subtitle={``}
+        link={`https://twitter.com/${collectionInfo?.twitterSnippet?.account?.username}`}
+        linkText="View Twitter"
+      />
+    ) : (
+      <ExternalLinkCard
+        key={'default-twitter-mention'}
+        marginY="8px"
+        title={'None'}
+        subtitle={``}
+        linkText="Add Twitter"
+        onClick={onClickEdit}
+      />
+    );
+
   return (
     <Box
       display="flex"
@@ -107,14 +128,7 @@ function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: Collectio
                   );
                 })
               ) : (
-                <ExternalLinkCard
-                  key={'default-twitter-mention'}
-                  marginY="8px"
-                  title={'Name'}
-                  subtitle={``}
-                  linkText="Add Twitter"
-                  onClick={onClickEdit}
-                />
+                <DefaultMention />
               )}
             </Box>
           </WithTitle>
@@ -140,7 +154,7 @@ function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: Collectio
                 <ExternalLinkCard
                   key={'default-partnership'}
                   marginY="8px"
-                  title={'Name'}
+                  title={'None'}
                   subtitle={''}
                   linkText="Add Partnership"
                   onClick={onClickEdit}
@@ -177,7 +191,7 @@ function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: Collectio
         marginTop={[0, 0, 0, '56px']}
         alignItems={['flex-start', 'flex-start', 'flex-start', 'flex-end']}
       >
-        {collectionInfo?.twitterSnippet?.recentTweets?.length && (
+        {collectionInfo?.twitterSnippet?.recentTweets && collectionInfo?.twitterSnippet?.recentTweets?.length > 0 && (
           <Box flexBasis={0} flexGrow={1} ref={twitterFeedContainerRef} marginTop={['56px', '56px', '56px', 0]}>
             <WithTitle title={'Twitter feed'}>
               <TwitterFeed

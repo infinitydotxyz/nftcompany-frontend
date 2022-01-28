@@ -406,7 +406,7 @@ function TrendingContents(props: {
                               <IntervalChange
                                 marginLeft={[0, 0, 0, 0, 2]}
                                 marginTop={[2, 2, 2, 2, 0]}
-                                change={`${numStr(Math.abs(value))}%`}
+                                change={value}
                                 justifyContent={'flex-start'}
                               />
                             ) : (

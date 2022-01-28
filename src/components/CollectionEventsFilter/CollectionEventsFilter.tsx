@@ -25,7 +25,7 @@ function CollectionEventsFilter({
       {...rest}
     >
       <Text mb={4} mt={4} textAlign={'center'} width="100%">
-        Filter
+        Event Type
       </Text>
 
       <Box display="flex" flexDirection="column" gridGap={2}>
