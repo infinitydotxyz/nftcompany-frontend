@@ -250,7 +250,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 List NFT
               </Button>
 
-              <Button disabled={isSubmitting} onClick={() => onClose && onClose()}>
+              <Button variant="outline" disabled={isSubmitting} onClick={() => onClose && onClose()}>
                 Cancel
               </Button>
 

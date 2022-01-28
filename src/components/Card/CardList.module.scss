@@ -100,10 +100,16 @@ $cardHeight: 332px;
     padding: 0;
     width: 100%;
     flex: 0;
+    align-items: center;
+    height: 30px;
 
     .stadiumButtonGray {
       background-color: #bbb;
       color: black;
+    }
+
+    .threeDotIcon {
+      cursor: pointer;
     }
   }
 
