@@ -64,7 +64,6 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
 
   React.useEffect(() => {
     const isActiveWrapper = { isActive: true };
-
     const rect = activityRef?.current?.getBoundingClientRect?.();
     setScrollDimensions({
       x: '100%',
