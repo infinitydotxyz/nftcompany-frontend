@@ -70,6 +70,7 @@ function ExternalLinkCard(props: Props) {
       padding="16px"
       minWidth={'200px'}
       maxWidth={'250px'}
+      minHeight={'64px'}
       {...rest}
     >
       <Box display="flex" flexDirection="column" justifyContent="space-between" flexBasis={0} flexGrow={2}>
@@ -80,13 +81,14 @@ function ExternalLinkCard(props: Props) {
         </Tooltip>
         <p className={styles.subtitle}>{subtitle}</p>
       </Box>
-      {'onClick' in props ? (
+      {'onClick' in props && (
         <Link _hover={{ textDecoration: 'none' }}>
           <Button size="sm" _hover={{ textDecoration: 'none' }} flexBasis={0} flexGrow={1} onClick={onClick}>
             {linkText}
           </Button>
         </Link>
-      ) : (
+      )}
+      {'link' in props && (
         <Link _hover={{ textDecoration: 'none' }} href={link} target={'_blank'}>
           <Button size="sm" flexBasis={0} flexGrow={1}>
             {linkText}

@@ -347,15 +347,17 @@ const Collection = (): JSX.Element => {
                       </Box>
                     </Box>
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel minWidth={'1025px'}>
                     <Box display="flex" flexDirection={'row'} marginTop={2}>
-                      <Box className="filter-container">
+                      <Box marginRight={'40px'} minWidth={'180px'}>
                         <CollectionEventsFilter
                           filterState={eventFilterState}
                           setFilterState={setEventFilterState}
                           minWidth={'180px'}
+                          width={70}
                           paddingBottom="30px"
                           borderBottom="1px solid #ccc"
+                          zIndex={1}
                         />
                       </Box>
 
@@ -364,7 +366,7 @@ const Collection = (): JSX.Element => {
                           address={address}
                           eventType={eventFilterState}
                           pageType="collection"
-                          width="82%"
+                          flexGrow={1}
                           overflow="hidden"
                         />
                       )}

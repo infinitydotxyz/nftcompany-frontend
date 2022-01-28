@@ -105,7 +105,7 @@ function GraphPreview(props: GraphPreviewProps | GraphPreviewPropsWithLink | Gra
       >
         <p className={styles.total}>{numStr(total)}</p>
         <IntervalChange
-          change={`${numStr(Math.floor(intervalChange * 1000) / 1000)}%`}
+          change={Math.floor(intervalChange * 100) / 100}
           interval={props.changeInterval}
           intervalUnits="hrs"
         />

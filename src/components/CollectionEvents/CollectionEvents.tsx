@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { apiGet } from 'utils/apiUtil';
-import { Table, Thead, Tbody, Tr, Th, Td, Link, Box, Text, Checkbox, ChakraProps } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Link, Box, Text, Checkbox, ChakraProps, Image } from '@chakra-ui/react';
 import { weiToEther } from 'utils/ethersUtil';
 import { ellipsisAddress, getChainScannerBase, numStr, renderSpinner } from 'utils/commonUtil';
 import styles from './CollectionEvents.module.scss';
@@ -59,8 +59,7 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
 
   React.useEffect(() => {
     const isActiveWrapper = { isActive: true };
-    setData([]);
-    setCurrentPage(-1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     if (!userReady) {
       return;
     }
@@ -98,94 +97,12 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
         </Thead>
         <Tbody>
           {data.map((item: any) => {
-            const from = item?.seller?.user?.username || item?.from_account?.user?.username;
-            const fromAddress = item?.seller?.address || item?.from_account?.address;
-            const to = item?.winner_account?.user?.username ?? item?.to_account?.user?.username;
-            const toAddress = item?.winner_account?.address || item?.to_account?.address;
             return (
-              <Tr key={`${address}_${item?.asset?.token_id}_${item.created_date}`}>
-                {pageType === 'collection' && (
-                  <Td display={'flex'} flexDirection={'column'} alignItems={'flex-start'}>
-                    {item?.asset?.image_thumbnail_url && (
-                      <>
-                        <img
-                          src={`${item.asset.image_thumbnail_url}`}
-                          alt={item?.asset?.token_id}
-                          className={styles.thumb}
-                        />
-                        <br />
-                        <p className={styles.tokenName}>
-                          {item?.asset?.name ? item?.asset?.name : item?.asset?.token_id}
-                        </p>
-                      </>
-                    )}
-                  </Td>
-                )}
-                <Td>
-                  <Link
-                    className={styles.underline}
-                    href={`${getChainScannerBase(item?.chainId)}/address/${fromAddress}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {from || ellipsisAddress(fromAddress)}
-                  </Link>
-                </Td>
-
-                <Td>
-                  <Link
-                    className={styles.underline}
-                    href={`${getChainScannerBase(item?.chainId)}/address/${toAddress}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {to || ellipsisAddress(toAddress)}
-                  </Link>
-                </Td>
-                <Td>
-                  <p>{`${new Date(item?.created_date).toLocaleDateString()}`}</p>
-
-                  <p>{new Date(item?.created_date).toLocaleTimeString()}</p>
-                </Td>
-
-                {item?.event_type === EventType.Sale && (
-                  <Td>
-                    {item?.total_price ? (
-                      <Box display="flex" flexDirection={'row'} alignItems="center">
-                        <EthToken marginBottom={'-2px'} /> {numStr(weiToEther(item?.total_price))}{' '}
-                      </Box>
-                    ) : (
-                      '---'
-                    )}
-                  </Td>
-                )}
-                {item.event_type === EventType.Offer && (
-                  <Td>
-                    {item?.bid_amount ? (
-                      <Box display="flex" flexDirection={'row'} alignItems="center">
-                        <EthToken marginBottom={'-2px'} /> {numStr(weiToEther(item?.bid_amount))}{' '}
-                      </Box>
-                    ) : (
-                      '---'
-                    )}
-                  </Td>
-                )}
-                {item.event_type !== EventType.Sale && item.event_type !== EventType.Offer && <Td>{'---'}</Td>}
-
-                <Td>
-                  {item.event_type === EventType.Sale || item.event_type === EventType.Transfer ? (
-                    <Link
-                      className={styles.underline}
-                      href={`${getChainScannerBase(item?.chainId)}/tx/${item.transaction?.transaction_hash}`}
-                      target="_blank"
-                    >
-                      {ellipsisAddress(item.transaction?.transaction_hash)}
-                    </Link>
-                  ) : (
-                    '---'
-                  )}
-                </Td>
-              </Tr>
+              <CollectionEvent
+                key={`${item.contract_address}_${item?.asset?.token_id}_${item.created_date}_${item.event_type}`}
+                item={item}
+                pageType={pageType}
+              />
             );
           })}
 
@@ -207,5 +124,98 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
     </Box>
   );
 }
+
+const CollectionEvent = ({ item, pageType }: { item: any; pageType: string }) => {
+  const from = item?.seller?.user?.username || item?.from_account?.user?.username;
+  const fromAddress = item?.seller?.address || item?.from_account?.address;
+  const to = item?.winner_account?.user?.username ?? item?.to_account?.user?.username;
+  const toAddress = item?.winner_account?.address || item?.to_account?.address;
+  const FallbackImage = <Box height="42px" width="42px" borderRadius={'8px'} backgroundColor={'actionLight'}></Box>;
+  return (
+    <Tr key={`${item.contract_address}_${item?.asset?.token_id}_${item.created_date}`}>
+      {pageType === 'collection' && (
+        <Td display={'flex'} flexDirection={'column'} alignItems={'flex-start'}>
+          {item?.asset?.image_thumbnail_url && (
+            <>
+              <Image
+                src={`${item.asset.image_thumbnail_url}`}
+                alt={item?.asset?.token_id}
+                className={styles.thumb}
+                fallback={FallbackImage}
+              />
+
+              <br />
+              <p className={styles.tokenName}>{item?.asset?.name ? item?.asset?.name : item?.asset?.token_id}</p>
+            </>
+          )}
+        </Td>
+      )}
+      <Td>
+        <Link
+          className={styles.underline}
+          href={`${getChainScannerBase(item?.chainId)}/address/${fromAddress}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {from || ellipsisAddress(fromAddress)}
+        </Link>
+      </Td>
+
+      <Td>
+        <Link
+          className={styles.underline}
+          href={`${getChainScannerBase(item?.chainId)}/address/${toAddress}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {to || ellipsisAddress(toAddress)}
+        </Link>
+      </Td>
+      <Td>
+        <p>{`${new Date(item?.created_date).toLocaleDateString()}`}</p>
+
+        <p>{new Date(item?.created_date).toLocaleTimeString()}</p>
+      </Td>
+
+      {item?.event_type === EventType.Sale && (
+        <Td>
+          {item?.total_price ? (
+            <Box display="flex" flexDirection={'row'} alignItems="center">
+              <EthToken marginBottom={'-2px'} /> {numStr(weiToEther(item?.total_price))}{' '}
+            </Box>
+          ) : (
+            '---'
+          )}
+        </Td>
+      )}
+      {item.event_type === EventType.Offer && (
+        <Td>
+          {item?.bid_amount ? (
+            <Box display="flex" flexDirection={'row'} alignItems="center">
+              <EthToken marginBottom={'-2px'} /> {numStr(weiToEther(item?.bid_amount))}{' '}
+            </Box>
+          ) : (
+            '---'
+          )}
+        </Td>
+      )}
+      {item.event_type !== EventType.Sale && item.event_type !== EventType.Offer && <Td>{'---'}</Td>}
+
+      <Td>
+        {item.event_type === EventType.Sale || item.event_type === EventType.Transfer ? (
+          <Link
+            className={styles.underline}
+            href={`${getChainScannerBase(item?.chainId)}/tx/${item.transaction?.transaction_hash}`}
+            target="_blank"
+          >
+            {ellipsisAddress(item.transaction?.transaction_hash)}
+          </Link>
+        ) : (
+          '---'
+        )}
+      </Td>
+    </Tr>
+  );
+};
 
 export default CollectionEvents;
