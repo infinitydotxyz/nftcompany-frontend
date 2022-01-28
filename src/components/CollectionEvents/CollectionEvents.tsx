@@ -98,6 +98,10 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
         </Thead>
         <Tbody>
           {data.map((item: any) => {
+            const from = item?.seller?.user?.username || item?.from_account?.user?.username;
+            const fromAddress = item?.seller?.address || item?.from_account?.address;
+            const to = item?.winner_account?.user?.username ?? item?.to_account?.user?.username;
+            const toAddress = item?.winner_account?.address || item?.to_account?.address;
             return (
               <Tr key={`${address}_${item?.asset?.token_id}_${item.created_date}`}>
                 {pageType === 'collection' && (
@@ -120,26 +124,22 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
                 <Td>
                   <Link
                     className={styles.underline}
-                    href={`${getChainScannerBase(item?.chainId)}/address/${item?.seller?.address}`}
+                    href={`${getChainScannerBase(item?.chainId)}/address/${fromAddress}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {item?.seller?.user?.username ||
-                      ellipsisAddress(item?.seller?.address) ||
-                      ellipsisAddress(item?.from_account?.address)}
+                    {from || ellipsisAddress(fromAddress)}
                   </Link>
                 </Td>
 
                 <Td>
                   <Link
                     className={styles.underline}
-                    href={`${getChainScannerBase(item?.chainId)}/address/${item?.winner_account?.address}`}
+                    href={`${getChainScannerBase(item?.chainId)}/address/${toAddress}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {item?.winner_account?.user?.username ||
-                      ellipsisAddress(item?.winner_account?.address) ||
-                      ellipsisAddress(item?.asset?.owner?.address)}
+                    {to || ellipsisAddress(toAddress)}
                   </Link>
                 </Td>
                 <Td>

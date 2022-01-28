@@ -76,7 +76,7 @@ function CollectionOverview(props: CollectionOverviewProps) {
         fontSize="12px"
         onClick={props.onClickEdit}
       >
-        {props.hasBeenClaimed ? 'Edit collection' : 'Claim collection'}
+        {props.hasBeenClaimed ? 'Edit Collection' : 'Claim Collection'}
       </Button>
     </Box>
   );

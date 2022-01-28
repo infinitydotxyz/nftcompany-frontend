@@ -142,7 +142,7 @@ function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: Collectio
                   marginY="8px"
                   title={'Name'}
                   subtitle={''}
-                  linkText="Add partnership"
+                  linkText="Add Partnership"
                   onClick={onClickEdit}
                 />
               )}
