@@ -81,6 +81,27 @@ function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: Collectio
     getUserVote();
   }, [user?.account, collectionInfo?.address]);
 
+  const DefaultMention = () =>
+    collectionInfo?.twitterSnippet?.account?.username ? (
+      <ExternalLinkCard
+        key={'default-twitter-mention'}
+        marginY="8px"
+        title={'None'}
+        subtitle={``}
+        link={`https://twitter.com/${collectionInfo?.twitterSnippet?.account?.username}`}
+        linkText="View Twitter"
+      />
+    ) : (
+      <ExternalLinkCard
+        key={'default-twitter-mention'}
+        marginY="8px"
+        title={'None'}
+        subtitle={``}
+        linkText="Add Twitter"
+        onClick={onClickEdit}
+      />
+    );
+
   return (
     <Box
       display="flex"
@@ -107,14 +128,7 @@ function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: Collectio
                   );
                 })
               ) : (
-                <ExternalLinkCard
-                  key={'default-twitter-mention'}
-                  marginY="8px"
-                  title={'Name'}
-                  subtitle={``}
-                  linkText="Add Twitter"
-                  onClick={onClickEdit}
-                />
+                <DefaultMention />
               )}
             </Box>
           </WithTitle>
@@ -140,7 +154,7 @@ function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: Collectio
                 <ExternalLinkCard
                   key={'default-partnership'}
                   marginY="8px"
-                  title={'Name'}
+                  title={'None'}
                   subtitle={''}
                   linkText="Add Partnership"
                   onClick={onClickEdit}
