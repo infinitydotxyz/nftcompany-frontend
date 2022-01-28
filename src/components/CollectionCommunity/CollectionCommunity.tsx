@@ -177,7 +177,7 @@ function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: Collectio
         marginTop={[0, 0, 0, '56px']}
         alignItems={['flex-start', 'flex-start', 'flex-start', 'flex-end']}
       >
-        {collectionInfo?.twitterSnippet?.recentTweets?.length && (
+        {collectionInfo?.twitterSnippet?.recentTweets && collectionInfo?.twitterSnippet?.recentTweets?.length > 0 && (
           <Box flexBasis={0} flexGrow={1} ref={twitterFeedContainerRef} marginTop={['56px', '56px', '56px', 0]}>
             <WithTitle title={'Twitter feed'}>
               <TwitterFeed
