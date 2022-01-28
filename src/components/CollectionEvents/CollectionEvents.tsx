@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { apiGet } from 'utils/apiUtil';
 import { Table, Thead, Tbody, Tr, Th, Td, Link, Box, Text, Checkbox, ChakraProps, Image } from '@chakra-ui/react';
 import { weiToEther } from 'utils/ethersUtil';
@@ -22,11 +22,15 @@ interface Props {
 }
 
 function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Props & ChakraProps) {
-  const { showAppError, chainId, userReady } = useAppContext();
+  const { showAppError, chainId, userReady, headerPosition } = useAppContext();
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<any>([]);
+  const activityRef = useRef<any | null>(null);
+  const bodyRef = useRef<any | null>(null);
+  const [isResetting, setIsResetting] = useState(false);
+  const [scrollDimensions, setScrollDimensions] = useState({ x: '100%', y: 0 });
 
   const fetchData = async (isActiveWrapper?: { isActive: boolean }, reset?: boolean) => {
     setIsFetching(true);
@@ -55,11 +59,21 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
     const prevData = reset ? [] : data;
     setData([...prevData, ...moreData]);
     setCurrentPage(newCurrentPage);
+    setIsResetting(false);
   };
 
   React.useEffect(() => {
     const isActiveWrapper = { isActive: true };
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const rect = activityRef?.current?.getBoundingClientRect?.();
+    setScrollDimensions({
+      x: '100%',
+      y: rect?.height ?? 50
+    });
+
+    setIsResetting(true);
+
+    const top = (rect?.y ?? 0) - headerPosition;
+    window.scrollBy({ top, behavior: 'smooth' });
     if (!userReady) {
       return;
     }
@@ -78,7 +92,7 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
 
   return (
     <Box display="flex" flexDirection={'column'} justifyContent={'space-between'} alignItems={'center'} {...rest}>
-      <Table size="sm">
+      <Table size="sm" ref={activityRef}>
         <Thead>
           <Tr>
             {pageType === 'collection' && (
@@ -95,7 +109,7 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
             <Th fontSize="md">Link</Th>
           </Tr>
         </Thead>
-        <Tbody>
+        <Tbody ref={bodyRef} display={isResetting ? 'none' : 'table-row-group'}>
           {data.map((item: any) => {
             return (
               <CollectionEvent
@@ -109,8 +123,18 @@ function CollectionEvents({ address, tokenId, eventType, pageType, ...rest }: Pr
           {dataLoaded && !isFetching && data.length === 0 && <Box p={6}>No data.</Box>}
         </Tbody>
       </Table>
-
-      {isFetching && renderSpinner({ margin: 5 })}
+      {isResetting && (
+        <Box
+          width={'100%'}
+          height={`${scrollDimensions.y}px`}
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'flex-start'}
+        >
+          {renderSpinner({ margin: 5 })}
+        </Box>
+      )}
+      {isFetching && !isResetting && renderSpinner({ margin: 5 })}
       {dataLoaded && (
         <FetchMore
           currentPage={currentPage}
