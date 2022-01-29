@@ -374,7 +374,7 @@ const FilterDrawer = ({
         </Box>
       </>
 
-      <Box mt={8}>
+      <Box mt={8} textAlign="left">
         <Button variant="outline" onClick={handleClickApply}>
           Apply
         </Button>
