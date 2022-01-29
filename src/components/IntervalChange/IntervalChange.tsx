@@ -10,16 +10,17 @@ interface IntervalChangeProps {
   intervalUnits?: string;
 }
 
-function IntervalChange({ change, interval, intervalUnits, ...rest }: IntervalChangeProps & ChakraProps) {
+function IntervalChange({ change: propsChange, interval, intervalUnits, ...rest }: IntervalChangeProps & ChakraProps) {
+  const change = Number.isNaN(propsChange) ? 0 : Math.round(propsChange * 100) / 100;
   return (
     <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" {...rest}>
-      <IoTriangleSharp className={`${styles.triangle} ${change > 0 ? styles.green : `${styles.red} ${styles.flip}`}`} />
+      <IoTriangleSharp
+        className={`${styles.triangle} ${change >= 0 ? styles.green : `${styles.red} ${styles.flip}`}`}
+      />
       <Box display={'flex'} flexDirection={'row'}>
-        <p className={`${styles.change} ${change > 0 ? styles.green : styles.red}`}>
-          {numStr(Math.abs(Math.round(change * 100) / 100))}%
-        </p>
+        <p className={`${styles.change} ${change >= 0 ? styles.green : styles.red}`}>{numStr(Math.abs(change))}%</p>
         {interval !== undefined && (
-          <p className={`${styles.unit} ${change > 0 ? styles.green : styles.red}`}>
+          <p className={`${styles.unit} ${change >= 0 ? styles.green : styles.red}`}>
             {interval}
             {intervalUnits}
           </p>
