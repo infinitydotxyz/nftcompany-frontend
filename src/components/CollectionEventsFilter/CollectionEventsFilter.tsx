@@ -24,7 +24,7 @@ function CollectionEventsFilter({
       fontSize={'0.95rem'}
       {...rest}
     >
-      <Text mb={4} mt={4} textAlign={'center'} width="100%">
+      <Text mb={4} mt={4} textAlign="left" width="100%">
         Event Type
       </Text>
 

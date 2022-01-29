@@ -32,6 +32,7 @@ import CollectionEvents, { EventType } from 'components/CollectionEvents/Collect
 import CollectionEventsFilter from 'components/CollectionEventsFilter/CollectionEventsFilter';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
+import styles from './Collection.module.scss';
 
 enum CollectionTabs {
   NFTs = 'NFTs',
@@ -297,7 +298,14 @@ const Collection = (): JSX.Element => {
               </Box>
             </Box>
 
-            <Box marginTop={'72px'} display={'flex'} flexDirection="row" width="100%" alignItems={'center'}>
+            <Box
+              marginTop={'72px'}
+              display={'flex'}
+              flexDirection="row"
+              width="100%"
+              alignItems={'center'}
+              className={styles.toggle}
+            >
               <ToggleTab
                 options={['NFTs', 'Community']}
                 selected={toggleTab}
