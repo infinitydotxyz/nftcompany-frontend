@@ -176,7 +176,7 @@ const FilterDrawer = ({
     <Box className={styles.main} mt={6} position="sticky" top={headerPosition + 12}>
       {showSaleTypes === false ? null : (
         <div className={styles.bottomBorder}>
-          <Text mb={4} mt={4}>
+          <Text mb={4} mt={4} align="left">
             Sale Type
           </Text>
 
@@ -205,7 +205,7 @@ const FilterDrawer = ({
 
       {showPrices === false ? null : (
         <div className={styles.bottomBorder}>
-          <Text mt={8} mb={4}>
+          <Text mb={4} mt={8} align="left">
             Price (ETH)
           </Text>
           <div className={styles.price}>
@@ -374,7 +374,7 @@ const FilterDrawer = ({
         </Box>
       </>
 
-      <Box mt={8}>
+      <Box mt={8} textAlign="left">
         <Button variant="outline" onClick={handleClickApply}>
           Apply
         </Button>
