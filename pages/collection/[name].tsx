@@ -39,7 +39,7 @@ enum CollectionTabs {
 }
 
 const Collection = (): JSX.Element => {
-  const { chainId } = useAppContext();
+  const { chainId, showAppError } = useAppContext();
   const [title, setTitle] = useState<string | undefined>();
   const [address, setAddress] = useState('');
   const router = useRouter();
@@ -48,7 +48,11 @@ const Collection = (): JSX.Element => {
   const [tabIndex, setTabIndex] = useState(0);
 
   const onEdit = () => {
-    router.push(`/collection/edit/${address}`);
+    if (!address) {
+      showAppError('Invalid url, please try reloading the page');
+    } else {
+      router.push(`/collection/edit/${address}`);
+    }
   };
 
   const { options, onChange, selected } = useToggleTab(
@@ -68,15 +72,20 @@ const Collection = (): JSX.Element => {
   const [eventFilterState, setEventFilterState] = useState(EventType.Sale);
 
   const [toggleTab, setToggleTab] = useState<'NFTs' | 'Community'>('NFTs');
-  const [failedWithSlug, setFailedWithSlug] = useState(false);
 
   useEffect(() => {
     setIsLoading(!collectionInfo);
   }, []);
 
-  const onLoaded = (address: string) => {
-    if (address) {
-      setAddress(address);
+  useEffect(() => {
+    if (collectionInfo?.address && collectionInfo?.address !== address) {
+      setAddress(collectionInfo.address.toLowerCase());
+    }
+  }, [collectionInfo]);
+
+  const onLoaded = (addressFromListings: string) => {
+    if (addressFromListings && addressFromListings !== address) {
+      setAddress(addressFromListings.toLowerCase());
     }
     setIsCardsLoading(false);
   };
