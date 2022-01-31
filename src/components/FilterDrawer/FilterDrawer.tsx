@@ -169,7 +169,7 @@ const FilterDrawer = ({
     }
   };
   const shouldFetchTraits =
-    (pageName === PAGE_NAMES.EXPLORE || pageName === PAGE_NAMES.LISTED_NFTS) &&
+    (pageName === PAGE_NAMES.EXPLORE || pageName === PAGE_NAMES.LISTED_NFTS || pageName === PAGE_NAMES.COLLECTION) &&
     selectedCollectionIds.split(',').length === 1;
 
   const content = (
@@ -256,7 +256,7 @@ const FilterDrawer = ({
                 const selectedCollectionIdsArr = selectedCollectionIds.split(',');
 
                 // fetch collection traits
-                if (address && selectedCollectionIdsArr.length === 1) {
+                if (address && shouldFetchTraits) {
                   fetchTraits(address);
                 } else {
                   setTraits([]);
