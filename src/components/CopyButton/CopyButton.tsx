@@ -25,7 +25,7 @@ export const CopyButton = ({ copyText, tooltip = 'Copy to Clipboard' }: Props) =
       <Tooltip label={tooltip} placement="top" hasArrow>
         <CopyIcon
           size="sm"
-          color={dark ? 'white' : 'brandBlue'}
+          color={dark ? 'white' : 'var(--chakra-colors-brandColor)'}
           aria-label="Copy"
           onClick={(e) => {
             e.stopPropagation();

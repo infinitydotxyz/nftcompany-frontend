@@ -5,16 +5,21 @@ import Layout from 'containers/layout';
 import CardList from 'components/Card/CardList';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import { apiGet } from 'utils/apiUtil';
-import { ITEMS_PER_PAGE, NFT_DATA_SOURCES } from 'utils/constants';
+import { ITEMS_PER_PAGE, NFT_DATA_SOURCES, PAGE_NAMES } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
-import { transformOpenSea, transformCovalent, getNftDataSource } from 'utils/commonUtil';
+import { transformOpenSea, transformCovalent, getNftDataSource, transformUnmarshal } from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
 import { NftAction } from 'types';
+import { Box } from '@chakra-ui/layout';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
+import { SearchFilter } from 'utils/context/SearchContext';
 
 export default function MyNFTs() {
   const { user, showAppError, chainId } = useAppContext();
+  const [filter, setFilter] = useState<SearchFilter | null>(null);
+
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<CardData[]>([]);
   const [listModalItem, setListModalItem] = useState(null);
@@ -33,7 +38,8 @@ export default function MyNFTs() {
     const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
       offset: newCurrentPage * ITEMS_PER_PAGE, // not "startAfter" because this is not firebase query.
       limit: ITEMS_PER_PAGE,
-      source
+      source,
+      ...filter
     });
     if (error) {
       showAppError(`${error.message}`);
@@ -44,6 +50,8 @@ export default function MyNFTs() {
         return transformOpenSea(item, user?.account, chainId);
       } else if (source === NFT_DATA_SOURCES.COVALENT) {
         return transformCovalent(item, user?.account, chainId);
+      } else if (source === NFT_DATA_SOURCES.UNMARSHAL) {
+        return transformUnmarshal(item, user?.account, chainId);
       }
     });
     setIsFetching(false);
@@ -53,7 +61,7 @@ export default function MyNFTs() {
 
   React.useEffect(() => {
     fetchData();
-  }, [user, chainId]);
+  }, [user, chainId, filter]);
 
   React.useEffect(() => {
     if (currentPage < 0 || data.length < currentPage * ITEMS_PER_PAGE) {
@@ -73,20 +81,35 @@ export default function MyNFTs() {
             <div className="tg-title">My NFTs</div>
           </div>
 
-          <div>
-            <PleaseConnectWallet account={user?.account} />
-            <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
-            {data?.length === 0 && isFetching && <LoadingCardList />}
+          <Box display="flex">
+            <Box className="filter-container">
+              <FilterDrawer
+                showSaleTypes={false}
+                showPrices={false}
+                onChange={(filter: SearchFilter) => {
+                  setCurrentPage(-1);
+                  setData([]);
+                  setFilter(filter);
+                }}
+              />
+            </Box>
+            <Box>
+              <PleaseConnectWallet account={user?.account} />
+              <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
+              {data?.length === 0 && isFetching && <LoadingCardList />}
 
-            <CardList
-              data={data}
-              showItems={[]}
-              action={NftAction.ListNft}
-              onClickAction={(item) => {
-                setListModalItem(item);
-              }}
-            />
-          </div>
+              <CardList
+                data={data}
+                showItems={[]}
+                userAccount={user?.account}
+                action={NftAction.ListNft}
+                pageName={PAGE_NAMES.MY_NFTS}
+                onClickAction={(item) => {
+                  setListModalItem(item);
+                }}
+              />
+            </Box>
+          </Box>
         </div>
 
         {dataLoaded && (

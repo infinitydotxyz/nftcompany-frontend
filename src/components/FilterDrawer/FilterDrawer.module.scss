@@ -1,8 +1,64 @@
 .main {
   width: auto;
+  font-size: 0.95rem;
 }
 
 .traitActionIcon {
   transform: scale(1.4);
   cursor: pointer;
+  margin-left: 4px;
+}
+
+.price {
+  display: flex;
+  gap: 4px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  .divider {
+    width: 1px;
+    background-color: #ccc;
+    margin-top: 8px;
+    margin-bottom: 8px;
+
+    :global(body.chakra-ui-dark) & {
+      background-color: #555;
+    }
+  }
+}
+
+.priceInput {
+  width: 100px;
+  font-size: 0.95rem;
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  :focus {
+    border: none !important;
+  }
+  :active {
+    border: none !important;
+  }
+}
+
+.priceInput::-moz-placeholder {
+  font-size: 0.95rem;
+}
+.priceInput::placeholder {
+  font-size: 0.95rem;
+}
+
+.bottomBorder {
+  padding-bottom: 30px;
+  border-bottom: 1px solid #ccc;
+}
+
+.dropdownCheckboxItem {
+  padding-bottom: 1px;
+  margin-bottom: 1px;
+}
+.dropdownItem {
+  padding-left: 1em;
+  padding-bottom: 1px;
+  margin-bottom: 1px;
 }

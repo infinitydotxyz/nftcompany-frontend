@@ -1,17 +1,20 @@
 import React, { useState, MouseEvent, useEffect } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import styles from './CardList.module.scss';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import { BaseCardData, CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { PriceBox } from 'components/PriceBox/PriceBox';
-import { addressesEqual } from 'utils/commonUtil';
+import { PriceBoxFloater } from 'components/PriceBoxFloater/';
+import { addressesEqual, getSearchFriendlyString } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
-import { Button, Spacer } from '@chakra-ui/react';
-import { LISTING_TYPE } from 'utils/constants';
+import { Spacer, Link } from '@chakra-ui/react';
+import { LISTING_TYPE, PAGE_NAMES } from 'utils/constants';
 import { NftAction } from 'types';
+import styles from './CardList.module.scss';
+import PreviewModal from 'components/PreviewModal/PreviewModal';
+import AppLink from 'components/AppLink/AppLink';
+import TransferNFTModal from 'components/TransferNFTModal/TransferNFTModal';
 
 type Props = {
   data: CardData;
@@ -19,15 +22,18 @@ type Props = {
   showItems?: string[];
   action?: string;
   userAccount?: string;
+  pageName?: string;
   [key: string]: any;
 };
 
-function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action = '' }: Props) {
+function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'], action = '' }: Props) {
   const [placeBidModalShowed, setPlaceBidModalShowed] = useState(false);
   const [acceptOfferModalShowed, setAcceptOfferModalShowed] = useState(false);
   const [cancelOfferModalShowed, setCancelOfferModalShowed] = useState(false);
   const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
   const [order, setOrder] = useState<BaseCardData | undefined>();
+  const [previewModalShowed, setPreviewModalShowed] = useState(false);
+  const [transferModalShowed, setTransferModalShowed] = useState(false);
 
   useEffect(() => {
     // prefer infinity listings
@@ -47,20 +53,12 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     ownedByYou = addressesEqual(data.owner, userAccount);
   }
 
-  const clickCard = () => {
+  const onClickCard = (ev: MouseEvent) => {
     router.push(`/assets/${data.tokenAddress}/${data.tokenId}`);
   };
 
   const collectionName = data.collectionName;
   const hasBlueCheck = data.hasBlueCheck;
-
-  if (inView === false) {
-    return (
-      <div ref={ref} id={`id_${data.id}`} className={styles.card}>
-        <img src={data.image} alt="Preloaded Image" style={{ width: 1, height: 1 }} />
-      </div>
-    );
-  }
 
   const actionButton = () => {
     const isForSale = data.metadata?.basePriceInEth;
@@ -76,7 +74,7 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           onClickAction(data, NftAction.ListNft);
         }
       };
-      name = 'List NFT';
+      name = 'List';
     } else if (action === NftAction.BuyNft && !ownedByYou) {
       handler = (ev) => {
         ev.preventDefault();
@@ -125,14 +123,19 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
 
     if (name) {
       return (
-        <Button className={styles.stadiumButtonBlue} onClick={handler}>
+        <Link title={name} variant="underline" onClick={handler}>
           {name}
-        </Button>
+        </Link>
       );
     }
 
     return null;
   };
+
+  const shouldShowTransferButton =
+    data.owner && userAccount && (data.owner ?? '').toLowerCase() === userAccount?.toLowerCase();
+
+  const shouldShowOwnedByYou = ownedByYou && pageName === PAGE_NAMES.EXPLORE;
 
   const getToken = () => {
     if (data.chainId === '1') {
@@ -141,30 +144,26 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
     return 'WETH';
   };
 
+  if (inView === false) {
+    return (
+      <div ref={ref} id={`id_${data.id}`} className={styles.card}>
+        <img src={data.image} alt="Preloaded Image" style={{ width: 1, height: 1 }} />
+      </div>
+    );
+  }
   return (
     <div ref={ref} id={`id_${data.id}`} className={styles.card}>
-      {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
+      <div className={styles.cardPreviewWrap}>
+        <div className={styles.cardPreview} onClick={onClickCard}>
+          <img src={data.image} alt="NFT image" />
 
-      <div className={styles.cardPreview}>
-        <img src={data.image} alt="Card preview" />
+          <div className={styles.cardControls}></div>
+        </div>
 
-        <div className={styles.cardControls}></div>
-      </div>
-      <div className={styles.cardBody}>
-        <div className={styles.cardLine}>
-          <div className={styles.cardTitle}>
-            {collectionName && (
-              <div className={styles.collectionRow}>
-                <div className={styles.collectionName}>{collectionName}</div>
+        {shouldShowOwnedByYou && <div className={styles.ownedTag}>Owned</div>}
 
-                <div style={{ paddingLeft: 6 }}>
-                  <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
-                </div>
-              </div>
-            )}
-            <div className={styles.title}>{data.title}</div>
-          </div>
-          <PriceBox
+        <div className={styles.priceFloater}>
+          <PriceBoxFloater
             justifyRight
             price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
             token={getToken()}
@@ -172,20 +171,52 @@ function Card({ data, onClickAction, userAccount, showItems = ['PRICE'], action 
           />
         </div>
       </div>
+
+      <div className={styles.cardBody}>
+        <div className={styles.cardLine}>
+          <div className={styles.cardTitle}>
+            {collectionName && (
+              <div className={styles.collectionRow}>
+                <AppLink title={collectionName} href={`/collection/${getSearchFriendlyString(collectionName)}`}>
+                  {collectionName}
+                </AppLink>
+
+                <div style={{ paddingLeft: 6, paddingBottom: 2 }}>
+                  <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
+                </div>
+              </div>
+            )}
+            <div className={styles.title}>{data.title}</div>
+          </div>
+        </div>
+      </div>
       <Spacer />
 
       <div className={styles.buttons}>
-        <Button className={styles.stadiumButtonGray}>
-          <a href={`/assets/${data.tokenAddress}/${data.tokenId}`} target="_blank" rel="noreferrer">
-            Info
-          </a>
-        </Button>
         {actionButton()}
+        {shouldShowTransferButton && (
+          <Link title="Transfer" variant="underline" onClick={() => setTransferModalShowed(true)}>
+            Transfer
+          </Link>
+        )}
+        <Link title="Preview" variant="underline" onClick={() => setPreviewModalShowed(true)}>
+          Preview
+        </Link>
       </div>
 
       {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
       {cancelOfferModalShowed && <CancelOfferModal data={data} onClose={() => setCancelOfferModalShowed(false)} />}
       {acceptOfferModalShowed && <AcceptOfferModal data={data} onClose={() => setAcceptOfferModalShowed(false)} />}
+      {transferModalShowed && <TransferNFTModal data={data} onClose={() => setTransferModalShowed(false)} />}
+      {previewModalShowed && (
+        <PreviewModal
+          action={action}
+          data={data}
+          onClose={() => {
+            setPreviewModalShowed(false);
+          }}
+        />
+      )}
     </div>
   );
 }

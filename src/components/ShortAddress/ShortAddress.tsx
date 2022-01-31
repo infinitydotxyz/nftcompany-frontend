@@ -8,6 +8,7 @@ import { addressesEqual, ellipsisAddress, ellipsisString } from 'utils/commonUti
 import { useAppContext } from 'utils/context/AppContext';
 
 type Props = {
+  className?: string;
   address?: string;
   label: string;
   tooltip?: string;
@@ -16,7 +17,15 @@ type Props = {
   vertical?: boolean;
 };
 
-export const ShortAddress = ({ vertical, href, newTab = true, address, label, tooltip = '' }: Props) => {
+export const ShortAddress = ({
+  className = '',
+  vertical,
+  href,
+  newTab = true,
+  address,
+  label,
+  tooltip = ''
+}: Props) => {
   const { user } = useAppContext();
   const { colorMode } = useColorMode();
 
@@ -44,7 +53,7 @@ export const ShortAddress = ({ vertical, href, newTab = true, address, label, to
     <div className={styles.link}>
       <Tooltip label={tooltip} hasArrow openDelay={1000}>
         <Link
-          color={dark ? 'white' : 'brandBlue'}
+          color={dark ? 'white' : 'var(--chakra-colors-brandColor)'}
           href={href}
           target={newTab ? '_blank' : ''}
           rel="noreferrer"
@@ -62,7 +71,7 @@ export const ShortAddress = ({ vertical, href, newTab = true, address, label, to
 
   if (label) {
     return (
-      <div className={vertical ? styles.mainVertical : styles.main}>
+      <div className={`${vertical ? styles.mainVertical : styles.main} ${className}`}>
         <Label bold={vertical} text={label} />
 
         <Spacer />

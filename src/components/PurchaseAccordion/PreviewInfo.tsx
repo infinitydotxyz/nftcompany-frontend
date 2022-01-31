@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import styles from './scss/PreviewInfo.module.scss';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { Button, Spacer } from '@chakra-ui/react';
@@ -14,6 +13,7 @@ import { Label } from 'components/Text/Text';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { LISTING_TYPE } from 'utils/constants';
 import { NftAction } from 'types';
+import styles from './scss/PreviewInfo.module.scss';
 
 interface Props {
   data: CardData;
@@ -108,6 +108,7 @@ export const PreviewInfo: React.FC<Props> = ({ showDescription = false, action, 
       href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}`}
       label="Contract Address:"
       tooltip={toChecksumAddress(data.tokenAddress)}
+      className={styles.noMarginTop}
     />
   );
 

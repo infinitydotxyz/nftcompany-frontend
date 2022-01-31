@@ -1,0 +1,80 @@
+@import 'styles/_mixins.scss';
+
+// the iframe
+.gameFrame {
+  @include lightShadow();
+
+  :global(body.chakra-ui-dark) & {
+    @include darkShadow();
+  }
+
+  border-radius: 10px;
+  overflow: hidden;
+  width: 1150px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.switchToPolygon {
+  padding: 20vh 40px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .switchToPolyMessage {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+}
+
+.centeredChooseNft {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .chooseNft {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .title {
+      padding: 10px 0;
+      font-size: 1.2rem;
+
+      font-weight: bold;
+    }
+
+    .chooseNftGrid {
+      display: flex;
+      align-items: start;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 1000px;
+
+      .chooseNftCard {
+        min-width: 200px;
+        padding: 10px 0;
+        display: flex;
+
+        .chooseNftCardIndex {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          margin-right: 8px;
+          font-weight: bold;
+        }
+
+        .chooseNftCardBody {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+
+          & div {
+            padding: 2px;
+          }
+        }
+      }
+    }
+  }
+}

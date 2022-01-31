@@ -14,7 +14,10 @@
 
 .link {
   font-family: monospace;
+  font-size: 1.2em;
   display: flex;
   gap: 6px;
   align-items: center;
+  color: var(--chakra-colors-brandColor);
+  text-decoration: underline;
 }

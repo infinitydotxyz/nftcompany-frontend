@@ -1,12 +1,10 @@
 import React from 'react';
-import styles from './CollectionCards.module.scss';
-import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import router from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { getChainScannerBase, getSearchFriendlyString, uuidv4 } from 'utils/commonUtil';
+import { getSearchFriendlyString, uuidv4 } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
-import { Button } from '@chakra-ui/react';
+import styles from './CollectionCards.module.scss';
 
 type Props = {
   entry: CollectionCardEntry;
@@ -19,11 +17,6 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
   if (!entry) {
     return <div>Nothing found</div>;
   }
-
-  const clickButton = () => {
-    // name could have # and other url reseved characters
-    router.push(`/collection/${cleanCollectionName(entry.name)}`);
-  };
 
   const cleanCollectionName = (input: string) => {
     if (!input) {
@@ -46,10 +39,14 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
       <div className={styles.card1}></div>
       <div className={styles.card2}></div>
 
-      <div className={`${styles.card3} ${isFeatured && styles.featuredCard}`}>
+      <div
+        className={`${styles.card3} ${isFeatured && styles.featuredCard}`}
+        onClick={() => router.push(`/collection/${cleanCollectionName(entry.name)}`)}
+      >
         <div className={styles.top}>
           <img className={styles.cardImage} src={entry.cardImage} alt="Card preview" />
         </div>
+
         <div className={styles.bottom}>
           <div className={styles.collectionRow}>
             <div>{entry.name}</div>
@@ -58,21 +55,6 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
               <BlueCheckIcon hasBlueCheck={entry.hasBlueCheck} />
             </div>
           </div>
-
-          <ShortAddress
-            vertical={true}
-            href={`${getChainScannerBase(entry.chainId)}/address/${entry.address}`}
-            address={entry.address}
-            label=""
-            tooltip={entry.address}
-          />
-        </div>
-        <div className={styles.buttons}>
-          <Button size="lg" className={styles.stadiumButtonBlue}>
-            <a href={`/collection/${cleanCollectionName(entry.name)}`} target="_blank" rel="noreferrer">
-              View Collection
-            </a>
-          </Button>
         </div>
       </div>
     </div>
@@ -88,7 +70,7 @@ type xProps = {
 
 export const CardGrid = ({ data, isFeatured = false }: xProps): JSX.Element => {
   return (
-    <div className={`${styles.cardList}`}>
+    <div className={styles.cardList}>
       {(data || []).map((item) => {
         if (!item) {
           return null;

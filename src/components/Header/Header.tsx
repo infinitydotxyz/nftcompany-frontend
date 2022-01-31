@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MenuItem, MenuDivider, Box, useColorMode, Alert, AlertIcon, CloseButton, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { saveAuthHeaders } from '../../../src/utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { AddressMenuItem } from 'components/AddressMenuItem/AddressMenuItem';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
@@ -15,12 +14,12 @@ import { CloseIcon } from '@chakra-ui/icons';
 import styles from './Header.module.scss';
 import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 import { MenuIcons } from 'components/Icons/MenuIcons';
-
-let isChangingAccount = false;
+import { defaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 
 const Header = (): JSX.Element => {
   const router = useRouter();
-  const { user, signIn, signOut, chainId, setHeaderPosition } = useAppContext();
+  const { user, signOut, chainId, setHeaderPosition } = useAppContext();
+  const { filterState, setFilterState } = useSearchContext();
   const [showBanner, setShowBanner] = useState(true);
   const [settingsModalShowed, setSettingsModalShowed] = useState(false);
   const [lockout, setLockout] = useState(false);
@@ -32,53 +31,17 @@ const Header = (): JSX.Element => {
     if (!position) {
       position = 76;
     }
-    setHeaderPosition(position);
+    setHeaderPosition(position > 0 ? position : 76);
   }, [headerRef?.current?.getBoundingClientRect?.()?.bottom, showBanner]);
 
   const { colorMode } = useColorMode();
 
   const signedIn = !!user?.account;
 
-  useEffect(() => {
-    const handleAccountChange = async (accounts: string[]) => {
-      isChangingAccount = true;
-
-      window.onfocus = async () => {
-        if (isChangingAccount) {
-          setTimeout(async () => {
-            isChangingAccount = false;
-            await saveAuthHeaders(accounts[0]);
-
-            // reload below makes this worthless. code left for documentation
-            // if we didn't page reload, we would signIn again
-            // signIn();
-
-            // use page reload for now to avoid complicated logic in other comps.
-            window.location.reload();
-          }, 500);
-        }
-      };
-    };
-
-    const handleNetworkChange = (chainId: string) => {
-      window.location.reload();
-    };
-
-    signIn();
-
-    if (window?.ethereum) {
-      window.ethereum.on('accountsChanged', handleAccountChange);
-      window.ethereum.on('chainChanged', handleNetworkChange);
-    }
-
-    return () => {
-      // on unmounting
-      if (window?.ethereum) {
-        window.ethereum.removeListener('accountsChanged', handleAccountChange);
-        window.ethereum.removeListener('chainChanged', handleNetworkChange);
-      }
-    };
-  }, []);
+  const onClickExplore = () => {
+    setFilterState(defaultFilterState); // clear filters
+    router.push('/explore');
+  };
 
   const ntfItems = [
     <MenuItem key="nfts" icon={MenuIcons.imageIcon} onClick={() => router.push('/my-nfts')}>
@@ -99,10 +62,13 @@ const Header = (): JSX.Element => {
   ];
 
   const exploreItems = [
-    <MenuItem key="made" icon={MenuIcons.exploreIcon} onClick={() => router.push('/explore')}>
+    <MenuItem key="explore-item" icon={MenuIcons.exploreIcon} onClick={onClickExplore}>
       Explore
     </MenuItem>,
-    <MenuItem key="received" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
+    // <MenuItem key="trending-item" icon={MenuIcons.trendingIcon} onClick={() => router.push('/trending')}>
+    //   Trending
+    // </MenuItem>,
+    <MenuItem key="verified-item" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
       Verified Collections
     </MenuItem>
   ];
@@ -159,7 +125,7 @@ const Header = (): JSX.Element => {
               fill="#333"
             />
           </svg>
-          Connect
+          <span>Connect</span>
         </div>
       </Link>
     );
@@ -169,7 +135,7 @@ const Header = (): JSX.Element => {
 
   const mobileNavMenu = () => {
     let result = [
-      <MenuItem key="explore-menu" icon={MenuIcons.imageSearchIcon} onClick={() => router.push('/explore')}>
+      <MenuItem key="explore-menu" icon={MenuIcons.imageSearchIcon} onClick={onClickExplore}>
         Explore
       </MenuItem>,
       <MenuItem key="collections" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
@@ -253,17 +219,23 @@ const Header = (): JSX.Element => {
           <div className={styles.showLargeLogo}>
             <Link href="/" passHref>
               <img
-                style={{ flex: '0 1 auto', minHeight: 68 }}
+                // style={{ flex: '0 1 auto', minHeight: 68 }}
                 className="can-click"
                 alt="logo"
-                src={dark ? '/img/logo-dark-mode.svg' : '/img/logo-light-mode.svg'}
-                width={130}
+                src={dark ? '/img/logo-new.svg' : '/img/logo-new.svg'}
+                width={160}
               />
             </Link>
           </div>
           <div className={styles.showSmallLogo}>
             <Link href="/" passHref>
-              <img style={{ flex: '0 1 auto' }} className="can-click" alt="logo" src="/img/logo-mini.svg" width={60} />
+              <img
+                style={{ flex: '0 1 auto' }}
+                className="can-click"
+                alt="logo"
+                src="/img/logo-mini-new.svg"
+                width={60}
+              />
             </Link>
           </div>
 
@@ -276,7 +248,7 @@ const Header = (): JSX.Element => {
 
           <div className={styles.links}>
             <div className={styles.showExplore}>
-              <HoverMenuButton buttonTitle="Explore" onClick={() => router.push('/explore')}>
+              <HoverMenuButton buttonTitle="Explore" onClick={onClickExplore}>
                 {exploreItems}
               </HoverMenuButton>
             </div>
@@ -295,9 +267,7 @@ const Header = (): JSX.Element => {
 
             {signedIn && (
               <div className={styles.showExplore}>
-                <div key="Rewards" className={styles.exploreButton} onClick={() => router.push('/rewards')}>
-                  Rewards
-                </div>
+                <HoverMenuButton disabled={!signedIn} buttonTitle="Rewards" onClick={() => router.push('/rewards')} />
               </div>
             )}
 

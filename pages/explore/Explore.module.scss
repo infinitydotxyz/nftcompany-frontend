@@ -11,6 +11,16 @@
   display: flex;
 }
 
-.filterPlaceholder {
-  width: 300px;
+.col {
+  width: 100%;
+  display: inline-flex;
+}
+
+.col1 {
+  width: 16%;
+  margin-right: 90px;
+}
+
+.col2 {
+  width: 80%;
 }

@@ -12,18 +12,15 @@ import { CardGrid } from 'components/CollectionCards/CollectionCard';
 import { CollectionCardEntry } from 'types/rewardTypes';
 import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import CardList from 'components/Card/CardList';
-import { Spacer } from '@chakra-ui/react';
-import FeaturedCollections from 'components/FeaturedCollections/FeaturedCollections';
+import { Spacer, Box } from '@chakra-ui/react';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { NftAction } from 'types';
 import styles from './Explore.module.scss';
+import { PAGE_NAMES } from 'utils/constants';
 
 export default function ExplorePage() {
   const searchContext = useSearchContext();
-  const [tabIndex, setTabIndex] = useState(0);
   const { user } = useAppContext();
-  const [isFilterOpened, setIsFilterOpened] = React.useState(false);
-
   const [searchMode, setSearchMode] = useState(false);
 
   useEffect(() => {
@@ -43,9 +40,9 @@ export default function ExplorePage() {
   const Explore = (props: { listingSource: ListingSource }) => {
     const cardProvider = useCardProvider(props.listingSource, searchContext);
     const [collectionCards, setCollectionCards] = useState<CollectionCardEntry[]>([]);
+
     useEffect(() => {
       let isMounted = true;
-
       if (isMounted) {
         const collCards = cardProvider.list.map((x) => {
           return {
@@ -67,11 +64,6 @@ export default function ExplorePage() {
 
     return (
       <>
-        <div className="section-bar">
-          <div className="tg-title">Explore</div>
-          <Spacer />
-          <SortMenuButton disabled={!searchMode || props.listingSource === ListingSource.OpenSea} />
-        </div>
         <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
         {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
@@ -81,6 +73,7 @@ export default function ExplorePage() {
             userAccount={user?.account}
             data={cardProvider.list}
             action={NftAction.BuyNft}
+            pageName={PAGE_NAMES.EXPLORE}
           />
         ) : (
           <CardGrid data={collectionCards} />
@@ -103,17 +96,29 @@ export default function ExplorePage() {
         <title>Explore</title>
       </Head>
 
-      <div className={`${styles.main} page-wrapper`}>
-        {isFilterOpened && <div className={styles.filterPlaceholder}></div>}
-
+      <div className={`${styles.main}`}>
         <div className="page-container">
-          {!searchMode && <FeaturedCollections />}
-          <Explore listingSource={ListingSource.Infinity} />
-        </div>
-      </div>
+          {/* {!searchMode && <FeaturedCollections />} */}
 
-      <div className="filter-panel-explore-page">
-        <FilterDrawer onToggle={(isOpen) => setIsFilterOpened(isOpen)} />
+          <div className="section-bar">
+            <div className="tg-title">Explore</div>
+            <Spacer />
+            <SortMenuButton
+              disabled={!searchMode}
+              filterState={searchContext.filterState}
+              setFilterState={searchContext.setFilterState}
+            />
+          </div>
+
+          <Box className={styles.col}>
+            <Box className="filter-container">
+              <FilterDrawer pageName={PAGE_NAMES.EXPLORE} />
+            </Box>
+            <Box className="content-container">
+              <Explore listingSource={ListingSource.Infinity} />
+            </Box>
+          </Box>
+        </div>
       </div>
     </>
   );

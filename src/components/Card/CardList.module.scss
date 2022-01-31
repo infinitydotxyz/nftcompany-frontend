@@ -2,7 +2,7 @@
 
 @include cardList();
 
-$cardHeight: 420px;
+$cardHeight: 332px;
 
 .button {
   display: inline-flex;
@@ -10,7 +10,7 @@ $cardHeight: 420px;
   align-items: center;
   height: 48px;
   padding: 0 24px;
-  background: #4047ff;
+  background: var(--chakra-colors-brandColor);
   border-radius: 24px;
   font-family: 'DM Sans', sans-serif;
   font-size: 16px;
@@ -19,20 +19,6 @@ $cardHeight: 420px;
   text-align: center;
   color: #fcfcfd;
   transition: all 0.2s;
-}
-.ownedTag {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-
-  background-color: var(--chakra-colors-brandBlueAlpha, red);
-  color: white;
-  padding: 4px 10px;
-  font-size: 0.8rem;
-  border-radius: 4px;
-  text-transform: uppercase;
-  font-weight: bold;
-  z-index: 1;
 }
 
 .featured {
@@ -45,20 +31,9 @@ $cardHeight: 420px;
   padding: 4px 10px;
   font-size: 0.8rem;
   border-radius: 4px;
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-weight: bold;
   z-index: 1;
-}
-
-.cardList {
-  display: grid;
-
-  // the minmax(0, 1fr) rather than 1fr keeps the cards from growing past their initial width
-  // https://stackoverflow.com/questions/43311943/prevent-content-from-expanding-grid-items?rq=1
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-gap: 56px;
-
-  margin: 10px 0 40px 0;
 }
 
 .card {
@@ -68,21 +43,48 @@ $cardHeight: 420px;
   height: $cardHeight;
   @include lightShadow();
   background-color: var(--chakra-colors-cardBgLight, red);
+  overflow: hidden;
 
   :global(body.chakra-ui-dark) & {
     @include darkShadow();
     background-color: var(--chakra-colors-cardBgDark, red);
   }
 
+  .cardPreviewWrap {
+    position: relative;
+
+    .priceFloater {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+    }
+
+    .ownedTag {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+
+      background-color: var(--chakra-colors-brandBlueAlpha, red);
+      color: white;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+      text-transform: uppercase;
+      font-weight: bold;
+      z-index: 1;
+    }
+  }
+
   .cardPreview {
     position: relative;
     border-radius: 16px;
     overflow: hidden;
-    height: 250px;
+    height: 220px;
+    cursor: pointer;
 
     img {
       min-width: 100%;
-      min-height: 250px;
+      min-height: 280px;
       transition: transform 1s;
       object-fit: cover;
     }
@@ -94,21 +96,10 @@ $cardHeight: 420px;
   .buttons {
     display: flex;
     gap: 10px;
-    padding: 10px 20px 20px 20px;
+    // padding: 10px 20px 20px 20px;
+    padding: 0;
     width: 100%;
     flex: 0;
-
-    .stadiumButtonGray,
-    .stadiumButtonBlue {
-      background-color: var(--chakra-colors-brandBlue, red);
-      color: white;
-      border-radius: 100px;
-      flex: 1;
-      &:hover {
-        background-color: blue;
-        color: white;
-      }
-    }
 
     .stadiumButtonGray {
       background-color: #bbb;
@@ -132,9 +123,6 @@ $cardHeight: 420px;
     }
   }
 
-  .cardBody {
-    padding: 10px 0;
-  }
   .cardLine {
     display: flex;
     justify-content: space-between;
@@ -144,29 +132,22 @@ $cardHeight: 420px;
 
     .collectionRow {
       display: flex;
-      align-items: center;
-    }
-
-    .collectionName {
-      color: var(--text-secondary);
-      font-size: 0.9em;
-
-      // keeps long titles from flowing outside the card bounds
-      white-space: nowrap;
-      max-width: 20ch;
-      text-overflow: ellipsis;
-      overflow: hidden;
+      align-items: flex-end;
+      font-weight: 500;
+      font-size: 16px;
+      a {
+        white-space: nowrap;
+      }
     }
 
     .cardTitle {
       font-size: 16px;
-      line-height: 1;
-      font-weight: 500;
+      font-weight: 400;
       display: flex;
-      gap: 7px;
       flex-direction: column;
 
       .title {
+        // maybe redundant, since defined above
         // keeps long titles from flowing outside the card bounds
         white-space: nowrap;
         max-width: 20ch;
@@ -179,43 +160,4 @@ $cardHeight: 420px;
 
 .featuredCard {
   background-image: linear-gradient(140deg, #ffffff 0%, #ffffff 50%, #d2fffb 75%);
-}
-
-@media only screen and (min-width: 1000px) and (max-width: 1400px) {
-  .cardList {
-    grid-gap: 36px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-
-    .card {
-      .cardPreview {
-        max-height: inherit;
-      }
-    }
-  }
-}
-
-@media only screen and (min-width: 700px) and (max-width: 1000px) {
-  .cardList {
-    grid-gap: 36px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    .card {
-      .cardPreview {
-        max-height: inherit;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 700px) {
-  .cardList {
-    grid-gap: 36px;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-
-    .card {
-      .cardPreview {
-        max-height: inherit;
-      }
-    }
-  }
 }

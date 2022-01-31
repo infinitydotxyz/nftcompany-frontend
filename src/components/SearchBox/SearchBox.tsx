@@ -1,10 +1,10 @@
 import React from 'react';
 import Downshift from 'downshift';
 import styles from './SearchBox.module.scss';
-import { Box, Input } from '@chakra-ui/react';
+import { Box, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { getTypeAheadOptions } from 'services/Listings.service';
 import { defaultFilterState, useSearchContext } from 'utils/context/SearchContext';
-import { CloseIcon } from '@chakra-ui/icons';
+import { CloseIcon, SearchIcon } from '@chakra-ui/icons';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { useRouter } from 'next/router';
 
@@ -148,35 +148,40 @@ export default function SearchBox() {
           return (
             <div className={styles.container}>
               <div className="m-auto w-1/2 mt-6">
-                <Input
-                  ref={inputRef}
-                  placeholder="Search..."
-                  className="w-full"
-                  onKeyUp={async (ev) => {
-                    if (ev.key === 'Enter') {
-                      closeMenu(); // if 'Enter', close menu.
-                      return;
-                    }
-                    const text = (ev.target as HTMLInputElement).value;
-                    if (text === selectedValue) {
-                      return;
-                    }
-                    if (text === '') {
-                      clearSearch();
-                    }
-                    if (timeoutId.current) {
-                      clearTimeout(timeoutId.current);
-                    }
-                    timeoutId.current = setTimeout(() => searchByText(text), 200);
-                  }}
-                  onFocus={() => openMenu()}
-                  onKeyDown={inputProps.onKeyDown}
-                  onChange={inputProps.onChange}
-                  onBlur={inputProps.onBlur}
-                  // {...getInputProps({
-                  //   onFocus: openMenu
-                  // })}
-                />
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none" size="xs">
+                    <SearchIcon className={styles.searchIcon} />
+                  </InputLeftElement>
+                  <Input
+                    ref={inputRef}
+                    placeholder="Search"
+                    className={styles.searchBox}
+                    onKeyUp={async (ev) => {
+                      if (ev.key === 'Enter') {
+                        closeMenu(); // if 'Enter', close menu.
+                        return;
+                      }
+                      const text = (ev.target as HTMLInputElement).value;
+                      if (text === selectedValue) {
+                        return;
+                      }
+                      if (text === '') {
+                        clearSearch();
+                      }
+                      if (timeoutId.current) {
+                        clearTimeout(timeoutId.current);
+                      }
+                      timeoutId.current = setTimeout(() => searchByText(text), 200);
+                    }}
+                    onFocus={() => openMenu()}
+                    onKeyDown={inputProps.onKeyDown}
+                    onChange={inputProps.onChange}
+                    onBlur={inputProps.onBlur}
+                    // {...getInputProps({
+                    //   onFocus: openMenu
+                    // })}
+                  />
+                </InputGroup>
                 {isOpen ? (
                   <ul
                     className={styles.dropPanel + ' ' + (options.length > 0 && styles.dropPanelOpened)}

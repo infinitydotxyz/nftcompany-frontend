@@ -1,13 +1,13 @@
 import React, { MouseEventHandler, useState } from 'react';
 import styles from './HoverMenuButton.module.scss';
-import { Menu, MenuButton, MenuList, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { Menu, MenuButton, MenuList, MenuItem, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 import { useWindowSize } from '@react-hook/window-size';
 
 type Props = {
   buttonContent?: JSX.Element;
   buttonTitle?: string;
-  children: JSX.Element[] | JSX.Element;
+  children?: JSX.Element[] | JSX.Element;
   shadow?: boolean;
   arrow?: boolean;
   disabled?: boolean;
@@ -35,7 +35,7 @@ export const HoverMenuButton = ({
       <div className={styles.buttonContent}>
         <div>{buttonTitle}</div>
 
-        {arrow && (
+        {arrow && children && (
           <div className={styles.arrow}>
             <TriangleDownIcon fontSize={10} />
           </div>
@@ -60,6 +60,35 @@ export const HoverMenuButton = ({
     buttonClass.push(styles.disabled);
   }
 
+  const menuButton = (
+    <MenuButton
+      onClick={onClick}
+      disabled={disabled}
+      className={buttonClass.join(' ')}
+      onMouseEnter={() => {
+        clearTimeout(menuListTimer);
+        if (!isOpen) {
+          onOpen();
+        }
+      }}
+      onMouseLeave={() => {
+        hoverTimer = setTimeout(onClose, delay);
+      }}
+    >
+      {buttonContent}
+    </MenuButton>
+  );
+
+  if (!children) {
+    return (
+      <div className={styles.main}>
+        <Menu isOpen={isOpen} id="hover-menu">
+          {menuButton}
+        </Menu>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.main}>
       {/* setting an id on menu prevents a console warning about non matching ids */}
@@ -67,23 +96,7 @@ export const HoverMenuButton = ({
       {/* Adding condition with mobile here to remove the bug with mobile menu*/}
       {width <= 650 ? (
         <Menu isLazy id="hover-menu">
-          <MenuButton
-            onClick={onClick}
-            disabled={disabled}
-            className={buttonClass.join(' ')}
-            onMouseEnter={() => {
-              clearTimeout(menuListTimer);
-
-              if (!isOpen) {
-                onOpen();
-              }
-            }}
-            onMouseLeave={() => {
-              hoverTimer = setTimeout(onClose, delay);
-            }}
-          >
-            {buttonContent}
-          </MenuButton>
+          {menuButton}
 
           <MenuList
             onClick={onClose}
@@ -93,29 +106,14 @@ export const HoverMenuButton = ({
             onMouseEnter={() => {
               clearTimeout(hoverTimer);
             }}
+            className={styles.menuList}
           >
             {children}
           </MenuList>
         </Menu>
       ) : (
         <Menu isLazy isOpen={isOpen} id="hover-menu">
-          <MenuButton
-            onClick={onClick}
-            disabled={disabled}
-            className={buttonClass.join(' ')}
-            onMouseEnter={() => {
-              clearTimeout(menuListTimer);
-
-              if (!isOpen) {
-                onOpen();
-              }
-            }}
-            onMouseLeave={() => {
-              hoverTimer = setTimeout(onClose, delay);
-            }}
-          >
-            {buttonContent}
-          </MenuButton>
+          {menuButton}
 
           <MenuList
             onClick={onClose}
@@ -125,6 +123,7 @@ export const HoverMenuButton = ({
             onMouseEnter={() => {
               clearTimeout(hoverTimer);
             }}
+            className={styles.menuList}
           >
             {children}
           </MenuList>

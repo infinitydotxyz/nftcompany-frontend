@@ -1,11 +1,9 @@
 import React from 'react';
-import { Input, Switch } from '@chakra-ui/react';
+import { Input, Switch, Text } from '@chakra-ui/react';
 import TabBar from 'components/TabBar/TabBar';
 import { Button } from '@chakra-ui/button';
 import { Spinner } from '@chakra-ui/spinner';
 import HelpTooltip from 'components/HelpTooltip/HelpTooltip';
-import { getOpenSeaportForChain } from 'utils/ethersUtil';
-import { apiGet } from 'utils/apiUtil';
 import { LISTING_TYPE } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import styles from './ListNFTModal.module.scss';
@@ -22,7 +20,7 @@ interface IProps {
 }
 
 const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
-  const { user, showAppError, showAppMessage } = useAppContext();
+  const { user, showAppError, showAppMessage, providerManager } = useAppContext();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [price, setPrice] = React.useState(0);
   const [endPriceShowed, setEndPriceShowed] = React.useState(false);
@@ -80,7 +78,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
         }
         obj.expirationTime = expiryTimeSeconds;
       }
-      await createSellOrder(obj);
+      await createSellOrder(obj, providerManager);
     } catch (e: any) {
       setIsSubmitting(false);
       err = e;
@@ -134,7 +132,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                   <div className={styles.fields}>
                     <div className={styles.left}>
                       <div>Ending price</div>
-                      <HelpTooltip text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found." />
+                      <HelpTooltip
+                        text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found."
+                        marginTop="4px"
+                      />
                     </div>
                     <div className={styles.middle}>
                       <Input
@@ -149,8 +150,11 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
 
                 <div className={styles.fields}>
                   <div className={styles.left}>
-                    <div>Include ending price</div>
-                    <HelpTooltip text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found." />
+                    <p>Include ending price</p>
+                    <HelpTooltip
+                      text="Adding an ending price will allow this listing to expire, or for the price to be reduced until a buyer is found."
+                      marginTop="4px"
+                    />
                   </div>
                   <div className={styles.middle}>
                     <Switch size="lg" onChange={(ev) => setEndPriceShowed(ev.target.checked)} />
@@ -162,7 +166,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                   <div className={styles.fields}>
                     <div className={styles.left}>
                       <div>Expiration time</div>
-                      <HelpTooltip text="Your listing will automatically end at this time. No need to cancel it!" />
+                      <HelpTooltip
+                        text="Your listing will automatically end at this time. No need to cancel it!"
+                        marginTop="4px"
+                      />
                     </div>
                     <div className={styles.middle}>
                       <DatePicker
@@ -184,7 +191,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 <div className={styles.fields}>
                   <div className={styles.left}>
                     <div>Minimum bid</div>
-                    <HelpTooltip text="Set your starting bid price. This starting bid price will be publicly visible. If you receive a bid above this starting value but below your reserve price, you can accept it at any time." />
+                    <HelpTooltip
+                      text="Set your starting bid price. This starting bid price will be publicly visible. If you receive a bid above this starting value but below your reserve price, you can accept it at any time."
+                      marginTop="4px"
+                    />
                   </div>
                   <div className={styles.middle}>
                     <Input
@@ -199,7 +209,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 <div className={styles.fields}>
                   <div className={styles.left}>
                     <div>Reserve price</div>
-                    <HelpTooltip text="Create a hidden limit by setting a reserve price. If you don’t receive any bids equal to or greater than your reserve, the auction will end without a sale. We require a minimum reserve price of ㆔1 or the equivalent value in your selected token." />
+                    <HelpTooltip
+                      text="Create a hidden limit by setting a reserve price. If you don’t receive any bids equal to or greater than your reserve, the auction will end without a sale. We require a minimum reserve price of ㆔1 or the equivalent value in your selected token."
+                      marginTop="4px"
+                    />
                   </div>
                   <div className={styles.middle}>
                     <Input
@@ -213,7 +226,10 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 <div className={styles.fields}>
                   <div className={styles.left}>
                     <div>Expiration time</div>
-                    <HelpTooltip text="Your auction will automatically end at this time and the highest bidder will win. No need to cancel it!" />
+                    <HelpTooltip
+                      text="Your auction will automatically end at this time and the highest bidder will win. No need to cancel it!"
+                      marginTop="4px"
+                    />
                   </div>
                   <div className={styles.middle}>
                     <DatePicker
@@ -234,7 +250,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 List NFT
               </Button>
 
-              <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose && onClose()}>
+              <Button disabled={isSubmitting} onClick={() => onClose && onClose()}>
                 Cancel
               </Button>
 

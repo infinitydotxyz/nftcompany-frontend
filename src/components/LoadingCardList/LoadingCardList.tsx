@@ -2,6 +2,7 @@ import React from 'react';
 // import ContentLoader from 'react-content-loader';
 import { Spinner } from '@chakra-ui/spinner';
 import styles from './LoadingCard.module.scss';
+import { renderSpinner } from 'utils/commonUtil';
 
 // const LoadingCard = (props: any) => (
 //   <ContentLoader
@@ -33,11 +34,7 @@ import styles from './LoadingCard.module.scss';
 // export default LoadingCardList;
 
 const LoadingCardList = () => {
-  return (
-    <div className={styles.spinner}>
-      <Spinner color="brandBlue" thickness="4px" height={26} width={26} emptyColor="gray.200" speed=".8s" />
-    </div>
-  );
+  return <div className={styles.spinner}>{renderSpinner()}</div>;
 };
 
 export default LoadingCardList;

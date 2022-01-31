@@ -6,12 +6,12 @@ import Image from 'next/image';
 import Layout from 'containers/layout';
 import { Box, Button } from '@chakra-ui/react';
 import { NextPage } from 'next';
-import styles from './home/Home.module.scss';
 import FaqAccordian from 'components/FaqAccordion/FaqAccordion';
 import { DarkmodeSwitch } from 'components/DarkmodeSwitch/DarkmodeSwitch';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import { CheckShieldIcon } from 'components/Icons/Icons';
 import router from 'next/router';
+import styles from './home/Home.module.scss';
 
 export default function Home() {
   // -------------------------------
@@ -20,29 +20,18 @@ export default function Home() {
       <div className={styles.containerAvg}>
         <div className={styles.topHeader}>
           <div className={styles.bigTitle}>
-            The NFT marketplace <br /> crypto needs is <div className={styles.bigTitleBlue}>here.</div>
+            The home for NFT <br /> communities
           </div>
 
           <div className={styles.subHeader}>
-            Earn rewards for your activity, list NFTs for free <br />
-            and pay low fees on sales.
+            Discover NFT communities, trade NFTs, and curate your favorite collections
           </div>
 
           <div className={styles.buttons}>
-            <Button
-              size="lg"
-              className={styles.stadiumButtonBlue}
-              colorScheme="gray"
-              onClick={() => router.push('/explore')}
-            >
-              Explore
+            <Button size="lg" className={styles.stadiumButtonMain} onClick={() => router.push('/explore')}>
+              Get started
             </Button>
-            <Button
-              size="lg"
-              className={styles.stadiumButton}
-              colorScheme="grayish"
-              onClick={() => router.push('/my-nfts')}
-            >
+            <Button size="lg" color="gray.400" className={styles.stadiumButton} onClick={() => router.push('/my-nfts')}>
               List NFTs
             </Button>
           </div>
@@ -57,18 +46,14 @@ export default function Home() {
       <div className={styles.containerAvg}>
         <div className={styles.infoHomepage}>
           <div className={styles.bigTitle}>
-            Infinity is fully compatible with OpenSea. It uses the same contracts, not forks.
-            <div className={[styles.bigTitleBlue, styles.alignCenter].join(' ')}>
-              <div>
-                No new smart contract risks. <CheckShieldIcon />
-              </div>
-            </div>
+            Infinity is a decentralized marketplace with a token for utility and governance
           </div>
 
           <div className={styles.checklist}>
+            <div className={styles.subHeader}>Benefits include:</div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>Low fees of 1.5%, go to a community-controlled treasury</div>
+              <div>0 fees</div>
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
@@ -78,11 +63,7 @@ export default function Home() {
             </div>
             <div className={styles.checklistRow}>
               <CheckCircleIcon className={styles.icon} />
-              <div>Earn governance tokens for activity on the marketplace</div>
-            </div>
-            <div className={styles.checklistRow}>
-              <CheckCircleIcon className={styles.icon} />
-              <div>Vote on all aspects of the marketplace and fee treasury as the token holder</div>
+              <div>Vote on all aspects of the marketplace as the token holder</div>
             </div>
           </div>
         </div>
@@ -253,8 +234,7 @@ export default function Home() {
                 },
                 {
                   question: 'How do I earn $NFT tokens?',
-                  answer:
-                    'We are airdropping $NFT tokens to OpenSea users. We have different volume tiers to ensure a wide distribution. The airdropped $NFT tokens become claimable after performing some activity on the Infinity marketplace - selling/buying. Head over to the rewards page to check out how many tokens you are eligible to earn.'
+                  answer: 'Please see our Medium for more details on this.'
                 },
                 {
                   question: 'How is Infinity different from other NFT marketplaces?',

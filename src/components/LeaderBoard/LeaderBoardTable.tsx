@@ -29,7 +29,7 @@ const getRows = (data: LeaderBoardEntry[]) => {
               <Tooltip label={'Go to link'} placement="top" hasArrow>
                 <ExternalLinkIcon
                   size="sm"
-                  color="brandBlue"
+                  color="brandColor"
                   aria-label="Go to link"
                   onClick={(e) => {
                     e.stopPropagation();

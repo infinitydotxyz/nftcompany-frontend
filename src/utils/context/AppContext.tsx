@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { getAccount, getChainId, getOpenSeaportForChain } from 'utils/ethersUtil';
+import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { getCustomMessage, getCustomExceptionMsg } from 'utils/commonUtil';
-import { deleteAuthHeaders } from 'utils/apiUtil';
 const { EventType } = require('../../../opensea/types');
 import { errorToast, infoToast, Toast } from 'components/Toast/Toast';
-import { ReactNode } from '.pnpm/@types+react@17.0.24/node_modules/@types/react';
+import { ProviderEvents, WalletType } from 'utils/providers/AbstractProvider';
+import { UserRejectException } from 'utils/providers/UserRejectException';
+import { ProviderManager } from 'utils/providers/ProviderManager';
 
 export type User = {
   account: string;
@@ -12,7 +13,6 @@ export type User = {
 
 export type AppContextType = {
   user: User | null;
-  signIn: () => void;
   signOut: () => void;
   userReady: boolean;
   chainId: string;
@@ -20,49 +20,130 @@ export type AppContextType = {
   showAppMessage: (msg: string) => void;
   headerPosition: number;
   setHeaderPosition: (bottom: number) => void;
+  connectWallet: (walletType: WalletType) => Promise<void>;
+  providerManager?: ProviderManager;
 };
 
 const AppContext = React.createContext<AppContextType | null>(null);
 
-// let lastError = '';
 let isListenerAdded = false; // set up event listeners once.
 
 export function AppContextProvider({ children }: any) {
   const [user, setUser] = React.useState<User | null>(null);
   const [userReady, setUserReady] = React.useState(false);
-  const [chainId, setChainId] = React.useState('');
+  const [chainId, setChainId] = React.useState('1');
   const [headerPosition, setHeaderPosition] = React.useState(0);
-  const showAppError = (message: ReactNode) => {
+  const showAppError = (message: React.ReactNode) => {
     const msg = getCustomExceptionMsg(message);
     errorToast(msg);
   };
-  const showAppMessage = (message: ReactNode) => infoToast(message);
+  const [providerManager, setProviderManager] = React.useState<ProviderManager | undefined>();
 
-  // const connectMetaMask = async () => {
-  //   // show MetaMask's errors:
-  //   const onError = (error: any) => {
-  //     const errorMsg = error?.message;
-  //     if (errorMsg === lastError) {
-  //       return; // to avoid showing the same error message so many times.
-  //     }
-  //     if (errorMsg.indexOf('The method does not exist') >= 0) {
-  //       return; // TODO: ignore this error for now.
-  //     }
-  //     lastError = errorMsg;
-  //     showToast(toast, 'error', `MetaMask RPC Error: ${errorMsg}` || 'MetaMask RPC Error');
-  //   };
-
-  //   const res = await initEthers({ onError }); // returns provider
-  //   if (res && res.getSigner) {
-  //     await saveAuthHeaders(await res.getSigner().getAddress());
-  //   } else {
-  //     showAppError('Failed to connect');
-  //   }
-  // };
+  const showAppMessage = (message: React.ReactNode) => infoToast(message);
 
   React.useEffect(() => {
-    // connectMetaMask(); // don't auto connect on page load.
+    let isActive = true;
+    ProviderManager.getInstance().then((providerManagerInstance) => {
+      if (isActive) {
+        setProviderManager(providerManagerInstance);
 
+        providerManagerInstance
+          .signIn()
+          .then(() => {
+            setUser({ account: providerManagerInstance.account });
+            const chainId = providerManagerInstance.chainId ?? 1;
+            setChainId(`${chainId}`);
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            setUserReady(true);
+          });
+      }
+    });
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
+  const connectWallet = async (walletType: WalletType) => {
+    if (providerManager?.connectWallet) {
+      try {
+        await providerManager.connectWallet(walletType);
+        await providerManager.signIn();
+        setUser({ account: providerManager.account ?? '' });
+        const chainId = providerManager.chainId ?? 1;
+        setChainId(`${chainId}`);
+        setUserReady(true);
+      } catch (err: Error | any) {
+        console.log(err);
+        if (err instanceof UserRejectException) {
+          showAppError(err.message);
+        }
+
+        setUserReady(true);
+      }
+    } else {
+      console.log(`Provider not ready yet`);
+    }
+  };
+
+  React.useEffect(() => {
+    const handleNetworkChange = (chainId: number) => {
+      setChainId(`${chainId}`);
+      window.location.reload();
+    };
+
+    let isChangingAccount = false;
+    const handleAccountChange = async (account: string) => {
+      isChangingAccount = true;
+      window.onfocus = async () => {
+        if (isChangingAccount) {
+          setTimeout(async () => {
+            isChangingAccount = false;
+            try {
+              await providerManager?.signIn();
+              setUser({ account: providerManager?.account ?? '' });
+              const chainId = providerManager?.chainId ?? 1;
+              setChainId(`${chainId}`);
+            } catch (err) {
+              if (err instanceof UserRejectException) {
+                showAppError(err.message);
+                return;
+              }
+              console.error(err);
+            }
+            window.location.reload();
+          }, 500);
+        }
+      };
+    };
+
+    const onConnect = () => {
+      return;
+    };
+
+    const onDisconnect = () => {
+      signOut();
+    };
+
+    if (providerManager) {
+      providerManager.on(ProviderEvents.AccountsChanged, handleAccountChange);
+      providerManager.on(ProviderEvents.ChainChanged, handleNetworkChange);
+      providerManager.on(ProviderEvents.Connect, onConnect);
+      providerManager.on(ProviderEvents.Disconnect, onDisconnect);
+    }
+
+    return () => {
+      providerManager?.removeListener?.(ProviderEvents.AccountsChanged, handleAccountChange);
+      providerManager?.removeListener?.(ProviderEvents.ChainChanged, handleNetworkChange);
+      providerManager?.removeListener?.(ProviderEvents.Connect, onConnect);
+      providerManager?.removeListener?.(ProviderEvents.Disconnect, onDisconnect);
+    };
+  }, [providerManager]);
+
+  React.useEffect(() => {
     const listener = (eventName: any, data: any) => {
       const msg = getCustomMessage(eventName, data);
       if (msg === null) {
@@ -71,15 +152,16 @@ export function AppContextProvider({ children }: any) {
       showAppMessage(msg);
     };
 
-    // const debouncedListener = debounce((eventName: any, data: any) => listener(eventName, data), 300); // didn't work.
-
+    const subscriptions: any[] = [];
     // listen to all OpenSea's "EventType" events to show them with showAppMessage:
-    if (user?.account && !isListenerAdded) {
+    if (user?.account && !isListenerAdded && providerManager) {
       isListenerAdded = true;
-      const seaport = getOpenSeaportForChain(chainId);
+      const seaport = getOpenSeaportForChain(chainId, providerManager);
       Object.values(EventType).forEach((eventName: any) => {
-        seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
+        const subscription = seaport.addListener(eventName, (data: any) => listener(eventName, data), true);
+        subscriptions.push(subscription);
       });
+
       // for testing: simulate OpenSea event:
       // const emitter = seaport.getEmitter();
       // console.log('emitter', emitter);
@@ -88,34 +170,31 @@ export function AppContextProvider({ children }: any) {
       //   accountAddress: '0x123',
       //   transactionHash: '0x67e01ca68c5ef37ebea8889da25849e3e5efcde6ca7fbef14fb1bc966ca4b9d0'
       // });
+      return () => {
+        for (const subscription of subscriptions) {
+          seaport.removeListener(subscription);
+        }
+      };
     }
   }, [user]);
 
-  const signIn = async (): Promise<void> => {
-    if (window.ethereum) {
-      setUser({ account: await getAccount() });
-      setChainId(await getChainId());
-    }
-
-    // views can avoid drawing until a login attempt was made to avoid a user=null and user='xx' refresh
-    setUserReady(true);
-  };
-
   const signOut = async (): Promise<void> => {
     setUser(null);
-    deleteAuthHeaders();
+    providerManager?.disconnect();
+    window.location.reload();
   };
 
   const value: AppContextType = {
     user,
-    signIn,
     signOut,
     userReady,
     chainId,
     showAppError,
     showAppMessage,
     headerPosition,
-    setHeaderPosition
+    setHeaderPosition,
+    connectWallet,
+    providerManager
   };
 
   return (

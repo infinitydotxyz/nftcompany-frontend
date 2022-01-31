@@ -1,16 +1,16 @@
 .hoverButton {
   padding: 8px 14px;
+  padding-top: 4px;
   border-radius: 100px;
-  color: #333;
+  color: var(--chakra-colors-brandColor);
   cursor: pointer;
-  font-weight: bold;
 
   :global(body.chakra-ui-dark) & {
     color: #eee;
   }
 
   &.menuOpen {
-    background-color: var(--chakra-colors-brandBlue, red);
+    background-color: var(--chakra-colors-brandColor);
     color: #fff;
   }
 
@@ -29,21 +29,25 @@
   border: 1px solid #eee;
 
   :global(body.chakra-ui-dark) & {
-    border: 1px solid #333;
+    border: 1px solid var(--chakra-colors-brandColor);
 
     &.menuOpen {
-      background-color: var(--chakra-colors-brandBlue, red);
+      background-color: var(--chakra-colors-brandColor);
       color: #fff;
     }
 
     background-color: var(--chakra-colors-brandGray, red);
-    color: #333;
+    color: var(--chakra-colors-brandColor);
   }
 }
 
 .buttonContent {
   display: flex;
   white-space: nowrap;
+
+  @media screen and (max-width: 500px) {
+    font-size: 0.8rem;
+  }
 
   // switch svgs to white
   img {
@@ -58,5 +62,12 @@
     .menuOpen & {
       color: #fff;
     }
+  }
+}
+
+.menuList {
+  button {
+    padding-bottom: 0.6rem !important;
+    align-items: flex-end !important;
   }
 }

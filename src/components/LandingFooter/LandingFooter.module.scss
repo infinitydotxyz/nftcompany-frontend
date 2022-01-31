@@ -34,9 +34,12 @@
     color: #071013;
   }
 
-  .socials a {
-    display: inline-block;
-    margin: 0 8px;
+  .socials {
+    display: flex;
+    a {
+      display: inline-block;
+      margin: 0 8px;
+    }
   }
 
   @media (max-width: 500px) {

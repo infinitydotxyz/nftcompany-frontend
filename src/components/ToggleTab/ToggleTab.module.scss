@@ -1,0 +1,41 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+
+  width: fit-content;
+
+  background-color: #e5e5e5;
+  border-radius: 8px;
+  margin: 8px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  cursor: pointer;
+}
+
+.option {
+  padding: 8px;
+  padding-top: 4px;
+  padding-bottom: 8px;
+  background-color: #e5e5e5;
+  flex-basis: 0;
+  flex-grow: 1;
+  border-radius: 8px;
+  width: 100px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.sm {
+  width: 80px;
+  font-size: 14px;
+}
+
+.selected {
+  background-color: #000000;
+  color: #ffffff;
+}

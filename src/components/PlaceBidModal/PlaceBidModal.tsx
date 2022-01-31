@@ -12,6 +12,7 @@ import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { getToken, stringToFloat } from 'utils/commonUtil';
 import { DatePicker } from 'components/DatePicker/DatePicker';
 import { LISTING_TYPE } from 'utils/constants';
+import { fetchVerifiedBonusReward } from 'components/ListNFTModal/listNFT';
 
 const isServer = typeof window === 'undefined';
 
@@ -21,7 +22,7 @@ interface IProps {
 }
 
 const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
-  const { user, showAppError, showAppMessage } = useAppContext();
+  const { user, showAppError, showAppMessage, providerManager } = useAppContext();
   const [isBuying, setIsBuying] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [expiryTimeSeconds, setExpiryTimeSeconds] = React.useState(0);
@@ -30,6 +31,15 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
   const [offerPrice, setOfferPrice] = React.useState(0);
   const token = getToken(data.order?.metadata?.listingType, data.order?.metadata?.chainId);
   const listingType = data.order?.metadata?.listingType;
+  const [backendChecks, setBackendChecks] = React.useState({});
+
+  React.useEffect(() => {
+    const fetchBackendChecks = async () => {
+      const result = await fetchVerifiedBonusReward(data.tokenAddress ?? '');
+      setBackendChecks({ hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified });
+    };
+    fetchBackendChecks();
+  }, []);
 
   const loadOrder = useCallback(async () => {
     let orderParams: any;
@@ -50,7 +60,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     }
 
     try {
-      const seaport = getOpenSeaportForChain(data?.chainId);
+      const seaport = getOpenSeaportForChain(data?.chainId, providerManager);
       const order: Order = await seaport.api.getOrder(orderParams);
       setOrder(order);
     } catch (err: any) {
@@ -68,7 +78,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
       // another user or cancelled by the creator
       if (order) {
         setIsBuying(true);
-        const seaport = getOpenSeaportForChain(data?.chainId);
+        const seaport = getOpenSeaportForChain(data?.chainId, providerManager);
 
         const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
           order: order,
@@ -117,7 +127,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
     }
     try {
       setIsSubmitting(true);
-      const seaport = getOpenSeaportForChain(data?.chainId);
+      const seaport = getOpenSeaportForChain(data?.chainId, providerManager);
       seaport
         .createBuyOrder({
           asset: {
@@ -128,7 +138,8 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
           accountAddress: user!.account,
           startAmount: offerPrice,
           assetDetails: data,
-          expirationTime: expiryTimeSeconds
+          expirationTime: expiryTimeSeconds,
+          ...backendChecks
         })
         .then(() => {
           showAppMessage('Offer sent successfully.');
@@ -199,7 +210,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                     <PriceBox
                       justifyRight
                       price={data.metadata?.basePriceInEth}
-                      token='WETH'
+                      token="WETH"
                       expirationTime={data?.expirationTime}
                     />
                   </div>
@@ -247,7 +258,7 @@ const PlaceBidModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 <Button type="submit" disabled={isSubmitting}>
                   Make an Offer
                 </Button>
-                <Button colorScheme="gray" disabled={isSubmitting} onClick={() => onClose && onClose()}>
+                <Button disabled={isSubmitting} variant="outline" onClick={() => onClose && onClose()}>
                   Cancel
                 </Button>
 

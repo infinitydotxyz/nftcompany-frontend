@@ -4,25 +4,28 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import CardList from 'components/Card/CardList';
 import CancelListingModal from 'components/CancelListingModal/CancelListingModal';
-import { LISTING_TYPE, NULL_ADDRESS } from 'utils/constants';
+import { LISTING_TYPE, NULL_ADDRESS, PAGE_NAMES } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { CardData, WyvernSchemaName } from 'types/Nft.interface';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Box, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import styles from './ListNFTs.module.scss';
 import { useUserListings } from 'hooks/useUserListings';
 import { createSellOrder, fetchVerifiedBonusReward, SellOrderProps } from 'components/ListNFTModal/listNFT';
 import { getPaymentTokenAddress } from 'utils/commonUtil';
 import { weiToEther } from 'utils/ethersUtil';
 import { NftAction } from 'types';
-import { ListingSource } from 'utils/context/SearchContext';
+import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
 import router from 'next/router';
+import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
+import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 
 export default function ListNFTs() {
-  const { user, showAppError, showAppMessage } = useAppContext();
+  const { user, showAppError, showAppMessage, providerManager } = useAppContext();
   const [tabIndex, setTabIndex] = useState(0);
   const [deleteModalItem, setDeleteModalItem] = useState<CardData | null>(null);
+  const [filter, setFilter] = useState<SearchFilter | null>(null);
 
   useEffect(() => {
     if (router.query.tab === 'opensea') {
@@ -100,7 +103,7 @@ export default function ListNFTs() {
         obj.buyerAddress = order.taker;
       }
 
-      await createSellOrder(obj);
+      await createSellOrder(obj, providerManager);
     } catch (e: any) {
       err = e;
       console.error('ERROR: ', e, '   ', expirationTime);
@@ -112,7 +115,7 @@ export default function ListNFTs() {
   };
 
   const Listings = (props: { source: ListingSource }) => {
-    const { listings, isFetching, fetchMore, currentPage, dataLoaded } = useUserListings(props.source);
+    const { listings, isFetching, fetchMore, currentPage, dataLoaded } = useUserListings(props.source, filter);
     const action = props.source === ListingSource.OpenSea ? NftAction.ImportOrder : NftAction.CancelListing;
 
     return (
@@ -125,6 +128,7 @@ export default function ListNFTs() {
           <CardList
             data={listings}
             action={action}
+            userAccount={user?.account}
             onClickAction={async (item, action) => {
               if (action === NftAction.ImportOrder) {
                 importOrder(item);
@@ -134,7 +138,6 @@ export default function ListNFTs() {
             }}
           />
         </div>
-
         {dataLoaded && (
           <FetchMore
             currentPage={currentPage}
@@ -157,9 +160,11 @@ export default function ListNFTs() {
         <div className="page-container">
           <div className="section-bar">
             <div className="tg-title">Listed NFTs</div>
+            <Spacer />
+            <SortMenuButton filterState={filter} setFilterState={setFilter} disabled={tabIndex === 1} />
           </div>
 
-          <div className="center">
+          <Box className="center">
             <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
               <TabList className={styles.tabList}>
                 <Tab>Infinity</Tab>
@@ -168,7 +173,21 @@ export default function ListNFTs() {
 
               <TabPanels>
                 <TabPanel>
-                  <Listings source={ListingSource.Infinity} />
+                  <Box display="flex" flexDirection={'row'} width="100%">
+                    <Box className="filter-container">
+                      <FilterDrawer
+                        pageName={PAGE_NAMES.LISTED_NFTS}
+                        renderContent={true}
+                        showCollection={true}
+                        onChange={(filter: SearchFilter) => {
+                          setFilter(filter);
+                        }}
+                      />
+                    </Box>
+                    <Box>
+                      <Listings source={ListingSource.Infinity} />
+                    </Box>
+                  </Box>
                 </TabPanel>
 
                 {tabIndex === 1 && (
@@ -178,7 +197,7 @@ export default function ListNFTs() {
                 )}
               </TabPanels>
             </Tabs>
-          </div>
+          </Box>
         </div>
       </div>
 

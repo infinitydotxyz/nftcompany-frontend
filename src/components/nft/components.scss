@@ -216,15 +216,19 @@
   }
 }
 
-.page-wrapper {
-  margin-top: 5rem;
-}
 .section-bar {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  padding-top: 40px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgb(228, 228, 228);
+
+  @media screen and (max-width: 500px) {
+    padding-top: 0px;
+  }
 
   .left {
     display: flex;
@@ -278,7 +282,7 @@
 
       &:hover,
       &.active {
-        background-color: var(--chakra-colors-brandBlue, red);
+        background-color: var(--chakra-colors-brandColor, red);
         box-shadow: 0px 8px 12px rgba(64, 71, 255, 0.15);
 
         color: #fff;
@@ -291,6 +295,23 @@
 }
 .can-click {
   cursor: pointer;
+}
+
+.filter-container {
+  max-width: 260px;
+  margin-right: 40px;
+
+  @media only screen and (max-width: 1024px) {
+    width: 0; // for small screen: no placeholder width. Otherwise, the cards will look squeezed.
+  }
+}
+
+.content-container {
+  width: calc(100% - 260px);
+
+  @media only screen and (max-width: 1024px) {
+    width: 100%;
+  }
 }
 
 .filter-panel-explore-page {

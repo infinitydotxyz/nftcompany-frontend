@@ -1,6 +1,7 @@
 .container {
   display: flex;
   position: relative;
+  width: 260px;
 
   & > div {
     flex: 1;
@@ -8,7 +9,6 @@
   }
   & > div > input {
     border: 1px solid #ccc;
-    padding: 6px 14px;
     width: 100%;
   }
 
@@ -18,6 +18,8 @@
     right: 12px;
     height: 100%;
     z-index: 1;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -37,7 +39,7 @@
     color: var(--text-primary);
   }
   li[aria-selected='true'] {
-    background-color: var(--chakra-colors-brandBlue, red);
+    background-color: var(--chakra-colors-brandColor, red);
     color: #eee;
   }
 }
@@ -53,5 +55,40 @@
 }
 
 .resultRow {
-  padding: 5px 10px;
+  padding: 5px 0px;
+}
+
+.checkBox input[type='checkbox'] {
+  min-width: 16px;
+  min-height: 16px;
+  margin-right: 2px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  border: 1px solid var(--chakra-colors-brandColor);
+  border-radius: var(--chakra-radii-sm);
+  box-shadow: none;
+}
+
+.checkBox input[type='checkbox']:before {
+  content: '';
+  display: block;
+}
+
+.checkBox input[type='checkbox']:checked:before {
+  width: 4px;
+  height: 9px;
+  margin: 2px auto;
+  border-bottom: 2px solid var(--chakra-colors-brandColor);
+  border-right: 2px solid var(--chakra-colors-brandColor);
+  transform: rotate(45deg);
+}
+
+.checkBox input[type='checkbox']:checked:after {
+  color: var(--chakra-colors-brandColor);
+}
+
+.checkBox {
+  cursor: pointer;
 }

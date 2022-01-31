@@ -88,7 +88,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
   const _subscribeSection = showSubscribeSection ? (
     <div className={styles.subscribe}>
       <div>
-        <Link color="brandBlue" onClick={toggleSubscribe}>
+        <Link color="brandColor" onClick={toggleSubscribe}>
           {subscribed ? 'Unsubscribe' : 'Subscribe'}
         </Link>
         {` if you ${subscribed ? 'do not' : ''} want to receive emails about your account activity.`}
@@ -113,6 +113,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
             </Link>
             <Box flex={1} />
             <IconButton
+              variant="outline"
               colorScheme="gray"
               aria-label="Copy"
               icon={<CopyIcon />}
@@ -158,7 +159,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }: Props) => {
               {content}
               <div className={styles.buttons}>
                 <Button onClick={() => saveEmail()}>Save</Button>
-                <Button colorScheme="gray" onClick={onClose}>
+                <Button variant="outline" onClick={onClose}>
                   Cancel
                 </Button>
               </div>

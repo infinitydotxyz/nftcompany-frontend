@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useColorMode, Tabs, TabPanels, TabPanel, TabList, Tab } from '@chakra-ui/react';
 import { PurchaseAccordionItem, SingleAccordion } from 'components/PurchaseAccordion/SingleAccordion';
 import { LargeIcons } from 'components/Icons/MenuIcons';
-import CollectionEvents from 'components/CollectionEvents/CollectionEvents';
+import CollectionEvents, { EventType } from 'components/CollectionEvents/CollectionEvents';
 
 import styles from './NFTEvents.module.scss';
 
@@ -30,35 +30,17 @@ function NFTEvents({ address, tokenId }: NFTEventsProps) {
             <TabPanels>
               <TabPanel>
                 {tabIndex === 0 && (
-                  <CollectionEvents
-                    address={address}
-                    tokenId={tokenId}
-                    eventType="successful"
-                    activityType="sale"
-                    pageType="nft"
-                  />
+                  <CollectionEvents address={address} tokenId={tokenId} eventType={EventType.Sale} pageType="nft" />
                 )}
               </TabPanel>
               <TabPanel>
                 {tabIndex === 1 && (
-                  <CollectionEvents
-                    address={address}
-                    tokenId={tokenId}
-                    eventType="transfer"
-                    activityType="transfer"
-                    pageType="nft"
-                  />
+                  <CollectionEvents address={address} tokenId={tokenId} eventType={EventType.Transfer} pageType="nft" />
                 )}
               </TabPanel>
               <TabPanel>
                 {tabIndex === 2 && (
-                  <CollectionEvents
-                    address={address}
-                    tokenId={tokenId}
-                    eventType="bid_entered"
-                    activityType="offer"
-                    pageType="nft"
-                  />
+                  <CollectionEvents address={address} tokenId={tokenId} eventType={EventType.Offer} pageType="nft" />
                 )}
               </TabPanel>
             </TabPanels>

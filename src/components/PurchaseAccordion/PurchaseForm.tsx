@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import styles from './scss/PurchaseForm.module.scss';
 import { CardData, Order } from 'types/Nft.interface';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';
 import { apiPost } from 'utils/apiUtil';
-import { Button, Spacer } from '@chakra-ui/react';
+import { Button, Spacer, Box } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import { getToken } from 'utils/commonUtil';
 import { Label, Title } from 'components/Text/Text';
 import { LISTING_TYPE } from 'utils/constants';
+import styles from './scss/PurchaseForm.module.scss';
 
 interface IProps {
   data: CardData;
@@ -18,7 +18,7 @@ interface IProps {
 }
 
 export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IProps) => {
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, providerManager } = useAppContext();
   const [isBuying, setIsBuying] = useState(false);
   const token = getToken(data.order?.metadata?.listingType, data.order?.metadata?.chainId);
   const listingType = order.metadata?.listingType;
@@ -29,7 +29,7 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
       // another user or cancelled by the creator
       if (order) {
         setIsBuying(true);
-        const seaport = getOpenSeaportForChain(data?.chainId);
+        const seaport = getOpenSeaportForChain(data?.chainId, providerManager);
 
         const { txnHash, salePriceInEth, feesInEth } = await seaport.fulfillOrder({
           order: order,
@@ -66,7 +66,7 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
 
   if (listingType !== LISTING_TYPE.ENGLISH_AUCTION) {
     return (
-      <div>
+      <Box mt={2}>
         <Title text="Buy this NFT for the price shown" />
 
         {data.metadata?.basePriceInEth && (
@@ -95,7 +95,7 @@ export const PurchaseForm: React.FC<IProps> = ({ onComplete, data, order }: IPro
             Buy Now
           </Button>
         </div>
-      </div>
+      </Box>
     );
   }
 

@@ -1,4 +1,5 @@
 import { ExternalLinkIcon, CloseIcon, CopyIcon } from '@chakra-ui/icons';
+import { BsGraphUp } from 'react-icons/bs';
 
 import {
   ListIcon,
@@ -14,7 +15,8 @@ import {
   ShoppingBagIcon,
   SignInIcon,
   ExploreIcon,
-  SortIcon
+  SortIcon,
+  TrendingIcon
 } from 'components/Icons/Icons';
 
 export class MenuIcons {
@@ -56,6 +58,7 @@ export class MenuIcons {
   static sortIcon = MenuIcons.wrap(<SortIcon boxSize={MenuIcons.bs} />);
   static collectionsIcon = MenuIcons.wrap(<CollectionsIcon boxSize={MenuIcons.bs} />);
   static exploreIcon = MenuIcons.wrap(<ExploreIcon boxSize={MenuIcons.bs} />);
+  static trendingIcon = MenuIcons.wrap(<TrendingIcon boxSize={MenuIcons.bs} />);
 
   // these are too large at bs, so use sbs
   static closeIcon = MenuIcons.wrap(<CloseIcon boxSize={MenuIcons.sbs} />);
@@ -100,6 +103,7 @@ export class LargeIcons {
   static sortIcon = LargeIcons.wrap(<SortIcon boxSize={LargeIcons.bs} />);
   static collectionsIcon = LargeIcons.wrap(<CollectionsIcon boxSize={LargeIcons.bs} />);
   static exploreIcon = LargeIcons.wrap(<ExploreIcon boxSize={LargeIcons.bs} />);
+  static trendingIcon = LargeIcons.wrap(<TrendingIcon boxSize={LargeIcons.bs} />);
 
   // these are too large at bs, so use sbs
   static closeIcon = LargeIcons.wrap(<CloseIcon boxSize={LargeIcons.sbs} />);

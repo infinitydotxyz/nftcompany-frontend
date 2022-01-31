@@ -28,6 +28,7 @@ export type SearchFilter = {
   limit: string;
   user: string;
   id: string;
+  chainId: string;
   tokenId: string;
   tokenAddress: string;
   tokenAddresses?: string[];
@@ -39,6 +40,7 @@ export type SearchFilter = {
   listType?: '' | 'fixedPrice' | 'englishAuction' | 'dutchAuction';
   traitType?: string;
   traitValue?: string;
+  pageName?: string;
 };
 
 export const defaultSearchState: SearchState = {
@@ -64,6 +66,7 @@ export const defaultFilterState: SearchFilter = {
   startAfterUser: '',
   id: '',
   user: '',
+  chainId: '',
   tokenAddress: '',
   tokenId: '',
   startAfterSearchTitle: '',
@@ -72,7 +75,8 @@ export const defaultFilterState: SearchFilter = {
   listType: '',
   collectionIds: '',
   traitType: '',
-  traitValue: ''
+  traitValue: '',
+  pageName: ''
 };
 
 const SearchContext = React.createContext({} as any);
@@ -96,3 +100,8 @@ export type SearchContextType = {
 export function useSearchContext(): SearchContextType {
   return useContext(SearchContext);
 }
+
+export const getDefaultFilterState = (existingFilterState: SearchFilter) => {
+  const newFilter: SearchFilter = { ...defaultFilterState, ...existingFilterState };
+  return newFilter;
+};

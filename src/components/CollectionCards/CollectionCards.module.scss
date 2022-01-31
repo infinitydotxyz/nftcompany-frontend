@@ -17,8 +17,8 @@
   flex-direction: center;
 }
 
-$innerHeight: 400px;
-$outerHeight: 400px;
+$innerHeight: 320px;
+$outerHeight: 320px;
 
 .card {
   position: absolute;
@@ -76,7 +76,7 @@ $outerHeight: 400px;
   }
 
   .stadiumButtonBlue {
-    background-color: var(--chakra-colors-brandBlue, red);
+    background-color: var(--chakra-colors-brandColor, red);
     color: white;
     border-radius: 100px;
     &:hover {
@@ -101,11 +101,10 @@ $outerHeight: 400px;
 
     .collectionRow {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
     }
   }
 }
-
 
 .outOfViewCard {
   height: $outerHeight;
@@ -150,6 +149,7 @@ $outerHeight: 400px;
     top: 8px;
     left: 16px;
     position: relative;
+    cursor: pointer;
 
     &:hover {
       .cardControls {
@@ -159,8 +159,8 @@ $outerHeight: 400px;
     }
   }
 
-.featuredCard {
-  background-image: linear-gradient(140deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(45, 185, 255, 0.2) 75%);
+  .featuredCard {
+    background-image: linear-gradient(140deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(40, 180, 255, 0.3) 75%);
   }
 
   .cardControls {
@@ -179,7 +179,7 @@ $outerHeight: 400px;
     .cardButton {
       min-width: 140px;
       margin: 0 10px 10px 10px;
-      background-color: var(--chakra-colors-brandBlue, red);
+      background-color: var(--chakra-colors-brandColor, red);
       padding: 10px 20px;
       text-align: center;
       border-radius: 24px;

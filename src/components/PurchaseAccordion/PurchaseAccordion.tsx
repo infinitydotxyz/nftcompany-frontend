@@ -31,7 +31,7 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
       setOrder(data.order);
     } else {
       let orderParams: any;
-
+      const owner = data.owner ?? data.metadata?.asset?.owner;
       if (data.id && data.maker) {
         orderParams = {
           maker: data.maker,
@@ -40,7 +40,7 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
         };
       } else {
         orderParams = {
-          maker: data.owner,
+          maker: owner,
           tokenId: data.tokenId,
           tokenAddress: data.tokenAddress,
           side: 1 // sell order
@@ -63,6 +63,7 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
   }, [loadOrder]);
 
   let showPurchase = false;
+  let showBuyNow = false;
 
   switch (action) {
     case NftAction.CancelListing:
@@ -73,8 +74,18 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
       break;
     case NftAction.BuyNft:
     default:
-      if (data.owner && !addressesEqual(data.owner, user?.account)) {
-        showPurchase = true;
+      showPurchase = true;
+      const owner = data.owner ?? data.metadata?.asset?.owner;
+      if (owner && addressesEqual(owner, user?.account)) {
+        showPurchase = false;
+      }
+
+      /**
+       * to check if the NFT is for sale we check if
+       * basePriceInEth is defined
+       */
+      if (typeof (data.order?.metadata as any)?.basePriceInEth === 'number') {
+        showBuyNow = true;
       }
 
       break;
@@ -94,11 +105,13 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
         <>
           <ExtraSpace />
 
-          <SingleAccordion>
-            <PurchaseAccordionItem dark={dark} title="Buy Now" icon={LargeIcons.moneyIcon}>
-              <PurchaseForm order={order} {...props} />
-            </PurchaseAccordionItem>
-          </SingleAccordion>
+          {showBuyNow && (
+            <SingleAccordion>
+              <PurchaseAccordionItem dark={dark} title="Buy Now" icon={LargeIcons.moneyIcon}>
+                <PurchaseForm order={order} {...props} />
+              </PurchaseAccordionItem>
+            </SingleAccordion>
+          )}
 
           <ExtraSpace />
 
