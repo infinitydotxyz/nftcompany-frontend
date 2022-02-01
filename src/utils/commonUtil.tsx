@@ -374,12 +374,22 @@ export const getChainScannerBase = (chainId?: string): string | null => {
 
 export const getNftDataSource = (chainId?: string): number => {
   if (chainId === '1') {
-    return NFT_DATA_SOURCES.OPENSEA;
+    return NFT_DATA_SOURCES.UNMARSHAL;
   } else if (chainId === '137') {
     return NFT_DATA_SOURCES.UNMARSHAL;
   }
   // default
   return NFT_DATA_SOURCES.OPENSEA;
+};
+
+export const getPageOffsetForAssetQuery = (source: number, currentPage: number, itemsPerPage: number): number => {
+  if (source === NFT_DATA_SOURCES.OPENSEA) {
+    return currentPage * itemsPerPage;
+  } else if (source === NFT_DATA_SOURCES.UNMARSHAL) {
+    return currentPage;
+  }
+  // default
+  return currentPage;
 };
 
 export const renderSpinner = (props?: any) => (
