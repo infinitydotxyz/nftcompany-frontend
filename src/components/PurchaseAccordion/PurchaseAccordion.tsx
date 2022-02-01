@@ -16,6 +16,7 @@ import { PriceHistory } from './PriceHistory';
 
 interface Props {
   data: CardData;
+  listings: CardData[];
   action: string;
   onComplete: () => void;
 }
@@ -127,7 +128,7 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
       <ExtraSpace />
       <SingleAccordion>
         <PurchaseAccordionItem dark={dark} title="Listing History" icon={LargeIcons.imageIcon}>
-          <PriceHistory {...props} />
+          <PriceHistory listings={props.listings || []} />
         </PurchaseAccordionItem>
       </SingleAccordion>
     </div>
