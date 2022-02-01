@@ -12,7 +12,8 @@ export const PAGE_NAMES = {
   LISTED_NFTS: 'listed-nfts',
   USER_NFTS: 'user-nfts',
   OFFERS_MADE: 'offers-made',
-  OFFERS_RECEIVED: 'offers-received'
+  OFFERS_RECEIVED: 'offers-received',
+  COLLECTION: 'collection'
 };
 
 export const LISTING_TYPE = {
