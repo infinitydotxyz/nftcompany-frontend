@@ -9,7 +9,14 @@ import { ITEMS_PER_PAGE, NFT_DATA_SOURCES, PAGE_NAMES } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
-import { transformOpenSea, transformCovalent, getNftDataSource, transformUnmarshal, getPageOffsetForAssetQuery } from 'utils/commonUtil';
+import {
+  transformAlchemy,
+  transformOpenSea,
+  transformCovalent,
+  getNftDataSource,
+  transformUnmarshal,
+  getPageOffsetForAssetQuery
+} from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
 import { NftAction } from 'types';
 import { Box } from '@chakra-ui/layout';
@@ -25,6 +32,7 @@ export default function MyNFTs() {
   const [listModalItem, setListModalItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [alchemyPageKey, setAlchemyPageKey] = useState('');
 
   const fetchData = async () => {
     if (!user || !user?.account || !chainId) {
@@ -41,6 +49,7 @@ export default function MyNFTs() {
       limit: ITEMS_PER_PAGE,
       source,
       chainId,
+      pageKey: alchemyPageKey,
       ...filter
     });
     if (error) {
@@ -54,11 +63,17 @@ export default function MyNFTs() {
         return transformCovalent(item, user?.account, chainId);
       } else if (source === NFT_DATA_SOURCES.UNMARSHAL) {
         return transformUnmarshal(item, user?.account, chainId);
+      } else if (source === NFT_DATA_SOURCES.ALCHEMY) {
+        return transformAlchemy(item, user?.account, chainId);
       }
     });
     setIsFetching(false);
     setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);
+    // alchemy pagination
+    if (result?.pageKey) {
+      setAlchemyPageKey(result.pageKey);
+    }
   };
 
   React.useEffect(() => {

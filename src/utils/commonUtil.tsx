@@ -13,6 +13,7 @@ import {
 } from './constants';
 import { Spinner } from '@chakra-ui/spinner';
 import { UnmarshalNFTAsset } from 'types/rewardTypes';
+import { AlchemyUserAsset } from 'types/AlchemyUserAsset';
 
 // OpenSea's EventType
 export enum EventType {
@@ -221,6 +222,44 @@ export const transformUnmarshal = (item: UnmarshalNFTAsset, owner: string, chain
   } as CardData;
 };
 
+export const transformAlchemy = (item: AlchemyUserAsset, owner: string, chainId: string) => {
+  if (!item) {
+    return null;
+  }
+
+  let schemaName = '';
+  const nftType = item?.id?.tokenMetadata?.tokenType;
+  if (nftType?.trim().toLowerCase() === 'erc721') {
+    schemaName = 'ERC721';
+  } else if (nftType?.trim().toLowerCase() === 'erc1155') {
+    schemaName = 'ERC1155';
+  }
+
+  const data = item;
+  data.traits = item?.metadata?.attributes;
+
+  let image = item?.metadata?.image;
+  // special case
+  if (image.startsWith('ipfs://')) {
+    image = item?.media[0]?.uri?.gateway;
+  }
+
+  return {
+    id: `${item?.contract?.address}_${item?.id?.tokenId}`,
+    title: item?.title,
+    description: item?.description,
+    image: image,
+    imagePreview: image,
+    tokenAddress: item?.contract?.address,
+    tokenId: item?.id?.tokenId,
+    collectionName: item?.title, // this should ideally be coll name; todo: adi handle this case
+    owner,
+    schemaName,
+    chainId,
+    data
+  } as CardData;
+};
+
 export const getCustomExceptionMsg = (msg: ReactNode) => {
   let customMsg = msg;
   if (typeof msg === 'string' && msg.indexOf('err: insufficient funds for gas * price + value') > 0) {
@@ -374,12 +413,12 @@ export const getChainScannerBase = (chainId?: string): string | null => {
 
 export const getNftDataSource = (chainId?: string): number => {
   if (chainId === '1') {
-    return NFT_DATA_SOURCES.UNMARSHAL;
+    return NFT_DATA_SOURCES.ALCHEMY;
   } else if (chainId === '137') {
-    return NFT_DATA_SOURCES.UNMARSHAL;
+    return NFT_DATA_SOURCES.ALCHEMY;
   }
   // default
-  return NFT_DATA_SOURCES.OPENSEA;
+  return NFT_DATA_SOURCES.ALCHEMY;
 };
 
 export const getPageOffsetForAssetQuery = (source: number, currentPage: number, itemsPerPage: number): number => {
