@@ -181,12 +181,14 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
                   {collectionName}
                 </AppLink>
 
-                <div style={{ paddingLeft: 6, paddingBottom: 2 }}>
+                <div style={{ paddingLeft: 6 }}>
                   <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
                 </div>
               </div>
             )}
-            <div className={styles.title}>{data.title}</div>
+            <div className={styles.title} title={data.title}>
+              {data.title}
+            </div>
           </div>
         </div>
       </div>
