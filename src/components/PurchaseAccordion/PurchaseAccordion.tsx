@@ -12,7 +12,7 @@ import { LargeIcons } from 'components/Icons/MenuIcons';
 import { PurchaseAccordionItem, SingleAccordion } from './SingleAccordion';
 import { ExtraSpace } from 'components/Spacer/Spacer';
 import { NftAction } from 'types';
-import { PriceHistory } from './PriceHistory';
+import { ActiveListings } from './ActiveListings';
 
 interface Props {
   data: CardData;
@@ -127,8 +127,8 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
 
       <ExtraSpace />
       <SingleAccordion>
-        <PurchaseAccordionItem dark={dark} title="Listing History" icon={LargeIcons.imageIcon}>
-          <PriceHistory listings={props.listings || []} />
+        <PurchaseAccordionItem dark={dark} title="Active Listings" icon={LargeIcons.imageIcon}>
+          <ActiveListings listings={props.listings || []} />
         </PurchaseAccordionItem>
       </SingleAccordion>
     </div>

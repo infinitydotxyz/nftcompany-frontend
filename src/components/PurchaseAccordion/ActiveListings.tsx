@@ -1,9 +1,9 @@
 import React from 'react';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
-import styles from './scss/PriceHistory.module.scss';
+import styles from './scss/ActiveListings.module.scss';
 
 import { CardData } from 'types/Nft.interface';
-import { ellipsisAddress, getChainScannerBase, toChecksumAddress } from 'utils/commonUtil';
+import { getChainScannerBase, toChecksumAddress } from 'utils/commonUtil';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 
 const MAX_VISIBLE_ITEMS = 10;
@@ -12,7 +12,7 @@ interface Props {
   listings: CardData[];
 }
 
-export const PriceHistory: React.FC<Props> = ({ listings }) => {
+export const ActiveListings: React.FC<Props> = ({ listings }) => {
   if (!listings || listings.length === 0) {
     return null;
   }
