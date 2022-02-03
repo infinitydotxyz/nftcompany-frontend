@@ -413,12 +413,12 @@ export const getChainScannerBase = (chainId?: string): string | null => {
 
 export const getNftDataSource = (chainId?: string): number => {
   if (chainId === '1') {
-    return NFT_DATA_SOURCES.ALCHEMY;
+    return NFT_DATA_SOURCES.OPENSEA;
   } else if (chainId === '137') {
-    return NFT_DATA_SOURCES.ALCHEMY;
+    return NFT_DATA_SOURCES.UNMARSHAL;
   }
   // default
-  return NFT_DATA_SOURCES.ALCHEMY;
+  return NFT_DATA_SOURCES.OPENSEA;
 };
 
 export const getPageOffsetForAssetQuery = (source: number, currentPage: number, itemsPerPage: number): number => {
