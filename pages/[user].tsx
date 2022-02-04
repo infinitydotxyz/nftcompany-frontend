@@ -9,7 +9,14 @@ import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/Fet
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useRouter } from 'next/router';
-import { transformOpenSea, transformCovalent, getNftDataSource, transformUnmarshal } from 'utils/commonUtil';
+import {
+  transformAlchemy,
+  transformOpenSea,
+  transformCovalent,
+  getNftDataSource,
+  transformUnmarshal,
+  getPageOffsetForAssetQuery
+} from 'utils/commonUtil';
 import { CardData } from 'types/Nft.interface';
 import { Box } from '@chakra-ui/layout';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
@@ -22,6 +29,7 @@ export default function UserPage() {
   const [data, setData] = useState<CardData[]>([]);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [alchemyPageKey, setAlchemyPageKey] = useState('');
 
   const router = useRouter();
   const {
@@ -37,11 +45,14 @@ export default function UserPage() {
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
     const source = getNftDataSource(chainId);
+    const offset = getPageOffsetForAssetQuery(source, newCurrentPage, ITEMS_PER_PAGE);
 
     const { result, error } = await apiGet(`/p/u/${userParam}/assets`, {
-      offset: newCurrentPage * ITEMS_PER_PAGE,
+      offset,
       limit: ITEMS_PER_PAGE,
       source,
+      chainId,
+      pageKey: alchemyPageKey,
       ...filter
     });
 
@@ -56,11 +67,17 @@ export default function UserPage() {
         return transformCovalent(item, userParam as string, chainId);
       } else if (source === NFT_DATA_SOURCES.UNMARSHAL) {
         return transformUnmarshal(item, userParam as string, chainId);
+      } else if (source === NFT_DATA_SOURCES.ALCHEMY) {
+        return transformAlchemy(item, userParam as string, chainId);
       }
     });
     setIsFetching(false);
     setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);
+    // alchemy pagination
+    if (result?.pageKey) {
+      setAlchemyPageKey(result.pageKey);
+    }
   };
 
   React.useEffect(() => {
