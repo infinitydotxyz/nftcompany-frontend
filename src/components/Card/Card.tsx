@@ -201,10 +201,10 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
 
             <div className={styles.priceRow}>
               <CardPriceBox
-                justifyRight
                 price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
                 token={getToken()}
                 expirationTime={data?.expirationTime}
+                onClick={() => setPlaceBidModalShowed(true)}
               />
               {menuEl}
             </div>

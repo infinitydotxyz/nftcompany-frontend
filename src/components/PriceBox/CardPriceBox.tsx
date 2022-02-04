@@ -10,10 +10,10 @@ type Props = {
   price?: number;
   token?: '' | 'ETH' | 'WETH';
   expirationTime?: string;
-  justifyRight?: boolean;
+  onClick?: () => void;
 };
 
-export const CardPriceBox = ({ justifyRight = false, price, expirationTime = '', token = '' }: Props) => {
+export const CardPriceBox = ({ price, expirationTime = '', token = '', onClick }: Props) => {
   let priceStr = '0';
 
   if (price) {
@@ -48,7 +48,7 @@ export const CardPriceBox = ({ justifyRight = false, price, expirationTime = '',
           </div>
         }
       >
-        <div className={styles.priceBox}>
+        <div className={styles.priceBox} onClick={onClick}>
           <div className={styles.price}>
             <Box mr={3}>Buy</Box>
             <Box fontWeight="normal">{priceStr}</Box> {token === 'ETH' ? <EthToken /> : <WEthToken />}
