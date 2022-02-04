@@ -2,7 +2,8 @@
 
 @include cardList();
 
-$cardHeight: 332px;
+$cardHeight: 400px;
+$imgHeight: 260px;
 
 .button {
   display: inline-flex;
@@ -38,15 +39,10 @@ $cardHeight: 332px;
 
 .card {
   position: relative;
-  padding: 12px;
-  border-radius: 20px;
   height: $cardHeight;
-  @include lightShadow();
-  background-color: var(--chakra-colors-cardBgLight, red);
   overflow: hidden;
 
   :global(body.chakra-ui-dark) & {
-    @include darkShadow();
     background-color: var(--chakra-colors-cardBgDark, red);
   }
 
@@ -77,14 +73,14 @@ $cardHeight: 332px;
 
   .cardPreview {
     position: relative;
-    border-radius: 16px;
+    border-radius: 22px;
     overflow: hidden;
-    height: 220px;
+    height: $imgHeight;
     cursor: pointer;
 
     img {
       min-width: 100%;
-      min-height: 280px;
+      min-height: $imgHeight;
       transition: transform 1s;
       object-fit: cover;
     }
@@ -137,7 +133,7 @@ $cardHeight: 332px;
     .collectionRow {
       display: flex;
       align-items: center;
-      font-weight: 500;
+      font-weight: bold;
       font-size: 16px;
       a {
         white-space: nowrap;
@@ -157,7 +153,24 @@ $cardHeight: 332px;
         max-width: 20ch;
         text-overflow: ellipsis;
         overflow: hidden;
+        color: #555;
+        margin-bottom: 10px;
       }
+    }
+  }
+
+  .priceRow {
+    display: flex;
+    > div {
+      flex: 1;
+    }
+    > button {
+      margin-left: 7px;
+      width: 45px;
+      border-radius: 22px;
+      border: 1px solid #bbb;
+      text-align: center;
+      padding-bottom: 8px;
     }
   }
 }
