@@ -22,6 +22,7 @@ import {
   DEFAULT_WRAPPED_NFT_LIQUIDATION_UNISWAP_SLIPPAGE_IN_BASIS_POINTS,
   ENJIN_COIN_ADDRESS,
   INVERSE_BASIS_POINT,
+  LOCALHOST_PROVIDER_URL,
   MAINNET_PROVIDER_URL,
   MANA_ADDRESS,
   MIN_EXPIRATION_SECONDS,
@@ -123,6 +124,8 @@ import {
 } from './utils/utils';
 import { LISTING_TYPE, NFTC_FEE_RECIPIENT } from '../src/utils/constants';
 import { getSearchFriendlyString, getCanonicalWeth } from '../src/utils/commonUtil';
+import { WyvernExchangeContract } from './wyvern-js/abi_gen/wyvern_exchange';
+import { constants } from './wyvern-js/utils/constants';
 
 export class OpenSeaPort {
   // Web3 instance to use
@@ -164,9 +167,18 @@ export class OpenSeaPort {
         ? MAINNET_PROVIDER_URL
         : this._networkName === Network.Polygon
         ? POLYGON_PROVIDER_URL
+        : this._networkName === Network.Localhost
+        ? LOCALHOST_PROVIDER_URL
         : RINKEBY_PROVIDER_URL
     );
-    this._chainId = this._networkName === Network.Main ? '1' : this._networkName === Network.Polygon ? '137' : '';
+    this._chainId =
+      this._networkName === Network.Main
+        ? '1'
+        : this._networkName === Network.Polygon
+        ? '137'
+        : this._networkName === Network.Localhost
+        ? '31337'
+        : '';
 
     // Web3 Config
     this.web3 = new Web3(provider);
@@ -3698,7 +3710,13 @@ export class OpenSeaPort {
     // Then do the transaction
     try {
       this.logger(`Fulfilling order with gas set to ${txnData.gas}`);
-      txnHash = await this._wyvernProtocol.wyvernExchange.atomicMatch_.sendTransactionAsync(
+      // const wrapperAddress = '0x51b225de727d9702876d85e7227f2cc1ea4bbc4f';
+      // const wyvernExchange = new WyvernExchangeContract(
+      //   this._wyvernProtocol._web3Wrapper.getContractInstance(constants.EXCHANGE_ABI as any, wrapperAddress),
+      //   {}
+      // );
+      const wyvernExchange = this._wyvernProtocol.wyvernExchange;
+      txnHash = await wyvernExchange.atomicMatch_.sendTransactionAsync(
         args[0],
         args[1],
         args[2],

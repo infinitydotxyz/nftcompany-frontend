@@ -359,6 +359,8 @@ export const getWyvernChainName = (chainId?: string): string | null => {
     return 'main';
   } else if (chainId === '137') {
     return 'polygon';
+  } else if (chainId === '31337') {
+    return 'localhost';
   }
   return null;
 };
