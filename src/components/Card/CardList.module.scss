@@ -100,10 +100,16 @@ $cardHeight: 332px;
     padding: 0;
     width: 100%;
     flex: 0;
+    align-items: center;
+    height: 30px;
 
     .stadiumButtonGray {
       background-color: #bbb;
       color: black;
+    }
+
+    .threeDotIcon {
+      cursor: pointer;
     }
   }
 
@@ -124,15 +130,13 @@ $cardHeight: 332px;
   }
 
   .cardLine {
-    display: flex;
-    justify-content: space-between;
     margin-top: 10px;
     font-size: 14px;
-    align-items: flex-start;
+    text-align: left;
 
     .collectionRow {
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       font-weight: 500;
       font-size: 16px;
       a {

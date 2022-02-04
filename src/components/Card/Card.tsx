@@ -8,13 +8,15 @@ import { PriceBoxFloater } from 'components/PriceBoxFloater/';
 import { addressesEqual, getSearchFriendlyString } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
-import { Spacer, Link } from '@chakra-ui/react';
+import { Spacer, Link, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 import { LISTING_TYPE, PAGE_NAMES } from 'utils/constants';
 import { NftAction } from 'types';
 import styles from './CardList.module.scss';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 import AppLink from 'components/AppLink/AppLink';
 import TransferNFTModal from 'components/TransferNFTModal/TransferNFTModal';
+import { ThreeDotLR } from 'components/Icons/Icons';
+import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 
 type Props = {
   data: CardData;
@@ -33,6 +35,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
   const { ref, inView } = useInView({ threshold: 0, rootMargin: '500px 0px 500px 0px' });
   const [order, setOrder] = useState<BaseCardData | undefined>();
   const [previewModalShowed, setPreviewModalShowed] = useState(false);
+  const [relistModalShowed, setRelistModalShowed] = useState(false);
   const [transferModalShowed, setTransferModalShowed] = useState(false);
 
   useEffect(() => {
@@ -181,12 +184,14 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
                   {collectionName}
                 </AppLink>
 
-                <div style={{ paddingLeft: 6, paddingBottom: 2 }}>
+                <div style={{ paddingLeft: 6 }}>
                   <BlueCheckIcon hasBlueCheck={hasBlueCheck === true} />
                 </div>
               </div>
             )}
-            <div className={styles.title}>{data.title}</div>
+            <div className={styles.title} title={data.title}>
+              {data.title}
+            </div>
           </div>
         </div>
       </div>
@@ -194,14 +199,21 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
 
       <div className={styles.buttons}>
         {actionButton()}
-        {shouldShowTransferButton && (
-          <Link title="Transfer" variant="underline" onClick={() => setTransferModalShowed(true)}>
-            Transfer
-          </Link>
-        )}
         <Link title="Preview" variant="underline" onClick={() => setPreviewModalShowed(true)}>
           Preview
         </Link>
+
+        {shouldShowTransferButton && (
+          <Menu>
+            <MenuButton>
+              <ThreeDotLR />
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => setTransferModalShowed(true)}>Transfer</MenuItem>
+              <MenuItem onClick={() => setRelistModalShowed(true)}>Relist / Lower Price</MenuItem>
+            </MenuList>
+          </Menu>
+        )}
       </div>
 
       {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
@@ -217,6 +229,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
           }}
         />
       )}
+      {relistModalShowed && <ListNFTModal data={data} onClose={() => setRelistModalShowed(false)} />}
     </div>
   );
 }
