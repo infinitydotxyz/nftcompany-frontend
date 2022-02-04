@@ -1,4 +1,6 @@
 :root {
   --text-primary: #333;
   --text-secondary: #777;
+
+  --border-radius-big: 22px;
 }
