@@ -33,6 +33,7 @@ import CollectionEventsFilter from 'components/CollectionEventsFilter/Collection
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import styles from './Collection.module.scss';
+import { PAGE_NAMES } from 'utils/constants';
 
 enum CollectionTabs {
   NFTs = 'NFTs',
@@ -348,7 +349,7 @@ const Collection = (): JSX.Element => {
                   <TabPanel>
                     <Box display="flex" flexDirection={'row'} width="100%">
                       <Box className="filter-container">
-                        <FilterDrawer collection={address} renderContent={true} showCollection={false} />
+                        <FilterDrawer collection={address} renderContent={true} showCollection={false} pageName={PAGE_NAMES.COLLECTION} />
                       </Box>
                       <Box width="82%">
                         <CollectionContents

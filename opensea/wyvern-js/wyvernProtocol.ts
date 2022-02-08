@@ -48,7 +48,7 @@ export class WyvernProtocol {
 
   public wyvernAtomicizer: WyvernAtomicizerContract;
 
-  private _web3Wrapper: Web3Wrapper;
+  public _web3Wrapper: Web3Wrapper;
 
   private _abiDecoder: AbiDecoder;
 

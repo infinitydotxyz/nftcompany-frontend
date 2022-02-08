@@ -85,7 +85,7 @@ const FilterDrawer = ({
   );
   const [maxPriceVal, setMaxPriceVal] = React.useState(filterState.priceMax);
   const [collectionName, setCollectionName] = React.useState('');
-  const [selectedCollectionIds, setSelectedCollectionIds] = React.useState('');
+  const [selectedCollectionIds, setSelectedCollectionIds] = React.useState(collection ?? '');
   const [traits, setTraits] = React.useState<Trait[]>([]);
   const [selectedTraitType, setSelectedTraitType] = React.useState<Trait | undefined>(undefined);
   const [selectedTraits, setSelectedTraits] = React.useState<any[]>([EmptyTrait]);
@@ -132,19 +132,31 @@ const FilterDrawer = ({
     }
   };
 
+  const clearSelectedTraits = () => {
+    setSelectedTraits([]);
+    setTimeout(() => {
+      setSelectedTraits([{ ...EmptyTrait }]);
+    }, 10);
+  };
+
   const handleClickClear = () => {
     const emptyFilter = getDefaultFilterState({ ...filterState });
-    emptyFilter.collectionIds = '';
+    emptyFilter.collectionIds = collection ?? '';
     emptyFilter.priceMax = '';
     emptyFilter.priceMin = '';
     setMinPriceVal('');
     setMaxPriceVal('');
     setCollectionName('');
     setSelectedCollectionIds('CLEAR');
-    setTraits([]);
+    if (pageName !== PAGE_NAMES.COLLECTION) {
+      setTraits([]); // don't clear traits for Collection page
+    }
     setSelectedTraitValue('');
     setSelectedTraitType(undefined);
     setSelectedTraits([EmptyTrait]);
+    clearSelectedTraits();
+    emptyFilter.traitType = '';
+    emptyFilter.traitValue = '';
 
     setFilterState(emptyFilter);
     if (onChange) {
@@ -169,7 +181,7 @@ const FilterDrawer = ({
     }
   };
   const shouldFetchTraits =
-    (pageName === PAGE_NAMES.EXPLORE || pageName === PAGE_NAMES.LISTED_NFTS) &&
+    (pageName === PAGE_NAMES.EXPLORE || pageName === PAGE_NAMES.LISTED_NFTS || pageName === PAGE_NAMES.COLLECTION) &&
     selectedCollectionIds.split(',').length === 1;
 
   const content = (
@@ -256,7 +268,7 @@ const FilterDrawer = ({
                 const selectedCollectionIdsArr = selectedCollectionIds.split(',');
 
                 // fetch collection traits
-                if (address && selectedCollectionIdsArr.length === 1) {
+                if (address && shouldFetchTraits) {
                   fetchTraits(address);
                 } else {
                   setTraits([]);
@@ -349,10 +361,7 @@ const FilterDrawer = ({
                               const newArr = selectedTraits.filter((_, index) => index !== selTraitIdx);
                               setSelectedTraits(newArr);
                             } else {
-                              setSelectedTraits([]);
-                              setTimeout(() => {
-                                setSelectedTraits([{ ...EmptyTrait }]);
-                              }, 10);
+                              clearSelectedTraits();
                             }
                           }}
                         />

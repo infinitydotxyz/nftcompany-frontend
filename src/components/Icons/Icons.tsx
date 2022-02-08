@@ -449,3 +449,9 @@ export const CarrotDown = (props: Record<string, unknown>): JSX.Element => (
     </g>
   </Icon>
 );
+
+export const ThreeDotLR = (props: Record<string, unknown>): JSX.Element => (
+  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px" height="52px" viewBox="0 0 52 52" {...props}>
+    <path d="M8,20c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6S4.7,20,8,20z M26,20c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6 S22.7,20,26,20z M44,20c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6S40.7,20,44,20z" />
+  </svg>
+);

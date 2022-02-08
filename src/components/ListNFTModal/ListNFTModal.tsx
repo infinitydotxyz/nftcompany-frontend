@@ -48,6 +48,15 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
       showAppError('Please login.');
       return;
     }
+    // todo: adi remove this
+    // data = {
+    //   tokenAddress: '0x610178dA211FEF7D417bC0e6FeD39F05609AD788',
+    //   tokenId: '1',
+    //   chainId: '31337',
+    //   schemaName: 'ERC721',
+    //   title: 'yo',
+    //   collectionName: 'yo yo'
+    // };
     const { tokenAddress, tokenId } = data;
     const expirationTime = endPriceShowed ? expiryTimeSeconds : 0;
     let err = null;
@@ -250,7 +259,7 @@ const ListNFTModal: React.FC<IProps> = ({ data, onClose }: IProps) => {
                 List NFT
               </Button>
 
-              <Button disabled={isSubmitting} onClick={() => onClose && onClose()}>
+              <Button variant="outline" disabled={isSubmitting} onClick={() => onClose && onClose()}>
                 Cancel
               </Button>
 

@@ -16,7 +16,8 @@ export enum Network {
   Main = 'main',
   Rinkeby = 'rinkeby',
   Kovan = 'kovan',
-  Polygon = 'polygon'
+  Polygon = 'polygon',
+  Localhost = 'localhost'
 }
 
 export enum ABIType {

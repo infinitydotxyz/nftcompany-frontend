@@ -2,6 +2,9 @@
   "name": "nftcompany-frontend",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": "16"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "npx pnpm install && rimraf ./build && cross-env NODE_ENV=production next build",
