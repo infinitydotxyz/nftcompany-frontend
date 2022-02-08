@@ -24,6 +24,10 @@
       overflow-y: auto;
       height: 80vh;
 
+      .contractAddress {
+        margin-top: 40px;
+      }
+
       .buttonBar {
         display: flex;
         gap: 6px;

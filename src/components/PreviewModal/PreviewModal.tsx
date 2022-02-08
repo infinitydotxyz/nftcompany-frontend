@@ -100,7 +100,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
   const _ownerSection =
     owner?.length > 0 ? (
       <ShortAddress
-        vertical={true}
+        vertical={false}
         address={owner}
         href={`${window.origin}/${owner}`}
         label="Owner"
@@ -136,7 +136,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
     <>
       {!isServer && (
         <ModalDialog onClose={onClose}>
-          <div style={{ width: '80vw', maxWidth: 1000 }}>
+          <div style={{ width: '80vw', maxWidth: 1200 }}>
             <div className={styles.main}>
               <div className={styles.nftContent}>
                 <div className={styles.imgBox}>
@@ -174,15 +174,16 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                   )} */}
 
                   <ShortAddress
-                    vertical={true}
+                    vertical={false}
                     address={data.tokenAddress}
                     href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}`}
                     label="Contract Address"
                     tooltip={toChecksumAddress(data.tokenAddress)}
+                    className={styles.contractAddress}
                   />
 
                   <ShortAddress
-                    vertical={true}
+                    vertical={false}
                     address={data.tokenId}
                     href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}?a=${data.tokenId}`}
                     label="Token Id"
