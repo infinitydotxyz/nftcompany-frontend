@@ -139,7 +139,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
   const shouldShowTransferButton =
     data.owner && userAccount && (data.owner ?? '').toLowerCase() === userAccount?.toLowerCase();
 
-  // const shouldShowOwnedByYou = ownedByYou && pageName === PAGE_NAMES.EXPLORE;
+  const shouldShowOwnedByYou = ownedByYou && pageName === PAGE_NAMES.EXPLORE;
 
   const getToken = () => {
     if (data.chainId === '1') {
@@ -191,7 +191,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
           <div className={styles.cardControls}></div>
         </div>
 
-        {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
+        {shouldShowOwnedByYou && <div className={styles.ownedTag}>Owned</div>}
       </div>
 
       <div className={styles.cardBody}>
