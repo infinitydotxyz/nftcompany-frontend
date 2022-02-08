@@ -201,10 +201,17 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
 
             <div className={styles.priceRow}>
               <CardPriceBox
+                label={ownedByYou ? 'Cancel' : 'Buy'}
                 price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
                 token={getToken()}
                 expirationTime={data?.expirationTime}
-                onClick={() => setPlaceBidModalShowed(true)}
+                onClick={() => {
+                  if (ownedByYou && onClickAction) {
+                    onClickAction(data, NftAction.CancelListing);
+                  } else {
+                    setPlaceBidModalShowed(true);
+                  }
+                }}
               />
 
               {ownedByYou ? (

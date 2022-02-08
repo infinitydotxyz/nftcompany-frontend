@@ -7,13 +7,14 @@ import { Box } from '@chakra-ui/layout';
 import styles from './CardPriceBox.module.scss';
 
 type Props = {
+  label: string;
   price?: number;
   token?: '' | 'ETH' | 'WETH';
   expirationTime?: string;
   onClick?: () => void;
 };
 
-export const CardPriceBox = ({ price, expirationTime = '', token = '', onClick }: Props) => {
+export const CardPriceBox = ({ label, price, expirationTime = '', token = '', onClick }: Props) => {
   let priceStr = '0';
 
   if (price) {
@@ -50,7 +51,7 @@ export const CardPriceBox = ({ price, expirationTime = '', token = '', onClick }
       >
         <div className={styles.priceBox} onClick={onClick}>
           <div className={styles.price}>
-            <Box mr={3}>Buy</Box>
+            <Box mr={3}>{label}</Box>
             <Box fontWeight="normal">{priceStr}</Box> {token === 'ETH' ? <EthToken /> : <WEthToken />}
           </div>
         </div>
