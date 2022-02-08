@@ -15,7 +15,7 @@ import styles from './CardList.module.scss';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 import AppLink from 'components/AppLink/AppLink';
 import TransferNFTModal from 'components/TransferNFTModal/TransferNFTModal';
-import { BsThreeDotsVertical } from 'react-icons/bs';
+import { BsThreeDotsVertical, BsEye } from 'react-icons/bs';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
 import { CardPriceBox } from 'components/PriceBox/CardPriceBox';
 
@@ -139,7 +139,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
   const shouldShowTransferButton =
     data.owner && userAccount && (data.owner ?? '').toLowerCase() === userAccount?.toLowerCase();
 
-  const shouldShowOwnedByYou = ownedByYou && pageName === PAGE_NAMES.EXPLORE;
+  // const shouldShowOwnedByYou = ownedByYou && pageName === PAGE_NAMES.EXPLORE;
 
   const getToken = () => {
     if (data.chainId === '1') {
@@ -178,7 +178,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
           <div className={styles.cardControls}></div>
         </div>
 
-        {shouldShowOwnedByYou && <div className={styles.ownedTag}>Owned</div>}
+        {ownedByYou && <div className={styles.ownedTag}>Owned</div>}
       </div>
 
       <div className={styles.cardBody}>
@@ -206,7 +206,14 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
                 expirationTime={data?.expirationTime}
                 onClick={() => setPlaceBidModalShowed(true)}
               />
-              {menuEl}
+
+              {ownedByYou ? (
+                menuEl
+              ) : (
+                <button onClick={() => setPreviewModalShowed(true)}>
+                  <BsEye />
+                </button>
+              )}
             </div>
           </div>
         </div>
