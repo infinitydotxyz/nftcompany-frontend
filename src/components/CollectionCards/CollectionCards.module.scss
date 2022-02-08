@@ -122,7 +122,6 @@ $outerHeight: 320px;
     @extend .card;
 
     :global(body.chakra-ui-dark) & {
-      // box-shadow: $lightShadow;
     }
 
     top: 4px;
@@ -133,7 +132,6 @@ $outerHeight: 320px;
     @extend .card;
 
     :global(body.chakra-ui-dark) & {
-      // box-shadow: $lightShadow;
     }
 
     top: 8px;

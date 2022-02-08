@@ -20,8 +20,6 @@ export const CardPriceBox = ({ label, price, expirationTime = '', token = '', on
   let newPrice: number;
 
   if (typeof price === 'string') {
-    console.log('PriceBox: price is a string');
-
     newPrice = parseFloat(price);
   } else {
     newPrice = price || 0;
