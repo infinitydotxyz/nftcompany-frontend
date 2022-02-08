@@ -147,7 +147,7 @@ $imgHeight: 260px;
         max-width: 20ch;
         text-overflow: ellipsis;
         overflow: hidden;
-        color: #555;
+        color: var(--text-secondary);
         margin-bottom: 10px;
       }
     }
