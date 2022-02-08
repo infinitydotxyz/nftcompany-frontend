@@ -349,7 +349,12 @@ const Collection = (): JSX.Element => {
                   <TabPanel>
                     <Box display="flex" flexDirection={'row'} width="100%">
                       <Box className="filter-container">
-                        <FilterDrawer collection={address} renderContent={true} showCollection={false} pageName={PAGE_NAMES.COLLECTION} />
+                        <FilterDrawer
+                          collection={address}
+                          renderContent={true}
+                          showCollection={false}
+                          pageName={PAGE_NAMES.COLLECTION}
+                        />
                       </Box>
                       <Box width="82%">
                         <CollectionContents
@@ -443,7 +448,13 @@ const CollectionContents = ({ name, onTitle, onLoaded, listingSource }: Props): 
 
       {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
-      <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action={NftAction.BuyNft} />
+      <CardList
+        pageName={PAGE_NAMES.COLLECTION}
+        showItems={['PRICE']}
+        userAccount={user?.account}
+        data={cardProvider.list}
+        action={NftAction.BuyNft}
+      />
 
       {cardProvider.hasData() && (
         <ScrollLoader

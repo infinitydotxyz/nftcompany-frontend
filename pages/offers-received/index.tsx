@@ -12,6 +12,7 @@ import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import styles from './OffersReceived.module.scss';
 import { useUserOffersReceived } from 'hooks/useUserOffersReceived';
 import { NftAction } from 'types';
+import { PAGE_NAMES } from 'utils/constants';
 
 export default function OffersReceived() {
   const { user } = useAppContext();
@@ -27,7 +28,12 @@ export default function OffersReceived() {
           <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={offers} />
           {offers?.length === 0 && isFetching && <LoadingCardList />}
 
-          <CardList data={offers} userAccount={user?.account} action={NftAction.AcceptOffer} />
+          <CardList
+            pageName={PAGE_NAMES.OFFERS_RECEIVED}
+            data={offers}
+            userAccount={user?.account}
+            action={NftAction.AcceptOffer}
+          />
         </div>
         {dataLoaded && (
           <FetchMore
