@@ -126,6 +126,7 @@ export default function ListNFTs() {
           {listings?.length === 0 && isFetching && <LoadingCardList />}
 
           <CardList
+            pageName={PAGE_NAMES.LISTED_NFTS}
             data={listings}
             action={action}
             userAccount={user?.account}

@@ -12,6 +12,7 @@ import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import styles from './OffersMade.module.scss';
 import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
 import { useUserOffersMade } from 'hooks/useUserOffersMade';
+import { PAGE_NAMES } from 'utils/constants';
 
 export default function OffersMade() {
   const { user } = useAppContext();
@@ -28,6 +29,7 @@ export default function OffersMade() {
           {offers?.length === 0 && isFetching && <LoadingCardList />}
 
           <CardList
+            pageName={PAGE_NAMES.OFFERS_MADE}
             data={offers}
             action={NftAction.CancelOffer}
             userAccount={user?.account}

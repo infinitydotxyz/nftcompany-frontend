@@ -17,47 +17,50 @@ type Props = {
 export const CardPriceBox = ({ label, price, expirationTime = '', token = '', onClick }: Props) => {
   let priceStr = '0';
 
-  if (price) {
-    let newPrice: number;
+  let newPrice: number;
 
-    if (typeof price === 'string') {
-      console.log('PriceBox: price is a string');
+  if (typeof price === 'string') {
+    console.log('PriceBox: price is a string');
 
-      newPrice = parseFloat(price);
-    } else {
-      newPrice = price;
-    }
-
-    if (newPrice > 10000) {
-      priceStr = newPrice.toExponential();
-    } else {
-      priceStr = newPrice.toString();
-    }
-
-    const expDate = parseTimestampString(expirationTime, true);
-    return (
-      <Tooltip
-        label={
-          <div>
-            <div>{`Token: ${token}`}</div>
-            {expDate && (
-              <div>
-                <div>Ends {format(expDate?.getTime())}</div>
-                <div>{`Expires on ${expDate?.toLocaleString()}`}</div>
-              </div>
-            )}
-          </div>
-        }
-      >
-        <div className={styles.priceBox} onClick={onClick}>
-          <div className={styles.price}>
-            <Box mr={3}>{label}</Box>
-            <Box fontWeight="normal">{priceStr}</Box> {token === 'ETH' ? <EthToken /> : <WEthToken />}
-          </div>
-        </div>
-      </Tooltip>
-    );
+    newPrice = parseFloat(price);
+  } else {
+    newPrice = price || 0;
   }
 
-  return null;
+  if (newPrice > 10000) {
+    priceStr = newPrice.toExponential();
+  } else {
+    priceStr = newPrice.toString();
+  }
+
+  const expDate = parseTimestampString(expirationTime, true);
+  return (
+    <Tooltip
+      label={
+        <div>
+          <div>{`Token: ${token}`}</div>
+          {expDate && (
+            <div>
+              <div>Ends {format(expDate?.getTime())}</div>
+              <div>{`Expires on ${expDate?.toLocaleString()}`}</div>
+            </div>
+          )}
+        </div>
+      }
+    >
+      <div className={styles.priceBox} onClick={onClick}>
+        <div className={styles.price}>
+          <Box>{label}</Box>
+          {priceStr !== '0' ? (
+            <>
+              <Box ml={3} fontWeight="normal">
+                {priceStr}
+              </Box>{' '}
+              {token === 'ETH' ? <EthToken /> : <WEthToken />}
+            </>
+          ) : null}
+        </div>
+      </div>
+    </Tooltip>
+  );
 };

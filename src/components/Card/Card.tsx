@@ -162,6 +162,19 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
     </Menu>
   );
 
+  let mainLabel = '';
+  if (pageName === PAGE_NAMES.MY_NFTS) {
+    mainLabel = 'List';
+  } else if (pageName === PAGE_NAMES.LISTED_NFTS) {
+    mainLabel = 'Cancel';
+  } else if (pageName === PAGE_NAMES.OFFERS_MADE) {
+    mainLabel = 'Cancel';
+  } else if (pageName === PAGE_NAMES.OFFERS_RECEIVED) {
+    mainLabel = 'Accept';
+  } else {
+    mainLabel = 'Buy';
+  }
+
   if (inView === false) {
     return (
       <div ref={ref} id={`id_${data.id}`} className={styles.card}>
@@ -201,13 +214,19 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
 
             <div className={styles.priceRow}>
               <CardPriceBox
-                label={ownedByYou ? 'Cancel' : 'Buy'}
+                label={mainLabel}
                 price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
                 token={getToken()}
                 expirationTime={data?.expirationTime}
                 onClick={() => {
-                  if (ownedByYou && onClickAction) {
+                  if (pageName === PAGE_NAMES.MY_NFTS && onClickAction) {
+                    onClickAction(data, NftAction.ListNft);
+                  } else if (pageName === PAGE_NAMES.LISTED_NFTS && onClickAction) {
                     onClickAction(data, NftAction.CancelListing);
+                  } else if (pageName === PAGE_NAMES.OFFERS_MADE) {
+                    setCancelOfferModalShowed(true);
+                  } else if (pageName === PAGE_NAMES.OFFERS_RECEIVED) {
+                    setAcceptOfferModalShowed(true);
                   } else {
                     setPlaceBidModalShowed(true);
                   }
