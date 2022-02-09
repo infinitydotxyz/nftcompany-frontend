@@ -372,6 +372,7 @@ export const numStr = (value: any): string => {
   return short;
 };
 
+// get search-friendly string, e.g. `/collections/${getSearchFriendlyString(collectionName)}`
 export const getSearchFriendlyString = (input: string): string => {
   if (!input) {
     return '';
