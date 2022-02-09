@@ -202,7 +202,7 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                   </Box>
 
                   {(data.metadata?.asset?.traits || []).length > 0 && (
-                    <Box mt={8}>
+                    <Box mt={8} width="100%">
                       <Label bold mt text="Traits" />
                       <TraitBox data={data} contentOnly={true} />
                     </Box>
