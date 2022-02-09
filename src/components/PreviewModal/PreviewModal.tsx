@@ -3,7 +3,7 @@ import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import { CardData } from 'types/Nft.interface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { Button, Link } from '@chakra-ui/react';
+import { Box, Button, Link } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { addressesEqual, getChainScannerBase, getToken, toChecksumAddress } from 'utils/commonUtil';
@@ -151,15 +151,17 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                 </div>
 
                 <div className={styles.infoBox}>
-                  <div className={styles.collectionRow}>
-                    <div className={styles.collection}>{data?.collectionName || data?.name}</div>
+                  <Box className={styles.collectionBox}>
+                    <div className={styles.collectionRow}>
+                      <div className={styles.collection}>
+                        {data?.collectionName || data?.name} <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
+                      </div>
+                    </div>
 
-                    <BlueCheckIcon hasBlueCheck={data.hasBlueCheck === true} />
-                  </div>
+                    {previewCollection === true ? null : _buttonBar}
+                  </Box>
 
                   {previewCollection !== true && <div className={styles.title}>{data?.title}</div>}
-
-                  {previewCollection === true ? null : _buttonBar}
 
                   {/* {data.metadata?.basePriceInEth && (
                     <>
@@ -193,15 +195,17 @@ const PreviewModal: React.FC<Props> = ({ action, onClose, data, previewCollectio
                   {_ownerSection}
                   {_offerMakerSection}
 
-                  {previewCollection === true ? <span>&nbsp;</span> : <Label bold mt text="Description" />}
-                  <Label text={description} />
-                  {showMore === 1 && <Link onClick={() => setShowMore(2)}>More...</Link>}
+                  <Box mt={8}>
+                    {previewCollection === true ? <span>&nbsp;</span> : <Label bold mt text="Description" />}
+                    <Label text={description} />
+                    {showMore === 1 && <Link onClick={() => setShowMore(2)}>More...</Link>}
+                  </Box>
 
                   {(data.metadata?.asset?.traits || []).length > 0 && (
-                    <>
+                    <Box mt={8}>
                       <Label bold mt text="Traits" />
                       <TraitBox data={data} contentOnly={true} />
-                    </>
+                    </Box>
                   )}
 
                   {/* <div className={styles.buttons}>{purchaseButton}</div> */}

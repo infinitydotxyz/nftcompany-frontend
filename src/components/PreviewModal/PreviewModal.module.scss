@@ -12,6 +12,7 @@
         height: auto;
         max-height: 80vh; /* for img that too tall */
         border-radius: 16px;
+        margin: 0 auto;
       }
     }
 
@@ -38,17 +39,30 @@
 
       .title {
         font-size: 1.2rem;
-        font-weight: bold;
+      }
+
+      .collectionBox {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        width: 100%;
+        padding-right: 5px;
       }
 
       .collectionRow {
         display: flex;
-        align-items: center;
+        align-items: flex-end;
       }
 
       .collection {
         font-size: 1.3rem;
         margin-right: 6px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        > div {
+          margin-left: 5px;
+        }
       }
     }
   }
