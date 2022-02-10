@@ -288,7 +288,7 @@ const Collection = (): JSX.Element => {
                       label="Discord members"
                       changeInterval={24}
                       onClick={onEdit}
-                      buttonText="Add discord"
+                      buttonText="Add Discord"
                       data={discordData.map((item) => {
                         return { ...item, y: item.membersCount };
                       })}
