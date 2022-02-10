@@ -52,7 +52,7 @@ export const colors = {
 
   buttonHoverBg: '#222',
   buttonHoverText: '#fff',
-  borderLight: '#bbb',
+  borderLight: '#bebebe',
 
   // unsure how to add opacity on a css var so we have these variants for now
   headerBg: lightBgAlpha,
