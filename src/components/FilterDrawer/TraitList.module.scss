@@ -1,0 +1,9 @@
+.traitValuesBox {
+  max-height: 200px;
+  overflow-y: scroll;
+
+  .traitValue > label {
+    display: flex;
+    align-items: center;
+  }
+}
