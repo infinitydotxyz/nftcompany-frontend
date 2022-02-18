@@ -1,0 +1,15 @@
+.pill {
+  padding: 5px 5px 5px 10px;
+  border: 1px solid var(--chakra-colors-borderLight);
+  border-radius: 10px;
+  margin-right: 10px;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  div {
+    flex: 1;
+    margin-right: 5px;
+  }
+}
