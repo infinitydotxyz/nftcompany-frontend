@@ -24,7 +24,9 @@ const SearchInput = ({ placeholder, size, defaultValue, onChange, onClear, class
         placeholder={placeholder}
         defaultValue={defaultValue}
         onChange={(ev) => {
-          onChange && onChange(ev.target.value);
+          if (onChange) {
+            onChange(ev.target.value);
+          }
         }}
       />
       <InputRightElement onClick={onClear}>
