@@ -15,7 +15,9 @@ const SearchInput = ({ placeholder, size, defaultValue, onChange, onClear, class
   const inputRef = useRef<HTMLInputElement | null>(null);
   return (
     <InputGroup className={className || ''}>
-      <InputLeftElement pointerEvents="none" color="gray.300" fontSize="1.2em" children={<SearchIcon ml={2} />} />
+      <InputLeftElement pointerEvents="none" color="gray.300" fontSize="1.2em">
+        <SearchIcon ml={2} />
+      </InputLeftElement>
       <Input
         ref={inputRef}
         size={size || 'md'}
@@ -25,20 +27,17 @@ const SearchInput = ({ placeholder, size, defaultValue, onChange, onClear, class
           onChange && onChange(ev.target.value);
         }}
       />
-      <InputRightElement
-        onClick={onClear}
-        children={
-          <SmallCloseIcon
-            mr={2}
-            color="gray.400"
-            onClick={() => {
-              if (inputRef.current) {
-                inputRef.current.value = '';
-              }
-            }}
-          />
-        }
-      />
+      <InputRightElement onClick={onClear}>
+        <SmallCloseIcon
+          mr={2}
+          color="gray.400"
+          onClick={() => {
+            if (inputRef.current) {
+              inputRef.current.value = '';
+            }
+          }}
+        />
+      </InputRightElement>
     </InputGroup>
   );
 };

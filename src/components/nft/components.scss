@@ -298,10 +298,11 @@
 }
 
 .filter-container {
-  max-width: 265px;
+  max-width: 270px;
   height: 80vh;
   margin-right: 40px;
   padding-left: 2px;
+  padding-right: 15px;
   overflow-y: scroll;
 
   @media only screen and (max-width: 1024px) {
