@@ -127,7 +127,7 @@ export default function MyNFTs() {
                 }}
               />
             </Box>
-            <Box>
+            <Box className="content-container">
               <PleaseConnectWallet account={user?.account} />
               <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
               {data?.length === 0 && isFetching && <LoadingCardList />}

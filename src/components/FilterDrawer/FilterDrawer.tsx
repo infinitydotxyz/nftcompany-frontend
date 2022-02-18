@@ -290,7 +290,7 @@ const FilterDrawer = ({
             />
           )}
 
-          {shouldFetchTraits && isFetchingTraits && renderSpinner()}
+          {shouldFetchTraits && isFetchingTraits && renderSpinner({ marginTop: 5 })}
         </Box>
 
         <TraitList
