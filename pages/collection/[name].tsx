@@ -34,6 +34,7 @@ import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import styles from './Collection.module.scss';
 import { PAGE_NAMES } from 'utils/constants';
+import FilterPills from 'components/FilterDrawer/FilterPills';
 
 enum CollectionTabs {
   NFTs = 'NFTs',
@@ -444,6 +445,8 @@ const CollectionContents = ({ name, onTitle, onLoaded, listingSource }: Props): 
 
   return (
     <>
+      <FilterPills />
+
       <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
 
       {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}

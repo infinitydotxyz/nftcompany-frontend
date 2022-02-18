@@ -15,8 +15,11 @@ export default function FilterPills() {
 
   useEffect(() => {}, [filterState]);
 
+  const hasPriceMin = filterState.priceMin && filterState.priceMin !== DEFAULT_MIN_PRICE.toString();
+  const hasFilter = filterState.listType || hasPriceMin || filterState.priceMax;
+
   return (
-    <Box display="flex" mt={4}>
+    <Box display="flex" mt={4} alignItems="center">
       {filterState.listType && (
         <Box className={styles.pill}>
           <div>{ListTypeFilterName[filterState.listType]}</div>
@@ -30,7 +33,7 @@ export default function FilterPills() {
         </Box>
       )}
 
-      {filterState.priceMin && filterState.priceMin !== DEFAULT_MIN_PRICE.toString() && (
+      {hasPriceMin && (
         <Box className={styles.pill}>
           <div>&gt; {filterState.priceMin} ETH</div>
           <SmallCloseIcon
@@ -54,6 +57,21 @@ export default function FilterPills() {
               setFilterState(newFilter);
             }}
           />
+        </Box>
+      )}
+
+      {hasFilter && (
+        <Box
+          onClick={() => {
+            const newFilter = { ...filterState };
+            newFilter.priceMin = '';
+            newFilter.priceMax = '';
+            newFilter.listType = '';
+            setFilterState(newFilter);
+          }}
+          cursor="pointer"
+        >
+          Clear All
         </Box>
       )}
     </Box>
