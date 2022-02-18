@@ -27,7 +27,7 @@ import { renderSpinner } from 'utils/commonUtil';
 import TraitList from './TraitList';
 import styles from './FilterDrawer.module.scss';
 
-const DEFAULT_MIN_PRICE = 0.0000000001;
+export const DEFAULT_MIN_PRICE = 0.0000000001;
 const CLEAR_KEY = 'CLEAR';
 
 const normalButtonProps: ButtonProps = {
@@ -89,6 +89,14 @@ const FilterDrawer = ({
   const [isMobile] = useMediaQuery('(max-width: 1024px)'); // same as css .filter-container
   const [isMobileSmall] = useMediaQuery('(max-width: 600px)');
   const [isFetchingTraits, setIsFetchingTraits] = useState(false);
+
+  useEffect(() => {
+    // update ui when filterState is changed somewhere else (like in FilterPills...):
+    if (filterState.priceMin !== DEFAULT_MIN_PRICE.toString()) {
+      setMinPriceVal(filterState.priceMin);
+    }
+    setMaxPriceVal(filterState.priceMax);
+  }, [filterState]);
 
   useEffect(() => {
     if (collection) {
