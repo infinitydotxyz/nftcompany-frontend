@@ -13,8 +13,6 @@ import { ListTypeFilterName } from 'utils/constants';
 export default function FilterPills() {
   const { filterState, setFilterState } = useSearchContext();
 
-  useEffect(() => {}, [filterState]);
-
   const hasPriceMin = filterState.priceMin && filterState.priceMin !== DEFAULT_MIN_PRICE.toString();
   const hasFilter = filterState.listType || hasPriceMin || filterState.priceMax;
 
