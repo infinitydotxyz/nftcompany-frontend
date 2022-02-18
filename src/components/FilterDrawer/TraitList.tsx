@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Box, Checkbox } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import SearchInput from '../SearchInput/SearchInput';
 import styles from './TraitList.module.scss';
 
 type ValueMapItem = {
@@ -11,11 +12,17 @@ type TypeValueMap = {
   [k: string]: ValueMapItem;
 };
 
+// open/close state of each TraitType section
 type OpenState = {
   [k: string]: boolean;
 };
 
-// transform typeValueMap into array of traitTypes & traitValues
+// search text of each TraitType section
+type SearchState = {
+  [k: string]: string;
+};
+
+// transform typeValueMap into array of traitTypes & traitValues (api filter params).
 // example: { Shirt: { Black: true, White: true } } => ['Shirt'] and ['Black|White']
 const getSelections = (typeValueMap: TypeValueMap) => {
   const traitTypes = [];
@@ -48,6 +55,7 @@ type Props = {
 
 function TraitList({ traitData, onChange }: Props) {
   const [openState, setOpenState] = useState<OpenState>({});
+  const [searchState, setSearchState] = useState<SearchState>({});
   const [typeValueMap, setTypeValueMap] = useState<TypeValueMap>({});
   if (!traitData || traitData.length === 0) {
     return <></>;
@@ -82,7 +90,26 @@ function TraitList({ traitData, onChange }: Props) {
 
               {openState[item.trait_type] && (
                 <Box className={styles.traitValuesBox}>
+                  <SearchInput
+                    defaultValue={searchState[item.trait_type]}
+                    onChange={(text) => {
+                      const newSearchState = { ...searchState, [item.trait_type]: text };
+                      setSearchState(newSearchState);
+                    }}
+                    onClear={() => {
+                      const newSearchState = { ...searchState, [item.trait_type]: '' };
+                      setSearchState(newSearchState);
+                    }}
+                    size="sm"
+                    placeholder="Filter"
+                    className={styles.search}
+                  />
+
                   {item.values.map((value) => {
+                    const searchText = (searchState[item.trait_type] || '').toLowerCase();
+                    if (searchText && value.toLowerCase().indexOf(searchText) < 0) {
+                      return null;
+                    }
                     return (
                       <Box key={`${item.trait_type}_${value}`} pt={1} pb={1} className={styles.traitValue}>
                         <label>
