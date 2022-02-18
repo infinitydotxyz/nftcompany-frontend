@@ -21,7 +21,7 @@ import * as React from 'react';
 import { getDefaultFilterState, useSearchContext } from 'utils/context/SearchContext';
 import CollectionNameFilter from './CollectionNameFilter';
 import { apiGet } from 'utils/apiUtil';
-import { LISTING_TYPE, PAGE_NAMES } from 'utils/constants';
+import { LISTING_TYPE, ListType, PAGE_NAMES } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
 import { renderSpinner } from 'utils/commonUtil';
 import TraitList from './TraitList';
@@ -121,7 +121,7 @@ const FilterDrawer = ({
     return newFilter;
   };
 
-  const handleClickListType = (listType: '' | 'fixedPrice' | 'englishAuction' | 'dutchAuction') => {
+  const handleClickListType = (listType: '' | ListType | undefined) => {
     let newListType = listType;
     if (listType === filterState.listType) {
       newListType = '';
@@ -203,19 +203,19 @@ const FilterDrawer = ({
           <Box display="flex" flexDirection="column" gridGap={2}>
             <Checkbox
               isChecked={filterState.listType === LISTING_TYPE.FIXED_PRICE}
-              onChange={() => handleClickListType('fixedPrice')}
+              onChange={() => handleClickListType(ListType.fixedPrice)}
             >
               <Text className={styles.main}>Fixed Price</Text>
             </Checkbox>
             <Checkbox
               isChecked={filterState.listType === LISTING_TYPE.DUTCH_AUCTION}
-              onChange={() => handleClickListType('dutchAuction')}
+              onChange={() => handleClickListType(ListType.dutchAuction)}
             >
               <Text className={styles.main}>Declining Price</Text>
             </Checkbox>
             <Checkbox
               isChecked={filterState.listType === LISTING_TYPE.ENGLISH_AUCTION}
-              onChange={() => handleClickListType('englishAuction')}
+              onChange={() => handleClickListType(ListType.englishAuction)}
             >
               <Text className={styles.main}>On Auction</Text>
             </Checkbox>
