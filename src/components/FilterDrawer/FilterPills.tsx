@@ -69,7 +69,7 @@ export default function FilterPills() {
                 return null;
               }
               return (
-                <Box className={styles.pill}>
+                <Box key={`${traitType}_${value}`} className={styles.pill}>
                   <div>{value}</div>
                   <SmallCloseIcon
                     onClick={() => {
