@@ -357,7 +357,7 @@ const Collection = (): JSX.Element => {
                           pageName={PAGE_NAMES.COLLECTION}
                         />
                       </Box>
-                      <Box width="82%">
+                      <Box className="content-container">
                         <CollectionContents
                           name={name as string}
                           onTitle={(newTitle) => {

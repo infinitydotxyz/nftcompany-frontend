@@ -22,6 +22,7 @@ import { NftAction } from 'types';
 import { Box } from '@chakra-ui/layout';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { SearchFilter } from 'utils/context/SearchContext';
+import FilterPills from 'components/FilterDrawer/FilterPills';
 
 export default function MyNFTs() {
   const { user, showAppError, chainId } = useAppContext();
@@ -128,6 +129,8 @@ export default function MyNFTs() {
               />
             </Box>
             <Box className="content-container">
+              <FilterPills />
+
               <PleaseConnectWallet account={user?.account} />
               <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
               {data?.length === 0 && isFetching && <LoadingCardList />}

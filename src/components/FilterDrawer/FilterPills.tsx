@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSearchContext } from 'utils/context/SearchContext';
 import { Box } from '@chakra-ui/react';
 import { SmallCloseIcon } from '@chakra-ui/icons';
 import { DEFAULT_MIN_PRICE } from './FilterDrawer';
-import styles from './FilterPills.module.scss';
 import { ListTypeFilterName } from 'utils/constants';
-
-// TODO:
-// - show in all pages
+import styles from './FilterPills.module.scss';
 
 export default function FilterPills() {
   const { filterState, setFilterState } = useSearchContext();
@@ -63,13 +60,13 @@ export default function FilterPills() {
       {traitTypes.map((traitType, idx) => {
         const values = traitValues[idx].split('|'); // example: 'blue|red'
         return (
-          <>
+          <Box key={`${traitType}_${idx}`}>
             {values.map((value) => {
               if (!value) {
                 return null;
               }
               return (
-                <Box key={`${traitType}_${value}`} className={styles.pill}>
+                <Box key={`${traitType}_${value}_${idx}`} className={styles.pill}>
                   <div>{value}</div>
                   <SmallCloseIcon
                     onClick={() => {
@@ -85,7 +82,7 @@ export default function FilterPills() {
                 </Box>
               );
             })}
-          </>
+          </Box>
         );
       })}
 
