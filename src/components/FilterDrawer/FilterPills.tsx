@@ -8,13 +8,15 @@ import { ListTypeFilterName } from 'utils/constants';
 
 // TODO:
 // - show in all pages
-// - Clear All link
 
 export default function FilterPills() {
   const { filterState, setFilterState } = useSearchContext();
 
   const hasPriceMin = filterState.priceMin && filterState.priceMin !== DEFAULT_MIN_PRICE.toString();
   const hasFilter = filterState.listType || hasPriceMin || filterState.priceMax;
+
+  const traitTypes = (filterState?.traitType || '').split(',');
+  const traitValues = (filterState?.traitValue || '').split(',');
 
   return (
     <Box display="flex" mt={4} alignItems="center">
@@ -58,6 +60,35 @@ export default function FilterPills() {
         </Box>
       )}
 
+      {traitTypes.map((traitType, idx) => {
+        const values = traitValues[idx].split('|'); // example: 'blue|red'
+        return (
+          <>
+            {values.map((value) => {
+              if (!value) {
+                return null;
+              }
+              return (
+                <Box className={styles.pill}>
+                  <div>{value}</div>
+                  <SmallCloseIcon
+                    onClick={() => {
+                      const newFilter = { ...filterState };
+                      traitValues[idx] = values.filter((str: string) => str !== value).join('|');
+                      if (traitValues[idx] === '') {
+                        traitTypes[idx] = '';
+                      }
+                      newFilter.traitValue = traitValues.join(',');
+                      setFilterState(newFilter);
+                    }}
+                  />
+                </Box>
+              );
+            })}
+          </>
+        );
+      })}
+
       {hasFilter && (
         <Box
           onClick={() => {
@@ -65,6 +96,8 @@ export default function FilterPills() {
             newFilter.priceMin = '';
             newFilter.priceMax = '';
             newFilter.listType = '';
+            newFilter.traitType = '';
+            newFilter.traitValue = '';
             setFilterState(newFilter);
           }}
           cursor="pointer"

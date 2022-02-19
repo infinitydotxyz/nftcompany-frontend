@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Checkbox } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import SearchInput from '../SearchInput/SearchInput';
 import styles from './TraitList.module.scss';
+import { useSearchContext } from 'utils/context/SearchContext';
 
 type ValueMapItem = {
   [k: string]: boolean;
@@ -28,6 +29,9 @@ const getSelections = (typeValueMap: TypeValueMap) => {
   const traitTypes = [];
   const traitValues: string[] = [];
   for (const type of Object.keys(typeValueMap)) {
+    if (!type) {
+      continue;
+    }
     const map = typeValueMap[type];
     const arr = [];
     for (const val of Object.keys(map)) {
@@ -54,13 +58,36 @@ type Props = {
 };
 
 function TraitList({ traitData, onChange }: Props) {
+  const { filterState, setFilterState } = useSearchContext();
   const [openState, setOpenState] = useState<OpenState>({});
   const [searchState, setSearchState] = useState<SearchState>({});
-  const [typeValueMap, setTypeValueMap] = useState<TypeValueMap>({});
+  const [typeValueMap, setTypeValueMap] = useState<TypeValueMap>({}); // ex: { Shirt: { Black: true, White: true } }
+
+  useEffect(() => {
+    // when filterState changed (somewhere else) => parse it and set to TypeValueMap for checkboxes' states
+    const traitTypes = (filterState?.traitType || '').split(',');
+    const traitValues = (filterState?.traitValue || '').split(',');
+    const map: any = {};
+    for (let i = 0; i < traitTypes.length; i++) {
+      const type = traitTypes[i];
+      if (!type) {
+        continue;
+      }
+      const values = traitValues[i].split('|');
+      map[type] = map[type] || {};
+      for (const val of values) {
+        if (!val) {
+          continue;
+        }
+        map[type][val] = true;
+      }
+    }
+    setTypeValueMap(map);
+  }, [filterState]);
+
   if (!traitData || traitData.length === 0) {
     return <></>;
   }
-
   return (
     <Box textAlign="left">
       <Box mt={3} mb={3}>
@@ -116,7 +143,7 @@ function TraitList({ traitData, onChange }: Props) {
                           <Checkbox
                             ml={2}
                             mr={3}
-                            defaultChecked={(typeValueMap[item.trait_type] || {})[value]}
+                            isChecked={(typeValueMap[item.trait_type] || {})[value] ?? false}
                             onChange={(ev) => {
                               typeValueMap[item.trait_type] = typeValueMap[item.trait_type] || {};
                               typeValueMap[item.trait_type][value] = ev.target.checked;
