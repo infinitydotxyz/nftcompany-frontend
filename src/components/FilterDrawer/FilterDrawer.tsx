@@ -181,7 +181,6 @@ const FilterDrawer = ({
     const { result, error } = await apiGet(`/collections/${address}/traits`);
     setIsFetchingTraits(false);
     if (result?.traits) {
-      console.log('result.traits', result.traits);
       setTraits(result.traits);
       setSelectedTraits([{ ...EmptyTrait }]);
     } else {

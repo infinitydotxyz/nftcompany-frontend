@@ -101,6 +101,7 @@ export default function FilterPills() {
             setFilterState(newFilter);
           }}
           cursor="pointer"
+          mb={1}
         >
           Clear All
         </Box>
