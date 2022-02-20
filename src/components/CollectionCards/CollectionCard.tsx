@@ -36,9 +36,6 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
 
   return (
     <div ref={ref} className={styles.tripleCard}>
-      <div className={styles.card1}></div>
-      <div className={styles.card2}></div>
-
       <div
         className={`${styles.card3} ${isFeatured && styles.featuredCard}`}
         onClick={() => router.push(`/collection/${cleanCollectionName(entry.name)}`)}

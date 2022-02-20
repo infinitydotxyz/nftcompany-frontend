@@ -6,12 +6,13 @@
     display: flex;
 
     .imgBox {
-      flex: 65;
+      flex: 50%;
       img {
         // width: 100%;
         height: auto;
         max-height: 80vh; /* for img that too tall */
-        border-radius: 16px;
+        border-radius: var(--border-radius-big);
+        margin: 0 auto;
       }
     }
 
@@ -24,27 +25,43 @@
       overflow-y: auto;
       height: 80vh;
 
+      .contractAddress {
+        margin-top: 40px;
+      }
+
       .buttonBar {
         display: flex;
         gap: 6px;
-
         align-items: center;
-        margin: 10px 0 0px 0;
+        margin: 0;
       }
 
       .title {
         font-size: 1.2rem;
-        font-weight: bold;
+      }
+
+      .collectionBox {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        width: 100%;
+        padding-right: 5px;
       }
 
       .collectionRow {
         display: flex;
-        align-items: center;
+        align-items: flex-end;
       }
 
       .collection {
         font-size: 1.3rem;
         margin-right: 6px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        > div {
+          margin-left: 5px;
+        }
       }
     }
   }

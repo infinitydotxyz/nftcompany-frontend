@@ -1,5 +1,5 @@
 import React from 'react';
-import Downshift from 'downshift';
+import Downshift, { ControllerStateAndHelpers } from 'downshift';
 import styles from './SearchBox.module.scss';
 import { Box, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { getTypeAheadOptions } from 'services/Listings.service';
@@ -7,6 +7,7 @@ import { defaultFilterState, useSearchContext } from 'utils/context/SearchContex
 import { CloseIcon, SearchIcon } from '@chakra-ui/icons';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { useRouter } from 'next/router';
+import { getSearchFriendlyString } from 'utils/commonUtil';
 
 type SearchMatch = {
   value: string;
@@ -33,41 +34,36 @@ export default function SearchBox() {
     }
   };
 
+  const onChangeSearchBox = (value: string[] | null) => {
+    // user selected a matched from the dropdown
+    let val = `${value || ''}`;
+
+    if (val.indexOf('Collection:') === 0) {
+      val = val.slice(12); // remove "Collection: " in the front.
+      router.push(`/collection/${getSearchFriendlyString(val)}`);
+    } else {
+      setSearchState({
+        ...searchState,
+        selectedOption: undefined,
+        collectionName: '',
+        text: val
+      });
+    }
+
+    setSelectedValue(val);
+    setIsSelecting(true);
+    setOptions([]); // after selecting an option, reset the dropdown options
+
+    if (inputRef && inputRef.current) {
+      inputRef.current.value = val;
+    }
+  };
+
   return (
     <div>
       <Downshift
         id="app-search-box"
-        onChange={(value) => {
-          // user selected a matched from the dropdown
-
-          // console.log('value', value, typeof value, b);
-          let val = `${value || ''}`;
-
-          if (val.indexOf('Collection:') === 0) {
-            val = val.slice(12); // remove "Collection: " in the front.
-            setSearchState({
-              ...searchState,
-              selectedOption: undefined,
-              collectionName: val,
-              text: ''
-            });
-          } else {
-            setSearchState({
-              ...searchState,
-              selectedOption: undefined,
-              collectionName: '',
-              text: val
-            });
-          }
-
-          setSelectedValue(val);
-          setIsSelecting(true);
-          setOptions([]); // after selecting an option, reset the dropdown options
-
-          if (inputRef && inputRef.current) {
-            inputRef.current.value = val;
-          }
-        }}
+        onChange={onChangeSearchBox}
         itemToString={(item: string[] | null) => `${item}`}
         selectedItem={[selectedValue]}
       >

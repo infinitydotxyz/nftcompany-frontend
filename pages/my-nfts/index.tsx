@@ -56,17 +56,34 @@ export default function MyNFTs() {
       showAppError(`${error.message}`);
       return;
     }
+
+    const tokenAddresses: string[] = [];
     const moreData = (result?.assets || []).map((item: any) => {
+      let newItem;
       if (source === NFT_DATA_SOURCES.OPENSEA) {
-        return transformOpenSea(item, user?.account, chainId);
+        newItem = transformOpenSea(item, user?.account, chainId);
       } else if (source === NFT_DATA_SOURCES.COVALENT) {
-        return transformCovalent(item, user?.account, chainId);
+        newItem = transformCovalent(item, user?.account, chainId);
       } else if (source === NFT_DATA_SOURCES.UNMARSHAL) {
-        return transformUnmarshal(item, user?.account, chainId);
+        newItem = transformUnmarshal(item, user?.account, chainId);
       } else if (source === NFT_DATA_SOURCES.ALCHEMY) {
-        return transformAlchemy(item, user?.account, chainId);
+        newItem = transformAlchemy(item, user?.account, chainId);
+      }
+
+      if (newItem?.tokenAddress && !tokenAddresses.includes(newItem.tokenAddress)) {
+        tokenAddresses.push(newItem.tokenAddress);
+      }
+      return newItem;
+    });
+
+    // fetch bluechecks for assets' collections (tokenAddresses) & apply them:
+    const { result: getBluecheckResult } = await apiGet(`/collections/verifiedIds?ids=${tokenAddresses.join(',')}`);
+    moreData.forEach((item: CardData) => {
+      if (getBluecheckResult?.collectionIds?.includes(item.tokenAddress)) {
+        item.hasBlueCheck = true;
       }
     });
+
     setIsFetching(false);
     setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);

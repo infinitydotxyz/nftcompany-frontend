@@ -15,8 +15,9 @@ import styles from './CardList.module.scss';
 import PreviewModal from 'components/PreviewModal/PreviewModal';
 import AppLink from 'components/AppLink/AppLink';
 import TransferNFTModal from 'components/TransferNFTModal/TransferNFTModal';
-import { ThreeDotLR } from 'components/Icons/Icons';
+import { BsThreeDotsVertical, BsEye } from 'react-icons/bs';
 import ListNFTModal from 'components/ListNFTModal/ListNFTModal';
+import { CardPriceBox } from 'components/PriceBox/CardPriceBox';
 
 type Props = {
   data: CardData;
@@ -126,9 +127,9 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
 
     if (name) {
       return (
-        <Link title={name} variant="underline" onClick={handler}>
+        <MenuItem title={name} onClick={handler}>
           {name}
-        </Link>
+        </MenuItem>
       );
     }
 
@@ -147,6 +148,33 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
     return 'WETH';
   };
 
+  const menuEl = (
+    <Menu>
+      <MenuButton>
+        <BsThreeDotsVertical />
+      </MenuButton>
+      <MenuList>
+        {actionButton()}
+        <MenuItem onClick={() => setRelistModalShowed(true)}>Relist / Lower Price</MenuItem>
+        <MenuItem onClick={() => setTransferModalShowed(true)}>Transfer</MenuItem>
+        <MenuItem onClick={() => setPreviewModalShowed(true)}>Preview</MenuItem>
+      </MenuList>
+    </Menu>
+  );
+
+  let mainLabel = '';
+  if (pageName === PAGE_NAMES.MY_NFTS) {
+    mainLabel = 'List';
+  } else if (pageName === PAGE_NAMES.LISTED_NFTS) {
+    mainLabel = 'Cancel';
+  } else if (pageName === PAGE_NAMES.OFFERS_MADE) {
+    mainLabel = 'Cancel';
+  } else if (pageName === PAGE_NAMES.OFFERS_RECEIVED) {
+    mainLabel = 'Accept';
+  } else {
+    mainLabel = 'Buy';
+  }
+
   if (inView === false) {
     return (
       <div ref={ref} id={`id_${data.id}`} className={styles.card}>
@@ -164,15 +192,6 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
         </div>
 
         {shouldShowOwnedByYou && <div className={styles.ownedTag}>Owned</div>}
-
-        <div className={styles.priceFloater}>
-          <PriceBoxFloater
-            justifyRight
-            price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
-            token={getToken()}
-            expirationTime={data?.expirationTime}
-          />
-        </div>
       </div>
 
       <div className={styles.cardBody}>
@@ -192,29 +211,42 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
             <div className={styles.title} title={data.title}>
               {data.title}
             </div>
+
+            <div className={styles.priceRow}>
+              <CardPriceBox
+                label={mainLabel}
+                price={showItems.indexOf('PRICE') >= 0 ? data.price : undefined}
+                token={getToken()}
+                expirationTime={data?.expirationTime}
+                onClick={() => {
+                  if (pageName === PAGE_NAMES.MY_NFTS && onClickAction) {
+                    onClickAction(data, NftAction.ListNft);
+                  } else if (pageName === PAGE_NAMES.LISTED_NFTS && onClickAction) {
+                    onClickAction(data, NftAction.CancelListing);
+                  } else if (pageName === PAGE_NAMES.OFFERS_MADE) {
+                    setCancelOfferModalShowed(true);
+                  } else if (pageName === PAGE_NAMES.OFFERS_RECEIVED) {
+                    setAcceptOfferModalShowed(true);
+                  } else {
+                    setPlaceBidModalShowed(true);
+                  }
+                }}
+              />
+
+              {ownedByYou ? (
+                menuEl
+              ) : (
+                <button onClick={() => setPreviewModalShowed(true)}>
+                  <BsEye />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
       <Spacer />
 
-      <div className={styles.buttons}>
-        {actionButton()}
-        <Link title="Preview" variant="underline" onClick={() => setPreviewModalShowed(true)}>
-          Preview
-        </Link>
-
-        {shouldShowTransferButton && (
-          <Menu>
-            <MenuButton>
-              <ThreeDotLR />
-            </MenuButton>
-            <MenuList>
-              <MenuItem onClick={() => setTransferModalShowed(true)}>Transfer</MenuItem>
-              <MenuItem onClick={() => setRelistModalShowed(true)}>Relist / Lower Price</MenuItem>
-            </MenuList>
-          </Menu>
-        )}
-      </div>
+      <div className={styles.buttons}></div>
 
       {placeBidModalShowed && <PlaceBidModal data={data} onClose={() => setPlaceBidModalShowed(false)} />}
       {cancelOfferModalShowed && <CancelOfferModal data={data} onClose={() => setCancelOfferModalShowed(false)} />}
