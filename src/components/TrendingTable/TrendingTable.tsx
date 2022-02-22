@@ -1,18 +1,5 @@
 import { Box, Link } from '@chakra-ui/layout';
-import {
-  Button,
-  IconButton,
-  Image,
-  Progress,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useDisclosure
-} from '@chakra-ui/react';
+import { Button, Image, Progress, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react';
 import { EthToken } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import SortButton from 'components/SortButton/SortButton';
@@ -21,11 +8,11 @@ import TrendingSelectionModal from 'components/TrendingSelectionModal/TrendingSe
 import Layout from 'containers/layout';
 import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'hooks/useTrendingStats';
 import { NextPage } from 'next';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { OrderBy, OrderDirection, StatInterval } from 'services/Stats.service';
 import { numStr, renderSpinner } from 'utils/commonUtil';
+import styles from './styles.module.scss';
 
 enum Period {
   OneDay = '1 day',
@@ -59,6 +46,7 @@ interface BaseDataColumn {
   type: DataColumnType;
   unit?: string;
 }
+
 export interface DataColumn extends BaseDataColumn {
   isSelected: boolean;
   /**
@@ -213,7 +201,7 @@ const defaultDataColumns: DataColumns = {
 
 export type DataColumns = Record<DataColumnGroup, Record<SecondaryOrderBy, DataColumn>>;
 
-export default function Trending() {
+export default function TrendingTable() {
   const {
     options,
     onChange,
@@ -243,44 +231,36 @@ export default function Trending() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <>
-      <Head>
-        <title>Explore</title>
-      </Head>
-
-      <div className="page-container">
-        <Box display="flex" flexDirection={'column'} justifyContent={'flex-start'} marginTop={'80px'}>
-          {isOpen && (
-            <TrendingSelectionModal
-              isOpen={isOpen}
-              onClose={onClose}
-              onOpen={onOpen}
-              dataColumns={dataColumns}
-              setDataColumns={setDataColumns}
-            />
-          )}
-          <Box
-            display="flex"
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            alignItems={'center'}
-            marginBottom="16px"
-          >
-            <Box display="flex" flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'}>
-              <Text size="lg" paddingBottom={'4px'}>
-                Period:
-              </Text>
-              <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
-            </Box>
-            <Button variant="outline" size="sm" onClick={onOpen}>
-              Select Categories
-            </Button>
-          </Box>
-
-          <TrendingContents statsFilter={statsFilter} dataColumns={dataColumns} setStatsFilter={setStatsFilter} />
+    <Box display="flex" flexDirection={'column'} justifyContent={'flex-start'} marginTop={'80px'}>
+      {isOpen && (
+        <TrendingSelectionModal
+          isOpen={isOpen}
+          onClose={onClose}
+          onOpen={onOpen}
+          dataColumns={dataColumns}
+          setDataColumns={setDataColumns}
+        />
+      )}
+      <Box
+        display="flex"
+        flexDirection={'row'}
+        justifyContent={'space-between'}
+        alignItems={'center'}
+        marginBottom="16px"
+      >
+        <Box display="flex" flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'}>
+          <Text size="lg" paddingBottom={'4px'}>
+            Period:
+          </Text>
+          <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
         </Box>
-      </div>
-    </>
+        <Button variant="outline" size="sm" onClick={onOpen}>
+          Select Categories
+        </Button>
+      </Box>
+
+      <TrendingContents statsFilter={statsFilter} dataColumns={dataColumns} setStatsFilter={setStatsFilter} />
+    </Box>
   );
 }
 
@@ -447,4 +427,4 @@ function TrendingContents(props: {
 }
 
 // eslint-disable-next-line react/display-name
-Trending.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
+TrendingTable.getLayout = (page: NextPage) => <Layout>{page}</Layout>;

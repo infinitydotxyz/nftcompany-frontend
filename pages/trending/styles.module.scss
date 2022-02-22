@@ -1,0 +1,11 @@
+@import '/styles/SharedStyles.module.scss';
+
+.main {
+  margin-bottom: 30vh;
+
+  .content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+}
