@@ -54,11 +54,11 @@ function DiscoverSelectionModal(props: Props) {
         <Stack spacing={2} direction="column">
           {Object.entries(tempDataColumns).map(([groupKey, group]) => {
             return (
-              <>
+              <Stack spacing={2} direction="column" key={groupKey ?? 'group'}>
                 {Object.entries(group).map(([itemKey, item]) => {
                   return (
                     <Checkbox
-                      key={itemKey}
+                      key={itemKey + groupKey}
                       isChecked={item.isSelected}
                       disabled={item.isDisabled}
                       onChange={() => {
@@ -80,7 +80,7 @@ function DiscoverSelectionModal(props: Props) {
                     </Checkbox>
                   );
                 })}
-              </>
+              </Stack>
             );
           })}
         </Stack>

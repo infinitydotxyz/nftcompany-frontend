@@ -364,7 +364,11 @@ const Checkbox = {
     return {
       control: {
         border: '1px solid',
-        borderColor: 'var(--chakra-colors-brandColor)'
+        borderColor: 'var(--chakra-colors-brandColor)',
+        _focus: {
+          // remove ugly focus shadow
+          boxShadow: 'none'
+        }
       },
       icon: {
         color: 'var(--chakra-colors-brandColor)',
