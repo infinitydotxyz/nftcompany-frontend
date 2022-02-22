@@ -62,6 +62,9 @@ const Header = (): JSX.Element => {
   ];
 
   const exploreItems = [
+    <MenuItem key="feed-item" icon={MenuIcons.activityFeedIcon} onClick={() => router.push('/feed')}>
+      Activity Feed
+    </MenuItem>,
     <MenuItem key="explore-item" icon={MenuIcons.exploreIcon} onClick={onClickExplore}>
       Explore
     </MenuItem>,

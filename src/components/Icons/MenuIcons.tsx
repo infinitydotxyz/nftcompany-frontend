@@ -57,6 +57,7 @@ export class MenuIcons {
   static copyIcon = MenuIcons.wrap(<CopyIcon boxSize={MenuIcons.bs} />);
   static sortIcon = MenuIcons.wrap(<SortIcon boxSize={MenuIcons.bs} />);
   static collectionsIcon = MenuIcons.wrap(<CollectionsIcon boxSize={MenuIcons.bs} />);
+  static activityFeedIcon = MenuIcons.wrap(<TrendingIcon boxSize={MenuIcons.bs} />); // TODO: set proper icon
   static exploreIcon = MenuIcons.wrap(<ExploreIcon boxSize={MenuIcons.bs} />);
   static trendingIcon = MenuIcons.wrap(<TrendingIcon boxSize={MenuIcons.bs} />);
 

@@ -13,7 +13,8 @@ export const PAGE_NAMES = {
   USER_NFTS: 'user-nfts',
   OFFERS_MADE: 'offers-made',
   OFFERS_RECEIVED: 'offers-received',
-  COLLECTION: 'collection'
+  COLLECTION: 'collection',
+  FEED: 'feed'
 };
 
 export const LISTING_TYPE = {
