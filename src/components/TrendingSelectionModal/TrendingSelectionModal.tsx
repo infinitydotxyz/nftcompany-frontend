@@ -1,9 +1,9 @@
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, Checkbox, Stack, Text, Button, Tooltip } from '@chakra-ui/react';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
+import { DataColumnGroup, DataColumns } from 'components/TrendingTable/DataColumns';
 import { SecondaryOrderBy } from 'hooks/useTrendingStats';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { DataColumnGroup, DataColumns } from '../../unfinished/trending';
 
 interface Props {
   dataColumns: DataColumns;
