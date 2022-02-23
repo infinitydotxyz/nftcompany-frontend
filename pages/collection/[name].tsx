@@ -299,14 +299,7 @@ const Collection = (): JSX.Element => {
               </Box>
             </Box>
 
-            <Box
-              marginTop={'72px'}
-              display={'flex'}
-              flexDirection="row"
-              width="100%"
-              alignItems={'center'}
-              className={styles.toggle}
-            >
+            <Box marginTop={'72px'} display={'flex'} flexDirection="row" width="100%" alignItems={'center'}>
               <ToggleTab
                 options={['NFTs', 'Community']}
                 selected={toggleTab}
