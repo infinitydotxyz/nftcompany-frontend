@@ -5,7 +5,7 @@ import IntervalChange from 'components/IntervalChange/IntervalChange';
 import SortButton from 'components/SortButton/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import TrendingDrawer from 'components/TrendingSelectionModal/TrendingSelectionDrawer';
-import TrendingSelectionModal from 'components/TrendingSelectionModal/TrendingSelectionModal';
+import TrendingSelectionModal from 'components/TrendingSelectionModal/TrendingFilter';
 import Layout from 'containers/layout';
 import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'hooks/useTrendingStats';
 import { NextPage } from 'next';
@@ -57,19 +57,8 @@ export default function TrendingTable() {
     });
   }, [period]);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <Box display="flex" flexDirection={'column'} justifyContent={'flex-start'} marginTop={'80px'}>
-      {isOpen && (
-        <TrendingSelectionModal
-          isOpen={isOpen}
-          onClose={onClose}
-          onOpen={onOpen}
-          dataColumns={dataColumns}
-          setDataColumns={setDataColumns}
-        />
-      )}
       <Box
         display="flex"
         flexDirection={'row'}
@@ -83,11 +72,8 @@ export default function TrendingTable() {
           </Text>
           <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
         </Box>
-        <Button variant="outline" size="sm" onClick={onOpen}>
-          Select Categories
-        </Button>
 
-        <TrendingDrawer />
+        <TrendingDrawer dataColumns={dataColumns} setDataColumns={setDataColumns} />
       </Box>
 
       <TrendingContents statsFilter={statsFilter} dataColumns={dataColumns} setStatsFilter={setStatsFilter} />

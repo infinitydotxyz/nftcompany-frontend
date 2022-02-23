@@ -1,47 +1,45 @@
 import {
   Drawer,
   DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
   Button,
-  Input
+  useMediaQuery
 } from '@chakra-ui/react';
-import React from 'react';
+import { DataColumns } from 'components/TrendingTable/DataColumns';
+import React, { Dispatch, SetStateAction } from 'react';
+import TrendingFilter from './TrendingFilter';
+import styles from './styles.module.scss';
 
 interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-  onOpen: () => void;
+  dataColumns: DataColumns;
+  setDataColumns: Dispatch<SetStateAction<DataColumns>>;
 }
 
-function TrendingDrawer() {
+function TrendingDrawer(props: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isMobileSmall] = useMediaQuery('(max-width: 600px)');
 
   return (
     <>
-      <Button colorScheme="teal" onClick={onOpen}>
-        Open
+      <Button borderRadius={100} variant="outline" onClick={onOpen}>
+        Filter
       </Button>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={isMobileSmall ? 'full' : 'xs'}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
+          <div className={styles.drawerHeader}>
+            <div className={styles.title}>Filter</div>
+            <div className={styles.subtitle}>Select up to 5</div>
+          </div>
 
           <DrawerBody>
-            <Input placeholder="Type here..." />
+            <TrendingFilter setDataColumns={props.setDataColumns} dataColumns={props.dataColumns} onClose={onClose} />
           </DrawerBody>
-
-          <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme="blue">Save</Button>
-          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>
