@@ -1,38 +1,31 @@
 .wrapper {
   display: flex;
-  flex-direction: row;
-
-  width: fit-content;
-
   background-color: #e5e5e5;
-  border-radius: 8px;
+  border-radius: 100px;
   margin: 8px;
+  padding: 4px;
+  gap: 2px;
 
   font-style: normal;
   font-weight: normal;
-  font-size: 16px;
+  font-size: 1.2rem;
   line-height: 19px;
   cursor: pointer;
 }
 
 .option {
-  padding: 8px;
-  padding-top: 4px;
-  padding-bottom: 8px;
+  padding: 8px 26px 11px 26px;
+  white-space: nowrap;
   background-color: #e5e5e5;
-  flex-basis: 0;
-  flex-grow: 1;
-  border-radius: 8px;
-  width: 100px;
+  border-radius: 100px;
   display: flex;
   text-align: center;
   align-items: center;
   justify-content: center;
-}
 
-.sm {
-  width: 80px;
-  font-size: 14px;
+  &.sm {
+    font-size: 1rem;
+  }
 }
 
 .selected {

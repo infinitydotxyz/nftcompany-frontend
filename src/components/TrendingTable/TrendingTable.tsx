@@ -67,9 +67,6 @@ export default function TrendingTable() {
         marginBottom="16px"
       >
         <Box display="flex" flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'}>
-          <Text size="lg" paddingBottom={'4px'}>
-            Period:
-          </Text>
           <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
         </Box>
 
