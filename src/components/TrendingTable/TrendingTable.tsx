@@ -4,6 +4,7 @@ import { EthToken } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import SortButton from 'components/SortButton/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
+import TrendingDrawer from 'components/TrendingSelectionModal/TrendingSelectionDrawer';
 import TrendingSelectionModal from 'components/TrendingSelectionModal/TrendingSelectionModal';
 import Layout from 'containers/layout';
 import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'hooks/useTrendingStats';
@@ -85,6 +86,8 @@ export default function TrendingTable() {
         <Button variant="outline" size="sm" onClick={onOpen}>
           Select Categories
         </Button>
+
+        <TrendingDrawer />
       </Box>
 
       <TrendingContents statsFilter={statsFilter} dataColumns={dataColumns} setStatsFilter={setStatsFilter} />

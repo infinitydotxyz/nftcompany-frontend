@@ -425,7 +425,13 @@ const FilterDrawer = ({
         trapFocus={false}
         {...rest}
       >
+        {/*
+        removed to allow clicks on screen when drawer is Open
+        the previous css hack interfered with normal drawers
+        This makes the closing animation janky, but couldn't find a fix for that
+
         <DrawerOverlay backgroundColor="rgba(0,0,0,0)" />
+        */}
 
         <DrawerContent shadow="lg" mt={headerPosition + 12}>
           <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
