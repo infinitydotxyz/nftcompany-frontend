@@ -26,7 +26,7 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 - The debugger can be connected in one of two modes `launch` or `attach`
 
-  - Use `attach` if you already have chrome open
+  - Use `attach` if you actively use chrome as your main browser
   - Only use `launch` if you mainly use a different browser and only use chrome for development. Otherwise the `userDataDir` setting - which allows you to launch the browser with your metamask - will prevent the browser from being launched correctly
 
 - `attach`
