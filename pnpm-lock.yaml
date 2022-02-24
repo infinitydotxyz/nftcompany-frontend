@@ -24,7 +24,7 @@ specifiers:
   '@walletconnect/web3-provider': ^1.7.1
   axios: 0.21.4
   bignumber.js: 4.1.0
-  chart.js: 3.5.1
+  chart.js: 3.7.1
   cross-env: 7.0.3
   downshift: 6.1.7
   eslint: 7.32.0
@@ -38,7 +38,7 @@ specifiers:
   isomorphic-unfetch: 3.1.0
   json-loader: 0.5.7
   lodash: 4.17.21
-  logrocket: 2.0.0
+  logrocket: 2.2.0
   memoize-one: ^6.0.0
   moment: 2.29.1
   next: 12.1.0
@@ -49,17 +49,17 @@ specifiers:
   rc-slider: 9.7.5
   react: 17.0.2
   react-bootstrap-typeahead: 5.2.2
-  react-chartjs-2: 3.0.5
-  react-content-loader: 6.0.3
+  react-chartjs-2: 4.0.1
+  react-content-loader: 6.1.0
   react-dom: 17.0.2
   react-flatpickr: 3.10.7
   react-icons: ^4.3.1
-  react-intersection-observer: 8.32.1
-  react-range: 1.8.11
+  react-intersection-observer: 8.33.1
+  react-range: 1.8.12
   react-timer-hook: 3.0.5
-  react-toastify: 8.0.3
+  react-toastify: 8.2.0
   react-window: ^1.8.6
-  recharts: 2.1.4
+  recharts: 2.1.9
   rimraf: ^3.0.2
   sass: 1.49.8
   timeago.js: 4.0.2
@@ -88,7 +88,7 @@ dependencies:
   '@walletconnect/web3-provider': 1.7.1_@babel+core@7.17.5
   axios: 0.21.4
   bignumber.js: 4.1.0
-  chart.js: 3.5.1
+  chart.js: 3.7.1
   cross-env: 7.0.3
   downshift: 6.1.7_react@17.0.2
   ethereumjs-abi: github.com/ProjectWyvern/ethereumjs-abi/3d2d89641a6ad5984929b6ca4b646452ec74f73d
@@ -99,7 +99,7 @@ dependencies:
   isomorphic-unfetch: 3.1.0
   json-loader: 0.5.7
   lodash: 4.17.21
-  logrocket: 2.0.0
+  logrocket: 2.2.0
   memoize-one: 6.0.0
   moment: 2.29.1
   next: 12.1.0_d4c8e9d0696ef40786054756cfd1867a
@@ -108,17 +108,17 @@ dependencies:
   rc-slider: 9.7.5_react-dom@17.0.2+react@17.0.2
   react: 17.0.2
   react-bootstrap-typeahead: 5.2.2_react-dom@17.0.2+react@17.0.2
-  react-chartjs-2: 3.0.5_chart.js@3.5.1+react@17.0.2
-  react-content-loader: 6.0.3_react@17.0.2
+  react-chartjs-2: 4.0.1_chart.js@3.7.1+react@17.0.2
+  react-content-loader: 6.1.0_react@17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-flatpickr: 3.10.7_react@17.0.2
   react-icons: 4.3.1_react@17.0.2
-  react-intersection-observer: 8.32.1_react@17.0.2
-  react-range: 1.8.11_react-dom@17.0.2+react@17.0.2
+  react-intersection-observer: 8.33.1_react@17.0.2
+  react-range: 1.8.12_react-dom@17.0.2+react@17.0.2
   react-timer-hook: 3.0.5_react-dom@17.0.2+react@17.0.2
-  react-toastify: 8.0.3_react-dom@17.0.2+react@17.0.2
+  react-toastify: 8.2.0_react-dom@17.0.2+react@17.0.2
   react-window: 1.8.6_react-dom@17.0.2+react@17.0.2
-  recharts: 2.1.4_75cb922c19ee1b7939faae9b4d1f4cf7
+  recharts: 2.1.9_75cb922c19ee1b7939faae9b4d1f4cf7
   sass: 1.49.8
   timeago.js: 4.0.2
   use-resize-observer: 8.0.0_react-dom@17.0.2+react@17.0.2
@@ -3815,8 +3815,8 @@ packages:
       supports-color: 7.2.0
     dev: true
 
-  /chart.js/3.5.1:
-    resolution: {integrity: sha512-m5kzt72I1WQ9LILwQC4syla/LD/N413RYv2Dx2nnTkRS9iv/ey1xLTt0DnPc/eWV4zI+BgEgDYBIzbQhZHc/PQ==}
+  /chart.js/3.7.1:
+    resolution: {integrity: sha512-8knRegQLFnPQAheZV8MjxIXc5gQEfDFD897BJgv/klO/vtIyFFmgMXrNfgrXpbTr/XbTturxRgxIXx/Y+ASJBA==}
     dev: false
 
   /checkpoint-store/1.1.0:
@@ -6605,8 +6605,8 @@ packages:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
     dev: false
 
-  /logrocket/2.0.0:
-    resolution: {integrity: sha512-O+YdrtpQn7oOmrxCqOyUcaB1+ONrhyJuB9CX57PQ0JJzNrYstxd0Oyg6UdLisA7UjNmwTr6fixMO3WOysDTFFA==}
+  /logrocket/2.2.0:
+    resolution: {integrity: sha512-YYZqYj4UjC9h992+yNt5E+h1bXCKyVjTa1UlbgK/onhLfNV/78tRqw9Ti7XBcwqOgaFsD2xrDDl+emZH36ch8g==}
     dev: false
 
   /longest/1.0.1:
@@ -7667,14 +7667,13 @@ packages:
       warning: 4.0.3
     dev: false
 
-  /react-chartjs-2/3.0.5_chart.js@3.5.1+react@17.0.2:
-    resolution: {integrity: sha512-fYr4E82agaZi9IFMe5GtOZ6WE/HWdxy/KywLNOzXsqgPkD2oo1IlrQLKMLUki/2UXko3p95TR2L8Q2rEss/opQ==}
+  /react-chartjs-2/4.0.1_chart.js@3.7.1+react@17.0.2:
+    resolution: {integrity: sha512-q8bgWzKoFvBvD7YcjT/hXG8jt55TaMAuJ1dmI3tKFJ7CijUWYz4pIfOhkTI6PBTwqu/pmeWsClBRd/7HiWzN1g==}
     peerDependencies:
       chart.js: ^3.5.0
       react: ^16.8.0 || ^17.0.0
     dependencies:
-      chart.js: 3.5.1
-      lodash: 4.17.21
+      chart.js: 3.7.1
       react: 17.0.2
     dev: false
 
@@ -7687,8 +7686,8 @@ packages:
       react: 17.0.2
     dev: false
 
-  /react-content-loader/6.0.3_react@17.0.2:
-    resolution: {integrity: sha512-CIRgTHze+ls+jGDIfCitw27YkW2XcaMpsYORTUdBxsMFiKuUYMnlvY76dZE4Lsaa9vFXVw+41ieBEK7SJt0nug==}
+  /react-content-loader/6.1.0_react@17.0.2:
+    resolution: {integrity: sha512-S4/+doQrNs0PGDgUYCGGfdFjGax8dMQzYkWcSSxfaUcUjFkbnikWARuX9lWkglocIVhxnn3lxNb6uEWFFUzNUw==}
     engines: {node: '>=10'}
     peerDependencies:
       react: '>=16.0.0'
@@ -7745,16 +7744,12 @@ packages:
       react: 17.0.2
     dev: false
 
-  /react-intersection-observer/8.32.1_react@17.0.2:
-    resolution: {integrity: sha512-FOmMkMw7MeJ8FkuADpU8TRcvGuTvPB+DRkaikS1QXcWArYLCWC3mjRorq2XeRGBuqmaueOBd27PUazTu9AgInw==}
+  /react-intersection-observer/8.33.1_react@17.0.2:
+    resolution: {integrity: sha512-3v+qaJvp3D1MlGHyM+KISVg/CMhPiOlO6FgPHcluqHkx4YFCLuyXNlQ/LE6UkbODXlQcLOppfX6UMxCEkUhDLw==}
     peerDependencies:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0|| ^18.0.0
     dependencies:
       react: 17.0.2
-    dev: false
-
-  /react-is/16.10.2:
-    resolution: {integrity: sha512-INBT1QEgtcCCgvccr5/86CfD71fw9EPmDxgiJX4I2Ddr6ZsV6iFXsuby+qWJPtmNuMY0zByTsG4468P7nHuNWA==}
     dev: false
 
   /react-is/16.13.1:
@@ -7801,8 +7796,8 @@ packages:
       warning: 4.0.3
     dev: false
 
-  /react-range/1.8.11_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-LaF5xwYy6u0Rnp0hRBBLKqJx0DmNpW2GqMSoj8OJ0IYiCM7GmSNf0UKxmN4cN0BCb2EwzD3zA9nw6Fkug2c3mg==}
+  /react-range/1.8.12_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-vY2eCNDvKlXtEpl8xx5AQVIBeE4ZZ46dLVL+82f4FcS9XrPqz4+XagPHmq3IPqYuVQ2H4b8UArXzvVAsd/B03Q==}
     peerDependencies:
       react: ^16.8.0-0 || ^17.0.0-0
       react-dom: ^16.8.0-0 || ^17.0.0-0
@@ -7901,8 +7896,8 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /react-toastify/8.0.3_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-rv3koC7f9lKKSkdpYgo/TGzgWlrB/aaiUInF1DyV7BpiM4kyTs+uhu6/r8XDMtBY2FOIHK+FlK3Iv7OzpA/tCA==}
+  /react-toastify/8.2.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-Pg2Ju7NngAamarFvLwqrFomJ57u/Ay6i6zfLurt/qPynWkAkOthu6vxfqYpJCyNhHRhR4hu7+bySSeWWJu6PAg==}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
@@ -8034,8 +8029,9 @@ packages:
       decimal.js-light: 2.5.1
     dev: false
 
-  /recharts/2.1.4_75cb922c19ee1b7939faae9b4d1f4cf7:
-    resolution: {integrity: sha512-ZKaLgUo4g84FhIiLeRq0uWMqe5GTjjJk+5fxmIt2H4cn279QZCMEsuVFmBqYedJcmX1URYEII5qb9pOppr5fJA==}
+  /recharts/2.1.9_75cb922c19ee1b7939faae9b4d1f4cf7:
+    resolution: {integrity: sha512-VozH5uznUvGqD7n224FGj7cmMAenlS0HPCs+7r2HeeHiQK6un6z0CTZfWVAB860xbcr4m+BN/EGMPZmYWd34Rg==}
+    engines: {node: '>=12'}
     peerDependencies:
       react: ^16.0.0 || ^17.0.0
       react-dom: ^16.0.0 || ^17.0.0
@@ -8051,7 +8047,7 @@ packages:
       lodash: 4.17.21
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-is: 16.10.2
+      react-is: 16.13.1
       react-resize-detector: 6.7.8_react-dom@17.0.2+react@17.0.2
       react-smooth: 2.0.0_75cb922c19ee1b7939faae9b4d1f4cf7
       recharts-scale: 0.4.5
