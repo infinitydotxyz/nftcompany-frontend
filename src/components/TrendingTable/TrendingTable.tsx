@@ -101,17 +101,8 @@ function TrendingContents(props: {
   }, [props.dataColumns]);
 
   return (
-    <Box
-      border="1px solid"
-      borderRadius={'8px'}
-      borderColor="separator"
-      display={'flex'}
-      flexDirection={'column'}
-      alignItems="center"
-      maxWidth={'100%'}
-      overflowX={'auto'}
-    >
-      <Table colorScheme="gray" marginTop={4} size={'sm'} display={'block'}>
+    <Box display={'flex'} flexDirection={'column'} alignItems="center" maxWidth={'100%'} overflowX={'auto'}>
+      <Table variant="unstyled" colorScheme="gray">
         <Thead>
           <Tr>
             <Th paddingBottom={'8px'}>Collection</Th>
@@ -155,7 +146,7 @@ function TrendingContents(props: {
         <Tbody>
           {trendingData.map((collectionData: TrendingData) => {
             return (
-              <Tr key={collectionData.collectionAddress}>
+              <Tr key={collectionData.collectionAddress} borderWidth={20} borderColor={'#fff'} bgColor="#f0f0f0">
                 <Td
                   display="flex"
                   flexDirection={['column', 'column', 'column', 'column', 'row']}
