@@ -9,13 +9,24 @@ function SortButton(props: {
 }) {
   const defaultArrows = (
     <>
-      <CarrotUp width="10px" />
-      <CarrotDown width="10px" />
+      <CarrotUp width="10px" position="relative" top="-5px" />
+      <CarrotDown width="10px" position="relative" top="-10px" />
     </>
   );
 
-  const topArrow = <CarrotUp width="10px" />;
-  const bottomArrow = <CarrotDown width="10px" />;
+  const topArrow = (
+    <>
+      <CarrotUp width="10px" position="relative" top="-5px" />
+      <CarrotDown width="10px" position="relative" top="-10px" color="#bbb" />
+    </>
+  );
+
+  const bottomArrow = (
+    <>
+      <CarrotUp width="10px" position="relative" top="-5px" color="#bbb" />
+      <CarrotDown width="10px" position="relative" top="-10px" />
+    </>
+  );
 
   const getArrows = () => {
     switch (props.state) {
@@ -39,7 +50,7 @@ function SortButton(props: {
     >
       {props.label && <Text>{props.label}</Text>}
 
-      <Box display={'flex'} flexDirection={'column'} position="relative" marginLeft="8px">
+      <Box display={'flex'} flexDirection={'column'} position="relative" height={15} marginLeft="8px">
         {getArrows()}
       </Box>
     </Box>
