@@ -30,6 +30,12 @@ export interface DataColumn extends BaseDataColumn {
 
 export const defaultDataColumns: DataColumns = {
   [DataColumnGroup.Transaction]: {
+    [SecondaryOrderBy.VotePercentFor]: {
+      name: 'Trust',
+      isSelected: true,
+      isDisabled: false,
+      type: DataColumnType.Vote
+    },
     [SecondaryOrderBy.AveragePrice]: {
       name: 'Average price',
       isSelected: false,
@@ -40,7 +46,7 @@ export const defaultDataColumns: DataColumns = {
         [
           SecondaryOrderBy.AveragePriceChange,
           {
-            name: 'Change in average price',
+            name: 'Average price change',
             isDisabled: false,
             type: DataColumnType.Change
           }
@@ -90,7 +96,7 @@ export const defaultDataColumns: DataColumns = {
         [
           SecondaryOrderBy.VolumeChange,
           {
-            name: 'Change in volume',
+            name: 'Volume change',
             isDisabled: false,
             type: DataColumnType.Change
           }
@@ -108,7 +114,7 @@ export const defaultDataColumns: DataColumns = {
         [
           SecondaryOrderBy.DiscordPresenceChange,
           {
-            name: 'Change in discord presence',
+            name: 'Discord presence change',
             isDisabled: false,
             type: DataColumnType.Change
           }
@@ -124,7 +130,7 @@ export const defaultDataColumns: DataColumns = {
         [
           SecondaryOrderBy.DiscordMembersChange,
           {
-            name: 'Change in discord members',
+            name: 'Discord members change',
             isDisabled: false,
             type: DataColumnType.Change
           }
@@ -141,18 +147,12 @@ export const defaultDataColumns: DataColumns = {
         [
           SecondaryOrderBy.TwitterFollowersChange,
           {
-            name: 'Change in twitter followers',
+            name: 'Twitter followers change',
             isDisabled: false,
             type: DataColumnType.Change
           }
         ]
       ]
-    },
-    [SecondaryOrderBy.VotePercentFor]: {
-      name: 'Community score',
-      isSelected: true,
-      isDisabled: false,
-      type: DataColumnType.Vote
     }
   } as Record<SecondaryOrderBy, DataColumn>,
   [DataColumnGroup.General]: {

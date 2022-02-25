@@ -16,6 +16,7 @@ import { numStr, renderSpinner } from 'utils/commonUtil';
 import styles from './styles.module.scss';
 import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from 'components/TrendingTable/DataColumns';
 import { Period, periodToInterval } from 'components/TrendingTable/TrendingTable';
+import { ProgressBar } from 'components/ProgressBar/ProgressBar';
 
 export default function TrendingList() {
   const {
@@ -142,16 +143,7 @@ function TrendingRow(props: {
       case DataColumnType.Vote:
         return (
           <>
-            <Progress
-              value={Number.isNaN(value) ? 100 : value}
-              variant={Number.isNaN(value) ? 'grey' : 'sentiment'}
-              borderRightRadius="8px"
-              borderLeftRadius={'8px'}
-              marginBottom="12px"
-              height="8px"
-              width="88px"
-            />
-            <Text variant="bold">{Number.isNaN(value) ? 'No votes' : `${numStr(Math.floor(value))}% Good`}</Text>
+            <ProgressBar percent={value} />
           </>
         );
       default:
@@ -161,6 +153,7 @@ function TrendingRow(props: {
 
   return (
     <div className={styles.row}>
+      <div className={styles.partnership}>Partnership</div>
       <TrendingItem trendingData={props.trendingData} image={true} />
       <TrendingItem trendingData={props.trendingData} nameItem={true} />
 

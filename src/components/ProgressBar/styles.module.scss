@@ -1,0 +1,23 @@
+.progressBar {
+  border-radius: 100px;
+  font-size: 0.8rem;
+  overflow: hidden;
+  background-color: #fff;
+  position: relative;
+
+  .fill {
+    border-radius: 100px;
+    background-color: #92deff;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+
+  .content {
+    padding: 6px 14px;
+    position: relative;
+    display: flex;
+  }
+}
