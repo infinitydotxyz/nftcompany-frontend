@@ -1,0 +1,50 @@
+.list {
+  display: flex;
+  overflow-x: auto;
+  flex-direction: column;
+
+  // this fixes everthing, no idea why
+  align-items: flex-start;
+
+  .item {
+    margin-right: 10px;
+
+    .itemTitle {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      color: #666666;
+    }
+
+    .itemValue {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-weight: bold;
+    }
+
+    .imageCropper {
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 50%;
+      height: 48px;
+      width: 48px;
+    }
+  }
+
+  .row {
+    display: grid;
+    // 50px for image
+    grid-template-columns: 60px repeat(auto-fill, minmax(200px, 1fr));
+    background-color: #f0f0f0;
+    border-radius: 24px;
+    margin-bottom: 12px;
+    padding: 32px 20px;
+
+    grid-auto-columns: minmax(200px, 1fr);
+    grid-auto-flow: column;
+    align-items: center;
+  }
+}

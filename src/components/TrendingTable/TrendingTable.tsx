@@ -16,21 +16,21 @@ import { numStr, renderSpinner } from 'utils/commonUtil';
 import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from './DataColumns';
 import styles from './styles.module.scss';
 
-enum Period {
+export enum Period {
   OneDay = '1 day',
   SevenDays = '7 days',
   ThirtyDays = '30 days',
   Total = 'Total'
 }
 
-const periodToInterval: Record<Period, StatInterval> = {
+export const periodToInterval: Record<Period, StatInterval> = {
   [Period.OneDay]: StatInterval.OneDay,
   [Period.SevenDays]: StatInterval.SevenDay,
   [Period.ThirtyDays]: StatInterval.ThirtyDay,
   [Period.Total]: StatInterval.Total
 };
 
-export default function TrendingTable() {
+export function TrendingTable() {
   const {
     options,
     onChange,

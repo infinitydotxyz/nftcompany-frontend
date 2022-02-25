@@ -9,14 +9,13 @@ function SortButton(props: {
 }) {
   const defaultArrows = (
     <>
-      <CarrotUp width="10px" position="absolute" top="-4px" />
-      <CarrotDown width="10px" position="absolute" top="4px" />
+      <CarrotUp width="10px" />
+      <CarrotDown width="10px" />
     </>
   );
 
-  const topArrow = <CarrotUp width="10px" position="absolute" />;
-
-  const bottomArrow = <CarrotDown width="10px" position="absolute" />;
+  const topArrow = <CarrotUp width="10px" />;
+  const bottomArrow = <CarrotDown width="10px" />;
 
   const getArrows = () => {
     switch (props.state) {
@@ -36,12 +35,11 @@ function SortButton(props: {
       cursor={'pointer'}
       position="relative"
       onClick={props.onClick}
-      width="100%"
-      justifyContent={'space-between'}
       alignItems={'center'}
     >
       {props.label && <Text>{props.label}</Text>}
-      <Box display={'flex'} flexDirection={'column'} maxHeight="16px" position="relative" top="-6px" marginLeft="8px">
+
+      <Box display={'flex'} flexDirection={'column'} position="relative" marginLeft="8px">
         {getArrows()}
       </Box>
     </Box>

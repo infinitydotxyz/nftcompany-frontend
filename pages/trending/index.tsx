@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import styles from './styles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
-import TrendingTable from 'components/TrendingTable/TrendingTable';
+import TrendingList from 'components/TrendingList/TrendingList';
 
 const TrendingPage = (): JSX.Element => {
   const { user, showAppError } = useAppContext();
@@ -23,7 +23,7 @@ const TrendingPage = (): JSX.Element => {
           <div className="section-bar">
             <div className="tg-title">Trending</div>
           </div>
-          <TrendingTable />
+          <TrendingList />
         </div>
       </div>
     </>
