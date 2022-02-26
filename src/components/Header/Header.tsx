@@ -187,16 +187,7 @@ const Header = (): JSX.Element => {
       <>
         <Box className={styles.banner} justifyContent="center" alignItems="center" display="flex">
           <Text color="white" textAlign="center" w="100">
-            Import your listed NFTs from OpenSea for free, with the click of a&nbsp;
-            <a
-              onClick={() => {
-                router.push('/listed-nfts?tab=opensea');
-                setShowBanner(false);
-              }}
-              style={{ textDecoration: 'underline', cursor: 'pointer' }}
-            >
-              button
-            </a>
+            We are upgrading our exchange contracts. All old listings and any new listings will be invalid.
           </Text>
         </Box>
         <CloseIcon
