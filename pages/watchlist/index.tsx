@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import TrendingList from 'components/TrendingList/TrendingList';
 
-const TrendingPage = (): JSX.Element => {
+const WatchlistPage = (): JSX.Element => {
   const { user, showAppError } = useAppContext();
 
   if (!user) {
@@ -16,12 +16,12 @@ const TrendingPage = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Trending</title>
+        <title>Watchlist</title>
       </Head>
       <div className={styles.main}>
         <div className="page-container">
           <div className="section-bar">
-            <div className="tg-title">Trending</div>
+            <div className="tg-title">Watchlist</div>
           </div>
           <TrendingList />
         </div>
@@ -31,5 +31,5 @@ const TrendingPage = (): JSX.Element => {
 };
 
 // eslint-disable-next-line react/display-name
-TrendingPage.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
-export default TrendingPage;
+WatchlistPage.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
+export default WatchlistPage;

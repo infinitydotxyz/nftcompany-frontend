@@ -1,5 +1,5 @@
 import { Box, Checkbox, Stack, Text, Button, Tooltip, Spacer } from '@chakra-ui/react';
-import { DataColumnGroup, DataColumns } from 'components/TrendingTable/DataColumns';
+import { DataColumnGroup, DataColumns } from 'components/TrendingList/DataColumns';
 import { SecondaryOrderBy } from 'hooks/useTrendingStats';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 

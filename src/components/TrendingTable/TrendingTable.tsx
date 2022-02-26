@@ -1,11 +1,10 @@
 import { Box, Link } from '@chakra-ui/layout';
-import { Button, Image, Progress, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react';
+import { Image, Progress, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { EthToken } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import SortButton from 'components/SortButton/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import TrendingDrawer from 'components/TrendingSelectionModal/TrendingSelectionDrawer';
-import TrendingSelectionModal from 'components/TrendingSelectionModal/TrendingFilter';
 import Layout from 'containers/layout';
 import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'hooks/useTrendingStats';
 import { NextPage } from 'next';
@@ -13,24 +12,10 @@ import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { OrderBy, OrderDirection, StatInterval } from 'services/Stats.service';
 import { numStr, renderSpinner } from 'utils/commonUtil';
-import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from './DataColumns';
-import styles from './styles.module.scss';
+import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from '../TrendingList/DataColumns';
+import { Period, periodToInterval } from '../TrendingList/PeriodInterval';
 
-enum Period {
-  OneDay = '1 day',
-  SevenDays = '7 days',
-  ThirtyDays = '30 days',
-  Total = 'Total'
-}
-
-const periodToInterval: Record<Period, StatInterval> = {
-  [Period.OneDay]: StatInterval.OneDay,
-  [Period.SevenDays]: StatInterval.SevenDay,
-  [Period.ThirtyDays]: StatInterval.ThirtyDay,
-  [Period.Total]: StatInterval.Total
-};
-
-export default function TrendingTable() {
+export function TrendingTable() {
   const {
     options,
     onChange,
@@ -101,17 +86,8 @@ function TrendingContents(props: {
   }, [props.dataColumns]);
 
   return (
-    <Box
-      border="1px solid"
-      borderRadius={'8px'}
-      borderColor="separator"
-      display={'flex'}
-      flexDirection={'column'}
-      alignItems="center"
-      maxWidth={'100%'}
-      overflowX={'auto'}
-    >
-      <Table colorScheme="gray" marginTop={4} size={'sm'} display={'block'}>
+    <Box display={'flex'} flexDirection={'column'} alignItems="center" maxWidth={'100%'} overflowX={'auto'}>
+      <Table variant="unstyled" colorScheme="gray">
         <Thead>
           <Tr>
             <Th paddingBottom={'8px'}>Collection</Th>
@@ -155,7 +131,7 @@ function TrendingContents(props: {
         <Tbody>
           {trendingData.map((collectionData: TrendingData) => {
             return (
-              <Tr key={collectionData.collectionAddress}>
+              <Tr key={collectionData.collectionAddress} borderWidth={20} borderColor={'#fff'} bgColor="#f0f0f0">
                 <Td
                   display="flex"
                   flexDirection={['column', 'column', 'column', 'column', 'row']}
