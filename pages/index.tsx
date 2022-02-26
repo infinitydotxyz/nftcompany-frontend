@@ -259,8 +259,6 @@ export default function Home() {
       </Head>
 
       {topSection}
-      {/* {automateSection}
-      {faqSection} */}
 
       {<DarkmodeSwitch />}
     </>
