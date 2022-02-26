@@ -61,17 +61,19 @@ const Header = (): JSX.Element => {
     </MenuItem>
   ];
 
-  const exploreItems = [
-    <MenuItem key="explore-item" icon={MenuIcons.exploreIcon} onClick={onClickExplore}>
-      Explore
-    </MenuItem>,
-    // <MenuItem key="trending-item" icon={MenuIcons.trendingIcon} onClick={() => router.push('/trending')}>
-    //   Trending
-    // </MenuItem>,
-    <MenuItem key="verified-item" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
-      Verified Collections
-    </MenuItem>
-  ];
+  // const exploreItems = [
+  //   <MenuItem key="explore-item" icon={MenuIcons.exploreIcon} onClick={onClickExplore}>
+  //     Explore
+  //   </MenuItem>,
+  //   // <MenuItem key="trending-item" icon={MenuIcons.trendingIcon} onClick={() => router.push('/trending')}>
+  //   //   Trending
+  //   // </MenuItem>,
+  //   <MenuItem key="verified-item" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
+  //     Verified Collections
+  //   </MenuItem>
+  // ];
+
+  const exploreItems = [];
 
   const transactionItems = [
     <MenuItem key="activity" icon={MenuIcons.listIcon} onClick={() => router.push('/activity')}>
@@ -134,14 +136,16 @@ const Header = (): JSX.Element => {
   const medNavMenu = [...ntfItems, <MenuDivider key="d1" />, ...offerItems];
 
   const mobileNavMenu = () => {
-    let result = [
-      <MenuItem key="explore-menu" icon={MenuIcons.imageSearchIcon} onClick={onClickExplore}>
-        Explore
-      </MenuItem>,
-      <MenuItem key="collections" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
-        Collections
-      </MenuItem>
-    ];
+    // let result = [
+    //   <MenuItem key="explore-menu" icon={MenuIcons.imageSearchIcon} onClick={onClickExplore}>
+    //     Explore
+    //   </MenuItem>,
+    //   <MenuItem key="collections" icon={MenuIcons.collectionsIcon} onClick={() => router.push('/collections')}>
+    //     Collections
+    //   </MenuItem>
+    // ];
+
+    let result = [];
 
     if (signedIn) {
       result.push(
@@ -190,14 +194,14 @@ const Header = (): JSX.Element => {
             We are upgrading our exchange contracts. All old listings and any new listings will be invalid.
           </Text>
         </Box>
-        <CloseIcon
+        {/* <CloseIcon
           className={styles.closeBanner}
           boxSize={MenuIcons.sbs}
           color="#ffffff"
           onClick={() => {
             setShowBanner(false);
           }}
-        />
+        /> */}
       </>
     );
   };
@@ -238,11 +242,11 @@ const Header = (): JSX.Element => {
           </Box>
 
           <div className={styles.links}>
-            <div className={styles.showExplore}>
+            {/* <div className={styles.showExplore}>
               <HoverMenuButton buttonTitle="Explore" onClick={onClickExplore}>
                 {exploreItems}
               </HoverMenuButton>
-            </div>
+            </div> */}
 
             <div className={styles.showLargeNav}>
               <HoverMenuButton disabled={!signedIn} buttonTitle="My NFTs" onClick={() => router.push('/my-nfts')}>
