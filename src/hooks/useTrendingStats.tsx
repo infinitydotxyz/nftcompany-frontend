@@ -179,7 +179,13 @@ export function useTrendingStats(filter: StatsFilter) {
       return 100 * (change / value);
     };
 
-    const trendingData = (collectionStats ?? []).map((item: any) => {
+    // filtering out items without a collectionAddress, causes key issues on TrendingTable
+    // and not sure if they are worth showing anyway
+    const filtered = (collectionStats ?? []).filter((item: any) => {
+      return item.collectionAddress?.length > 0;
+    });
+
+    const trendingData = filtered.map((item: any) => {
       const { collectionAddress, name, profileImage, votesAgainst, votesFor, floorPrice, owners, count } = item;
 
       const intervalData: any = item[interval];

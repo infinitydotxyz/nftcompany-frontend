@@ -1,219 +1,21 @@
 import { Box, Link } from '@chakra-ui/layout';
-import {
-  Button,
-  IconButton,
-  Image,
-  Progress,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useDisclosure
-} from '@chakra-ui/react';
+import { Image, Progress, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { EthToken } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import SortButton from 'components/SortButton/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
-import TrendingSelectionModal from 'components/TrendingSelectionModal/TrendingSelectionModal';
+import TrendingDrawer from 'components/TrendingSelectionModal/TrendingSelectionDrawer';
 import Layout from 'containers/layout';
 import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'hooks/useTrendingStats';
 import { NextPage } from 'next';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { OrderBy, OrderDirection, StatInterval } from 'services/Stats.service';
 import { numStr, renderSpinner } from 'utils/commonUtil';
+import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from '../TrendingList/DataColumns';
+import { Period, periodToInterval } from '../TrendingList/PeriodInterval';
 
-enum Period {
-  OneDay = '1 day',
-  SevenDays = '7 days',
-  ThirtyDays = '30 days',
-  Total = 'Total'
-}
-
-const periodToInterval: Record<Period, StatInterval> = {
-  [Period.OneDay]: StatInterval.OneDay,
-  [Period.SevenDays]: StatInterval.SevenDay,
-  [Period.ThirtyDays]: StatInterval.ThirtyDay,
-  [Period.Total]: StatInterval.Total
-};
-
-export enum DataColumnGroup {
-  General = 'General',
-  Community = 'Community',
-  Transaction = 'Transaction'
-}
-
-export enum DataColumnType {
-  Vote = 'vote',
-  Amount = 'number',
-  Change = 'change'
-}
-
-interface BaseDataColumn {
-  name: string;
-  isDisabled: boolean;
-  type: DataColumnType;
-  unit?: string;
-}
-export interface DataColumn extends BaseDataColumn {
-  isSelected: boolean;
-  /**
-   * additional columns that will be displayed
-   * if this column is selected
-   */
-  additionalColumns?: [SecondaryOrderBy, BaseDataColumn][];
-}
-
-const defaultDataColumns: DataColumns = {
-  [DataColumnGroup.Transaction]: {
-    [SecondaryOrderBy.AveragePrice]: {
-      name: 'Average price',
-      isSelected: false,
-      isDisabled: false,
-      type: DataColumnType.Amount,
-      unit: 'ETH',
-      additionalColumns: [
-        [
-          SecondaryOrderBy.AveragePriceChange,
-          {
-            name: 'Change in average price',
-            isDisabled: false,
-            type: DataColumnType.Change
-          }
-        ]
-      ]
-    },
-    [SecondaryOrderBy.FloorPrice]: {
-      name: 'Floor price',
-      isSelected: true,
-      isDisabled: false,
-      type: DataColumnType.Amount,
-      unit: 'ETH'
-      // additionalColumns: [
-      // [
-      //   SecondaryOrderBy.FloorPriceChange,
-      //   {
-      //     name: 'Change in floor price',
-      //     isDisabled: false,
-      //     type: DataColumnType.Change
-      //   }
-      // ]
-      // ]
-    },
-    [SecondaryOrderBy.Sales]: {
-      name: 'Sales',
-      isSelected: false,
-      isDisabled: false,
-      type: DataColumnType.Amount
-      // additionalColumns: [
-      //   [
-      //     SecondaryOrderBy.SalesChange,
-      //     {
-      //       name: 'Change in sales',
-      //       isDisabled: false,
-      //       type: DataColumnType.Change
-      //     }
-      //   ]
-      // ]
-    },
-    [SecondaryOrderBy.Volume]: {
-      name: 'Volume',
-      isSelected: true,
-      isDisabled: false,
-      type: DataColumnType.Amount,
-      unit: 'ETH',
-      additionalColumns: [
-        [
-          SecondaryOrderBy.VolumeChange,
-          {
-            name: 'Change in volume',
-            isDisabled: false,
-            type: DataColumnType.Change
-          }
-        ]
-      ]
-    }
-  } as Record<SecondaryOrderBy, DataColumn>,
-  [DataColumnGroup.Community]: {
-    [SecondaryOrderBy.DiscordPresence]: {
-      name: 'Discord presence',
-      isSelected: false,
-      isDisabled: false,
-      type: DataColumnType.Amount,
-      additionalColumns: [
-        [
-          SecondaryOrderBy.DiscordPresenceChange,
-          {
-            name: 'Change in discord presence',
-            isDisabled: false,
-            type: DataColumnType.Change
-          }
-        ]
-      ]
-    },
-    [SecondaryOrderBy.DiscordMembers]: {
-      name: 'Discord members',
-      isSelected: true,
-      isDisabled: false,
-      type: DataColumnType.Amount,
-      additionalColumns: [
-        [
-          SecondaryOrderBy.DiscordMembersChange,
-          {
-            name: 'Change in discord members',
-            isDisabled: false,
-            type: DataColumnType.Change
-          }
-        ]
-      ]
-    },
-
-    [SecondaryOrderBy.TwitterFollowers]: {
-      name: 'Twitter followers',
-      isSelected: true,
-      isDisabled: false,
-      type: DataColumnType.Amount,
-      additionalColumns: [
-        [
-          SecondaryOrderBy.TwitterFollowersChange,
-          {
-            name: 'Change in twitter followers',
-            isDisabled: false,
-            type: DataColumnType.Change
-          }
-        ]
-      ]
-    },
-    [SecondaryOrderBy.VotePercentFor]: {
-      name: 'Community score',
-      isSelected: true,
-      isDisabled: false,
-      type: DataColumnType.Vote
-    }
-  } as Record<SecondaryOrderBy, DataColumn>,
-  [DataColumnGroup.General]: {
-    [SecondaryOrderBy.Items]: {
-      name: 'Items',
-      isSelected: false,
-      isDisabled: false,
-      type: DataColumnType.Amount
-    },
-    [SecondaryOrderBy.Owners]: {
-      name: 'Owners',
-      isSelected: false,
-      isDisabled: false,
-      type: DataColumnType.Amount
-    }
-  } as Record<SecondaryOrderBy, DataColumn>
-};
-
-export type DataColumns = Record<DataColumnGroup, Record<SecondaryOrderBy, DataColumn>>;
-
-export default function Trending() {
+export function TrendingTable() {
   const {
     options,
     onChange,
@@ -240,47 +42,24 @@ export default function Trending() {
     });
   }, [period]);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
-    <>
-      <Head>
-        <title>Explore</title>
-      </Head>
-
-      <div className="page-container">
-        <Box display="flex" flexDirection={'column'} justifyContent={'flex-start'} marginTop={'80px'}>
-          {isOpen && (
-            <TrendingSelectionModal
-              isOpen={isOpen}
-              onClose={onClose}
-              onOpen={onOpen}
-              dataColumns={dataColumns}
-              setDataColumns={setDataColumns}
-            />
-          )}
-          <Box
-            display="flex"
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            alignItems={'center'}
-            marginBottom="16px"
-          >
-            <Box display="flex" flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'}>
-              <Text size="lg" paddingBottom={'4px'}>
-                Period:
-              </Text>
-              <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
-            </Box>
-            <Button variant="outline" size="sm" onClick={onOpen}>
-              Select Categories
-            </Button>
-          </Box>
-
-          <TrendingContents statsFilter={statsFilter} dataColumns={dataColumns} setStatsFilter={setStatsFilter} />
+    <Box display="flex" flexDirection={'column'} justifyContent={'flex-start'} marginTop={'80px'}>
+      <Box
+        display="flex"
+        flexDirection={'row'}
+        justifyContent={'space-between'}
+        alignItems={'center'}
+        marginBottom="16px"
+      >
+        <Box display="flex" flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'}>
+          <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
         </Box>
-      </div>
-    </>
+
+        <TrendingDrawer dataColumns={dataColumns} setDataColumns={setDataColumns} />
+      </Box>
+
+      <TrendingContents statsFilter={statsFilter} dataColumns={dataColumns} setStatsFilter={setStatsFilter} />
+    </Box>
   );
 }
 
@@ -307,17 +86,8 @@ function TrendingContents(props: {
   }, [props.dataColumns]);
 
   return (
-    <Box
-      border="1px solid"
-      borderRadius={'8px'}
-      borderColor="separator"
-      display={'flex'}
-      flexDirection={'column'}
-      alignItems="center"
-      maxWidth={'100%'}
-      overflowX={'auto'}
-    >
-      <Table colorScheme="gray" marginTop={4} size={'sm'} display={'block'}>
+    <Box display={'flex'} flexDirection={'column'} alignItems="center" maxWidth={'100%'} overflowX={'auto'}>
+      <Table variant="unstyled" colorScheme="gray">
         <Thead>
           <Tr>
             <Th paddingBottom={'8px'}>Collection</Th>
@@ -361,7 +131,7 @@ function TrendingContents(props: {
         <Tbody>
           {trendingData.map((collectionData: TrendingData) => {
             return (
-              <Tr key={collectionData.collectionAddress}>
+              <Tr key={collectionData.collectionAddress} borderWidth={20} borderColor={'#fff'} bgColor="#f0f0f0">
                 <Td
                   display="flex"
                   flexDirection={['column', 'column', 'column', 'column', 'row']}
@@ -447,4 +217,4 @@ function TrendingContents(props: {
 }
 
 // eslint-disable-next-line react/display-name
-Trending.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
+TrendingTable.getLayout = (page: NextPage) => <Layout>{page}</Layout>;

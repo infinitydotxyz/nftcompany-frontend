@@ -21,6 +21,7 @@ import { CardData } from 'types/Nft.interface';
 import { Box } from '@chakra-ui/layout';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { SearchFilter } from 'utils/context/SearchContext';
+import FilterPills from 'components/FilterDrawer/FilterPills';
 
 export default function UserPage() {
   const { user, showAppError, chainId } = useAppContext();
@@ -104,6 +105,8 @@ export default function UserPage() {
           </div>
 
           <Box display="flex">
+            <FilterPills />
+
             <Box className="filter-container">
               <FilterDrawer
                 showSaleTypes={false}
@@ -115,7 +118,7 @@ export default function UserPage() {
                 }}
               />
             </Box>
-            <Box>
+            <Box className="content-container">
               <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
               {data?.length === 0 && isFetching && <LoadingCardList />}
 

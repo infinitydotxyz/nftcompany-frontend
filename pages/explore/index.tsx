@@ -17,6 +17,7 @@ import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { NftAction } from 'types';
 import styles from './Explore.module.scss';
 import { PAGE_NAMES } from 'utils/constants';
+import FilterPills from 'components/FilterDrawer/FilterPills';
 
 export default function ExplorePage() {
   const searchContext = useSearchContext();
@@ -64,6 +65,8 @@ export default function ExplorePage() {
 
     return (
       <>
+        <FilterPills />
+
         <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
         {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 

@@ -28,11 +28,14 @@ export default function Home() {
           </div>
 
           <div className={styles.buttons}>
-            <Button size="lg" className={styles.stadiumButtonMain} onClick={() => router.push('/explore')}>
+            {/* <Button size="lg" className={styles.stadiumButtonMain} onClick={() => router.push('/explore')}>
               Get started
             </Button>
             <Button size="lg" color="gray.400" className={styles.stadiumButton} onClick={() => router.push('/my-nfts')}>
               List NFTs
+            </Button> */}
+            <Button size="lg" className={styles.stadiumButtonMain}>
+              Coming soon
             </Button>
           </div>
         </div>
@@ -256,8 +259,6 @@ export default function Home() {
       </Head>
 
       {topSection}
-      {automateSection}
-      {faqSection}
 
       {<DarkmodeSwitch />}
     </>

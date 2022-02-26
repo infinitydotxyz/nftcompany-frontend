@@ -20,6 +20,7 @@ import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
 import router from 'next/router';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
+import FilterPills from 'components/FilterDrawer/FilterPills';
 
 export default function ListNFTs() {
   const { user, showAppError, showAppMessage, providerManager } = useAppContext();
@@ -122,6 +123,8 @@ export default function ListNFTs() {
       <>
         <div>
           <PleaseConnectWallet account={user?.account} />
+          <FilterPills />
+
           <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={listings} />
           {listings?.length === 0 && isFetching && <LoadingCardList />}
 
