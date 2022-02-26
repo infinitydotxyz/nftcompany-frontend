@@ -1,11 +1,10 @@
 import { Box, Link } from '@chakra-ui/layout';
-import { Button, Image, Progress, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react';
+import { Image, Text } from '@chakra-ui/react';
 import { EthToken } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import SortButton from 'components/SortButton/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import TrendingDrawer from 'components/TrendingSelectionModal/TrendingSelectionDrawer';
-import TrendingSelectionModal from 'components/TrendingSelectionModal/TrendingFilter';
 import Layout from 'containers/layout';
 import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'hooks/useTrendingStats';
 import { NextPage } from 'next';
@@ -14,8 +13,8 @@ import { Dispatch, Key, SetStateAction, useEffect, useState } from 'react';
 import { OrderBy, OrderDirection, StatInterval } from 'services/Stats.service';
 import { numStr, renderSpinner } from 'utils/commonUtil';
 import styles from './styles.module.scss';
-import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from 'components/TrendingTable/DataColumns';
-import { Period, periodToInterval } from 'components/TrendingTable/TrendingTable';
+import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from 'components/TrendingList/DataColumns';
+import { Period, periodToInterval } from 'components/TrendingList/PeriodInterval';
 import { ProgressBar } from 'components/ProgressBar/ProgressBar';
 
 export default function TrendingList() {
@@ -52,7 +51,7 @@ export default function TrendingList() {
         flexDirection={'row'}
         justifyContent={'space-between'}
         alignItems={'center'}
-        marginBottom="16px"
+        marginBottom="40px"
       >
         <Box display="flex" flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'}>
           <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
@@ -209,11 +208,19 @@ function TrendingItem(props: {
   direction?: OrderDirection;
   sortClick?: () => void;
 }) {
+  const router = useRouter();
+
   if (props.nameItem) {
     return (
-      <div className={styles.item}>
-        <div className={styles.itemValue}>{props.trendingData.name}</div>
-      </div>
+      <Link
+        onClick={() => {
+          router.push(`/collection/${props.trendingData.searchCollectionName}`);
+        }}
+      >
+        <div className={styles.item}>
+          <div className={styles.itemValue}>{props.trendingData.name}</div>
+        </div>
+      </Link>
     );
   }
 

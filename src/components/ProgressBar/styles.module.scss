@@ -6,7 +6,8 @@
   position: relative;
 
   .fill {
-    border-radius: 100px;
+    border-bottom-left-radius: 100px;
+    border-top-left-radius: 100px;
     background-color: #92deff;
     position: absolute;
     left: 0;
@@ -16,8 +17,12 @@
   }
 
   .content {
-    padding: 6px 14px;
+    padding: 8px 14px;
     position: relative;
     display: flex;
+
+    // content looks more centered with this
+    top: -2px;
+    line-height: 1;
   }
 }

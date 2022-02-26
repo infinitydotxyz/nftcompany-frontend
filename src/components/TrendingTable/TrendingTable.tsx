@@ -1,11 +1,10 @@
 import { Box, Link } from '@chakra-ui/layout';
-import { Button, Image, Progress, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react';
+import { Image, Progress, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { EthToken } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import SortButton from 'components/SortButton/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import TrendingDrawer from 'components/TrendingSelectionModal/TrendingSelectionDrawer';
-import TrendingSelectionModal from 'components/TrendingSelectionModal/TrendingFilter';
 import Layout from 'containers/layout';
 import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'hooks/useTrendingStats';
 import { NextPage } from 'next';
@@ -13,22 +12,8 @@ import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { OrderBy, OrderDirection, StatInterval } from 'services/Stats.service';
 import { numStr, renderSpinner } from 'utils/commonUtil';
-import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from './DataColumns';
-import styles from './styles.module.scss';
-
-export enum Period {
-  OneDay = '1 day',
-  SevenDays = '7 days',
-  ThirtyDays = '30 days',
-  Total = 'Total'
-}
-
-export const periodToInterval: Record<Period, StatInterval> = {
-  [Period.OneDay]: StatInterval.OneDay,
-  [Period.SevenDays]: StatInterval.SevenDay,
-  [Period.ThirtyDays]: StatInterval.ThirtyDay,
-  [Period.Total]: StatInterval.Total
-};
+import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from '../TrendingList/DataColumns';
+import { Period, periodToInterval } from '../TrendingList/PeriodInterval';
 
 export function TrendingTable() {
   const {
