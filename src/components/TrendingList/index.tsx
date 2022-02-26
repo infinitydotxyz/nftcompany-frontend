@@ -2,12 +2,10 @@ import { Box, Link } from '@chakra-ui/layout';
 import { Image, Text } from '@chakra-ui/react';
 import { EthToken } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
-import SortButton from 'components/SortButton/SortButton';
+import { SortButton } from 'components/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
-import TrendingDrawer from 'components/TrendingSelectionModal/TrendingSelectionDrawer';
-import Layout from 'containers/layout';
+import { TrendingDrawer } from 'components/TrendingSelectionDrawer';
 import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'hooks/useTrendingStats';
-import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Dispatch, Key, SetStateAction, useEffect, useState } from 'react';
 import { OrderBy, OrderDirection, StatInterval } from 'services/Stats.service';
@@ -15,9 +13,9 @@ import { numStr, renderSpinner } from 'utils/commonUtil';
 import styles from './styles.module.scss';
 import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from 'components/TrendingList/DataColumns';
 import { Period, periodToInterval } from 'components/TrendingList/PeriodInterval';
-import { ProgressBar } from 'components/ProgressBar/ProgressBar';
+import { SortProgressBar } from 'components/SortProgressBar';
 
-export default function TrendingList() {
+export const TrendingList = (): JSX.Element => {
   const {
     options,
     onChange,
@@ -63,7 +61,7 @@ export default function TrendingList() {
       <TrendingContents statsFilter={statsFilter} dataColumns={dataColumns} setStatsFilter={setStatsFilter} />
     </Box>
   );
-}
+};
 
 function TrendingContents(props: {
   statsFilter: StatsFilter;
@@ -112,7 +110,30 @@ function TrendingRow(props: {
     setColumns(selectedItemsOrderedByGroup);
   }, [props.dataColumns]);
 
-  const valueDiv = (dataColumn: DataColumn, key: string) => {
+  const onSortClick = (key: SecondaryOrderBy) => {
+    const isSelected = props.statsFilter.secondaryOrderBy === key;
+
+    if (isSelected) {
+      props.setStatsFilter((prev) => {
+        return {
+          ...prev,
+          secondaryOrderDirection:
+            prev.secondaryOrderDirection === OrderDirection.Ascending
+              ? OrderDirection.Descending
+              : OrderDirection.Ascending
+        };
+      });
+    } else {
+      props.setStatsFilter((prev) => {
+        return {
+          ...prev,
+          secondaryOrderBy: key
+        };
+      });
+    }
+  };
+
+  const valueDiv = (direction: OrderDirection, dataColumn: DataColumn, key: SecondaryOrderBy) => {
     const value: any = (props.trendingData as any)[key];
 
     switch (dataColumn.type) {
@@ -142,7 +163,13 @@ function TrendingRow(props: {
       case DataColumnType.Vote:
         return (
           <>
-            <ProgressBar percent={value} />
+            <SortProgressBar
+              direction={direction}
+              percent={value}
+              onClick={() => {
+                onSortClick(key);
+              }}
+            />
           </>
         );
       default:
@@ -157,40 +184,29 @@ function TrendingRow(props: {
       <TrendingItem trendingData={props.trendingData} nameItem={true} />
 
       {columns.map(([key, dataColumn]) => {
-        const content = valueDiv(dataColumn, key);
-
         let direction = '' as OrderDirection;
         const isSelected = props.statsFilter.secondaryOrderBy === key;
         if (isSelected) {
           direction = props.statsFilter.secondaryOrderDirection;
         }
 
+        const content = valueDiv(direction, dataColumn, key);
+
+        // don't show title on progress bars
+        let title;
+        if (dataColumn.type !== DataColumnType.Vote) {
+          title = dataColumn.name;
+        }
+
         return (
           <TrendingItem
             key={key}
             direction={direction}
-            title={dataColumn.name}
+            title={title}
             trendingData={props.trendingData}
             content={content}
             sortClick={() => {
-              if (isSelected) {
-                props.setStatsFilter((prev) => {
-                  return {
-                    ...prev,
-                    secondaryOrderDirection:
-                      prev.secondaryOrderDirection === OrderDirection.Ascending
-                        ? OrderDirection.Descending
-                        : OrderDirection.Ascending
-                  };
-                });
-              } else {
-                props.setStatsFilter((prev) => {
-                  return {
-                    ...prev,
-                    secondaryOrderBy: key
-                  };
-                });
-              }
+              onSortClick(key);
             }}
           />
         );
@@ -238,7 +254,7 @@ function TrendingItem(props: {
     <div className={styles.item}>
       {props.title && (
         <SortButton
-          state={props.direction ?? ''}
+          direction={props.direction ?? ''}
           onClick={() => {
             if (props.sortClick) {
               props.sortClick();
@@ -252,6 +268,3 @@ function TrendingItem(props: {
     </div>
   );
 }
-
-// eslint-disable-next-line react/display-name
-TrendingList.getLayout = (page: NextPage) => <Layout>{page}</Layout>;

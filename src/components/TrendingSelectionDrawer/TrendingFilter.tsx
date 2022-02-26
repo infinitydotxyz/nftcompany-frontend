@@ -3,19 +3,19 @@ import { DataColumnGroup, DataColumns } from 'components/TrendingList/DataColumn
 import { SecondaryOrderBy } from 'hooks/useTrendingStats';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-interface Props {
+type Props = {
   dataColumns: DataColumns;
   setDataColumns: Dispatch<SetStateAction<DataColumns>>;
   onClose: () => void;
-}
+};
 
-function TrendingFilter(props: Props) {
-  const [tempDataColumns, setTempDataColumns] = useState<DataColumns>(props.dataColumns);
+export const TrendingFilter = ({ dataColumns, setDataColumns, onClose }: Props): JSX.Element => {
+  const [tempDataColumns, setTempDataColumns] = useState<DataColumns>(dataColumns);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    setTempDataColumns(props.dataColumns);
-  }, [props.dataColumns]);
+    setTempDataColumns(dataColumns);
+  }, [dataColumns]);
 
   const isDataColumnsValid = () => {
     let numSelected = 0;
@@ -87,8 +87,8 @@ function TrendingFilter(props: Props) {
                   }
                 }
 
-                props.setDataColumns(copy);
-                props.onClose();
+                setDataColumns(copy);
+                onClose();
               }}
               borderRadius={100}
               variant="outline"
@@ -98,9 +98,9 @@ function TrendingFilter(props: Props) {
             <Button
               borderRadius={100}
               onClick={() => {
-                props.setDataColumns(tempDataColumns);
+                setDataColumns(tempDataColumns);
 
-                props.onClose();
+                onClose();
               }}
               isDisabled={!!errorMessage}
             >
@@ -111,6 +111,4 @@ function TrendingFilter(props: Props) {
       </Box>
     </Box>
   );
-}
-
-export default TrendingFilter;
+};

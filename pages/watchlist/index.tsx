@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import styles from './styles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
-import TrendingList from 'components/TrendingList/TrendingList';
+import { TrendingList } from 'components/TrendingList';
 import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 
 const WatchlistPage = (): JSX.Element => {

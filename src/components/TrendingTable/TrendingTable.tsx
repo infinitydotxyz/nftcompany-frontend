@@ -2,9 +2,9 @@ import { Box, Link } from '@chakra-ui/layout';
 import { Image, Progress, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { EthToken } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
-import SortButton from 'components/SortButton/SortButton';
+import { SortButton } from 'components/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
-import TrendingDrawer from 'components/TrendingSelectionModal/TrendingSelectionDrawer';
+import { TrendingDrawer } from 'components/TrendingSelectionDrawer';
 import Layout from 'containers/layout';
 import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'hooks/useTrendingStats';
 import { NextPage } from 'next';
@@ -100,7 +100,7 @@ function TrendingContents(props: {
               return (
                 <Th paddingBottom={'8px'} key={key}>
                   <SortButton
-                    state={direction as '' | OrderDirection}
+                    direction={direction as '' | OrderDirection}
                     onClick={() => {
                       if (isSelected) {
                         props.setStatsFilter((prev) => {

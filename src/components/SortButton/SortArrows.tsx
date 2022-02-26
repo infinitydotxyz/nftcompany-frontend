@@ -2,7 +2,12 @@ import { Box, Text } from '@chakra-ui/react';
 import { CarrotDown, CarrotUp } from 'components/Icons/Icons';
 import { OrderDirection } from 'services/Stats.service';
 
-function SortArrows(props: { state: '' | OrderDirection.Ascending | OrderDirection.Descending }) {
+type Props = {
+  direction: '' | OrderDirection.Ascending | OrderDirection.Descending;
+  marginLeft?: string;
+};
+
+export const SortArrows = ({ marginLeft = '8px', direction }: Props): JSX.Element => {
   const defaultArrows = (
     <>
       <CarrotUp width="10px" position="relative" top="-5px" />
@@ -25,7 +30,7 @@ function SortArrows(props: { state: '' | OrderDirection.Ascending | OrderDirecti
   );
 
   const getArrows = () => {
-    switch (props.state) {
+    switch (direction) {
       case OrderDirection.Ascending:
         return topArrow;
       case OrderDirection.Descending:
@@ -36,10 +41,8 @@ function SortArrows(props: { state: '' | OrderDirection.Ascending | OrderDirecti
   };
 
   return (
-    <Box display={'flex'} flexDirection={'column'} height={15}>
+    <Box marginLeft={marginLeft} display={'flex'} flexDirection={'column'} height={15}>
       {getArrows()}
     </Box>
   );
-}
-
-export default SortArrows;
+};
