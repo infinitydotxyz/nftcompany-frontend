@@ -190,14 +190,14 @@ const Header = (): JSX.Element => {
             We are upgrading our exchange contracts. All old listings and any new listings will be invalid.
           </Text>
         </Box>
-        <CloseIcon
+        {/* <CloseIcon
           className={styles.closeBanner}
           boxSize={MenuIcons.sbs}
           color="#ffffff"
           onClick={() => {
             setShowBanner(false);
           }}
-        />
+        /> */}
       </>
     );
   };
@@ -238,11 +238,11 @@ const Header = (): JSX.Element => {
           </Box>
 
           <div className={styles.links}>
-            <div className={styles.showExplore}>
+            {/* <div className={styles.showExplore}>
               <HoverMenuButton buttonTitle="Explore" onClick={onClickExplore}>
                 {exploreItems}
               </HoverMenuButton>
-            </div>
+            </div> */}
 
             <div className={styles.showLargeNav}>
               <HoverMenuButton disabled={!signedIn} buttonTitle="My NFTs" onClick={() => router.push('/my-nfts')}>

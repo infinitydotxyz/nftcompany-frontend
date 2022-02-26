@@ -18,7 +18,7 @@ const LandingFooter = () => {
 
           <p className={styles.paragraph}>
             Infinity is built by an A-team of crypto devs and operators. Join us on discord to find out more and
-            contribute. We are on our way to becoming the largest DAO in the world.
+            contribute.
           </p>
         </Box>
         {/* <div className="col-sm-12 col-md-3">
