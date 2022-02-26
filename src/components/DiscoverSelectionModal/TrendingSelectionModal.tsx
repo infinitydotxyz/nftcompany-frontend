@@ -1,7 +1,7 @@
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, Checkbox, Stack, Text, Button } from '@chakra-ui/react';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
-import { DataColumnGroup, DataColumns } from 'components/TrendingTable/DataColumns';
+import { DataColumnGroup, DataColumns } from 'components/TrendingList/DataColumns';
 import { SecondaryOrderBy } from 'hooks/useTrendingStats';
 
 interface Props {

@@ -8,7 +8,7 @@ import {
   Button,
   useMediaQuery
 } from '@chakra-ui/react';
-import { DataColumns } from 'components/TrendingTable/DataColumns';
+import { DataColumns } from 'components/TrendingList/DataColumns';
 import React, { Dispatch, SetStateAction } from 'react';
 import TrendingFilter from './TrendingFilter';
 import styles from './styles.module.scss';
