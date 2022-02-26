@@ -5,13 +5,10 @@ import Layout from 'containers/layout';
 import styles from './styles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import TrendingList from 'components/TrendingList/TrendingList';
+import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 
 const WatchlistPage = (): JSX.Element => {
   const { user, showAppError } = useAppContext();
-
-  if (!user) {
-    return <div />;
-  }
 
   return (
     <>
@@ -23,6 +20,8 @@ const WatchlistPage = (): JSX.Element => {
           <div className="section-bar">
             <div className="tg-title">Watchlist</div>
           </div>
+          <PleaseConnectWallet account={user?.account} />
+
           <TrendingList />
         </div>
       </div>
