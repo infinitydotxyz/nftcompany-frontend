@@ -6,6 +6,7 @@ import styles from './styles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { TrendingList } from 'components/TrendingList';
 import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
+import { PageHeader } from 'components/PageHeader';
 
 const WatchlistPage = (): JSX.Element => {
   const { user, showAppError } = useAppContext();
@@ -17,9 +18,7 @@ const WatchlistPage = (): JSX.Element => {
       </Head>
       <div className={styles.main}>
         <div className="page-container">
-          <div className="section-bar">
-            <div className="tg-title">Watchlist</div>
-          </div>
+          <PageHeader title="Watchlist" />
           <PleaseConnectWallet account={user?.account} />
 
           <TrendingList />

@@ -59,7 +59,7 @@ export const TrendingList = (): JSX.Element => {
   );
 
   return (
-    <Box display="flex" flexDirection={'column'} justifyContent={'flex-start'} marginTop={'80px'}>
+    <Box display="flex" flexDirection={'column'} justifyContent={'flex-start'}>
       {toolbarAndDrawer}
 
       <TrendingContents statsFilter={statsFilter} dataColumns={dataColumns} setStatsFilter={setStatsFilter} />
