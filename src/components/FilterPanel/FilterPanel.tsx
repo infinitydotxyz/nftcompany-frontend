@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import styles from './FilterPanel.module.css';
+import styles from './FilterPanel.module.scss';
 import PriceSlider from './PriceSlider';
 import { Box } from '@chakra-ui/react';
 import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
