@@ -24,7 +24,7 @@ export const TrendingDrawer = ({ setDataColumns, dataColumns }: Props): JSX.Elem
 
   return (
     <>
-      <Button borderRadius={100} variant="outline" onClick={onOpen}>
+      <Button px="32px" borderRadius={100} variant="outline" onClick={onOpen}>
         Filter
       </Button>
 
