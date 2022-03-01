@@ -16,20 +16,13 @@ import { Period, periodToInterval } from 'components/TrendingList/PeriodInterval
 import { SortProgressBar } from 'components/SortProgressBar';
 import { useWatchlist, WatchListHook } from 'hooks/useWatchlist';
 import { useAppContext } from 'utils/context/AppContext';
+import { CollectionSearch } from './CollectionSearch';
 
 type Props = {
   watchlistMode?: boolean;
 };
 
 export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
-  const {
-    options,
-    onChange,
-    selected: period
-  } = useToggleTab([Period.OneDay, Period.SevenDays, Period.ThirtyDays, Period.Total], Period.OneDay);
-
-  const [dataColumns, setDataColumns] = useState<DataColumns>(defaultDataColumns);
-
   const [statsFilter, setStatsFilter] = useState<StatsFilter>({
     primaryOrderBy: OrderBy.Volume,
     primaryOrderDirection: OrderDirection.Descending,
@@ -37,6 +30,15 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
     secondaryOrderBy: SecondaryOrderBy.Volume,
     secondaryOrderDirection: OrderDirection.Ascending
   });
+
+  const {
+    options,
+    onChange,
+    selected: period
+  } = useToggleTab([Period.OneDay, Period.SevenDays, Period.ThirtyDays, Period.Total], Period.OneDay);
+  const [dataColumns, setDataColumns] = useState<DataColumns>(defaultDataColumns);
+  const { user } = useAppContext();
+  const watchlist = useWatchlist(user);
 
   useEffect(() => {
     const newInterval = periodToInterval[period as Period];
@@ -47,6 +49,17 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
       };
     });
   }, [period]);
+
+  let search;
+  if (watchlistMode) {
+    search = (
+      <CollectionSearch
+        onSelect={(collectionAddress) => {
+          watchlist.add(collectionAddress);
+        }}
+      />
+    );
+  }
 
   const toolbarAndDrawer = (
     <Box
@@ -60,6 +73,7 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
         <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
       </Box>
 
+      {search}
       <TrendingDrawer dataColumns={dataColumns} setDataColumns={setDataColumns} />
     </Box>
   );
@@ -69,6 +83,7 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
       {toolbarAndDrawer}
 
       <TrendingContents
+        watchlist={watchlist}
         watchlistMode={watchlistMode}
         statsFilter={statsFilter}
         dataColumns={dataColumns}
@@ -81,16 +96,21 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
 // ====================================================================
 
 type Props2 = {
+  watchlist: WatchListHook;
   statsFilter: StatsFilter;
   dataColumns: DataColumns;
   watchlistMode: boolean;
   setStatsFilter: Dispatch<SetStateAction<StatsFilter>>;
 };
 
-export const TrendingContents = ({ watchlistMode, statsFilter, dataColumns, setStatsFilter }: Props2): JSX.Element => {
+export const TrendingContents = ({
+  watchlist,
+  watchlistMode,
+  statsFilter,
+  dataColumns,
+  setStatsFilter
+}: Props2): JSX.Element => {
   const { trendingData, isLoading, fetchMoreData } = useTrendingStats(statsFilter);
-  const { user } = useAppContext();
-  const watchlist = useWatchlist(user);
 
   // get list and filter if watchlistMode
   let collections = trendingData;
