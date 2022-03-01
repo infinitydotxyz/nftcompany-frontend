@@ -17,7 +17,11 @@ import { SortProgressBar } from 'components/SortProgressBar';
 import { useWatchlist, WatchListHook } from 'hooks/useWatchlist';
 import { useAppContext } from 'utils/context/AppContext';
 
-export const TrendingList = (): JSX.Element => {
+type Props = {
+  watchlistMode?: boolean;
+};
+
+export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
   const {
     options,
     onChange,
@@ -71,12 +75,14 @@ export const TrendingList = (): JSX.Element => {
 
 // ====================================================================
 
-function TrendingContents(props: {
+type Props2 = {
   statsFilter: StatsFilter;
   dataColumns: DataColumns;
   setStatsFilter: Dispatch<SetStateAction<StatsFilter>>;
-}) {
-  const { trendingData, isLoading, fetchMoreData } = useTrendingStats(props.statsFilter);
+};
+
+export const TrendingContents = ({ statsFilter, dataColumns, setStatsFilter }: Props2): JSX.Element => {
+  const { trendingData, isLoading, fetchMoreData } = useTrendingStats(statsFilter);
   const { user } = useAppContext();
   const watchlist = useWatchlist(user);
 
@@ -86,11 +92,11 @@ function TrendingContents(props: {
         return (
           <TrendingRow
             watchlist={watchlist}
-            statsFilter={props.statsFilter}
+            statsFilter={statsFilter}
             key={collectionData.collectionAddress ?? 'key'}
             trendingData={collectionData}
-            dataColumns={props.dataColumns}
-            setStatsFilter={props.setStatsFilter}
+            dataColumns={dataColumns}
+            setStatsFilter={setStatsFilter}
           />
         );
       })}
@@ -98,37 +104,44 @@ function TrendingContents(props: {
       {isLoading && renderSpinner({ margin: 5 })}
     </div>
   );
-}
+};
 
 // ====================================================================
 
-function TrendingRow(props: {
+type Props3 = {
   watchlist: WatchListHook;
   trendingData: TrendingData;
   dataColumns: DataColumns;
   statsFilter: StatsFilter;
   setStatsFilter: Dispatch<SetStateAction<StatsFilter>>;
-}) {
+};
+
+export const TrendingRow = ({
+  trendingData,
+  watchlist,
+  statsFilter,
+  dataColumns,
+  setStatsFilter
+}: Props3): JSX.Element => {
   const [columns, setColumns] = useState<[SecondaryOrderBy, DataColumn][]>([]);
 
   useEffect(() => {
-    const selectedItemsOrderedByGroup: [SecondaryOrderBy, DataColumn][] = Object.values(props.dataColumns).flatMap(
-      (group) =>
-        Object.entries(group)
-          .filter(([itemKey, item]) => item.isSelected)
-          .flatMap(([key, mainColumn]) => {
-            return [[key, mainColumn], ...(mainColumn.additionalColumns ?? [])];
-          })
+    const selectedItemsOrderedByGroup: [SecondaryOrderBy, DataColumn][] = Object.values(dataColumns).flatMap((group) =>
+      Object.entries(group)
+        .filter(([itemKey, item]) => item.isSelected)
+        .flatMap(([key, mainColumn]) => {
+          return [[key, mainColumn], ...(mainColumn.additionalColumns ?? [])];
+        })
     ) as [SecondaryOrderBy, DataColumn][];
 
     setColumns(selectedItemsOrderedByGroup);
-  }, [props.dataColumns]);
+  }, [dataColumns]);
 
   const onSortClick = (key: SecondaryOrderBy) => {
-    const isSelected = props.statsFilter.secondaryOrderBy === key;
+    const isSelected = statsFilter.secondaryOrderBy === key;
 
     if (isSelected) {
-      props.setStatsFilter((prev) => {
+      setStatsFilter((prev) => {
         return {
           ...prev,
           secondaryOrderDirection:
@@ -138,7 +151,7 @@ function TrendingRow(props: {
         };
       });
     } else {
-      props.setStatsFilter((prev) => {
+      setStatsFilter((prev) => {
         return {
           ...prev,
           secondaryOrderBy: key
@@ -148,7 +161,7 @@ function TrendingRow(props: {
   };
 
   const valueDiv = (direction: OrderDirection, dataColumn: DataColumn, key: SecondaryOrderBy) => {
-    const value: any = (props.trendingData as any)[key];
+    const value: any = (trendingData as any)[key];
 
     switch (dataColumn.type) {
       case DataColumnType.Amount:
@@ -191,13 +204,13 @@ function TrendingRow(props: {
     }
   };
 
-  const isFavorite = props.watchlist.exists(props.trendingData.collectionAddress);
+  const isFavorite = watchlist.exists(trendingData.collectionAddress);
   let favoriteButton = (
     <FavoriteOutlineIcon
       color={'#d00'}
       className={styles.favoritesButton}
       onClick={() => {
-        props.watchlist.toggle(props.trendingData.collectionAddress);
+        watchlist.toggle(trendingData.collectionAddress);
       }}
     />
   );
@@ -208,7 +221,7 @@ function TrendingRow(props: {
         color={'#d00'}
         className={styles.favoritesButton}
         onClick={() => {
-          props.watchlist.toggle(props.trendingData.collectionAddress);
+          watchlist.toggle(trendingData.collectionAddress);
         }}
       />
     );
@@ -219,14 +232,14 @@ function TrendingRow(props: {
       {favoriteButton}
 
       <div className={styles.partnership}>Partnership</div>
-      <TrendingItem trendingData={props.trendingData} image={true} />
-      <TrendingItem trendingData={props.trendingData} nameItem={true} />
+      <TrendingItem trendingData={trendingData} image={true} />
+      <TrendingItem trendingData={trendingData} nameItem={true} />
 
       {columns.map(([key, dataColumn]) => {
         let direction = '' as OrderDirection;
-        const isSelected = props.statsFilter.secondaryOrderBy === key;
+        const isSelected = statsFilter.secondaryOrderBy === key;
         if (isSelected) {
-          direction = props.statsFilter.secondaryOrderDirection;
+          direction = statsFilter.secondaryOrderDirection;
         }
 
         const content = valueDiv(direction, dataColumn, key);
@@ -242,7 +255,7 @@ function TrendingRow(props: {
             key={key}
             direction={direction}
             title={title}
-            trendingData={props.trendingData}
+            trendingData={trendingData}
             content={content}
             sortClick={() => {
               onSortClick(key);
@@ -252,11 +265,11 @@ function TrendingRow(props: {
       })}
     </div>
   );
-}
+};
 
 // ====================================================================
 
-function TrendingItem(props: {
+type Props4 = {
   content?: any;
   title?: string;
   trendingData: TrendingData;
@@ -264,28 +277,38 @@ function TrendingItem(props: {
   image?: boolean;
   direction?: OrderDirection;
   sortClick?: () => void;
-}) {
+};
+
+export const TrendingItem = ({
+  title,
+  content,
+  image,
+  direction,
+  sortClick,
+  nameItem,
+  trendingData
+}: Props4): JSX.Element => {
   const router = useRouter();
 
-  if (props.nameItem) {
+  if (nameItem) {
     return (
       <Link
         onClick={() => {
-          router.push(`/collection/${props.trendingData.searchCollectionName}`);
+          router.push(`/collection/${trendingData.searchCollectionName}`);
         }}
       >
         <div className={styles.item}>
-          <div className={styles.itemValue}>{props.trendingData.name}</div>
+          <div className={styles.itemValue}>{trendingData.name}</div>
         </div>
       </Link>
     );
   }
 
-  if (props.image) {
+  if (image) {
     return (
       <div className={styles.item}>
         <div className={styles.imageCropper}>
-          <Image alt={'collection image'} src={props.trendingData.profileImage} />
+          <Image alt={'collection image'} src={trendingData.profileImage} />
         </div>
       </div>
     );
@@ -293,19 +316,19 @@ function TrendingItem(props: {
 
   return (
     <div className={styles.item}>
-      {props.title && (
+      {title && (
         <SortButton
-          direction={props.direction ?? ''}
+          direction={direction ?? ''}
           onClick={() => {
-            if (props.sortClick) {
-              props.sortClick();
+            if (sortClick) {
+              sortClick();
             }
           }}
-          label={props.title}
+          label={title}
         />
       )}
 
-      {props.content}
+      {content}
     </div>
   );
-}
+};
