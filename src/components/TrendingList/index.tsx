@@ -1,6 +1,6 @@
 import { Box, Link } from '@chakra-ui/layout';
-import { Image, Text } from '@chakra-ui/react';
-import { EthToken } from 'components/Icons/Icons';
+import { IconButton, Image, Text } from '@chakra-ui/react';
+import { EthToken, FavoriteIcon, FavoriteOutlineIcon } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import { SortButton } from 'components/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
@@ -14,6 +14,7 @@ import styles from './styles.module.scss';
 import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from 'components/TrendingList/DataColumns';
 import { Period, periodToInterval } from 'components/TrendingList/PeriodInterval';
 import { SortProgressBar } from 'components/SortProgressBar';
+import { useWatchlist } from 'hooks/useWatchlist';
 
 export const TrendingList = (): JSX.Element => {
   const {
@@ -67,6 +68,8 @@ export const TrendingList = (): JSX.Element => {
   );
 };
 
+// ====================================================================
+
 function TrendingContents(props: {
   statsFilter: StatsFilter;
   dataColumns: DataColumns;
@@ -93,6 +96,8 @@ function TrendingContents(props: {
   );
 }
 
+// ====================================================================
+
 function TrendingRow(props: {
   trendingData: TrendingData;
   dataColumns: DataColumns;
@@ -100,6 +105,8 @@ function TrendingRow(props: {
   setStatsFilter: Dispatch<SetStateAction<StatsFilter>>;
 }) {
   const [columns, setColumns] = useState<[SecondaryOrderBy, DataColumn][]>([]);
+
+  const watchlist = useWatchlist();
 
   useEffect(() => {
     const selectedItemsOrderedByGroup: [SecondaryOrderBy, DataColumn][] = Object.values(props.dataColumns).flatMap(
@@ -181,8 +188,33 @@ function TrendingRow(props: {
     }
   };
 
+  const isFavorite = watchlist.exists(props.trendingData.collectionAddress);
+  let favoriteButton = (
+    <FavoriteOutlineIcon
+      color={'#d00'}
+      className={styles.favoritesButton}
+      onClick={() => {
+        watchlist.toggle(props.trendingData.collectionAddress);
+      }}
+    />
+  );
+
+  if (isFavorite) {
+    favoriteButton = (
+      <FavoriteIcon
+        color={'#d00'}
+        className={styles.favoritesButton}
+        onClick={() => {
+          watchlist.toggle(props.trendingData.collectionAddress);
+        }}
+      />
+    );
+  }
+
   return (
     <div className={styles.row}>
+      {favoriteButton}
+
       <div className={styles.partnership}>Partnership</div>
       <TrendingItem trendingData={props.trendingData} image={true} />
       <TrendingItem trendingData={props.trendingData} nameItem={true} />
@@ -218,6 +250,8 @@ function TrendingRow(props: {
     </div>
   );
 }
+
+// ====================================================================
 
 function TrendingItem(props: {
   content?: any;
