@@ -68,7 +68,12 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
     <Box display="flex" flexDirection={'column'} justifyContent={'flex-start'}>
       {toolbarAndDrawer}
 
-      <TrendingContents statsFilter={statsFilter} dataColumns={dataColumns} setStatsFilter={setStatsFilter} />
+      <TrendingContents
+        watchlistMode={watchlistMode}
+        statsFilter={statsFilter}
+        dataColumns={dataColumns}
+        setStatsFilter={setStatsFilter}
+      />
     </Box>
   );
 };
@@ -78,17 +83,26 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
 type Props2 = {
   statsFilter: StatsFilter;
   dataColumns: DataColumns;
+  watchlistMode: boolean;
   setStatsFilter: Dispatch<SetStateAction<StatsFilter>>;
 };
 
-export const TrendingContents = ({ statsFilter, dataColumns, setStatsFilter }: Props2): JSX.Element => {
+export const TrendingContents = ({ watchlistMode, statsFilter, dataColumns, setStatsFilter }: Props2): JSX.Element => {
   const { trendingData, isLoading, fetchMoreData } = useTrendingStats(statsFilter);
   const { user } = useAppContext();
   const watchlist = useWatchlist(user);
 
+  // get list and filter if watchlistMode
+  let collections = trendingData;
+  if (watchlistMode) {
+    collections = trendingData.filter((e) => {
+      return watchlist.watchlist.includes(e.collectionAddress ?? '');
+    });
+  }
+
   return (
     <div className={styles.list}>
-      {trendingData.map((collectionData: TrendingData) => {
+      {collections.map((collectionData: TrendingData) => {
         return (
           <TrendingRow
             watchlist={watchlist}

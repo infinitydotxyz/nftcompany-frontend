@@ -21,7 +21,7 @@ const WatchlistPage = (): JSX.Element => {
           <PageHeader title="Watchlist" />
           <PleaseConnectWallet account={user?.account} />
 
-          <TrendingList />
+          <TrendingList watchlistMode={true} />
         </div>
       </div>
     </>
