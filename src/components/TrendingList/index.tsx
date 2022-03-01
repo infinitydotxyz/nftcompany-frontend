@@ -14,7 +14,8 @@ import styles from './styles.module.scss';
 import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from 'components/TrendingList/DataColumns';
 import { Period, periodToInterval } from 'components/TrendingList/PeriodInterval';
 import { SortProgressBar } from 'components/SortProgressBar';
-import { useWatchlist } from 'hooks/useWatchlist';
+import { useWatchlist, WatchListHook } from 'hooks/useWatchlist';
+import { useAppContext } from 'utils/context/AppContext';
 
 export const TrendingList = (): JSX.Element => {
   const {
@@ -76,12 +77,15 @@ function TrendingContents(props: {
   setStatsFilter: Dispatch<SetStateAction<StatsFilter>>;
 }) {
   const { trendingData, isLoading, fetchMoreData } = useTrendingStats(props.statsFilter);
+  const { user } = useAppContext();
+  const watchlist = useWatchlist(user);
 
   return (
     <div className={styles.list}>
       {trendingData.map((collectionData: TrendingData) => {
         return (
           <TrendingRow
+            watchlist={watchlist}
             statsFilter={props.statsFilter}
             key={collectionData.collectionAddress ?? 'key'}
             trendingData={collectionData}
@@ -99,14 +103,13 @@ function TrendingContents(props: {
 // ====================================================================
 
 function TrendingRow(props: {
+  watchlist: WatchListHook;
   trendingData: TrendingData;
   dataColumns: DataColumns;
   statsFilter: StatsFilter;
   setStatsFilter: Dispatch<SetStateAction<StatsFilter>>;
 }) {
   const [columns, setColumns] = useState<[SecondaryOrderBy, DataColumn][]>([]);
-
-  const watchlist = useWatchlist();
 
   useEffect(() => {
     const selectedItemsOrderedByGroup: [SecondaryOrderBy, DataColumn][] = Object.values(props.dataColumns).flatMap(
@@ -188,13 +191,13 @@ function TrendingRow(props: {
     }
   };
 
-  const isFavorite = watchlist.exists(props.trendingData.collectionAddress);
+  const isFavorite = props.watchlist.exists(props.trendingData.collectionAddress);
   let favoriteButton = (
     <FavoriteOutlineIcon
       color={'#d00'}
       className={styles.favoritesButton}
       onClick={() => {
-        watchlist.toggle(props.trendingData.collectionAddress);
+        props.watchlist.toggle(props.trendingData.collectionAddress);
       }}
     />
   );
@@ -205,7 +208,7 @@ function TrendingRow(props: {
         color={'#d00'}
         className={styles.favoritesButton}
         onClick={() => {
-          watchlist.toggle(props.trendingData.collectionAddress);
+          props.watchlist.toggle(props.trendingData.collectionAddress);
         }}
       />
     );

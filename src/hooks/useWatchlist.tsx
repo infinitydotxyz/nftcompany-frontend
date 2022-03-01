@@ -1,12 +1,39 @@
 import { useEffect, useState } from 'react';
+import { apiGet, apiPost } from 'utils/apiUtil';
+import { User } from 'utils/context/AppContext';
 
-export function useWatchlist() {
+export type WatchListHook = {
+  watchlist: string[];
+  exists: (item?: string) => boolean;
+  add: (item: string) => void;
+  toggle: (item?: string) => void;
+  save: () => void;
+  remove: (item: string) => void;
+};
+
+export function useWatchlist(user: User | null): WatchListHook {
   const [watchlist, setWatchlist] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const _update = async () => {
+    if (!user || !user?.account) {
+      if (watchlist.length > 0) {
+        setWatchlist([]);
+      }
+      return;
+    }
+
+    const { result, error } = await apiGet(`/u/${user?.account}/watchlist`);
+    if (error) {
+      console.log(`${error.message}`);
+      return;
+    }
+
+    setWatchlist(result ?? []);
+  };
 
   useEffect(() => {
-    // setWatchlist([]);
-  }, []);
+    _update();
+  }, [user]);
 
   const add = (item: string) => {
     if (!exists(item)) {
@@ -30,6 +57,8 @@ export function useWatchlist() {
       } else {
         add(item);
       }
+
+      save();
     }
   };
 
@@ -39,9 +68,19 @@ export function useWatchlist() {
     setWatchlist([...watchlist]);
   };
 
-  const save = () => {
-    // watchList.push(item);
+  const save = async () => {
+    if (user) {
+      const response = await apiPost(`/u/${user?.account}/watchlist`, null, { watchlist: watchlist });
+
+      if (response.status === 200) {
+        console.log(`watchlist updated.`);
+      } else {
+        console.log('An error occured');
+      }
+    } else {
+      console.log('watchlist is invalid');
+    }
   };
 
-  return { watchlist, isLoading, exists, add, toggle, save, remove };
+  return { watchlist, exists, add, toggle, save, remove };
 }
