@@ -7,7 +7,7 @@ import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import { TrendingDrawer } from 'components/TrendingSelectionDrawer';
 import { SecondaryOrderBy, StatsFilter, TrendingData, useTrendingStats } from 'hooks/useTrendingStats';
 import { useRouter } from 'next/router';
-import { Dispatch, Key, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { OrderBy, OrderDirection, StatInterval } from 'services/Stats.service';
 import { numStr, renderSpinner } from 'utils/commonUtil';
 import styles from './styles.module.scss';
@@ -248,36 +248,10 @@ export const TrendingRow = ({
     }
   };
 
-  const isFavorite = watchlist.exists(trendingData.collectionAddress);
-  let favoriteButton = (
-    <FavoriteOutlineIcon
-      color={'#d00'}
-      className={styles.favoritesButton}
-      onClick={() => {
-        watchlist.toggle(trendingData.collectionAddress);
-      }}
-    />
-  );
-
-  if (isFavorite) {
-    favoriteButton = (
-      <FavoriteIcon
-        color={'#d00'}
-        className={styles.favoritesButton}
-        onClick={() => {
-          watchlist.toggle(trendingData.collectionAddress);
-        }}
-      />
-    );
-  }
-
   return (
     <div className={styles.row}>
-      {favoriteButton}
-
-      <div className={styles.partnership}>Partnership</div>
-      <TrendingItem trendingData={trendingData} image={true} />
-      <TrendingItem trendingData={trendingData} nameItem={true} />
+      <TrendingItem watchlist={watchlist} trendingData={trendingData} image={true} />
+      <TrendingItem watchlist={watchlist} trendingData={trendingData} nameItem={true} />
 
       {columns.map(([key, dataColumn]) => {
         let direction = '' as OrderDirection;
@@ -297,6 +271,7 @@ export const TrendingRow = ({
         return (
           <TrendingItem
             key={key}
+            watchlist={watchlist}
             direction={direction}
             title={title}
             trendingData={trendingData}
@@ -314,6 +289,7 @@ export const TrendingRow = ({
 // ====================================================================
 
 type Props4 = {
+  watchlist: WatchListHook;
   content?: any;
   title?: string;
   trendingData: TrendingData;
@@ -329,22 +305,53 @@ export const TrendingItem = ({
   image,
   direction,
   sortClick,
+  watchlist,
   nameItem,
   trendingData
 }: Props4): JSX.Element => {
   const router = useRouter();
 
   if (nameItem) {
-    return (
-      <Link
+    const isFavorite = watchlist.exists(trendingData.collectionAddress);
+    let favoriteButton = (
+      <div
+        className={styles.favoritesButton}
         onClick={() => {
-          router.push(`/collection/${trendingData.searchCollectionName}`);
+          watchlist.toggle(trendingData.collectionAddress);
         }}
       >
-        <div className={styles.item}>
-          <div className={styles.itemTitle}>{trendingData.name}</div>
+        <FavoriteOutlineIcon color={'#d00'} />
+      </div>
+    );
+
+    if (isFavorite) {
+      favoriteButton = (
+        <div
+          className={styles.favoritesButton}
+          onClick={() => {
+            watchlist.toggle(trendingData.collectionAddress);
+          }}
+        >
+          <FavoriteIcon color={'#d00'} />
         </div>
-      </Link>
+      );
+    }
+
+    return (
+      <div className={styles.item}>
+        <Link
+          onClick={() => {
+            router.push(`/collection/${trendingData.searchCollectionName}`);
+          }}
+        >
+          <div className={styles.itemTitle}>{trendingData.name}</div>
+        </Link>
+
+        <div className={styles.subtitle}>
+          {favoriteButton}
+          <div className={styles.partnership}>Partnership</div>
+        </div>
+      </div>
     );
   }
 
