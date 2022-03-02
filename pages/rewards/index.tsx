@@ -73,6 +73,9 @@ const Rewards = (): JSX.Element => {
         },
         { title: 'Total tokens', value: rewardResults.finalEarnedTokens }
       ];
+      if (rewardResults.refunded) {
+        activityItems.push({ title: 'Claimed refund', value: rewardResults.refunded });
+      }
       return activityItems;
     }
 

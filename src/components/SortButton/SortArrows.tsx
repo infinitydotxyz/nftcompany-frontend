@@ -2,11 +2,12 @@ import { Box, Text } from '@chakra-ui/react';
 import { CarrotDown, CarrotUp } from 'components/Icons/Icons';
 import { OrderDirection } from 'services/Stats.service';
 
-function SortButton(props: {
-  state: '' | OrderDirection.Ascending | OrderDirection.Descending;
-  onClick: () => void;
-  label?: string;
-}) {
+type Props = {
+  direction: '' | OrderDirection.Ascending | OrderDirection.Descending;
+  marginLeft?: string;
+};
+
+export const SortArrows = ({ marginLeft = '8px', direction }: Props): JSX.Element => {
   const defaultArrows = (
     <>
       <CarrotUp width="10px" position="relative" top="-5px" />
@@ -29,7 +30,7 @@ function SortButton(props: {
   );
 
   const getArrows = () => {
-    switch (props.state) {
+    switch (direction) {
       case OrderDirection.Ascending:
         return topArrow;
       case OrderDirection.Descending:
@@ -40,21 +41,8 @@ function SortButton(props: {
   };
 
   return (
-    <Box
-      display={'flex'}
-      flexDirection={'row'}
-      cursor={'pointer'}
-      position="relative"
-      onClick={props.onClick}
-      alignItems={'center'}
-    >
-      {props.label && <Text>{props.label}</Text>}
-
-      <Box display={'flex'} flexDirection={'column'} position="relative" height={15} marginLeft="8px">
-        {getArrows()}
-      </Box>
+    <Box marginLeft={marginLeft} display={'flex'} flexDirection={'column'} height={15}>
+      {getArrows()}
     </Box>
   );
-}
-
-export default SortButton;
+};

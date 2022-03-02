@@ -157,7 +157,8 @@ export function useTrendingStats(filter: StatsFilter) {
   }, [filter.secondaryOrderBy, filter.secondaryOrderDirection, collectionStats]);
 
   const fetchData = async () => {
-    const startAfter = collectionStats[collectionStats.length - 1]?.collectionAddress ?? '';
+    const startAfter = collectionStats[collectionStats.length - 1]?.startAfter ?? '';
+
     try {
       const collectionStats: CollectionStats[] = await getStats(
         filter.primaryOrderBy,

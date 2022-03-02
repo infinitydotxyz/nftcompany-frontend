@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 import styles from './styles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
-import TrendingList from 'components/TrendingList/TrendingList';
+import { TrendingList } from 'components/TrendingList';
+import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
+import { PageHeader } from 'components/PageHeader';
+import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 
 const TrendingPage = (): JSX.Element => {
   const { user, showAppError } = useAppContext();
+  const { options, onChange, selected } = useToggleTab(['Trending', 'Watchlist'], 'Trending');
 
-  if (!user) {
-    return <div />;
-  }
+  const tabControl = <ToggleTab options={options} selected={selected} onChange={onChange} size="sm" />;
 
   return (
     <>
@@ -20,10 +22,10 @@ const TrendingPage = (): JSX.Element => {
       </Head>
       <div className={styles.main}>
         <div className="page-container">
-          <div className="section-bar">
-            <div className="tg-title">Trending</div>
-          </div>
-          <TrendingList />
+          <PageHeader title="Trending" rightSide={tabControl} />
+          <PleaseConnectWallet account={user?.account} />
+
+          <TrendingList watchlistMode={selected === 'Watchlist'} />
         </div>
       </div>
     </>

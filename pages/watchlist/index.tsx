@@ -4,14 +4,12 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import styles from './styles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
-import TrendingList from 'components/TrendingList/TrendingList';
+import { TrendingList } from 'components/TrendingList';
+import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
+import { PageHeader } from 'components/PageHeader';
 
 const WatchlistPage = (): JSX.Element => {
   const { user, showAppError } = useAppContext();
-
-  if (!user) {
-    return <div />;
-  }
 
   return (
     <>
@@ -20,10 +18,10 @@ const WatchlistPage = (): JSX.Element => {
       </Head>
       <div className={styles.main}>
         <div className="page-container">
-          <div className="section-bar">
-            <div className="tg-title">Watchlist</div>
-          </div>
-          <TrendingList />
+          <PageHeader title="Watchlist" />
+          <PleaseConnectWallet account={user?.account} />
+
+          <TrendingList watchlistMode={true} />
         </div>
       </div>
     </>

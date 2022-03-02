@@ -10,21 +10,21 @@ import {
 } from '@chakra-ui/react';
 import { DataColumns } from 'components/TrendingList/DataColumns';
 import React, { Dispatch, SetStateAction } from 'react';
-import TrendingFilter from './TrendingFilter';
+import { TrendingFilter } from './TrendingFilter';
 import styles from './styles.module.scss';
 
-interface Props {
+type Props = {
   dataColumns: DataColumns;
   setDataColumns: Dispatch<SetStateAction<DataColumns>>;
-}
+};
 
-function TrendingDrawer(props: Props) {
+export const TrendingDrawer = ({ setDataColumns, dataColumns }: Props): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isMobileSmall] = useMediaQuery('(max-width: 600px)');
 
   return (
     <>
-      <Button borderRadius={100} variant="outline" onClick={onOpen}>
+      <Button px="32px" borderRadius={100} variant="outline" onClick={onOpen}>
         Filter
       </Button>
 
@@ -38,12 +38,10 @@ function TrendingDrawer(props: Props) {
           </div>
 
           <DrawerBody>
-            <TrendingFilter setDataColumns={props.setDataColumns} dataColumns={props.dataColumns} onClose={onClose} />
+            <TrendingFilter setDataColumns={setDataColumns} dataColumns={dataColumns} onClose={onClose} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>
   );
-}
-
-export default TrendingDrawer;
+};

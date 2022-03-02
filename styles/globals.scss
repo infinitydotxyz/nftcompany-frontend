@@ -1,8 +1,8 @@
-@import './vars.css';
+@import './vars.scss';
 
 /* toast with override css */
 @import 'react-toastify/dist/ReactToastify.css';
-@import './toastify.css';
+@import './toastify.scss';
 
 html,
 body {
@@ -60,10 +60,6 @@ a {
 .text-gray {
   color: #666;
   font-size: 0.9em;
-}
-
-svg {
-  display: inline-block !important;
 }
 
 .mb-1 {

@@ -4,11 +4,10 @@ import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
 import { BaseCardData, CardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { PriceBoxFloater } from 'components/PriceBoxFloater/';
 import { addressesEqual, getSearchFriendlyString } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
 import router from 'next/router';
-import { Spacer, Link, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
+import { Spacer, Menu, MenuButton, MenuList, MenuItem, IconButton } from '@chakra-ui/react';
 import { LISTING_TYPE, PAGE_NAMES } from 'utils/constants';
 import { NftAction } from 'types';
 import styles from './CardList.module.scss';
@@ -150,9 +149,7 @@ function Card({ data, onClickAction, userAccount, pageName, showItems = ['PRICE'
 
   const menuEl = (
     <Menu>
-      <MenuButton>
-        <BsThreeDotsVertical />
-      </MenuButton>
+      <MenuButton as={IconButton} aria-label="" icon={<BsThreeDotsVertical />} />
       <MenuList>
         {actionButton()}
         <MenuItem onClick={() => setRelistModalShowed(true)}>Relist / Lower Price</MenuItem>

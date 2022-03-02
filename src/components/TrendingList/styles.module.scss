@@ -8,16 +8,10 @@
 
   .item {
     margin-right: 40px;
+    flex-direction: column;
+    display: flex;
 
     .itemTitle {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-
-      color: #666666;
-    }
-
-    .itemValue {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -48,15 +42,35 @@
     grid-auto-flow: column;
     align-items: center;
 
-    .partnership {
-      position: absolute;
-      top: 20px;
-      left: 34px;
-      border-radius: 100px;
-      padding: 1px 12px;
-      font-size: 0.8rem;
+    .subtitle {
+      display: flex;
+      align-items: center;
+      margin-top: 6px;
 
-      background-color: #fff;
+      .partnership {
+        border-radius: 100px;
+        padding: 4px 12px 8px 12px;
+        line-height: 1;
+        font-size: 0.8rem;
+
+        background-color: rgba(255, 255, 255, 0.7);
+      }
+
+      .favoritesButton {
+        padding: 2px;
+        margin-right: 10px;
+
+        svg {
+          display: block;
+        }
+      }
     }
+  }
+}
+
+// search box
+.typeahead {
+  input {
+    border-radius: 10rem;
   }
 }

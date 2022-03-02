@@ -46,6 +46,7 @@ export type RewardResults = {
   newThreshold: number;
   transacted: number;
   finalEarnedTokens: number;
+  refunded?: boolean;
 };
 
 // ===========================================================
