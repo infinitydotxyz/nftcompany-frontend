@@ -8,16 +8,10 @@
 
   .item {
     margin-right: 40px;
+    flex-direction: column;
+    display: flex;
 
     .itemTitle {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-
-      color: #666666;
-    }
-
-    .itemValue {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -50,8 +44,8 @@
 
     .partnership {
       position: absolute;
-      top: 20px;
-      left: 34px;
+      top: 17px;
+      left: 50px;
       border-radius: 100px;
       padding: 1px 12px;
       font-size: 0.8rem;
@@ -62,7 +56,7 @@
     .favoritesButton {
       position: absolute;
       top: 20px;
-      left: 220px;
+      left: 20px;
     }
   }
 }

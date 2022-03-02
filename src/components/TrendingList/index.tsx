@@ -342,7 +342,7 @@ export const TrendingItem = ({
         }}
       >
         <div className={styles.item}>
-          <div className={styles.itemValue}>{trendingData.name}</div>
+          <div className={styles.itemTitle}>{trendingData.name}</div>
         </div>
       </Link>
     );
