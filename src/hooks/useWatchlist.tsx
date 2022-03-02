@@ -78,7 +78,7 @@ export function useWatchlist(user: User | null): WatchListHook {
         console.log('An error occured');
       }
     } else {
-      console.log('watchlist is invalid');
+      console.log('user not connected');
     }
   };
 

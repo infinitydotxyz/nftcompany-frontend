@@ -1,5 +1,5 @@
 import { Box, Link } from '@chakra-ui/layout';
-import { IconButton, Image, Text } from '@chakra-ui/react';
+import { Button, Image, Text } from '@chakra-ui/react';
 import { EthToken, FavoriteIcon, FavoriteOutlineIcon } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import { SortButton } from 'components/SortButton';
@@ -121,22 +121,32 @@ export const TrendingContents = ({
   }
 
   return (
-    <div className={styles.list}>
-      {collections.map((collectionData: TrendingData) => {
-        return (
-          <TrendingRow
-            watchlist={watchlist}
-            statsFilter={statsFilter}
-            key={collectionData.collectionAddress ?? 'key'}
-            trendingData={collectionData}
-            dataColumns={dataColumns}
-            setStatsFilter={setStatsFilter}
-          />
-        );
-      })}
+    <>
+      <div className={styles.list}>
+        {collections.map((collectionData: TrendingData) => {
+          return (
+            <TrendingRow
+              watchlist={watchlist}
+              statsFilter={statsFilter}
+              key={collectionData.collectionAddress ?? 'key'}
+              trendingData={collectionData}
+              dataColumns={dataColumns}
+              setStatsFilter={setStatsFilter}
+            />
+          );
+        })}
 
-      {isLoading && renderSpinner({ margin: 5 })}
-    </div>
+        {isLoading && renderSpinner({ margin: 5 })}
+      </div>
+
+      <Button
+        onClick={() => {
+          fetchMoreData();
+        }}
+      >
+        More
+      </Button>
+    </>
   );
 };
 
