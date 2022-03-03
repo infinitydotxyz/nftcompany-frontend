@@ -471,3 +471,9 @@ export const FavoriteOutlineIcon = (props: Record<string, unknown>): JSX.Element
     </g>
   </Icon>
 );
+
+export const EthCurrencyIcon = (props: Record<string, unknown>): JSX.Element => {
+  const ethSymbol = 'Ξ';
+
+  return <div {...props}>{ethSymbol}</div>;
+};

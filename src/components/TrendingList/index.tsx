@@ -1,6 +1,6 @@
 import { Box, Link } from '@chakra-ui/layout';
 import { Button, Image, Text } from '@chakra-ui/react';
-import { EthToken, FavoriteIcon, FavoriteOutlineIcon } from 'components/Icons/Icons';
+import { EthCurrencyIcon, EthToken, FavoriteIcon, FavoriteOutlineIcon } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import { SortButton } from 'components/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
@@ -211,7 +211,7 @@ export const TrendingRow = ({
       case DataColumnType.Amount:
         return (
           <Box display="flex" flexDirection={'row'} alignItems={'center'}>
-            {dataColumn.unit === 'ETH' && <EthToken marginBottom={'-2px'} />}
+            {dataColumn.unit === 'ETH' && <EthCurrencyIcon style={{ marginRight: '6px', fontWeight: 'bold' }} />}
 
             {value ? <Text variant="bold">{numStr(value)}</Text> : <Text variant="bold">---</Text>}
           </Box>
