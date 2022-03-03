@@ -1,6 +1,6 @@
 import { Box, Link } from '@chakra-ui/layout';
-import { Button, Image, Text } from '@chakra-ui/react';
-import { EthCurrencyIcon, EthToken, FavoriteIcon, FavoriteOutlineIcon } from 'components/Icons/Icons';
+import { Button, IconButton, Image, Text } from '@chakra-ui/react';
+import { EthCurrencyIcon, FavoriteIcon, FavoriteOutlineIcon } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import { SortButton } from 'components/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
@@ -17,6 +17,7 @@ import { SortProgressBar } from 'components/SortProgressBar';
 import { useWatchlist, WatchListHook } from 'hooks/useWatchlist';
 import { useAppContext } from 'utils/context/AppContext';
 import { CollectionSearch } from './CollectionSearch';
+import { StarIcon } from '@chakra-ui/icons';
 
 type Props = {
   watchlistMode?: boolean;
@@ -209,7 +210,7 @@ export const TrendingRow = ({
           <Box display="flex" flexDirection={'row'} alignItems={'center'}>
             {dataColumn.unit === 'ETH' && <EthCurrencyIcon style={{ marginRight: '6px', fontWeight: 'bold' }} />}
 
-            {value ? <Text variant="bold">{numStr(value)}</Text> : <Text variant="bold">---</Text>}
+            {value ? <div className={styles.itemValue}>{numStr(value)}</div> : <Text variant="bold">---</Text>}
           </Box>
         );
       case DataColumnType.Change:
@@ -244,8 +245,37 @@ export const TrendingRow = ({
     }
   };
 
+  const isFavorite = watchlist.exists(trendingData.collectionAddress);
+  let favoriteButton = (
+    <IconButton
+      aria-label=""
+      variant="ghost"
+      icon={<StarIcon color="#BEBEBE" />}
+      isRound
+      onClick={() => {
+        watchlist.toggle(trendingData.collectionAddress);
+      }}
+    />
+  );
+
+  if (isFavorite) {
+    favoriteButton = (
+      <IconButton
+        aria-label=""
+        variant="ghost"
+        backgroundColor="#000"
+        icon={<StarIcon color="#fff" />}
+        isRound
+        onClick={() => {
+          watchlist.toggle(trendingData.collectionAddress);
+        }}
+      />
+    );
+  }
+
   return (
     <div className={styles.row}>
+      <div className={styles.starButton}>{favoriteButton}</div>
       <TrendingItem watchlist={watchlist} trendingData={trendingData} image={true} />
       <TrendingItem watchlist={watchlist} trendingData={trendingData} nameItem={true} />
 
@@ -308,31 +338,6 @@ export const TrendingItem = ({
   const router = useRouter();
 
   if (nameItem) {
-    const isFavorite = watchlist.exists(trendingData.collectionAddress);
-    let favoriteButton = (
-      <div
-        className={styles.favoritesButton}
-        onClick={() => {
-          watchlist.toggle(trendingData.collectionAddress);
-        }}
-      >
-        <FavoriteOutlineIcon color={'#d00'} />
-      </div>
-    );
-
-    if (isFavorite) {
-      favoriteButton = (
-        <div
-          className={styles.favoritesButton}
-          onClick={() => {
-            watchlist.toggle(trendingData.collectionAddress);
-          }}
-        >
-          <FavoriteIcon color={'#d00'} />
-        </div>
-      );
-    }
-
     return (
       <div className={styles.item}>
         <Link
@@ -344,7 +349,6 @@ export const TrendingItem = ({
         </Link>
 
         <div className={styles.subtitle}>
-          {favoriteButton}
           <div className={styles.partnership}>Partnership</div>
         </div>
       </div>

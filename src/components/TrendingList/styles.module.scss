@@ -18,6 +18,13 @@
       font-weight: bold;
     }
 
+    .itemValue {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-weight: bold;
+    }
+
     .imageCropper {
       display: flex;
       justify-content: center;
@@ -41,6 +48,15 @@
     grid-auto-columns: minmax(160px, 1fr);
     grid-auto-flow: column;
     align-items: center;
+
+    .starButton {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      right: 20px;
+      top: 0;
+      bottom: 0;
+    }
 
     .subtitle {
       display: flex;
