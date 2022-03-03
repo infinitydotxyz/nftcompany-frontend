@@ -14,7 +14,7 @@ import styles from './styles.module.scss';
 import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from 'components/TrendingList/DataColumns';
 import { Period, periodToInterval } from 'components/TrendingList/PeriodInterval';
 import { SortProgressBar } from 'components/SortProgressBar';
-import { useWatchlist, WatchListHook } from 'hooks/useWatchlist';
+import { trendingDataToCollectionFollow, useWatchlist, WatchListHook } from 'hooks/useWatchlist';
 import { useAppContext } from 'utils/context/AppContext';
 import { CollectionSearch } from './CollectionSearch';
 import { StarIcon } from '@chakra-ui/icons';
@@ -38,8 +38,8 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
     selected: period
   } = useToggleTab([Period.OneDay, Period.SevenDays, Period.ThirtyDays, Period.Total], Period.OneDay);
   const [dataColumns, setDataColumns] = useState<DataColumns>(defaultDataColumns);
-  const { user } = useAppContext();
-  const watchlist = useWatchlist(user);
+  const { user, chainId } = useAppContext();
+  const watchlist = useWatchlist(user, chainId);
 
   useEffect(() => {
     const newInterval = periodToInterval[period as Period];
@@ -56,7 +56,8 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
     search = (
       <CollectionSearch
         onSelect={(collectionAddress) => {
-          watchlist.add(collectionAddress);
+          // TODO: SNG
+          watchlist.add({ name: 'fixme', chainId: '1', address: collectionAddress });
         }}
       />
     );
@@ -117,7 +118,9 @@ export const TrendingContents = ({
   let collections = trendingData;
   if (watchlistMode) {
     collections = trendingData.filter((e) => {
-      return watchlist.watchlist.includes(e.collectionAddress ?? '');
+      return watchlist.watchlist.some((j) => {
+        return j.address === e.collectionAddress;
+      });
     });
   }
 
@@ -245,7 +248,7 @@ export const TrendingRow = ({
     }
   };
 
-  const isFavorite = watchlist.exists(trendingData.collectionAddress);
+  const isFavorite = watchlist.exists(trendingDataToCollectionFollow(trendingData));
   let favoriteButton = (
     <IconButton
       aria-label=""
@@ -253,7 +256,7 @@ export const TrendingRow = ({
       icon={<StarIcon color="#BEBEBE" />}
       isRound
       onClick={() => {
-        watchlist.toggle(trendingData.collectionAddress);
+        watchlist.toggle(trendingDataToCollectionFollow(trendingData));
       }}
     />
   );
@@ -267,7 +270,7 @@ export const TrendingRow = ({
         icon={<StarIcon color="#fff" />}
         isRound
         onClick={() => {
-          watchlist.toggle(trendingData.collectionAddress);
+          watchlist.toggle(trendingDataToCollectionFollow(trendingData));
         }}
       />
     );

@@ -50,7 +50,7 @@ export const CollectionSearch = ({ onSelect }: Props): JSX.Element => {
           minLength={1}
           filterBy={() => true}
           labelKey={(option) => option.name}
-          isLoading={false} // SNG
+          isLoading={false} // TODO: SNG
           onSearch={handleSearch}
           options={collectionNames}
           placeholder="Search"

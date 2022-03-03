@@ -1,18 +1,32 @@
 import { useEffect, useState } from 'react';
 import { apiGet, apiPost } from 'utils/apiUtil';
 import { User } from 'utils/context/AppContext';
+import { TrendingData } from './useTrendingStats';
 
 export type WatchListHook = {
-  watchlist: string[];
-  exists: (item?: string) => boolean;
-  add: (item: string) => void;
-  toggle: (item?: string) => void;
-  save: () => void;
-  remove: (item: string) => void;
+  watchlist: CollectionFollow[];
+  exists: (item?: CollectionFollow) => boolean;
+  add: (item: CollectionFollow) => void;
+  toggle: (item?: CollectionFollow) => void;
+  remove: (item: CollectionFollow) => void;
 };
 
-export function useWatchlist(user: User | null): WatchListHook {
-  const [watchlist, setWatchlist] = useState<string[]>([]);
+export type CollectionFollow = {
+  address: string;
+  chainId: string;
+  name: string;
+};
+
+export const trendingDataToCollectionFollow = (trendingData: TrendingData): CollectionFollow => {
+  return {
+    address: trendingData.collectionAddress ?? '',
+    name: trendingData.name ?? '',
+    chainId: '1' // TODO: SNG
+  };
+};
+
+export function useWatchlist(user: User | null, chainId: string): WatchListHook {
+  const [watchlist, setWatchlist] = useState<CollectionFollow[]>([]);
 
   const _update = async () => {
     if (!user || !user?.account) {
@@ -22,7 +36,7 @@ export function useWatchlist(user: User | null): WatchListHook {
       return;
     }
 
-    const { result, error } = await apiGet(`/u/${user?.account}/watchlist`);
+    const { result, error } = await apiGet(`/u/${user?.account}/collectionFollows`);
     if (error) {
       console.log(`${error.message}`);
       return;
@@ -35,42 +49,56 @@ export function useWatchlist(user: User | null): WatchListHook {
     _update();
   }, [user]);
 
-  const add = (item: string) => {
+  const add = (item: CollectionFollow) => {
     if (!exists(item)) {
       watchlist.push(item);
       setWatchlist([...watchlist]);
+
+      _addFollow(item);
     }
   };
 
-  const exists = (item?: string) => {
-    if (item && item.length > 0) {
-      return watchlist.indexOf(item) !== -1;
+  const exists = (item?: CollectionFollow): boolean => {
+    if (item) {
+      return watchlist.some((e) => {
+        return e.address === item.address;
+      });
     }
 
     return false;
   };
 
-  const toggle = (item?: string) => {
-    if (item && item.length > 0) {
+  const toggle = (item?: CollectionFollow) => {
+    if (item) {
       if (exists(item)) {
         remove(item);
       } else {
         add(item);
       }
-
-      save();
     }
   };
 
-  const remove = (item: string) => {
-    watchlist.splice(watchlist.indexOf(item), 1);
+  const remove = (item: CollectionFollow) => {
+    const index = watchlist.findIndex((e) => {
+      return e.address === item.address;
+    });
 
-    setWatchlist([...watchlist]);
+    if (index !== -1) {
+      watchlist.splice(index, 1);
+
+      setWatchlist([...watchlist]);
+
+      _deleteFollow(item);
+    }
   };
 
-  const save = async () => {
+  const _deleteFollow = async (item: CollectionFollow) => {
     if (user) {
-      const response = await apiPost(`/u/${user?.account}/watchlist`, null, { watchlist: watchlist });
+      const response = await apiPost(`/u/${user?.account}/collectionFollows`, null, {
+        deleteFollow: true,
+        collectionFollow: item,
+        chainId: chainId
+      });
 
       if (response.status === 200) {
         console.log(`watchlist updated.`);
@@ -82,5 +110,23 @@ export function useWatchlist(user: User | null): WatchListHook {
     }
   };
 
-  return { watchlist, exists, add, toggle, save, remove };
+  const _addFollow = async (item: CollectionFollow) => {
+    if (user) {
+      const response = await apiPost(`/u/${user?.account}/collectionFollows`, null, {
+        deleteFollow: false,
+        collectionFollow: item,
+        chainId: chainId
+      });
+
+      if (response.status === 200) {
+        console.log(`watchlist updated.`);
+      } else {
+        console.log('An error occured');
+      }
+    } else {
+      console.log('user not connected');
+    }
+  };
+
+  return { watchlist, exists, add, toggle, remove };
 }

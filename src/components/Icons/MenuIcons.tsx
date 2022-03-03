@@ -8,7 +8,7 @@ import {
   OfferIcon,
   ImageSearchIcon,
   ImageIcon,
-  StarIcon,
+  StarOutlineIcon,
   AccountIcon,
   CartIcon,
   CollectionsIcon,
@@ -52,7 +52,7 @@ export class MenuIcons {
   static shoppingBagIcon = MenuIcons.wrap(<ShoppingBagIcon boxSize={MenuIcons.bs} />);
 
   static imageSearchIcon = MenuIcons.wrap(<ImageSearchIcon boxSize={MenuIcons.bs} />);
-  static starIcon = MenuIcons.wrap(<StarIcon boxSize={MenuIcons.bs} />);
+  static starIcon = MenuIcons.wrap(<StarOutlineIcon boxSize={MenuIcons.bs} />);
   static signInIcon = MenuIcons.wrap(<SignInIcon boxSize={MenuIcons.bs} />);
   static copyIcon = MenuIcons.wrap(<CopyIcon boxSize={MenuIcons.bs} />);
   static sortIcon = MenuIcons.wrap(<SortIcon boxSize={MenuIcons.bs} />);
@@ -97,7 +97,7 @@ export class LargeIcons {
   static shoppingBagIcon = LargeIcons.wrap(<ShoppingBagIcon boxSize={LargeIcons.bs} />);
 
   static imageSearchIcon = LargeIcons.wrap(<ImageSearchIcon boxSize={LargeIcons.bs} />);
-  static starIcon = LargeIcons.wrap(<StarIcon boxSize={LargeIcons.bs} />);
+  static starIcon = LargeIcons.wrap(<StarOutlineIcon boxSize={LargeIcons.bs} />);
   static signInIcon = LargeIcons.wrap(<SignInIcon boxSize={LargeIcons.bs} />);
   static copyIcon = LargeIcons.wrap(<CopyIcon boxSize={LargeIcons.bs} />);
   static sortIcon = LargeIcons.wrap(<SortIcon boxSize={LargeIcons.bs} />);
