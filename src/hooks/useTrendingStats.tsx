@@ -30,15 +30,9 @@ export type TrendingData = IntervalStats &
   >;
 
 export enum SecondaryOrderBy {
-  /**
-   * general
-   */
   Owners = 'owners',
   Items = 'count',
 
-  /**
-   * transactions
-   */
   FloorPrice = 'floorPrice',
   FloorPriceChange = 'floorPriceChange',
   Volume = 'volume',
@@ -48,9 +42,6 @@ export enum SecondaryOrderBy {
   AveragePrice = 'averagePrice',
   AveragePriceChange = 'averagePriceChange',
 
-  /**
-   * community
-   */
   TwitterFollowers = 'twitterFollowers',
   TwitterFollowersChange = 'twitterFollowersChange',
   DiscordMembers = 'discordMembers',

@@ -170,12 +170,8 @@ export const TrendingRow = ({
   const [columns, setColumns] = useState<[SecondaryOrderBy, DataColumn][]>([]);
 
   useEffect(() => {
-    const selectedItemsOrderedByGroup: [SecondaryOrderBy, DataColumn][] = Object.values(dataColumns).flatMap((group) =>
-      Object.entries(group)
-        .filter(([itemKey, item]) => item.isSelected)
-        .flatMap(([key, mainColumn]) => {
-          return [[key, mainColumn], ...(mainColumn.additionalColumns ?? [])];
-        })
+    const selectedItemsOrderedByGroup: [SecondaryOrderBy, DataColumn][] = Object.entries(dataColumns).filter(
+      ([itemKey, item]) => item.isSelected
     ) as [SecondaryOrderBy, DataColumn][];
 
     setColumns(selectedItemsOrderedByGroup);

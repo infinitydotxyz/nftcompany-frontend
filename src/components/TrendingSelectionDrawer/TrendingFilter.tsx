@@ -1,5 +1,5 @@
 import { Box, Checkbox, Stack, Text, Button, Tooltip, Spacer } from '@chakra-ui/react';
-import { DataColumnGroup, DataColumns } from 'components/TrendingList/DataColumns';
+import { DataColumns } from 'components/TrendingList/DataColumns';
 import { SecondaryOrderBy } from 'hooks/useTrendingStats';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
@@ -19,10 +19,8 @@ export const TrendingFilter = ({ dataColumns, setDataColumns, onClose }: Props):
 
   const isDataColumnsValid = () => {
     let numSelected = 0;
-    for (const group of Object.values(tempDataColumns)) {
-      for (const col of Object.values(group)) {
-        numSelected += col.isSelected ? 1 : 0;
-      }
+    for (const col of Object.values(tempDataColumns)) {
+      numSelected += col.isSelected ? 1 : 0;
     }
 
     if (numSelected > 5) {
@@ -39,35 +37,26 @@ export const TrendingFilter = ({ dataColumns, setDataColumns, onClose }: Props):
   return (
     <Box flex={1} display="flex" flexDirection="column" style={{ height: '100%' }}>
       <Stack spacing={2} direction="column">
-        {Object.entries(tempDataColumns).map(([groupKey, group]) => {
+        {Object.entries(tempDataColumns).map(([itemKey, item]) => {
           return (
-            <Stack spacing={2} direction="column" key={groupKey ?? 'group'}>
-              {Object.entries(group).map(([itemKey, item]) => {
-                return (
-                  <Checkbox
-                    key={itemKey + groupKey}
-                    isChecked={item.isSelected}
-                    disabled={item.isDisabled}
-                    onChange={() => {
-                      setTempDataColumns((prev) => {
-                        return {
-                          ...prev,
-                          [groupKey]: {
-                            ...prev[groupKey as DataColumnGroup],
-                            [itemKey]: {
-                              ...prev[groupKey as DataColumnGroup][itemKey as SecondaryOrderBy],
-                              isSelected: !prev[groupKey as DataColumnGroup][itemKey as SecondaryOrderBy].isSelected
-                            }
-                          }
-                        };
-                      });
-                    }}
-                  >
-                    {item.name}
-                  </Checkbox>
-                );
-              })}
-            </Stack>
+            <Checkbox
+              key={itemKey}
+              isChecked={item.isSelected}
+              disabled={item.isDisabled}
+              onChange={() => {
+                setTempDataColumns((prev) => {
+                  return {
+                    ...prev,
+                    [itemKey]: {
+                      ...prev[itemKey as SecondaryOrderBy],
+                      isSelected: !prev[itemKey as SecondaryOrderBy].isSelected
+                    }
+                  };
+                });
+              }}
+            >
+              {item.name}
+            </Checkbox>
           );
         })}
       </Stack>
@@ -81,10 +70,8 @@ export const TrendingFilter = ({ dataColumns, setDataColumns, onClose }: Props):
                 // must make a copy so the change will be detected
                 const copy = { ...tempDataColumns };
 
-                for (const group of Object.values(copy)) {
-                  for (const col of Object.values(group)) {
-                    col.isSelected = false;
-                  }
+                for (const col of Object.values(copy)) {
+                  col.isSelected = false;
                 }
 
                 setDataColumns(copy);
