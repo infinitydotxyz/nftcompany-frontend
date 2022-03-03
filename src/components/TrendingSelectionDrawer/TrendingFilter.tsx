@@ -74,8 +74,7 @@ export const TrendingFilter = ({ dataColumns, setDataColumns, onClose }: Props):
                   col.isSelected = false;
                 }
 
-                setDataColumns(copy);
-                onClose();
+                setTempDataColumns(copy);
               }}
               borderRadius={100}
               variant="outline"
