@@ -450,6 +450,42 @@ export const CarrotDown = (props: Record<string, unknown>): JSX.Element => (
   </Icon>
 );
 
+export const SortArrowsIcon = (props: Record<string, unknown>): JSX.Element => {
+  const width = 6;
+  const gap = width / 4;
+
+  const height = width + gap + gap + 4;
+  const midY = height / 2;
+  const midX = width / 2;
+
+  const dimmed = 0.4;
+  let upOpacity = dimmed;
+  let downOpacity = dimmed;
+
+  switch (props.mode) {
+    case 'asc':
+      downOpacity = 1;
+      break;
+    case 'desc':
+      upOpacity = 1;
+      break;
+    default:
+      break;
+  }
+
+  return (
+    <svg width={width} viewBox={`0 0 ${width} ${height}`} {...props}>
+      <g fill="currentColor" fillOpacity={upOpacity}>
+        <path d={`M0 ${midY - gap} L${width} ${midY - gap} L${midX} 0 z`} />
+      </g>
+
+      <g fill="currentColor" fillOpacity={downOpacity}>
+        <path d={`M0 ${midY + gap} L${width} ${midY + gap} L${midX} ${height} z`} />
+      </g>
+    </svg>
+  );
+};
+
 export const ThreeDotLR = (props: Record<string, unknown>): JSX.Element => (
   <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px" height="52px" viewBox="0 0 52 52" {...props}>
     <path d="M8,20c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6S4.7,20,8,20z M26,20c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6 S22.7,20,26,20z M44,20c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6S40.7,20,44,20z" />
