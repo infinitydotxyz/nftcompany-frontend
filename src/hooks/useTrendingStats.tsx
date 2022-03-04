@@ -60,20 +60,17 @@ export interface StatsFilter {
 }
 
 export function useTrendingStats(filter: StatsFilter) {
-  /**
-   * data for all intervals
-   */
+  // data for all intervals
   const [collectionStats, setCollectionStats] = useState<CollectionStats[]>([]);
 
-  /**
-   * filter specific data
-   */
+  // filter specific data
   const [trendingData, setTrendingData] = useState<TrendingData[]>([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     let isActive = true;
+
     setIsLoading(true);
     fetchData()
       .then((collectionStats) => {
@@ -100,6 +97,7 @@ export function useTrendingStats(filter: StatsFilter) {
         setCollectionStats((prev) => {
           const updated = [...prev, ...collectionStats];
           const ids = new Set<string>();
+
           return updated.filter((item) => {
             if (!item?.collectionAddress || ids.has(item.collectionAddress)) {
               return false;
@@ -120,13 +118,12 @@ export function useTrendingStats(filter: StatsFilter) {
 
   useEffect(() => {
     const selectedIntervalData = getIntervalData(collectionStats, filter.primaryInterval);
-    const sortedData = (selectedIntervalData as any as Record<SecondaryOrderBy, number>[]).sort((itemA, itemB) => {
-      const itemAField = itemA[filter.secondaryOrderBy];
-      const itemBField = itemB[filter.secondaryOrderBy];
 
-      /**
-       * always show NaN fields at the end of the list
-       */
+    const sortedData = selectedIntervalData.sort((itemA, itemB) => {
+      const itemAField = (itemA as any)[filter.secondaryOrderBy];
+      const itemBField = (itemB as any)[filter.secondaryOrderBy];
+
+      // always show NaN fields at the end of the list
       if (
         (Number.isNaN(itemAField) || typeof itemAField !== 'number') &&
         (Number.isNaN(itemBField) || typeof itemBField !== 'number')
@@ -141,10 +138,11 @@ export function useTrendingStats(filter: StatsFilter) {
       if (filter.secondaryOrderDirection === OrderDirection.Ascending) {
         return itemBField - itemAField;
       }
+
       return itemAField - itemBField;
     });
 
-    setTrendingData(sortedData as any as TrendingData[]);
+    setTrendingData(sortedData);
   }, [filter.secondaryOrderBy, filter.secondaryOrderDirection, collectionStats]);
 
   const fetchData = async () => {
@@ -166,7 +164,7 @@ export function useTrendingStats(filter: StatsFilter) {
     }
   };
 
-  const getIntervalData = (collectionStats: CollectionStats[], interval: StatInterval) => {
+  const getIntervalData = (collectionStats: CollectionStats[], interval: StatInterval): TrendingData[] => {
     const percentChange = (value: number, change: number) => {
       return 100 * (change / value);
     };
@@ -194,12 +192,14 @@ export function useTrendingStats(filter: StatsFilter) {
       let twitterFollowersChange = intervalData?.twitterFollowers;
       let discordMembersChange = intervalData?.discordMembers;
       let discordPresenceChange = intervalData?.discordPresence;
+
       if (interval === StatInterval.Total) {
         averagePriceChange = averagePrice;
         twitterFollowersChange = twitterFollowers;
         discordMembersChange = discordMembers;
         discordPresenceChange = discordPresence;
       }
+
       averagePriceChange = percentChange(averagePrice, averagePriceChange);
       twitterFollowersChange = percentChange(twitterFollowers, twitterFollowersChange);
       discordMembersChange = percentChange(discordMembers, discordMembersChange);

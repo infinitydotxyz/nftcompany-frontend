@@ -31,15 +31,15 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
     secondaryOrderBy: SecondaryOrderBy.Volume,
     secondaryOrderDirection: OrderDirection.Ascending
   });
+  const [dataColumns, setDataColumns] = useState<DataColumns>(defaultDataColumns);
+  const { user, chainId } = useAppContext();
+  const collectionFollow = useCollectionFollow(user, chainId);
 
   const {
     options,
     onChange,
     selected: period
   } = useToggleTab([Period.OneDay, Period.SevenDays, Period.ThirtyDays, Period.Total], Period.OneDay);
-  const [dataColumns, setDataColumns] = useState<DataColumns>(defaultDataColumns);
-  const { user, chainId } = useAppContext();
-  const collectionFollow = useCollectionFollow(user, chainId);
 
   useEffect(() => {
     const newInterval = periodToInterval[period as Period];

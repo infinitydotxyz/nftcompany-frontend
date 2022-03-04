@@ -24,6 +24,8 @@ function ToggleTab({ options, onChange, selected, size, ...rest }: ToggleTab & C
     <Box className={styles.wrapper} {...rest}>
       {options.map((option: string) => {
         let optionName = option;
+
+        // TODO: SNG does backend use Total?
         if (optionName === 'Total') {
           optionName = 'All time';
         }
