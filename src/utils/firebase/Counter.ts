@@ -18,9 +18,9 @@ import * as uuid from 'uuid';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc, setDoc, onSnapshot, collection, CollectionReference, DocumentData } from 'firebase/firestore';
 
-const SHARD_COLLECTION_ID = '_firebase_ext_'; // '_counter_shards_';
+const SHARD_COLLECTION_ID = '_counter_shards_';
 const COOKIE_NAME = 'FIRESTORE_COUNTER_SHARD_ID';
 
 export interface CounterSnapshot {
@@ -33,6 +33,7 @@ export class Counter {
   private shardId = '';
   private shards: { [key: string]: number } = {};
   private notifyPromise: Promise<void> | null = null;
+  private shardsRef: CollectionReference<DocumentData>;
 
   /**
    * Constructs a sharded counter object that references to a field
@@ -43,25 +44,16 @@ export class Counter {
    */
   constructor(private doc: firebase.firestore.DocumentReference, private field: string) {
     this.db = doc.firestore;
-    this.shardId = getShardId(COOKIE_NAME);
-
     firebase.initializeApp(this.db.app.options);
 
-    const shardsRef = firebase.firestore().collection(SHARD_COLLECTION_ID);
+    this.shardId = getShardId(COOKIE_NAME);
+    this.shardsRef = collection(this.db, doc.path, SHARD_COLLECTION_ID);
     this.shards[doc.path] = 0;
-
-    this.shards[shardsRef.path + '/' + this.shardId] = 0;
-    this.shards[shardsRef.path + '/' + '\t' + this.shardId.substr(0, 4)] = 0;
-    this.shards[shardsRef.path + '/' + '\t\t' + this.shardId.substr(0, 3)] = 0;
-    this.shards[shardsRef.path + '/' + '\t\t\t' + this.shardId.substr(0, 2)] = 0;
-    this.shards[shardsRef.path + '/' + '\t\t\t' + this.shardId.substr(0, 1)] = 0;
-    console.log('this.shards', this.shards);
-
-    // this.shards[shardsRef.doc(this.shardId).path] = 0;
-    // this.shards[shardsRef.doc("\t" + this.shardId.substr(0, 4)).path] = 0;
-    // this.shards[shardsRef.doc("\t\t" + this.shardId.substr(0, 3)).path] = 0;
-    // this.shards[shardsRef.doc("\t\t\t" + this.shardId.substr(0, 2)).path] = 0;
-    // this.shards[shardsRef.doc("\t\t\t\t" + this.shardId.substr(0, 1)).path] = 0;
+    this.shards[this.shardsRef.path + '/' + this.shardId] = 0;
+    this.shards[this.shardsRef.path + '/' + '\t' + this.shardId.substr(0, 4)] = 0;
+    this.shards[this.shardsRef.path + '/' + '\t\t' + this.shardId.substr(0, 3)] = 0;
+    this.shards[this.shardsRef.path + '/' + '\t\t\t' + this.shardId.substr(0, 2)] = 0;
+    this.shards[this.shardsRef.path + '/' + '\t\t\t' + this.shardId.substr(0, 1)] = 0;
   }
 
   /**
@@ -91,7 +83,9 @@ export class Counter {
 
       onSnapshot(document, (snap: firebase.firestore.DocumentData) => {
         this.shards[snap.ref.path] = snap.get(this.field) || 0;
-        if (this.notifyPromise !== null) return;
+        if (this.notifyPromise !== null) {
+          return;
+        }
         this.notifyPromise = schedule(() => {
           const sum = Object.values(this.shards).reduce((a, b) => a + b, 0);
           observable({ exists: true, data: () => sum });
@@ -117,9 +111,7 @@ export class Counter {
       .reduce((value, name) => ({ [name]: value }), increment);
     console.log('*** update', update);
 
-    const shardRef = firebase.firestore().collection(SHARD_COLLECTION_ID);
-
-    return setDoc(doc(shardRef, this.shardId), update, { merge: true });
+    return setDoc(doc(this.shardsRef, this.shardId), update, { merge: true });
   }
 
   /**
@@ -147,8 +139,11 @@ async function schedule<T>(func: () => T): Promise<T> {
 }
 
 function getShardId(cookie: string): string {
+  // @ts-ignore
   const result = new RegExp('(?:^|; )' + encodeURIComponent(cookie) + '=([^;]*)').exec(document.cookie);
-  if (result) return result[1];
+  if (result) {
+    return result[1];
+  }
 
   const shardId = uuid.v4();
 

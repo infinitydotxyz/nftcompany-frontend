@@ -21,11 +21,10 @@ export async function initCounter() {
   const docRef = doc(db, 'feed/data/events/event1');
 
   const docObj = await getDoc(docRef);
-  console.log('docRef', docObj.data());
 
   // Initialize the sharded counter.
   // @ts-ignore
-  var views = new Counter(docRef, 'likes');
+  const views = new Counter(docRef, 'likes');
 
   // // This will increment a field "stats.views" of the "pages/hello-world" document by 3.
   views.incrementBy(4).then(($: any) => console.log('returning document >>>>', $));
@@ -35,7 +34,7 @@ export async function initCounter() {
     console.log('Locally consistent view of visits: ' + snap.data());
   });
 
-  //Alternatively if you don't mind counter delays, you can listen to the document directly.
+  // Alternatively if you don't mind counter delays, you can listen to the document directly.
   // onSnapshot(doc(db, 'pages', 'hello-world'), (snap) => {
   //   console.log('Eventually consistent view of visits: ' + snap.get('stats.views'));
   // });
