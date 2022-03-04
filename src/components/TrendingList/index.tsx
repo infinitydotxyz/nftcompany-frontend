@@ -14,7 +14,7 @@ import styles from './styles.module.scss';
 import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from 'components/TrendingList/DataColumns';
 import { Period, periodToInterval } from 'components/TrendingList/PeriodInterval';
 import { SortProgressBar } from 'components/SortProgressBar';
-import { trendingDataToCollectionFollow, useWatchlist, WatchListHook } from 'hooks/useWatchlist';
+import { trendingDataToCollectionFollow, useCollectionFollow, CollectionFollowHook } from 'hooks/useCollectionFollow';
 import { useAppContext } from 'utils/context/AppContext';
 import { CollectionSearch } from './CollectionSearch';
 import { StarIcon } from '@chakra-ui/icons';
@@ -39,7 +39,7 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
   } = useToggleTab([Period.OneDay, Period.SevenDays, Period.ThirtyDays, Period.Total], Period.OneDay);
   const [dataColumns, setDataColumns] = useState<DataColumns>(defaultDataColumns);
   const { user, chainId } = useAppContext();
-  const watchlist = useWatchlist(user, chainId);
+  const collectionFollow = useCollectionFollow(user, chainId);
 
   useEffect(() => {
     const newInterval = periodToInterval[period as Period];
@@ -57,7 +57,7 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
       <CollectionSearch
         onSelect={(collectionAddress) => {
           // TODO: SNG
-          watchlist.add({ name: 'fixme', chainId: '1', address: collectionAddress });
+          collectionFollow.add({ name: 'fixme', chainId: '1', address: collectionAddress });
         }}
       />
     );
@@ -85,7 +85,7 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
       {toolbarAndDrawer}
 
       <TrendingContents
-        watchlist={watchlist}
+        collectionFollow={collectionFollow}
         watchlistMode={watchlistMode}
         statsFilter={statsFilter}
         dataColumns={dataColumns}
@@ -98,7 +98,7 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
 // ====================================================================
 
 type Props2 = {
-  watchlist: WatchListHook;
+  collectionFollow: CollectionFollowHook;
   statsFilter: StatsFilter;
   dataColumns: DataColumns;
   watchlistMode: boolean;
@@ -106,7 +106,7 @@ type Props2 = {
 };
 
 export const TrendingContents = ({
-  watchlist,
+  collectionFollow,
   watchlistMode,
   statsFilter,
   dataColumns,
@@ -118,7 +118,7 @@ export const TrendingContents = ({
   let collections = trendingData;
   if (watchlistMode) {
     collections = trendingData.filter((e) => {
-      return watchlist.watchlist.some((j) => {
+      return collectionFollow.list.some((j) => {
         return j.address === e.collectionAddress;
       });
     });
@@ -130,7 +130,7 @@ export const TrendingContents = ({
         {collections.map((collectionData: TrendingData) => {
           return (
             <TrendingRow
-              watchlist={watchlist}
+              collectionFollow={collectionFollow}
               statsFilter={statsFilter}
               key={collectionData.collectionAddress ?? 'key'}
               trendingData={collectionData}
@@ -157,7 +157,7 @@ export const TrendingContents = ({
 // ====================================================================
 
 type Props3 = {
-  watchlist: WatchListHook;
+  collectionFollow: CollectionFollowHook;
   trendingData: TrendingData;
   dataColumns: DataColumns;
   statsFilter: StatsFilter;
@@ -166,7 +166,7 @@ type Props3 = {
 
 export const TrendingRow = ({
   trendingData,
-  watchlist,
+  collectionFollow,
   statsFilter,
   dataColumns,
   setStatsFilter
@@ -248,7 +248,7 @@ export const TrendingRow = ({
     }
   };
 
-  const isFavorite = watchlist.exists(trendingDataToCollectionFollow(trendingData));
+  const isFavorite = collectionFollow.exists(trendingDataToCollectionFollow(trendingData));
   let favoriteButton = (
     <IconButton
       aria-label=""
@@ -256,7 +256,7 @@ export const TrendingRow = ({
       icon={<StarIcon color="#BEBEBE" />}
       isRound
       onClick={() => {
-        watchlist.toggle(trendingDataToCollectionFollow(trendingData));
+        collectionFollow.toggle(trendingDataToCollectionFollow(trendingData));
       }}
     />
   );
@@ -270,7 +270,7 @@ export const TrendingRow = ({
         icon={<StarIcon color="#fff" />}
         isRound
         onClick={() => {
-          watchlist.toggle(trendingDataToCollectionFollow(trendingData));
+          collectionFollow.toggle(trendingDataToCollectionFollow(trendingData));
         }}
       />
     );
@@ -279,8 +279,8 @@ export const TrendingRow = ({
   return (
     <div className={styles.row}>
       <div className={styles.starButton}>{favoriteButton}</div>
-      <TrendingItem watchlist={watchlist} trendingData={trendingData} image={true} />
-      <TrendingItem watchlist={watchlist} trendingData={trendingData} nameItem={true} />
+      <TrendingItem collectionFollow={collectionFollow} trendingData={trendingData} image={true} />
+      <TrendingItem collectionFollow={collectionFollow} trendingData={trendingData} nameItem={true} />
 
       {columns.map(([key, dataColumn]) => {
         let direction = '' as OrderDirection;
@@ -300,7 +300,7 @@ export const TrendingRow = ({
         return (
           <TrendingItem
             key={key}
-            watchlist={watchlist}
+            collectionFollow={collectionFollow}
             direction={direction}
             title={title}
             trendingData={trendingData}
@@ -318,7 +318,7 @@ export const TrendingRow = ({
 // ====================================================================
 
 type Props4 = {
-  watchlist: WatchListHook;
+  collectionFollow: CollectionFollowHook;
   content?: any;
   title?: string;
   trendingData: TrendingData;
@@ -334,7 +334,7 @@ export const TrendingItem = ({
   image,
   direction,
   sortClick,
-  watchlist,
+  collectionFollow,
   nameItem,
   trendingData
 }: Props4): JSX.Element => {
