@@ -43,6 +43,7 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
 
   useEffect(() => {
     const newInterval = periodToInterval[period as Period];
+
     setStatsFilter((prev) => {
       return {
         ...prev,

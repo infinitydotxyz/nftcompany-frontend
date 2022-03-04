@@ -72,7 +72,7 @@ export function useTrendingStats(filter: StatsFilter) {
     let isActive = true;
 
     setIsLoading(true);
-    fetchData()
+    fetchData(false)
       .then((collectionStats) => {
         if (isActive) {
           setCollectionStats(collectionStats);
@@ -92,7 +92,7 @@ export function useTrendingStats(filter: StatsFilter) {
 
   const fetchMoreData = async () => {
     setIsLoading(true);
-    fetchData()
+    fetchData(true)
       .then((collectionStats) => {
         setCollectionStats((prev) => {
           const updated = [...prev, ...collectionStats];
@@ -145,8 +145,11 @@ export function useTrendingStats(filter: StatsFilter) {
     setTrendingData(sortedData);
   }, [filter.secondaryOrderBy, filter.secondaryOrderDirection, collectionStats]);
 
-  const fetchData = async () => {
-    const startAfter = collectionStats[collectionStats.length - 1]?.startAfter ?? '';
+  const fetchData = async (fetchMore: boolean) => {
+    let startAfter = '';
+    if (fetchMore) {
+      startAfter = collectionStats[collectionStats.length - 1]?.startAfter ?? '';
+    }
 
     try {
       const collectionStats: CollectionStats[] = await getStats(
