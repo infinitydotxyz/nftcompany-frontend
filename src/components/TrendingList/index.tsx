@@ -144,13 +144,16 @@ export const TrendingContents = ({
         {isLoading && renderSpinner({ margin: 5 })}
       </div>
 
-      <Button
-        onClick={() => {
-          fetchMoreData();
-        }}
-      >
-        More
-      </Button>
+      <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
+        <Button
+          variant="outline"
+          onClick={() => {
+            fetchMoreData();
+          }}
+        >
+          More
+        </Button>
+      </div>
     </>
   );
 };

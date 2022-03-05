@@ -117,32 +117,36 @@ export function useTrendingStats(filter: StatsFilter) {
   };
 
   useEffect(() => {
-    const selectedIntervalData = getIntervalData(collectionStats, filter.primaryInterval);
+    const sortList = async (): Promise<TrendingData[]> => {
+      const selectedIntervalData = getIntervalData(collectionStats, filter.primaryInterval);
 
-    const sortedData = selectedIntervalData.sort((itemA, itemB) => {
-      const itemAField = (itemA as any)[filter.secondaryOrderBy];
-      const itemBField = (itemB as any)[filter.secondaryOrderBy];
+      return selectedIntervalData.sort((itemA, itemB) => {
+        const itemAField = (itemA as any)[filter.secondaryOrderBy];
+        const itemBField = (itemB as any)[filter.secondaryOrderBy];
 
-      // always show NaN fields at the end of the list
-      if (
-        (Number.isNaN(itemAField) || typeof itemAField !== 'number') &&
-        (Number.isNaN(itemBField) || typeof itemBField !== 'number')
-      ) {
-        return 0;
-      } else if (Number.isNaN(itemAField) || typeof itemAField !== 'number') {
-        return 1;
-      } else if (Number.isNaN(itemBField) || typeof itemBField !== 'number') {
-        return -1;
-      }
+        // always show NaN fields at the end of the list
+        if (
+          (Number.isNaN(itemAField) || typeof itemAField !== 'number') &&
+          (Number.isNaN(itemBField) || typeof itemBField !== 'number')
+        ) {
+          return 0;
+        } else if (Number.isNaN(itemAField) || typeof itemAField !== 'number') {
+          return 1;
+        } else if (Number.isNaN(itemBField) || typeof itemBField !== 'number') {
+          return -1;
+        }
 
-      if (filter.secondaryOrderDirection === OrderDirection.Ascending) {
-        return itemBField - itemAField;
-      }
+        if (filter.secondaryOrderDirection === OrderDirection.Ascending) {
+          return itemBField - itemAField;
+        }
 
-      return itemAField - itemBField;
+        return itemAField - itemBField;
+      });
+    };
+
+    sortList().then((results) => {
+      setTrendingData(results);
     });
-
-    setTrendingData(sortedData);
   }, [filter.secondaryOrderBy, filter.secondaryOrderDirection, collectionStats]);
 
   const fetchData = async (fetchMore: boolean) => {
