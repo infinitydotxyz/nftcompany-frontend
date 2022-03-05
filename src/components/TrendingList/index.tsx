@@ -280,8 +280,16 @@ export const TrendingRow = ({
     );
   }
 
+  // build dynamic grid based on columns shown
+  // 60px for image, next is name
+  let gridTemplate = '60px minmax(120px, 220px)';
+
+  columns.forEach((e) => {
+    gridTemplate += ' minmax(40px, 220px)';
+  });
+
   return (
-    <div className={styles.row}>
+    <div className={styles.row} style={{ gridTemplateColumns: gridTemplate }}>
       <div className={styles.starButton}>{favoriteButton}</div>
       <TrendingItem collectionFollow={collectionFollow} trendingData={trendingData} image={true} />
       <TrendingItem collectionFollow={collectionFollow} trendingData={trendingData} nameItem={true} />
