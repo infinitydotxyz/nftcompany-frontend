@@ -17,7 +17,7 @@ import {
   transformUnmarshal,
   getPageOffsetForAssetQuery
 } from 'utils/commonUtil';
-import { CardData } from 'types/Nft.interface';
+import { CardData } from 'infinity-types/types/NftInterface';
 import { NftAction } from 'types';
 import { Box } from '@chakra-ui/layout';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';

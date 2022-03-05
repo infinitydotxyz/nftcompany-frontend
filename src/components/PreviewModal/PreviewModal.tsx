@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import { CardData } from 'types/Nft.interface';
+import { CardData } from 'infinity-types/types/NftInterface';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { Box, Button, Link } from '@chakra-ui/react';
