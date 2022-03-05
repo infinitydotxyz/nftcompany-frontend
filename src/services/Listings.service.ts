@@ -1,4 +1,4 @@
-import { CardData, Order, Orders, OrderType } from 'types/Nft.interface';
+import { CardData, Order, Orders, OrderType } from 'infinity-types/types/NftInterface';
 import { weiToEther } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { ListingSource, SearchFilter } from 'utils/context/SearchContext';

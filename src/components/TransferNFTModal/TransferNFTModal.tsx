@@ -8,7 +8,7 @@ import styles from './TransferNFTModal.module.scss';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { isServer } from 'utils/commonUtil';
 import { Asset } from 'components/ListNFTModal/listNFT';
-import { CardData, WyvernSchemaName } from 'types/Nft.interface';
+import { CardData, WyvernSchemaName } from 'infinity-types/types/NftInterface';
 import { ethers } from 'ethers';
 
 interface IProps {

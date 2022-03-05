@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './CancelOfferModal.module.scss';
-import { CardData } from 'types/Nft.interface';
+import { CardData } from 'infinity-types/types/NftInterface';
 import { useAppContext } from 'utils/context/AppContext';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';

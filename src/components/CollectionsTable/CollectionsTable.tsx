@@ -6,7 +6,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { CopyButton } from 'components/CopyButton/CopyButton';
-import { CollectionCardEntry } from 'types/rewardTypes';
+import { CollectionCardEntry } from 'infinity-types/types/Rewards';
 
 type Props = {
   entries?: CollectionCardEntry[];

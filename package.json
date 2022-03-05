@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "npx pnpm install && rimraf ./build && cross-env NODE_ENV=production next build",
+    "dev": "npm run update-types && next dev",
+    "build": "npm run update-types && npx pnpm install && rimraf ./build && cross-env NODE_ENV=production next build",
     "start": "next start -p 8080",
     "lint": "next lint",
-    "format": "prettier --write src/**/*.{tsx,ts}"
+    "format": "prettier --write src/**/*.{tsx,ts}",
+    "update-types": "npx pnpm update infinity-types"
   },
   "dependencies": {
     "@babel/core": "7.17.5",
@@ -33,6 +34,7 @@
     "ethers": "5.4.7",
     "fbemitter": "3.0.0",
     "framer-motion": "4",
+    "infinity-types": "github:infinity-xyz/typescript-types",
     "isomorphic-unfetch": "3.1.0",
     "json-loader": "0.5.7",
     "lodash": "4.17.21",

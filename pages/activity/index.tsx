@@ -7,7 +7,7 @@ import { Button } from '@chakra-ui/react';
 import { TransactionsTable } from 'components/TransactionsTable/TransactionsTable';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
-import { TransactionCardEntry } from 'types/rewardTypes';
+import { TransactionCardEntry } from 'infinity-types/types/Rewards';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import CheckTransactionModal from 'components/CheckTransactionModal/CheckTransactionModal';
 

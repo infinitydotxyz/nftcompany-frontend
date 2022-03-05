@@ -2,7 +2,7 @@ import React, { useState, MouseEvent, useEffect } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
 import AcceptOfferModal from 'components/AcceptOfferModal/AcceptOfferModal';
 import CancelOfferModal from 'components/CancelOfferModal/CancelOfferModal';
-import { BaseCardData, CardData } from 'types/Nft.interface';
+import { BaseCardData, CardData } from 'infinity-types/types/NftInterface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { addressesEqual, getSearchFriendlyString } from 'utils/commonUtil';
 import { useInView } from 'react-intersection-observer';
