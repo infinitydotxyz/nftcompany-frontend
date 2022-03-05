@@ -36,37 +36,43 @@
 
   .row {
     width: 100%;
-    position: relative;
-    display: grid;
-    gap: 20px;
-    // grid-template-columns is set in code dynamically
+    display: flex;
+    align-items: center;
     background-color: #f0f0f0;
     border-radius: 24px;
     margin-bottom: 12px;
     padding: 32px 30px;
-    align-items: center;
 
-    .starButton {
-      position: absolute;
-      display: flex;
+    .gridRow {
+      width: 100%;
+      position: relative;
+      display: grid;
+      gap: 20px;
+      // grid-template-columns is set in code dynamically
       align-items: center;
-      right: 20px;
-      top: 0;
-      bottom: 0;
-    }
 
-    .subtitle {
-      display: flex;
-      align-items: center;
-      margin-top: 6px;
+      .starButton {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        right: 20px;
+        top: 0;
+        bottom: 0;
+      }
 
-      .partnership {
-        border-radius: 100px;
-        padding: 4px 12px 8px 12px;
-        line-height: 1;
-        font-size: 0.8rem;
+      .subtitle {
+        display: flex;
+        align-items: center;
+        margin-top: 6px;
 
-        background-color: rgba(255, 255, 255, 0.7);
+        .partnership {
+          border-radius: 100px;
+          padding: 4px 12px 8px 12px;
+          line-height: 1;
+          font-size: 0.8rem;
+
+          background-color: rgba(255, 255, 255, 0.7);
+        }
       }
     }
   }

@@ -289,40 +289,43 @@ export const TrendingRow = ({
   });
 
   return (
-    <div className={styles.row} style={{ gridTemplateColumns: gridTemplate }}>
+    <div className={styles.row}>
+      <div className={styles.gridRow} style={{ gridTemplateColumns: gridTemplate }}>
+        <TrendingItem collectionFollow={collectionFollow} trendingData={trendingData} image={true} />
+        <TrendingItem collectionFollow={collectionFollow} trendingData={trendingData} nameItem={true} />
+
+        {columns.map(([key, dataColumn]) => {
+          let direction = '' as OrderDirection;
+          const isSelected = statsFilter.secondaryOrderBy === key;
+          if (isSelected) {
+            direction = statsFilter.secondaryOrderDirection;
+          }
+
+          const content = valueDiv(direction, dataColumn, key);
+
+          // don't show title on progress bars
+          let title;
+          if (dataColumn.type !== DataColumnType.Vote) {
+            title = dataColumn.name;
+          }
+
+          return (
+            <TrendingItem
+              key={key}
+              collectionFollow={collectionFollow}
+              direction={direction}
+              title={title}
+              trendingData={trendingData}
+              content={content}
+              sortClick={() => {
+                onSortClick(key);
+              }}
+            />
+          );
+        })}
+      </div>
+
       <div className={styles.starButton}>{favoriteButton}</div>
-      <TrendingItem collectionFollow={collectionFollow} trendingData={trendingData} image={true} />
-      <TrendingItem collectionFollow={collectionFollow} trendingData={trendingData} nameItem={true} />
-
-      {columns.map(([key, dataColumn]) => {
-        let direction = '' as OrderDirection;
-        const isSelected = statsFilter.secondaryOrderBy === key;
-        if (isSelected) {
-          direction = statsFilter.secondaryOrderDirection;
-        }
-
-        const content = valueDiv(direction, dataColumn, key);
-
-        // don't show title on progress bars
-        let title;
-        if (dataColumn.type !== DataColumnType.Vote) {
-          title = dataColumn.name;
-        }
-
-        return (
-          <TrendingItem
-            key={key}
-            collectionFollow={collectionFollow}
-            direction={direction}
-            title={title}
-            trendingData={trendingData}
-            content={content}
-            sortClick={() => {
-              onSortClick(key);
-            }}
-          />
-        );
-      })}
     </div>
   );
 };
