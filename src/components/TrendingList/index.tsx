@@ -291,8 +291,8 @@ export const TrendingRow = ({
   return (
     <div className={styles.row}>
       <div className={styles.gridRow} style={{ gridTemplateColumns: gridTemplate }}>
-        <TrendingItem collectionFollow={collectionFollow} trendingData={trendingData} image={true} />
-        <TrendingItem collectionFollow={collectionFollow} trendingData={trendingData} nameItem={true} />
+        <TrendingItem trendingData={trendingData} image={true} />
+        <TrendingItem trendingData={trendingData} nameItem={true} />
 
         {columns.map(([key, dataColumn]) => {
           let direction = '' as OrderDirection;
@@ -313,7 +313,6 @@ export const TrendingRow = ({
           return (
             <TrendingItem
               key={key}
-              collectionFollow={collectionFollow}
               direction={direction}
               title={title}
               trendingData={trendingData}
@@ -334,7 +333,6 @@ export const TrendingRow = ({
 // ====================================================================
 
 type Props4 = {
-  collectionFollow: CollectionFollowHook;
   content?: any;
   title?: string;
   trendingData: TrendingData;
@@ -350,7 +348,6 @@ export const TrendingItem = ({
   image,
   direction,
   sortClick,
-  collectionFollow,
   nameItem,
   trendingData
 }: Props4): JSX.Element => {

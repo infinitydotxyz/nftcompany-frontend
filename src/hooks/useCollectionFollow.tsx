@@ -34,7 +34,11 @@ export function useCollectionFollow(user: User | null, chainId: string): Collect
       return;
     }
 
-    const { result, error } = await apiGet(`/u/${user?.account}/collectionFollows`);
+    const body = {
+      limit: 50
+    };
+
+    const { result, error } = await apiGet(`/u/${user?.account}/collectionFollows`, body);
     if (error) {
       console.log(`${error.message}`);
       return;
