@@ -282,10 +282,10 @@ export const TrendingRow = ({
 
   // build dynamic grid based on columns shown
   // 60px for image, next is name
-  let gridTemplate = '60px minmax(120px, 220px)';
+  let gridTemplate = '50px minmax(120px, 220px)';
 
-  columns.forEach((e) => {
-    gridTemplate += ' minmax(40px, 220px)';
+  columns.forEach(([key, item]) => {
+    gridTemplate += ` minmax(${item.minWidth}px, ${item.maxWidth}px)`;
   });
 
   return (
@@ -296,6 +296,7 @@ export const TrendingRow = ({
 
         {columns.map(([key, dataColumn]) => {
           let direction = '' as OrderDirection;
+
           const isSelected = statsFilter.secondaryOrderBy === key;
           if (isSelected) {
             direction = statsFilter.secondaryOrderDirection;

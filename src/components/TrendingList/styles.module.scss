@@ -1,6 +1,5 @@
 .list {
   display: flex;
-  overflow-x: auto;
   flex-direction: column;
 
   // this fixes everthing, no idea why
@@ -43,6 +42,10 @@
     margin-bottom: 12px;
     padding: 32px 30px;
 
+    .starButton {
+      margin-left: 20px;
+    }
+
     .gridRow {
       width: 100%;
       position: relative;
@@ -50,15 +53,6 @@
       gap: 20px;
       // grid-template-columns is set in code dynamically
       align-items: center;
-
-      .starButton {
-        position: absolute;
-        display: flex;
-        align-items: center;
-        right: 20px;
-        top: 0;
-        bottom: 0;
-      }
 
       .subtitle {
         display: flex;
