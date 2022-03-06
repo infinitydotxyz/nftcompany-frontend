@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { apiGet, apiPost } from 'utils/apiUtil';
 import { User } from 'utils/context/AppContext';
 import { TrendingData } from './useTrendingStats';
+import { CollectionFollow } from '@infinityxyz/types/core/Follows';
 
 // ================================================================
 // types
@@ -12,12 +13,6 @@ export type CollectionFollowHook = {
   add: (item: CollectionFollow) => void;
   toggle: (item?: CollectionFollow) => void;
   remove: (item: CollectionFollow) => void;
-};
-
-export type CollectionFollow = {
-  address: string;
-  chainId: string;
-  name: string;
 };
 
 // ================================================================
