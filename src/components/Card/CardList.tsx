@@ -1,5 +1,5 @@
 import React from 'react';
-import { CardData } from '@infinityxyz/types/core/NftInterface';
+import { CardData } from '@infinityxyz/types/core';
 import { uuidv4 } from 'utils/commonUtil';
 import Card from './Card';
 import styles from './CardList.module.scss';

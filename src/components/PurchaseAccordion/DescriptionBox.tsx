@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './scss/DescriptionBox.module.scss';
-import { CardData } from '@infinityxyz/types/core/NftInterface';
+import { CardData } from '@infinityxyz/types/core';
 import { PurchaseAccordionItem, SingleAccordion } from './SingleAccordion';
 import { LargeIcons } from 'components/Icons/MenuIcons';
 import { Link, useColorMode } from '@chakra-ui/react';

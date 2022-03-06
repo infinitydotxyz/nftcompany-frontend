@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styles from './scss/MakeOfferForm.module.scss';
-import { CardData } from '@infinityxyz/types/core/NftInterface';
-import { Order } from '@infinityxyz/types/core/Order';
+import { CardData, Order } from '@infinityxyz/types/core';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';

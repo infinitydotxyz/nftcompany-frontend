@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { CardData } from '@infinityxyz/types/core/NftInterface';
-import { Order } from '@infinityxyz/types/core/Order';
+import { CardData, Order } from '@infinityxyz/types/core';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { useColorMode } from '@chakra-ui/react';
 import { PurchaseForm } from './PurchaseForm';
