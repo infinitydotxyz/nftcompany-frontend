@@ -3,12 +3,13 @@ import { initializeApp } from 'firebase/app';
 // Add Firebase products that you want to use
 import { getFirestore, getDoc, doc, onSnapshot } from 'firebase/firestore';
 import { Counter } from './Counter';
+import { COLL_FEED } from './firestoreUtils';
 
 export async function increaseLikes(userAccount: string, itemId: string) {
   const firebaseApp = initializeApp(firestoreConfig);
   const db = getFirestore(firebaseApp);
 
-  const docRef = doc(db, `feed/data/events/${itemId}`);
+  const docRef = doc(db, `${COLL_FEED}/${itemId}`);
   // @ts-ignore
   const likes = new Counter(docRef, 'likes', userAccount, itemId); // initialize the sharded counter.
 

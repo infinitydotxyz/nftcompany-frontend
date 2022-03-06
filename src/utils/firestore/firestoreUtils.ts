@@ -17,7 +17,7 @@ import {
 import { increaseLikes } from './counterUtils';
 import { firestoreConfig } from '../../../creds/firestore';
 
-const COLL_FEED = 'feed'; // collection: /feed - to store feed events
+export const COLL_FEED = 'feed'; // collection: /feed - to store feed events
 
 const app = initializeApp(firestoreConfig);
 
@@ -38,7 +38,7 @@ export async function getCollectionDocs(collectionPath: string, onChange: any) {
 let lastDoc: any = null;
 
 export async function fetchMoreEvents() {
-  const coll = collection(firestoreDb, 'feed/data/events');
+  const coll = collection(firestoreDb, COLL_FEED);
 
   if (lastDoc) {
     const q = query(coll, orderBy('datetime', 'asc'), limit(2), startAfter(lastDoc)); // query(coll, limit(3), orderBy('datetime', 'desc'))
@@ -85,7 +85,7 @@ export async function updateCollectionDoc(path: string, docId: string, data: any
 }
 
 export async function addUserLike(eventId: string, userAccount: string, doneCallback: () => void) {
-  const docRef = doc(firestoreDb, 'feed', 'data', 'events', eventId, 'userLikes', userAccount);
+  const docRef = doc(firestoreDb, 'feed', eventId, 'userLikes', userAccount);
   const existingDocRef = await getDoc(docRef);
   const existingDocData = existingDocRef?.data();
   console.log('existingDocData', existingDocData);

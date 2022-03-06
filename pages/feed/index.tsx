@@ -5,7 +5,7 @@ import { Select } from '@chakra-ui/react';
 import Head from 'next/head';
 import Layout from 'containers/layout';
 
-import { fetchMoreEvents, subscribe } from '../../src/utils/firestore/firestoreUtils';
+import { COLL_FEED, fetchMoreEvents, subscribe } from '../../src/utils/firestore/firestoreUtils';
 import FeedItem, { FeedEvent, FeedEventType } from './FeedItem';
 import { FetchMore } from 'components/FetchMore/FetchMore';
 
@@ -21,7 +21,7 @@ export default function Feed() {
 
   async function getEvents() {
     try {
-      subscribe('feed/data/events', (type: string, data: FeedEvent) => {
+      subscribe(COLL_FEED, (type: string, data: FeedEvent) => {
         // console.log('--- change: ', type, data);
         if (type === 'added') {
           setEvents((currentEvents) => [data, ...currentEvents]);
