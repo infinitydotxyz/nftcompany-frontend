@@ -4,10 +4,18 @@ import { Box } from '@chakra-ui/layout';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { CardData } from '@infinityxyz/types/core';
 
-const FetchMoreElement = ({ inView, ref, onFetchMore, data, currentPage }: any) => {
+type FetchMoreElementProps = {
+  inView: boolean;
+  ref?: React.LegacyRef<HTMLSpanElement>;
+  onFetchMore: () => void;
+  data?: any[];
+  currentPage?: number;
+};
+
+const FetchMoreElement = ({ inView, ref, onFetchMore, data, currentPage }: FetchMoreElementProps) => {
   React.useEffect(() => {
     if (inView === true && onFetchMore) {
-      if (currentPage === 0 && data?.length < ITEMS_PER_PAGE) {
+      if (currentPage === 0 && data && data?.length < ITEMS_PER_PAGE) {
         return; // return if it's the first page with less items.
       }
       onFetchMore();
