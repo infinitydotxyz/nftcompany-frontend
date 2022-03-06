@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { ethers } from 'ethers';
-import { CardData } from 'infinity-types/types/NftInterface';
+import { CardData } from '@infinityxyz/types/core/NftInterface';
 import {
   WETH_ADDRESS,
   CHAIN_SCANNER_BASE,
@@ -12,8 +12,8 @@ import {
   NFT_DATA_SOURCES
 } from './constants';
 import { Spinner } from '@chakra-ui/spinner';
-import { UnmarshalNFTAsset } from 'infinity-types/types/services/unmarshal/Unmarshal';
-import { AlchemyUserAsset } from 'infinity-types/types/services/alchemy/AlchemyUserAsset';
+import { UnmarshalNFTAsset } from '@infinityxyz/types/services/unmarshal/Unmarshal';
+import { AlchemyUserAsset } from '@infinityxyz/types/services/alchemy/AlchemyUserAsset';
 
 // OpenSea's EventType
 export enum EventType {

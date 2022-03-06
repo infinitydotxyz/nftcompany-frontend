@@ -5,7 +5,7 @@ import { ellipsisAddress, getChainScannerBase } from 'utils/commonUtil';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { CopyButton } from 'components/CopyButton/CopyButton';
-import { TransactionCardEntry } from 'infinity-types/types/Rewards';
+import { TransactionCardEntry } from '@infinityxyz/types/core/Rewards';
 
 type Props = {
   entries?: TransactionCardEntry[];

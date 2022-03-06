@@ -8,7 +8,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import { Button, Spacer } from '@chakra-ui/react';
 import { apiGet } from 'utils/apiUtil';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { UnmarshalNFTAsset } from 'infinity-types/types/services/unmarshal/Unmarshal';
+import { UnmarshalNFTAsset } from '@infinityxyz/types/services/unmarshal/Unmarshal';
 import { ethers } from 'ethers';
 import { Spinner } from '@chakra-ui/spinner';
 import { ellipsisString } from 'utils/commonUtil';

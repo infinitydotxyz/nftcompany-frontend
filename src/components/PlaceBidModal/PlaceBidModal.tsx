@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import styles from './PlaceBidModal.module.scss';
 import { Spinner } from '@chakra-ui/spinner';
-import { CardData, Order } from 'infinity-types/types/NftInterface';
+import { CardData } from '@infinityxyz/types/core/NftInterface';
+import { Order } from '@infinityxyz/types/core/Order';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';

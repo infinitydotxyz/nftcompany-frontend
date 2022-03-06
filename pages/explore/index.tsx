@@ -9,7 +9,7 @@ import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
 import { CardGrid } from 'components/CollectionCards/CollectionCard';
-import { CollectionCardEntry } from 'infinity-types/types/Rewards';
+import { CollectionCardEntry } from '@infinityxyz/types/core/Rewards';
 import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import CardList from 'components/Card/CardList';
 import { Spacer, Box } from '@chakra-ui/react';

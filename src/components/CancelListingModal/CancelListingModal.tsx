@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './CancelListingModal.module.scss';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
-import { CardData } from 'infinity-types/types/NftInterface';
+import { CardData } from '@infinityxyz/types/core/NftInterface';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';

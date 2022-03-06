@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './RewardCard.module.scss';
 import { Countdown } from 'components/Countdown/Countdown';
 import { AlarmIcon, AwardIcon, LeaderboardIcon, StatsIcon } from 'components/Icons/Icons';
-import { LeaderBoard, UserReward } from 'infinity-types/types/Rewards';
+import { LeaderBoard, UserReward } from '@infinityxyz/types/core/Rewards';
 import { SaleLeaderBoardTable, BuyLeaderBoardTable } from 'components/LeaderBoard/LeaderBoardTable';
 import { Progress } from '@chakra-ui/react';
 import { values } from 'lodash';

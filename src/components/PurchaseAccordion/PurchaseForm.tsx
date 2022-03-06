@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { CardData, Order } from 'infinity-types/types/NftInterface';
+import { CardData } from '@infinityxyz/types/core/NftInterface';
+import { Order } from '@infinityxyz/types/core/Order';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';

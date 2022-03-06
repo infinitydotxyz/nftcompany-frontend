@@ -1,7 +1,7 @@
 import { ordersToCardData } from 'services/Listings.service';
 import { getLastItemBasePrice, getLastItemBlueCheck, getLastItemCreatedAt } from 'components/FetchMore/FetchMore';
 import { useState, useEffect, useRef } from 'react';
-import { CardData, OrderType } from 'infinity-types/types/NftInterface';
+import { CardData, OrderType } from '@infinityxyz/types/core/NftInterface';
 import { ITEMS_PER_PAGE } from 'utils/constants';
 import { apiGet } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';

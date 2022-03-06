@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './LeaderBoardTable.module.scss';
 import { Table, Thead, Tbody, Tr, Th, Td, IconButton, Icon } from '@chakra-ui/react';
 import { ellipsisAddress, numStr } from 'utils/commonUtil';
-import { LeaderBoard, LeaderBoardEntry } from 'infinity-types/types/Rewards';
+import { LeaderBoard, LeaderBoardEntry } from '@infinityxyz/types/core/Rewards';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/tooltip';
 import { CopyButton } from 'components/CopyButton/CopyButton';
