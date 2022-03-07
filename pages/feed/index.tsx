@@ -6,7 +6,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 
 import { COLL_FEED, fetchMoreEvents, subscribe } from '../../src/utils/firestore/firestoreUtils';
-import FeedItem, { FeedEvent, FeedEventType } from './FeedItem';
+import FeedItem, { FeedEvent, FeedEventType } from '../../src/components/app/Feed/FeedItem';
 import { FetchMore } from 'components/FetchMore/FetchMore';
 
 type Filter = {

@@ -47,9 +47,8 @@ export default function FeedItem({ event, onLike }: Props) {
             color="blue.400"
             cursor="pointer"
             onClick={() => {
-              const userAccount = user?.account;
-              if (userAccount) {
-                addUserLike(event.id, userAccount, () => {
+              if (user && user?.account) {
+                addUserLike(event.id, user?.account, () => {
                   if (onLike) {
                     onLike(event);
                   }
