@@ -5,18 +5,13 @@ import { useAppContext } from 'utils/context/AppContext';
 
 export type FeedEventType = 'COLL' | 'NFT' | 'TWEET';
 
-export type TimestampObject = {
-  seconds: number;
-  nanoseconds: number;
-};
-
 export type FeedEvent = {
   id: string;
   type: FeedEventType;
   title: string;
   imageUrl?: string;
   likes: number;
-  datetime: TimestampObject;
+  timestamp: number;
 };
 
 type Props = {
@@ -31,7 +26,7 @@ export default function FeedItem({ event, onLike }: Props) {
     return null;
   }
 
-  const dt = new Date(event?.datetime?.seconds * 1000).toLocaleString();
+  const dt = new Date(event?.timestamp).toLocaleString();
   return (
     <AnimatePresence>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>

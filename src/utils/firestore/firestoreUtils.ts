@@ -41,7 +41,7 @@ export async function fetchMoreEvents() {
   const coll = collection(firestoreDb, COLL_FEED);
 
   if (lastDoc) {
-    const q = query(coll, orderBy('datetime', 'asc'), limit(2), startAfter(lastDoc)); // query(coll, limit(3), orderBy('datetime', 'desc'))
+    const q = query(coll, orderBy('timestamp', 'asc'), limit(2), startAfter(lastDoc)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
     const items = await getDocs(q);
 
     if (items.docs.length > 0) {
@@ -61,7 +61,7 @@ export async function subscribe(collectionPath: string, onChange: any) {
   try {
     const coll = collection(firestoreDb, collectionPath);
 
-    const q = query(coll, orderBy('datetime', 'asc'), limit(2)); // query(coll, limit(3), orderBy('datetime', 'desc'))
+    const q = query(coll, orderBy('timestamp', 'asc'), limit(2)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (onChange && change.type === 'added') {
