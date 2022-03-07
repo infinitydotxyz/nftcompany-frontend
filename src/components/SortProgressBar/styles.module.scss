@@ -24,12 +24,24 @@
   }
 
   .content {
-    padding: 8px 14px;
+    padding: 10px 14px;
     position: relative;
     display: flex;
 
     // content looks more centered with this
-    top: -2px;
-    line-height: 1;
+    .text {
+      position: relative;
+      top: -1px;
+      line-height: 1;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .boldText {
+      @extend .text;
+
+      font-weight: bold;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { CardData } from 'types/Nft.interface';
+import { CardData } from '@infinityxyz/types/core';
 import { useEffect, useState } from 'react';
 import { ListingSource, SearchFilter, SearchState } from 'utils/context/SearchContext';
 import { useAppContext } from 'utils/context/AppContext';
@@ -51,7 +51,7 @@ const fetchData = async (
     tokenAddress: typeAhead?.address ?? '',
     collectionName,
     text,
-    priceMax: filter.priceMax, // SNG,
+    priceMax: filter.priceMax,
     offset,
     listingSource
   });

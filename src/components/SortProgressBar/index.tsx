@@ -15,18 +15,18 @@ type Props = {
 export const SortProgressBar = ({ onClick, direction, percent = 0 }: Props): JSX.Element => {
   return (
     <div className={styles.sortBar} onClick={onClick}>
-      <ProgressBar percent={percent} />
-      <SortArrows direction={direction} />
+      <ProgressBar percent={percent} control={<SortArrows direction={direction} />} />
     </div>
   );
 };
 
 type Props2 = {
   percent?: number;
+  control?: JSX.Element;
 };
 
-export const ProgressBar = ({ percent = 0 }: Props2): JSX.Element => {
-  const { ref, width = 1 } = useResizeObserver<HTMLDivElement>({ box: 'content-box' });
+export const ProgressBar = ({ control, percent = 0 }: Props2): JSX.Element => {
+  const { ref, width = 1 } = useResizeObserver<HTMLDivElement>({ box: 'border-box' });
   let x = '';
 
   let p = 0;
@@ -47,14 +47,18 @@ export const ProgressBar = ({ percent = 0 }: Props2): JSX.Element => {
       <div className={styles.content}>
         {!noVotes && (
           <>
-            <div>Trust</div>
+            <div className={styles.text}>Trust</div>
             <Spacer />
-            <div>{x}</div>
+            <div className={styles.boldText}>{x}</div>
+            {control && <div>{control}</div>}
           </>
         )}
         {noVotes && (
           <>
-            <div style={{ textAlign: 'center', width: '100%' }}>{x}</div>
+            <div className={styles.text}>{x}</div>
+
+            <Spacer />
+            {control && <div>{control}</div>}
           </>
         )}
       </div>

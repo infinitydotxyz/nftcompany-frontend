@@ -1,6 +1,6 @@
 import { Box, Link } from '@chakra-ui/layout';
-import { Button, Image, Text } from '@chakra-ui/react';
-import { EthToken, FavoriteIcon, FavoriteOutlineIcon } from 'components/Icons/Icons';
+import { Button, IconButton, Image, Text } from '@chakra-ui/react';
+import { EthCurrencyIcon, FavoriteIcon, FavoriteOutlineIcon } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 import { SortButton } from 'components/SortButton';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
@@ -14,9 +14,10 @@ import styles from './styles.module.scss';
 import { DataColumn, DataColumns, DataColumnType, defaultDataColumns } from 'components/TrendingList/DataColumns';
 import { Period, periodToInterval } from 'components/TrendingList/PeriodInterval';
 import { SortProgressBar } from 'components/SortProgressBar';
-import { useWatchlist, WatchListHook } from 'hooks/useWatchlist';
+import { trendingDataToCollectionFollow, useCollectionFollow, CollectionFollowHook } from 'hooks/useCollectionFollow';
 import { useAppContext } from 'utils/context/AppContext';
 import { CollectionSearch } from './CollectionSearch';
+import { StarIcon } from '@chakra-ui/icons';
 
 type Props = {
   watchlistMode?: boolean;
@@ -30,18 +31,19 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
     secondaryOrderBy: SecondaryOrderBy.Volume,
     secondaryOrderDirection: OrderDirection.Ascending
   });
+  const [dataColumns, setDataColumns] = useState<DataColumns>(defaultDataColumns);
+  const { user, chainId } = useAppContext();
+  const collectionFollow = useCollectionFollow(user, chainId);
 
   const {
     options,
     onChange,
     selected: period
   } = useToggleTab([Period.OneDay, Period.SevenDays, Period.ThirtyDays, Period.Total], Period.OneDay);
-  const [dataColumns, setDataColumns] = useState<DataColumns>(defaultDataColumns);
-  const { user } = useAppContext();
-  const watchlist = useWatchlist(user);
 
   useEffect(() => {
     const newInterval = periodToInterval[period as Period];
+
     setStatsFilter((prev) => {
       return {
         ...prev,
@@ -55,7 +57,8 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
     search = (
       <CollectionSearch
         onSelect={(collectionAddress) => {
-          watchlist.add(collectionAddress);
+          // TODO: SNG
+          collectionFollow.add({ name: 'fixme', chainId: '1', address: collectionAddress });
         }}
       />
     );
@@ -83,7 +86,7 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
       {toolbarAndDrawer}
 
       <TrendingContents
-        watchlist={watchlist}
+        collectionFollow={collectionFollow}
         watchlistMode={watchlistMode}
         statsFilter={statsFilter}
         dataColumns={dataColumns}
@@ -96,7 +99,7 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
 // ====================================================================
 
 type Props2 = {
-  watchlist: WatchListHook;
+  collectionFollow: CollectionFollowHook;
   statsFilter: StatsFilter;
   dataColumns: DataColumns;
   watchlistMode: boolean;
@@ -104,7 +107,7 @@ type Props2 = {
 };
 
 export const TrendingContents = ({
-  watchlist,
+  collectionFollow,
   watchlistMode,
   statsFilter,
   dataColumns,
@@ -116,7 +119,9 @@ export const TrendingContents = ({
   let collections = trendingData;
   if (watchlistMode) {
     collections = trendingData.filter((e) => {
-      return watchlist.watchlist.includes(e.collectionAddress ?? '');
+      return collectionFollow.list.some((j) => {
+        return j.address === e.collectionAddress;
+      });
     });
   }
 
@@ -126,7 +131,7 @@ export const TrendingContents = ({
         {collections.map((collectionData: TrendingData) => {
           return (
             <TrendingRow
-              watchlist={watchlist}
+              collectionFollow={collectionFollow}
               statsFilter={statsFilter}
               key={collectionData.collectionAddress ?? 'key'}
               trendingData={collectionData}
@@ -139,13 +144,16 @@ export const TrendingContents = ({
         {isLoading && renderSpinner({ margin: 5 })}
       </div>
 
-      <Button
-        onClick={() => {
-          fetchMoreData();
-        }}
-      >
-        More
-      </Button>
+      <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
+        <Button
+          variant="outline"
+          onClick={() => {
+            fetchMoreData();
+          }}
+        >
+          More
+        </Button>
+      </div>
     </>
   );
 };
@@ -153,7 +161,7 @@ export const TrendingContents = ({
 // ====================================================================
 
 type Props3 = {
-  watchlist: WatchListHook;
+  collectionFollow: CollectionFollowHook;
   trendingData: TrendingData;
   dataColumns: DataColumns;
   statsFilter: StatsFilter;
@@ -162,7 +170,7 @@ type Props3 = {
 
 export const TrendingRow = ({
   trendingData,
-  watchlist,
+  collectionFollow,
   statsFilter,
   dataColumns,
   setStatsFilter
@@ -170,12 +178,8 @@ export const TrendingRow = ({
   const [columns, setColumns] = useState<[SecondaryOrderBy, DataColumn][]>([]);
 
   useEffect(() => {
-    const selectedItemsOrderedByGroup: [SecondaryOrderBy, DataColumn][] = Object.values(dataColumns).flatMap((group) =>
-      Object.entries(group)
-        .filter(([itemKey, item]) => item.isSelected)
-        .flatMap(([key, mainColumn]) => {
-          return [[key, mainColumn], ...(mainColumn.additionalColumns ?? [])];
-        })
+    const selectedItemsOrderedByGroup: [SecondaryOrderBy, DataColumn][] = Object.entries(dataColumns).filter(
+      ([itemKey, item]) => item.isSelected
     ) as [SecondaryOrderBy, DataColumn][];
 
     setColumns(selectedItemsOrderedByGroup);
@@ -211,14 +215,14 @@ export const TrendingRow = ({
       case DataColumnType.Amount:
         return (
           <Box display="flex" flexDirection={'row'} alignItems={'center'}>
-            {dataColumn.unit === 'ETH' && <EthToken marginBottom={'-2px'} />}
+            {dataColumn.unit === 'ETH' && <EthCurrencyIcon style={{ marginRight: '6px', fontWeight: 'bold' }} />}
 
-            {value ? <Text variant="bold">{numStr(value)}</Text> : <Text variant="bold">---</Text>}
+            {value ? <div className={styles.itemValue}>{numStr(value)}</div> : <Text variant="bold">---</Text>}
           </Box>
         );
       case DataColumnType.Change:
         return (
-          <Box display="flex" flexDirection={'row'} alignItems={'center'}>
+          <>
             {value ? (
               <IntervalChange
                 marginLeft={[0, 0, 0, 0, 2]}
@@ -229,7 +233,7 @@ export const TrendingRow = ({
             ) : (
               <Text variant="bold">---</Text>
             )}
-          </Box>
+          </>
         );
       case DataColumnType.Vote:
         return (
@@ -248,40 +252,80 @@ export const TrendingRow = ({
     }
   };
 
+  const isFavorite = collectionFollow.exists(trendingDataToCollectionFollow(trendingData));
+  let favoriteButton = (
+    <IconButton
+      aria-label=""
+      variant="ghost"
+      icon={<StarIcon color="#BEBEBE" />}
+      isRound
+      onClick={() => {
+        collectionFollow.toggle(trendingDataToCollectionFollow(trendingData));
+      }}
+    />
+  );
+
+  if (isFavorite) {
+    favoriteButton = (
+      <IconButton
+        aria-label=""
+        variant="ghost"
+        backgroundColor="#000"
+        icon={<StarIcon color="#fff" />}
+        isRound
+        onClick={() => {
+          collectionFollow.toggle(trendingDataToCollectionFollow(trendingData));
+        }}
+      />
+    );
+  }
+
+  // build dynamic grid based on columns shown
+  // 60px for image, next is name
+  let gridTemplate = '50px minmax(120px, 220px)';
+
+  columns.forEach(([key, item]) => {
+    gridTemplate += ` minmax(${item.minWidth}px, ${item.maxWidth}px)`;
+  });
+
   return (
     <div className={styles.row}>
-      <TrendingItem watchlist={watchlist} trendingData={trendingData} image={true} />
-      <TrendingItem watchlist={watchlist} trendingData={trendingData} nameItem={true} />
+      <div className={styles.gridRow} style={{ gridTemplateColumns: gridTemplate }}>
+        <TrendingItem trendingData={trendingData} image={true} />
+        <TrendingItem trendingData={trendingData} nameItem={true} />
 
-      {columns.map(([key, dataColumn]) => {
-        let direction = '' as OrderDirection;
-        const isSelected = statsFilter.secondaryOrderBy === key;
-        if (isSelected) {
-          direction = statsFilter.secondaryOrderDirection;
-        }
+        {columns.map(([key, dataColumn]) => {
+          let direction = '' as OrderDirection;
 
-        const content = valueDiv(direction, dataColumn, key);
+          const isSelected = statsFilter.secondaryOrderBy === key;
+          if (isSelected) {
+            direction = statsFilter.secondaryOrderDirection;
+          }
 
-        // don't show title on progress bars
-        let title;
-        if (dataColumn.type !== DataColumnType.Vote) {
-          title = dataColumn.name;
-        }
+          const content = valueDiv(direction, dataColumn, key);
 
-        return (
-          <TrendingItem
-            key={key}
-            watchlist={watchlist}
-            direction={direction}
-            title={title}
-            trendingData={trendingData}
-            content={content}
-            sortClick={() => {
-              onSortClick(key);
-            }}
-          />
-        );
-      })}
+          // don't show title on progress bars
+          let title;
+          if (dataColumn.type !== DataColumnType.Vote) {
+            title = dataColumn.name;
+          }
+
+          return (
+            <TrendingItem
+              key={key}
+              direction={direction}
+              title={title}
+              trendingData={trendingData}
+              content={content}
+              sortClick={() => {
+                onSortClick(key);
+              }}
+            />
+          );
+        })}
+      </div>
+
+      <div className={styles.starButton}>{favoriteButton}</div>
     </div>
   );
 };
@@ -289,7 +333,6 @@ export const TrendingRow = ({
 // ====================================================================
 
 type Props4 = {
-  watchlist: WatchListHook;
   content?: any;
   title?: string;
   trendingData: TrendingData;
@@ -305,38 +348,12 @@ export const TrendingItem = ({
   image,
   direction,
   sortClick,
-  watchlist,
   nameItem,
   trendingData
 }: Props4): JSX.Element => {
   const router = useRouter();
 
   if (nameItem) {
-    const isFavorite = watchlist.exists(trendingData.collectionAddress);
-    let favoriteButton = (
-      <div
-        className={styles.favoritesButton}
-        onClick={() => {
-          watchlist.toggle(trendingData.collectionAddress);
-        }}
-      >
-        <FavoriteOutlineIcon color={'#d00'} />
-      </div>
-    );
-
-    if (isFavorite) {
-      favoriteButton = (
-        <div
-          className={styles.favoritesButton}
-          onClick={() => {
-            watchlist.toggle(trendingData.collectionAddress);
-          }}
-        >
-          <FavoriteIcon color={'#d00'} />
-        </div>
-      );
-    }
-
     return (
       <div className={styles.item}>
         <Link
@@ -348,7 +365,6 @@ export const TrendingItem = ({
         </Link>
 
         <div className={styles.subtitle}>
-          {favoriteButton}
           <div className={styles.partnership}>Partnership</div>
         </div>
       </div>

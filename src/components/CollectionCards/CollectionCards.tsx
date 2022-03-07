@@ -4,7 +4,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { CollectionsTable } from 'components/CollectionsTable/CollectionsTable';
-import { CollectionCardEntry } from 'types/rewardTypes';
+import { CollectionCardEntry } from '@infinityxyz/types/core';
 import useResizeObserver from 'use-resize-observer';
 import { CardGrid } from './CollectionCard';
 import { ITEMS_PER_PAGE } from 'utils/constants';
