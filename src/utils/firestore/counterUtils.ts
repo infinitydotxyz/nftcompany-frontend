@@ -1,7 +1,7 @@
 import { firestoreConfig } from '../../../creds/firestore';
 import { initializeApp } from 'firebase/app';
 // Add Firebase products that you want to use
-import { getFirestore, getDoc, doc, onSnapshot } from 'firebase/firestore';
+import { getFirestore, doc } from 'firebase/firestore';
 import { Counter } from './Counter';
 import { COLL_FEED } from './firestoreUtils';
 
@@ -13,7 +13,7 @@ export async function increaseLikes(userAccount: string, itemId: string) {
   // @ts-ignore
   const likes = new Counter(docRef, 'likes', userAccount, itemId); // initialize the sharded counter.
 
-  likes.incrementBy(1).then(($: any) => console.log('returning document >>>>', $));
+  likes.incrementBy(1); // .then(($: any) => console.log('returning document >>>>', $));
 
   // likes.incrementBy(1).then(($: any) => console.log('returning document >>>>', $));
   // // Listen to locally consistent values
@@ -25,4 +25,15 @@ export async function increaseLikes(userAccount: string, itemId: string) {
   // onSnapshot(doc(db, 'pages', 'hello-world'), (snap) => {
   //   console.log('Eventually consistent view of visits: ' + snap.get('stats.views'));
   // });
+}
+
+export async function increaseComments(userAccount: string, itemId: string) {
+  const firebaseApp = initializeApp(firestoreConfig);
+  const db = getFirestore(firebaseApp);
+
+  const docRef = doc(db, `${COLL_FEED}/${itemId}`);
+  // @ts-ignore
+  const likes = new Counter(docRef, 'comments', userAccount, itemId); // initialize the sharded counter.
+
+  likes.incrementBy(1);
 }

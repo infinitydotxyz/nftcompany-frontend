@@ -79,6 +79,13 @@ export default function Feed() {
                   }
                   setEvents([...events]);
                 }}
+                onComment={(ev) => {
+                  const foundEv = events.find((e) => e.id === ev.id);
+                  if (foundEv?.comments) {
+                    foundEv.comments = foundEv.comments + 1;
+                  }
+                  setEvents([...events]);
+                }}
               />
             );
           })}

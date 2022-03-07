@@ -14,7 +14,7 @@ import {
   startAfter
 } from 'firebase/firestore'; // access firestore database service
 
-import { increaseLikes } from './counterUtils';
+import { increaseComments, increaseLikes } from './counterUtils';
 import { firestoreConfig } from '../../../creds/firestore';
 
 export const COLL_FEED = 'feed'; // collection: /feed - to store feed events
@@ -88,11 +88,18 @@ export async function addUserLike(eventId: string, userAccount: string, doneCall
   const docRef = doc(firestoreDb, 'feed', eventId, 'userLikes', userAccount);
   const existingDocRef = await getDoc(docRef);
   const existingDocData = existingDocRef?.data();
-  console.log('existingDocData', existingDocData);
   if (!existingDocData) {
     // user has not liked this eventId before => setDoc to userLikes & call increaseLikes:
     await setDoc(docRef, { timestamp: +new Date() });
     increaseLikes(userAccount ?? '', eventId);
     doneCallback();
   }
+}
+
+export async function addUserComments(eventId: string, userAccount: string, comment: string, doneCallback: () => void) {
+  const timestamp = +new Date();
+  const docRef = doc(firestoreDb, 'feed', eventId, 'userComments', userAccount + '_' + timestamp);
+  await setDoc(docRef, { comment, timestamp });
+  increaseComments(userAccount ?? '', eventId);
+  doneCallback();
 }

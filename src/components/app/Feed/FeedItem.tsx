@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/layout';
 import { AnimatePresence, motion } from 'framer-motion';
-import { addUserLike } from 'utils/firestore/firestoreUtils';
+import { addUserComments, addUserLike } from 'utils/firestore/firestoreUtils';
 import { useAppContext } from 'utils/context/AppContext';
 
 export type FeedEventType = 'COLL' | 'NFT' | 'TWEET';
@@ -11,15 +11,17 @@ export type FeedEvent = {
   title: string;
   imageUrl?: string;
   likes: number;
+  comments: number;
   timestamp: number;
 };
 
 type Props = {
   event?: FeedEvent;
   onLike?: (event: FeedEvent) => void;
+  onComment?: (event: FeedEvent) => void;
 };
 
-export default function FeedItem({ event, onLike }: Props) {
+export default function FeedItem({ event, onLike, onComment }: Props) {
   const { user } = useAppContext();
 
   if (!event) {
@@ -38,20 +40,37 @@ export default function FeedItem({ event, onLike }: Props) {
           <Box mt={4}>
             <img src={event.imageUrl} />
           </Box>
-          <Box
-            color="blue.400"
-            cursor="pointer"
-            onClick={() => {
-              if (user && user?.account) {
-                addUserLike(event.id, user?.account, () => {
-                  if (onLike) {
-                    onLike(event);
-                  }
-                });
-              }
-            }}
-          >
-            {event.likes} Like
+          <Box display="flex">
+            <Box
+              color="blue.400"
+              cursor="pointer"
+              onClick={() => {
+                if (user && user?.account) {
+                  addUserLike(event.id, user?.account, () => {
+                    if (onLike) {
+                      onLike(event);
+                    }
+                  });
+                }
+              }}
+            >
+              {event.likes} Like(s)
+            </Box>
+            <Box
+              color="blue.400"
+              cursor="pointer"
+              onClick={() => {
+                if (user && user?.account) {
+                  addUserComments(event.id, user?.account, 'Dummy comment ' + Math.random(), () => {
+                    if (onComment) {
+                      onComment(event);
+                    }
+                  });
+                }
+              }}
+            >
+              &nbsp; - {event.comments} Comment(s)
+            </Box>
           </Box>
         </Box>
       </motion.div>
