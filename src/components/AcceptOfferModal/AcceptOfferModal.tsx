@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './AcceptOfferModal.module.scss';
-import { CardData } from 'types/Nft.interface';
+import { CardData } from '@infinityxyz/types/core';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';
@@ -93,7 +93,7 @@ const AcceptOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
               <Button onClick={acceptOffer} disabled={isSubmitting}>
                 Accept Offer
               </Button>
-              <Button disabled={isSubmitting} onClick={() => onClose && onClose()}>
+              <Button variant="outline" disabled={isSubmitting} onClick={() => onClose && onClose()}>
                 Cancel
               </Button>
             </div>

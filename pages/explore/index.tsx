@@ -9,7 +9,7 @@ import { useCardProvider } from 'hooks/useCardProvider';
 import { ScrollLoader } from 'components/FetchMore/ScrollLoader';
 import { useAppContext } from 'utils/context/AppContext';
 import { CardGrid } from 'components/CollectionCards/CollectionCard';
-import { CollectionCardEntry } from 'types/rewardTypes';
+import { CollectionCardEntry } from '@infinityxyz/types/core';
 import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import CardList from 'components/Card/CardList';
 import { Spacer, Box } from '@chakra-ui/react';
@@ -17,6 +17,7 @@ import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { NftAction } from 'types';
 import styles from './Explore.module.scss';
 import { PAGE_NAMES } from 'utils/constants';
+import FilterPills from 'components/FilterDrawer/FilterPills';
 
 export default function ExplorePage() {
   const searchContext = useSearchContext();
@@ -64,6 +65,8 @@ export default function ExplorePage() {
 
     return (
       <>
+        <FilterPills />
+
         <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
         {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 

@@ -8,7 +8,7 @@ import { LISTING_TYPE, NULL_ADDRESS, PAGE_NAMES } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
-import { CardData, WyvernSchemaName } from 'types/Nft.interface';
+import { CardData, WyvernSchemaName } from '@infinityxyz/types/core';
 import { Box, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import styles from './ListNFTs.module.scss';
 import { useUserListings } from 'hooks/useUserListings';
@@ -20,6 +20,7 @@ import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
 import router from 'next/router';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
+import FilterPills from 'components/FilterDrawer/FilterPills';
 
 export default function ListNFTs() {
   const { user, showAppError, showAppMessage, providerManager } = useAppContext();
@@ -44,73 +45,75 @@ export default function ListNFTs() {
       return;
     }
 
-    const tokenAddress = order.metadata.asset.address;
-    const tokenId = order.metadata.asset.id;
+    const tokenAddress = order?.metadata?.asset?.address;
+    const tokenId = order?.metadata?.asset?.id;
     const expirationTime = Number(order.expirationTime);
 
-    const fetchBackendChecks = async () => {
-      const result = await fetchVerifiedBonusReward(tokenAddress);
-      return { hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified };
-    };
-
-    const backendChecks = await fetchBackendChecks();
-    const chainId = order.metadata.chainId;
-    let err;
-    const startAmount = Number(weiToEther(order.basePrice));
-    try {
-      const obj: SellOrderProps & { chainId?: string } = {
-        chainId: chainId,
-        asset: {
-          tokenAddress,
-          tokenId,
-          schemaName: (order?.metadata.schema || '') as WyvernSchemaName
-        },
-        paymentTokenAddress: getPaymentTokenAddress('', chainId),
-        accountAddress: user.account,
-        startAmount: startAmount,
-        endAmount: startAmount,
-        expirationTime,
-        assetDetails: { ...item }, // custom data to pass in details.
-        ...backendChecks
+    if (tokenAddress && tokenId) {
+      const fetchBackendChecks = async () => {
+        const result = await fetchVerifiedBonusReward(tokenAddress);
+        return { hasBonusReward: result?.bonusReward, hasBlueCheck: result?.verified };
       };
 
-      switch (order.metadata.listingType) {
-        case LISTING_TYPE.FIXED_PRICE:
-          obj.endAmount = startAmount;
-          break;
+      const backendChecks = await fetchBackendChecks();
+      const chainId = order?.metadata?.chainId;
+      let err;
+      const startAmount = Number(weiToEther(order.basePrice));
+      try {
+        const obj: SellOrderProps & { chainId?: string } = {
+          chainId: chainId,
+          asset: {
+            tokenAddress,
+            tokenId,
+            schemaName: (order?.metadata?.schema || '') as WyvernSchemaName
+          },
+          paymentTokenAddress: getPaymentTokenAddress('', chainId),
+          accountAddress: user.account,
+          startAmount: startAmount,
+          endAmount: startAmount,
+          expirationTime,
+          assetDetails: { ...item }, // custom data to pass in details.
+          ...backendChecks
+        };
 
-        case LISTING_TYPE.DUTCH_AUCTION:
-          if (!order.extra) {
-            showAppError('Failed to find ending price');
+        switch (order?.metadata?.listingType) {
+          case LISTING_TYPE.FIXED_PRICE:
+            obj.endAmount = startAmount;
+            break;
+
+          case LISTING_TYPE.DUTCH_AUCTION:
+            if (!order.extra) {
+              showAppError('Failed to find ending price');
+              return;
+            }
+            obj.endAmount = Number(weiToEther(order.extra));
+            break;
+
+          case LISTING_TYPE.ENGLISH_AUCTION:
+            // ignore reserve price
+            obj.endAmount = startAmount;
+            obj.paymentTokenAddress = getPaymentTokenAddress(LISTING_TYPE.ENGLISH_AUCTION, chainId);
+            obj.waitForHighestBid = true;
+            break;
+
+          default:
+            showAppError('Failed to determine order type.');
             return;
-          }
-          obj.endAmount = Number(weiToEther(order.extra));
-          break;
+        }
 
-        case LISTING_TYPE.ENGLISH_AUCTION:
-          // ignore reserve price
-          obj.endAmount = startAmount;
-          obj.paymentTokenAddress = getPaymentTokenAddress(LISTING_TYPE.ENGLISH_AUCTION, chainId);
-          obj.waitForHighestBid = true;
-          break;
+        if (order.taker && order.taker !== NULL_ADDRESS) {
+          obj.buyerAddress = order.taker;
+        }
 
-        default:
-          showAppError('Failed to determine order type.');
-          return;
+        await createSellOrder(obj, providerManager);
+      } catch (e: any) {
+        err = e;
+        console.error('ERROR: ', e, '   ', expirationTime);
+        showAppError(e.message);
       }
-
-      if (order.taker && order.taker !== NULL_ADDRESS) {
-        obj.buyerAddress = order.taker;
+      if (!err) {
+        showAppMessage('NFT listed successfully!');
       }
-
-      await createSellOrder(obj, providerManager);
-    } catch (e: any) {
-      err = e;
-      console.error('ERROR: ', e, '   ', expirationTime);
-      showAppError(e.message);
-    }
-    if (!err) {
-      showAppMessage('NFT listed successfully!');
     }
   };
 
@@ -122,10 +125,13 @@ export default function ListNFTs() {
       <>
         <div>
           <PleaseConnectWallet account={user?.account} />
+          <FilterPills />
+
           <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={listings} />
           {listings?.length === 0 && isFetching && <LoadingCardList />}
 
           <CardList
+            pageName={PAGE_NAMES.LISTED_NFTS}
             data={listings}
             action={action}
             userAccount={user?.account}

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { TypeAheadOption } from 'services/Listings.service';
+import { ListType } from 'utils/constants';
 
 export type SearchState = {
   isLoading: boolean;
@@ -37,7 +38,7 @@ export type SearchFilter = {
   sortByPriceDirection: string;
   startAfterUser: string;
   collectionIds: string;
-  listType?: '' | 'fixedPrice' | 'englishAuction' | 'dutchAuction';
+  listType?: '' | ListType;
   traitType?: string;
   traitValue?: string;
   pageName?: string;

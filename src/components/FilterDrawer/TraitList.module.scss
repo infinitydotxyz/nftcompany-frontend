@@ -1,0 +1,18 @@
+.traitValuesBox {
+  max-height: 200px;
+  overflow-y: auto;
+
+  .traitValue > label {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.search {
+  div {
+    height: 100%;
+  }
+  input {
+    margin: 2px;
+  }
+}

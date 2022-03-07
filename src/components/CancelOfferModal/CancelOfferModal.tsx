@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './CancelOfferModal.module.scss';
-import { CardData } from 'types/Nft.interface';
+import { CardData } from '@infinityxyz/types/core';
 import { useAppContext } from 'utils/context/AppContext';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
@@ -85,7 +85,7 @@ const CancelOfferModal: React.FC<IProps> = ({ onClose, data }: IProps) => {
                 Cancel Offer
               </Button>
 
-              <Button disabled={isSubmitting} onClick={() => onClose && onClose()}>
+              <Button variant="outline" disabled={isSubmitting} onClick={() => onClose && onClose()}>
                 Close
               </Button>
             </div>

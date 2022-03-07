@@ -22,6 +22,18 @@ export const LISTING_TYPE = {
   ENGLISH_AUCTION: 'englishAuction'
 };
 
+export enum ListType {
+  fixedPrice = 'fixedPrice',
+  englishAuction = 'englishAuction',
+  dutchAuction = 'dutchAuction'
+}
+
+export enum ListTypeFilterName {
+  fixedPrice = 'Fixed Price',
+  englishAuction = 'On Auction',
+  dutchAuction = 'Declining Price'
+}
+
 export const NFT_DATA_SOURCES = {
   INFINITY: 0,
   OPENSEA: 1,

@@ -17,6 +17,7 @@ export const DEP_INFURA_KEY = 'e8695bce67944848aa95459fac052f8e';
 export const MAINNET_PROVIDER_URL = PROVIDER_URL_MAINNET;
 export const POLYGON_PROVIDER_URL = PROVIDER_URL_POLYGON;
 export const RINKEBY_PROVIDER_URL = 'https://testnets-api.opensea.io/jsonrpc/v1/';
+export const LOCALHOST_PROVIDER_URL = 'http://localhost:8545/';
 
 export const INVERSE_BASIS_POINT = 10000;
 export const MAX_UINT_256 = new BigNumber(2).pow(255);

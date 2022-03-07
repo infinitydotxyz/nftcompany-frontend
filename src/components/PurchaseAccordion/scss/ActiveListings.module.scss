@@ -1,0 +1,16 @@
+.table {
+  th {
+    padding-bottom: 10px;
+    padding-left: 0;
+    font-weight: normal;
+    color: var(--chakra-colors-brandColor);
+  }
+  th,
+  td {
+    border-bottom: none;
+    padding-left: 0;
+  }
+  td {
+    padding-top: 10px;
+  }
+}

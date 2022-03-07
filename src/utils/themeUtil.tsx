@@ -50,6 +50,10 @@ export const colors = {
   cardBgLight: '#f3f3f3',
   cardBgDark: '#111',
 
+  buttonHoverBg: '#222',
+  buttonHoverText: '#fff',
+  borderLight: '#bebebe',
+
   // unsure how to add opacity on a css var so we have these variants for now
   headerBg: lightBgAlpha,
   headerBgDark: darkGrayAlpha,
@@ -360,7 +364,11 @@ const Checkbox = {
     return {
       control: {
         border: '1px solid',
-        borderColor: 'var(--chakra-colors-brandColor)'
+        borderColor: 'var(--chakra-colors-brandColor)',
+        _focus: {
+          // remove ugly focus shadow
+          boxShadow: 'none'
+        }
       },
       icon: {
         color: 'var(--chakra-colors-brandColor)',

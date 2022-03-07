@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { CardData, Order } from 'types/Nft.interface';
+import { CardData, Order } from '@infinityxyz/types/core';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { useColorMode } from '@chakra-ui/react';
 import { PurchaseForm } from './PurchaseForm';
@@ -12,9 +12,11 @@ import { LargeIcons } from 'components/Icons/MenuIcons';
 import { PurchaseAccordionItem, SingleAccordion } from './SingleAccordion';
 import { ExtraSpace } from 'components/Spacer/Spacer';
 import { NftAction } from 'types';
+import { ActiveListings } from './ActiveListings';
 
 interface Props {
   data: CardData;
+  listings: CardData[];
   action: string;
   onComplete: () => void;
 }
@@ -122,6 +124,13 @@ export const PurchaseAccordion: React.FC<Props> = (props: Props) => {
           </SingleAccordion>
         </>
       )}
+
+      <ExtraSpace />
+      <SingleAccordion>
+        <PurchaseAccordionItem dark={dark} title="Active Listings" icon={LargeIcons.imageIcon}>
+          <ActiveListings listings={props.listings || []} />
+        </PurchaseAccordionItem>
+      </SingleAccordion>
     </div>
   );
 };

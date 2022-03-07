@@ -52,5 +52,12 @@ export const deployed = {
     WyvernTokenTransferProxy: '0x3e023b8d0bc62bc38ae08f663d668332e41d96c1',
     WyvernProxyRegistry: '0x396bffea196a753b3c697c9ab899f3a62077d18a',
     WyvernExchange: '0xbfbf0bd8963fe4f5168745ad59da20bf78d6385e'
+    // WrapperWyvernExchange: '0x51b225de727d9702876d85e7227f2cc1ea4bbc4f' // not used
+  },
+  localhost: {
+    WyvernTokenTransferProxy: '0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9',
+    WyvernProxyRegistry: '0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0',
+    WyvernExchange: '0xdc64a140aa3e981100a9beca4e685f962f0cf6c9'
+    // WrapperWyvernExchange: '0x5fbdb2315678afecb367f032d93f642f64180aa3' // not used
   }
 };

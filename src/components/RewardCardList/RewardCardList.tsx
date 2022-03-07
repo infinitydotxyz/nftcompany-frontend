@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './RewardCardList.module.scss';
 import { AirdropCard, CountdownCard, DataItem, RewardCard } from '../RewardCard/RewardCard';
-import { UserReward } from 'types/rewardTypes';
+import { UserReward } from '@infinityxyz/types/core';
 import {
   StatsIcon,
   GiftCardIcon,

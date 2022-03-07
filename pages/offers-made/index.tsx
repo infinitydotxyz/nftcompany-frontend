@@ -12,6 +12,8 @@ import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import styles from './OffersMade.module.scss';
 import { SearchFilter, useSearchContext } from 'utils/context/SearchContext';
 import { useUserOffersMade } from 'hooks/useUserOffersMade';
+import { PAGE_NAMES } from 'utils/constants';
+import FilterPills from 'components/FilterDrawer/FilterPills';
 
 export default function OffersMade() {
   const { user } = useAppContext();
@@ -23,11 +25,14 @@ export default function OffersMade() {
     return (
       <>
         <div>
+          <FilterPills />
+
           <PleaseConnectWallet account={user?.account} />
           <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={offers} />
           {offers?.length === 0 && isFetching && <LoadingCardList />}
 
           <CardList
+            pageName={PAGE_NAMES.OFFERS_MADE}
             data={offers}
             action={NftAction.CancelOffer}
             userAccount={user?.account}

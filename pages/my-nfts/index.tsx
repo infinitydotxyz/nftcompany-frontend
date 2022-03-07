@@ -9,12 +9,20 @@ import { ITEMS_PER_PAGE, NFT_DATA_SOURCES, PAGE_NAMES } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
-import { transformOpenSea, transformCovalent, getNftDataSource, transformUnmarshal } from 'utils/commonUtil';
-import { CardData } from 'types/Nft.interface';
+import {
+  transformAlchemy,
+  transformOpenSea,
+  transformCovalent,
+  getNftDataSource,
+  transformUnmarshal,
+  getPageOffsetForAssetQuery
+} from 'utils/commonUtil';
+import { CardData } from '@infinityxyz/types/core';
 import { NftAction } from 'types';
 import { Box } from '@chakra-ui/layout';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { SearchFilter } from 'utils/context/SearchContext';
+import FilterPills from 'components/FilterDrawer/FilterPills';
 
 export default function MyNFTs() {
   const { user, showAppError, chainId } = useAppContext();
@@ -25,6 +33,7 @@ export default function MyNFTs() {
   const [listModalItem, setListModalItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [alchemyPageKey, setAlchemyPageKey] = useState('');
 
   const fetchData = async () => {
     if (!user || !user?.account || !chainId) {
@@ -34,29 +43,55 @@ export default function MyNFTs() {
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
     const source = getNftDataSource(chainId);
+    const offset = getPageOffsetForAssetQuery(source, newCurrentPage, ITEMS_PER_PAGE);
 
     const { result, error } = await apiGet(`/u/${user?.account}/assets`, {
-      offset: newCurrentPage * ITEMS_PER_PAGE, // not "startAfter" because this is not firebase query.
+      offset, // not "startAfter" because this is not firebase query.
       limit: ITEMS_PER_PAGE,
       source,
+      chainId,
+      pageKey: alchemyPageKey,
       ...filter
     });
     if (error) {
       showAppError(`${error.message}`);
       return;
     }
+
+    const tokenAddresses: string[] = [];
     const moreData = (result?.assets || []).map((item: any) => {
+      let newItem;
       if (source === NFT_DATA_SOURCES.OPENSEA) {
-        return transformOpenSea(item, user?.account, chainId);
+        newItem = transformOpenSea(item, user?.account, chainId);
       } else if (source === NFT_DATA_SOURCES.COVALENT) {
-        return transformCovalent(item, user?.account, chainId);
+        newItem = transformCovalent(item, user?.account, chainId);
       } else if (source === NFT_DATA_SOURCES.UNMARSHAL) {
-        return transformUnmarshal(item, user?.account, chainId);
+        newItem = transformUnmarshal(item, user?.account, chainId);
+      } else if (source === NFT_DATA_SOURCES.ALCHEMY) {
+        newItem = transformAlchemy(item, user?.account, chainId);
+      }
+
+      if (newItem?.tokenAddress && !tokenAddresses.includes(newItem.tokenAddress)) {
+        tokenAddresses.push(newItem.tokenAddress);
+      }
+      return newItem;
+    });
+
+    // fetch bluechecks for assets' collections (tokenAddresses) & apply them:
+    const { result: getBluecheckResult } = await apiGet(`/collections/verifiedIds?ids=${tokenAddresses.join(',')}`);
+    moreData.forEach((item: CardData) => {
+      if (getBluecheckResult?.collectionIds?.includes(item.tokenAddress)) {
+        item.hasBlueCheck = true;
       }
     });
+
     setIsFetching(false);
     setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);
+    // alchemy pagination
+    if (result?.pageKey) {
+      setAlchemyPageKey(result.pageKey);
+    }
   };
 
   React.useEffect(() => {
@@ -93,7 +128,9 @@ export default function MyNFTs() {
                 }}
               />
             </Box>
-            <Box>
+            <Box className="content-container">
+              <FilterPills />
+
               <PleaseConnectWallet account={user?.account} />
               <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
               {data?.length === 0 && isFetching && <LoadingCardList />}

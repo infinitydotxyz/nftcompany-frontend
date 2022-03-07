@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './AssetPreview.module.scss';
-import { CardData } from 'types/Nft.interface';
+import { CardData, BaseCardData } from '@infinityxyz/types/core';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { PurchaseAccordion } from 'components/PurchaseAccordion/PurchaseAccordion';
 import { getListings } from 'services/Listings.service';
@@ -23,6 +23,7 @@ type Props = {
 
 export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Element => {
   const [data, setData] = useState<CardData | undefined>();
+  const [listings, setListings] = useState<BaseCardData[]>([]);
   const [title, setTitle] = useState('');
   const { chainId } = useAppContext();
 
@@ -41,20 +42,21 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
     const result = await getListings({ ...filter, chainId, listingSource: ListingSource.Infinity });
 
     if (result && result.length > 0) {
-      let theData = result[0];
-      let createdAt = theData.metadata?.createdAt ?? 0;
+      setListings(result);
+      let firstListing = result[0]; // by default, pick the first (latest) listing.
+      let createdAt = firstListing.metadata?.createdAt ?? 0;
 
       // get the latest one if more than 1
       result.forEach((x) => {
         if ((x.metadata?.createdAt ?? 0) > createdAt) {
-          theData = x;
+          firstListing = x;
           createdAt = x.metadata?.createdAt ?? 0;
         }
       });
 
-      setData(theData);
-      setTitle(theData.title);
-      onTitle(theData.title);
+      setData(firstListing);
+      setTitle(firstListing.title);
+      onTitle(firstListing.title);
     }
   };
 
@@ -118,6 +120,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
           <div className={styles.right}>
             <PurchaseAccordion
               data={data}
+              listings={listings}
               action={action}
               onComplete={() => {
                 // onClose();

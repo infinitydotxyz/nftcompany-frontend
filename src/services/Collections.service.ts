@@ -251,6 +251,7 @@ export interface CollectionStats {
   votesFor?: number;
   votesAgainst?: number;
   name?: string;
+  startAfter?: string;
   profileImage?: string;
   searchCollectionName: string;
 }

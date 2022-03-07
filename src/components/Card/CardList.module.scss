@@ -2,7 +2,8 @@
 
 @include cardList();
 
-$cardHeight: 332px;
+$cardHeight: 400px;
+$imgHeight: 260px;
 
 .button {
   display: inline-flex;
@@ -38,26 +39,15 @@ $cardHeight: 332px;
 
 .card {
   position: relative;
-  padding: 12px;
-  border-radius: 20px;
   height: $cardHeight;
-  @include lightShadow();
-  background-color: var(--chakra-colors-cardBgLight, red);
   overflow: hidden;
 
   :global(body.chakra-ui-dark) & {
-    @include darkShadow();
     background-color: var(--chakra-colors-cardBgDark, red);
   }
 
   .cardPreviewWrap {
     position: relative;
-
-    .priceFloater {
-      position: absolute;
-      top: 8px;
-      left: 10px;
-    }
 
     .ownedTag {
       position: absolute;
@@ -77,14 +67,14 @@ $cardHeight: 332px;
 
   .cardPreview {
     position: relative;
-    border-radius: 16px;
+    border-radius: var(--border-radius-big);
     overflow: hidden;
-    height: 220px;
+    height: $imgHeight;
     cursor: pointer;
 
     img {
       min-width: 100%;
-      min-height: 280px;
+      min-height: $imgHeight;
       transition: transform 1s;
       object-fit: cover;
     }
@@ -100,10 +90,16 @@ $cardHeight: 332px;
     padding: 0;
     width: 100%;
     flex: 0;
+    align-items: center;
+    height: 30px;
 
     .stadiumButtonGray {
       background-color: #bbb;
       color: black;
+    }
+
+    .threeDotIcon {
+      cursor: pointer;
     }
   }
 
@@ -124,16 +120,14 @@ $cardHeight: 332px;
   }
 
   .cardLine {
-    display: flex;
-    justify-content: space-between;
     margin-top: 10px;
     font-size: 14px;
-    align-items: flex-start;
+    text-align: left;
 
     .collectionRow {
       display: flex;
-      align-items: flex-end;
-      font-weight: 500;
+      align-items: center;
+      font-weight: bold;
       font-size: 16px;
       a {
         white-space: nowrap;
@@ -153,6 +147,23 @@ $cardHeight: 332px;
         max-width: 20ch;
         text-overflow: ellipsis;
         overflow: hidden;
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .priceRow {
+    display: flex;
+    > button {
+      background-color: white;
+      color: black;
+      margin-left: 7px;
+      border-radius: var(--border-radius-big);
+      border: 1px solid var(--chakra-colors-brandColor);
+      &:hover {
+        background-color: var(--chakra-colors-buttonHoverBg);
+        color: var(--chakra-colors-buttonHoverText);
       }
     }
   }

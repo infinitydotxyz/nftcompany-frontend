@@ -1,10 +1,10 @@
-import '../styles/globals.css';
-import '../styles/grid.css';
+import '../styles/globals.scss';
+import '../styles/components.scss';
+import '../styles/grid.scss';
 import '../styles/page.scss';
-import '../styles/fonts.css';
-import '../styles/Typeahead.css';
+import '../styles/fonts.scss';
+import '../styles/Typeahead.scss';
 import '../styles/DatePicker.scss';
-import '../src/components/nft/components.scss';
 
 import type { AppProps } from 'next/app';
 import { NextPage } from 'next';

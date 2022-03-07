@@ -1,4 +1,5 @@
-import { CardData, Order, Orders, OrderType } from 'types/Nft.interface';
+import { CardData, Orders, OrderType } from '@infinityxyz/types/core';
+import { Order } from '@infinityxyz/types/core';
 import { weiToEther } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { ListingSource, SearchFilter } from 'utils/context/SearchContext';
@@ -132,30 +133,36 @@ export const getTypeAheadOptions = async (
 export const orderToCardData = (order: Order, orderType: OrderType): CardData => {
   const cheapestOpenseaOrder = getCheapestOpenseaOrder(order);
   let owner = order.maker;
-  if (orderType === OrderType.BUY) {
-    owner = order.metadata.asset.owner;
-  }
-  const cardData: CardData = {
-    id: order.id,
-    image: order.metadata.asset.image,
-    title: order.metadata.asset.title,
-    description: order.metadata.asset.description,
-    inStock: +order.metadata.asset.quantity,
-    price: Number(weiToEther(order.basePrice || 0)),
-    tokenAddress: order.metadata.asset.address,
-    tokenId: order.metadata.asset.id,
-    maker: order.maker,
-    order: order,
-    hasBonusReward: order.metadata.hasBonusReward,
-    hasBlueCheck: order.metadata.hasBlueCheck,
-    collectionName: order.metadata.asset.collectionName,
-    owner,
-    metadata: order.metadata,
-    schemaName: order.metadata.schema,
-    expirationTime: order.expirationTime,
-    chainId: order.metadata.chainId,
-    openseaListing: cheapestOpenseaOrder
+  let cardData: CardData = {
+    id: '',
+    title: ''
   };
+  if (order.metadata) {
+    if (orderType === OrderType.BUY) {
+      owner = order.metadata.asset.owner;
+    }
+    cardData = {
+      id: order.id ?? '',
+      image: order.metadata.asset.image,
+      title: order.metadata.asset.title ?? '',
+      description: order.metadata.asset.description,
+      inStock: +(order.metadata.asset.quantity ?? 0),
+      price: Number(weiToEther(order.basePrice ?? 0)),
+      tokenAddress: order.metadata.asset.address,
+      tokenId: order.metadata.asset.id,
+      maker: order.maker,
+      order: order,
+      hasBonusReward: order.metadata.hasBonusReward,
+      hasBlueCheck: order.metadata.hasBlueCheck,
+      collectionName: order.metadata.asset.collectionName,
+      owner,
+      metadata: order.metadata,
+      schemaName: order.metadata.schema,
+      expirationTime: order.expirationTime,
+      chainId: order.metadata.chainId,
+      openseaListing: cheapestOpenseaOrder
+    };
+  }
   return cardData;
 };
 

@@ -34,6 +34,7 @@ import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import styles from './Collection.module.scss';
 import { PAGE_NAMES } from 'utils/constants';
+import FilterPills from 'components/FilterDrawer/FilterPills';
 
 enum CollectionTabs {
   NFTs = 'NFTs',
@@ -288,7 +289,7 @@ const Collection = (): JSX.Element => {
                       label="Discord members"
                       changeInterval={24}
                       onClick={onEdit}
-                      buttonText="Add discord"
+                      buttonText="Add Discord"
                       data={discordData.map((item) => {
                         return { ...item, y: item.membersCount };
                       })}
@@ -299,14 +300,7 @@ const Collection = (): JSX.Element => {
               </Box>
             </Box>
 
-            <Box
-              marginTop={'72px'}
-              display={'flex'}
-              flexDirection="row"
-              width="100%"
-              alignItems={'center'}
-              className={styles.toggle}
-            >
+            <Box marginTop={'72px'} display={'flex'} flexDirection="row" width="100%" alignItems={'center'}>
               <ToggleTab
                 options={['NFTs', 'Community']}
                 selected={toggleTab}
@@ -349,9 +343,14 @@ const Collection = (): JSX.Element => {
                   <TabPanel>
                     <Box display="flex" flexDirection={'row'} width="100%">
                       <Box className="filter-container">
-                        <FilterDrawer collection={address} renderContent={true} showCollection={false} pageName={PAGE_NAMES.COLLECTION} />
+                        <FilterDrawer
+                          collection={address}
+                          renderContent={true}
+                          showCollection={false}
+                          pageName={PAGE_NAMES.COLLECTION}
+                        />
                       </Box>
-                      <Box width="82%">
+                      <Box className="content-container">
                         <CollectionContents
                           name={name as string}
                           onTitle={(newTitle) => {
@@ -439,11 +438,19 @@ const CollectionContents = ({ name, onTitle, onLoaded, listingSource }: Props): 
 
   return (
     <>
+      <FilterPills />
+
       <NoData dataLoaded={cardProvider.hasLoaded} isFetching={!cardProvider.hasLoaded} data={cardProvider.list} />
 
       {!cardProvider.hasData() && !cardProvider.hasLoaded && <LoadingCardList />}
 
-      <CardList showItems={['PRICE']} userAccount={user?.account} data={cardProvider.list} action={NftAction.BuyNft} />
+      <CardList
+        pageName={PAGE_NAMES.COLLECTION}
+        showItems={['PRICE']}
+        userAccount={user?.account}
+        data={cardProvider.list}
+        action={NftAction.BuyNft}
+      />
 
       {cardProvider.hasData() && (
         <ScrollLoader

@@ -9,11 +9,19 @@ import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/Fet
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
 import { useRouter } from 'next/router';
-import { transformOpenSea, transformCovalent, getNftDataSource, transformUnmarshal } from 'utils/commonUtil';
-import { CardData } from 'types/Nft.interface';
+import {
+  transformAlchemy,
+  transformOpenSea,
+  transformCovalent,
+  getNftDataSource,
+  transformUnmarshal,
+  getPageOffsetForAssetQuery
+} from 'utils/commonUtil';
+import { CardData } from '@infinityxyz/types/core';
 import { Box } from '@chakra-ui/layout';
 import FilterDrawer from 'components/FilterDrawer/FilterDrawer';
 import { SearchFilter } from 'utils/context/SearchContext';
+import FilterPills from 'components/FilterDrawer/FilterPills';
 
 export default function UserPage() {
   const { user, showAppError, chainId } = useAppContext();
@@ -22,6 +30,7 @@ export default function UserPage() {
   const [data, setData] = useState<CardData[]>([]);
   const [currentPage, setCurrentPage] = useState(-1);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [alchemyPageKey, setAlchemyPageKey] = useState('');
 
   const router = useRouter();
   const {
@@ -37,11 +46,14 @@ export default function UserPage() {
     setIsFetching(true);
     const newCurrentPage = currentPage + 1;
     const source = getNftDataSource(chainId);
+    const offset = getPageOffsetForAssetQuery(source, newCurrentPage, ITEMS_PER_PAGE);
 
     const { result, error } = await apiGet(`/p/u/${userParam}/assets`, {
-      offset: newCurrentPage * ITEMS_PER_PAGE,
+      offset,
       limit: ITEMS_PER_PAGE,
       source,
+      chainId,
+      pageKey: alchemyPageKey,
       ...filter
     });
 
@@ -56,11 +68,17 @@ export default function UserPage() {
         return transformCovalent(item, userParam as string, chainId);
       } else if (source === NFT_DATA_SOURCES.UNMARSHAL) {
         return transformUnmarshal(item, userParam as string, chainId);
+      } else if (source === NFT_DATA_SOURCES.ALCHEMY) {
+        return transformAlchemy(item, userParam as string, chainId);
       }
     });
     setIsFetching(false);
     setData([...data, ...moreData]);
     setCurrentPage(newCurrentPage);
+    // alchemy pagination
+    if (result?.pageKey) {
+      setAlchemyPageKey(result.pageKey);
+    }
   };
 
   React.useEffect(() => {
@@ -87,6 +105,8 @@ export default function UserPage() {
           </div>
 
           <Box display="flex">
+            <FilterPills />
+
             <Box className="filter-container">
               <FilterDrawer
                 showSaleTypes={false}
@@ -98,7 +118,7 @@ export default function UserPage() {
                 }}
               />
             </Box>
-            <Box>
+            <Box className="content-container">
               <NoData dataLoaded={dataLoaded} isFetching={isFetching} data={data} />
               {data?.length === 0 && isFetching && <LoadingCardList />}
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CollectionCardEntry } from 'types/rewardTypes';
+import { CollectionCardEntry } from '@infinityxyz/types/core';
 import router from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { getSearchFriendlyString, uuidv4 } from 'utils/commonUtil';
@@ -36,9 +36,6 @@ export const CollectionCard = ({ entry, isFeatured }: Props) => {
 
   return (
     <div ref={ref} className={styles.tripleCard}>
-      <div className={styles.card1}></div>
-      <div className={styles.card2}></div>
-
       <div
         className={`${styles.card3} ${isFeatured && styles.featuredCard}`}
         onClick={() => router.push(`/collection/${cleanCollectionName(entry.name)}`)}
