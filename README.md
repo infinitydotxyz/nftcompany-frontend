@@ -1,5 +1,7 @@
 ## Getting Started
 
+Tip: if you're using [NVM](https://github.com/nvm-sh/nvm) you should set your Node version to the recommended version for this project by running `nvm use` at the project root.
+
 First, install the packages:
 
 ```bash
