@@ -167,7 +167,7 @@ packages:
       bintrees: 1.0.2
       bn.js: 4.12.0
       compare-versions: 3.6.0
-      ethereumjs-abi: 0.6.6
+      ethereumjs-abi: 0.6.8
       ethereumjs-blockstream: 2.0.7
       ethereumjs-util: 5.2.1
       find-versions: 2.0.0
@@ -4647,7 +4647,7 @@ packages:
   /d/1.0.1:
     resolution: {integrity: sha512-m62ShEObQ39CfralilEQRjH6oAMtNCV1xJyEx5LpRYUVN+EviphDgUc/F3hnYbADmkiNs67Y+3ylmlG7Lnu+FA==}
     dependencies:
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
       type: 1.2.0
     dev: false
 
@@ -5048,19 +5048,21 @@ packages:
       is-date-object: 1.0.5
       is-symbol: 1.0.4
 
-  /es5-ext/0.10.53:
-    resolution: {integrity: sha512-Xs2Stw6NiNHWypzRTY1MtaG/uJlwCk8kH81920ma8mvN8Xq1gsfhZvpkImLQArw8AHnv8MT2I45J3c0R8slE+Q==}
+  /es5-ext/0.10.56:
+    resolution: {integrity: sha512-YUhqzoMnIjMW5y8FzaMxsCu0eWCwq32GrlwhOhbQmL5OiZReWFm/KvRiYuvqf3CaG/zZ36Kyb4KfVe674cafCQ==}
+    engines: {node: '>=0.10'}
+    requiresBuild: true
     dependencies:
       es6-iterator: 2.0.3
       es6-symbol: 3.1.3
-      next-tick: 1.0.0
+      next-tick: 1.1.0
     dev: false
 
   /es6-iterator/2.0.3:
     resolution: {integrity: sha1-p96IkUGgWpSwhUQDstCg+/qY87c=}
     dependencies:
       d: 1.0.1
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
       es6-symbol: 3.1.3
     dev: false
 
@@ -5068,7 +5070,7 @@ packages:
     resolution: {integrity: sha1-kTbgUD3MBqMBaQ8LsU/042TpSfA=}
     dependencies:
       d: 1.0.1
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
       es6-iterator: 2.0.3
       es6-set: 0.1.5
       es6-symbol: 3.1.3
@@ -5079,7 +5081,7 @@ packages:
     resolution: {integrity: sha1-0rPsXU2ADO2BjbU40ol02wpzzLE=}
     dependencies:
       d: 1.0.1
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
       es6-iterator: 2.0.3
       es6-symbol: 3.1.1
       event-emitter: 0.3.5
@@ -5089,7 +5091,7 @@ packages:
     resolution: {integrity: sha1-vwDvT9q2uhtG7Le2KbTH7VcVzHc=}
     dependencies:
       d: 1.0.1
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
     dev: false
 
   /es6-symbol/3.1.3:
@@ -5103,7 +5105,7 @@ packages:
     resolution: {integrity: sha512-p5um32HOTO1kP+w7PRnB+5lQ43Z6muuMuIMffvDN8ZB4GcnjLBV6zGStpbASIMk4DCAvEaamhe2zhyCb/QXXsA==}
     dependencies:
       d: 1.0.1
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
       es6-iterator: 2.0.3
       es6-symbol: 3.1.3
     dev: false
@@ -5524,11 +5526,11 @@ packages:
       setimmediate: 1.0.5
     dev: false
 
-  /ethereumjs-abi/0.6.6:
-    resolution: {integrity: sha512-w8KubDsA/+OAuqtIR9RGsMcoZ5nhM8vxwjJAJvEIY+clhxA3BHoLG3+ClYQaQhD0n3mlDt3U5rBrmSVJvI3c8A==}
+  /ethereumjs-abi/0.6.8:
+    resolution: {integrity: sha512-Tx0r/iXI6r+lRsdvkFDlut0N08jWMnKRZ6Gkq+Nmw75lZe4e6o3EkSnkaBP5NF6+m5PTGAr9JP43N3LyeoglsA==}
     dependencies:
       bn.js: 4.12.0
-      ethereumjs-util: 5.2.1
+      ethereumjs-util: 6.2.1
     dev: false
 
   /ethereumjs-account/2.0.5:
@@ -5703,7 +5705,7 @@ packages:
     resolution: {integrity: sha1-34xp7vFkeSPHFXuc6DhAYQsCzDk=}
     dependencies:
       d: 1.0.1
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
     dev: false
 
   /eventemitter3/4.0.7:
@@ -7435,8 +7437,8 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: false
 
-  /next-tick/1.0.0:
-    resolution: {integrity: sha1-yobR/ogoFpsBICCOPchCS524NCw=}
+  /next-tick/1.1.0:
+    resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
     dev: false
 
   /next/12.1.0_d4c8e9d0696ef40786054756cfd1867a:
