@@ -14,7 +14,7 @@ import {
   startAfter
 } from 'firebase/firestore'; // access firestore database service
 
-import { increaseLikes } from './counterUtils';
+import { increaseComments, increaseLikes } from './counterUtils';
 import { firestoreConfig } from '../../../creds/firestore';
 
 export const COLL_FEED = 'feed'; // collection: /feed - to store feed events
@@ -41,7 +41,7 @@ export async function fetchMoreEvents() {
   const coll = collection(firestoreDb, COLL_FEED);
 
   if (lastDoc) {
-    const q = query(coll, orderBy('datetime', 'asc'), limit(2), startAfter(lastDoc)); // query(coll, limit(3), orderBy('datetime', 'desc'))
+    const q = query(coll, orderBy('timestamp', 'asc'), limit(2), startAfter(lastDoc)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
     const items = await getDocs(q);
 
     if (items.docs.length > 0) {
@@ -61,7 +61,7 @@ export async function subscribe(collectionPath: string, onChange: any) {
   try {
     const coll = collection(firestoreDb, collectionPath);
 
-    const q = query(coll, orderBy('datetime', 'asc'), limit(2)); // query(coll, limit(3), orderBy('datetime', 'desc'))
+    const q = query(coll, orderBy('timestamp', 'asc'), limit(2)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (onChange && change.type === 'added') {
@@ -88,11 +88,18 @@ export async function addUserLike(eventId: string, userAccount: string, doneCall
   const docRef = doc(firestoreDb, 'feed', eventId, 'userLikes', userAccount);
   const existingDocRef = await getDoc(docRef);
   const existingDocData = existingDocRef?.data();
-  console.log('existingDocData', existingDocData);
   if (!existingDocData) {
     // user has not liked this eventId before => setDoc to userLikes & call increaseLikes:
     await setDoc(docRef, { timestamp: +new Date() });
     increaseLikes(userAccount ?? '', eventId);
     doneCallback();
   }
+}
+
+export async function addUserComments(eventId: string, userAccount: string, comment: string, doneCallback: () => void) {
+  const timestamp = +new Date();
+  const docRef = doc(firestoreDb, 'feed', eventId, 'userComments', userAccount + '_' + timestamp);
+  await setDoc(docRef, { comment, timestamp });
+  increaseComments(userAccount ?? '', eventId);
+  doneCallback();
 }

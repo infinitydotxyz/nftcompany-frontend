@@ -6,7 +6,7 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 
 import { COLL_FEED, fetchMoreEvents, subscribe } from '../../src/utils/firestore/firestoreUtils';
-import FeedItem, { FeedEvent, FeedEventType } from './FeedItem';
+import FeedItem, { FeedEvent, FeedEventType } from '../../src/components/app/Feed/FeedItem';
 import { FetchMore } from 'components/FetchMore/FetchMore';
 
 type Filter = {
@@ -76,6 +76,13 @@ export default function Feed() {
                   const foundEv = events.find((e) => e.id === ev.id);
                   if (foundEv?.likes) {
                     foundEv.likes = foundEv.likes + 1;
+                  }
+                  setEvents([...events]);
+                }}
+                onComment={(ev) => {
+                  const foundEv = events.find((e) => e.id === ev.id);
+                  if (foundEv?.comments) {
+                    foundEv.comments = foundEv.comments + 1;
                   }
                   setEvents([...events]);
                 }}
