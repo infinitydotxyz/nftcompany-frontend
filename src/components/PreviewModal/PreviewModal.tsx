@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import { CardData } from '@infinityxyz/types/core';
+import { CardData } from '@infinityxyz/lib/types/core';
 import { useAppContext } from 'utils/context/AppContext';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { Box, Button, Link } from '@chakra-ui/react';

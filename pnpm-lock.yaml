@@ -12,7 +12,7 @@ specifiers:
   '@chakra-ui/tooltip': 1.3.11
   '@emotion/react': '11'
   '@emotion/styled': '11'
-  '@infinityxyz/types': ^1.1.2
+  '@infinityxyz/lib': ^1.6.1
   '@react-hook/window-size': ^3.0.7
   '@types/react': 17.0.39
   '@types/react-bootstrap-typeahead': 5.1.8
@@ -88,6 +88,7 @@ dependencies:
   '@chakra-ui/tooltip': 1.3.11_24332c47a350833870bea213fd3659eb
   '@emotion/react': 11.7.1_7c3ecd89bd75b61b41f2029715ea2305
   '@emotion/styled': 11.6.0_9b9ae732b3b2d88f2c185c94e7019fd1
+  '@infinityxyz/lib': 1.6.1
   '@react-hook/window-size': 3.0.7_react@17.0.2
   '@walletconnect/web3-provider': 1.7.1_@babel+core@7.17.5
   axios: 0.21.4
@@ -135,7 +136,6 @@ dependencies:
   wyvern-schemas: github.com/ProjectOpenSea/wyvern-schemas/e1a08fcf8ce2b11a0fe9cbdc7c9f77c59fadef26
 
 devDependencies:
-  '@infinityxyz/types': 1.1.2
   '@types/react': 17.0.39
   '@types/react-bootstrap-typeahead': 5.1.8
   '@types/react-dom': 17.0.11
@@ -2267,7 +2267,7 @@ packages:
     engines: {node: ^8.13.0 || >=10.10.0}
     dependencies:
       '@grpc/proto-loader': 0.6.9
-      '@types/node': 17.0.16
+      '@types/node': 17.0.21
     dev: false
 
   /@grpc/proto-loader/0.6.9:
@@ -2309,9 +2309,9 @@ packages:
       warning: 4.0.3
     dev: false
 
-  /@infinityxyz/types/1.1.2:
-    resolution: {integrity: sha512-qODqIMcD0GA70nYUaPR49WIJHgChk/d1U1NUnFjHk9YygWULj1znXQ8jCxnMgdXC4R+7FoArtkE1Ay0VpHuGvQ==}
-    dev: true
+  /@infinityxyz/lib/1.6.1:
+    resolution: {integrity: sha512-McZs9DOGHJa0HKHmRYH+YJ+HlUdjJ1SFhqt+k2VT4AfUMN08ddf9O+5GUmlLMd2cGnAXvcQv+r7Ns86c8zGbsA==}
+    dev: false
 
   /@jridgewell/resolve-uri/3.0.5:
     resolution: {integrity: sha512-VPeQ7+wH0itvQxnG+lIzWgkysKIr3L9sslimFW55rHMdGu/qCQ5z5h9zq4gI8uBtqkpHhsF4Z/OwExufUCThew==}
@@ -4120,7 +4120,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001313
-      electron-to-chromium: 1.4.76
+      electron-to-chromium: 1.4.77
     dev: false
 
   /browserslist/4.19.1:
@@ -4647,7 +4647,7 @@ packages:
   /d/1.0.1:
     resolution: {integrity: sha512-m62ShEObQ39CfralilEQRjH6oAMtNCV1xJyEx5LpRYUVN+EviphDgUc/F3hnYbADmkiNs67Y+3ylmlG7Lnu+FA==}
     dependencies:
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
       type: 1.2.0
     dev: false
 
@@ -4943,8 +4943,8 @@ packages:
     resolution: {integrity: sha512-f1RXFMsvwufWLwYUxTiP7HmjprKXrqEWHiQkjAYa9DJeVIlZk5v8gBGcaV+FhtXLly6C1OTVzQY+2UQrACiLlg==}
     dev: false
 
-  /electron-to-chromium/1.4.76:
-    resolution: {integrity: sha512-3Vftv7cenJtQb+k00McEBZ2vVmZ/x+HEF7pcZONZIkOsESqAqVuACmBxMv0JhzX7u0YltU0vSqRqgBSTAhFUjA==}
+  /electron-to-chromium/1.4.77:
+    resolution: {integrity: sha512-fiDxw8mO9Ph1Z0bjX2sFTPpi0J0QkOiwOJF+5Q0J0baNc/F9lLePAvDPlnoxvbUYYMizqrKPeotRRkJ9LtxAew==}
     dev: false
 
   /elliptic/6.5.4:
@@ -5048,19 +5048,21 @@ packages:
       is-date-object: 1.0.5
       is-symbol: 1.0.4
 
-  /es5-ext/0.10.53:
-    resolution: {integrity: sha512-Xs2Stw6NiNHWypzRTY1MtaG/uJlwCk8kH81920ma8mvN8Xq1gsfhZvpkImLQArw8AHnv8MT2I45J3c0R8slE+Q==}
+  /es5-ext/0.10.56:
+    resolution: {integrity: sha512-YUhqzoMnIjMW5y8FzaMxsCu0eWCwq32GrlwhOhbQmL5OiZReWFm/KvRiYuvqf3CaG/zZ36Kyb4KfVe674cafCQ==}
+    engines: {node: '>=0.10'}
+    requiresBuild: true
     dependencies:
       es6-iterator: 2.0.3
       es6-symbol: 3.1.3
-      next-tick: 1.0.0
+      next-tick: 1.1.0
     dev: false
 
   /es6-iterator/2.0.3:
     resolution: {integrity: sha1-p96IkUGgWpSwhUQDstCg+/qY87c=}
     dependencies:
       d: 1.0.1
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
       es6-symbol: 3.1.3
     dev: false
 
@@ -5068,7 +5070,7 @@ packages:
     resolution: {integrity: sha1-kTbgUD3MBqMBaQ8LsU/042TpSfA=}
     dependencies:
       d: 1.0.1
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
       es6-iterator: 2.0.3
       es6-set: 0.1.5
       es6-symbol: 3.1.3
@@ -5079,7 +5081,7 @@ packages:
     resolution: {integrity: sha1-0rPsXU2ADO2BjbU40ol02wpzzLE=}
     dependencies:
       d: 1.0.1
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
       es6-iterator: 2.0.3
       es6-symbol: 3.1.1
       event-emitter: 0.3.5
@@ -5089,7 +5091,7 @@ packages:
     resolution: {integrity: sha1-vwDvT9q2uhtG7Le2KbTH7VcVzHc=}
     dependencies:
       d: 1.0.1
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
     dev: false
 
   /es6-symbol/3.1.3:
@@ -5103,7 +5105,7 @@ packages:
     resolution: {integrity: sha512-p5um32HOTO1kP+w7PRnB+5lQ43Z6muuMuIMffvDN8ZB4GcnjLBV6zGStpbASIMk4DCAvEaamhe2zhyCb/QXXsA==}
     dependencies:
       d: 1.0.1
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
       es6-iterator: 2.0.3
       es6-symbol: 3.1.3
     dev: false
@@ -5703,7 +5705,7 @@ packages:
     resolution: {integrity: sha1-34xp7vFkeSPHFXuc6DhAYQsCzDk=}
     dependencies:
       d: 1.0.1
-      es5-ext: 0.10.53
+      es5-ext: 0.10.56
     dev: false
 
   /eventemitter3/4.0.7:
@@ -7435,8 +7437,8 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: false
 
-  /next-tick/1.0.0:
-    resolution: {integrity: sha1-yobR/ogoFpsBICCOPchCS524NCw=}
+  /next-tick/1.1.0:
+    resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
     dev: false
 
   /next/12.1.0_d4c8e9d0696ef40786054756cfd1867a:
@@ -8045,7 +8047,7 @@ packages:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.1
-      '@types/node': 17.0.16
+      '@types/node': 17.0.21
       long: 4.0.0
     dev: false
 

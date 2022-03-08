@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './AcceptOfferModal.module.scss';
-import { CardData } from '@infinityxyz/types/core';
+import { CardData } from '@infinityxyz/lib/types/core';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { apiPost } from 'utils/apiUtil';
 import { useAppContext } from 'utils/context/AppContext';

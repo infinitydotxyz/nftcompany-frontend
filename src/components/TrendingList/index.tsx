@@ -1,4 +1,4 @@
-import { Box, Link } from '@chakra-ui/layout';
+import { Box, Link, Spacer } from '@chakra-ui/layout';
 import { Button, IconButton, Image, Text } from '@chakra-ui/react';
 import { EthCurrencyIcon, FavoriteIcon, FavoriteOutlineIcon } from 'components/Icons/Icons';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
@@ -16,14 +16,9 @@ import { Period, periodToInterval } from 'components/TrendingList/PeriodInterval
 import { SortProgressBar } from 'components/SortProgressBar';
 import { trendingDataToCollectionFollow, useCollectionFollow, CollectionFollowHook } from 'hooks/useCollectionFollow';
 import { useAppContext } from 'utils/context/AppContext';
-import { CollectionSearch } from './CollectionSearch';
-import { StarIcon } from '@chakra-ui/icons';
+import { AddIcon, MinusIcon, StarIcon } from '@chakra-ui/icons';
 
-type Props = {
-  watchlistMode?: boolean;
-};
-
-export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
+export const TrendingList = (props: { watchlistMode?: boolean }): JSX.Element => {
   const [statsFilter, setStatsFilter] = useState<StatsFilter>({
     primaryOrderBy: OrderBy.Volume,
     primaryOrderDirection: OrderDirection.Descending,
@@ -34,6 +29,11 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
   const [dataColumns, setDataColumns] = useState<DataColumns>(defaultDataColumns);
   const { user, chainId } = useAppContext();
   const collectionFollow = useCollectionFollow(user, chainId);
+  const {
+    options: tOptions,
+    onChange: tOnChange,
+    selected: tSelected
+  } = useToggleTab(['Trending', 'Following'], 'Trending');
 
   const {
     options,
@@ -52,31 +52,25 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
     });
   }, [period]);
 
-  let search;
-  if (watchlistMode) {
-    search = (
-      <CollectionSearch
-        onSelect={(collectionAddress) => {
-          // TODO: SNG
-          collectionFollow.add({ name: 'fixme', chainId: '1', address: collectionAddress });
-        }}
-      />
-    );
-  }
+  const followingToggle = <ToggleTab options={tOptions} selected={tSelected} onChange={tOnChange} size="sm" />;
+
+  // search = (
+  //   <CollectionSearch
+  //     onSelect={(collectionAddress) => {
+  //       // TODO: SNG
+  //       collectionFollow.add({ name: 'fixme', chainId: '1', address: collectionAddress });
+  //     }}
+  //   />
+  // );
 
   const toolbarAndDrawer = (
-    <Box
-      display="flex"
-      flexDirection={'row'}
-      justifyContent={'space-between'}
-      alignItems={'center'}
-      marginBottom="30px"
-    >
+    <Box display="flex" flexDirection={'row'} alignItems={'center'} marginBottom="30px">
       <Box display="flex" flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'}>
         <ToggleTab options={options} selected={period} onChange={onChange} size="sm" />
       </Box>
 
-      {search}
+      <Spacer />
+      {followingToggle}
       <TrendingDrawer dataColumns={dataColumns} setDataColumns={setDataColumns} />
     </Box>
   );
@@ -87,7 +81,7 @@ export const TrendingList = ({ watchlistMode = false }: Props): JSX.Element => {
 
       <TrendingContents
         collectionFollow={collectionFollow}
-        watchlistMode={watchlistMode}
+        watchlistMode={tSelected === 'Following'}
         statsFilter={statsFilter}
         dataColumns={dataColumns}
         setStatsFilter={setStatsFilter}
@@ -257,7 +251,7 @@ export const TrendingRow = ({
     <IconButton
       aria-label=""
       variant="ghost"
-      icon={<StarIcon color="#BEBEBE" />}
+      icon={<AddIcon color="#BEBEBE" />}
       isRound
       onClick={() => {
         collectionFollow.toggle(trendingDataToCollectionFollow(trendingData));
@@ -271,7 +265,7 @@ export const TrendingRow = ({
         aria-label=""
         variant="ghost"
         backgroundColor="#000"
-        icon={<StarIcon color="#fff" />}
+        icon={<MinusIcon color="#fff" />}
         isRound
         onClick={() => {
           collectionFollow.toggle(trendingDataToCollectionFollow(trendingData));
@@ -363,10 +357,6 @@ export const TrendingItem = ({
         >
           <div className={styles.itemTitle}>{trendingData.name}</div>
         </Link>
-
-        <div className={styles.subtitle}>
-          <div className={styles.partnership}>Partnership</div>
-        </div>
       </div>
     );
   }

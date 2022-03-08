@@ -11,9 +11,6 @@ import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 
 const TrendingPage = (): JSX.Element => {
   const { user, showAppError } = useAppContext();
-  const { options, onChange, selected } = useToggleTab(['Trending', 'Watchlist'], 'Trending');
-
-  const tabControl = <ToggleTab options={options} selected={selected} onChange={onChange} size="sm" />;
 
   return (
     <>
@@ -22,10 +19,10 @@ const TrendingPage = (): JSX.Element => {
       </Head>
       <div className={styles.main}>
         <div className="page-container">
-          <PageHeader title="Trending" rightSide={tabControl} />
+          <PageHeader title="Analytics" />
           <PleaseConnectWallet account={user?.account} />
 
-          <TrendingList watchlistMode={selected === 'Watchlist'} />
+          <TrendingList />
         </div>
       </div>
     </>
