@@ -1,0 +1,47 @@
+container:
+  width: "100%"
+  height: "300px"
+  backgroundColor: "yellow.100"
+  overflow: "hidden"
+  display: flex
+  justifyContent: center
+  alignItems: center
+
+element:
+  width: "100px"
+  height: "100px"
+  backgroundColor: "gold"
+  border: "3px solid"
+  borderColor: "yellow.400"
+grid:
+  container:
+    width: 100%
+    height: 100%
+    display: grid
+    gridTemplateColumns: 1fr 1fr 1fr
+    backgroundColor: quinary.200
+    gridGap: 0.25rem
+    padding: 0.25rem
+  column:
+    container:
+      width: 100%
+      height: 100%
+      backgroundColor: white
+      padding: 1rem
+    heading:
+      fontSize: 1.5rem
+      color: quinary.800
+      margin: 1rem 0
+      fontVariant: all-petite-caps
+    text:
+      fontSize: 0.9rem
+      color: quinary.700
+      lineHeight: 1rem
+      margin: 1rem 0
+    button:
+      backgroundColor: yellow.500
+      color: yellow.900
+      fontSize: 20px
+      textShadow: none
+      "&:hover":
+        backgroundColor: yellow.400

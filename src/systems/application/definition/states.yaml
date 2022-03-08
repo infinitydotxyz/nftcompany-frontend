@@ -1,0 +1,188 @@
+id: application
+type: parallel
+preserveActionOrder: true
+context:
+  database: {}
+  user: null
+  api:
+    settings:
+      id: ""
+      server: ""
+  network:
+    selected: 0
+on:
+  network.select:
+    actions: network.select
+states:
+  server:
+    type: parallel
+    states:
+      database:
+        type: parallel
+  user:
+    id: user
+    type: parallel
+    entry: api.initialize
+    states:
+      database:
+        initial: idle
+        states:
+          idle:
+            on:
+              database.get.user.transactions:
+                target: fetch user transactions
+              database.get.user.eth.balance:
+                target: fetch user eth balance
+              database.get.user.erc20.balances:
+                target: fetch user erc20 balances
+              database.get.user.nft.balances:
+                target: fetch user nft balances
+          fetch user transactions:
+            invoke:
+              src: database.get.user.transactions
+              onDone:
+                target: idle
+                actions: assign.user.data
+              onError:
+                target: error
+          fetch user eth balance:
+            invoke:
+              src: database.get.user.eth.balance
+              onDone:
+                target: idle
+                actions: assign.user.data
+              onError:
+                target: error
+          fetch user erc20 balances:
+            invoke:
+              src: database.get.user.erc20.balances
+              onDone:
+                target: idle
+                actions: assign.user.data
+              onError:
+                target: error
+          fetch user nft balances:
+            invoke:
+              src: database.get.user.nft.balances
+              onDone:
+                target: idle
+                actions: assign.user.data
+              onError:
+                target: error
+          error:
+            entry: log.errors
+            always: idle
+      authentication:
+        id: authentication
+        initial: uninitialized
+        states:
+          uninitialized:
+            invoke:
+              src: get.current.user
+              onDone:
+                - cond: user.connected
+                  target: connected
+                  actions: assign.user
+                - cond: user.disconnected
+                  target: disconnected
+                  actions: assign.user
+              onError:
+                target: disconnected
+                actions: assign.user
+          disconnected:
+            on:
+              connect.wallet:
+                target: connecting.wallet
+              sign.in.regular:
+                target: connecting.email & password
+          connecting:
+            states:
+              wallet:
+                invoke:
+                  src: connect.wallet
+                  onDone:
+                    - cond: user.connected
+                      target: "#authentication.connected"
+                      actions: assign.user
+                    - cond: user.disconnected
+                      target: "#authentication.disconnected"
+                      actions: assign.user
+                  onError:
+                    target: "#authentication.error"
+              email & password:
+                invoke:
+                  src: sign.in.regular
+                  onDone:
+                    - cond: user.connected
+                      target: "#authentication.connected"
+                      actions: assign.user
+                    - cond: user.disconnected
+                      target: "#authentication.disconnected"
+                      actions: assign.user
+                  onError:
+                    target: "#authentication.error"
+          connected:
+            on:
+              disconnect.wallet:
+                target: disconnecting.wallet
+          disconnecting:
+            states:
+              wallet:
+                invoke:
+                  src: disconnect.wallet
+                  onDone:
+                    target: "#authentication.disconnected"
+                    actions: assign.user
+          error:
+            entry: log.errors
+            always: disconnected
+  interface:
+    type: parallel
+    states:
+      layout:
+        initial: default
+        states:
+          default: {}
+      theme:
+        initial: electric
+        states:
+          electric:
+            on:
+              theme.next: dark
+              theme.prev: ghost
+              theme.choose.fire: fire
+              theme.choose.ghost: ghost
+              theme.choose.water: water
+              theme.choose.electric: electric
+          dark:
+            on:
+              theme.next: fire
+              theme.prev: electric
+              theme.choose.fire: fire
+              theme.choose.ghost: ghost
+              theme.choose.water: water
+              theme.choose.electric: electric
+          fire:
+            on:
+              theme.next: water
+              theme.prev: dark
+              theme.choose.fire: fire
+              theme.choose.water: water
+              theme.choose.ghost: ghost
+              theme.choose.electric: electric
+          water:
+            on:
+              theme.next: ghost
+              theme.prev: fire
+              theme.choose.fire: fire
+              theme.choose.ghost: ghost
+              theme.choose.water: water
+              theme.choose.electric: electric
+          ghost:
+            on:
+              theme.next: electric
+              theme.prev: water
+              theme.choose.fire: fire
+              theme.choose.ghost: ghost
+              theme.choose.water: water
+              theme.choose.electric: electric

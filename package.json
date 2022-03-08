@@ -1,0 +1,183 @@
+{
+  "name": "infinity.xyz",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Ayush Sharma <code.ayush@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "develop": "next",
+    "docs": "serve docs",
+    "build": "next build && next export -o build/",
+    "start": "next start",
+    "prepare": "yarn format && yarn clean",
+    "format": "prettier --write 'src/**/*.{js,jsx}'",
+    "storybook": "start-storybook -p 6006",
+    "update": "npx npm-check-updates -u --timeout 300000 && yarn install",
+    "clean": "rimraf .next yarn.lock *lock.json .nyc_output coverage *.log",
+    "test:unit": "yarn prepare && jest --config ./jest.config.js --passWithNoTests --watchAll",
+    "test:e2e": "yarn prepare && start-server-and-test develop http://localhost:3000 'cypress open'",
+    "test:coverage": "jest --config ./jest.config.js --passWithNoTests --coverage && serve coverage/lcov-report",
+    "storybook:build": "NODE_ENV=production build-storybook -s ./public,./src/assets/ -o .storybook/styleguide",
+    "storybook:share": "NODE_ENV=production yarn storybook:build && surge .storybook/styleguide",
+    "build:share": "NODE_ENV=production yarn build && surge ./build",
+    "build-storybook": "build-storybook"
+  },
+  "precommit": [
+    "prepare"
+  ],
+  "dependencies": {
+    "@chakra-ui/react": "^1.8.6",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@headlessui/react": "^1.5.0",
+    "@heroicons/react": "^1.0.6",
+    "@tailwindcss/aspect-ratio": "^0.4.0",
+    "@tailwindcss/custom-forms": "^0.2.1",
+    "@tailwindcss/forms": "^0.5.0",
+    "@tailwindcss/typography": "^0.5.2",
+    "@walletconnect/web3-provider": "^1.7.4",
+    "@xstate/inspect": "^0.6.3",
+    "@xstate/react": "^2.0.1",
+    "animejs": "^3.2.1",
+    "autoprefixer": "^10.4.2",
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "deepmerge": "^4.2.2",
+    "evergreen-ui": "^6.9.1",
+    "focus-visible": "^5.2.0",
+    "framer-motion": "^6",
+    "howler": "^2.2.3",
+    "jest": "^27.5.1",
+    "joi": "^17.6.0",
+    "js-yaml": "^4.1.0",
+    "js-yaml-loader": "^1.2.2",
+    "moralis": "1.3.5",
+    "mousetrap": "^1.6.5",
+    "next": "^12.1.0",
+    "next-connect": "^0.12.2",
+    "p5": "^1.4.1",
+    "postcss": "^8.4.8",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-hotkeys-hook": "^3.4.4",
+    "rive-react": "^0.0.31",
+    "tailwindcss": "^3.0.23",
+    "tailwindcss-filters": "^3.0.0",
+    "theme-ui": "^0.13.1",
+    "xstate": "^4.30.5",
+    "yaml": "^1.10.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/plugin-transform-react-jsx": "^7.17.3",
+    "@cypress/code-coverage": "^3.9.12",
+    "@emotion/babel-plugin-jsx-pragmatic": "^0.1.5",
+    "@storybook/addon-actions": "^6.4.19",
+    "@storybook/addon-essentials": "^6.4.19",
+    "@storybook/addon-knobs": "^6.3.1",
+    "@storybook/addon-links": "^6.4.19",
+    "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/addon-storysource": "^6.4.19",
+    "@storybook/builder-webpack5": "^6.4.19",
+    "@storybook/manager-webpack5": "^6.4.19",
+    "@storybook/react": "^6.4.19",
+    "@testing-library/cypress": "^8.0.2",
+    "@testing-library/dom": "^8.11.3",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.3",
+    "@theme-ui/presets": "^0.13.1",
+    "babel-jest": "^27.5.1",
+    "babel-loader": "^8.2.3",
+    "babel-plugin-istanbul": "^6.1.1",
+    "cypress": "^9.5.1",
+    "cypress-axe": "^0.14.0",
+    "dotenv": "^16.0.0",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest-yaml-transform": "^0.2.0",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-import": "^14.0.2",
+    "postcss-preset-env": "^7.4.2",
+    "pre-commit": "^1.2.2",
+    "prettier": "^2.5.1",
+    "prettier-plugin-solidity": "^1.0.0-beta.19",
+    "react-icons": "^4.3.1",
+    "react-is": "^17.0.2",
+    "sass": "^1.49.9",
+    "solhint": "^3.3.7",
+    "solidity-coverage": "^0.7.20",
+    "start-server-and-test": "^1.14.0",
+    "yaml-loader": "^0.6.0"
+  },
+  "babel": {
+    "presets": [
+      "next/babel"
+    ],
+    "plugins": [
+      [
+        "@emotion/babel-plugin-jsx-pragmatic",
+        {
+          "module": "theme-ui",
+          "import": "jsx",
+          "export": "jsx"
+        }
+      ],
+      [
+        "@babel/plugin-transform-react-jsx",
+        {
+          "pragma": "jsx",
+          "pragmaFrag": "React.Fragment"
+        }
+      ]
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": false,
+    "trailingComma": "none",
+    "tabWidth": 2,
+    "printWidth": 120,
+    "arrowParens": "avoid",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "requirePragma": false,
+    "proseWrap": "preserve",
+    "overrides": [
+      {
+        "files": "*.sass",
+        "options": {
+          "printWidth": 999
+        }
+      },
+      {
+        "files": "*.mdx",
+        "options": {
+          "tabWidth": 2,
+          "printWidth": 120,
+          "proseWrap": "always"
+        }
+      },
+      {
+        "files": "*.md",
+        "options": {
+          "tabWidth": 2,
+          "printWidth": 120,
+          "proseWrap": "always",
+          "htmlWhitespaceSensitivity": "strict"
+        }
+      },
+      {
+        "files": "*.html",
+        "options": {
+          "htmlWhitespaceSensitivity": "strict"
+        }
+      }
+    ]
+  }
+}

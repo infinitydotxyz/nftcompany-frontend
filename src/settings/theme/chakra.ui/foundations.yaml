@@ -1,0 +1,182 @@
+fonts:
+  body: SF UI Text,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol
+  heading: SF UI Display,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol
+  monospace: SF Mono,Monaco,Inconsolata,Fira Mono,Droid Sans Mono,Source Code Pro,monospace
+colors:
+  background: transparent
+  current: currentColor
+
+  pokemon:
+    electric:
+      100: "#FEFBF7"
+      200: "#FFF1CE"
+      300: "#F5E383"
+      400: "#F3DB95"
+      500: "#FEC114"
+      600: "#D299AC"
+      700: "#DA6E57"
+      800: "#786751"
+      900: "#3E4242"
+    water:
+      100: "#FFFFFF"
+      200: "#E8EFF5"
+      300: "#B6BFD1"
+      400: "#AFE5E5"
+      500: "#478ECD"
+      600: "#84A2C6"
+      700: "#587CA9"
+      800: "#3F698E"
+      900: "#052E4D"
+    fire:
+      100: "#DABBBC"
+      200: "#918492"
+      300: "#FBF0CC"
+      400: "#D4C388"
+      500: "#EE804C"
+      600: "#B12F30"
+      700: "#8A0817"
+      800: "#523335"
+      900: "#010101"
+    ghost:
+      100: "#FFFFFF"
+      200: "#FCFBFD"
+      300: "#E8A29F"
+      400: "#DBCEF0"
+      500: "#9E8EA8"
+      600: "#695893"
+      700: "#9D6DDC"
+      800: "#7A29D6"
+      900: "#3F2F8B"
+
+  retro:
+    50: "#FFFFFF"
+    100: "#001219"
+    200: "#005F73"
+    300: "#0A9396"
+    400: "#94D2BD"
+    500: "#E9D8A6"
+    600: "#EE9B00"
+    700: "#CA6702"
+    800: "#BB3E03"
+    900: "#AE2012"
+    1000: "#9B2226"
+
+  india:
+    blue:
+      100: "#68A9AD"
+      200: "#0E2F58"
+      300: "#2A2462"
+      400: "#2B2563"
+    red:
+      100: "#FEB00D"
+      200: "#D85B07"
+      300: "#8B4230"
+      400: "#DA4843"
+    skin:
+      100: "#CD928A"
+      200: "#8A6478"
+      300: "#A48D89"
+      400: "#5C4875"
+      500: "#60607C"
+    white:
+      100: "#BAB4A1"
+      200: "#E2D3B8"
+      300: "#F8F2EE"
+      400: "#FEF6F3"
+
+  linear:
+    50: "#FFFFFF"
+    100: "#F7F8F8"
+    200: "#5E6AD2"
+    300: "#F2C94C"
+    400: "#F74040"
+    500: "#8A8F98"
+    600: "#81808E"
+    700: "#303236"
+    800: "#27282B"
+    900: "#1F2023"
+
+  discord:
+    50: "#FFFFFF"
+    100: "#B9BBBE"
+    200: "#ED4245"
+    300: "#7289DA"
+    400: "#5865F2"
+    500: "#3C45A5"
+    600: "#40444B"
+    700: "#36393F"
+    800: "#2F3136"
+    900: "#292B2F"
+    1000: "#202225"
+
+  linkedin:
+    50: "#E8F4F9"
+    100: "#CFEDFB"
+    200: "#9BDAF3"
+    300: "#68C7EC"
+    400: "#34B3E4"
+    500: "#00A0DC"
+    600: "#008CC9"
+    700: "#0077B5"
+    800: "#005E93"
+    900: "#004471"
+
+  facebook:
+    50: "#E8F4F9"
+    100: "#D9DEE9"
+    200: "#B7C2DA"
+    300: "#6482C0"
+    400: "#4267B2"
+    500: "#385898"
+    600: "#314E89"
+    700: "#29487D"
+    800: "#223B67"
+    900: "#1E355B"
+
+  messenger:
+    50: "#D0E6FF"
+    100: "#B9DAFF"
+    200: "#A2CDFF"
+    300: "#7AB8FF"
+    400: "#2E90FF"
+    500: "#0078FF"
+    600: "#0063D1"
+    700: "#0052AC"
+    800: "#003C7E"
+    900: "#002C5C"
+
+  whatsapp:
+    50: "#E2F7F4"
+    100: "#C3F0E9"
+    200: "#A0E7DC"
+    300: "#76DCCD"
+    400: "#43CFBA"
+    500: "#00BFA5"
+    600: "#00AC92"
+    700: "#009780"
+    800: "#007D6A"
+    900: "#005A4C"
+
+  twitter:
+    50: "#E5F4FD"
+    100: "#C8E9FB"
+    200: "#A8DCFA"
+    300: "#83CDF7"
+    400: "#57BBF5"
+    500: "#1DA1F2"
+    600: "#1A94DA"
+    700: "#1681BF"
+    800: "#136B9E"
+    900: "#0D4D71"
+
+  telegram:
+    50: "#E3F2F9"
+    100: "#C5E4F3"
+    200: "#A2D4EC"
+    300: "#7AC1E4"
+    400: "#47A9DA"
+    500: "#0088CC"
+    600: "#007AB8"
+    700: "#006BA1"
+    800: "#005885"
+    900: "#003F5E"
