@@ -1,0 +1,103 @@
+import { useState, useEffect } from 'react';
+import {
+  Box,
+  Image,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  Heading,
+  IconButton,
+  Textarea,
+  Button
+} from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
+import { addUserComments, Comment, fetchComments } from 'utils/firestore/firestoreUtils';
+import { FeedEvent } from './FeedItem';
+import { ellipsisString } from 'utils/commonUtil';
+import { useAppContext } from 'utils/context/AppContext';
+
+interface Props {
+  isOpen: boolean;
+  onClose: (newIsOpen: boolean) => void;
+  event: FeedEvent;
+}
+
+export function CommentPanel({ isOpen, onClose, event, ...rest }: Props) {
+  const { user } = useAppContext();
+  const [text, setText] = useState('');
+  const [data, setData] = useState<Comment[]>([
+    {
+      userAddress: 'user1',
+      comment: 'comment 1',
+      timestamp: 1646693311366
+    },
+    {
+      userAddress: 'user2',
+      comment: 'comment 2',
+      timestamp: 1646693312500
+    }
+  ]);
+
+  const fetchData = async () => {
+    const commentsArr = await fetchComments(event.id);
+    setData(commentsArr as Comment[]);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return (
+    <Drawer
+      isOpen={isOpen}
+      placement="right"
+      size="lg"
+      onClose={() => undefined}
+      blockScrollOnMount={false}
+      trapFocus={false}
+      {...rest}
+    >
+      <DrawerContent shadow="lg">
+        <DrawerHeader display="flex" justifyContent="space-between" alignItems="center">
+          <Heading size="lg" color="gray.400" fontWeight="">
+            Comments
+          </Heading>
+          <IconButton aria-label="" variant="ghost" size="lg" colorScheme="gray" onClick={() => onClose(false)}>
+            <CloseIcon />
+          </IconButton>
+        </DrawerHeader>
+
+        <DrawerBody>
+          <Box mb={6} display="flex">
+            <Textarea mr={6} onChange={(ev) => setText(ev.target.value)} />
+            <Button
+              variant="outline"
+              onClick={async () => {
+                console.log('text', text);
+                await addUserComments(event.id, user?.account ?? '', text);
+                setData([]);
+                fetchData();
+              }}
+            >
+              Submit
+            </Button>
+          </Box>
+
+          {data.map((item, idx: number) => {
+            return (
+              <Box key={idx} mb={8}>
+                <Box display="flex">
+                  <Image p={4} border="1px solid lightgray" borderRadius="50%" mr={4} />
+                  <Box mr={4}>{ellipsisString(item.userAddress)}</Box>
+                  <Box>{new Date(item.timestamp).toLocaleString()}</Box>
+                </Box>
+                <pre>{item.comment}</pre>
+              </Box>
+            );
+          })}
+        </DrawerBody>
+      </DrawerContent>
+    </Drawer>
+  );
+}
