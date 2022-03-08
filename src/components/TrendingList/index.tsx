@@ -18,7 +18,7 @@ import { trendingDataToCollectionFollow, useCollectionFollow, CollectionFollowHo
 import { useAppContext } from 'utils/context/AppContext';
 import { AddIcon, MinusIcon, StarIcon } from '@chakra-ui/icons';
 
-export const TrendingList = (): JSX.Element => {
+export const TrendingList = (props: { watchlistMode?: boolean }): JSX.Element => {
   const [statsFilter, setStatsFilter] = useState<StatsFilter>({
     primaryOrderBy: OrderBy.Volume,
     primaryOrderDirection: OrderDirection.Descending,
