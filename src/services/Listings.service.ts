@@ -1,4 +1,4 @@
-import { CardData, Orders, OrderType, Order } from '@infinityxyz/types/core';
+import { CardData, Orders, OrderType, Order } from '@infinityxyz/lib/types/core';
 import { weiToEther } from 'utils/ethersUtil';
 import { apiGet } from 'utils/apiUtil';
 import { ListingSource, SearchFilter } from 'utils/context/SearchContext';

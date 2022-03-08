@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './scss/MakeOfferForm.module.scss';
-import { CardData, Order } from '@infinityxyz/types/core';
+import { CardData, Order } from '@infinityxyz/lib/types/core';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';
 import { useAppContext } from 'utils/context/AppContext';
 import { GenericError } from 'types';

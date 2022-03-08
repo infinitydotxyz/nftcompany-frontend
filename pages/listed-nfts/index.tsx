@@ -8,7 +8,7 @@ import { LISTING_TYPE, NULL_ADDRESS, PAGE_NAMES } from 'utils/constants';
 import { FetchMore, NoData, PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { useAppContext } from 'utils/context/AppContext';
 import LoadingCardList from 'components/LoadingCardList/LoadingCardList';
-import { CardData, WyvernSchemaName } from '@infinityxyz/types/core';
+import { CardData, WyvernSchemaName } from '@infinityxyz/lib/types/core';
 import { Box, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import styles from './ListNFTs.module.scss';
 import { useUserListings } from 'hooks/useUserListings';
