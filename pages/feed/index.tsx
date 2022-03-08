@@ -8,6 +8,7 @@ import Layout from 'containers/layout';
 import { COLL_FEED, fetchMoreEvents, subscribe } from '../../src/utils/firestore/firestoreUtils';
 import FeedItem, { FeedEvent, FeedEventType } from '../../src/components/app/Feed/FeedItem';
 import { FetchMore } from 'components/FetchMore/FetchMore';
+import { CommentPanel } from 'components/app/Feed/CommentPanel';
 
 type Filter = {
   type?: FeedEventType;
@@ -18,6 +19,7 @@ export default function Feed() {
   const [events, setEvents] = useState<FeedEvent[]>([]);
   const [filter, setFilter] = useState<Filter>({});
   const [filteredEvents, setFilteredEvents] = useState<FeedEvent[]>([]);
+  const [commentPanelEvent, setCommentPanelEvent] = useState<FeedEvent | null>(null); // to show Comments Panel for an Event.
 
   async function getEvents() {
     try {
@@ -86,10 +88,23 @@ export default function Feed() {
                   }
                   setEvents([...events]);
                 }}
+                onClickShowComments={(ev) => {
+                  setCommentPanelEvent(ev);
+                }}
               />
             );
           })}
         </div>
+
+        {commentPanelEvent && (
+          <CommentPanel
+            event={commentPanelEvent}
+            isOpen={!!commentPanelEvent}
+            onClose={() => {
+              setCommentPanelEvent(null);
+            }}
+          />
+        )}
 
         <FetchMore
           currentPage={currentPage}

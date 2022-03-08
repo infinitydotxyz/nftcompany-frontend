@@ -19,9 +19,10 @@ type Props = {
   event?: FeedEvent;
   onLike?: (event: FeedEvent) => void;
   onComment?: (event: FeedEvent) => void;
+  onClickShowComments?: (event: FeedEvent) => void;
 };
 
-export default function FeedItem({ event, onLike, onComment }: Props) {
+export default function FeedItem({ event, onLike, onComment, onClickShowComments }: Props) {
   const { user } = useAppContext();
 
   if (!event) {
@@ -59,17 +60,29 @@ export default function FeedItem({ event, onLike, onComment }: Props) {
             <Box
               color="blue.400"
               cursor="pointer"
-              onClick={() => {
+              onClick={async () => {
                 if (user && user?.account) {
-                  addUserComments(event.id, user?.account, 'Dummy comment ' + Math.random(), () => {
-                    if (onComment) {
-                      onComment(event);
-                    }
-                  });
+                  await addUserComments(event.id, user?.account, 'Dummy comment ' + Math.random());
+                  if (onComment) {
+                    onComment(event);
+                  }
                 }
               }}
             >
               &nbsp; - {event.comments} Comment(s)
+            </Box>
+            <Box
+              color="blue.400"
+              cursor="pointer"
+              onClick={() => {
+                if (user && user?.account) {
+                  if (onClickShowComments) {
+                    onClickShowComments(event);
+                  }
+                }
+              }}
+            >
+              &nbsp; - Show
             </Box>
           </Box>
         </Box>

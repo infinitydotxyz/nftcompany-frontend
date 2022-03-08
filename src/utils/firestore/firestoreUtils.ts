@@ -19,6 +19,12 @@ import { firestoreConfig } from '../../../creds/firestore';
 
 export const COLL_FEED = 'feed'; // collection: /feed - to store feed events
 
+export type Comment = {
+  userAddress: string;
+  comment: string;
+  timestamp: number;
+};
+
 const app = initializeApp(firestoreConfig);
 
 export const firestoreDb = getFirestore();
@@ -96,10 +102,28 @@ export async function addUserLike(eventId: string, userAccount: string, doneCall
   }
 }
 
-export async function addUserComments(eventId: string, userAccount: string, comment: string, doneCallback: () => void) {
+export async function addUserComments(eventId: string, userAddress: string, comment: string) {
   const timestamp = +new Date();
-  const docRef = doc(firestoreDb, 'feed', eventId, 'userComments', userAccount + '_' + timestamp);
-  await setDoc(docRef, { comment, timestamp });
-  increaseComments(userAccount ?? '', eventId);
-  doneCallback();
+  const docRef = doc(firestoreDb, 'feed', eventId, 'userComments', userAddress + '_' + timestamp);
+  await setDoc(docRef, { userAddress, comment, timestamp });
+  increaseComments(userAddress ?? '', eventId);
+}
+
+export async function fetchComments(eventId: string) {
+  try {
+    const coll = collection(firestoreDb, `feed/${eventId}/userComments`);
+    const q = query(coll, orderBy('timestamp', 'desc'), limit(4)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
+    const snapshot = await getDocs(q);
+
+    const list: Comment[] = [];
+    snapshot.forEach((doc) => {
+      const docData = doc.data() as Comment;
+      // docData.userAddress = doc.id;
+      list.push(docData);
+    });
+    return list;
+  } catch (err) {
+    console.error(err);
+    throw new Error(`${err}`);
+  }
 }
