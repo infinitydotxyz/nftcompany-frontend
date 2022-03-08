@@ -105,7 +105,6 @@ export function CommentPanel({ isOpen, onClose, event, ...rest }: Props) {
             onFetchMore={async () => {
               setCurrentPage(currentPage + 1);
               const arr = (await fetchMoreComments(event.id)) as Comment[];
-              console.log('arr', arr);
               setData((currentComments) => [...currentComments, ...arr]);
             }}
           />

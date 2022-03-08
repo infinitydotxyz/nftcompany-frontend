@@ -62,27 +62,13 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
               cursor="pointer"
               onClick={async () => {
                 if (user && user?.account) {
-                  await addUserComments(event.id, user?.account, 'Dummy comment ' + Math.random());
-                  if (onComment) {
-                    onComment(event);
-                  }
-                }
-              }}
-            >
-              &nbsp; - {event.comments} Comment(s)
-            </Box>
-            <Box
-              color="blue.400"
-              cursor="pointer"
-              onClick={() => {
-                if (user && user?.account) {
                   if (onClickShowComments) {
                     onClickShowComments(event);
                   }
                 }
               }}
             >
-              &nbsp; - Show
+              &nbsp; - {event.comments} Comment(s)
             </Box>
           </Box>
         </Box>
