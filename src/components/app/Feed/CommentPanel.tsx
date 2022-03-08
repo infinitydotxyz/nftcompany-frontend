@@ -12,10 +12,11 @@ import {
   Button
 } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
-import { addUserComments, Comment, fetchComments } from 'utils/firestore/firestoreUtils';
+import { addUserComments, Comment, fetchComments, fetchMoreComments } from 'utils/firestore/firestoreUtils';
 import { FeedEvent } from './FeedItem';
 import { ellipsisString } from 'utils/commonUtil';
 import { useAppContext } from 'utils/context/AppContext';
+import { FetchMore } from 'components/FetchMore/FetchMore';
 
 interface Props {
   isOpen: boolean;
@@ -25,6 +26,7 @@ interface Props {
 
 export function CommentPanel({ isOpen, onClose, event, ...rest }: Props) {
   const { user } = useAppContext();
+  const [currentPage, setCurrentPage] = useState(0);
   const [text, setText] = useState('');
   const [data, setData] = useState<Comment[]>([
     {
@@ -77,6 +79,7 @@ export function CommentPanel({ isOpen, onClose, event, ...rest }: Props) {
                 console.log('text', text);
                 await addUserComments(event.id, user?.account ?? '', text);
                 setData([]);
+                setCurrentPage(0);
                 fetchData();
               }}
             >
@@ -96,6 +99,16 @@ export function CommentPanel({ isOpen, onClose, event, ...rest }: Props) {
               </Box>
             );
           })}
+
+          <FetchMore
+            currentPage={currentPage}
+            onFetchMore={async () => {
+              setCurrentPage(currentPage + 1);
+              const arr = (await fetchMoreComments(event.id)) as Comment[];
+              console.log('arr', arr);
+              setData((currentComments) => [...currentComments, ...arr]);
+            }}
+          />
         </DrawerBody>
       </DrawerContent>
     </Drawer>
