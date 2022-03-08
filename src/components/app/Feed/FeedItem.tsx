@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/layout';
 import { AnimatePresence, motion } from 'framer-motion';
 import { addUserComments, addUserLike } from 'utils/firestore/firestoreUtils';
 import { useAppContext } from 'utils/context/AppContext';
+import { ChatIcon } from '@chakra-ui/icons';
 
 export type FeedEventType = 'COLL' | 'NFT' | 'TWEET';
 
@@ -41,10 +42,11 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
           <Box mt={4}>
             <img src={event.imageUrl} />
           </Box>
-          <Box display="flex">
+          <Box display="flex" mt={4}>
             <Box
               color="blue.400"
               cursor="pointer"
+              mr={4}
               onClick={() => {
                 if (user && user?.account) {
                   addUserLike(event.id, user?.account, () => {
@@ -58,6 +60,8 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
               {event.likes} Like(s)
             </Box>
             <Box
+              display="flex"
+              alignItems="center"
               color="blue.400"
               cursor="pointer"
               onClick={async () => {
@@ -68,7 +72,7 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
                 }
               }}
             >
-              &nbsp; - {event.comments} Comment(s)
+              <ChatIcon mr={2} /> {event.comments}
             </Box>
           </Box>
         </Box>
