@@ -76,14 +76,14 @@ export default function Feed() {
                 event={event}
                 onLike={(ev) => {
                   const foundEv = events.find((e) => e.id === ev.id);
-                  if (foundEv?.likes) {
+                  if (foundEv?.likes !== undefined) {
                     foundEv.likes = foundEv.likes + 1;
                   }
                   setEvents([...events]);
                 }}
                 onComment={(ev) => {
                   const foundEv = events.find((e) => e.id === ev.id);
-                  if (foundEv?.comments) {
+                  if (foundEv?.comments !== undefined) {
                     foundEv.comments = foundEv.comments + 1;
                   }
                   setEvents([...events]);

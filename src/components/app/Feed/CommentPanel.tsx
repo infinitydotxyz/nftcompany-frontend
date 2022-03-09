@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { format } from 'timeago.js';
 import {
   Box,
   Image,
@@ -90,10 +91,14 @@ export function CommentPanel({ isOpen, onClose, event, ...rest }: Props) {
           {data.map((item, idx: number) => {
             return (
               <Box key={idx} mb={8}>
-                <Box display="flex">
-                  <Image p={4} border="1px solid lightgray" borderRadius="50%" mr={4} />
-                  <Box mr={4}>{ellipsisString(item.userAddress)}</Box>
-                  <Box>{new Date(item.timestamp).toLocaleString()}</Box>
+                <Box display="flex" alignItems="center" mb={2}>
+                  <Image p={4} border="1px solid lightgray" borderRadius="50%" mr={2} />
+                  <Box fontWeight="500" mr={6}>
+                    {ellipsisString(item.userAddress)}
+                  </Box>
+                  <Box color="gray.500" title={new Date(item.timestamp).toLocaleString()}>
+                    {format(item.timestamp)}
+                  </Box>
                 </Box>
                 <pre>{item.comment}</pre>
               </Box>
