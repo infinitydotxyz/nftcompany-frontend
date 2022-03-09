@@ -17,8 +17,8 @@ const NftImage = ({
     if (!tokenAddress || !tokenId || unmounted) {
       return;
     }
-    const { result } = await apiGet(`/nfts/ethereum/${tokenAddress}/${tokenId}/image`);
-    setImageUrl(result);
+    const { result } = await apiGet(`/collections/${tokenAddress}/${tokenId}/ethereum/image`);
+    setImageUrl(result?.imageUrl);
   };
   useEffect(() => {
     getData();
