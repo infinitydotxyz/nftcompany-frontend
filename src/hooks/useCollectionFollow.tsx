@@ -103,7 +103,8 @@ export const trendingDataToCollectionFollow = (trendingData: TrendingData): Coll
   return {
     address: trendingData.collectionAddress ?? '',
     name: trendingData.name ?? '',
-    chainId: '1' // TODO: SNG
+    chainId: '1', // TODO: SNG
+    slug: 'noidea'
   };
 };
 
