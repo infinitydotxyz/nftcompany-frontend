@@ -7,85 +7,154 @@ import { useAppContext } from 'utils/context/AppContext';
 import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { PageHeader } from 'components/PageHeader';
 import { apiPost } from 'utils/apiUtil';
-import { BuyOrder, SellOrder } from '@infinityxyz/lib/types/core';
+import { BuyOrder, BuyOrderMatch, SellOrder } from '@infinityxyz/lib/types/core';
 import { Button } from '@chakra-ui/button';
 
 const MarketPage = (): JSX.Element => {
-  const { user, showAppError } = useAppContext();
+  const { user, showAppError, showAppMessage } = useAppContext();
 
-  const buy = async () => {
-    const order: BuyOrder = {
-      user: user?.account ?? '',
-      budget: 12,
-      collections: ['apes', 'goop'],
-      expiration: Date.now(),
-      minNFTs: 2
-    };
-
+  const buy = async (order: BuyOrder) => {
     const body = {
       buyOrder: order
     };
 
     const response = await apiPost(`/u/${user?.account}/market`, null, body);
 
-    console.log(response);
+    const match = response.result.result as BuyOrderMatch;
 
     if (response.status === 200) {
-      showAppError(`buy successful.`);
+      if (match) {
+        console.log(match);
+
+        showAppMessage('buy successful.');
+      } else {
+        showAppMessage('buy submitted');
+      }
     } else {
-      console.log('An error occured: buy');
+      showAppError('An error occured: buy');
     }
   };
 
-  const sell = async () => {
-    const order: SellOrder = {
-      user: user?.account ?? '',
-      collection: 'goop',
-      expiration: Date.now(),
-      nftAddress: '0xalskdjflkasjdlfkjasdlf',
-      price: 232.999
-    };
-
+  const sell = async (order: SellOrder) => {
     const body = {
-      buyOrder: order
+      sellOrder: order
     };
 
     const response = await apiPost(`/u/${user?.account}/market`, null, body);
 
-    console.log(response);
+    const match = response.result.result as BuyOrderMatch[];
 
     if (response.status === 200) {
-      showAppError(`sell successful.`);
+      if (match && match.length > 0) {
+        console.log(match);
+        showAppMessage('sell successful.');
+      } else {
+        showAppMessage('sell submitted');
+      }
     } else {
-      console.log('An error occured: sell');
+      showAppError('An error occured: sell');
     }
   };
 
   return (
     <>
       <Head>
-        <title>Trending</title>
+        <title>Market</title>
       </Head>
       <div className={styles.main}>
         <div className="page-container">
           <PageHeader title="Market" />
           <PleaseConnectWallet account={user?.account} />
 
-          <Button
-            onClick={() => {
-              buy();
-            }}
-          >
-            Buy
-          </Button>
+          <div className={styles.buttons}>
+            <Button
+              onClick={() => {
+                const order: BuyOrder = {
+                  user: user?.account ?? '',
+                  budget: 12,
+                  collections: ['apes', 'goop'],
+                  expiration: Date.now(),
+                  minNFTs: 2
+                };
 
-          <Button
-            onClick={() => {
-              sell();
-            }}
-          >
-            Sell
-          </Button>
+                buy(order);
+              }}
+            >
+              Buy
+            </Button>
+
+            <Button
+              onClick={() => {
+                const order: BuyOrder = {
+                  user: user?.account ?? '',
+                  budget: 22,
+                  collections: ['apes', 'goop'],
+                  expiration: Date.now(),
+                  minNFTs: 4
+                };
+
+                buy(order);
+              }}
+            >
+              Buy2
+            </Button>
+
+            <Button
+              onClick={() => {
+                let order: SellOrder = {
+                  user: user?.account ?? '',
+                  collection: 'goop',
+                  expiration: Date.now() + 10000,
+                  address: '0xalddsdfsdflsdfkasjdlfkjasdlf',
+                  name: 'Green Cat',
+                  price: 1.2
+                };
+
+                sell(order);
+
+                order = {
+                  user: user?.account ?? '',
+                  collection: 'apes',
+                  expiration: Date.now() + 10000,
+                  address: '0xalddssdfdfsdflkasjdlfkjasdlf',
+                  name: 'Pink Cat',
+                  price: 2.2
+                };
+
+                sell(order);
+              }}
+            >
+              Sell
+            </Button>
+
+            <Button
+              onClick={() => {
+                let order: SellOrder = {
+                  user: user?.account ?? '',
+                  collection: 'goop',
+                  expiration: Date.now() + 10000,
+                  address: '0xalddddjflkasjdlfkjasdlf',
+                  name: 'Purple Cat',
+                  price: 1.2
+                };
+
+                sell(order);
+
+                order = {
+                  user: user?.account ?? '',
+                  collection: 'apes',
+                  expiration: Date.now() + 10000,
+                  address: '0xalddsdfsdflkasjdlfkjasdlf',
+                  name: 'Blue Cat',
+                  price: 2.2
+                };
+
+                sell(order);
+              }}
+            >
+              Sell2
+            </Button>
+          </div>
         </div>
       </div>
     </>

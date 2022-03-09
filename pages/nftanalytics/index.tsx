@@ -15,7 +15,7 @@ const TrendingPage = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Trending</title>
+        <title>Analytics</title>
       </Head>
       <div className={styles.main}>
         <div className="page-container">
