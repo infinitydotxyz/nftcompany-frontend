@@ -18,7 +18,7 @@ import { increaseComments, increaseLikes } from './counterUtils';
 import { firestoreConfig } from '../../../creds/firestore';
 
 export const COLL_FEED = 'feed'; // collection: /feed - to store feed events
-const EVENTS_PER_PAGE = 2;
+const EVENTS_PER_PAGE = 4;
 const COMMENTS_PER_PAGE = 10;
 
 export type Comment = {

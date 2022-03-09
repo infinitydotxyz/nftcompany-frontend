@@ -7,14 +7,15 @@ import { useAppContext } from 'utils/context/AppContext';
 import { ChatIcon } from '@chakra-ui/icons';
 import { AiOutlineLike } from 'react-icons/ai';
 import { ellipsisString } from 'utils/commonUtil';
-import { PriceBox } from 'components/PriceBox/PriceBox';
+
+import NftImage from './NftImage';
 
 export type FeedEventType = 'COLL' | 'NFT' | 'SALE' | 'TWEET';
 
 export type FeedEvent = {
   id: string;
   type: FeedEventType;
-  collectionAddress?: string;
+  tokenAddress?: string;
   tokenId?: string;
   userAddress?: string;
   price?: number;
@@ -49,7 +50,7 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
             <Box>
               <Box display="flex">
                 <Box fontWeight="500" mr={6}>
-                  {ellipsisString(event.collectionAddress)}
+                  {ellipsisString(event.tokenAddress)}
                 </Box>
                 <Box color="gray.500" title={new Date(event.timestamp).toLocaleString()}>
                   {format(event.timestamp)}
@@ -76,15 +77,17 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
                 p={4}
                 mt={4}
               >
-                <Image
+                <NftImage
+                  tokenAddress={event.tokenAddress ?? ''}
+                  tokenId={event.tokenId ?? ''}
                   border="1px solid lightgray"
                   width={20}
                   height={20}
                   borderRadius={14}
                   mr={8}
-                  src="https://lh3.googleusercontent.com/Gpqw-XOK-1OavLKNN6pMG5s6v98dbICTBQ6gQRgTW-GhxvJDlYpXN31NiTYMYIvl7dwMqJxYa16yEwRbDtFYHiTEKbsRdkdl1c3rcw=w600"
                 />
-                <Box display="flex" width="50%">
+
+                <Box display="flex" width="100%">
                   <Box width="50%">
                     <Box>Buyer</Box>
                     <Box fontWeight={500} title={event.userAddress}>
