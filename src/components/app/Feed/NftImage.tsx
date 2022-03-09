@@ -29,7 +29,7 @@ const NftImage = ({
   if (!imageUrl) {
     return null;
   }
-  return <Image src={imageUrl} {...rest} />;
+  return <Image src={imageUrl} {...rest} alt="" />;
 };
 
 export default NftImage;
