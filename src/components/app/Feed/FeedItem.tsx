@@ -46,7 +46,7 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
         <Box borderRadius={12} mb={10} width="50%">
           <Box display="flex" alignItems="center" mb={2}>
-            <Image p={4} border="1px solid lightgray" borderRadius="50%" mr={2} />
+            <Image p={4} border="1px solid lightgray" alt="" borderRadius="50%" mr={2} />
             <Box>
               <Box display="flex">
                 <Box fontWeight="500" mr={6}>
@@ -65,7 +65,7 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
             {event.title}
             {event.type === 'TWEET' && (
               <Box mt={4}>
-                <img src={event.imageUrl} />
+                <img src={event.imageUrl} alt="" />
               </Box>
             )}
             {event.type === 'SALE' && (
@@ -85,6 +85,8 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
                   height={20}
                   borderRadius={14}
                   mr={8}
+                  alt=""
+                  src="https://lh3.googleusercontent.com/Gpqw-XOK-1OavLKNN6pMG5s6v98dbICTBQ6gQRgTW-GhxvJDlYpXN31NiTYMYIvl7dwMqJxYa16yEwRbDtFYHiTEKbsRdkdl1c3rcw=w600"
                 />
 
                 <Box display="flex" width="100%">

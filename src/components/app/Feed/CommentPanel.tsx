@@ -92,7 +92,7 @@ export function CommentPanel({ isOpen, onClose, event, ...rest }: Props) {
             return (
               <Box key={idx} mb={8}>
                 <Box display="flex" alignItems="center" mb={2}>
-                  <Image p={4} border="1px solid lightgray" borderRadius="50%" mr={2} />
+                  <Image p={4} border="1px solid lightgray" alt="" borderRadius="50%" mr={2} />
                   <Box fontWeight="500" mr={6}>
                     {ellipsisString(item.userAddress)}
                   </Box>
