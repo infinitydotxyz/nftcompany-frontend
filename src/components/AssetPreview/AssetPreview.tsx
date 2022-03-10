@@ -15,6 +15,12 @@ import { NftAction } from 'types';
 import AppLink from 'components/AppLink/AppLink';
 import { useAppContext } from 'utils/context/AppContext';
 
+import { Grid, GridItem, Center } from '@chakra-ui/layout';
+import { Image } from '@chakra-ui/react';
+import { Switch } from '@chakra-ui/react';
+
+import { ToggleSwitchButton } from 'components/ToggleSwitchButton';
+
 type Props = {
   tokenId: string;
   tokenAddress: string;
@@ -69,6 +75,35 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
 
   return (
     <>
+      <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }} gap={[4, 8, 12]} py={[4, 8]}>
+        <GridItem w="100%" bg="white">
+          <Center>
+            <Image
+              alt="not available"
+              w={'100%'}
+              borderRadius={[6, 12]}
+              src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
+            />
+          </Center>
+        </GridItem>
+        <GridItem w="100%" bg="white">
+          <Box ml={-2} mb={[4, 8, 12]}>
+            <ToggleSwitchButton />
+          </Box>
+          <Box>
+            <h3 className={styles.heading}>{data?.collectionName}</h3>
+            <Box display={'flex'} gap={4}>
+              <AppLink type="secondary" className={styles.collection} href={`${window.origin}/collection/${name}`}>
+                {data?.collectionName}
+              </AppLink>
+              <Box ml={1}>
+                <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
+              </Box>
+            </Box>
+          </Box>
+        </GridItem>
+      </Grid>
+
       <div className={styles.main}>
         <div className={styles.nftContent}>
           <div className={styles.left}>
@@ -77,33 +112,6 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
                 alt="not available"
                 src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
               />
-
-              <div className={styles.imgFooter}>
-                <div className={styles.infoColumn}>
-                  <div className={styles.collectionRow}>
-                    <AppLink
-                      type="secondary"
-                      className={styles.collection}
-                      href={`${window.origin}/collection/${name}`}
-                    >
-                      {data?.collectionName}
-                    </AppLink>
-
-                    <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
-                  </div>
-                  <div className={styles.imgTitle}>{title}</div>
-                </div>
-                <Spacer />
-                <div className={styles.playButton}>
-                  {/* <Button
-                    onClick={() => {
-                      router.push('/game/doge2048');
-                    }}
-                  >
-                    Play Game
-                  </Button> */}
-                </div>
-              </div>
             </div>
 
             <ExtraSpace />
@@ -118,6 +126,28 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
           </div>
 
           <div className={styles.right}>
+            <div className={styles.imgFooter}>
+              <div className={styles.infoColumn}>
+                <div className={styles.collectionRow}>
+                  <AppLink type="secondary" className={styles.collection} href={`${window.origin}/collection/${name}`}>
+                    {data?.collectionName}
+                  </AppLink>
+
+                  <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
+                </div>
+                <div className={styles.imgTitle}>{title}</div>
+              </div>
+              <Spacer />
+              <div className={styles.playButton}>
+                {/* <Button
+                    onClick={() => {
+                      router.push('/game/doge2048');
+                    }}
+                  >
+                    Play Game
+                  </Button> */}
+              </div>
+            </div>
             <PurchaseAccordion
               data={data}
               listings={listings}
