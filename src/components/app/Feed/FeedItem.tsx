@@ -18,6 +18,7 @@ export type FeedEvent = {
   tokenAddress?: string;
   tokenId?: string;
   userAddress?: string;
+  userDisplayName?: string;
   price?: number;
   title: string;
   imageUrl?: string;
@@ -50,14 +51,16 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
             <Box>
               <Box display="flex">
                 <Box fontWeight="500" mr={6}>
-                  {ellipsisString(event.tokenAddress)}
+                  {event.type === 'SALE'
+                    ? ellipsisString(event.tokenAddress)
+                    : event.userDisplayName || event.userAddress}
                 </Box>
                 <Box color="gray.500" title={new Date(event.timestamp).toLocaleString()}>
                   {format(event.timestamp)}
                 </Box>
               </Box>
               <Box display="flex" color="gray.500">
-                {event.type === 'SALE' ? 'Sale' : event.type}
+                {event.type === 'SALE' ? 'Sale' : ''}
               </Box>
             </Box>
           </Box>
@@ -85,8 +88,6 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
                   height={20}
                   borderRadius={14}
                   mr={8}
-                  alt=""
-                  src="https://lh3.googleusercontent.com/Gpqw-XOK-1OavLKNN6pMG5s6v98dbICTBQ6gQRgTW-GhxvJDlYpXN31NiTYMYIvl7dwMqJxYa16yEwRbDtFYHiTEKbsRdkdl1c3rcw=w600"
                 />
 
                 <Box display="flex" width="100%">
