@@ -11,7 +11,7 @@ import { BuyOrder, BuyOrderMatch, SellOrder } from '@infinityxyz/lib/types/core'
 import { Button } from '@chakra-ui/button';
 
 const MarketPage = (): JSX.Element => {
-  const { user, showAppError, showAppMessage } = useAppContext();
+  const { user, chainId, showAppError, showAppMessage } = useAppContext();
 
   const buy = async (order: BuyOrder) => {
     const body = {
@@ -72,9 +72,10 @@ const MarketPage = (): JSX.Element => {
                 const order: BuyOrder = {
                   user: user?.account ?? '',
                   budget: 12,
-                  collections: ['apes', 'goop'],
-                  expiration: Date.now(),
-                  minNFTs: 2
+                  collectionAddresses: ['apes', 'goop'],
+                  expiration: Date.now() + 10000,
+                  minNFTs: 2,
+                  chainId: chainId
                 };
 
                 buy(order);
@@ -88,9 +89,10 @@ const MarketPage = (): JSX.Element => {
                 const order: BuyOrder = {
                   user: user?.account ?? '',
                   budget: 22,
-                  collections: ['apes', 'goop'],
-                  expiration: Date.now(),
-                  minNFTs: 4
+                  collectionAddresses: ['apes', 'goop'],
+                  expiration: Date.now() + 10000,
+                  minNFTs: 4,
+                  chainId: chainId
                 };
 
                 buy(order);
@@ -103,22 +105,26 @@ const MarketPage = (): JSX.Element => {
               onClick={() => {
                 let order: SellOrder = {
                   user: user?.account ?? '',
-                  collection: 'goop',
+                  collectionAddress: 'goop',
+                  collectionName: 'goop',
                   expiration: Date.now() + 10000,
-                  address: '0xalddsdfsdflsdfkasjdlfkjasdlf',
-                  name: 'Green Cat',
-                  price: 1.2
+                  tokenId: '0xalddsdfsdflsdfkasfsfsjasdlf',
+                  tokenName: 'Pink Cat',
+                  price: 1.2,
+                  chainId: chainId
                 };
 
                 sell(order);
 
                 order = {
                   user: user?.account ?? '',
-                  collection: 'apes',
+                  collectionAddress: 'apes',
+                  collectionName: 'apes',
                   expiration: Date.now() + 10000,
-                  address: '0xalddssdfdfsdflkasjdlfkjasdlf',
-                  name: 'Pink Cat',
-                  price: 2.2
+                  tokenId: '0xalddsdfsdflsdfkasjdlfkjasdlf',
+                  tokenName: 'Green Cat',
+                  price: 1.2,
+                  chainId: chainId
                 };
 
                 sell(order);
@@ -131,22 +137,26 @@ const MarketPage = (): JSX.Element => {
               onClick={() => {
                 let order: SellOrder = {
                   user: user?.account ?? '',
-                  collection: 'goop',
+                  collectionAddress: 'goop',
+                  collectionName: 'goop',
                   expiration: Date.now() + 10000,
-                  address: '0xalddddjflkasjdlfkjasdlf',
-                  name: 'Purple Cat',
-                  price: 1.2
+                  tokenId: '0xaldfsfsflsdfkasjdlfkjasdlf',
+                  tokenName: 'Blue Cat',
+                  price: 1.2,
+                  chainId: chainId
                 };
 
                 sell(order);
 
                 order = {
                   user: user?.account ?? '',
-                  collection: 'apes',
+                  collectionAddress: 'apes',
+                  collectionName: 'apes',
                   expiration: Date.now() + 10000,
-                  address: '0xalddsdfsdflkasjdlfkjasdlf',
-                  name: 'Blue Cat',
-                  price: 2.2
+                  tokenId: '0xalddssdsdfkasjdlfkjasdlf',
+                  tokenName: 'Purple Cat',
+                  price: 1.2,
+                  chainId: chainId
                 };
 
                 sell(order);
