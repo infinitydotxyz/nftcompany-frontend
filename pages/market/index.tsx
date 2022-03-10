@@ -35,6 +35,24 @@ const MarketPage = (): JSX.Element => {
     }
   };
 
+  const list = async (body: object) => {
+    const response = await apiPost(`/marketListings`, null, body);
+
+    const match = response.result;
+
+    if (response.status === 200) {
+      if (match) {
+        console.log(match);
+
+        showAppMessage('list successful.');
+      } else {
+        showAppMessage('list ??');
+      }
+    } else {
+      showAppError('An error occured: buy');
+    }
+  };
+
   const sell = async (order: SellOrder) => {
     const body = {
       sellOrder: order
@@ -163,6 +181,36 @@ const MarketPage = (): JSX.Element => {
               }}
             >
               Sell2
+            </Button>
+
+            <Button
+              onClick={() => {
+                const body = {
+                  orderType: 'sellOrders',
+                  action: 'list',
+                  listId: 'validActive',
+                  moveListId: 'validActive'
+                };
+
+                list(body);
+              }}
+            >
+              Sell Orders
+            </Button>
+
+            <Button
+              onClick={() => {
+                const body = {
+                  orderType: 'buyOrders',
+                  action: 'list',
+                  listId: 'validActive',
+                  moveListId: 'validActive'
+                };
+
+                list(body);
+              }}
+            >
+              Buy Orders
             </Button>
           </div>
         </div>
