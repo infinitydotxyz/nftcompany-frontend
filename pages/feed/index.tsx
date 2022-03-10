@@ -9,6 +9,7 @@ import { COLL_FEED, fetchMoreEvents, subscribe } from '../../src/utils/firestore
 import FeedItem, { FeedEvent, FeedEventType } from '../../src/components/app/Feed/FeedItem';
 import { FetchMore } from 'components/FetchMore/FetchMore';
 import { CommentPanel } from 'components/app/Feed/CommentPanel';
+import { PageHeader } from 'components/PageHeader';
 
 type Filter = {
   type?: FeedEventType;
@@ -55,7 +56,7 @@ export default function Feed() {
       </Head>
       <div>
         <div className="page-container">
-          <Box mb={4}>Activity Feed</Box>
+          <PageHeader title="Activity Feed" />
 
           <Box mb={4}>
             <Select
