@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Image } from '@chakra-ui/react';
 import { apiGet } from 'utils/apiUtil';
+import { NftDetailsResponse } from '@infinityxyz/lib/types/core/CollectionResponse';
+
+type ApiResponse = {
+  result: NftDetailsResponse;
+};
 
 const NftImage = ({
   tokenAddress,
@@ -17,7 +22,9 @@ const NftImage = ({
     if (!tokenAddress || !tokenId || unmounted) {
       return;
     }
-    const { result } = await apiGet(`/collections/${tokenAddress}/${tokenId}/ethereum/image`);
+    const { result }: ApiResponse = (await apiGet(
+      `/collections/ethereum/${tokenAddress}/${tokenId}/image`
+    )) as ApiResponse;
     setImageUrl(result?.imageUrl);
   };
   useEffect(() => {
