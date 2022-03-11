@@ -8,7 +8,7 @@ import { Button } from '@chakra-ui/button';
 
 type Props = {
   orders: BuyOrder[];
-  onClickAction: (order: BuyOrder) => void;
+  onClickAction: (order: BuyOrder, action: string) => void;
 };
 
 export const BuyOrderList = ({ orders, onClickAction }: Props): JSX.Element => {
@@ -29,22 +29,31 @@ export const BuyOrderList = ({ orders, onClickAction }: Props): JSX.Element => {
 
 type Props2 = {
   order: BuyOrder;
-  onClickAction: (order: BuyOrder) => void;
+  onClickAction: (order: BuyOrder, action: string) => void;
 };
 
 const BuyOrderCard = ({ order, onClickAction }: Props2): JSX.Element => {
   return (
-    <div className={styles.card} onClick={() => onClickAction(order)}>
+    <div className={styles.card} onClick={() => onClickAction(order, 'card')}>
       <div className={styles.title}>Buy Order</div>
       <div>budget: {order.budget}</div>
       <div>collectionAddresses: {order.collectionAddresses}</div>
       <div>minNFTs: {order.minNFTs}</div>
       <div>chainId: {order.chainId}</div>
-      <div>expiration: {order.expiration}</div>
+      <div>expiration: {new Date(order.expiration).toLocaleString()}</div>
       <div>user: {order.user}</div>
+      <div>id: {order.id}</div>
 
       <div className={styles.buttons}>
-        <Button variant="ghost" onClick={() => console.log('delete')}>
+        <Button
+          variant="ghost"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+
+            onClickAction(order, 'delete');
+          }}
+        >
           Delete
         </Button>
       </div>
@@ -56,7 +65,7 @@ const BuyOrderCard = ({ order, onClickAction }: Props2): JSX.Element => {
 
 type Props10 = {
   orders: SellOrder[];
-  onClickAction: (order: SellOrder) => void;
+  onClickAction: (order: SellOrder, action: string) => void;
 };
 
 export const SellOrderList = ({ orders, onClickAction }: Props10): JSX.Element => {
@@ -77,12 +86,12 @@ export const SellOrderList = ({ orders, onClickAction }: Props10): JSX.Element =
 
 type Props11 = {
   order: SellOrder;
-  onClickAction: (order: SellOrder) => void;
+  onClickAction: (order: SellOrder, action: string) => void;
 };
 
 const SellOrderCard = ({ order, onClickAction }: Props11): JSX.Element => {
   return (
-    <div className={styles.card} onClick={() => onClickAction(order)}>
+    <div className={styles.card} onClick={() => onClickAction(order, 'card')}>
       <div className={styles.title}>Sell Order</div>
       <div>price: {order.price}</div>
       <div>tokenName: {order.tokenName}</div>
@@ -90,10 +99,20 @@ const SellOrderCard = ({ order, onClickAction }: Props11): JSX.Element => {
       <div>collectionAddress: {order.collectionAddress}</div>
       <div>collectionName: {order.collectionName}</div>
       <div>chainId: {order.chainId}</div>
-      <div>expiration: {order.expiration}</div>
+      <div>expiration: {new Date(order.expiration).toLocaleString()}</div>
       <div>user: {order.user}</div>
+      <div>id: {order.id}</div>
+
       <div className={styles.buttons}>
-        <Button variant="ghost" onClick={() => console.log('delete')}>
+        <Button
+          variant="ghost"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+
+            onClickAction(order, 'delete');
+          }}
+        >
           Delete
         </Button>
       </div>
@@ -105,8 +124,8 @@ const SellOrderCard = ({ order, onClickAction }: Props11): JSX.Element => {
 
 type Props20 = {
   matches: BuyOrderMatch[];
-  onSellClick: (order: SellOrder) => void;
-  onBuyClick: (order: BuyOrder) => void;
+  onSellClick: (order: SellOrder, action: string) => void;
+  onBuyClick: (order: BuyOrder, action: string) => void;
 };
 
 export const BuyOrderMatchList = ({ matches, onBuyClick, onSellClick }: Props20): JSX.Element => {
@@ -131,8 +150,8 @@ export const BuyOrderMatchList = ({ matches, onBuyClick, onSellClick }: Props20)
 
 type Props21 = {
   match: BuyOrderMatch;
-  onSellClick: (order: SellOrder) => void;
-  onBuyClick: (order: BuyOrder) => void;
+  onSellClick: (order: SellOrder, action: string) => void;
+  onBuyClick: (order: BuyOrder, action: string) => void;
 };
 
 const BuyOrderMatchCard = ({ match, onSellClick, onBuyClick }: Props21): JSX.Element => {
