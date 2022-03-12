@@ -257,7 +257,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
         <ModalDialog onClose={onClose}>
           <div>
             <div className={styles.main}>
-              <div className={styles.title}>Market Order</div>
+              <div className={styles.title}>{buyMode ? 'Buy Order' : 'Sell Order'}</div>
               {content}
               <div className={styles.buttons}>
                 <Button onClick={() => onSubmit()}>{buyMode ? 'Buy' : 'Sell'}</Button>
