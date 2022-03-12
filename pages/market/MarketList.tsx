@@ -1,5 +1,5 @@
 import React from 'react';
-import { BuyOrder, BuyOrderMatch, SellOrder } from '@infinityxyz/lib/types/core';
+import { BuyOrder, BuyOrderMatch, isOrderExpired, SellOrder } from '@infinityxyz/lib/types/core';
 import { uuidv4 } from 'utils/commonUtil';
 import styles from './styles.module.scss';
 import { Button } from '@chakra-ui/button';
@@ -43,6 +43,7 @@ const BuyOrderCard = ({ order, onClickAction }: Props2): JSX.Element => {
       <div>expiration: {new Date(order.expiration).toLocaleString()}</div>
       <div>user: {order.user}</div>
       <div>id: {order.id}</div>
+      <div>expired: {isOrderExpired(order) ? 'YES' : 'NO'}</div>
 
       <div className={styles.buttons}>
         <Button
@@ -102,6 +103,7 @@ const SellOrderCard = ({ order, onClickAction }: Props11): JSX.Element => {
       <div>expiration: {new Date(order.expiration).toLocaleString()}</div>
       <div>user: {order.user}</div>
       <div>id: {order.id}</div>
+      <div>expired: {isOrderExpired(order) ? 'YES' : 'NO'}</div>
 
       <div className={styles.buttons}>
         <Button

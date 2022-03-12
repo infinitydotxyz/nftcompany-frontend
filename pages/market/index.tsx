@@ -6,139 +6,87 @@ import styles from './styles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { PageHeader } from 'components/PageHeader';
-import { apiPost } from 'utils/apiUtil';
 import {
   BuyOrder,
   BuyOrderMatch,
   MarketListingsBody,
-  MarketListingsResponse,
   MarketOrder,
   SellOrder,
-  isBuyOrder,
-  orderHash
+  isBuyOrder
 } from '@infinityxyz/lib/types/core';
 import { Button } from '@chakra-ui/button';
 import { BuyOrderList, BuyOrderMatchList, SellOrderList } from './MarketList';
-
-const expirationTime = Date.now() + 10000;
+import MarketOrderModal from 'components/MarketOrderModal';
+import {
+  marketBuy,
+  marketMatches,
+  marketBuyOrders,
+  marketDeleteOrder,
+  marketSell,
+  marketSellOrders
+} from './marketUtils';
 
 const MarketPage = (): JSX.Element => {
   const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
   const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
   const [matchOrders, setMatchOrders] = useState<BuyOrderMatch[]>([]);
   const { user, chainId, showAppError, showAppMessage } = useAppContext();
+  const [buyModalShown, setBuyModalShown] = useState(false);
+  const [sellModalShown, setSellModalShown] = useState(false);
+
+  const [clickedOrder, setClickedOrder] = useState<MarketOrder>();
 
   const buy = async (order: BuyOrder) => {
-    const body = {
-      buyOrder: order
-    };
+    const match = await marketBuy(order);
 
-    const response = await apiPost(`/u/${user?.account}/market`, null, body);
+    if (match) {
+      setMatchOrders(match);
 
-    if (response.result) {
-      const match = response.result.result as BuyOrderMatch;
-
-      if (response.status === 200) {
-        if (match) {
-          setMatchOrders([match]);
-
-          showAppMessage('buy successful.');
-        } else {
-          showAppMessage('buy submitted');
-        }
-      } else {
-        showAppError('An error occured: buy');
-      }
+      showAppMessage('Buy successful');
+    } else {
+      showAppError('Buy submitted');
     }
   };
 
   const listBuyOrders = async () => {
-    const body: MarketListingsBody = {
-      orderType: 'buyOrders',
-      action: 'list',
-      listId: 'validActive',
-      moveListId: 'validActive'
-    };
+    const match = await marketBuyOrders();
 
-    list(body);
+    if (match) {
+      const orders: BuyOrder[] = match as BuyOrder[];
+
+      setBuyOrders(orders);
+    } else {
+      showAppError('An error occured: listBuyOrders');
+    }
   };
 
   const listSellOrders = async () => {
-    const body: MarketListingsBody = {
-      orderType: 'sellOrders',
-      action: 'list',
-      listId: 'validActive',
-      moveListId: 'validActive'
-    };
+    const match = await marketSellOrders();
 
-    list(body);
-  };
+    if (match) {
+      const orders: SellOrder[] = match as SellOrder[];
 
-  const list = async (body: MarketListingsBody) => {
-    const response = await apiPost(`/marketListings`, null, body);
-
-    if (response.result) {
-      const match: MarketListingsResponse | null = response.result;
-
-      if (response.status === 200) {
-        if (match) {
-          if (body.orderType === 'buyOrders') {
-            const buys: BuyOrder[] = match.result as BuyOrder[];
-
-            setBuyOrders(buys);
-          } else if (body.orderType === 'sellOrders') {
-            const sells: SellOrder[] = match.result as SellOrder[];
-
-            setSellOrders(sells);
-          }
-
-          showAppMessage('list successful.');
-        } else {
-          showAppMessage('list ??');
-        }
-      } else {
-        showAppError('An error occured: buy');
-      }
+      setSellOrders(orders);
+    } else {
+      showAppError('Sell Submitted');
     }
   };
 
   const deleteOrder = async (body: MarketListingsBody) => {
-    const response = await apiPost(`/marketListings`, null, body);
+    const response = await marketDeleteOrder(body);
 
-    if (response.result) {
-      const match: MarketListingsResponse | null = response.result;
-
-      if (response.status === 200) {
-        if (match) {
-          showAppMessage(match.success);
-        } else {
-          showAppMessage('list ??');
-        }
-      } else {
-        showAppError('An error occured: buy');
-      }
+    if (response) {
+      showAppMessage(response);
     }
   };
 
   const sell = async (order: SellOrder) => {
-    const body = {
-      sellOrder: order
-    };
-
-    const response = await apiPost(`/u/${user?.account}/market`, null, body);
-    if (response.result) {
-      const match = response.result.result as BuyOrderMatch[];
-
-      if (response.status === 200) {
-        if (match) {
-          setMatchOrders(match);
-          showAppMessage('sell successful.');
-        } else {
-          showAppMessage('sell submitted');
-        }
-      } else {
-        showAppError('An error occured: sell');
-      }
+    const match = await marketSell(order);
+    if (match) {
+      setMatchOrders(match);
+      showAppMessage('sell successful.');
+    } else {
+      showAppMessage('sell submitted');
     }
   };
 
@@ -146,18 +94,7 @@ const MarketPage = (): JSX.Element => {
     <div className={styles.buttons}>
       <Button
         onClick={async () => {
-          const order: BuyOrder = {
-            user: user?.account ?? '',
-            budget: 12,
-            collectionAddresses: ['apes', 'goop'],
-            expiration: expirationTime,
-            minNFTs: 2,
-            chainId: chainId
-          };
-
-          await buy(order);
-
-          listBuyOrders();
+          setBuyModalShown(true);
         }}
       >
         Buy
@@ -165,105 +102,28 @@ const MarketPage = (): JSX.Element => {
 
       <Button
         onClick={async () => {
-          const order: BuyOrder = {
-            user: user?.account ?? '',
-            budget: 22,
-            collectionAddresses: ['apes', 'goop'],
-            expiration: expirationTime,
-            minNFTs: 4,
-            chainId: chainId
-          };
-
-          await buy(order);
-
-          listBuyOrders();
-        }}
-      >
-        Buy2
-      </Button>
-
-      <Button
-        onClick={async () => {
-          let order: SellOrder = {
-            user: user?.account ?? '',
-            collectionAddress: 'goop',
-            collectionName: 'goop',
-            expiration: expirationTime,
-            tokenId: '0xalddsdfsdflsdfkasfsfsjasdlf',
-            tokenName: 'Pink Cat',
-            price: 1.2,
-            chainId: chainId
-          };
-
-          await sell(order);
-
-          order = {
-            user: user?.account ?? '',
-            collectionAddress: 'apes',
-            collectionName: 'apes',
-            expiration: expirationTime,
-            tokenId: '0xalddsdfsdflsdfkasjdlfkjasdlf',
-            tokenName: 'Green Cat',
-            price: 1.2,
-            chainId: chainId
-          };
-
-          await sell(order);
-
-          listSellOrders();
+          setSellModalShown(true);
         }}
       >
         Sell
       </Button>
 
       <Button
-        onClick={async () => {
-          let order: SellOrder = {
-            user: user?.account ?? '',
-            collectionAddress: 'goop',
-            collectionName: 'goop',
-            expiration: expirationTime,
-            tokenId: '0xaldfsfsflsdfkasjdlfkjasdlf',
-            tokenName: 'Blue Cat',
-            price: 1.2,
-            chainId: chainId
-          };
-
-          await sell(order);
-
-          order = {
-            user: user?.account ?? '',
-            collectionAddress: 'apes',
-            collectionName: 'apes',
-            expiration: expirationTime,
-            tokenId: '0xalddssdsdfkasjdlfkjasdlf',
-            tokenName: 'Purple Cat',
-            price: 1.2,
-            chainId: chainId
-          };
-
-          await sell(order);
-
-          listSellOrders();
-        }}
-      >
-        Sell2
-      </Button>
-
-      <Button
         onClick={() => {
           listSellOrders();
-        }}
-      >
-        Sell Orders
-      </Button>
-
-      <Button
-        onClick={() => {
           listBuyOrders();
         }}
       >
-        Buy Orders
+        Orders
+      </Button>
+
+      <Button
+        onClick={async () => {
+          const matches = await marketMatches();
+          setMatchOrders(matches);
+        }}
+      >
+        Matches
       </Button>
     </div>
   );
@@ -271,7 +131,13 @@ const MarketPage = (): JSX.Element => {
   const handleCardClick = async (order: MarketOrder, action: string) => {
     switch (action) {
       case 'card':
-        console.log('clicked card');
+        setClickedOrder(order);
+
+        if (isBuyOrder(order)) {
+          setBuyModalShown(true);
+        } else {
+          setSellModalShown(true);
+        }
         break;
       case 'delete':
         const body: MarketListingsBody = {
@@ -317,6 +183,38 @@ const MarketPage = (): JSX.Element => {
 
           <BuyOrderMatchList matches={matchOrders} onBuyClick={handleCardClick} onSellClick={handleCardClick} />
         </div>
+
+        {buyModalShown && (
+          <MarketOrderModal
+            inOrder={clickedOrder}
+            buyMode={true}
+            onClose={async (buyOrder, sellOrder) => {
+              setBuyModalShown(false);
+
+              if (buyOrder) {
+                await buy(buyOrder);
+
+                listBuyOrders();
+              }
+            }}
+          />
+        )}
+
+        {sellModalShown && (
+          <MarketOrderModal
+            inOrder={clickedOrder}
+            buyMode={false}
+            onClose={async (buyOrder, sellOrder) => {
+              setSellModalShown(false);
+
+              if (sellOrder) {
+                await sell(sellOrder);
+
+                listSellOrders();
+              }
+            }}
+          />
+        )}
       </div>
     </>
   );
