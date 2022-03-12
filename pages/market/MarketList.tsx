@@ -128,9 +128,10 @@ type Props20 = {
   matches: BuyOrderMatch[];
   onSellClick: (order: SellOrder, action: string) => void;
   onBuyClick: (order: BuyOrder, action: string) => void;
+  onAcceptClick: (order: BuyOrder) => void;
 };
 
-export const BuyOrderMatchList = ({ matches, onBuyClick, onSellClick }: Props20): JSX.Element => {
+export const BuyOrderMatchList = ({ matches, onAcceptClick, onBuyClick, onSellClick }: Props20): JSX.Element => {
   if (matches.length === 0) {
     return <></>;
   }
@@ -140,7 +141,13 @@ export const BuyOrderMatchList = ({ matches, onBuyClick, onSellClick }: Props20)
       {matches.map((match) => {
         return (
           <div key={uuidv4()}>
-            <BuyOrderMatchCard key={uuidv4()} match={match} onBuyClick={onBuyClick} onSellClick={onSellClick} />
+            <BuyOrderMatchCard
+              key={uuidv4()}
+              match={match}
+              onBuyClick={onBuyClick}
+              onSellClick={onSellClick}
+              onAcceptClick={onAcceptClick}
+            />
           </div>
         );
       })}
@@ -154,9 +161,10 @@ type Props21 = {
   match: BuyOrderMatch;
   onSellClick: (order: SellOrder, action: string) => void;
   onBuyClick: (order: BuyOrder, action: string) => void;
+  onAcceptClick: (order: BuyOrder) => void;
 };
 
-const BuyOrderMatchCard = ({ match, onSellClick, onBuyClick }: Props21): JSX.Element => {
+const BuyOrderMatchCard = ({ match, onAcceptClick, onSellClick, onBuyClick }: Props21): JSX.Element => {
   let buyCard;
   if (match.buyOrder) {
     buyCard = <BuyOrderCard order={match.buyOrder} onClickAction={onBuyClick} />;
@@ -165,14 +173,7 @@ const BuyOrderMatchCard = ({ match, onSellClick, onBuyClick }: Props21): JSX.Ele
   return (
     <div className={styles.matchCard}>
       <div className={styles.acceptButton}>
-        <Button
-          variant="ghost"
-          backgroundColor="transparent"
-          size="sm"
-          onClick={() => {
-            console.log('duh');
-          }}
-        >
+        <Button variant="ghost" backgroundColor="transparent" size="sm" onClick={() => onAcceptClick(match.buyOrder)}>
           Accept
         </Button>
       </div>

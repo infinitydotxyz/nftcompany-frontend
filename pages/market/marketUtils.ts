@@ -138,3 +138,27 @@ export const marketDeleteOrder = async (body: MarketListingsBody): Promise<strin
 
   return 'error';
 };
+
+export const executeBuyOrder = async (orderId: string): Promise<string> => {
+  const body: MarketListingsBody = {
+    action: 'buy',
+    orderId: orderId,
+    orderType: 'buyOrders'
+  };
+
+  const response = await apiPost(`/marketListings`, null, body);
+
+  if (response.result) {
+    const match: MarketListingsResponse | null = response.result;
+
+    if (response.status === 200) {
+      if (match) {
+        return match.success;
+      }
+    }
+  }
+
+  console.log('An error occured: buy');
+
+  return 'error';
+};

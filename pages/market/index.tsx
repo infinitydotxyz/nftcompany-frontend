@@ -23,7 +23,8 @@ import {
   marketBuyOrders,
   marketDeleteOrder,
   marketSell,
-  marketSellOrders
+  marketSellOrders,
+  executeBuyOrder
 } from './marketUtils';
 
 const MarketPage = (): JSX.Element => {
@@ -132,6 +133,14 @@ const MarketPage = (): JSX.Element => {
     </div>
   );
 
+  const handleAcceptClick = async (buyOrder: BuyOrder) => {
+    await executeBuyOrder(buyOrder.id ?? '');
+
+    listMatches();
+    listBuyOrders();
+    listSellOrders();
+  };
+
   const handleCardClick = async (order: MarketOrder, action: string) => {
     switch (action) {
       case 'card':
@@ -198,7 +207,12 @@ const MarketPage = (): JSX.Element => {
           {matchOrders.length > 0 && (
             <>
               <div className={styles.header}>Match Orders</div>
-              <BuyOrderMatchList matches={matchOrders} onBuyClick={handleCardClick} onSellClick={handleCardClick} />
+              <BuyOrderMatchList
+                matches={matchOrders}
+                onBuyClick={handleCardClick}
+                onSellClick={handleCardClick}
+                onAcceptClick={handleAcceptClick}
+              />
             </>
           )}
         </div>
