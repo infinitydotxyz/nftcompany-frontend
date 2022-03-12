@@ -18,15 +18,15 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
   const { user, chainId, showAppError } = useAppContext();
 
   // form data
-  const [budget, setBudget] = useState(2);
-  const [minNFTs, setMinNFTs] = useState(2);
-  const [price, setPrice] = useState(1.23);
-  const [expiration, setExpiration] = useState(expirationTime);
+  const [budget, setBudget] = useState<number>(2);
+  const [minNFTs, setMinNFTs] = useState<number>(2);
+  const [price, setPrice] = useState<number>(1.23);
+  const [expiration, setExpiration] = useState<number>(expirationTime);
   const [collectionAddress, setCollectionAddress] = useState('0xAddress1');
-  const [collectionName, setCollectionName] = useState('goop');
+  const [collectionName, setCollectionName] = useState('goop bros');
   const [tokenId, setTokenId] = useState('0xasdfasdfasdfasdf');
   const [tokenName, setTokenName] = useState('Grey Dog');
-  const [collectionAddresses, setCollectionAddresses] = useState(['0xAddressOne', '0xAddress2']);
+  const [collectionAddresses, setCollectionAddresses] = useState(['0xAddress1', '0xAddress2']);
 
   useEffect(() => {
     let buyOrder: BuyOrder | undefined;
@@ -174,7 +174,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
         onSubmit={() => {
           onSubmit();
         }}
-        onChange={(e: any) => setMinNFTs(e.target.value)}
+        onChange={(e: any) => setMinNFTs(parseInt(e.target.value))}
       />
     </FormControl>
   );
@@ -190,7 +190,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
         onSubmit={() => {
           onSubmit();
         }}
-        onChange={(e: any) => setBudget(e.target.value)}
+        onChange={(e: any) => setBudget(parseFloat(e.target.value))}
       />
     </FormControl>
   );
@@ -206,7 +206,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
         onSubmit={() => {
           onSubmit();
         }}
-        onChange={(e: any) => setPrice(e.target.value)}
+        onChange={(e: any) => setPrice(parseFloat(e.target.value))}
       />
     </FormControl>
   );
@@ -222,7 +222,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
         onSubmit={() => {
           onSubmit();
         }}
-        onChange={(e: any) => setExpiration(e.target.value)}
+        onChange={(e: any) => setExpiration(parseInt(e.target.value))}
       />
     </FormControl>
   );

@@ -40,12 +40,12 @@ const BuyOrderCard = ({ order, onClickAction }: Props2): JSX.Element => {
       <div>collectionAddresses: {order.collectionAddresses}</div>
       <div>minNFTs: {order.minNFTs}</div>
       <div>chainId: {order.chainId}</div>
-      <div>expiration: {new Date(order.expiration).toLocaleString()}</div>
+      <div>expiration: {new Date(order.expiration * 1000).toLocaleString()}</div>
       <div>user: {order.user}</div>
       <div>id: {order.id}</div>
       <div>expired: {isOrderExpired(order) ? 'YES' : 'NO'}</div>
 
-      <div className={styles.buttons}>
+      <div className={styles.cardButtons}>
         <Button
           variant="ghost"
           onClick={(e) => {
@@ -100,12 +100,12 @@ const SellOrderCard = ({ order, onClickAction }: Props11): JSX.Element => {
       <div>collectionAddress: {order.collectionAddress}</div>
       <div>collectionName: {order.collectionName}</div>
       <div>chainId: {order.chainId}</div>
-      <div>expiration: {new Date(order.expiration).toLocaleString()}</div>
+      <div>expiration: {new Date(order.expiration * 1000).toLocaleString()}</div>
       <div>user: {order.user}</div>
       <div>id: {order.id}</div>
       <div>expired: {isOrderExpired(order) ? 'YES' : 'NO'}</div>
 
-      <div className={styles.buttons}>
+      <div className={styles.cardButtons}>
         <Button
           variant="ghost"
           onClick={(e) => {
@@ -139,7 +139,7 @@ export const BuyOrderMatchList = ({ matches, onBuyClick, onSellClick }: Props20)
     <>
       {matches.map((match) => {
         return (
-          <div key={uuidv4()} className={styles.cardList}>
+          <div key={uuidv4()}>
             <BuyOrderMatchCard key={uuidv4()} match={match} onBuyClick={onBuyClick} onSellClick={onSellClick} />
           </div>
         );
@@ -163,7 +163,20 @@ const BuyOrderMatchCard = ({ match, onSellClick, onBuyClick }: Props21): JSX.Ele
   }
 
   return (
-    <>
+    <div className={styles.matchCard}>
+      <div className={styles.acceptButton}>
+        <Button
+          variant="ghost"
+          backgroundColor="transparent"
+          size="sm"
+          onClick={() => {
+            console.log('duh');
+          }}
+        >
+          Accept
+        </Button>
+      </div>
+
       <div>Buy Order</div>
       {buyCard}
 
@@ -172,6 +185,6 @@ const BuyOrderMatchCard = ({ match, onSellClick, onBuyClick }: Props21): JSX.Ele
       {match.sellOrders && match.sellOrders.length > 0 && (
         <SellOrderList orders={match.sellOrders} onClickAction={onSellClick} />
       )}
-    </>
+    </div>
   );
 };

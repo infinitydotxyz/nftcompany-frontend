@@ -60,6 +60,11 @@ const MarketPage = (): JSX.Element => {
     }
   };
 
+  const listMatches = async () => {
+    const matches = await marketMatches();
+    setMatchOrders(matches);
+  };
+
   const listSellOrders = async () => {
     const match = await marketSellOrders();
 
@@ -119,8 +124,7 @@ const MarketPage = (): JSX.Element => {
 
       <Button
         onClick={async () => {
-          const matches = await marketMatches();
-          setMatchOrders(matches);
+          listMatches();
         }}
       >
         Matches
@@ -155,6 +159,9 @@ const MarketPage = (): JSX.Element => {
         } else {
           listSellOrders();
         }
+
+        // clear this
+        setMatchOrders([]);
         break;
       default:
         console.log(`not handled: ${action}`);
@@ -173,15 +180,27 @@ const MarketPage = (): JSX.Element => {
           <PleaseConnectWallet account={user?.account} />
 
           {buttons}
-          <div>Buy Orders</div>
-          <BuyOrderList orders={buyOrders} onClickAction={handleCardClick} />
 
-          <div>Sell Orders</div>
-          <SellOrderList orders={sellOrders} onClickAction={handleCardClick} />
+          {buyOrders.length > 0 && (
+            <>
+              <div className={styles.header}>Buy Orders</div>
+              <BuyOrderList orders={buyOrders} onClickAction={handleCardClick} />
+            </>
+          )}
 
-          <div>Sell Orders</div>
+          {sellOrders.length > 0 && (
+            <>
+              <div className={styles.header}>Sell Orders</div>
+              <SellOrderList orders={sellOrders} onClickAction={handleCardClick} />
+            </>
+          )}
 
-          <BuyOrderMatchList matches={matchOrders} onBuyClick={handleCardClick} onSellClick={handleCardClick} />
+          {matchOrders.length > 0 && (
+            <>
+              <div className={styles.header}>Match Orders</div>
+              <BuyOrderMatchList matches={matchOrders} onBuyClick={handleCardClick} onSellClick={handleCardClick} />
+            </>
+          )}
         </div>
 
         {buyModalShown && (
