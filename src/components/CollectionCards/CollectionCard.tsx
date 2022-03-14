@@ -1,5 +1,5 @@
 import React from 'react';
-import { CollectionCardEntry } from '@infinityxyz/types/core';
+import { CollectionCardEntry } from '@infinityxyz/lib/types/core';
 import router from 'next/router';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { getSearchFriendlyString, uuidv4 } from 'utils/commonUtil';

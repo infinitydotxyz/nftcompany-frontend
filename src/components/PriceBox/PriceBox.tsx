@@ -11,9 +11,10 @@ type Props = {
   token?: '' | 'ETH' | 'WETH';
   expirationTime?: string;
   justifyRight?: boolean;
+  noBorder?: boolean;
 };
 
-export const PriceBox = ({ justifyRight = false, price, expirationTime = '', token = '' }: Props) => {
+export const PriceBox = ({ justifyRight = false, price, expirationTime = '', token = '', noBorder = false }: Props) => {
   let priceStr = '0';
 
   if (price) {
@@ -48,7 +49,7 @@ export const PriceBox = ({ justifyRight = false, price, expirationTime = '', tok
         }
       >
         <div className={priceStyle.join(' ')}>
-          <div className={styles.price}>
+          <div className={styles.price + ' ' + (noBorder === true ? styles.noBorder : '')}>
             <Box pb={1}>{priceStr}</Box> {token === 'ETH' ? <EthToken /> : <WEthToken />}
           </div>
           {expDate && (

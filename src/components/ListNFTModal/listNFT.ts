@@ -1,4 +1,4 @@
-import { TokenStandardVersion, WyvernSchemaName } from '@infinityxyz/types/core';
+import { TokenStandardVersion, WyvernSchemaName } from '@infinityxyz/lib/types/core';
 import { apiGet } from 'utils/apiUtil';
 import { NFTC_FEE_RECIPIENT, NULL_ADDRESS } from 'utils/constants';
 import { getOpenSeaportForChain } from 'utils/ethersUtil';

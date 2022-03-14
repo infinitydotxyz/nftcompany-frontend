@@ -2,7 +2,7 @@ import React from 'react';
 import { InView } from 'react-intersection-observer';
 import { Box } from '@chakra-ui/layout';
 import { ITEMS_PER_PAGE } from 'utils/constants';
-import { CardData } from '@infinityxyz/types/core';
+import { CardData } from '@infinityxyz/lib/types/core';
 
 type FetchMoreElementProps = {
   inView: boolean;
