@@ -111,7 +111,11 @@ export const getHistoricalDiscordData = async (collectionAddress: string) => {
   return result as { timestamp: number; presenceCount: number; membersCount: number }[];
 };
 
-export type CollectionData = CollectionInfo & { links?: CollectionLinks; stats?: CollectionStats };
+export type CollectionData = CollectionInfo & {
+  links?: CollectionLinks;
+  stats?: CollectionStats;
+  integrations?: CollectionIntegrations;
+};
 
 export interface CollectionInfo {
   isClaimed?: boolean;
@@ -285,4 +289,18 @@ export interface InfinityTweet {
   tweetId: string;
   text: string;
   url: string;
+}
+
+/**
+ * Integration with infinity.xyz discord bot.
+ */
+export interface DiscordIntegration {
+  /**
+   * List of channels to monitor for feed data.
+   */
+  channels: string[];
+}
+
+export interface CollectionIntegrations {
+  discord: DiscordIntegration;
 }

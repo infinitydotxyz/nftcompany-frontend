@@ -1,9 +1,9 @@
 import { ChangeEvent, FC, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { CollectionData } from 'services/Collections.service';
+import { CollectionData, CollectionIntegrations } from 'services/Collections.service';
 import { useAppContext } from 'utils/context/AppContext';
 import uniqueId from 'lodash/uniqueId';
 import { Button } from '@chakra-ui/button';
-import { Box, SimpleGrid, Text } from '@chakra-ui/layout';
+import { Box, Heading, Link, SimpleGrid, Text } from '@chakra-ui/layout';
 import { FormLabel, Input, Textarea, Image } from '@chakra-ui/react';
 import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import { FaImage } from 'react-icons/fa';
@@ -22,7 +22,8 @@ enum CollectionFormField {
   Wiki = 'wiki',
   Telegram = 'telegram',
   Benefits = 'benefits',
-  Partnerships = 'partnerships'
+  Partnerships = 'partnerships',
+  DiscordIntegration = 'discord-integration'
 }
 
 enum InputType {
@@ -70,6 +71,7 @@ interface CollectionFormData {
   [CollectionFormField.Telegram]: TextInput;
   [CollectionFormField.Benefits]: MultipleTextInputs;
   [CollectionFormField.Partnerships]: NameAndLinkInputs;
+  [CollectionFormField.DiscordIntegration]: TextInput;
 }
 
 interface FormBody {
@@ -94,9 +96,10 @@ interface FormBody {
   telegram: string;
   benefits: string[];
   partnerships: Array<{ name: string; link: string }>;
+  integrations: CollectionIntegrations;
 }
 
-const InputGroupWrapper = (props: { title?: string; children: ReactNode }) => {
+const InputGroupWrapper = (props: { title?: string; description?: string; children: ReactNode }) => {
   return (
     <Box
       display="flex"
@@ -115,8 +118,13 @@ const InputGroupWrapper = (props: { title?: string; children: ReactNode }) => {
         minWidth={['500', '600', '700', '750']}
       >
         {props.title && (
-          <Text size="xl" variant="bold" marginBottom={'56px'}>
+          <Text size="xl" variant="bold" marginBottom={props.description ? '2px' : '56px'}>
             {props.title}
+          </Text>
+        )}
+        {props.description && (
+          <Text size="sm" marginBottom={'56px'}>
+            {props.description}
           </Text>
         )}
         {props.children}
@@ -183,7 +191,15 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData; userAddress?: st
             .filter((item) => item),
           partnerships: Object.values(formData[CollectionFormField.Partnerships].value ?? {}).filter(
             (item) => item.name && item.link
-          )
+          ),
+          integrations: {
+            discord: {
+              channels: formData[CollectionFormField.DiscordIntegration].value
+                .split(',')
+                .map((channel) => channel.trim())
+                .filter((channel) => channel)
+            }
+          }
         };
         form.append('data', JSON.stringify(update));
         const res = await apiPost(
@@ -287,6 +303,10 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData; userAddress?: st
       [CollectionFormField.Partnerships]: {
         type: InputType.NameAndLinkArray,
         value: partnerships
+      },
+      [CollectionFormField.DiscordIntegration]: {
+        type: InputType.Text,
+        value: collectionInfo?.links?.discord ?? ''
       }
     };
 
@@ -616,6 +636,26 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData; userAddress?: st
           <Button variant={'alt'} size="lg" onClick={addEmptyNameAndLinkThunked(CollectionFormField.Partnerships)}>
             Add more partnerships
           </Button>
+        </InputGroupWrapper>
+        <HorizontalLine />
+
+        <InputGroupWrapper title="Integrations" description="Enable integrations with third party party platforms.">
+          <SimpleGrid spacingY="32px" columns={1} spacingX={'32px'} width="100%">
+            <Text>
+              <Heading as="h4" size="sm">
+                Discord
+              </Heading>
+              Add the <Link textDecoration="underline">official infinity.xyz Discord bot</Link> to your server to
+              cross-post #announcements straight to the feed! You can configure the text channels below.
+            </Text>
+            <InputWithLabel
+              title="Discord channels to monitor (separate multiple values by comma)"
+              placeholder="announcements, 952902403055812650"
+              name={CollectionFormField.DiscordIntegration}
+              value={(formData[CollectionFormField.DiscordIntegration] as TextInput)?.value ?? ''}
+              onChange={onChangeHandler}
+            />
+          </SimpleGrid>
         </InputGroupWrapper>
 
         <Box
