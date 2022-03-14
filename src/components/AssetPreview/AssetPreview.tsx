@@ -20,8 +20,9 @@ import { DescriptionBox } from 'components/PurchaseAccordion/DescriptionBox';
 import { Grid, GridItem, Center } from '@chakra-ui/layout';
 import { addressesEqual, getChainScannerBase, getToken, toChecksumAddress } from 'utils/commonUtil';
 
-import { Image } from '@chakra-ui/react';
+import { Image, Button } from '@chakra-ui/react';
 import { Switch, Text, Stack } from '@chakra-ui/react';
+import { TraitItem } from 'components/TraitItem';
 import { ReadMoreText } from 'components/ReadMoreText/ReadMoreText';
 
 import { ToggleSwitchButton } from 'components/ToggleSwitchButton';
@@ -79,7 +80,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
   name = name?.toLowerCase();
 
   return (
-    <>
+    <div className="main">
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }} gap={[4, 8, 16]} py={[4, 8]}>
         <GridItem w="100%" bg="white">
           <Center>
@@ -119,6 +120,58 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
               tooltip={`#${data.tokenId}`}
             />
           </Box>
+          <Box display={{ base: 'grid', sm: 'flex' }} ml={-1} mb={[4, 8]}>
+            <Box
+              as="button"
+              height="48px"
+              lineHeight="1.4"
+              transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+              border="1px"
+              px="24px"
+              borderRadius="24px"
+              fontSize="14px"
+              fontWeight="semibold"
+              bg="#000"
+              borderColor="#000"
+              color="#fff"
+              _hover={{ bg: '#434343' }}
+              _active={{
+                bg: '#262626',
+                transform: 'scale(0.98)'
+              }}
+              _focus={{
+                boxShadow: '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)'
+              }}
+            >
+              Buy&nbsp;&nbsp;&nbsp;3.30 ETH
+            </Box>
+            <Box
+              as="button"
+              ml={{ sm: 4 }}
+              mt={{ base: 1, sm: 0 }}
+              height="48px"
+              lineHeight="1.4"
+              transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+              border="1px"
+              px="36px"
+              borderRadius="24px"
+              fontSize="14px"
+              fontWeight="semibold"
+              bg="#fff"
+              borderColor="#BEBEBE"
+              color="#000"
+              _hover={{ bg: '#ebedf0' }}
+              _active={{
+                bg: '#dddfe2',
+                transform: 'scale(0.98)'
+              }}
+              _focus={{
+                boxShadow: '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)'
+              }}
+            >
+              Make offer
+            </Box>
+          </Box>
           <Text fontWeight={800} mb={[1]}>
             Description
           </Text>
@@ -126,9 +179,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
             <ReadMoreText
               text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
               dolore magna aliqua. Ut enim ad minim veniam. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. Lorem ipsum dolor
-              sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam.Lorem ipsum dolor sit amet..."
+              do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
               min={100}
               ideal={120}
               max={200}
@@ -138,63 +189,19 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
         </GridItem>
       </Grid>
 
-      <div className={styles.main}>
-        <div className={styles.nftContent}>
-          <div className={styles.left}>
-            <div className={styles.imageFrame}>
-              <img
-                alt="not available"
-                src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
-              />
-            </div>
-
-            <ExtraSpace />
-
-            <DescriptionBox data={data} />
-
-            {(data.metadata?.asset?.traits || []).length > 0 && (
-              <Box mt={4}>
-                <TraitBox data={data} />
-              </Box>
-            )}
-          </div>
-
-          <div className={styles.right}>
-            <div className={styles.imgFooter}>
-              <div className={styles.infoColumn}>
-                <div className={styles.collectionRow}>
-                  <AppLink type="secondary" className={styles.collection} href={`${window.origin}/collection/${name}`}>
-                    {data?.collectionName}
-                  </AppLink>
-
-                  <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
-                </div>
-                <div className={styles.imgTitle}>{title}</div>
-              </div>
-              <Spacer />
-              <div className={styles.playButton}>
-                {/* <Button
-                    onClick={() => {
-                      router.push('/game/doge2048');
-                    }}
-                  >
-                    Play Game
-                  </Button> */}
-              </div>
-            </div>
-            <PurchaseAccordion
-              data={data}
-              listings={listings}
-              action={action}
-              onComplete={() => {
-                // onClose();
-              }}
+      <Box d="flex" flexWrap="wrap" w="100%" py={[4, 8]}>
+        {(data.metadata?.asset?.traits || []).map((item) => {
+          return (
+            <TraitItem
+              key={`${item.traitType}_${item.traitValue}`}
+              traitType={item.traitType}
+              traitValue={item.traitValue}
+              percentage={7}
             />
-          </div>
-        </div>
-
-        <NFTEvents address={tokenAddress} tokenId={tokenId} />
-      </div>
-    </>
+          );
+        })}
+      </Box>
+      <NFTEvents address={tokenAddress} tokenId={tokenId} />
+    </div>
   );
 };

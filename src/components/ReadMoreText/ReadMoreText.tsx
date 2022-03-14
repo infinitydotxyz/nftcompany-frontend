@@ -98,7 +98,7 @@ export class ReadMoreText extends React.Component<ReadMoreTextPropType, ReadMore
     const [primaryText, secondaryText] = trimText(this.props.text, this.props.min, this.props.ideal, this.props.max);
 
     this.state = {
-      displaySecondary: false,
+      displaySecondary: true,
       primaryText,
       secondaryText,
       readMoreText: this.props.readMoreText
