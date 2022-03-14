@@ -8,6 +8,7 @@ import { FormLabel, Input, Textarea, Image } from '@chakra-ui/react';
 import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import { FaImage } from 'react-icons/fa';
 import { apiPost } from 'utils/apiUtil';
+import { DISCORD_BOT_OAUTH_URL } from 'utils/constants';
 
 enum CollectionFormField {
   ProfileImage = 'profileImage',
@@ -645,11 +646,15 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData; userAddress?: st
               <Heading as="h4" size="sm">
                 Discord
               </Heading>
-              Add the <Link textDecoration="underline">official infinity.xyz Discord bot</Link> to your server to
-              cross-post #announcements straight to the feed! You can configure the text channels below.
+              Add the{' '}
+              <Link textDecoration="underline" href={DISCORD_BOT_OAUTH_URL} target="_blank">
+                official infinity.xyz bot
+              </Link>{' '}
+              to your server and let it cross-post #announcements straight to Infinity{"'"}s feed! You can configure the
+              text channels to monitor below.
             </Text>
             <InputWithLabel
-              title="Discord channels to monitor (separate multiple values by comma)"
+              title="Discord channels (separate multiple values by comma)"
               placeholder="announcements, 952902403055812650"
               name={CollectionFormField.DiscordIntegration}
               value={(formData[CollectionFormField.DiscordIntegration] as TextInput)?.value ?? ''}

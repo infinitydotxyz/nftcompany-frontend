@@ -1,7 +1,9 @@
-export const API_BASE = 'https://sv-dev.nftcompany.com';
+export const API_BASE = 'http://127.0.0.1:9090';
 export const RINKEBY_API_BASE = 'https://sv-dev.nftcompany.com';
 export const SITE_HOST = 'https://dev.nftcompany.com';
 export const RINKEBY_SITE_HOST = 'https://dev.nftcompany.com';
+export const DISCORD_BOT_OAUTH_URL =
+  'https://discord.com/api/oauth2/authorize?client_id=952882439838130236&permissions=1024&scope=bot';
 export const NFTC_FEE_RECIPIENT = '0xAAdd54c429a6eEBD4514135EaD53d98D0Cc57d57';
 export const ITEMS_PER_PAGE = 50;
 export const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
