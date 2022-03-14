@@ -195,7 +195,7 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData; userAddress?: st
           ),
           integrations: {
             discord: {
-              channels: formData[CollectionFormField.DiscordIntegration].value
+              channels: (formData[CollectionFormField.DiscordIntegration].value ?? '')
                 .split(',')
                 .map((channel) => channel.trim())
                 .filter((channel) => channel)
