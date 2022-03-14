@@ -6,7 +6,6 @@ import { PurchaseAccordion } from 'components/PurchaseAccordion/PurchaseAccordio
 import { getListings } from 'services/Listings.service';
 import { defaultFilterState, ListingSource } from 'utils/context/SearchContext';
 import { Spacer, Box } from '@chakra-ui/react';
-import { DescriptionBox } from 'components/PurchaseAccordion/DescriptionBox';
 import { ExtraSpace } from 'components/Spacer/Spacer';
 import NFTEvents from 'components/NFTEvents/NFTEvents';
 import { getSearchFriendlyString } from 'utils/commonUtil';
@@ -15,9 +14,15 @@ import { NftAction } from 'types';
 import AppLink from 'components/AppLink/AppLink';
 import { useAppContext } from 'utils/context/AppContext';
 
+import { ShortAddress } from 'components/ShortAddress/ShortAddress';
+import { DescriptionBox } from 'components/PurchaseAccordion/DescriptionBox';
+
 import { Grid, GridItem, Center } from '@chakra-ui/layout';
+import { addressesEqual, getChainScannerBase, getToken, toChecksumAddress } from 'utils/commonUtil';
+
 import { Image } from '@chakra-ui/react';
-import { Switch } from '@chakra-ui/react';
+import { Switch, Text, Stack } from '@chakra-ui/react';
+import { ReadMoreText } from 'components/ReadMoreText/ReadMoreText';
 
 import { ToggleSwitchButton } from 'components/ToggleSwitchButton';
 
@@ -75,7 +80,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
 
   return (
     <>
-      <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }} gap={[4, 8, 12]} py={[4, 8]}>
+      <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }} gap={[4, 8, 16]} py={[4, 8]}>
         <GridItem w="100%" bg="white">
           <Center>
             <Image
@@ -87,20 +92,49 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
           </Center>
         </GridItem>
         <GridItem w="100%" bg="white">
-          <Box ml={-2} mb={[4, 8, 12]}>
+          <Box ml={-2} mb={[4, 8]}>
             <ToggleSwitchButton />
           </Box>
-          <Box>
-            <h3 className={styles.heading}>{data?.collectionName}</h3>
-            <Box display={'flex'} gap={4}>
-              <AppLink type="secondary" className={styles.collection} href={`${window.origin}/collection/${name}`}>
-                {data?.collectionName}
-              </AppLink>
-              <Box ml={1}>
-                <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
-              </Box>
+          <h3 className={styles.heading}>{data?.collectionName}</h3>
+          <Box display={'flex'} gap={4}>
+            <AppLink type="secondary" className={styles.collection} href={`${window.origin}/collection/${name}`}>
+              {data?.collectionName}
+            </AppLink>
+            <Box ml={1}>
+              <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
             </Box>
           </Box>
+          <Box my={[4, 8]}>
+            <ShortAddress
+              address={data.tokenAddress}
+              href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}`}
+              label="Contract Address:"
+              tooltip={toChecksumAddress(data.tokenAddress)}
+              className={styles.noMarginTop}
+            />
+            <ShortAddress
+              address={`#${data.tokenId}`}
+              href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}?a=${data.tokenId}`}
+              label="Token ID:"
+              tooltip={`#${data.tokenId}`}
+            />
+          </Box>
+          <Text fontWeight={800} mb={[1]}>
+            Description
+          </Text>
+          <div className={styles.description}>
+            <ReadMoreText
+              text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua. Ut enim ad minim veniam. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. Lorem ipsum dolor
+              sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam.Lorem ipsum dolor sit amet..."
+              min={100}
+              ideal={120}
+              max={200}
+              readMoreText="Read more"
+            />
+          </div>
         </GridItem>
       </Grid>
 
