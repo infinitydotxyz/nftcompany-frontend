@@ -15,7 +15,7 @@ import {
   isBuyOrder
 } from '@infinityxyz/lib/types/core';
 import { Button } from '@chakra-ui/button';
-import { BuyOrderList, BuyOrderMatchList, SellOrderList } from './MarketList';
+import { BuyOrderList, BuyOrderMatchList, SellOrderList } from 'components/MarketList';
 import MarketOrderModal from 'components/MarketOrderModal';
 import {
   marketBuy,
@@ -25,7 +25,7 @@ import {
   marketSell,
   marketSellOrders,
   executeBuyOrder
-} from './marketUtils';
+} from 'components/MarketList/marketUtils';
 
 const MarketPage = (): JSX.Element => {
   const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
