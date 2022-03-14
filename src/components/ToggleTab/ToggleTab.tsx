@@ -27,7 +27,7 @@ function ToggleTab({ options, onChange, selected, size, ...rest }: ToggleTab & C
 
         // TODO: SNG does backend use Total?
         if (optionName === 'Total') {
-          optionName = 'All time';
+          optionName = 'All';
         }
 
         return (

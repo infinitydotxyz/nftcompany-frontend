@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { apiGet, apiPost } from 'utils/apiUtil';
 import { User } from 'utils/context/AppContext';
 import { TrendingData } from './useTrendingStats';
-import { CollectionFollow } from '@infinityxyz/types/core/Follows';
+import { CollectionFollow } from '@infinityxyz/lib/types/core/Follows';
 
 // ================================================================
 // types
@@ -103,7 +103,8 @@ export const trendingDataToCollectionFollow = (trendingData: TrendingData): Coll
   return {
     address: trendingData.collectionAddress ?? '',
     name: trendingData.name ?? '',
-    chainId: '1' // TODO: SNG
+    chainId: '1', // TODO: SNG
+    slug: 'noidea'
   };
 };
 

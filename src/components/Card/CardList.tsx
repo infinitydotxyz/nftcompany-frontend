@@ -1,5 +1,5 @@
 import React from 'react';
-import { CardData } from '@infinityxyz/types/core';
+import { CardData } from '@infinityxyz/lib/types/core';
 import { uuidv4 } from 'utils/commonUtil';
 import Card from './Card';
 import styles from './CardList.module.scss';

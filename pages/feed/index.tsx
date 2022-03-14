@@ -8,6 +8,8 @@ import Layout from 'containers/layout';
 import { COLL_FEED, fetchMoreEvents, subscribe } from '../../src/utils/firestore/firestoreUtils';
 import FeedItem, { FeedEvent, FeedEventType } from '../../src/components/app/Feed/FeedItem';
 import { FetchMore } from 'components/FetchMore/FetchMore';
+import { CommentPanel } from 'components/app/Feed/CommentPanel';
+import { PageHeader } from 'components/PageHeader';
 
 type Filter = {
   type?: FeedEventType;
@@ -18,6 +20,7 @@ export default function Feed() {
   const [events, setEvents] = useState<FeedEvent[]>([]);
   const [filter, setFilter] = useState<Filter>({});
   const [filteredEvents, setFilteredEvents] = useState<FeedEvent[]>([]);
+  const [commentPanelEvent, setCommentPanelEvent] = useState<FeedEvent | null>(null); // to show Comments Panel for an Event.
 
   async function getEvents() {
     try {
@@ -53,7 +56,7 @@ export default function Feed() {
       </Head>
       <div>
         <div className="page-container">
-          <Box mb={4}>Activity Feed</Box>
+          <PageHeader title="Activity Feed" />
 
           <Box mb={4}>
             <Select
@@ -74,22 +77,35 @@ export default function Feed() {
                 event={event}
                 onLike={(ev) => {
                   const foundEv = events.find((e) => e.id === ev.id);
-                  if (foundEv?.likes) {
+                  if (foundEv?.likes !== undefined) {
                     foundEv.likes = foundEv.likes + 1;
                   }
                   setEvents([...events]);
                 }}
                 onComment={(ev) => {
                   const foundEv = events.find((e) => e.id === ev.id);
-                  if (foundEv?.comments) {
+                  if (foundEv?.comments !== undefined) {
                     foundEv.comments = foundEv.comments + 1;
                   }
                   setEvents([...events]);
+                }}
+                onClickShowComments={(ev) => {
+                  setCommentPanelEvent(ev);
                 }}
               />
             );
           })}
         </div>
+
+        {commentPanelEvent && (
+          <CommentPanel
+            event={commentPanelEvent}
+            isOpen={!!commentPanelEvent}
+            onClose={() => {
+              setCommentPanelEvent(null);
+            }}
+          />
+        )}
 
         <FetchMore
           currentPage={currentPage}
