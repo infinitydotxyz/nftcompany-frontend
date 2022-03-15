@@ -10,7 +10,7 @@ import {
   TradeResponse
 } from '@infinityxyz/lib/types/core';
 
-export const marketBuy = async (order: BuyOrder): Promise<BuyOrderMatch[]> => {
+export const addBuy = async (order: BuyOrder): Promise<BuyOrderMatch[]> => {
   try {
     const body: TradeBody = {
       buyOrder: order
@@ -32,7 +32,7 @@ export const marketBuy = async (order: BuyOrder): Promise<BuyOrderMatch[]> => {
   return [];
 };
 
-export const marketSell = async (order: SellOrder): Promise<BuyOrderMatch[]> => {
+export const addSell = async (order: SellOrder): Promise<BuyOrderMatch[]> => {
   try {
     const body: TradeBody = {
       sellOrder: order

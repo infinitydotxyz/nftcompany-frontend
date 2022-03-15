@@ -28,6 +28,10 @@ module.exports = {
     '@next/next/no-img-element': 'off',
     'react-hooks/exhaustive-deps': 0,
 
+    // we need to turn these on and fix the code
+    // 'no-shadow': 2,
+
+    'no-shadow-restricted-names': 2,
     'no-console': 0,
     'linebreak-style': ['error', 'unix'],
     'default-case': 2,
@@ -50,8 +54,6 @@ module.exports = {
     'no-useless-call': 2,
     'no-useless-escape': 2,
     'no-with': 2,
-    // 'no-shadow': 2,
-    // 'no-shadow-restricted-names': 2,
     // 'no-use-before-define': 2,
     // camelcase: 2,
     // 'comma-dangle': 2,
