@@ -4,6 +4,7 @@ import { useAppContext } from 'utils/context/AppContext';
 import { Button, FormControl, Input, FormLabel } from '@chakra-ui/react';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
 import { BuyOrder, isBuyOrder, isSellOrder, MarketOrder, SellOrder } from '@infinityxyz/lib/types/core';
+import { ChipInput } from 'components/ChipInput';
 
 const isServer = typeof window === 'undefined';
 const expirationTime = Math.round(Date.now() / 1000) + 1000;
@@ -26,7 +27,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
   const [collectionName, setCollectionName] = useState('goop bros');
   const [tokenId, setTokenId] = useState('0xasdfasdfasdfasdf');
   const [tokenName, setTokenName] = useState('Grey Dog');
-  const [collectionAddresses, setCollectionAddresses] = useState(['0xAddress1', '0xAddress2']);
+  const [collectionAddresses, setCollectionAddresses] = useState<string[]>(['0xAddress1', '0xAddress2']);
 
   useEffect(() => {
     let buyOrder: BuyOrder | undefined;
@@ -111,6 +112,18 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
           onSubmit();
         }}
         onChange={(e: any) => setCollectionAddress(e.target.value)}
+      />
+    </FormControl>
+  );
+
+  const collectionAddressesField = (
+    <FormControl>
+      <FormLabel>Collection Address</FormLabel>
+      <ChipInput
+        value={collectionAddresses}
+        onChange={(value) => {
+          setCollectionAddresses(value);
+        }}
       />
     </FormControl>
   );
@@ -234,6 +247,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
         <>
           {minNFTsField}
           {budgetField}
+          {collectionAddressesField}
           {expirationField}
         </>
       );

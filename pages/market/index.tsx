@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from 'containers/layout';
@@ -18,14 +18,14 @@ import { Button } from '@chakra-ui/button';
 import { BuyOrderList, BuyOrderMatchList, SellOrderList } from 'components/MarketList';
 import MarketOrderModal from 'components/MarketOrderModal';
 import {
-  marketBuy,
+  addBuy,
   marketMatches,
   marketBuyOrders,
   marketDeleteOrder,
-  marketSell,
+  addSell,
   marketSellOrders,
   executeBuyOrder
-} from 'components/MarketList/marketUtils';
+} from 'utils/marketUtils';
 
 const MarketPage = (): JSX.Element => {
   const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
@@ -37,8 +37,14 @@ const MarketPage = (): JSX.Element => {
 
   const [clickedOrder, setClickedOrder] = useState<MarketOrder>();
 
+  useEffect(() => {
+    if (user) {
+      refreshAllLists();
+    }
+  }, [user]);
+
   const buy = async (order: BuyOrder) => {
-    const match = await marketBuy(order);
+    const match = await addBuy(order);
 
     if (match) {
       setMatchOrders(match);
@@ -63,6 +69,7 @@ const MarketPage = (): JSX.Element => {
 
   const listMatches = async () => {
     const matches = await marketMatches();
+
     setMatchOrders(matches);
   };
 
@@ -87,7 +94,7 @@ const MarketPage = (): JSX.Element => {
   };
 
   const sell = async (order: SellOrder) => {
-    const match = await marketSell(order);
+    const match = await addSell(order);
     if (match) {
       setMatchOrders(match);
       showAppMessage('sell successful.');
@@ -133,12 +140,16 @@ const MarketPage = (): JSX.Element => {
     </div>
   );
 
-  const handleAcceptClick = async (buyOrder: BuyOrder) => {
-    await executeBuyOrder(buyOrder.id ?? '');
-
+  const refreshAllLists = async () => {
     listMatches();
     listBuyOrders();
     listSellOrders();
+  };
+
+  const handleAcceptClick = async (buyOrder: BuyOrder) => {
+    await executeBuyOrder(buyOrder.id ?? '');
+
+    refreshAllLists();
   };
 
   const handleCardClick = async (order: MarketOrder, action: string) => {
