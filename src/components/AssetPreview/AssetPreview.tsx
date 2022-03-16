@@ -25,12 +25,11 @@ type Props = {
 };
 
 const accountItems: JSX.Element[] = [
-  <MenuDivider key="kdd" />,
-  <MenuDivider key="ggdd" />,
-  <MenuItem key="Settings">Account</MenuItem>,
-
+  <MenuItem key="Sales">Sales</MenuItem>,
   <MenuDivider key="dd1" />,
-  <MenuItem key="Sign out">Sign out</MenuItem>
+  <MenuItem key="Transfer">Transfer</MenuItem>,
+  <MenuDivider key="dd2" />,
+  <MenuItem key="Offers">Sign out</MenuItem>
 ];
 
 export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Element => {
@@ -81,7 +80,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
 
   return (
     <div className="main">
-      <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }} gap={[4, 8, 16]} py={[4, 8]}>
+      <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={[4, 8, 16]} py={[4, 8]}>
         <GridItem w="100%" bg="white">
           <Center>
             <Image
@@ -203,24 +202,37 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
           );
         })}
       </Box>
-      <Box mt={[2, 4]} mb={[2, 8]} position={'absolute'} left={0} width={'100vw'} padding={[2, 8, 16]}>
+      <Box mt={[2, 4]} mb={[2, 8]}>
         <Box display={'flex'} justifyContent="space-between" alignItems="center">
-          <Text fontWeight={800}>Activity</Text>
+          <Text fontWeight={900}>Activity</Text>
           <HoverMenuButton buttonTitle={'Filter'} shadow={true} arrow={false} className={styles.filterBtn}>
             {accountItems}
           </HoverMenuButton>
         </Box>
-        <div>
-          <h1>good</h1>
-          <h1>good</h1>
-
-          <h1>good</h1>
-          <h1>good</h1>
-          <h1>good</h1>
-          <h1>good</h1>
-          <h1>good</h1>
-          <h1>good</h1>
-        </div>
+        {[1, 2, 3].map((v) => (
+          <Box key={v} className={styles.activity} px={[2, 4, 8]} mx={-1} my={[2, 4]} py={[1, 2, 4, 8]}>
+            <div className={styles.activityItem}>
+              <p>Seller</p>
+              <p>ON1 Force</p>
+            </div>
+            <div className={styles.activityItem}>
+              <p>Buyer</p>
+              <p>Nhmen_Howzer</p>
+            </div>
+            <div className={styles.activityItem}>
+              <p>Price</p>
+              <p>=2.5</p>
+            </div>
+            <div className={styles.activityItem}>
+              <p>Date</p>
+              <p>15 mins ago</p>
+            </div>
+            <div className={styles.activityItem}>
+              <p>Link</p>
+              <p>0x0270...f7B3</p>
+            </div>
+          </Box>
+        ))}
       </Box>
 
       {/* <NFTEvents address={tokenAddress} tokenId={tokenId} /> */}
