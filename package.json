@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run update:lib && next dev",
     "build": "rimraf ./build && cross-env NODE_ENV=production next build",
     "start": "next start -p 8080",
     "lint": "next lint",
     "format": "prettier --write src/**/*.{tsx,ts}",
-    "update:lib": "npx npm update @infinityxyz/lib"
+    "update:lib": "npx ncu -f @infinityxyz/lib -u && npm i"
   },
   "dependencies": {
     "@babel/core": "7.17.5",
