@@ -3,8 +3,17 @@ import styles from './styles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { Button, FormControl, Input, FormLabel } from '@chakra-ui/react';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
-import { BuyOrder, isBuyOrder, isSellOrder, MarketOrder, SellOrder } from '@infinityxyz/lib/types/core';
-import { ChipInput } from 'components/ChipInput';
+import {
+  BuyOrder,
+  CollectionAddress,
+  isBuyOrder,
+  isSellOrder,
+  MarketOrder,
+  SellOrder
+} from '@infinityxyz/lib/types/core';
+import { DatePicker } from 'components/DatePicker/DatePicker';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import { CollectionManager } from 'utils/marketUtils';
 
 const isServer = typeof window === 'undefined';
 const expirationTime = Math.round(Date.now() / 1000) + 1000;
@@ -23,11 +32,10 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
   const [minNFTs, setMinNFTs] = useState<number>(2);
   const [price, setPrice] = useState<number>(1.23);
   const [expiration, setExpiration] = useState<number>(expirationTime);
-  const [collectionAddress, setCollectionAddress] = useState('0xAddress1');
-  const [collectionName, setCollectionName] = useState('goop bros');
+  const [collectionAddress, setCollectionAddress] = useState<CollectionAddress>();
   const [tokenId, setTokenId] = useState('0xasdfasdfasdfasdf');
   const [tokenName, setTokenName] = useState('Grey Dog');
-  const [collectionAddresses, setCollectionAddresses] = useState<string[]>(['0xAddress1', '0xAddress2']);
+  const [collectionAddresses, setCollectionAddresses] = useState<CollectionAddress[]>([]);
 
   useEffect(() => {
     let buyOrder: BuyOrder | undefined;
@@ -52,7 +60,6 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
 
       setPrice(sellOrder.price);
       setCollectionAddress(sellOrder.collectionAddress);
-      setCollectionName(sellOrder.collectionName);
       setTokenId(sellOrder.tokenId);
       setTokenName(sellOrder.tokenName);
     }
@@ -77,7 +84,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
         onClose(order, undefined);
       }
     } else {
-      if (user?.account && chainId && collectionAddress && collectionName && tokenId && tokenName) {
+      if (user?.account && chainId && collectionAddress && tokenId && tokenName) {
         dataOK = true;
 
         const order: SellOrder = {
@@ -85,7 +92,6 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
           chainId: chainId,
           collectionAddress: collectionAddress,
           expiration: expiration,
-          collectionName: collectionName,
           price: price,
           tokenId: tokenId,
           tokenName: tokenName
@@ -103,15 +109,19 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
   const collectionAddressField = (
     <FormControl>
       <FormLabel>Collection Address</FormLabel>
-      <Input
-        fontWeight={500}
-        type="text"
-        placeholder="Collection Address"
-        value={collectionAddress}
-        onSubmit={() => {
-          onSubmit();
+      <Typeahead
+        id="basic-typeahead"
+        labelKey={'name'}
+        onChange={(e) => {
+          if (e.length > 0) {
+            setCollectionAddress(e[0]);
+          } else {
+            setCollectionAddress(undefined);
+          }
         }}
-        onChange={(e: any) => setCollectionAddress(e.target.value)}
+        options={CollectionManager.collections()}
+        placeholder="Collection Address"
+        selected={collectionAddress ? [collectionAddress] : []}
       />
     </FormControl>
   );
@@ -119,12 +129,24 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
   const collectionAddressesField = (
     <FormControl>
       <FormLabel>Collection Address</FormLabel>
-      <ChipInput
-        value={collectionAddresses}
+
+      <Typeahead
+        id="basic-typeahead-multiple"
+        multiple
+        labelKey={'name'}
+        onChange={setCollectionAddresses}
+        options={CollectionManager.collections()}
+        placeholder="Collections"
+        selected={collectionAddresses}
+      />
+
+      {/* <ChipInput
+        chips={collectionAddresses}
         onChange={(value) => {
           setCollectionAddresses(value);
         }}
-      />
+        onDisplayName={(e) => CollectionManager.addressToName(e)}
+      /> */}
     </FormControl>
   );
 
@@ -156,22 +178,6 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
           onSubmit();
         }}
         onChange={(e: any) => setTokenName(e.target.value)}
-      />
-    </FormControl>
-  );
-
-  const collectionNameField = (
-    <FormControl>
-      <FormLabel>Collection Name</FormLabel>
-      <Input
-        fontWeight={500}
-        type="text"
-        placeholder="Collection Name"
-        value={collectionName}
-        onSubmit={() => {
-          onSubmit();
-        }}
-        onChange={(e: any) => setCollectionName(e.target.value)}
       />
     </FormControl>
   );
@@ -227,15 +233,13 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
   const expirationField = (
     <FormControl>
       <FormLabel>Expiration</FormLabel>
-      <Input
-        fontWeight={500}
-        type="number"
-        placeholder="21321323"
-        value={expiration}
-        onSubmit={() => {
-          onSubmit();
+
+      <DatePicker
+        placeholder="Optional"
+        value={new Date(expiration * 1000)}
+        onChange={(date) => {
+          setExpiration(date.getTime() / 1000);
         }}
-        onChange={(e: any) => setExpiration(parseInt(e.target.value))}
       />
     </FormControl>
   );
@@ -257,7 +261,6 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
           {collectionAddressField}
           {tokenIdField}
           {tokenNameField}
-          {collectionNameField}
           {priceField}
           {expirationField}
         </>

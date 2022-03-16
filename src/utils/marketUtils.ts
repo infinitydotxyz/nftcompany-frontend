@@ -2,6 +2,7 @@ import { apiPost } from 'utils/apiUtil';
 import {
   BuyOrder,
   BuyOrderMatch,
+  CollectionAddress,
   MarketListingsBody,
   MarketListingsResponse,
   MarketOrder,
@@ -162,3 +163,18 @@ export const executeBuyOrder = async (orderId: string): Promise<string> => {
 
   return 'error';
 };
+
+// ======================================================
+
+const collectionMap = new Map<string, CollectionAddress>();
+collectionMap.set('0xAddress1', { address: '0xAddress1', name: 'Dump Trux' });
+collectionMap.set('0xAddress2', { address: '0xAddress2', name: 'Ape People' });
+collectionMap.set('0xAddress3', { address: '0xAddress3', name: 'DigiKraap' });
+collectionMap.set('0xAddress4', { address: '0xAddress4', name: 'Sik Art' });
+collectionMap.set('0xAddress5', { address: '0xAddress5', name: 'Blu Balz' });
+collectionMap.set('0xAddress6', { address: '0xAddress6', name: 'Unkle Fester' });
+collectionMap.set('0xAddress7', { address: '0xAddress7', name: 'Badass Pix' });
+
+export class CollectionManager {
+  static collections = (): CollectionAddress[] => Array.from(collectionMap.values());
+}

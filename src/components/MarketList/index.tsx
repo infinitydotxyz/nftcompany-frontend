@@ -33,11 +33,15 @@ type Props2 = {
 };
 
 const BuyOrderCard = ({ order, onClickAction }: Props2): JSX.Element => {
+  const addresses = order.collectionAddresses.map((e) => e.address);
+  const names = order.collectionAddresses.map((e) => e.name);
+
   return (
     <div className={styles.card} onClick={() => onClickAction(order, 'card')}>
       <div className={styles.title}>Buy Order</div>
       <div>budget: {order.budget}</div>
-      <div>collectionAddresses: {order.collectionAddresses}</div>
+      <div>collectionAddresses: {addresses.join(', ')}</div>
+      <div>collectionNames: {names.join(', ')}</div>
       <div>minNFTs: {order.minNFTs}</div>
       <div>chainId: {order.chainId}</div>
       <div>expiration: {new Date(order.expiration * 1000).toLocaleString()}</div>
@@ -97,8 +101,8 @@ const SellOrderCard = ({ order, onClickAction }: Props11): JSX.Element => {
       <div>price: {order.price}</div>
       <div>tokenName: {order.tokenName}</div>
       <div>tokenId: {order.tokenId}</div>
-      <div>collectionAddress: {order.collectionAddress}</div>
-      <div>collectionName: {order.collectionName}</div>
+      <div>collectionAddress: {order.collectionAddress.address}</div>
+      <div>collectionName: {order.collectionAddress.name}</div>
       <div>chainId: {order.chainId}</div>
       <div>expiration: {new Date(order.expiration * 1000).toLocaleString()}</div>
       <div>user: {order.user}</div>
