@@ -107,6 +107,8 @@ const MarketPage = (): JSX.Element => {
     <div className={styles.buttons}>
       <Button
         onClick={async () => {
+          setClickedOrder(undefined);
+
           setBuyModalShown(true);
         }}
       >
@@ -115,6 +117,8 @@ const MarketPage = (): JSX.Element => {
 
       <Button
         onClick={async () => {
+          setClickedOrder(undefined);
+
           setSellModalShown(true);
         }}
       >
@@ -189,6 +193,34 @@ const MarketPage = (): JSX.Element => {
     }
   };
 
+  const modalComponent = (buyMode: boolean) => {
+    return (
+      <MarketOrderModal
+        inOrder={clickedOrder}
+        buyMode={buyMode}
+        onClose={async (buyOrder, sellOrder) => {
+          if (buyMode) {
+            setBuyModalShown(false);
+
+            if (buyOrder) {
+              await buy(buyOrder);
+
+              listBuyOrders();
+            }
+          } else {
+            setSellModalShown(false);
+
+            if (sellOrder) {
+              await sell(sellOrder);
+
+              listSellOrders();
+            }
+          }
+        }}
+      />
+    );
+  };
+
   return (
     <>
       <Head>
@@ -228,42 +260,12 @@ const MarketPage = (): JSX.Element => {
           )}
         </div>
 
-        {buyModalShown && (
-          <MarketOrderModal
-            inOrder={clickedOrder}
-            buyMode={true}
-            onClose={async (buyOrder, sellOrder) => {
-              setBuyModalShown(false);
-
-              if (buyOrder) {
-                await buy(buyOrder);
-
-                listBuyOrders();
-              }
-            }}
-          />
-        )}
-
-        {sellModalShown && (
-          <MarketOrderModal
-            inOrder={clickedOrder}
-            buyMode={false}
-            onClose={async (buyOrder, sellOrder) => {
-              setSellModalShown(false);
-
-              if (sellOrder) {
-                await sell(sellOrder);
-
-                listSellOrders();
-              }
-            }}
-          />
-        )}
+        {buyModalShown && modalComponent(true)}
+        {sellModalShown && modalComponent(false)}
       </div>
     </>
   );
 };
 
-// eslint-disable-next-line react/display-name
 MarketPage.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
 export default MarketPage;

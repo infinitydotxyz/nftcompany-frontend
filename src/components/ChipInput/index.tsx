@@ -2,16 +2,15 @@ import { Box, Input, Tag, TagLabel, TagCloseButton, Wrap } from '@chakra-ui/reac
 import { ChangeEvent, ClipboardEvent, KeyboardEvent, useState } from 'react';
 
 interface Props3 {
-  value: string[];
+  chips: string[];
   onChange: (value: string[]) => void;
+  onDisplayName: (value: string) => string;
 }
 
-export const ChipInput = ({ value, onChange }: Props3): JSX.Element => {
+export const ChipInput = ({ onDisplayName, chips, onChange }: Props3): JSX.Element => {
   const [inputValue, setInputValue] = useState('');
-  const [chips, setChips] = useState<string[]>(value);
 
   const updateChips = (newChips: string[]) => {
-    setChips(newChips);
     onChange(newChips);
   };
 
@@ -82,7 +81,7 @@ export const ChipInput = ({ value, onChange }: Props3): JSX.Element => {
         />
       </Box>
 
-      <ChipList chips={chips} onCloseClick={handleCloseClick} />
+      <ChipList chips={chips} onCloseClick={handleCloseClick} onDisplayName={onDisplayName} />
     </>
   );
 };
@@ -91,12 +90,13 @@ export const ChipInput = ({ value, onChange }: Props3): JSX.Element => {
 
 interface Props {
   data: string;
+  displayName: string;
   onCloseClick: (data: string) => void;
 }
 
-export const Chip = ({ data, onCloseClick }: Props): JSX.Element => (
+export const Chip = ({ displayName, data, onCloseClick }: Props): JSX.Element => (
   <Tag key={data} borderRadius="full" variant="solid" colorScheme="green">
-    <TagLabel>{data}</TagLabel>
+    <TagLabel>{displayName}</TagLabel>
     <TagCloseButton
       onClick={() => {
         onCloseClick(data);
@@ -109,13 +109,14 @@ export const Chip = ({ data, onCloseClick }: Props): JSX.Element => (
 
 interface Props2 {
   chips: string[];
+  onDisplayName: (value: string) => string;
   onCloseClick: (chip: string) => void;
 }
 
-export const ChipList = ({ chips = [], onCloseClick }: Props2): JSX.Element => (
+export const ChipList = ({ onDisplayName, chips = [], onCloseClick }: Props2): JSX.Element => (
   <Wrap spacing={1} my={2}>
-    {chips.map((chip) => (
-      <Chip data={chip} key={chip} onCloseClick={onCloseClick} />
+    {chips.map((data) => (
+      <Chip displayName={onDisplayName(data)} data={data} key={data} onCloseClick={onCloseClick} />
     ))}
   </Wrap>
 );
