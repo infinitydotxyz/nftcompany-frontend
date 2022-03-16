@@ -1,9 +1,9 @@
-import { ChangeEvent, FC, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { CollectionData, CollectionIntegrations } from 'services/Collections.service';
+import { ChangeEvent, FC, ReactNode, useEffect, useRef, useState } from 'react';
+import { CollectionData, CollectionIntegrations } from '@infinityxyz/lib/types/core';
 import { useAppContext } from 'utils/context/AppContext';
 import uniqueId from 'lodash/uniqueId';
 import { Button } from '@chakra-ui/button';
-import { Box, Heading, Link, SimpleGrid, Text } from '@chakra-ui/layout';
+import { Box, Code, Heading, Link, ListItem, OrderedList, SimpleGrid, Text } from '@chakra-ui/layout';
 import { FormLabel, Input, Textarea, Image } from '@chakra-ui/react';
 import HorizontalLine from 'components/HorizontalLine/HorizontalLine';
 import { FaImage } from 'react-icons/fa';
@@ -642,17 +642,31 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData; userAddress?: st
 
         <InputGroupWrapper title="Integrations" description="Enable integrations with third party party platforms.">
           <SimpleGrid spacingY="32px" columns={1} spacingX={'32px'} width="100%">
-            <Text>
+            <Text as="span">
               <Heading as="h4" size="sm">
                 Discord
               </Heading>
-              Add the{' '}
-              <Link textDecoration="underline" href={DISCORD_BOT_OAUTH_URL} target="_blank">
-                official infinity.xyz bot
-              </Link>{' '}
-              to your server and let it cross-post #announcements straight to Infinity{"'"}s feed! You can configure the
-              text channels to monitor below.
+              Add the official infinity.xyz bot to your server and let it cross-post #announcements straight to Infinity
+              {"'"}s feed!
             </Text>
+            {!collectionInfo?.integrations?.discord?.guildId && (
+              <OrderedList>
+                <ListItem>
+                  Add the{' '}
+                  <Link textDecoration="underline" href={DISCORD_BOT_OAUTH_URL} target="_blank">
+                    official infinity.xyz bot
+                  </Link>{' '}
+                  to your server.
+                </ListItem>
+                <ListItem>
+                  Type <Code colorScheme="gray">/infinity verify {collectionInfo?.address}</Code> to complete the
+                  integration. Make sure you are the server owner or have a discord role with the {"'"}Use Application
+                  Commands
+                  {"'"} permission!
+                </ListItem>
+                <ListItem>Configure the text channels to monitor below.</ListItem>
+              </OrderedList>
+            )}
             <InputWithLabel
               title="Discord channels (separate multiple values by comma)"
               placeholder="announcements, 952902403055812650"
@@ -660,6 +674,13 @@ const EditCollectionForm: FC<{ collectionInfo?: CollectionData; userAddress?: st
               value={(formData[CollectionFormField.DiscordIntegration] as TextInput)?.value ?? ''}
               onChange={onChangeHandler}
             />
+
+            <Text as="span">
+              <Heading as="h4" size="sm">
+                Twitter
+              </Heading>
+              Twitter integration is already enabled by default.
+            </Text>
           </SimpleGrid>
         </InputGroupWrapper>
 

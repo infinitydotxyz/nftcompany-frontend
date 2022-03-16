@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "npm run update:lib && next dev",
-    "build": "npx pnpm install && npm run update:lib && rimraf ./build && cross-env NODE_ENV=production next build",
+    "dev": "next dev",
+    "build": "rimraf ./build && cross-env NODE_ENV=production next build",
     "start": "next start -p 8080",
     "lint": "next lint",
     "format": "prettier --write src/**/*.{tsx,ts}",
-    "update:lib": "npx pnpm update @infinityxyz/lib"
+    "update:lib": "npx npm update @infinityxyz/lib"
   },
   "dependencies": {
     "@babel/core": "7.17.5",
@@ -22,7 +22,7 @@
     "@chakra-ui/tooltip": "1.3.11",
     "@emotion/react": "11",
     "@emotion/styled": "11",
-    "@infinityxyz/lib": "^1.15.3",
+    "@infinityxyz/lib": "^1.19.0",
     "@react-hook/window-size": "^3.0.7",
     "@walletconnect/web3-provider": "^1.7.1",
     "axios": "0.21.4",
