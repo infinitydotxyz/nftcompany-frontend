@@ -61,7 +61,7 @@ export async function fetchMoreEvents(filter: FeedFilter) {
     if (filter?.type) {
       q = query(
         coll,
-        where('type', '==', filter?.type),
+        where('type', 'in', [filter?.type]),
         orderBy('timestamp', 'desc'),
         limit(EVENTS_PER_PAGE),
         startAfter(lastDoc)
@@ -92,7 +92,7 @@ export async function subscribe(collectionPath: string, filter: FeedFilter, onCh
 
     let q;
     if (filter?.type) {
-      q = query(coll, where('type', '==', filter?.type), orderBy('timestamp', 'desc'), limit(EVENTS_PER_PAGE)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
+      q = query(coll, where('type', 'in', [filter?.type]), orderBy('timestamp', 'desc'), limit(EVENTS_PER_PAGE)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
     } else {
       q = query(coll, orderBy('timestamp', 'desc'), limit(EVENTS_PER_PAGE)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
     }
