@@ -36,8 +36,10 @@ const BuyOrderCard = ({ order, onClickAction }: Props2): JSX.Element => {
   const addresses = order.collectionAddresses.map((e) => e.address);
   const names = order.collectionAddresses.map((e) => e.name);
 
+  const classes = isOrderExpired(order) ? `${styles.card} ${styles.expired}` : styles.card;
+
   return (
-    <div className={styles.card} onClick={() => onClickAction(order, 'card')}>
+    <div className={classes} onClick={() => onClickAction(order, 'card')}>
       <div className={styles.title}>Buy Order</div>
       <div>budget: {order.budget}</div>
       <div>collectionAddresses: {addresses.join(', ')}</div>
@@ -95,8 +97,10 @@ type Props11 = {
 };
 
 const SellOrderCard = ({ order, onClickAction }: Props11): JSX.Element => {
+  const classes = isOrderExpired(order) ? `${styles.card} ${styles.expired}` : styles.card;
+
   return (
-    <div className={styles.card} onClick={() => onClickAction(order, 'card')}>
+    <div className={classes} onClick={() => onClickAction(order, 'card')}>
       <div className={styles.title}>Sell Order</div>
       <div>price: {order.price}</div>
       <div>tokenName: {order.tokenName}</div>
