@@ -11,6 +11,81 @@ import { NftSaleEvent } from '@infinityxyz/lib/types/core/feed';
 import { BaseFeedEvent, FeedEventType } from '@infinityxyz/lib/types/core/feed/FeedEvent';
 import NftImage from './NftImage';
 
+export type EventType = FeedEventType & 'TWEET';
+
+export type FeedEvent = BaseFeedEvent &
+  NftSaleEvent & {
+    id?: string;
+    type: EventType;
+    userDisplayName?: string;
+  };
+
+type Props = {
+  event?: FeedEvent;
+  onLike?: (event: FeedEvent) => void;
+  onComment?: (event: FeedEvent) => void;
+  onClickShowComments?: (event: FeedEvent) => void;
+};
+
+export default function FeedItem({ event, onLike, onComment, onClickShowComments }: Props) {
+  const { user, showAppMessage } = useAppContext();
+
+  if (!event) {
+    return null;
+  }
+  return (
+    <AnimatePresence>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        <Box borderRadius={12} mb={10}>
+          <ItemHeader event={event} />
+          <Box ml={10}>
+            {event.type === 'TWEET' && <TweetEvent event={event} />}
+            {event.type === 'NFT_SALE' && <SaleEvent event={event} />}
+            {/* --- item footer --- */}
+            <Box display="flex" mt={4}>
+              <Box
+                color="gray.500"
+                cursor="pointer"
+                mr={12}
+                display="flex"
+                onClick={async () => {
+                  if (user && user?.account) {
+                    await addUserLike(event.id || '', user?.account, () => {
+                      if (onLike) {
+                        onLike(event);
+                      }
+                    });
+                  }
+                }}
+              >
+                <AiOutlineLike size={22} />
+                &nbsp;{event.likes}
+              </Box>
+              <Box
+                display="flex"
+                alignItems="center"
+                color="gray.500"
+                cursor="pointer"
+                onClick={async () => {
+                  if (user && user?.account) {
+                    if (onClickShowComments) {
+                      onClickShowComments(event);
+                    }
+                  } else {
+                    showAppMessage('Please connect to Wallet.');
+                  }
+                }}
+              >
+                <ChatIcon mr={2} /> {event.comments}
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
 const ItemHeader = ({ event }: { event: FeedEvent }) => {
   return (
     <Box display="flex" alignItems="center" mb={2}>
@@ -60,95 +135,32 @@ const SaleEvent = ({ event }: { event: FeedEvent }) => {
         borderRadius={14}
         mr={8}
       />
-      <Box display="flex" width="100%">
-        <Box width="50%">
-          <Box>Buyer</Box>
-          <Box fontWeight={500} title={event.buyerDisplayName || event.buyer}>
+      <Box display="flex" justifyContent="space-between" width="100%">
+        <Box>
+          <Box color={'gray'}>Link</Box>
+          <Box>
+            <a href={event.externalUrl} target="_blank" rel="noreferrer">
+              {ellipsisString(event.txHash)}
+            </a>
+          </Box>
+        </Box>
+        <Box>
+          <Box color={'gray'}>Buyer</Box>
+          <Box title={event.buyerDisplayName || event.buyer}>
             {ellipsisString(event.buyerDisplayName || event.buyer)}
           </Box>
         </Box>
-        <Box width="50%">
-          <Box>Price</Box>
-          <Box fontWeight={500}>{event.price} ETH</Box>
+        <Box>
+          <Box color={'gray'}>Seller</Box>
+          <Box title={event.sellerDisplayName || event.seller}>
+            {ellipsisString(event.sellerDisplayName || event.seller)}
+          </Box>
+        </Box>
+        <Box>
+          <Box color={'gray'}>Price</Box>
+          <Box>{event.price} ETH</Box>
         </Box>
       </Box>
     </Box>
   );
 };
-
-export type EventType = FeedEventType & 'TWEET';
-
-export type FeedEvent = BaseFeedEvent &
-  NftSaleEvent & {
-    id?: string;
-    type: EventType;
-    userDisplayName?: string;
-  };
-
-type Props = {
-  event?: FeedEvent;
-  onLike?: (event: FeedEvent) => void;
-  onComment?: (event: FeedEvent) => void;
-  onClickShowComments?: (event: FeedEvent) => void;
-};
-
-export default function FeedItem({ event, onLike, onComment, onClickShowComments }: Props) {
-  const { user, showAppMessage } = useAppContext();
-
-  if (!event) {
-    return null;
-  }
-
-  // const timestampStr = new Date(event?.timestamp).toLocaleString();
-  // console.log('event', event);
-  return (
-    <AnimatePresence>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-        <Box borderRadius={12} mb={10} width="50%">
-          <ItemHeader event={event} />
-          <Box ml={10}>
-            {event.type === 'TWEET' && <TweetEvent event={event} />}
-            {event.type === 'NFT_SALE' && <SaleEvent event={event} />}
-            <Box display="flex" mt={4}>
-              <Box
-                color="gray.500"
-                cursor="pointer"
-                mr={12}
-                display="flex"
-                onClick={async () => {
-                  if (user && user?.account) {
-                    await addUserLike(event.id || '', user?.account, () => {
-                      if (onLike) {
-                        onLike(event);
-                      }
-                    });
-                  }
-                }}
-              >
-                <AiOutlineLike size={22} />
-                &nbsp;{event.likes}
-              </Box>
-              <Box
-                display="flex"
-                alignItems="center"
-                color="gray.500"
-                cursor="pointer"
-                onClick={async () => {
-                  if (user && user?.account) {
-                    if (onClickShowComments) {
-                      onClickShowComments(event);
-                    }
-                  } else {
-                    showAppMessage('Please connect to Wallet.');
-                  }
-                }}
-              >
-                <ChatIcon mr={2} /> {event.comments}
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </motion.div>
-    </AnimatePresence>
-  );
-}
