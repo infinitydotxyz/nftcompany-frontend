@@ -7,16 +7,14 @@ import { useAppContext } from 'utils/context/AppContext';
 import { ChatIcon } from '@chakra-ui/icons';
 import { AiOutlineLike } from 'react-icons/ai';
 import { ellipsisString } from 'utils/commonUtil';
-import { NftSaleEvent } from '@infinityxyz/lib/types/core/feed';
+import { ExchangeEvent } from '@infinityxyz/lib/types/core/feed/NftEvent';
 import { BaseFeedEvent, FeedEventType } from '@infinityxyz/lib/types/core/feed/FeedEvent';
 import NftImage from './NftImage';
 
-export type EventType = FeedEventType & 'TWEET';
-
 export type FeedEvent = BaseFeedEvent &
-  NftSaleEvent & {
+  ExchangeEvent & {
     id?: string;
-    type: EventType;
+    type?: FeedEventType;
     userDisplayName?: string;
   };
 
@@ -39,8 +37,8 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
         <Box borderRadius={12} mb={10}>
           <ItemHeader event={event} />
           <Box ml={10}>
-            {event.type === 'TWEET' && <TweetEvent event={event} />}
-            {event.type === 'NFT_SALE' && <SaleEvent event={event} />}
+            {event.type === FeedEventType.TwitterTweet && <TweetEvent event={event} />}
+            {event.type === FeedEventType.NftSale && <SaleEvent event={event} />}
             {/* --- item footer --- */}
             <Box display="flex" mt={4}>
               <Box
@@ -93,16 +91,16 @@ const ItemHeader = ({ event }: { event: FeedEvent }) => {
       <Box>
         <Box display="flex">
           <Box fontWeight="500" mr={6}>
-            {event.type === 'NFT_SALE' && (event.name || ellipsisString(event.collectionAddress))}
-            {event.type === 'TWEET' && event.userDisplayName}
+            {event.type === FeedEventType.NftSale && (event.name || ellipsisString(event.collectionAddress))}
+            {event.type === FeedEventType.TwitterTweet && event.userDisplayName}
           </Box>
           <Box color="gray.500" title={new Date(event.timestamp).toLocaleString()}>
             {format(event.timestamp)}
           </Box>
         </Box>
         <Box display="flex" color="gray.500">
-          {event.type === 'NFT_SALE' && 'Sale'}
-          {event.type === 'TWEET' && 'Tweet'}
+          {event.type === FeedEventType.NftSale && 'Sale'}
+          {event.type === FeedEventType.TwitterTweet && 'Tweet'}
         </Box>
       </Box>
     </Box>
@@ -113,7 +111,7 @@ const TweetEvent = ({ event }: { event: FeedEvent }) => {
   return (
     <div>
       {event.title}
-      {event.type === 'TWEET' && (
+      {event.type === FeedEventType.TwitterTweet && (
         <Box mt={4}>
           <img src={event.image} alt="" />
         </Box>

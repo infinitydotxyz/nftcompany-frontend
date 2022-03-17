@@ -6,14 +6,15 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 
 import { COLL_FEED, fetchMoreEvents, subscribe } from '../../src/utils/firestore/firestoreUtils';
-import FeedItem, { FeedEvent, EventType } from '../../src/components/app/Feed/FeedItem';
+import FeedItem, { FeedEvent } from '../../src/components/app/Feed/FeedItem';
 import { FetchMore } from 'components/FetchMore/FetchMore';
 import { CommentPanel } from 'components/app/Feed/CommentPanel';
 import { PageHeader } from 'components/PageHeader';
 import styles from './feed.module.scss';
+import { FeedEventType } from '@infinityxyz/lib/types/core/feed';
 
 type Filter = {
-  type?: EventType;
+  type?: FeedEventType;
 };
 let eventsInit = false;
 
@@ -77,7 +78,7 @@ export default function Feed() {
                   setNewEvents([]);
                   // triggers useEffect.
                   if (ev.target.value) {
-                    setFilter({ type: ev.target.value as EventType });
+                    setFilter({ type: ev.target.value as FeedEventType });
                   } else {
                     setFilter({});
                   }
@@ -143,7 +144,7 @@ export default function Feed() {
           currentPage={currentPage}
           onFetchMore={async () => {
             setCurrentPage(currentPage + 1);
-            const arr = (await fetchMoreEvents(filter)) as EventType[];
+            const arr = (await fetchMoreEvents(filter)) as FeedEvent[];
             setEvents((currentEvents) => [...currentEvents, ...arr]);
           }}
         />

@@ -18,14 +18,14 @@ import {
 
 import { increaseComments, increaseLikes } from './counterUtils';
 import { firestoreConfig } from '../../../creds/firestore';
-import { FeedEvent } from 'components/app/Feed/FeedItem';
+import { FeedEventType } from '@infinityxyz/lib/types/core/feed';
 
 export const COLL_FEED = 'feed'; // collection: /feed - to store feed events
 const EVENTS_PER_PAGE = 10;
 const COMMENTS_PER_PAGE = 10;
 
 type FeedFilter = {
-  type?: FeedEvent;
+  type?: FeedEventType;
 };
 
 export type Comment = {
