@@ -10,6 +10,7 @@ import FeedItem, { FeedEvent, EventType } from '../../src/components/app/Feed/Fe
 import { FetchMore } from 'components/FetchMore/FetchMore';
 import { CommentPanel } from 'components/app/Feed/CommentPanel';
 import { PageHeader } from 'components/PageHeader';
+import styles from './feed.module.scss';
 
 type Filter = {
   type?: EventType;
@@ -90,12 +91,13 @@ export default function Feed() {
 
           {newEvents.length > 0 ? (
             <div
+              className={styles.moreEvents}
               onClick={() => {
                 setEvents((currentEvents) => [...newEvents, ...currentEvents]);
                 setNewEvents([]);
               }}
             >
-              There are {newEvents.length} new events. Click to show.
+              Show {newEvents.length} more events.
             </div>
           ) : null}
 
