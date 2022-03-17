@@ -27,12 +27,17 @@ import {
   marketSellOrders,
   executeBuyOrder
 } from 'utils/marketUtils';
+import { createOBOrder, OBOrder } from 'utils/exchange/orders';
+import { NULL_ADDRESS } from 'utils/constants';
+import { ethers } from 'ethers';
+import { splitSignature } from 'ethers/lib/utils';
+import { infinityExchangeAbi } from 'abi/infinityExchange';
 
 const MarketPage = (): JSX.Element => {
   const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
   const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
   const [matchOrders, setMatchOrders] = useState<BuyOrderMatch[]>([]);
-  const { user, chainId, showAppError, showAppMessage } = useAppContext();
+  const { user, chainId, showAppError, showAppMessage, providerManager } = useAppContext();
   const [buyModalShown, setBuyModalShown] = useState(false);
   const [sellModalShown, setSellModalShown] = useState(false);
 
@@ -50,9 +55,56 @@ const MarketPage = (): JSX.Element => {
   }, [user]);
 
   // ===========================================================
+
+  // Orderbook orders
+
+  const makeOBOrder = async (order: BuyOrder) => {
+    const exchange = '0x26B862f640357268Bd2d9E95bc81553a2Aa81D7E'.toLowerCase();
+    const complicationAddress = '0xffa7CA1AEEEbBc30C874d32C7e22F052BbEa0429';
+    const collectionAddresses = ['0x276C216D241856199A83bf27b2286659e5b877D3'];
+    const signer = providerManager?.getEthersProvider().getSigner();
+
+    const obOrder: OBOrder = {
+      signerAddress: user!.account,
+      numItems: order.minNFTs,
+      amount: order.budget,
+      startTime: Math.floor(Date.now() / 1000),
+      endTime: order.expiration,
+      isSellOrder: false,
+      complicationAddress,
+      currencyAddress: NULL_ADDRESS,
+      nonce: 1,
+      minBpsToSeller: 9000,
+      collectionAddresses,
+      tokenIds: []
+    };
+    if (signer) {
+      const signedHashedOBOrder = await createOBOrder(chainId, exchange, signer, obOrder);
+      const orderHash = signedHashedOBOrder.hash;
+      const signedOBOrder = signedHashedOBOrder.signedOrder;
+
+      // split signature
+      const splitSig = splitSignature(signedOBOrder.sig);
+      const v = splitSig.v;
+      const r = splitSig.r;
+      const s = splitSig.s;
+
+      console.log('orderHash', orderHash, 'sig: ', splitSig);
+
+      const signerAddress = await signer.getAddress();
+      const infinityExchange = new ethers.Contract(exchange, infinityExchangeAbi, signer);
+      const isSigValid = await infinityExchange.verifyOrderSig(signedOBOrder, signerAddress, v, r, s);
+      console.log('Sig valid:', isSigValid);
+    } else {
+      console.error('No signer. Are you logged in?');
+    }
+  };
+
   // buy orders
 
   const buy = async (order: BuyOrder) => {
+    await makeOBOrder(order);
+
     const match = await addBuy(order);
 
     if (match) {
