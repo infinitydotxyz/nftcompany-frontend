@@ -7,25 +7,18 @@ import { useAppContext } from 'utils/context/AppContext';
 import { ChatIcon } from '@chakra-ui/icons';
 import { AiOutlineLike } from 'react-icons/ai';
 import { ellipsisString } from 'utils/commonUtil';
+import { NftSaleEvent } from '@infinityxyz/lib/types/core/feed';
+import { BaseFeedEvent, FeedEventType } from '@infinityxyz/lib/types/core/feed/FeedEvent';
 
 import NftImage from './NftImage';
 
-export type FeedEventType = 'COLL' | 'NFT' | 'SALE' | 'TWEET';
+export type EventType = FeedEventType & 'TWEET';
 
-export type FeedEvent = {
-  id: string;
-  type: FeedEventType;
-  tokenAddress?: string;
-  tokenId?: string;
-  userAddress?: string;
-  userDisplayName?: string;
-  price?: number;
-  title: string;
-  imageUrl?: string;
-  likes: number;
-  comments: number;
-  timestamp: number;
-};
+export type FeedEvent = BaseFeedEvent &
+  NftSaleEvent & {
+    id?: string;
+    type: EventType;
+  };
 
 type Props = {
   event?: FeedEvent;
@@ -35,13 +28,14 @@ type Props = {
 };
 
 export default function FeedItem({ event, onLike, onComment, onClickShowComments }: Props) {
-  const { user } = useAppContext();
+  const { user, showAppMessage } = useAppContext();
 
   if (!event) {
     return null;
   }
 
   const timestampStr = new Date(event?.timestamp).toLocaleString();
+  // console.log('event', event);
   return (
     <AnimatePresence>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -51,16 +45,16 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
             <Box>
               <Box display="flex">
                 <Box fontWeight="500" mr={6}>
-                  {event.type === 'SALE'
-                    ? ellipsisString(event.tokenAddress)
-                    : event.userDisplayName || event.userAddress}
+                  {event.type === 'NFT_SALE'
+                    ? event.name || ellipsisString(event.collectionAddress)
+                    : event.buyerDisplayName || event.buyer}
                 </Box>
                 <Box color="gray.500" title={new Date(event.timestamp).toLocaleString()}>
                   {format(event.timestamp)}
                 </Box>
               </Box>
               <Box display="flex" color="gray.500">
-                {event.type === 'SALE' ? 'Sale' : ''}
+                {event.type === 'NFT_SALE' ? 'Sale' : ''}
               </Box>
             </Box>
           </Box>
@@ -68,10 +62,10 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
             {event.title}
             {event.type === 'TWEET' && (
               <Box mt={4}>
-                <img src={event.imageUrl} alt="" />
+                <img src={event.image} alt="" />
               </Box>
             )}
-            {event.type === 'SALE' && (
+            {event.type === 'NFT_SALE' && (
               <Box
                 display="flex"
                 alignItems="center"
@@ -81,8 +75,9 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
                 mt={4}
               >
                 <NftImage
-                  tokenAddress={event.tokenAddress ?? ''}
+                  tokenAddress={event.collectionAddress ?? ''}
                   tokenId={event.tokenId ?? ''}
+                  src={event.image}
                   border="1px solid lightgray"
                   width={20}
                   height={20}
@@ -93,8 +88,8 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
                 <Box display="flex" width="100%">
                   <Box width="50%">
                     <Box>Buyer</Box>
-                    <Box fontWeight={500} title={event.userAddress}>
-                      {ellipsisString(event.userAddress)}
+                    <Box fontWeight={500} title={event.buyerDisplayName || event.buyer}>
+                      {ellipsisString(event.buyerDisplayName || event.buyer)}
                     </Box>
                   </Box>
                   <Box width="50%">
@@ -112,7 +107,7 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
                 display="flex"
                 onClick={async () => {
                   if (user && user?.account) {
-                    await addUserLike(event.id, user?.account, () => {
+                    await addUserLike(event.id || '', user?.account, () => {
                       if (onLike) {
                         onLike(event);
                       }
@@ -133,6 +128,8 @@ export default function FeedItem({ event, onLike, onComment, onClickShowComments
                     if (onClickShowComments) {
                       onClickShowComments(event);
                     }
+                  } else {
+                    showAppMessage('Please connect to Wallet.');
                   }
                 }}
               >

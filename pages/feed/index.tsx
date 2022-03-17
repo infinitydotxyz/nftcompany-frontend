@@ -6,13 +6,13 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 
 import { COLL_FEED, fetchMoreEvents, subscribe } from '../../src/utils/firestore/firestoreUtils';
-import FeedItem, { FeedEvent, FeedEventType } from '../../src/components/app/Feed/FeedItem';
+import FeedItem, { FeedEvent, EventType } from '../../src/components/app/Feed/FeedItem';
 import { FetchMore } from 'components/FetchMore/FetchMore';
 import { CommentPanel } from 'components/app/Feed/CommentPanel';
 import { PageHeader } from 'components/PageHeader';
 
 type Filter = {
-  type?: FeedEventType;
+  type?: EventType;
 };
 
 export default function Feed() {
@@ -24,7 +24,7 @@ export default function Feed() {
 
   async function getEvents() {
     try {
-      subscribe(COLL_FEED, (type: string, data: FeedEvent) => {
+      subscribe(COLL_FEED, filter, (type: string, data: FeedEvent) => {
         // console.log('--- change: ', type, data);
         if (type === 'added') {
           setEvents((currentEvents) => [data, ...currentEvents]);
@@ -39,7 +39,7 @@ export default function Feed() {
 
   useEffect(() => {
     getEvents();
-  }, []);
+  }, [filter]);
 
   useEffect(() => {
     let arr = events;
@@ -47,7 +47,7 @@ export default function Feed() {
       arr = events.filter((ev) => ev.type === filter.type);
     }
     setFilteredEvents(arr);
-  }, [filter, events]);
+  }, [events]);
 
   return (
     <>
@@ -61,11 +61,19 @@ export default function Feed() {
           <Box mb={4}>
             <Select
               onChange={(ev) => {
-                setFilter({ type: ev.target.value as FeedEventType });
+                setEvents([]);
+                setTimeout(() => {
+                  // triggers useEffect.
+                  if (ev.target.value) {
+                    setFilter({ type: ev.target.value as EventType });
+                  } else {
+                    setFilter({});
+                  }
+                }, 500);
               }}
             >
               <option value="">All</option>
-              <option value="COLL">Collection</option>
+              <option value="NFT_SALE">NFT Sales</option>
               <option value="TWEET">Tweets</option>
             </Select>
           </Box>
@@ -111,7 +119,7 @@ export default function Feed() {
           currentPage={currentPage}
           onFetchMore={async () => {
             setCurrentPage(currentPage + 1);
-            const arr = (await fetchMoreEvents()) as FeedEvent[];
+            const arr = (await fetchMoreEvents(filter)) as EventType[];
             setEvents((currentEvents) => [...currentEvents, ...arr]);
           }}
         />
