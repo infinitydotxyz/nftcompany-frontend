@@ -29,18 +29,7 @@ export function CommentPanel({ isOpen, onClose, event, ...rest }: Props) {
   const { user } = useAppContext();
   const [currentPage, setCurrentPage] = useState(0);
   const [text, setText] = useState('');
-  const [data, setData] = useState<Comment[]>([
-    {
-      userAddress: 'user1',
-      comment: 'comment 1',
-      timestamp: 1646693311366
-    },
-    {
-      userAddress: 'user2',
-      comment: 'comment 2',
-      timestamp: 1646693312500
-    }
-  ]);
+  const [data, setData] = useState<Comment[]>([]);
 
   const fetchData = async () => {
     const commentsArr = await fetchComments(event.id);
@@ -77,8 +66,7 @@ export function CommentPanel({ isOpen, onClose, event, ...rest }: Props) {
             <Button
               variant="outline"
               onClick={async () => {
-                console.log('text', text);
-                await addUserComments(event.id, user?.account ?? '', text);
+                await addUserComments(event.id || '', user?.account ?? '', text);
                 setData([]);
                 setCurrentPage(0);
                 fetchData();
