@@ -91,9 +91,8 @@ const MarketPage = (): JSX.Element => {
 
       console.log('orderHash', orderHash, 'sig: ', splitSig);
 
-      const signerAddress = await signer.getAddress();
       const infinityExchange = new ethers.Contract(exchange, infinityExchangeAbi, signer);
-      const isSigValid = await infinityExchange.verifyOrderSig(signedOBOrder, signerAddress, v, r, s);
+      const isSigValid = await infinityExchange.verifyOrderSig(signedOBOrder);
       console.log('Sig valid:', isSigValid);
     } else {
       console.error('No signer. Are you logged in?');
