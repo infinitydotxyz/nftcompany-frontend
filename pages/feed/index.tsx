@@ -20,7 +20,6 @@ let eventsInit = false;
 export default function Feed() {
   const [currentPage, setCurrentPage] = useState(0);
   const [events, setEvents] = useState<FeedEvent[]>([]);
-  // const [eventsInit, setEventsInit] = useState(false);
   const [newEvents, setNewEvents] = useState<FeedEvent[]>([]); // new feed events
   const [filter, setFilter] = useState<Filter>({});
   const [filteredEvents, setFilteredEvents] = useState<FeedEvent[]>([]);
@@ -74,6 +73,8 @@ export default function Feed() {
               onChange={(ev) => {
                 setEvents([]);
                 setTimeout(() => {
+                  eventsInit = false;
+                  setNewEvents([]);
                   // triggers useEffect.
                   if (ev.target.value) {
                     setFilter({ type: ev.target.value as EventType });
