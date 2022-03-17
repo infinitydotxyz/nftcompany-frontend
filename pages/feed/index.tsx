@@ -14,10 +14,13 @@ import { PageHeader } from 'components/PageHeader';
 type Filter = {
   type?: EventType;
 };
+let eventsInit = false;
 
 export default function Feed() {
   const [currentPage, setCurrentPage] = useState(0);
   const [events, setEvents] = useState<FeedEvent[]>([]);
+  // const [eventsInit, setEventsInit] = useState(false);
+  const [newEvents, setNewEvents] = useState<FeedEvent[]>([]); // new feed events
   const [filter, setFilter] = useState<Filter>({});
   const [filteredEvents, setFilteredEvents] = useState<FeedEvent[]>([]);
   const [commentPanelEvent, setCommentPanelEvent] = useState<FeedEvent | null>(null); // to show Comments Panel for an Event.
@@ -27,7 +30,14 @@ export default function Feed() {
       subscribe(COLL_FEED, filter, (type: string, data: FeedEvent) => {
         // console.log('--- change: ', type, data);
         if (type === 'added') {
-          setEvents((currentEvents) => [data, ...currentEvents]);
+          if (eventsInit === false) {
+            setEvents((currentEvents) => [data, ...currentEvents]); // add initial feed events.
+            setTimeout(() => {
+              eventsInit = true;
+            }, 3000);
+          } else {
+            setNewEvents((currentEvents) => [data, ...currentEvents]);
+          }
         } else {
           setEvents((currentEvents) => [...currentEvents, data]);
         }
@@ -77,6 +87,17 @@ export default function Feed() {
               <option value="TWEET">Tweets</option>
             </Select>
           </Box>
+
+          {newEvents.length > 0 ? (
+            <div
+              onClick={() => {
+                setEvents((currentEvents) => [...newEvents, ...currentEvents]);
+                setNewEvents([]);
+              }}
+            >
+              There are {newEvents.length} new events. Click to show.
+            </div>
+          ) : null}
 
           {filteredEvents.map((event: FeedEvent, idx: number) => {
             return (
