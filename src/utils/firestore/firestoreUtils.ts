@@ -10,16 +10,23 @@ import {
   query,
   limit,
   orderBy,
+  where,
   updateDoc,
-  startAfter
+  startAfter,
+  Unsubscribe
 } from 'firebase/firestore'; // access firestore database service
 
 import { increaseComments, increaseLikes } from './counterUtils';
 import { firestoreConfig } from '../../../creds/firestore';
+import { FeedEvent } from 'components/app/Feed/FeedItem';
 
 export const COLL_FEED = 'feed'; // collection: /feed - to store feed events
-const EVENTS_PER_PAGE = 4;
+const EVENTS_PER_PAGE = 10;
 const COMMENTS_PER_PAGE = 10;
+
+type FeedFilter = {
+  type?: FeedEvent;
+};
 
 export type Comment = {
   userAddress: string;
@@ -46,11 +53,23 @@ export async function getCollectionDocs(collectionPath: string, onChange: any) {
 let lastDoc: any = null;
 let lastCommentDoc: any = null;
 
-export async function fetchMoreEvents() {
+export async function fetchMoreEvents(filter: FeedFilter) {
   const coll = collection(firestoreDb, COLL_FEED);
 
   if (lastDoc) {
-    const q = query(coll, orderBy('timestamp', 'asc'), limit(EVENTS_PER_PAGE), startAfter(lastDoc)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
+    let q;
+    if (filter?.type) {
+      q = query(
+        coll,
+        where('type', '==', filter?.type),
+        orderBy('timestamp', 'desc'),
+        limit(EVENTS_PER_PAGE),
+        startAfter(lastDoc)
+      ); // query(coll, limit(3), orderBy('timestamp', 'desc'))
+    } else {
+      q = query(coll, orderBy('timestamp', 'desc'), limit(EVENTS_PER_PAGE), startAfter(lastDoc)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
+    }
+
     const items = await getDocs(q);
 
     if (items.docs.length > 0) {
@@ -66,16 +85,26 @@ export async function fetchMoreEvents() {
   return [];
 }
 
-export async function subscribe(collectionPath: string, onChange: any) {
+let unsubscribe: Unsubscribe;
+export async function subscribe(collectionPath: string, filter: FeedFilter, onChange: any) {
   try {
     const coll = collection(firestoreDb, collectionPath);
 
-    const q = query(coll, orderBy('timestamp', 'asc'), limit(EVENTS_PER_PAGE)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
-    const unsubscribe = onSnapshot(q, (snapshot) => {
+    let q;
+    if (filter?.type) {
+      q = query(coll, where('type', '==', filter?.type), orderBy('timestamp', 'desc'), limit(EVENTS_PER_PAGE)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
+    } else {
+      q = query(coll, orderBy('timestamp', 'desc'), limit(EVENTS_PER_PAGE)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
+    }
+
+    if (unsubscribe) {
+      unsubscribe();
+    }
+    unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (onChange && change.type === 'added') {
           const docData = { ...change.doc.data(), id: change.doc.id };
-          console.log('docData', docData);
+          // console.log('docData', docData);
           lastDoc = change.doc;
           onChange(change.type, docData);
         }
@@ -112,7 +141,10 @@ export async function addUserComments(eventId: string, userAddress: string, comm
   increaseComments(userAddress ?? '', eventId);
 }
 
-export async function fetchComments(eventId: string) {
+export async function fetchComments(eventId?: string) {
+  if (!eventId) {
+    return [];
+  }
   try {
     const coll = collection(firestoreDb, `feed/${eventId}/userComments`);
     const q = query(coll, orderBy('timestamp', 'desc'), limit(COMMENTS_PER_PAGE)); // query(coll, limit(3), orderBy('timestamp', 'desc'))
@@ -135,7 +167,10 @@ export async function fetchComments(eventId: string) {
   }
 }
 
-export async function fetchMoreComments(eventId: string) {
+export async function fetchMoreComments(eventId?: string) {
+  if (!eventId) {
+    return [];
+  }
   const coll = collection(firestoreDb, `feed/${eventId}/userComments`);
 
   if (lastCommentDoc) {
