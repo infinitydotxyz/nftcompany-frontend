@@ -34,6 +34,7 @@ export function CommentPanel({ isOpen, onClose, event, ...rest }: Props) {
   const fetchData = async () => {
     const commentsArr = await fetchComments(event.id);
     setData(commentsArr as Comment[]);
+    event.comments = commentsArr.length;
   };
 
   useEffect(() => {
@@ -62,7 +63,7 @@ export function CommentPanel({ isOpen, onClose, event, ...rest }: Props) {
 
         <DrawerBody>
           <Box mb={6} display="flex">
-            <Textarea mr={6} onChange={(ev) => setText(ev.target.value)} />
+            <Textarea mr={6} value={text} onChange={(ev) => setText(ev.target.value)} />
             <Button
               variant="outline"
               onClick={async () => {
@@ -70,6 +71,7 @@ export function CommentPanel({ isOpen, onClose, event, ...rest }: Props) {
                 setData([]);
                 setCurrentPage(0);
                 fetchData();
+                setText('');
               }}
             >
               Submit
