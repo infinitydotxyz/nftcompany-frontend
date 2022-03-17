@@ -12,7 +12,8 @@ import {
   MarketListingsBody,
   MarketOrder,
   SellOrder,
-  isBuyOrder
+  isBuyOrder,
+  MarketListIdType
 } from '@infinityxyz/lib/types/core';
 import { Button } from '@chakra-ui/button';
 import { BuyOrderList, BuyOrderMatchList, SellOrderList } from 'components/MarketList';
@@ -35,6 +36,11 @@ const MarketPage = (): JSX.Element => {
   const [buyModalShown, setBuyModalShown] = useState(false);
   const [sellModalShown, setSellModalShown] = useState(false);
 
+  const [buyOrdersValidInactive, setBuyOrdersValidInactive] = useState<BuyOrder[]>([]);
+  const [buyOrdersInvalid, setBuyOrdersInvalid] = useState<BuyOrder[]>([]);
+  const [sellOrdersValidInactive, setSellOrdersValidInactive] = useState<SellOrder[]>([]);
+  const [sellOrdersInvalid, setSellOrdersInvalid] = useState<SellOrder[]>([]);
+
   const [clickedOrder, setClickedOrder] = useState<MarketOrder>();
 
   useEffect(() => {
@@ -42,6 +48,9 @@ const MarketPage = (): JSX.Element => {
       refreshAllLists();
     }
   }, [user]);
+
+  // ===========================================================
+  // buy orders
 
   const buy = async (order: BuyOrder) => {
     const match = await addBuy(order);
@@ -56,42 +65,43 @@ const MarketPage = (): JSX.Element => {
   };
 
   const listBuyOrders = async () => {
-    const match = await marketBuyOrders();
+    await _listBuyOrders('validActive');
+  };
+
+  const listBuyOrdersValidInactive = async () => {
+    await _listBuyOrders('validInactive');
+  };
+
+  const listBuyOrdersInvalid = async () => {
+    await _listBuyOrders('invalid');
+  };
+
+  const _listBuyOrders = async (listId: MarketListIdType) => {
+    const match = await marketBuyOrders(listId);
 
     if (match) {
       const orders: BuyOrder[] = match as BuyOrder[];
 
-      setBuyOrders(orders);
+      switch (listId) {
+        case 'validActive':
+          setBuyOrders(orders);
+          break;
+        case 'invalid':
+          setBuyOrdersInvalid(orders);
+          break;
+        case 'validInactive':
+          setBuyOrdersValidInactive(orders);
+          break;
+        default:
+          console.log('hit default case');
+      }
     } else {
       showAppError('An error occured: listBuyOrders');
     }
   };
 
-  const listMatches = async () => {
-    const matches = await marketMatches();
-
-    setMatchOrders(matches);
-  };
-
-  const listSellOrders = async () => {
-    const match = await marketSellOrders();
-
-    if (match) {
-      const orders: SellOrder[] = match as SellOrder[];
-
-      setSellOrders(orders);
-    } else {
-      showAppError('Sell Submitted');
-    }
-  };
-
-  const deleteOrder = async (body: MarketListingsBody) => {
-    const response = await marketDeleteOrder(body);
-
-    if (response) {
-      showAppMessage(response);
-    }
-  };
+  // ===========================================================
+  // sell orders
 
   const sell = async (order: SellOrder) => {
     const match = await addSell(order);
@@ -100,6 +110,59 @@ const MarketPage = (): JSX.Element => {
       showAppMessage('sell successful.');
     } else {
       showAppMessage('sell submitted');
+    }
+  };
+
+  const listSellOrders = async () => {
+    await _listSellOrders('validActive');
+  };
+
+  const listSellOrdersValidInactive = async () => {
+    await _listSellOrders('validInactive');
+  };
+
+  const listSellOrdersInvalid = async () => {
+    await _listSellOrders('invalid');
+  };
+
+  const _listSellOrders = async (listId: MarketListIdType) => {
+    const match = await marketSellOrders(listId);
+
+    if (match) {
+      const orders: SellOrder[] = match as SellOrder[];
+
+      switch (listId) {
+        case 'validActive':
+          setSellOrders(orders);
+          break;
+        case 'invalid':
+          setSellOrdersInvalid(orders);
+          break;
+        case 'validInactive':
+          setSellOrdersValidInactive(orders);
+          break;
+        default:
+          console.log('hit default case');
+      }
+    } else {
+      showAppError('An error occured: listBuyOrders');
+    }
+  };
+
+  // ===========================================================
+  // matching orders
+
+  const listMatches = async () => {
+    const matches = await marketMatches();
+
+    setMatchOrders(matches);
+  };
+
+  const deleteOrder = async (body: MarketListingsBody) => {
+    const response = await marketDeleteOrder(body);
+
+    if (response) {
+      showAppMessage(response);
     }
   };
 
@@ -141,6 +204,14 @@ const MarketPage = (): JSX.Element => {
       >
         Matches
       </Button>
+
+      <Button
+        onClick={async () => {
+          refreshInactiveLists();
+        }}
+      >
+        Inactive
+      </Button>
     </div>
   );
 
@@ -150,13 +221,21 @@ const MarketPage = (): JSX.Element => {
     listSellOrders();
   };
 
+  const refreshInactiveLists = async () => {
+    listBuyOrdersValidInactive();
+    listBuyOrdersInvalid();
+    listSellOrdersValidInactive();
+    listSellOrdersInvalid();
+  };
+
   const handleAcceptClick = async (buyOrder: BuyOrder) => {
     await executeBuyOrder(buyOrder.id ?? '');
 
     refreshAllLists();
+    refreshInactiveLists();
   };
 
-  const handleCardClick = async (order: MarketOrder, action: string) => {
+  const handleCardClick = async (order: MarketOrder, action: string, listId: MarketListIdType) => {
     switch (action) {
       case 'card':
         setClickedOrder(order);
@@ -171,9 +250,8 @@ const MarketPage = (): JSX.Element => {
         const body: MarketListingsBody = {
           orderType: isBuyOrder(order) ? 'buyOrders' : 'sellOrders',
           action: 'delete',
-          listId: 'validActive',
-          orderId: order.id,
-          moveListId: 'validActive'
+          listId: listId,
+          orderId: order.id
         };
 
         await deleteOrder(body);
@@ -183,6 +261,9 @@ const MarketPage = (): JSX.Element => {
         } else {
           listSellOrders();
         }
+
+        // could be inactive list
+        refreshInactiveLists();
 
         // clear this
         setMatchOrders([]);
@@ -236,14 +317,20 @@ const MarketPage = (): JSX.Element => {
           {buyOrders.length > 0 && (
             <>
               <div className={styles.header}>Buy Orders</div>
-              <BuyOrderList orders={buyOrders} onClickAction={handleCardClick} />
+              <BuyOrderList
+                orders={buyOrders}
+                onClickAction={(order, action) => handleCardClick(order, action, 'validActive')}
+              />
             </>
           )}
 
           {sellOrders.length > 0 && (
             <>
               <div className={styles.header}>Sell Orders</div>
-              <SellOrderList orders={sellOrders} onClickAction={handleCardClick} />
+              <SellOrderList
+                orders={sellOrders}
+                onClickAction={(order, action) => handleCardClick(order, action, 'validActive')}
+              />
             </>
           )}
 
@@ -252,9 +339,49 @@ const MarketPage = (): JSX.Element => {
               <div className={styles.header}>Match Orders</div>
               <BuyOrderMatchList
                 matches={matchOrders}
-                onBuyClick={handleCardClick}
-                onSellClick={handleCardClick}
+                onBuyClick={(order, action) => handleCardClick(order, action, 'validActive')}
+                onSellClick={(order, action) => handleCardClick(order, action, 'validActive')}
                 onAcceptClick={handleAcceptClick}
+              />
+            </>
+          )}
+
+          {buyOrdersValidInactive.length > 0 && (
+            <>
+              <div className={styles.header}>Buy Orders (validInactive)</div>
+              <BuyOrderList
+                orders={buyOrdersValidInactive}
+                onClickAction={(order, action) => handleCardClick(order, action, 'validInactive')}
+              />
+            </>
+          )}
+
+          {buyOrdersInvalid.length > 0 && (
+            <>
+              <div className={styles.header}>Buy Orders (Invalid)</div>
+              <BuyOrderList
+                orders={buyOrdersInvalid}
+                onClickAction={(order, action) => handleCardClick(order, action, 'invalid')}
+              />
+            </>
+          )}
+
+          {sellOrdersValidInactive.length > 0 && (
+            <>
+              <div className={styles.header}>Sell Orders (validInactive)</div>
+              <SellOrderList
+                orders={sellOrdersValidInactive}
+                onClickAction={(order, action) => handleCardClick(order, action, 'validInactive')}
+              />
+            </>
+          )}
+
+          {sellOrdersInvalid.length > 0 && (
+            <>
+              <div className={styles.header}>Sell Orders (Invalid)</div>
+              <SellOrderList
+                orders={sellOrdersInvalid}
+                onClickAction={(order, action) => handleCardClick(order, action, 'invalid')}
               />
             </>
           )}

@@ -3,6 +3,7 @@ import {
   BuyOrder,
   BuyOrderMatch,
   CollectionAddress,
+  MarketListIdType,
   MarketListingsBody,
   MarketListingsResponse,
   MarketOrder,
@@ -56,23 +57,21 @@ export const addSell = async (order: SellOrder): Promise<BuyOrderMatch[]> => {
   return [];
 };
 
-export const marketBuyOrders = async (): Promise<MarketOrder[]> => {
+export const marketBuyOrders = async (listId: MarketListIdType): Promise<MarketOrder[]> => {
   const body: MarketListingsBody = {
     orderType: 'buyOrders',
     action: 'list',
-    listId: 'validActive',
-    moveListId: 'validActive'
+    listId: listId
   };
 
   return list(body);
 };
 
-export const marketSellOrders = async (): Promise<MarketOrder[]> => {
+export const marketSellOrders = async (listId: MarketListIdType): Promise<MarketOrder[]> => {
   const body: MarketListingsBody = {
     orderType: 'sellOrders',
     action: 'list',
-    listId: 'validActive',
-    moveListId: 'validActive'
+    listId: listId
   };
 
   return list(body);
