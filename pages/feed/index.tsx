@@ -87,7 +87,7 @@ export default function Feed() {
             >
               <option value="">All</option>
               <option value="NFT_SALE">NFT Sales</option>
-              <option value="TWEET">Tweets</option>
+              <option value="TWITTER_TWEET">Tweets</option>
             </Select>
           </Box>
 

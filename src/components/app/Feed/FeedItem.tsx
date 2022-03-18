@@ -111,11 +111,9 @@ const TweetEvent = ({ event }: { event: FeedEvent }) => {
   return (
     <div>
       {event.title}
-      {event.type === FeedEventType.TwitterTweet && (
-        <Box mt={4}>
-          <img src={event.image} alt="" />
-        </Box>
-      )}
+      <Box mt={4}>
+        <img src={event.image} alt="" />
+      </Box>
     </div>
   );
 };
