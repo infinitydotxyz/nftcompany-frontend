@@ -15,6 +15,7 @@ export type FeedEvent = BaseFeedEvent &
   ExchangeEvent & {
     id?: string;
     type?: FeedEventType;
+    title?: string;
     userDisplayName?: string;
   };
 
@@ -91,7 +92,7 @@ const ItemHeader = ({ event }: { event: FeedEvent }) => {
       <Box>
         <Box display="flex">
           <Box fontWeight="500" mr={6}>
-            {event.type === FeedEventType.NftSale && (event.name || ellipsisString(event.collectionAddress))}
+            {event.type === FeedEventType.NftSale && (event.collectionName || ellipsisString(event.collectionAddress))}
             {event.type === FeedEventType.TwitterTweet && event.userDisplayName}
           </Box>
           <Box color="gray.500" title={new Date(event.timestamp).toLocaleString()}>
