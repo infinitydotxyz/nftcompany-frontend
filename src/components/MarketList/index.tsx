@@ -46,7 +46,8 @@ const BuyOrderCard = ({ order, onClickAction }: Props2): JSX.Element => {
       <div>collectionNames: {names.join(', ')}</div>
       <div>minNFTs: {order.minNFTs}</div>
       <div>chainId: {order.chainId}</div>
-      <div>expiration: {new Date(order.expiration * 1000).toLocaleString()}</div>
+      <div>startTime: {new Date(order.startTime * 1000).toLocaleString()}</div>
+      <div>endTime: {new Date(order.endTime * 1000).toLocaleString()}</div>
       <div>user: {order.user}</div>
       <div>id: {order.id}</div>
       <div>expired: {isOrderExpired(order) ? 'YES' : 'NO'}</div>
@@ -102,13 +103,15 @@ const SellOrderCard = ({ order, onClickAction }: Props11): JSX.Element => {
   return (
     <div className={classes} onClick={() => onClickAction(order, 'card')}>
       <div className={styles.title}>Sell Order</div>
-      <div>price: {order.price}</div>
+      <div>startPrice: {order.startPrice}</div>
+      <div>endPrice: {order.endPrice}</div>
       <div>tokenName: {order.tokenName}</div>
       <div>tokenId: {order.tokenId}</div>
       <div>collectionAddress: {order.collectionAddress.address}</div>
       <div>collectionName: {order.collectionAddress.name}</div>
       <div>chainId: {order.chainId}</div>
-      <div>expiration: {new Date(order.expiration * 1000).toLocaleString()}</div>
+      <div>startTime: {new Date(order.startTime * 1000).toLocaleString()}</div>
+      <div>endTime: {new Date(order.endTime * 1000).toLocaleString()}</div>
       <div>user: {order.user}</div>
       <div>id: {order.id}</div>
       <div>expired: {isOrderExpired(order) ? 'YES' : 'NO'}</div>
