@@ -101,6 +101,7 @@ export function useCollectionFollow(user: User | null, chainId: string): Collect
 
 export const trendingDataToCollectionFollow = (trendingData: TrendingData): CollectionFollow => {
   return {
+    userAddress: '', // TODO: dylan: set this.
     address: trendingData.collectionAddress ?? '',
     name: trendingData.name ?? '',
     chainId: '1', // TODO: SNG
