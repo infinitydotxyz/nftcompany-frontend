@@ -105,8 +105,7 @@ export const trendingDataToCollectionFollow = (trendingData: TrendingData): Coll
     address: trendingData.collectionAddress ?? '',
     name: trendingData.name ?? '',
     chainId: '1', // TODO: SNG
-    slug: 'noidea',
-    userAddress: 'fixme'
+    slug: 'noidea'
   };
 };
 
