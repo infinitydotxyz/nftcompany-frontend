@@ -15,7 +15,7 @@ import {
   isBuyOrder,
   MarketListIdType
 } from '@infinityxyz/lib/types/core';
-import { Button } from '@chakra-ui/button';
+import { Button, IconButton } from '@chakra-ui/button';
 import { BuyOrderList, BuyOrderMatchList, SellOrderList } from 'components/MarketList';
 import MarketOrderModal from 'components/MarketOrderModal';
 import {
@@ -32,6 +32,8 @@ import { NULL_ADDRESS } from 'utils/constants';
 import { ethers } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { infinityExchangeAbi } from 'abi/infinityExchange';
+import { Link } from '@chakra-ui/react';
+import { RepeatIcon } from '@chakra-ui/icons';
 
 const MarketPage = (): JSX.Element => {
   const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
@@ -50,7 +52,7 @@ const MarketPage = (): JSX.Element => {
 
   useEffect(() => {
     if (user) {
-      refreshAllLists();
+      refreshActiveLists();
     }
   }, [user]);
 
@@ -203,7 +205,7 @@ const MarketPage = (): JSX.Element => {
   // ===========================================================
   // matching orders
 
-  const listMatches = async () => {
+  const listMatcheOrders = async () => {
     const matches = await marketMatches();
 
     setMatchOrders(matches);
@@ -250,7 +252,7 @@ const MarketPage = (): JSX.Element => {
 
       <Button
         onClick={async () => {
-          listMatches();
+          listMatcheOrders();
         }}
       >
         Matches
@@ -263,11 +265,24 @@ const MarketPage = (): JSX.Element => {
       >
         Inactive
       </Button>
+
+      <Button
+        onClick={async () => {
+          refreshAllLists();
+        }}
+      >
+        Refresh All
+      </Button>
     </div>
   );
 
   const refreshAllLists = async () => {
-    listMatches();
+    refreshActiveLists();
+    refreshInactiveLists();
+  };
+
+  const refreshActiveLists = async () => {
+    listMatcheOrders();
     listBuyOrders();
     listSellOrders();
   };
@@ -282,7 +297,7 @@ const MarketPage = (): JSX.Element => {
   const handleAcceptClick = async (buyOrder: BuyOrder) => {
     await executeBuyOrder(buyOrder.id ?? '');
 
-    refreshAllLists();
+    refreshActiveLists();
     refreshInactiveLists();
   };
 
@@ -365,29 +380,34 @@ const MarketPage = (): JSX.Element => {
 
           {buttons}
 
+          {/* === Buy Orders === */}
+          <Header title="Buy Orders" onClick={() => listBuyOrders()} />
           {buyOrders.length > 0 && (
             <>
-              <div className={styles.header}>Buy Orders</div>
               <BuyOrderList
                 orders={buyOrders}
                 onClickAction={(order, action) => handleCardClick(order, action, 'validActive')}
               />
             </>
           )}
+          {buyOrders.length === 0 && <NothingFound />}
 
+          {/* === Sell Orders === */}
+          <Header title="Sell Orders" onClick={() => listSellOrders()} />
           {sellOrders.length > 0 && (
             <>
-              <div className={styles.header}>Sell Orders</div>
               <SellOrderList
                 orders={sellOrders}
                 onClickAction={(order, action) => handleCardClick(order, action, 'validActive')}
               />
             </>
           )}
+          {sellOrders.length === 0 && <NothingFound />}
 
+          {/* === Match Orders === */}
+          <Header title="Matched Orders" onClick={() => listMatcheOrders()} />
           {matchOrders.length > 0 && (
             <>
-              <div className={styles.header}>Match Orders</div>
               <BuyOrderMatchList
                 matches={matchOrders}
                 onBuyClick={(order, action) => handleCardClick(order, action, 'validActive')}
@@ -396,46 +416,55 @@ const MarketPage = (): JSX.Element => {
               />
             </>
           )}
+          {matchOrders.length === 0 && <NothingFound />}
 
+          {/* === Buy Orders (validInactive) === */}
+          <Header title="Buy Orders (validInactive)" onClick={() => listBuyOrdersValidInactive()} />
           {buyOrdersValidInactive.length > 0 && (
             <>
-              <div className={styles.header}>Buy Orders (validInactive)</div>
               <BuyOrderList
                 orders={buyOrdersValidInactive}
                 onClickAction={(order, action) => handleCardClick(order, action, 'validInactive')}
               />
             </>
           )}
+          {buyOrdersValidInactive.length === 0 && <NothingFound />}
 
+          {/* === Buy Orders (Invalid) === */}
+          <Header title="Buy Orders (Invalid)" onClick={() => listBuyOrdersInvalid()} />
           {buyOrdersInvalid.length > 0 && (
             <>
-              <div className={styles.header}>Buy Orders (Invalid)</div>
               <BuyOrderList
                 orders={buyOrdersInvalid}
                 onClickAction={(order, action) => handleCardClick(order, action, 'invalid')}
               />
             </>
           )}
+          {buyOrdersInvalid.length === 0 && <NothingFound />}
 
+          {/* === Sell Orders (validInactive) === */}
+          <Header title="Sell Orders (validInactive)" onClick={() => listSellOrdersValidInactive()} />
           {sellOrdersValidInactive.length > 0 && (
             <>
-              <div className={styles.header}>Sell Orders (validInactive)</div>
               <SellOrderList
                 orders={sellOrdersValidInactive}
                 onClickAction={(order, action) => handleCardClick(order, action, 'validInactive')}
               />
             </>
           )}
+          {sellOrdersValidInactive.length === 0 && <NothingFound />}
 
+          {/* === Sell Orders (Invalid) === */}
+          <Header title="Sell Orders (Invalid)" onClick={() => listSellOrdersInvalid()} />
           {sellOrdersInvalid.length > 0 && (
             <>
-              <div className={styles.header}>Sell Orders (Invalid)</div>
               <SellOrderList
                 orders={sellOrdersInvalid}
                 onClickAction={(order, action) => handleCardClick(order, action, 'invalid')}
               />
             </>
           )}
+          {sellOrdersInvalid.length === 0 && <NothingFound />}
         </div>
 
         {buyModalShown && modalComponent(true)}
@@ -447,3 +476,28 @@ const MarketPage = (): JSX.Element => {
 
 MarketPage.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
 export default MarketPage;
+
+// =====================================================
+
+const NothingFound = (): JSX.Element => {
+  return (
+    <div className={styles.nothingFound}>
+      <div className={styles.text}>Nothing Found</div>
+    </div>
+  );
+};
+
+interface Props2 {
+  title: string;
+  onClick: () => void;
+}
+
+const Header = ({ title, onClick }: Props2): JSX.Element => {
+  return (
+    <div className={styles.header}>
+      <div className={styles.text}>{title}</div>
+
+      <IconButton aria-label="" variant="ghost" icon={<RepeatIcon />} isRound onClick={onClick} />
+    </div>
+  );
+};
