@@ -2,36 +2,36 @@ import React, { useEffect, useState } from 'react';
 import styles from './AssetPreview.module.scss';
 import { CardData, BaseCardData } from 'types/Nft.interface';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { PurchaseAccordion } from 'components/PurchaseAccordion/PurchaseAccordion';
 import { getListings } from 'services/Listings.service';
 import { defaultFilterState, ListingSource } from 'utils/context/SearchContext';
-import { Spacer, Box } from '@chakra-ui/react';
-import { ExtraSpace } from 'components/Spacer/Spacer';
+import { Image, Text, Box, Button, MenuDivider, MenuItem } from '@chakra-ui/react';
 import NFTEvents from 'components/NFTEvents/NFTEvents';
-import { getSearchFriendlyString } from 'utils/commonUtil';
-import { TraitBox } from 'components/PurchaseAccordion/TraitBox';
+import { getSearchFriendlyString, getChainScannerBase, toChecksumAddress } from 'utils/commonUtil';
 import { NftAction } from 'types';
 import AppLink from 'components/AppLink/AppLink';
 import { useAppContext } from 'utils/context/AppContext';
-
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
-import { DescriptionBox } from 'components/PurchaseAccordion/DescriptionBox';
-
 import { Grid, GridItem, Center } from '@chakra-ui/layout';
-import { addressesEqual, getChainScannerBase, getToken, toChecksumAddress } from 'utils/commonUtil';
-
-import { Image, Button } from '@chakra-ui/react';
-import { Switch, Text, Stack } from '@chakra-ui/react';
 import { TraitItem } from 'components/TraitItem';
 import { ReadMoreText } from 'components/ReadMoreText/ReadMoreText';
-
 import { ToggleSwitchButton } from 'components/ToggleSwitchButton';
+import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
+import classNames from 'classnames';
 
 type Props = {
   tokenId: string;
   tokenAddress: string;
   onTitle: (title: string) => void;
 };
+
+const accountItems: JSX.Element[] = [
+  <MenuDivider key="kdd" />,
+  <MenuDivider key="ggdd" />,
+  <MenuItem key="Settings">Account</MenuItem>,
+
+  <MenuDivider key="dd1" />,
+  <MenuItem key="Sign out">Sign out</MenuItem>
+];
 
 export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Element => {
   const [data, setData] = useState<CardData | undefined>();
@@ -179,7 +179,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
             <ReadMoreText
               text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
               dolore magna aliqua. Ut enim ad minim veniam. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-              do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
+              do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed. "
               min={100}
               ideal={120}
               max={200}
@@ -188,8 +188,10 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
           </div>
         </GridItem>
       </Grid>
-
-      <Box d="flex" flexWrap="wrap" w="100%" py={[4, 8]}>
+      <Text fontWeight={800} mt={[2, 4]} mb={[2, 4]}>
+        Traits
+      </Text>
+      <Box d="flex" flexWrap="wrap" w="100%" pb={[4, 8]} mx={-2}>
         {(data.metadata?.asset?.traits || []).map((item) => {
           return (
             <TraitItem
@@ -201,7 +203,27 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
           );
         })}
       </Box>
-      <NFTEvents address={tokenAddress} tokenId={tokenId} />
+      <Box mt={[2, 4]} mb={[2, 8]} position={'absolute'} left={0} width={'100vw'} padding={[2, 8, 16]}>
+        <Box display={'flex'} justifyContent="space-between" alignItems="center">
+          <Text fontWeight={800}>Activity</Text>
+          <HoverMenuButton buttonTitle={'Filter'} shadow={true} arrow={false} className={styles.filterBtn}>
+            {accountItems}
+          </HoverMenuButton>
+        </Box>
+        <div>
+          <h1>good</h1>
+          <h1>good</h1>
+
+          <h1>good</h1>
+          <h1>good</h1>
+          <h1>good</h1>
+          <h1>good</h1>
+          <h1>good</h1>
+          <h1>good</h1>
+        </div>
+      </Box>
+
+      {/* <NFTEvents address={tokenAddress} tokenId={tokenId} /> */}
     </div>
   );
 };

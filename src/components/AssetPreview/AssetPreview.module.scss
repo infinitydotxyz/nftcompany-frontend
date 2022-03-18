@@ -118,6 +118,13 @@
   /* Inside auto layout */
 }
 
+.filterBtn {
+  width: 138px;
+  height: 48px;
+  padding: 10px 20px;
+  border-radius: 48px;
+}
+
 @media (max-width: 768px) {
   .main {
     justify-content: center;

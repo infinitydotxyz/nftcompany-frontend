@@ -6,8 +6,6 @@
   background-color: #fff;
   border: 1px solid var(--chakra-colors-borderLight);
   border-radius: var(--border-radius-big);
-  margin-top: 16px;
-  margin-right: 8px;
   text-align: center;
   font-family: 'F37 Bolton Trial';
   font-style: normal;
@@ -15,6 +13,7 @@
   font-size: 14px;
   line-height: 150%;
   padding: 20px;
+  margin: 8px;
   color: #666666;
 
   .traitValue {
@@ -49,4 +48,14 @@
 
   background: #f0f0f0;
   border-radius: 30px;
+}
+
+@media (max-width: 575px) {
+  .traitItem {
+    width: 150px;
+    margin: 8px;
+  }
+  .badge {
+    width: 108px;
+  }
 }
