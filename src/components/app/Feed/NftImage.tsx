@@ -10,14 +10,17 @@ type ApiResponse = {
 const NftImage = ({
   tokenAddress,
   tokenId,
+  src,
   ...rest
 }: {
   tokenAddress: string;
   tokenId: string;
-  [key: string]: string | number;
+  src?: string;
+  [key: string]: string | number | undefined;
 }) => {
   const [unmounted, setUnmounted] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState(src || '');
+
   const getData = async () => {
     if (!tokenAddress || !tokenId || unmounted) {
       return;
@@ -28,7 +31,9 @@ const NftImage = ({
     setImageUrl(result?.imageUrl);
   };
   useEffect(() => {
-    getData();
+    if (!src) {
+      getData();
+    }
     return () => {
       setUnmounted(true);
     };
