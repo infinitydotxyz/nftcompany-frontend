@@ -9,6 +9,7 @@ import {
   isBuyOrder,
   isSellOrder,
   MarketOrder,
+  nowSeconds,
   SellOrder
 } from '@infinityxyz/lib/types/core';
 import { DatePicker } from 'components/DatePicker/DatePicker';
@@ -16,7 +17,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import { CollectionManager } from 'utils/marketUtils';
 
 const isServer = typeof window === 'undefined';
-const expirationTime = Math.round(Date.now() / 1000) + 1000;
+const expirationTime = nowSeconds() + 1000;
 
 interface Props {
   buyMode: boolean;
@@ -32,7 +33,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
   const [minNFTs, setMinNFTs] = useState<number>(2);
   const [startPrice, setStartPrice] = useState<number>(1.23);
   const [endPrice, setEndPrice] = useState<number>(1.23);
-  const [startTime, setStartTime] = useState<number>(expirationTime);
+  const [startTime, setStartTime] = useState<number>(nowSeconds());
   const [endTime, setEndTime] = useState<number>(expirationTime);
   const [collectionAddress, setCollectionAddress] = useState<CollectionAddress>();
   const [tokenId, setTokenId] = useState('0xasdfasdfasdfasdf');
