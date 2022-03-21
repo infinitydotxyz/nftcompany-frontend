@@ -242,36 +242,11 @@ const MarketPage = (): JSX.Element => {
       </Button>
 
       <Button
-        onClick={() => {
-          listSellOrders();
-          listBuyOrders();
-        }}
-      >
-        Orders
-      </Button>
-
-      <Button
-        onClick={async () => {
-          listMatcheOrders();
-        }}
-      >
-        Matches
-      </Button>
-
-      <Button
-        onClick={async () => {
-          refreshInactiveLists();
-        }}
-      >
-        Inactive
-      </Button>
-
-      <Button
         onClick={async () => {
           refreshAllLists();
         }}
       >
-        Refresh All
+        Refresh
       </Button>
     </div>
   );

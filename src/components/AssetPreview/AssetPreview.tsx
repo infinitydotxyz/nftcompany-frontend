@@ -69,6 +69,7 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
 
   return (
     <>
+      <h1 className="text-7xl font-bold underline">Hello world!</h1>
       <div className={styles.main}>
         <div className={styles.nftContent}>
           <div className={styles.left}>

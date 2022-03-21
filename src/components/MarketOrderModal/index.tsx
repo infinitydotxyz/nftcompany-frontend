@@ -9,6 +9,7 @@ import {
   isBuyOrder,
   isSellOrder,
   MarketOrder,
+  nowSeconds,
   SellOrder
 } from '@infinityxyz/lib/types/core';
 import { DatePicker } from 'components/DatePicker/DatePicker';
@@ -16,7 +17,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import { CollectionManager } from 'utils/marketUtils';
 
 const isServer = typeof window === 'undefined';
-const expirationTime = Math.round(Date.now() / 1000) + 1000;
+const expirationTime = nowSeconds() + 1000;
 
 interface Props {
   buyMode: boolean;
@@ -30,8 +31,10 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
   // form data
   const [budget, setBudget] = useState<number>(2);
   const [minNFTs, setMinNFTs] = useState<number>(2);
-  const [price, setPrice] = useState<number>(1.23);
-  const [expiration, setExpiration] = useState<number>(expirationTime);
+  const [startPrice, setStartPrice] = useState<number>(1.23);
+  const [endPrice, setEndPrice] = useState<number>(1.23);
+  const [startTime, setStartTime] = useState<number>(nowSeconds());
+  const [endTime, setEndTime] = useState<number>(expirationTime);
   const [collectionAddress, setCollectionAddress] = useState<CollectionAddress>();
   const [tokenId, setTokenId] = useState('0xasdfasdfasdfasdf');
   const [tokenName, setTokenName] = useState('Grey Dog');
@@ -48,7 +51,8 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
     }
 
     if (buyOrder) {
-      setExpiration(buyOrder.expiration);
+      setEndTime(buyOrder.endTime);
+      setStartTime(buyOrder.startTime);
 
       setMinNFTs(buyOrder.minNFTs);
       setBudget(buyOrder.budget);
@@ -56,9 +60,11 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
     }
 
     if (sellOrder) {
-      setExpiration(sellOrder.expiration);
+      setEndTime(sellOrder.endTime);
+      setStartTime(sellOrder.startTime);
 
-      setPrice(sellOrder.price);
+      setStartPrice(sellOrder.startPrice);
+      setEndPrice(sellOrder.endPrice);
       setCollectionAddress(sellOrder.collectionAddress);
       setTokenId(sellOrder.tokenId);
       setTokenName(sellOrder.tokenName);
@@ -77,7 +83,8 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
           budget: budget,
           chainId: chainId,
           collectionAddresses: collectionAddresses,
-          expiration: expiration,
+          endTime: endTime,
+          startTime: startTime,
           minNFTs: minNFTs
         };
 
@@ -91,8 +98,10 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
           user: user.account,
           chainId: chainId,
           collectionAddress: collectionAddress,
-          expiration: expiration,
-          price: price,
+          startTime: startTime,
+          endTime: endTime,
+          startPrice: startPrice,
+          endPrice: endPrice,
           tokenId: tokenId,
           tokenName: tokenName
         };
@@ -214,31 +223,59 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
     </FormControl>
   );
 
-  const priceField = (
+  const startPriceField = (
     <FormControl>
-      <FormLabel>Price</FormLabel>
+      <FormLabel>Start Price</FormLabel>
       <Input
         fontWeight={500}
         type="number"
         placeholder="2.33"
-        value={price}
+        value={startPrice}
         onSubmit={() => {
           onSubmit();
         }}
-        onChange={(e: any) => setPrice(parseFloat(e.target.value))}
+        onChange={(e: any) => setStartPrice(parseFloat(e.target.value))}
       />
     </FormControl>
   );
 
-  const expirationField = (
+  const endPriceField = (
     <FormControl>
-      <FormLabel>Expiration</FormLabel>
+      <FormLabel>End Price</FormLabel>
+      <Input
+        fontWeight={500}
+        type="number"
+        placeholder="2.33"
+        value={endPrice}
+        onSubmit={() => {
+          onSubmit();
+        }}
+        onChange={(e: any) => setEndPrice(parseFloat(e.target.value))}
+      />
+    </FormControl>
+  );
+
+  const startTimeField = (
+    <FormControl>
+      <FormLabel>Start Time</FormLabel>
 
       <DatePicker
-        placeholder="Optional"
-        value={new Date(expiration * 1000)}
+        value={new Date(startTime * 1000)}
         onChange={(date) => {
-          setExpiration(date.getTime() / 1000);
+          setStartTime(date.getTime() / 1000);
+        }}
+      />
+    </FormControl>
+  );
+
+  const endTimeField = (
+    <FormControl>
+      <FormLabel>End Time</FormLabel>
+
+      <DatePicker
+        value={new Date(endTime * 1000)}
+        onChange={(date) => {
+          setEndTime(date.getTime() / 1000);
         }}
       />
     </FormControl>
@@ -252,7 +289,8 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
           {minNFTsField}
           {budgetField}
           {collectionAddressesField}
-          {expirationField}
+          {startTimeField}
+          {endTimeField}
         </>
       );
     } else {
@@ -261,8 +299,10 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
           {collectionAddressField}
           {tokenIdField}
           {tokenNameField}
-          {priceField}
-          {expirationField}
+          {startPriceField}
+          {endPriceField}
+          {startTimeField}
+          {endTimeField}
         </>
       );
     }

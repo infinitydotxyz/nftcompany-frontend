@@ -34,10 +34,6 @@
   border-radius: 12px;
   box-shadow: 0 0 11px #eee;
 
-  &.expired {
-    background-color: #faeaea;
-  }
-
   .title {
     font-weight: bold;
     text-transform: uppercase;
@@ -49,4 +45,18 @@
     justify-content: center;
     align-items: center;
   }
+}
+
+.buyCard {
+  @extend .card;
+}
+
+.sellCard {
+  @extend .card;
+  background-color: #eafaea;
+}
+
+.expiredCard {
+  @extend .card;
+  background-color: #faeaea;
 }

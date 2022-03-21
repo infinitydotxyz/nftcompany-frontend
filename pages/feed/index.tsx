@@ -6,28 +6,39 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 
 import { COLL_FEED, fetchMoreEvents, subscribe } from '../../src/utils/firestore/firestoreUtils';
-import FeedItem, { FeedEvent, FeedEventType } from '../../src/components/app/Feed/FeedItem';
+import FeedItem, { FeedEvent } from '../../src/components/app/Feed/FeedItem';
 import { FetchMore } from 'components/FetchMore/FetchMore';
 import { CommentPanel } from 'components/app/Feed/CommentPanel';
 import { PageHeader } from 'components/PageHeader';
+import styles from './feed.module.scss';
+import { FeedEventType } from '@infinityxyz/lib/types/core/feed';
 
 type Filter = {
   type?: FeedEventType;
 };
+let eventsInit = false;
 
 export default function Feed() {
   const [currentPage, setCurrentPage] = useState(0);
   const [events, setEvents] = useState<FeedEvent[]>([]);
+  const [newEvents, setNewEvents] = useState<FeedEvent[]>([]); // new feed events
   const [filter, setFilter] = useState<Filter>({});
   const [filteredEvents, setFilteredEvents] = useState<FeedEvent[]>([]);
   const [commentPanelEvent, setCommentPanelEvent] = useState<FeedEvent | null>(null); // to show Comments Panel for an Event.
 
   async function getEvents() {
     try {
-      subscribe(COLL_FEED, (type: string, data: FeedEvent) => {
+      subscribe(COLL_FEED, filter, (type: string, data: FeedEvent) => {
         // console.log('--- change: ', type, data);
         if (type === 'added') {
-          setEvents((currentEvents) => [data, ...currentEvents]);
+          if (eventsInit === false) {
+            setEvents((currentEvents) => [data, ...currentEvents]); // add initial feed events.
+            setTimeout(() => {
+              eventsInit = true;
+            }, 3000);
+          } else {
+            setNewEvents((currentEvents) => [data, ...currentEvents]);
+          }
         } else {
           setEvents((currentEvents) => [...currentEvents, data]);
         }
@@ -39,7 +50,7 @@ export default function Feed() {
 
   useEffect(() => {
     getEvents();
-  }, []);
+  }, [filter]);
 
   useEffect(() => {
     let arr = events;
@@ -47,7 +58,7 @@ export default function Feed() {
       arr = events.filter((ev) => ev.type === filter.type);
     }
     setFilteredEvents(arr);
-  }, [filter, events]);
+  }, [events]);
 
   return (
     <>
@@ -61,14 +72,36 @@ export default function Feed() {
           <Box mb={4}>
             <Select
               onChange={(ev) => {
-                setFilter({ type: ev.target.value as FeedEventType });
+                setEvents([]);
+                setTimeout(() => {
+                  eventsInit = false;
+                  setNewEvents([]);
+                  // triggers useEffect.
+                  if (ev.target.value) {
+                    setFilter({ type: ev.target.value as FeedEventType });
+                  } else {
+                    setFilter({});
+                  }
+                }, 500);
               }}
             >
               <option value="">All</option>
-              <option value="COLL">Collection</option>
-              <option value="TWEET">Tweets</option>
+              <option value="NFT_SALE">NFT Sales</option>
+              <option value="TWITTER_TWEET">Tweets</option>
             </Select>
           </Box>
+
+          {newEvents.length > 0 ? (
+            <div
+              className={styles.moreEvents}
+              onClick={() => {
+                setEvents((currentEvents) => [...newEvents, ...currentEvents]);
+                setNewEvents([]);
+              }}
+            >
+              Show {newEvents.length} more events.
+            </div>
+          ) : null}
 
           {filteredEvents.map((event: FeedEvent, idx: number) => {
             return (
@@ -111,7 +144,7 @@ export default function Feed() {
           currentPage={currentPage}
           onFetchMore={async () => {
             setCurrentPage(currentPage + 1);
-            const arr = (await fetchMoreEvents()) as FeedEvent[];
+            const arr = (await fetchMoreEvents(filter)) as FeedEvent[];
             setEvents((currentEvents) => [...currentEvents, ...arr]);
           }}
         />
