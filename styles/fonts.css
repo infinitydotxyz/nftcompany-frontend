@@ -1,4 +1,32 @@
 @font-face {
+  font-family: 'F37Bolton';
+  src: url('/fonts/F37Bolton-Regular.woff2') format('woff2'), url('/fonts/F37Bolton-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'F37Bolton';
+  src: url('/fonts/F37Bolton-Bold.woff2') format('woff2'), url('/fonts/F37Bolton-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'F37ZagmaMono';
+  src: url('/fonts/F37ZagmaMono-Regular.woff2') format('woff2'), url('/fonts/F37ZagmaMono-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'F37ZagmaMono';
+  src: url('/fonts/F37ZagmaMono-Bold.woff2') format('woff2'), url('/fonts/F37ZagmaMono-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
   font-family: 'Futura';
   src: url('/fonts/futura-regular.woff2') format('woff2'), url('/fonts/futura-regular.woff') format('woff');
   font-style: normal;

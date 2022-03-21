@@ -29,7 +29,7 @@ const activeActionLight = '#000000';
 
 const lightText = '#6F6F6F';
 const mainFont =
-  'Futura, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif';
+  'F37Bolton, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,  Droid Sans, Helvetica Neue, sans-serif';
 
 export const colors = {
   brandColor, // currently: black #222
