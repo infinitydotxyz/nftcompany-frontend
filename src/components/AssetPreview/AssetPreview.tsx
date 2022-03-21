@@ -16,7 +16,6 @@ import { TraitItem } from 'components/TraitItem';
 import { ReadMoreText } from 'components/ReadMoreText/ReadMoreText';
 import { ToggleSwitchButton } from 'components/ToggleSwitchButton';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
-import classNames from 'classnames';
 
 type Props = {
   tokenId: string;
