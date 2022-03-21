@@ -176,7 +176,7 @@ const Button = {
     return {
       // default is 1.2 and it makes the text a few pixels too high
       lineHeight: '1.0',
-      paddingBottom: '4px', // align button text vertically for Futura font.
+      paddingBottom: '4px', // align button text vertically for F37Bolton font.
       fontWeight: 'normal',
       bg: 'var(--chakra-colors-brandColor)',
       backgroundColor: 'var(--chakra-colors-brandColor)',
@@ -205,7 +205,7 @@ const Button = {
         fontSize: '16px',
         lineHeight: '19px',
         paddingTop: '22.5px',
-        paddingBottom: '26.5px', // align button text vertically for Futura font
+        paddingBottom: '26.5px', // align button text vertically for F37Bolton font
         paddingX: '16px',
         minWidth: '157px'
       };
@@ -332,14 +332,14 @@ const Text = {
 const Input = {
   baseStyle: (props: any) => {
     return {
-      paddingBottom: '4px' // align button text vertically for Futura font.
+      paddingBottom: '4px' // align button text vertically for F37Bolton font.
     };
   },
   variants: {
     outline: (props: any) => {
       return {
         field: {
-          paddingBottom: '4px', // align button text vertically for Futura font.
+          paddingBottom: '4px', // align button text vertically for F37Bolton font.
           border: '1px solid',
 
           // not sure why you have to set this
@@ -385,7 +385,7 @@ const Checkbox = {
 const Textarea = {
   baseStyle: (props: any) => {
     return {
-      paddingBottom: '4px', // align button text vertically for Futura font.
+      paddingBottom: '4px', // align button text vertically for F37Bolton font.
       border: '1px solid',
       borderColor: '#aaa',
 
