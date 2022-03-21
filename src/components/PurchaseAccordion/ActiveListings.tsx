@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import styles from './scss/ActiveListings.module.scss';
 
-import { CardData } from 'types/Nft.interface';
+import { CardData } from '@infinityxyz/lib/types/core';
 import { getChainScannerBase, toChecksumAddress } from 'utils/commonUtil';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 

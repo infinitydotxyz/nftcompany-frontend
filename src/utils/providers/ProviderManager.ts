@@ -52,7 +52,7 @@ export class ProviderManager implements Omit<Optional<Provider, 'type'>, 'init'>
 
     return this.instance;
   }
-  // eslint-disable-next-line no-empty-function
+
   private constructor() {
     this._emitter = new EventEmitter();
   }

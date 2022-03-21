@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './AssetPreview.module.scss';
-import { CardData, BaseCardData } from 'types/Nft.interface';
+import { CardData, BaseCardData } from '@infinityxyz/lib/types/core';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { getListings } from 'services/Listings.service';
 import { defaultFilterState, ListingSource } from 'utils/context/SearchContext';

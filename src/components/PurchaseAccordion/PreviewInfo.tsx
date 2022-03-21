@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PlaceBidModal from 'components/PlaceBidModal/PlaceBidModal';
-import { CardData } from 'types/Nft.interface';
+import { CardData } from '@infinityxyz/lib/types/core';
 import { useAppContext } from 'utils/context/AppContext';
 import { Button, Spacer } from '@chakra-ui/react';
 import { PriceBox } from 'components/PriceBox/PriceBox';

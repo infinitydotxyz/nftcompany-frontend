@@ -1,4 +1,4 @@
-import { CardData } from 'types/Nft.interface';
+import { CardData } from '@infinityxyz/lib/types/core';
 import { useEffect, useState } from 'react';
 import { ListingSource, SearchFilter, SearchState } from 'utils/context/SearchContext';
 import { useAppContext } from 'utils/context/AppContext';

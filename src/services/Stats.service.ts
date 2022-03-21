@@ -26,15 +26,15 @@ export async function getStats(
   limit: number,
   startAfter: string
 ) {
-  const path = '/collections/stats';
-
-  const { result, error }: { result: any; error: any } = (await apiGet(path, {
+  const body = {
     orderBy,
     interval,
     orderDirection,
     limit,
     startAfter
-  })) as any;
+  };
+
+  const { result, error } = await apiGet('/collections/stats', body);
 
   if (error !== undefined) {
     return [];

@@ -5,7 +5,7 @@ import Layout from 'containers/layout';
 import styles from './Rewards.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { apiGet } from 'utils/apiUtil';
-import { RewardResults } from '../../src/types/rewardTypes';
+import { RewardResults } from '@infinityxyz/lib/types/core';
 import { Spinner } from '@chakra-ui/spinner';
 import { DataItem, RewardCard } from 'components/RewardCard/RewardCard';
 import { GiftCardIcon } from 'components/Icons/Icons';

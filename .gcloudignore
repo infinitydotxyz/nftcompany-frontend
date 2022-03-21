@@ -30,3 +30,14 @@ yarn-error.log
 # Next.js default build
 .next
 out
+
+ci
+src
+fs-bq-extensions
+
+.github
+.idea
+.eslintrc.js
+.firebaserc
+tsconfig.json
+tsconfig.tsbuildinfo
