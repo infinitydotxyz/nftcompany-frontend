@@ -143,7 +143,7 @@ export default function SearchBox() {
 
           return (
             <div className={styles.container}>
-              <div className="m-auto w-1/2 mt-6">
+              <div className="m-auto w-1/2">
                 <InputGroup>
                   <InputLeftElement pointerEvents="none" size="xs">
                     <SearchIcon className={styles.searchIcon} />
