@@ -2,8 +2,7 @@ import React from 'react';
 import { Tooltip } from '@chakra-ui/tooltip';
 import styles from './ShortAddress.module.scss';
 import { CopyButton } from 'components/CopyButton/CopyButton';
-import { Link, Spacer, useColorMode } from '@chakra-ui/react';
-import { Text } from '@chakra-ui/react';
+import { Link, Spacer, useColorMode, Text } from '@chakra-ui/react';
 import { addressesEqual, ellipsisAddress, ellipsisString } from 'utils/commonUtil';
 import { useAppContext } from 'utils/context/AppContext';
 
