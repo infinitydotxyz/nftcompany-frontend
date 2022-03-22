@@ -3,7 +3,7 @@ import { Tooltip } from '@chakra-ui/tooltip';
 import styles from './ShortAddress.module.scss';
 import { CopyButton } from 'components/CopyButton/CopyButton';
 import { Link, Spacer, useColorMode } from '@chakra-ui/react';
-import { Label } from 'components/Text/Text';
+import { Text } from '@chakra-ui/react';
 import { addressesEqual, ellipsisAddress, ellipsisString } from 'utils/commonUtil';
 import { useAppContext } from 'utils/context/AppContext';
 
@@ -53,7 +53,7 @@ export const ShortAddress = ({
     <div className={styles.link}>
       <Tooltip label={tooltip} hasArrow openDelay={1000}>
         <Link
-          color={dark ? 'white' : 'var(--chakra-colors-brandColor)'}
+          color={dark ? 'white' : 'black'}
           href={href}
           target={newTab ? '_blank' : ''}
           rel="noreferrer"
@@ -65,6 +65,7 @@ export const ShortAddress = ({
           {shortAddress}
         </Link>
       </Tooltip>
+      <Spacer width={[2, 5]} />
       <CopyButton copyText={address} />
     </div>
   );
@@ -72,10 +73,7 @@ export const ShortAddress = ({
   if (label) {
     return (
       <div className={`${vertical ? styles.mainVertical : styles.main} ${className}`}>
-        <Label bold={vertical} text={label} />
-
-        <Spacer />
-
+        <Text mr={[2, 4]}>{label}</Text>
         {link}
       </div>
     );

@@ -1,23 +1,23 @@
 .main {
   width: 100%;
   display: flex;
-  align-items: center;
-  margin-top: 10px;
+  margin-top: 8px;
+  font-family: 'F37 Bolton Trial';
+  color: black;
 }
 
 .mainVertical {
   @extend .main;
-
   align-items: flex-start;
   flex-direction: column;
 }
 
 .link {
-  font-family: monospace;
-  font-size: 1.2em;
+  font-family: 'F37 Bolton Trial';
+  color: black;
+  font-size: 16px;
   display: flex;
-  gap: 6px;
   align-items: center;
-  color: var(--chakra-colors-brandColor);
+  text-underline-offset: 2px;
   text-decoration: underline;
 }

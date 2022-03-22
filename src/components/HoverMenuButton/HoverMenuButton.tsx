@@ -3,6 +3,7 @@ import styles from './HoverMenuButton.module.scss';
 import { Menu, MenuButton, MenuList, MenuItem, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 import { useWindowSize } from '@react-hook/window-size';
+import clsx from 'classnames';
 
 type Props = {
   buttonContent?: JSX.Element;
@@ -12,6 +13,7 @@ type Props = {
   arrow?: boolean;
   disabled?: boolean;
   onClick?: MouseEventHandler<any>;
+  className?: string;
 };
 
 export const HoverMenuButton = ({
@@ -20,6 +22,7 @@ export const HoverMenuButton = ({
   arrow = true,
   buttonTitle,
   buttonContent,
+  className = '',
   children,
   onClick
 }: Props) => {
@@ -90,7 +93,7 @@ export const HoverMenuButton = ({
   }
 
   return (
-    <div className={styles.main}>
+    <div className={clsx(styles.main, className)}>
       {/* setting an id on menu prevents a console warning about non matching ids */}
 
       {/* Adding condition with mobile here to remove the bug with mobile menu*/}

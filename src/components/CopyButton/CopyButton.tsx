@@ -24,6 +24,7 @@ export const CopyButton = ({ copyText, tooltip = 'Copy to Clipboard' }: Props) =
     <div className={styles.copyIcon}>
       <Tooltip label={tooltip} placement="top" hasArrow>
         <CopyIcon
+          mt={-1}
           size="sm"
           color={dark ? 'white' : 'var(--chakra-colors-brandColor)'}
           aria-label="Copy"
