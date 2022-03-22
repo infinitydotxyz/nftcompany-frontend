@@ -259,7 +259,6 @@ export default function Home() {
       </Head>
 
       {topSection}
-
       {<DarkmodeSwitch />}
     </>
   );
