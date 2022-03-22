@@ -1,5 +1,8 @@
 import { Box, Image, Button, Text } from '@chakra-ui/react';
+import Chip from 'components/base/Chip/Chip';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
+import { FaDiscord, FaTwitter, FaInstagram, FaFacebook } from 'react-icons/fa';
+
 interface CollectionOverviewProps {
   /**
    * name of the collection
@@ -38,6 +41,18 @@ interface CollectionOverviewProps {
 function CollectionOverview(props: CollectionOverviewProps) {
   return (
     <Box display="flex" flexDirection="column" minWidth={'300px'}>
+      <div className="flex">
+        <Chip content="Watch" />
+        <Chip content="Edit" />
+        <Chip left={<FaDiscord />} content="0" right={<span>change</span>} />
+        <Chip content={<FaTwitter />} />
+        <Chip content={<FaInstagram />} />
+        <Chip content={<FaFacebook />} />
+      </div>
+      <div>
+        <button className="btn">Claim Collection</button>
+      </div>
+
       <Box display="flex" flexDirection="row" marginBottom="32px">
         <Image src={props.profileImage} alt="" maxHeight="78px" marginRight="40px" />
         <Box display="flex" flexDirection="column" justifyContent={'space-between'}>
