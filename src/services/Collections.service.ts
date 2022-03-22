@@ -147,6 +147,8 @@ export interface CollectionInfo {
   twitterSnippet?: TwitterSnippet;
 
   discordSnippet?: DiscordSnippet;
+
+  metadata?: any; // TODO: use lib types
 }
 
 export interface WyvernTraitWithValues {
