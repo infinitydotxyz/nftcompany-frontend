@@ -1,153 +1,213 @@
-import { JsonRpcSigner } from '@ethersproject/providers';
 import { BigNumberish, BytesLike, ethers } from 'ethers';
-import { defaultAbiCoder, _TypedDataEncoder } from 'ethers/lib/utils';
+import {
+  defaultAbiCoder, keccak256, solidityKeccak256, splitSignature, _TypedDataEncoder
+} from 'ethers/lib/utils';
+import { NULL_ADDRESS } from 'utils/constants';
+import { ProviderManager } from 'utils/providers/ProviderManager';
 
-export interface OBOrder {
-  signerAddress: string;
-  numItems: BigNumberish;
-  amount: BigNumberish;
-  startTime: BigNumberish;
-  endTime: BigNumberish;
-  isSellOrder: boolean;
-  complicationAddress: string;
-  currencyAddress: string;
-  nonce: BigNumberish;
-  minBpsToSeller: BigNumberish;
-  collectionAddresses: string[];
+export interface Item {
+  collection: string;
   tokenIds: BigNumberish[];
 }
 
-export interface SignedOBOrder {
-  signer: string;
+export interface ExecParams {
+  complicationAddress: string;
+  currencyAddress: string;
+}
+
+export interface ExtraParams {
+  buyer?: string;
+}
+
+export interface OBOrder {
+  isSellOrder: boolean;
+  signerAddress: string;
   numItems: BigNumberish;
-  amount: BigNumberish;
-  startAndEndTimes: BytesLike;
-  execInfo: BytesLike;
-  params: BytesLike;
+  startPrice: BigNumberish;
+  endPrice: BigNumberish;
+  startTime: BigNumberish;
+  endTime: BigNumberish;
+  minBpsToSeller: BigNumberish;
+  nonce: BigNumberish;
+  nfts: Item[];
+  execParams: ExecParams;
+  extraParams: ExtraParams;
+}
+
+export interface SignedOBOrder {
+  isSellOrder: boolean;
+  signer: string;
+  constraints: BigNumberish[];
+  nfts: Item[];
+  execParams: string[];
+  extraParams: BytesLike;
   sig: BytesLike;
-}
-
-export interface SignedAndHashedOBOrder {
-  signedOrder: SignedOBOrder;
-  hash: BytesLike;
-}
-
-export interface OBOrderAbiEncodedValues {
-  startAndEndTimes: BytesLike;
-  execInfo: BytesLike;
-  params: BytesLike;
 }
 
 export async function createOBOrder(
   chainId: BigNumberish,
   contractAddress: string,
-  signer: JsonRpcSigner,
+  providerManager: ProviderManager | undefined,
   order: OBOrder
-): Promise<SignedAndHashedOBOrder> {
-  const signedAndHashedOBOrder = await signOBOrder(chainId, contractAddress, signer, order);
-  return signedAndHashedOBOrder;
-}
-
-export const signOBOrder = async (
-  chainId: BigNumberish,
-  contractAddress: string,
-  signer: JsonRpcSigner,
-  order: OBOrder
-): Promise<SignedAndHashedOBOrder> => {
+): Promise<SignedOBOrder> {
   const domain = {
     name: 'InfinityExchange',
     version: '1',
     chainId: chainId,
     verifyingContract: contractAddress
   };
+
   const types = {
-    OBOrder: [
+    Order: [
+      { name: 'isSellOrder', type: 'bool' },
       { name: 'signer', type: 'address' },
-      { name: 'numItems', type: 'uint256' },
-      { name: 'amount', type: 'uint256' },
-      { name: 'startAndEndTimes', type: 'bytes' },
-      { name: 'execInfo', type: 'bytes' },
-      { name: 'params', type: 'bytes' }
+      { name: 'dataHash', type: 'bytes32' },
+      { name: 'extraParams', type: 'bytes' }
     ]
   };
 
-  const { startAndEndTimes, execInfo, params } = getAbiEncodedValues(order);
+  const signedOBOrder = await signOBOrder(chainId, contractAddress, domain, types, providerManager, order);
+  return signedOBOrder;
+}
+
+export const signOBOrder = async (
+  chainId: BigNumberish,
+  contractAddress: string,
+  domain: any,
+  types: any,
+  providerManager: ProviderManager | undefined,
+  order: OBOrder
+): Promise<SignedOBOrder> => {
+  const constraints = [
+    order.numItems,
+    order.startPrice,
+    order.endPrice,
+    order.startTime,
+    order.endTime,
+    order.minBpsToSeller,
+    order.nonce
+  ];
+  const constraintsHash = keccak256(
+    defaultAbiCoder.encode(['uint256', 'uint256', 'uint256', 'uint256', 'uint256', 'uint256', 'uint256'], constraints)
+  );
+
+  let encodedItems = '';
+  for (const item of order.nfts) {
+    const collection = item.collection;
+    const tokenIds = item.tokenIds;
+    encodedItems += defaultAbiCoder.encode(['address', 'uint256[]'], [collection, tokenIds]);
+  }
+  const encodedItemsHash = keccak256(encodedItems);
+
+  const execParams = [order.execParams.complicationAddress, order.execParams.currencyAddress];
+  const execParamsHash = keccak256(defaultAbiCoder.encode(['address', 'address'], execParams));
+
+  const dataHash = keccak256(
+    defaultAbiCoder.encode(['bytes32', 'bytes32', 'bytes32'], [constraintsHash, encodedItemsHash, execParamsHash])
+  );
+
+  const extraParams = defaultAbiCoder.encode(['address'], [order.extraParams.buyer ?? NULL_ADDRESS]);
 
   const orderToSign = {
+    isSellOrder: order.isSellOrder,
     signer: order.signerAddress,
-    numItems: order.numItems,
-    amount: order.amount,
-    startAndEndTimes,
-    execInfo,
-    params
+    dataHash,
+    extraParams
   };
 
   const signedOrder: SignedOBOrder = {
     ...orderToSign,
+    nfts: order.nfts,
+    constraints,
+    execParams,
     sig: ''
   };
 
-  // hash order
-  const orderHash = _TypedDataEncoder.hash(domain, types, orderToSign);
+  // commented and left for reference
+  // const hashDomain = _TypedDataEncoder.hashDomain(domain);
+  // const typedDataEncoder = _TypedDataEncoder.from(types);
+  // const primaryType = typedDataEncoder.primaryType;
+  // const primary = typedDataEncoder.encodeType(primaryType);
+  // const hashedType = solidityKeccak256(['string'], [primary]);
+  // console.log('primary type, domain sep, hashed type', primaryType, hashDomain, hashedType);
+  // const encodedData = typedDataEncoder.encode(orderToSign);
+  // const hashedEncoded = typedDataEncoder.hash(orderToSign);
+  // console.log('typed data encoded hash', encodedData, hashedEncoded);
+
+  // const calcDigest = _getCalculatedDigest(chainId, contractAddress, order);
+  // console.log('calculated digest', calcDigest);
+
+  // const orderDigest = _TypedDataEncoder.hash(domain, types, orderToSign);
+  // console.log('typed digest', orderDigest);
+
   // sign order
-  signedOrder.sig = await signer._signTypedData(domain, types, orderToSign);
+  try {
+    const sig = await providerManager?.getEthersProvider().getSigner()._signTypedData(domain, types, orderToSign);
+    console.log('sig', sig);
+    const splitSig = splitSignature(sig ?? '');
+    const encodedSig = defaultAbiCoder.encode(['bytes32', 'bytes32', 'uint8'], [splitSig.r, splitSig.s, splitSig.v]);
+    signedOrder.sig = encodedSig;
+  } catch (e) {
+    console.error('Error signing order', e);
+  }
+
   // return
-  return { signedOrder, hash: orderHash };
+  return signedOrder;
 };
 
-export const getAbiEncodedValues = (order: OBOrder): OBOrderAbiEncodedValues => {
-  // start and end times
-  const startTime = order.startTime;
-  const endTime = order.endTime;
-  const startAndEndTimes = defaultAbiCoder.encode(['uint256', 'uint256'], [startTime, endTime]);
+// ================================= Below functions are for reference & testing only =====================================
+// ================================= Below functions are for reference & testing only =====================================
 
-  // execInfo
-  const isSellOrder = order.isSellOrder;
-  const complicationAddress = order.complicationAddress;
-  const currencyAddress = order.currencyAddress;
-  const nonce = order.nonce;
-  const minBpsToSeller = order.minBpsToSeller;
-  const execInfo = defaultAbiCoder.encode(
-    ['bool', 'address', 'address', 'uint256', 'uint256'],
-    [isSellOrder, complicationAddress, currencyAddress, nonce, minBpsToSeller]
+const _getCalculatedDigest = (chainId: BigNumberish, exchange: string, order: OBOrder): BytesLike => {
+  const fnSign = 'Order(bool isSellOrder,address signer,bytes32 dataHash,bytes extraParams)';
+  const orderTypeHash = solidityKeccak256(['string'], [fnSign]);
+  console.log('Order type hash', orderTypeHash);
+
+  const constraints = [
+    order.numItems,
+    order.startPrice,
+    order.endPrice,
+    order.startTime,
+    order.endTime,
+    order.minBpsToSeller,
+    order.nonce
+  ];
+  const constraintsHash = keccak256(
+    defaultAbiCoder.encode(['uint256', 'uint256', 'uint256', 'uint256', 'uint256', 'uint256', 'uint256'], constraints)
   );
 
-  // params
-  const collectionAddresses = order.collectionAddresses;
-  const tokenIds = order.tokenIds;
-  const params = defaultAbiCoder.encode(['address[]', 'uint256[]'], [collectionAddresses, tokenIds]);
+  let encodedItems = '';
+  for (const item of order.nfts) {
+    const collection = item.collection;
+    const tokenIds = item.tokenIds;
+    encodedItems += defaultAbiCoder.encode(['address', 'uint256[]'], [collection, tokenIds]);
+  }
+  const encodedItemsHash = keccak256(encodedItems);
 
-  return { startAndEndTimes, execInfo, params };
-};
+  const execParams = [order.execParams.complicationAddress, order.execParams.currencyAddress];
+  const execParamsHash = keccak256(defaultAbiCoder.encode(['address', 'address'], execParams));
 
-// below functions are for reference only
+  const dataHash = keccak256(
+    defaultAbiCoder.encode(['bytes32', 'bytes32', 'bytes32'], [constraintsHash, encodedItemsHash, execParamsHash])
+  );
 
-const _getOrderHash = (order: OBOrder): string => {
-  const { startAndEndTimes, execInfo, params } = getAbiEncodedValues(order);
-  const OB_ORDER_HASH = '0xa3a5f07081083fb7946fff7d08befc3dcf87b843a21b8e8b961d00d0afa67a25';
-  const toSignvalues = {
-    signer: order.signerAddress,
-    numItems: order.numItems,
-    amount: order.amount,
-    startAndEndTimes: ethers.utils.keccak256(startAndEndTimes),
-    execInfo: ethers.utils.keccak256(execInfo),
-    params: ethers.utils.keccak256(params)
-  };
-  const orderHash = ethers.utils.keccak256(
+  const extraParams = defaultAbiCoder.encode(['address'], [order.extraParams.buyer ?? NULL_ADDRESS]);
+
+  const orderHash = keccak256(
     defaultAbiCoder.encode(
-      ['bytes32', 'address', 'uint256', 'uint256', 'bytes32', 'bytes32', 'bytes32'],
-      [
-        OB_ORDER_HASH,
-        toSignvalues.signer,
-        toSignvalues.numItems,
-        toSignvalues.amount,
-        toSignvalues.startAndEndTimes,
-        toSignvalues.execInfo,
-        toSignvalues.params
-      ]
+      ['bytes32', 'bool', 'address', 'bytes32', 'bytes32'],
+      [orderTypeHash, order.isSellOrder, order.signerAddress, dataHash, keccak256(extraParams)]
     )
   );
-  return orderHash;
+
+  console.log('calculated orderHash', orderHash);
+  const digest = _getDigest(chainId, exchange, orderHash);
+  return digest;
+};
+
+const _getDigest = (chainId: BigNumberish, exchange: BytesLike | string, orderHash: string | BytesLike): BytesLike => {
+  const domainSeparator = _getDomainSeparator(chainId, exchange);
+  return solidityKeccak256(['string', 'bytes32', 'bytes32'], ['\x19\x01', domainSeparator, orderHash]);
 };
 
 const _getDomainSeparator = (chainId: BigNumberish, exchange: BytesLike): BytesLike => {
@@ -167,7 +227,61 @@ const _getDomainSeparator = (chainId: BigNumberish, exchange: BytesLike): BytesL
   return domainSeparator;
 };
 
-const _getDigest = (chainId: BigNumberish, exchange: BytesLike, orderHash: BytesLike): BytesLike => {
-  const domainSeparator = _getDomainSeparator(chainId, exchange);
-  return ethers.utils.solidityKeccak256(['string', 'bytes32', 'bytes32'], ['\x19\x01', domainSeparator, orderHash]);
-};
+export async function testHash(
+  chainId: BigNumberish,
+  contractAddress: string,
+  providerManager: ProviderManager | undefined
+) {
+  const types = {
+    Base: [{ name: 'isSellOrder', type: 'bool' }]
+  };
+
+  const typesWithDomain = {
+    EIP712Domain: [
+      { name: 'name', type: 'string' },
+      { name: 'version', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' }
+    ],
+    Base: [{ name: 'isSellOrder', type: 'bool' }]
+  };
+
+  const fnSign = 'Base(bool isSellOrder)';
+  const baseTypeHash = solidityKeccak256(['string'], [fnSign]);
+
+  const message = { isSellOrder: false };
+  const orderHash = ethers.utils.keccak256(defaultAbiCoder.encode(['bytes32', 'bool'], [baseTypeHash, message]));
+  console.log('Base', baseTypeHash, orderHash);
+
+  const typedDataEncoder = _TypedDataEncoder.from(types);
+  const primaryType = typedDataEncoder.primaryType;
+  const primary = typedDataEncoder.encodeType(primaryType);
+  const hashedType = solidityKeccak256(['string'], [primary]);
+  const hashedEncoded = typedDataEncoder.hash(message);
+  console.log(primaryType, hashedType, hashedEncoded);
+
+  const domain = {
+    name: 'InfinityExchange',
+    version: '1',
+    chainId: chainId,
+    verifyingContract: contractAddress
+  };
+  const msgParams = JSON.stringify({
+    domain,
+    primaryType: 'Base',
+    types: typesWithDomain,
+    message
+  });
+
+  const signer = providerManager?.getEthersProvider().getSigner();
+  const sig = await providerManager
+    ?.getEthersProvider()
+    .send('eth_signTypedData_v4', [await signer?.getAddress(), msgParams]);
+  console.log('sig raw method', sig);
+
+  const payload = JSON.stringify(_TypedDataEncoder.getPayload(domain, types, message));
+  const sig2 = await signer?._signTypedData(domain, types, message);
+  console.log('sig ethers method', sig2);
+
+  console.log('msgParams', msgParams, 'payload', payload);
+}

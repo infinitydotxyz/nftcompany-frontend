@@ -150,88 +150,27 @@ export const infinityExchangeAbi = [
         type: 'address'
       },
       {
+        components: [
+          {
+            internalType: 'address',
+            name: 'collection',
+            type: 'address'
+          },
+          {
+            internalType: 'uint256[]',
+            name: 'tokenIds',
+            type: 'uint256[]'
+          }
+        ],
         indexed: false,
-        internalType: 'address[]',
-        name: 'collections',
-        type: 'address[]'
-      },
-      {
-        indexed: false,
-        internalType: 'uint256[]',
-        name: 'tokenIds',
-        type: 'uint256[]'
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256'
-      }
-    ],
-    name: 'OBOrderFulfilled',
-    type: 'event'
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: 'string',
-        name: 'orderType',
-        type: 'string'
-      },
-      {
-        indexed: false,
-        internalType: 'bytes32',
-        name: 'orderHash',
-        type: 'bytes32'
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'maker',
-        type: 'address'
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'taker',
-        type: 'address'
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'complication',
-        type: 'address'
-      },
-      {
-        indexed: false,
-        internalType: 'address',
-        name: 'currency',
-        type: 'address'
-      },
-      {
-        indexed: false,
-        internalType: 'address',
-        name: 'collection',
-        type: 'address'
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256'
+        internalType: 'struct OrderTypes.Item[]',
+        name: 'items',
+        type: 'tuple[]'
       },
       {
         indexed: false,
         internalType: 'uint256',
         name: 'amount',
-        type: 'uint256'
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'price',
         type: 'uint256'
       }
     ],
@@ -336,98 +275,6 @@ export const infinityExchangeAbi = [
     type: 'function'
   },
   {
-    inputs: [
-      {
-        components: [
-          {
-            internalType: 'address',
-            name: 'signer',
-            type: 'address'
-          },
-          {
-            internalType: 'address',
-            name: 'collection',
-            type: 'address'
-          },
-          {
-            internalType: 'bytes',
-            name: 'prices',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'startAndEndTimes',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'tokenInfo',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'execInfo',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'params',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'sig',
-            type: 'bytes'
-          }
-        ],
-        internalType: 'struct OrderTypes.Maker[]',
-        name: 'makerOrders',
-        type: 'tuple[]'
-      },
-      {
-        components: [
-          {
-            internalType: 'bool',
-            name: 'isSellOrder',
-            type: 'bool'
-          },
-          {
-            internalType: 'address',
-            name: 'taker',
-            type: 'address'
-          },
-          {
-            internalType: 'uint256',
-            name: 'price',
-            type: 'uint256'
-          },
-          {
-            internalType: 'uint256',
-            name: 'tokenId',
-            type: 'uint256'
-          },
-          {
-            internalType: 'uint256',
-            name: 'minBpsToSeller',
-            type: 'uint256'
-          },
-          {
-            internalType: 'bytes',
-            name: 'params',
-            type: 'bytes'
-          }
-        ],
-        internalType: 'struct OrderTypes.Taker[]',
-        name: 'takerOrders',
-        type: 'tuple[]'
-      }
-    ],
-    name: 'execOrders',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
     inputs: [],
     name: 'infinityFeeDistributor',
     outputs: [
@@ -469,33 +316,50 @@ export const infinityExchangeAbi = [
       {
         components: [
           {
+            internalType: 'bool',
+            name: 'isSellOrder',
+            type: 'bool'
+          },
+          {
             internalType: 'address',
             name: 'signer',
             type: 'address'
           },
           {
-            internalType: 'uint256',
-            name: 'numItems',
-            type: 'uint256'
+            internalType: 'bytes32',
+            name: 'dataHash',
+            type: 'bytes32'
           },
           {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256'
+            internalType: 'uint256[]',
+            name: 'constraints',
+            type: 'uint256[]'
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'collection',
+                type: 'address'
+              },
+              {
+                internalType: 'uint256[]',
+                name: 'tokenIds',
+                type: 'uint256[]'
+              }
+            ],
+            internalType: 'struct OrderTypes.Item[]',
+            name: 'nfts',
+            type: 'tuple[]'
+          },
+          {
+            internalType: 'address[]',
+            name: 'execParams',
+            type: 'address[]'
           },
           {
             internalType: 'bytes',
-            name: 'startAndEndTimes',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'execInfo',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'params',
+            name: 'extraParams',
             type: 'bytes'
           },
           {
@@ -504,40 +368,57 @@ export const infinityExchangeAbi = [
             type: 'bytes'
           }
         ],
-        internalType: 'struct OrderTypes.OrderBook[]',
+        internalType: 'struct OrderTypes.Order[]',
         name: 'sells',
         type: 'tuple[]'
       },
       {
         components: [
           {
+            internalType: 'bool',
+            name: 'isSellOrder',
+            type: 'bool'
+          },
+          {
             internalType: 'address',
             name: 'signer',
             type: 'address'
           },
           {
-            internalType: 'uint256',
-            name: 'numItems',
-            type: 'uint256'
+            internalType: 'bytes32',
+            name: 'dataHash',
+            type: 'bytes32'
           },
           {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256'
+            internalType: 'uint256[]',
+            name: 'constraints',
+            type: 'uint256[]'
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'collection',
+                type: 'address'
+              },
+              {
+                internalType: 'uint256[]',
+                name: 'tokenIds',
+                type: 'uint256[]'
+              }
+            ],
+            internalType: 'struct OrderTypes.Item[]',
+            name: 'nfts',
+            type: 'tuple[]'
+          },
+          {
+            internalType: 'address[]',
+            name: 'execParams',
+            type: 'address[]'
           },
           {
             internalType: 'bytes',
-            name: 'startAndEndTimes',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'execInfo',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'params',
+            name: 'extraParams',
             type: 'bytes'
           },
           {
@@ -546,40 +427,57 @@ export const infinityExchangeAbi = [
             type: 'bytes'
           }
         ],
-        internalType: 'struct OrderTypes.OrderBook[]',
+        internalType: 'struct OrderTypes.Order[]',
         name: 'buys',
         type: 'tuple[]'
       },
       {
         components: [
           {
+            internalType: 'bool',
+            name: 'isSellOrder',
+            type: 'bool'
+          },
+          {
             internalType: 'address',
             name: 'signer',
             type: 'address'
           },
           {
-            internalType: 'uint256',
-            name: 'numItems',
-            type: 'uint256'
+            internalType: 'bytes32',
+            name: 'dataHash',
+            type: 'bytes32'
           },
           {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256'
+            internalType: 'uint256[]',
+            name: 'constraints',
+            type: 'uint256[]'
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'collection',
+                type: 'address'
+              },
+              {
+                internalType: 'uint256[]',
+                name: 'tokenIds',
+                type: 'uint256[]'
+              }
+            ],
+            internalType: 'struct OrderTypes.Item[]',
+            name: 'nfts',
+            type: 'tuple[]'
+          },
+          {
+            internalType: 'address[]',
+            name: 'execParams',
+            type: 'address[]'
           },
           {
             internalType: 'bytes',
-            name: 'startAndEndTimes',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'execInfo',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'params',
+            name: 'extraParams',
             type: 'bytes'
           },
           {
@@ -588,12 +486,12 @@ export const infinityExchangeAbi = [
             type: 'bytes'
           }
         ],
-        internalType: 'struct OrderTypes.OrderBook[]',
+        internalType: 'struct OrderTypes.Order[]',
         name: 'constructs',
         type: 'tuple[]'
       }
     ],
-    name: 'matchOBOrders',
+    name: 'matchOrders',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'
@@ -636,33 +534,50 @@ export const infinityExchangeAbi = [
       {
         components: [
           {
+            internalType: 'bool',
+            name: 'isSellOrder',
+            type: 'bool'
+          },
+          {
             internalType: 'address',
             name: 'signer',
             type: 'address'
           },
           {
-            internalType: 'uint256',
-            name: 'numItems',
-            type: 'uint256'
+            internalType: 'bytes32',
+            name: 'dataHash',
+            type: 'bytes32'
           },
           {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256'
+            internalType: 'uint256[]',
+            name: 'constraints',
+            type: 'uint256[]'
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'collection',
+                type: 'address'
+              },
+              {
+                internalType: 'uint256[]',
+                name: 'tokenIds',
+                type: 'uint256[]'
+              }
+            ],
+            internalType: 'struct OrderTypes.Item[]',
+            name: 'nfts',
+            type: 'tuple[]'
+          },
+          {
+            internalType: 'address[]',
+            name: 'execParams',
+            type: 'address[]'
           },
           {
             internalType: 'bytes',
-            name: 'startAndEndTimes',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'execInfo',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'params',
+            name: 'extraParams',
             type: 'bytes'
           },
           {
@@ -671,40 +586,57 @@ export const infinityExchangeAbi = [
             type: 'bytes'
           }
         ],
-        internalType: 'struct OrderTypes.OrderBook[]',
+        internalType: 'struct OrderTypes.Order[]',
         name: 'makerOrders',
         type: 'tuple[]'
       },
       {
         components: [
           {
+            internalType: 'bool',
+            name: 'isSellOrder',
+            type: 'bool'
+          },
+          {
             internalType: 'address',
             name: 'signer',
             type: 'address'
           },
           {
-            internalType: 'uint256',
-            name: 'numItems',
-            type: 'uint256'
+            internalType: 'bytes32',
+            name: 'dataHash',
+            type: 'bytes32'
           },
           {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256'
+            internalType: 'uint256[]',
+            name: 'constraints',
+            type: 'uint256[]'
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'collection',
+                type: 'address'
+              },
+              {
+                internalType: 'uint256[]',
+                name: 'tokenIds',
+                type: 'uint256[]'
+              }
+            ],
+            internalType: 'struct OrderTypes.Item[]',
+            name: 'nfts',
+            type: 'tuple[]'
+          },
+          {
+            internalType: 'address[]',
+            name: 'execParams',
+            type: 'address[]'
           },
           {
             internalType: 'bytes',
-            name: 'startAndEndTimes',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'execInfo',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'params',
+            name: 'extraParams',
             type: 'bytes'
           },
           {
@@ -713,12 +645,12 @@ export const infinityExchangeAbi = [
             type: 'bytes'
           }
         ],
-        internalType: 'struct OrderTypes.OrderBook[]',
+        internalType: 'struct OrderTypes.Order[]',
         name: 'takerOrders',
         type: 'tuple[]'
       }
     ],
-    name: 'takeOBOrders',
+    name: 'takeOrders',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'
@@ -812,33 +744,50 @@ export const infinityExchangeAbi = [
       {
         components: [
           {
+            internalType: 'bool',
+            name: 'isSellOrder',
+            type: 'bool'
+          },
+          {
             internalType: 'address',
             name: 'signer',
             type: 'address'
           },
           {
-            internalType: 'uint256',
-            name: 'numItems',
-            type: 'uint256'
+            internalType: 'bytes32',
+            name: 'dataHash',
+            type: 'bytes32'
           },
           {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256'
+            internalType: 'uint256[]',
+            name: 'constraints',
+            type: 'uint256[]'
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'collection',
+                type: 'address'
+              },
+              {
+                internalType: 'uint256[]',
+                name: 'tokenIds',
+                type: 'uint256[]'
+              }
+            ],
+            internalType: 'struct OrderTypes.Item[]',
+            name: 'nfts',
+            type: 'tuple[]'
+          },
+          {
+            internalType: 'address[]',
+            name: 'execParams',
+            type: 'address[]'
           },
           {
             internalType: 'bytes',
-            name: 'startAndEndTimes',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'execInfo',
-            type: 'bytes'
-          },
-          {
-            internalType: 'bytes',
-            name: 'params',
+            name: 'extraParams',
             type: 'bytes'
           },
           {
@@ -847,29 +796,9 @@ export const infinityExchangeAbi = [
             type: 'bytes'
           }
         ],
-        internalType: 'struct OrderTypes.OrderBook',
+        internalType: 'struct OrderTypes.Order',
         name: 'order',
         type: 'tuple'
-      },
-      {
-        internalType: 'address',
-        name: 'signer',
-        type: 'address'
-      },
-      {
-        internalType: 'uint8',
-        name: 'v',
-        type: 'uint8'
-      },
-      {
-        internalType: 'bytes32',
-        name: 'r',
-        type: 'bytes32'
-      },
-      {
-        internalType: 'bytes32',
-        name: 's',
-        type: 'bytes32'
       }
     ],
     name: 'verifyOrderSig',

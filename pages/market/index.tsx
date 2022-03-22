@@ -1,39 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { NextPage } from 'next';
-import Head from 'next/head';
-import Layout from 'containers/layout';
-import styles from './styles.module.scss';
-import { useAppContext } from 'utils/context/AppContext';
-import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
-import { PageHeader } from 'components/PageHeader';
+import { Button, IconButton } from '@chakra-ui/button';
+import { RepeatIcon } from '@chakra-ui/icons';
 import {
   BuyOrder,
-  BuyOrderMatch,
-  MarketListingsBody,
+  BuyOrderMatch, isBuyOrder,
+  MarketListIdType, MarketListingsBody,
   MarketOrder,
-  SellOrder,
-  isBuyOrder,
-  MarketListIdType
+  SellOrder
 } from '@infinityxyz/lib/types/core';
-import { Button, IconButton } from '@chakra-ui/button';
+import { infinityExchangeAbi } from 'abi/infinityExchange';
+import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { BuyOrderList, BuyOrderMatchList, SellOrderList } from 'components/MarketList';
 import MarketOrderModal from 'components/MarketOrderModal';
-import {
-  addBuy,
-  marketMatches,
-  marketBuyOrders,
-  marketDeleteOrder,
-  addSell,
-  marketSellOrders,
-  executeBuyOrder
-} from 'utils/marketUtils';
-import { createOBOrder, OBOrder } from 'utils/exchange/orders';
-import { NULL_ADDRESS } from 'utils/constants';
+import { PageHeader } from 'components/PageHeader';
+import Layout from 'containers/layout';
 import { ethers } from 'ethers';
-import { splitSignature } from 'ethers/lib/utils';
-import { infinityExchangeAbi } from 'abi/infinityExchange';
-import { Link } from '@chakra-ui/react';
-import { RepeatIcon } from '@chakra-ui/icons';
+import { NextPage } from 'next';
+import Head from 'next/head';
+import React, { useEffect, useState } from 'react';
+import { NULL_ADDRESS } from 'utils/constants';
+import { useAppContext } from 'utils/context/AppContext';
+import { createOBOrder, ExtraParams, Item, OBOrder } from 'utils/exchange/orders';
+import {
+  addBuy, addSell, executeBuyOrder, marketBuyOrders,
+  marketDeleteOrder, marketMatches, marketSellOrders
+} from 'utils/marketUtils';
+import styles from './styles.module.scss';
 
 const MarketPage = (): JSX.Element => {
   const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
@@ -61,38 +52,37 @@ const MarketPage = (): JSX.Element => {
   // Orderbook orders
 
   const makeOBOrder = async (order: BuyOrder) => {
-    const exchange = '0x26B862f640357268Bd2d9E95bc81553a2Aa81D7E'.toLowerCase();
+    const exchange = '0x59b670e9fA9D0A427751Af201D676719a970857b'.toLowerCase();
     const complicationAddress = '0xffa7CA1AEEEbBc30C874d32C7e22F052BbEa0429';
-    const collectionAddresses = ['0x276C216D241856199A83bf27b2286659e5b877D3'];
+    const collections = ['0x276C216D241856199A83bf27b2286659e5b877D3'];
     const signer = providerManager?.getEthersProvider().getSigner();
 
+    const nfts: Item[] = [
+      {
+        collection: collections[0],
+        tokenIds: []
+      }
+    ];
+    const execParams = { complicationAddress, currencyAddress: NULL_ADDRESS };
+    const extraParams: ExtraParams = {};
+
     const obOrder: OBOrder = {
+      isSellOrder: false,
       signerAddress: user!.account,
       numItems: order.minNFTs,
-      amount: order.budget,
-      startTime: Math.floor(Date.now() / 1000),
-      endTime: order.expiration,
-      isSellOrder: false,
-      complicationAddress,
-      currencyAddress: NULL_ADDRESS,
-      nonce: 1,
+      startPrice: order.budget,
+      endPrice: order.budget,
+      startTime: order.startTime,
+      endTime: order.endTime,
       minBpsToSeller: 9000,
-      collectionAddresses,
-      tokenIds: []
+      nonce: 1,
+      nfts,
+      execParams,
+      extraParams
     };
+
     if (signer) {
-      const signedHashedOBOrder = await createOBOrder(chainId, exchange, signer, obOrder);
-      const orderHash = signedHashedOBOrder.hash;
-      const signedOBOrder = signedHashedOBOrder.signedOrder;
-
-      // split signature
-      const splitSig = splitSignature(signedOBOrder.sig);
-      const v = splitSig.v;
-      const r = splitSig.r;
-      const s = splitSig.s;
-
-      console.log('orderHash', orderHash, 'sig: ', splitSig);
-
+      const signedOBOrder = await createOBOrder(chainId, exchange, providerManager, obOrder);
       const infinityExchange = new ethers.Contract(exchange, infinityExchangeAbi, signer);
       const isSigValid = await infinityExchange.verifyOrderSig(signedOBOrder);
       console.log('Sig valid:', isSigValid);
