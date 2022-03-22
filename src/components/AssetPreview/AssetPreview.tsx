@@ -79,65 +79,6 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
   name = name?.toLowerCase();
 
   return (
-<<<<<<< HEAD
-    <>
-      <h1 className="text-7xl font-bold underline">Hello world!</h1>
-      <div className={styles.main}>
-        <div className={styles.nftContent}>
-          <div className={styles.left}>
-            <div className={styles.imageFrame}>
-              <img
-                alt="not available"
-                src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
-              />
-
-              <div className={styles.imgFooter}>
-                <div className={styles.infoColumn}>
-                  <div className={styles.collectionRow}>
-                    <AppLink
-                      type="secondary"
-                      className={styles.collection}
-                      href={`${window.origin}/collection/${name}`}
-                    >
-                      {data?.collectionName}
-                    </AppLink>
-
-                    <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
-                  </div>
-                  <div className={styles.imgTitle}>{title}</div>
-                </div>
-                <Spacer />
-                <div className={styles.playButton}>
-                  {/* <Button
-                    onClick={() => {
-                      router.push('/game/doge2048');
-                    }}
-                  >
-                    Play Game
-                  </Button> */}
-                </div>
-              </div>
-            </div>
-
-            <ExtraSpace />
-
-            <DescriptionBox data={data} />
-
-            {(data.metadata?.asset?.traits || []).length > 0 && (
-              <Box mt={4}>
-                <TraitBox data={data} />
-              </Box>
-            )}
-          </div>
-
-          <div className={styles.right}>
-            <PurchaseAccordion
-              data={data}
-              listings={listings}
-              action={action}
-              onComplete={() => {
-                // onClose();
-=======
     <div className="main">
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={[4, 8, 16]} py={[4, 8]}>
         <GridItem w="100%" bg="white">
@@ -222,7 +163,6 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
               _active={{
                 bg: '#dddfe2',
                 transform: 'scale(0.98)'
->>>>>>> john/assert_page
               }}
               _focus={{
                 boxShadow: '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)'
