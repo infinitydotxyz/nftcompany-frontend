@@ -1,5 +1,14 @@
 import React from 'react';
+import { Page } from 'components/page';
 
-export function AssertDetail() {
-  return <h1> Assert Detail Page</h1>;
+interface AssertDetailProps {
+  onTitle: (title: string) => void;
 }
+
+export const AssertDetail: React.FC<AssertDetailProps> = ({ onTitle }: AssertDetailProps) => {
+  return (
+    <Page>
+      <h1> Assert Detail Page</h1>
+    </Page>
+  );
+};

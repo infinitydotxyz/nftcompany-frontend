@@ -5,10 +5,12 @@ import Layout from 'containers/layout';
 import { useRouter } from 'next/router';
 import styles from './AssetsPage.module.scss';
 import { AssetPreview } from 'components/AssetPreview/AssetPreview';
+import { AssertDetail } from 'containers/assert';
 
 const AssetsPage = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
   const router = useRouter();
+
   const {
     query: { address, id }
   } = router;
@@ -19,6 +21,14 @@ const AssetsPage = (): JSX.Element => {
         <title>{`NFT: ${title ?? ''}`}</title>
         <meta name="description" content="Infinity NFT Detail Page"></meta>
       </Head>
+      <AssertDetail
+        onTitle={(newTitle) => {
+          if (!title) {
+            setTitle(newTitle);
+          }
+        }}
+      />
+
       <div>
         <div className="page-container">
           <div className={styles.insetPage}>
