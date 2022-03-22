@@ -17,6 +17,7 @@ const AssetsPage = (): JSX.Element => {
     <>
       <Head>
         <title>{`NFT: ${title ?? ''}`}</title>
+        <meta name="description" content={'Infinity NFT Assert'}></meta>
       </Head>
       <div>
         <div className="page-container">
