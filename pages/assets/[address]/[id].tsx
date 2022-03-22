@@ -17,7 +17,7 @@ const AssetsPage = (): JSX.Element => {
     <>
       <Head>
         <title>{`NFT: ${title ?? ''}`}</title>
-        <meta name="description" content={'Infinity NFT Assert'}></meta>
+        <meta name="description" content="Infinity NFT Detail Page"></meta>
       </Head>
       <div>
         <div className="page-container">
@@ -42,5 +42,12 @@ const AssetsPage = (): JSX.Element => {
   );
 };
 
+export async function getServerSideProps(context) {
+  return {
+    props: {} // will be passed to the page component as props
+  };
+}
+
 AssetsPage.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
+
 export default AssetsPage;
