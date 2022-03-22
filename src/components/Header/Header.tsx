@@ -210,7 +210,7 @@ const Header = (): JSX.Element => {
     <header ref={headerRef} className={styles.header} style={showBanner ? { height: '127px' } : { height: '76px' }}>
       {showBanner && <Banner />}
       <Box className={styles.hdf} style={showBanner ? { top: 51 } : {}}>
-        <div className="page-container-header">
+        <div className="page-container flex items-center">
           <div className={styles.showLargeLogo}>
             <Link href="/" passHref>
               <img

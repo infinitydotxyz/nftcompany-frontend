@@ -3,7 +3,6 @@ import '../styles/globals.css';
 import '../styles/globals.scss';
 import '../styles/components.scss';
 import '../styles/grid.scss';
-import '../styles/page.scss';
 import '../styles/Typeahead.scss';
 import '../styles/DatePicker.scss';
 
