@@ -83,6 +83,21 @@ function CollectionOverview(props: CollectionOverviewProps) {
       <button className="btn w-1/3" onClick={props.onClickEdit}>
         Claim Collection
       </button>
+
+      <table className="mt-4 text-sm">
+        <tr className="text-gray-400">
+          <th className="text-left">Items</th>
+          <th className="text-left">Owned by</th>
+          <th className="text-left">Floor price</th>
+          <th className="text-left">Volume traded</th>
+        </tr>
+        <tr className="font-bold">
+          <td>379</td>
+          <td>999</td>
+          <td>0.40 ETH</td>
+          <td>899</td>
+        </tr>
+      </table>
     </Box>
   );
 }
