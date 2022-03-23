@@ -1,48 +1,52 @@
 @tailwind base;
 
-a {
-  @apply text-blue-700;
-}
-
-a:hover {
-  @apply underline underline-offset-2;
-}
-
-a:visited {
-  @apply underline underline-offset-2;
-}
-
-.page-container {
-  @apply mx-auto px-4 md:px-9 lg:px-16 xl:px-20 max-w-screen-2xl;
-}
-
-.btn {
-  @apply font-bold py-3 px-6 rounded font-heading tracking-tight;
-}
-
-.btn-dark {
-  @apply bg-black text-white;
-}
-
-.btn-dark:hover {
-  @apply bg-gray-900;
-}
-
-.btn-white {
-  @apply border-gray-300 border;
-}
-
-.btn-white:hover {
-  @apply bg-gray-50;
-}
-
 @tailwind components;
 @tailwind utilities;
 
-.content p {
-  @apply my-6;
-}
+@layer components {
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
 
-.content ul {
-  @apply my-6;
+  a {
+    @apply text-blue-700;
+  }
+
+  a:hover {
+    @apply underline underline-offset-2;
+  }
+
+  a:visited {
+    @apply underline underline-offset-2;
+  }
+
+  .page-container {
+    @apply mx-auto px-4 md:px-9 lg:px-16 xl:px-20 max-w-screen-2xl;
+  }
+
+  .btn {
+    @apply font-bold py-3 px-6 rounded font-heading tracking-tight;
+  }
+
+  .btn-dark {
+    @apply bg-black text-white;
+  }
+
+  .btn-dark:hover {
+    @apply bg-gray-900;
+  }
+
+  .btn-white {
+    @apply border-gray-300 border;
+  }
+
+  .btn-white:hover {
+    @apply bg-gray-50;
+  }
 }
