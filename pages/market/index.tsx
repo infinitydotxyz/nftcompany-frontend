@@ -1,5 +1,4 @@
 import { Button, IconButton } from '@chakra-ui/button';
-import { RepeatIcon } from '@chakra-ui/icons';
 import {
   BuyOrder,
   BuyOrderMatch, isBuyOrder,
@@ -25,6 +24,8 @@ import {
   marketDeleteOrder, marketMatches, marketSellOrders
 } from 'utils/marketUtils';
 import styles from './styles.module.scss';
+import { RepeatIcon } from '@chakra-ui/icons';
+import MarketOrderDrawer from 'components/MarketOrderDrawer';
 
 const MarketPage = (): JSX.Element => {
   const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
@@ -40,6 +41,7 @@ const MarketPage = (): JSX.Element => {
   const [sellOrdersInvalid, setSellOrdersInvalid] = useState<SellOrder[]>([]);
 
   const [clickedOrder, setClickedOrder] = useState<MarketOrder>();
+  const [cartOpen, setCartOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (user) {
@@ -238,6 +240,14 @@ const MarketPage = (): JSX.Element => {
       >
         Refresh
       </Button>
+
+      <Button
+        onClick={async () => {
+          setCartOpen(!cartOpen);
+        }}
+      >
+        Cart
+      </Button>
     </div>
   );
 
@@ -344,6 +354,8 @@ const MarketPage = (): JSX.Element => {
           <PleaseConnectWallet account={user?.account} />
 
           {buttons}
+
+          <MarketOrderDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
 
           {/* === Buy Orders === */}
           <Header title="Buy Orders" onClick={() => listBuyOrders()} />

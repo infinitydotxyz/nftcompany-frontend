@@ -15,4 +15,11 @@
     justify-content: flex-start;
     margin-top: 40px;
   }
+
+  .formLabel {
+    font-size: var(--chakra-fontSizes-sm);
+    font-weight: var(--chakra-fontWeights-normal);
+    margin: 10px 0 2px 0;
+    color: #777;
+  }
 }

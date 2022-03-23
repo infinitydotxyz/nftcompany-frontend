@@ -5,13 +5,12 @@ import { TwitterFeed } from 'components/TwitterFeed/TwitterFeed';
 import VoteCard from 'components/VoteCard/VoteCard';
 import WithTitle from 'components/WithTitle/WithTitle';
 import { useEffect, useRef, useState } from 'react';
-import { CollectionData } from 'services/Collections.service';
 import { apiGet, apiPost } from 'utils/apiUtil';
 import { numStr } from 'utils/commonUtil';
 import { useAppContext } from 'utils/context/AppContext';
 
 interface CollectionCommunityProps {
-  collectionInfo?: CollectionData;
+  collectionInfo?: any; // TODO: old: CollectionData: use BaseCollection type
   onClickEdit: () => void;
 }
 
@@ -115,7 +114,8 @@ function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: Collectio
           <WithTitle title="Twitter mentions">
             <Box maxHeight={'300'} overflowY="scroll">
               {collectionInfo?.twitterSnippet?.topMentions && collectionInfo?.twitterSnippet?.topMentions.length > 0 ? (
-                collectionInfo?.twitterSnippet?.topMentions?.map((mention) => {
+                collectionInfo?.twitterSnippet?.topMentions?.map((mention: any) => {
+                  // TODO: use mention type
                   return (
                     <ExternalLinkCard
                       key={mention.id}
@@ -138,7 +138,8 @@ function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: Collectio
           <WithTitle title="Partnerships">
             <Box maxHeight={'300'} overflowY="auto">
               {collectionInfo?.partnerships && collectionInfo?.partnerships?.length > 0 ? (
-                collectionInfo?.partnerships?.map((partnership) => {
+                collectionInfo?.partnerships?.map((partnership: any) => {
+                  // TODO: use partnership type
                   return (
                     <ExternalLinkCard
                       key={partnership.name}
@@ -196,7 +197,8 @@ function CollectionCommunity({ collectionInfo, onClickEdit, ...rest }: Collectio
             <WithTitle title={'Twitter feed'}>
               <TwitterFeed
                 width={twitterFeedWidth}
-                tweetIds={collectionInfo?.twitterSnippet?.recentTweets?.map((item) => item.tweetId)}
+                // TODO: use recentTweets type
+                tweetIds={collectionInfo?.twitterSnippet?.recentTweets?.map((item: any) => item.tweetId)}
                 height="600px"
                 overflowY="scroll"
               />
