@@ -4,13 +4,30 @@
 
 @layer components {
   h1 {
-    @apply text-2xl;
+    @apply text-3xl;
   }
   h2 {
-    @apply text-xl;
+    @apply text-2xl;
   }
   h3 {
+    @apply text-xl;
+  }
+  h4 {
     @apply text-lg;
+  }
+  h5 {
+  }
+  .text-primary {
+    @apply text-gray-900;
+  }
+  .text-secondary {
+    @apply text-gray-500;
+  }
+  .border-primary {
+    @apply border-gray-900;
+  }
+  .border-secondary {
+    @apply border-gray-300;
   }
 
   .btn {
