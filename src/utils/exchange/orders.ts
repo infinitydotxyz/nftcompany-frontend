@@ -123,7 +123,7 @@ export async function createOBOrder(
     ]
   };
 
-  const calcDigest = _getCalculatedDigest(chainId, contractAddress, order);
+  // const calcDigest = _getCalculatedDigest(chainId, contractAddress, order);
 
   const signedOBOrder = await signOBOrder(domain, types, providerManager, order);
   return signedOBOrder;
@@ -180,7 +180,7 @@ export async function signOBOrder(
     sig: ''
   };
 
-  _printTypeEncodedData(domain, types, orderToSign);
+  // _printTypeEncodedData(domain, types, orderToSign);
 
   // sign order
   try {
