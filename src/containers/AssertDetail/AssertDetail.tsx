@@ -10,12 +10,12 @@ import { NftAction } from 'types';
 import { useAppContext } from 'utils/context/AppContext';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 
-import { TraitList } from './components/trait';
-import { ActivityList } from './components/acitivity';
+import { TraitList } from './components/Trait';
+import { ActivityList } from './components/Activity';
 import { ReadMoreText } from 'components/ReadMoreText/ReadMoreText';
-import { ToggleSwitchButton } from './components/toggle-switch-button';
+import { ToggleSwitchButton } from './components/ToggleSwitchButton';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
-import { Page } from 'components/page';
+import { Page } from 'components/Page';
 
 interface AssertDetailProps {
   tokenId: string;
@@ -81,7 +81,7 @@ export const AssertDetail: React.FC<AssertDetailProps> = ({ tokenId, tokenAddres
   return (
     <Page className="max-w-screen-xl mx-auto">
       <div className="mb-4">
-        <div className="w-80 mx-auto sm:float-left sm:w-80 md:w-96 lg:w-96 xl:w-128 sm:mr-6 md:mr-8 lg:mr-16 mb-4">
+        <div className="w-80 mx-auto sm:float-left sm:w-64 md:w-80  lg:w-96 xl:w-128 sm:mr-6 md:mr-8 lg:mr-16 mb-4">
           <img
             alt={`Image - ${data?.title}`}
             className="rounded-3xl w-full"
@@ -112,9 +112,9 @@ export const AssertDetail: React.FC<AssertDetailProps> = ({ tokenId, tokenAddres
           label="Token ID:"
           tooltip={`#${data.tokenId}`}
         />
-        <div className="md:flex my-4 lg:my-8">
+        <div className="sm:flex my-4 lg:my-8">
           <button className="btn btn-dark rounded-3xl md:-ml-2 w-full sm:w-40 mb-1 block">Buy&nbsp;3.30 ETH</button>
-          <button className="btn btn-white rounded-3xl md:ml-4 w-full sm:w-40 mb-1">Make offer</button>
+          <button className="btn btn-white rounded-3xl sm:ml-4 w-full sm:w-40 mb-1">Make offer</button>
         </div>
         <p className="font-body text-black">Description</p>
         <div>
@@ -141,6 +141,7 @@ export const AssertDetail: React.FC<AssertDetailProps> = ({ tokenId, tokenAddres
           </HoverMenuButton>
         </div>
       </div>
+
       <ActivityList />
       {/* <NFTEvents address={tokenAddress} tokenId={tokenId} /> */}
     </Page>

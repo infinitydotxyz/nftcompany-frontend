@@ -5,7 +5,7 @@ import Layout from 'containers/layout';
 import { useRouter } from 'next/router';
 import styles from './AssetsPage.module.scss';
 import { AssetPreview } from 'components/AssetPreview/AssetPreview';
-import { AssertDetail } from 'containers/assert';
+import { AssertDetail } from 'containers/AssertDetail';
 
 const AssetsPage = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();

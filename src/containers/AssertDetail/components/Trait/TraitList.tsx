@@ -1,5 +1,5 @@
 import React from 'react';
-import { TraitItem } from './trait-item';
+import { TraitItem } from './TraitItem';
 import clsx from 'classnames';
 
 interface TraitListPropType {

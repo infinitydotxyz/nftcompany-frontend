@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityItem } from './activity-item';
+import { ActivityItem } from './ActivityItem';
 import clsx from 'classnames';
 
 interface ActivityListPropType {
