@@ -123,18 +123,18 @@ export async function createOBOrder(
     ]
   };
 
-  const signedOBOrder = await signOBOrder(chainId, contractAddress, domain, types, providerManager, order);
+  const calcDigest = _getCalculatedDigest(chainId, contractAddress, order);
+
+  const signedOBOrder = await signOBOrder(domain, types, providerManager, order);
   return signedOBOrder;
 }
 
-export const signOBOrder = async (
-  chainId: BigNumberish,
-  contractAddress: string,
+export async function signOBOrder(
   domain: any,
   types: any,
   providerManager: ProviderManager | undefined,
   order: OBOrder
-): Promise<SignedOBOrder> => {
+): Promise<SignedOBOrder> {
   const constraints = [
     order.numItems,
     order.startPrice,
@@ -180,23 +180,7 @@ export const signOBOrder = async (
     sig: ''
   };
 
-  // commented and left for reference; do not delete
-
-  // const hashDomain = _TypedDataEncoder.hashDomain(domain);
-  // const typedDataEncoder = _TypedDataEncoder.from(types);
-  // const primaryType = typedDataEncoder.primaryType;
-  // const primary = typedDataEncoder.encodeType(primaryType);
-  // const hashedType = solidityKeccak256(['string'], [primary]);
-  // console.log('primary type, domain sep, hashed type', primaryType, hashDomain, hashedType);
-  // const encodedData = typedDataEncoder.encode(orderToSign);
-  // const hashedEncoded = typedDataEncoder.hash(orderToSign);
-  // console.log('typed data encoded hash', encodedData, hashedEncoded);
-
-  // const calcDigest = _getCalculatedDigest(chainId, contractAddress, order);
-  // console.log('calculated digest', calcDigest);
-
-  // const orderDigest = _TypedDataEncoder.hash(domain, types, orderToSign);
-  // console.log('typed digest', orderDigest);
+  _printTypeEncodedData(domain, types, orderToSign);
 
   // sign order
   try {
@@ -210,12 +194,12 @@ export const signOBOrder = async (
 
   // return
   return signedOrder;
-};
+}
 
 // ================================= Below functions are for reference & testing only =====================================
 // ================================= Below functions are for reference & testing only =====================================
 
-const _getCalculatedDigest = (chainId: BigNumberish, exchange: string, order: OBOrder): BytesLike => {
+function _getCalculatedDigest(chainId: BigNumberish, exchange: string, order: OBOrder): BytesLike {
   const fnSign = 'Order(bool isSellOrder,address signer,bytes32 dataHash,bytes extraParams)';
   const orderTypeHash = solidityKeccak256(['string'], [fnSign]);
   console.log('Order type hash', orderTypeHash);
@@ -259,15 +243,16 @@ const _getCalculatedDigest = (chainId: BigNumberish, exchange: string, order: OB
 
   console.log('calculated orderHash', orderHash);
   const digest = _getDigest(chainId, exchange, orderHash);
+  console.log('calculated digest', digest);
   return digest;
-};
+}
 
-const _getDigest = (chainId: BigNumberish, exchange: BytesLike | string, orderHash: string | BytesLike): BytesLike => {
+function _getDigest(chainId: BigNumberish, exchange: BytesLike | string, orderHash: string | BytesLike): BytesLike {
   const domainSeparator = _getDomainSeparator(chainId, exchange);
   return solidityKeccak256(['string', 'bytes32', 'bytes32'], ['\x19\x01', domainSeparator, orderHash]);
-};
+}
 
-const _getDomainSeparator = (chainId: BigNumberish, exchange: BytesLike): BytesLike => {
+function _getDomainSeparator(chainId: BigNumberish, exchange: BytesLike): BytesLike {
   const domainSeparator = ethers.utils.keccak256(
     defaultAbiCoder.encode(
       ['bytes32', 'bytes32', 'bytes32', 'uint256', 'address'],
@@ -283,15 +268,29 @@ const _getDomainSeparator = (chainId: BigNumberish, exchange: BytesLike): BytesL
       ]
     )
   );
-  console.log('domainSeparator', domainSeparator);
+  console.log('domainSeparator:', domainSeparator);
   return domainSeparator;
-};
+}
 
-export async function testHash(
-  chainId: BigNumberish,
-  contractAddress: string,
-  providerManager: ProviderManager | undefined
-) {
+function _printTypeEncodedData(domain: any, types: any, orderToSign: any) {
+  const domainSeparator = _TypedDataEncoder.hashDomain(domain);
+  const typedDataEncoder = _TypedDataEncoder.from(types);
+  const primaryType = typedDataEncoder.primaryType;
+  const primary = typedDataEncoder.encodeType(primaryType);
+  const hashedType = solidityKeccak256(['string'], [primary]);
+  console.log('primary type:', primaryType);
+  console.log('domain separator:', domainSeparator);
+  console.log('type hash:', hashedType);
+  const encodedData = typedDataEncoder.encode(orderToSign);
+  const hashedEncoded = typedDataEncoder.hash(orderToSign);
+  console.log('encoded typed data:', encodedData);
+  console.log('typed data hash:', hashedEncoded);
+
+  const orderDigest = _TypedDataEncoder.hash(domain, types, orderToSign);
+  console.log('typed data digest', orderDigest);
+}
+
+async function testHash(chainId: BigNumberish, contractAddress: string, providerManager: ProviderManager | undefined) {
   const types = {
     Base: [{ name: 'isSellOrder', type: 'bool' }]
   };
