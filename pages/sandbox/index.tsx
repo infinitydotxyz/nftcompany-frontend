@@ -7,6 +7,12 @@ export default function SandBox() {
     <div className="flex-col space-y-8 prose p-4">
       <h3>Text</h3>
       <div>
+        <h1 className="page-header">Page Header</h1>
+        <h1>H1</h1>
+        <h2>H2</h2>
+        <h3>H3</h3>
+        <h4>H4</h4>
+        <h5>H5</h5>
         <div className="text-primary">Primary Text</div>
         <div className="text-secondary">Secondary Text</div>
       </div>
