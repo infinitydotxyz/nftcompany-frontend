@@ -1,3 +1,1 @@
-import ReadMoreText from './ReadMoreText';
-
-export default { ReadMoreText };
+export * from './ReadMoreText';
