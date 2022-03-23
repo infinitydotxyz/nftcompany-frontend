@@ -31,6 +31,7 @@ import styles from './Collection.module.scss';
 import { PAGE_NAMES } from 'utils/constants';
 import FilterPills from 'components/FilterDrawer/FilterPills';
 import { BaseCollection } from '@infinityxyz/lib/types/core/Collection';
+import RoundedNav from 'components/base/RoundedNav/RoundedNav';
 
 enum CollectionTabs {
   NFTs = 'NFTs',
@@ -44,6 +45,7 @@ const Collection = (): JSX.Element => {
   const router = useRouter();
   const { name } = router.query;
   const searchContext = useSearchContext();
+  const [currentTab, setCurrentTab] = useState(0);
   const [tabIndex, setTabIndex] = useState(0);
 
   const onEdit = () => {
@@ -299,14 +301,10 @@ const Collection = (): JSX.Element => {
               </Box>
             </Box>
 
+            {/*
+            TODO: in use?
             <Box marginTop={'72px'} display={'flex'} flexDirection="row" width="100%" alignItems={'center'}>
-              <ToggleTab
-                options={['NFTs', 'Community']}
-                selected={toggleTab}
-                onChange={(opt: string) => setToggleTab(opt as any)}
-              />
-
-              {toggleTab === 'NFTs' && (
+              {currentTab === 0 && (
                 <>
                   <Spacer />
                   <SortMenuButton
@@ -316,20 +314,28 @@ const Collection = (): JSX.Element => {
                   />
                 </>
               )}
-            </Box>
+            </Box> */}
 
-            <HorizontalLine display={toggleTab === 'NFTs' ? 'none' : ''} marginTop={'40px'} />
+            <div className="w-1/6 mt-8">
+              <RoundedNav
+                items={[{ title: 'NFT' }, { title: 'Community' }]}
+                onChange={(currentIndex) => setCurrentTab(currentIndex)}
+              />
+            </div>
+
+            <HorizontalLine display={currentTab === 0 ? 'none' : ''} marginTop={'40px'} />
+
             {collectionInfo && (
               <CollectionCommunity
                 collectionInfo={collectionInfo}
-                display={toggleTab === 'NFTs' ? 'none' : 'flex'}
+                display={currentTab === 0 ? 'none' : 'flex'}
                 onClickEdit={onEdit}
               />
             )}
-            <Box className="center" display={toggleTab === 'Community' ? 'none' : 'flex'} width="100%">
+            <Box className="center" display={currentTab === 1 ? 'none' : 'flex'} width="100%">
               <Tabs
                 align={'center'}
-                display={toggleTab === 'Community' ? 'none' : ''}
+                display={currentTab === 1 ? 'none' : ''}
                 width="100%"
                 index={tabIndex}
                 onChange={(index) => setTabIndex(index)}
