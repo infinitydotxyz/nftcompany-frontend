@@ -17,7 +17,7 @@ import { ToggleSwitchButton } from './components/ToggleSwitchButton';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import { Page } from 'components/Page';
 
-interface AssertDetailProps {
+interface AssetDetailProps {
   tokenId: string;
   tokenAddress: string;
   onTitle: (title: string) => void;
@@ -31,7 +31,7 @@ const accountItems: JSX.Element[] = [
   <MenuItem key="Offers">Sign out</MenuItem>
 ];
 
-export const AssertDetail: React.FC<AssertDetailProps> = ({ tokenId, tokenAddress, onTitle }): JSX.Element => {
+export const AssetDetail: React.FC<AssetDetailProps> = ({ tokenId, tokenAddress, onTitle }): JSX.Element => {
   const { chainId } = useAppContext();
 
   const [data, setData] = useState<CardData | undefined>();

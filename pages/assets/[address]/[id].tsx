@@ -5,7 +5,7 @@ import Layout from 'containers/layout';
 import { useRouter } from 'next/router';
 import styles from './AssetsPage.module.scss';
 import { AssetPreview } from 'components/AssetPreview/AssetPreview';
-import { AssertDetail } from 'containers/AssertDetail';
+import { AssetDetail } from 'containers/AssetDetail';
 
 const AssetsPage = (): JSX.Element => {
   const [title, setTitle] = useState<string | undefined>();
@@ -21,7 +21,7 @@ const AssetsPage = (): JSX.Element => {
         <title>{`NFT: ${title ?? ''}`}</title>
         <meta name="description" content={`Infinity - NFT:${title} Detail Page`}></meta>
       </Head>
-      <AssertDetail
+      <AssetDetail
         tokenId={id as string}
         tokenAddress={address as string}
         onTitle={(newTitle: string) => {
