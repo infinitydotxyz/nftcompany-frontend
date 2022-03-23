@@ -13,6 +13,7 @@ export default function SandBox() {
         <h3>H3</h3>
         <h4>H4</h4>
         <h5>H5</h5>
+        <h6>H6</h6>
         <div className="text-primary">Primary Text</div>
         <div className="text-secondary">Secondary Text</div>
       </div>

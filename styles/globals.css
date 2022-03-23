@@ -4,18 +4,22 @@
 
 @layer components {
   h1 {
-    @apply text-3xl;
+    @apply text-4xl mt-0 mb-2;
   }
   h2 {
-    @apply text-2xl;
+    @apply text-3xl mt-0 mb-2;
   }
   h3 {
-    @apply text-xl;
+    @apply text-2xl mt-0 mb-2;
   }
   h4 {
-    @apply text-lg;
+    @apply text-xl mt-0 mb-2;
   }
   h5 {
+    @apply text-lg mt-0 mb-2;
+  }
+  h6 {
+    @apply mt-0 mb-2;
   }
   .text-primary {
     @apply text-gray-900;
