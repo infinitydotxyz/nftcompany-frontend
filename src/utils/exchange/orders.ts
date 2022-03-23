@@ -121,7 +121,8 @@ export const signOBOrder = async (
     sig: ''
   };
 
-  // commented and left for reference
+  // commented and left for reference; do not delete
+
   // const hashDomain = _TypedDataEncoder.hashDomain(domain);
   // const typedDataEncoder = _TypedDataEncoder.from(types);
   // const primaryType = typedDataEncoder.primaryType;
@@ -141,7 +142,6 @@ export const signOBOrder = async (
   // sign order
   try {
     const sig = await providerManager?.getEthersProvider().getSigner()._signTypedData(domain, types, orderToSign);
-    console.log('sig', sig);
     const splitSig = splitSignature(sig ?? '');
     const encodedSig = defaultAbiCoder.encode(['bytes32', 'bytes32', 'uint8'], [splitSig.r, splitSig.s, splitSig.v]);
     signedOrder.sig = encodedSig;
