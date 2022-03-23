@@ -41,19 +41,7 @@ interface CollectionOverviewProps {
 function CollectionOverview(props: CollectionOverviewProps) {
   return (
     <Box display="flex" flexDirection="column" minWidth={'300px'}>
-      <div className="flex">
-        <Chip content="Watch" />
-        <Chip content="Edit" />
-        <Chip left={<FaDiscord />} content="0" right={<span>change</span>} />
-        <Chip content={<FaTwitter />} />
-        <Chip content={<FaInstagram />} />
-        <Chip content={<FaFacebook />} />
-      </div>
-      <div>
-        <button className="btn">Claim Collection</button>
-      </div>
-
-      <Box display="flex" flexDirection="row" marginBottom="32px">
+      <Box display="flex" flexDirection="row" marginBottom="16px">
         <Image src={props.profileImage} alt="" maxHeight="78px" marginRight="40px" />
         <Box display="flex" flexDirection="column" justifyContent={'space-between'}>
           <Box display="flex" flexDirection={'row'} alignItems={'center'}>
@@ -80,19 +68,21 @@ function CollectionOverview(props: CollectionOverviewProps) {
           )}
         </Box>
       </Box>
-      <Text size={'lg'} variant="dark" marginBottom={'40px'}>
-        {props.description}
-      </Text>
-      <Button
-        variant={'alt'}
-        paddingY="16px"
-        paddingX="32px"
-        width="max-content"
-        fontSize="12px"
-        onClick={props.onClickEdit}
-      >
-        {props.hasBeenClaimed ? 'Edit Collection' : 'Claim Collection'}
-      </Button>
+
+      <div className="flex mb-6">
+        <Chip content="Watch" />
+        <Chip content="Edit" />
+        <Chip left={<FaDiscord />} content="0" right={<span>change</span>} />
+        <Chip content={<FaTwitter />} />
+        <Chip content={<FaInstagram />} />
+        <Chip content={<FaFacebook />} />
+      </div>
+
+      <div className="text-gray-500 mb-4">{props.description}</div>
+
+      <button className="btn w-1/3" onClick={props.onClickEdit}>
+        Claim Collection
+      </button>
     </Box>
   );
 }
