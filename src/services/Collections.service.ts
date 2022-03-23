@@ -1,3 +1,4 @@
+import { BaseCollection } from '@infinityxyz/lib/types/core';
 import { apiGet } from 'utils/apiUtil';
 import { getSearchFriendlyString } from 'utils/commonUtil';
 
@@ -64,7 +65,7 @@ export const getFeaturedCollections = async (): Promise<FeaturedCollectionRespon
 export const getCollectionInfo = async (
   collectionName: string,
   chainId: string
-): Promise<CollectionData | undefined> => {
+): Promise<BaseCollection | undefined> => {
   const path = `/collections/${getSearchFriendlyString(collectionName)}`;
 
   const { result, error }: { result: any; error: any } = (await apiGet(path, { chainId: chainId || '1' })) as any;
@@ -73,7 +74,7 @@ export const getCollectionInfo = async (
     return;
   }
 
-  return result as CollectionData;
+  return result as BaseCollection;
 };
 
 export const getAuthenticatedCollectionInfo = async (
