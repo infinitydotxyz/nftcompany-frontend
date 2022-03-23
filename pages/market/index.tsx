@@ -54,7 +54,7 @@ const MarketPage = (): JSX.Element => {
   // Orderbook orders
 
   const makeOBOrder = async (order: BuyOrder) => {
-    const exchange = '0x59b670e9fA9D0A427751Af201D676719a970857b'.toLowerCase();
+    const exchange = '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'.toLowerCase();
     const complicationAddress = '0xffa7CA1AEEEbBc30C874d32C7e22F052BbEa0429';
     const collections = ['0x276C216D241856199A83bf27b2286659e5b877D3'];
     const signer = providerManager?.getEthersProvider().getSigner();

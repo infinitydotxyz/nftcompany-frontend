@@ -1,7 +1,5 @@
 import { BigNumberish, BytesLike, ethers } from 'ethers';
-import {
-  defaultAbiCoder, keccak256, solidityKeccak256, splitSignature, _TypedDataEncoder
-} from 'ethers/lib/utils';
+import { defaultAbiCoder, keccak256, solidityKeccak256, splitSignature, _TypedDataEncoder } from 'ethers/lib/utils';
 import { NULL_ADDRESS } from 'utils/constants';
 import { ProviderManager } from 'utils/providers/ProviderManager';
 
@@ -215,9 +213,12 @@ const _getDomainSeparator = (chainId: BigNumberish, exchange: BytesLike): BytesL
     defaultAbiCoder.encode(
       ['bytes32', 'bytes32', 'bytes32', 'uint256', 'address'],
       [
-        '0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f', // keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)")
-        '0xcd07a2d5dd0d50cbe9aef4d6509941c5576ea10e93ff919a6e4d463e00c5c9f8', // keccak256("InfinityExchange")
-        '0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6', // keccak256(bytes("1")) for versionId = 1
+        solidityKeccak256(
+          ['string'],
+          ['EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)']
+        ),
+        solidityKeccak256(['string'], ['InfinityExchange']),
+        solidityKeccak256(['string'], ['1']), // for versionId = 1
         chainId,
         exchange
       ]
