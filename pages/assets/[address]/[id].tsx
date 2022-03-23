@@ -19,7 +19,7 @@ const AssetsPage = (): JSX.Element => {
     <>
       <Head>
         <title>{`NFT: ${title ?? ''}`}</title>
-        <meta name="description" content="Infinity NFT Detail Page"></meta>
+        <meta name="description" content={`Infinity - NFT:${title} Detail Page`}></meta>
       </Head>
       <AssertDetail
         tokenId={id as string}
@@ -30,35 +30,9 @@ const AssetsPage = (): JSX.Element => {
           }
         }}
       />
-
-      {/* <div>
-        <div className="page-container">
-          <div className={styles.insetPage}>
-            {id && (
-              <div style={{ marginTop: 20 }}>
-                <AssetPreview
-                  tokenId={id as string}
-                  tokenAddress={address as string}
-                  onTitle={(newTitle) => {
-                    if (!title) {
-                      setTitle(newTitle);
-                    }
-                  }}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      </div> */}
     </>
   );
 };
-
-export async function getServerSideProps(context) {
-  return {
-    props: {} // will be passed to the page component as props
-  };
-}
 
 AssetsPage.getLayout = (page: NextPage) => <Layout>{page}</Layout>;
 
