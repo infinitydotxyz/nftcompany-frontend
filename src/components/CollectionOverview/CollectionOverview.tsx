@@ -1,7 +1,7 @@
 import { Box, Image, Button, Text } from '@chakra-ui/react';
 import Chip from 'components/base/Chip/Chip';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
-import { FaDiscord, FaTwitter, FaInstagram, FaFacebook } from 'react-icons/fa';
+import { FaDiscord, FaTwitter, FaInstagram, FaFacebook, FaCheck } from 'react-icons/fa';
 
 interface CollectionOverviewProps {
   /**
@@ -80,7 +80,25 @@ function CollectionOverview(props: CollectionOverviewProps) {
 
       <div className="text-gray-500 mb-4">{props.description}</div>
 
-      <button className="btn w-1/3" onClick={props.onClickEdit}>
+      <div className="text-sm font-bold">
+        <div>Ownership includes</div>
+        <div className="flex space-x-8 mt-2">
+          <div className="flex text-gray-500">
+            <FaCheck className="mr-2" />
+            Access
+          </div>
+          <div className="flex text-gray-500">
+            <FaCheck className="mr-2" />
+            Royalties
+          </div>
+          <div className="flex text-gray-500">
+            <FaCheck className="mr-2" />
+            IP rights
+          </div>
+        </div>
+      </div>
+
+      <button className="btn w-1/3 mt-8" onClick={props.onClickEdit}>
         Claim Collection
       </button>
 
