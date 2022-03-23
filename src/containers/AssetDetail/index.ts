@@ -1,1 +1,1 @@
-export * from './AssertDetail';
+export * from './AssetDetail';
