@@ -130,19 +130,21 @@ export const AssetDetail: React.FC<AssetDetailProps> = ({ tokenId, tokenAddress,
         </div>
       </div>
 
-      <p className="mt-4 sm:mt-6 w-full float-left sm:mb-4 tracking-base text-black">Traits</p>
-      <TraitList traits={data.metadata?.asset?.traits} className="mb-4 -ml-2" />
+      <div className="float-left w-full">
+        <p className="mt-4 sm:mt-6 sm:mb-4 tracking-base text-black">Traits</p>
+        <TraitList traits={data.metadata?.asset?.traits} className="mb-4 -ml-2" />
 
-      <div className="mt-4 md:mt-8">
-        <div className="flex items-center justify-between">
-          <p className="font-body text-black">Activity</p>
-          <HoverMenuButton buttonTitle={'Filter'} shadow={true} arrow={false}>
-            {accountItems}
-          </HoverMenuButton>
+        <div className="mt-4 md:mt-8">
+          <div className="flex items-center justify-between">
+            <p className="font-body text-black">Activity</p>
+            <HoverMenuButton buttonTitle={'Filter'} shadow={true} arrow={false}>
+              {accountItems}
+            </HoverMenuButton>
+          </div>
         </div>
-      </div>
 
-      <ActivityList />
+        <ActivityList />
+      </div>
       {/* <NFTEvents address={tokenAddress} tokenId={tokenId} /> */}
     </Page>
   );
