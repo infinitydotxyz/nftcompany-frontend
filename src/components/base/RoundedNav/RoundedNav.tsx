@@ -27,7 +27,7 @@ export default function RoundedNav({ items, defaultIndex, onChange }: Props) {
           <a
             key={item.title}
             href="#"
-            className={`px-10 py-1 font-medium rounded-3xl text-lg bg-gray-200 ${activeCx}`}
+            className={`px-10 py-2 font-medium rounded-3xl text-sm bg-gray-200 ${activeCx}`}
             onClick={() => {
               setActiveIndex(index);
               if (onChange) {
