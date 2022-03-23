@@ -10,7 +10,8 @@ import { NftAction } from 'types';
 import { useAppContext } from 'utils/context/AppContext';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 
-import { TraitItem } from './components/trait-item';
+import { TraitList } from './components/trait';
+import { ActivityList } from './components/acitivity';
 import { ReadMoreText } from 'components/ReadMoreText/ReadMoreText';
 import { ToggleSwitchButton } from './components/toggle-switch-button';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
@@ -130,55 +131,17 @@ export const AssertDetail: React.FC<AssertDetailProps> = ({ tokenId, tokenAddres
       </div>
 
       <p className="mt-4 sm:mt-6 w-full float-left sm:mb-4 tracking-base text-black">Traits</p>
-      <div className="justify-around sm:justify-start flex flex-wrap mb-4 -ml-2">
-        {(data.metadata?.asset?.traits || []).map((item) => {
-          return (
-            <TraitItem
-              key={`${item.traitType}_${item.traitValue}`}
-              traitType={item.traitType}
-              traitValue={item.traitValue}
-              percentage={7}
-            />
-          );
-        })}
-      </div>
+      <TraitList traits={data.metadata?.asset?.traits} className="mb-4 -ml-2" />
 
-      <div className="my-4 md:my-8">
+      <div className="mt-4 md:mt-8">
         <div className="flex items-center justify-between">
           <p className="font-body text-black">Activity</p>
           <HoverMenuButton buttonTitle={'Filter'} shadow={true} arrow={false}>
             {accountItems}
           </HoverMenuButton>
         </div>
-        {[1, 2, 3].map((v) => (
-          <div
-            key={v}
-            className="flex justify-between bg-gray-50 px-2 sm:px-4 md:px-8 lg:px-16 -mx-1 my-2 sm:my-4 py-2 md:py-8 rounded-3xl"
-          >
-            <div>
-              <p className="font-heading tracking-tight text-gray-600">Seller</p>
-              <p className="font-heading font-bold tracking-tight text-black">ON1 Force</p>
-            </div>
-            <div>
-              <p className="font-heading tracking-tight text-gray-600">Buyer</p>
-              <p className="font-heading font-bold tracking-tight text-black">Nhmen_Howzer</p>
-            </div>
-            <div>
-              <p className="font-heading tracking-tight text-gray-600">Price</p>
-              <p className="font-heading font-bold tracking-tight text-black">=2.5</p>
-            </div>
-            <div>
-              <p className="font-heading tracking-tight text-gray-600">Date</p>
-              <p className="font-heading font-bold tracking-tight text-black">15 mins ago</p>
-            </div>
-            <div>
-              <p className="font-heading tracking-tight text-gray-600">Link</p>
-              <p className="font-heading font-bold tracking-tight text-black">0x0270...f7B3</p>
-            </div>
-          </div>
-        ))}
       </div>
-
+      <ActivityList />
       {/* <NFTEvents address={tokenAddress} tokenId={tokenId} /> */}
     </Page>
   );
