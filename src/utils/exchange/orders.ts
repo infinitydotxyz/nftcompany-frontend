@@ -55,7 +55,7 @@ export interface SignedOBOrder {
 
 // Orderbook orders
 
-export async function makeOBOrder(
+export async function prepareOBOrder(
   user: User,
   chainId: BigNumberish,
   providerManager: ProviderManager,
@@ -91,17 +91,17 @@ export async function makeOBOrder(
   };
 
   if (signer) {
-    const signedOBOrder = await createOBOrder(chainId, exchange, providerManager, obOrder);
+    const constructedOBOrder = await constructOBOrder(chainId, exchange, providerManager, obOrder);
     const infinityExchange = new ethers.Contract(exchange, infinityExchangeAbi, signer);
-    const isSigValid = await infinityExchange.verifyOrderSig(signedOBOrder);
+    const isSigValid = await infinityExchange.verifyOrderSig(constructedOBOrder);
     console.log('Sig valid:', isSigValid);
-    return signedOBOrder;
+    return constructedOBOrder;
   } else {
     console.error('No signer. Are you logged in?');
   }
 }
 
-export async function createOBOrder(
+export async function constructOBOrder(
   chainId: BigNumberish,
   contractAddress: string,
   providerManager: ProviderManager | undefined,
@@ -124,17 +124,6 @@ export async function createOBOrder(
   };
 
   // const calcDigest = _getCalculatedDigest(chainId, contractAddress, order);
-
-  const signedOBOrder = await signOBOrder(domain, types, providerManager, order);
-  return signedOBOrder;
-}
-
-export async function signOBOrder(
-  domain: any,
-  types: any,
-  providerManager: ProviderManager | undefined,
-  order: OBOrder
-): Promise<SignedOBOrder> {
   const constraints = [
     order.numItems,
     order.startPrice,

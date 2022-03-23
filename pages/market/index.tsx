@@ -20,7 +20,7 @@ import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { NULL_ADDRESS } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
-import { makeOBOrder } from 'utils/exchange/orders';
+import { prepareOBOrder } from 'utils/exchange/orders';
 import {
   addBuy,
   addSell,
@@ -65,7 +65,7 @@ const MarketPage = (): JSX.Element => {
       console.error('no user or provider');
       return;
     }
-    await makeOBOrder(user, chainId, providerManager, order);
+    await prepareOBOrder(user, chainId, providerManager, order);
 
     const match = await addBuy(order);
 
