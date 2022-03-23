@@ -1,11 +1,11 @@
 import React from 'react';
+import Link from 'next/link';
 import { Tooltip } from '@chakra-ui/tooltip';
-import styles from './ShortAddress.module.scss';
 import { CopyButton } from 'components/CopyButton/CopyButton';
-import { Link, Spacer, useColorMode } from '@chakra-ui/react';
-import { Text } from '@chakra-ui/react';
+import { Spacer, useColorMode } from '@chakra-ui/react';
 import { addressesEqual, ellipsisAddress, ellipsisString } from 'utils/commonUtil';
 import { useAppContext } from 'utils/context/AppContext';
+import clsx from 'classnames';
 
 type Props = {
   className?: string;
@@ -50,19 +50,21 @@ export const ShortAddress = ({
   }
 
   const link = (
-    <div className={styles.link}>
+    <div className="flex items-center">
       <Tooltip label={tooltip} hasArrow openDelay={1000}>
-        <Link
-          color={dark ? 'white' : 'black'}
-          href={href}
-          target={newTab ? '_blank' : ''}
-          rel="noreferrer"
-          onClick={(e) => {
-            // without this the parent will get the click (if clickable)
-            e.stopPropagation();
-          }}
-        >
-          {shortAddress}
+        <Link href={href}>
+          <a
+            href={href}
+            target={newTab ? '_blank' : ''}
+            rel="noreferrer"
+            className="font-heading underline underline-offset-2"
+            onClick={(e) => {
+              // without this the parent will get the click (if clickable)
+              e.stopPropagation();
+            }}
+          >
+            {shortAddress}
+          </a>
         </Link>
       </Tooltip>
       <Spacer width={[2, 5]} />
@@ -72,8 +74,8 @@ export const ShortAddress = ({
 
   if (label) {
     return (
-      <div className={`${vertical ? styles.mainVertical : styles.main} ${className}`}>
-        <Text mr={[2, 4]}>{label}</Text>
+      <div className={clsx('flex items-center pb-2', className)}>
+        <label className="mr-4 font-body tracking-wide">{label}</label>
         {link}
       </div>
     );

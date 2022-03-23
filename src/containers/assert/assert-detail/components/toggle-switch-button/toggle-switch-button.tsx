@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import clsx from 'classnames';
-import classes from './ToggleSwitchButton.module.scss';
+import classes from './toggle-switch-button.module.scss';
 
 export const ToggleSwitchButton = () => {
   const [toggle, setToggle] = useState(false);

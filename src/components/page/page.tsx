@@ -1,5 +1,11 @@
 import React from 'react';
+import clsx from 'classnames';
 
-export const Page: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <div className="page-container pb-2 pt-2 sm:pt-4 md:pt-8">{children}</div>;
+interface PageProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const Page: React.FC<PageProps> = ({ children, className }) => {
+  return <div className={clsx('page-container pb-2 pt-2 sm:pt-4 md:pt-8', className)}>{children}</div>;
 };

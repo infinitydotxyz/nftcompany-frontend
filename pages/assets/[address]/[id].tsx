@@ -22,14 +22,16 @@ const AssetsPage = (): JSX.Element => {
         <meta name="description" content="Infinity NFT Detail Page"></meta>
       </Head>
       <AssertDetail
-        onTitle={(newTitle) => {
+        tokenId={id as string}
+        tokenAddress={address as string}
+        onTitle={(newTitle: string) => {
           if (!title) {
             setTitle(newTitle);
           }
         }}
       />
 
-      <div>
+      {/* <div>
         <div className="page-container">
           <div className={styles.insetPage}>
             {id && (
@@ -47,7 +49,7 @@ const AssetsPage = (): JSX.Element => {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

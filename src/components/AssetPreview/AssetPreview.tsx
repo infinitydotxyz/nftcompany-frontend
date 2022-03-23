@@ -14,7 +14,6 @@ import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { Grid, GridItem, Center } from '@chakra-ui/layout';
 import { TraitItem } from 'components/TraitItem';
 import { ReadMoreText } from 'components/ReadMoreText/ReadMoreText';
-import { ToggleSwitchButton } from 'components/ToggleSwitchButton';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import classNames from 'classnames';
 
@@ -92,9 +91,6 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
           </Center>
         </GridItem>
         <GridItem w="100%" bg="white">
-          <Box ml={-2} mb={[4, 8]}>
-            <ToggleSwitchButton />
-          </Box>
           <h3 className={styles.heading}>{data?.collectionName}</h3>
           <Box display={'flex'} gap={4}>
             <AppLink type="secondary" className={styles.collection} href={`${window.origin}/collection/${name}`}>

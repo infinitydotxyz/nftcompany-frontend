@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './AssetPreview.module.scss';
+import Link from 'next/link';
 import { CardData, BaseCardData } from '@infinityxyz/lib/types/core';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { getListings } from 'services/Listings.service';
@@ -14,15 +14,16 @@ import { ShortAddress } from 'components/ShortAddress/ShortAddress';
 import { Grid, GridItem, Center } from '@chakra-ui/layout';
 import { TraitItem } from 'components/TraitItem';
 import { ReadMoreText } from 'components/ReadMoreText/ReadMoreText';
-import { ToggleSwitchButton } from 'components/ToggleSwitchButton';
+import { ToggleSwitchButton } from './components/toggle-switch-button';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
+import { Page } from 'components/page';
 import classNames from 'classnames';
 
-type Props = {
+interface AssertDetailProps {
   tokenId: string;
   tokenAddress: string;
   onTitle: (title: string) => void;
-};
+}
 
 const accountItems: JSX.Element[] = [
   <MenuItem key="Sales">Sales</MenuItem>,
@@ -32,11 +33,12 @@ const accountItems: JSX.Element[] = [
   <MenuItem key="Offers">Sign out</MenuItem>
 ];
 
-export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Element => {
+export const AssertDetail: React.FC<AssertDetailProps> = ({ tokenId, tokenAddress, onTitle }): JSX.Element => {
+  const { chainId } = useAppContext();
+
   const [data, setData] = useState<CardData | undefined>();
   const [listings, setListings] = useState<BaseCardData[]>([]);
   const [title, setTitle] = useState('');
-  const { chainId } = useAppContext();
 
   const action = NftAction.BuyNft;
 
@@ -79,117 +81,67 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
   name = name?.toLowerCase();
 
   return (
-    <div className="main">
-      <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={[4, 8, 16]} py={[4, 8]}>
-        <GridItem w="100%" bg="white">
-          <Center>
-            <Image
-              alt="not available"
-              w={'100%'}
-              borderRadius={[6, 12]}
-              src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
-            />
-          </Center>
-        </GridItem>
-        <GridItem w="100%" bg="white">
-          <Box ml={-2} mb={[4, 8]}>
-            <ToggleSwitchButton />
-          </Box>
-          <h3 className={styles.heading}>{data?.collectionName}</h3>
-          <Box display={'flex'} gap={4}>
-            <AppLink type="secondary" className={styles.collection} href={`${window.origin}/collection/${name}`}>
+    <Page className="max-w-screen-xl mx-auto">
+      <div className="mb-4">
+        <div className="w-80 mx-auto sm:float-left sm:w-80 md:w-96 lg:w-96 xl:w-128 sm:mr-6 md:mr-8 lg:mr-16 mb-4">
+          <img
+            alt={`Image - ${data?.title}`}
+            className="rounded-3xl w-full"
+            src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
+          />
+        </div>
+        <div className="mb-2 md:mb-4 lg:mb-8">
+          <ToggleSwitchButton />
+        </div>
+        <h3 className="text-black font-body text-2xl font-bold leading-9 tracking-wide pb-1">{data?.collectionName}</h3>
+        <div className="flex sm:mb-8">
+          <Link href={`${window.origin}/collection/${name}`}>
+            <a href={`${window.origin}/collection/${name}`} className="text-gray-500 tracking-tight mr-2">
               {data?.collectionName}
-            </AppLink>
-            <Box ml={1}>
-              <BlueCheckIcon large hasBlueCheck={data.hasBlueCheck === true} />
-            </Box>
-          </Box>
-          <Box my={[4, 8]}>
-            <ShortAddress
-              address={data.tokenAddress}
-              href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}`}
-              label="Contract Address:"
-              tooltip={toChecksumAddress(data.tokenAddress)}
-              className={styles.noMarginTop}
-            />
-            <ShortAddress
-              address={`#${data.tokenId}`}
-              href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}?a=${data.tokenId}`}
-              label="Token ID:"
-              tooltip={`#${data.tokenId}`}
-            />
-          </Box>
-          <Box display={{ base: 'grid', sm: 'flex' }} ml={-1} mb={[4, 8]}>
-            <Box
-              as="button"
-              height="48px"
-              lineHeight="1.4"
-              transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
-              border="1px"
-              px="24px"
-              borderRadius="24px"
-              fontSize="14px"
-              fontWeight="semibold"
-              bg="#000"
-              borderColor="#000"
-              color="#fff"
-              _hover={{ bg: '#434343' }}
-              _active={{
-                bg: '#262626',
-                transform: 'scale(0.98)'
-              }}
-              _focus={{
-                boxShadow: '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)'
-              }}
-            >
-              Buy&nbsp;&nbsp;&nbsp;3.30 ETH
-            </Box>
-            <Box
-              as="button"
-              ml={{ sm: 4 }}
-              mt={{ base: 1, sm: 0 }}
-              height="48px"
-              lineHeight="1.4"
-              transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
-              border="1px"
-              px="36px"
-              borderRadius="24px"
-              fontSize="14px"
-              fontWeight="semibold"
-              bg="#fff"
-              borderColor="#BEBEBE"
-              color="#000"
-              _hover={{ bg: '#ebedf0' }}
-              _active={{
-                bg: '#dddfe2',
-                transform: 'scale(0.98)'
-              }}
-              _focus={{
-                boxShadow: '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)'
-              }}
-            >
-              Make offer
-            </Box>
-          </Box>
-          <Text fontWeight={800} mb={[1]}>
-            Description
-          </Text>
-          <div className={styles.description}>
-            <ReadMoreText
-              text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            </a>
+          </Link>
+          <BlueCheckIcon large hasBlueCheck={true} />
+        </div>
+        <ShortAddress
+          address={data.tokenAddress}
+          href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}`}
+          label="Contract Address:"
+          tooltip={toChecksumAddress(data.tokenAddress)}
+        />
+        <ShortAddress
+          address={`#${data.tokenId}`}
+          href={`${getChainScannerBase(data.chainId)}/token/${data.tokenAddress}?a=${data.tokenId}`}
+          label="Token ID:"
+          tooltip={`#${data.tokenId}`}
+        />
+
+        <div className="md:flex my-4 lg:my-8">
+          <button className="btn btn-dark rounded-3xl md:-ml-2 w-full sm:w-40 mb-1 block">Buy&nbsp;3.30 ETH</button>
+          <button className="btn btn-white rounded-3xl md:ml-4 w-full sm:w-40 mb-1">Make offer</button>
+        </div>
+
+        <Text fontWeight={800} mb={[1]}>
+          Description
+        </Text>
+        <div>
+          <ReadMoreText
+            text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
               dolore magna aliqua. Ut enim ad minim veniam. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
               do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed. "
-              min={100}
-              ideal={120}
-              max={200}
-              readMoreText="Read more"
-            />
-          </div>
-        </GridItem>
-      </Grid>
-      <Text fontWeight={800} mt={[2, 4]} mb={[2, 4]}>
-        Traits
-      </Text>
+            min={100}
+            ideal={120}
+            max={200}
+            readMoreText="Read more"
+          />
+        </div>
+      </div>
+
+      <div className="w-full float-left mt-4">
+        <Text fontWeight={800} mt={[2, 4]} mb={[2, 4]}>
+          Traits
+        </Text>
+      </div>
+
       <Box d="flex" flexWrap="wrap" w="100%" pb={[4, 8]} mx={-2}>
         {(data.metadata?.asset?.traits || []).map((item) => {
           return (
@@ -205,29 +157,29 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
       <Box mt={[2, 4]} mb={[2, 8]}>
         <Box display={'flex'} justifyContent="space-between" alignItems="center">
           <Text fontWeight={900}>Activity</Text>
-          <HoverMenuButton buttonTitle={'Filter'} shadow={true} arrow={false} className={styles.filterBtn}>
+          <HoverMenuButton buttonTitle={'Filter'} shadow={true} arrow={false}>
             {accountItems}
           </HoverMenuButton>
         </Box>
         {[1, 2, 3].map((v) => (
-          <Box key={v} className={styles.activity} px={[2, 4, 8]} mx={-1} my={[2, 4]} py={[1, 2, 4, 8]}>
-            <div className={styles.activityItem}>
+          <Box key={v} px={[2, 4, 8]} mx={-1} my={[2, 4]} py={[1, 2, 4, 8]}>
+            <div>
               <p>Seller</p>
               <p>ON1 Force</p>
             </div>
-            <div className={styles.activityItem}>
+            <div>
               <p>Buyer</p>
               <p>Nhmen_Howzer</p>
             </div>
-            <div className={styles.activityItem}>
+            <div>
               <p>Price</p>
               <p>=2.5</p>
             </div>
-            <div className={styles.activityItem}>
+            <div>
               <p>Date</p>
               <p>15 mins ago</p>
             </div>
-            <div className={styles.activityItem}>
+            <div>
               <p>Link</p>
               <p>0x0270...f7B3</p>
             </div>
@@ -236,6 +188,6 @@ export const AssetPreview = ({ tokenId, tokenAddress, onTitle }: Props): JSX.Ele
       </Box>
 
       {/* <NFTEvents address={tokenAddress} tokenId={tokenId} /> */}
-    </div>
+    </Page>
   );
 };

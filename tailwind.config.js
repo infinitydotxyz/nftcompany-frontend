@@ -8,9 +8,18 @@ module.exports = {
     extend: {
       colors: {
         gray: {
-          dark: '#666',
-          light: '#f0f0f0'
+          500: '#666',
+          50: '#f0f0f0'
         }
+      },
+      width: {
+        120: '30rem',
+        128: '32rem',
+        144: '36rem'
+      },
+      letterSpacing: {
+        wide: '0.01rem',
+        tight: '-.01em'
       }
     }
   },
