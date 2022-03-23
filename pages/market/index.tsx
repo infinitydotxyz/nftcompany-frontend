@@ -1,12 +1,14 @@
 import { Button, IconButton } from '@chakra-ui/button';
 import {
   BuyOrder,
-  BuyOrderMatch, isBuyOrder,
-  MarketListIdType, MarketListingsBody,
+  BuyOrderMatch,
+  isBuyOrder,
+  MarketListIdType,
+  MarketListingsBody,
   MarketOrder,
   SellOrder
 } from '@infinityxyz/lib/types/core';
-import { infinityExchangeAbi } from 'abi/infinityExchange';
+
 import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
 import { BuyOrderList, BuyOrderMatchList, SellOrderList } from 'components/MarketList';
 import MarketOrderModal from 'components/MarketOrderModal';
@@ -18,10 +20,15 @@ import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { NULL_ADDRESS } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
-import { createOBOrder, ExtraParams, Item, OBOrder } from 'utils/exchange/orders';
+import { makeOBOrder } from 'utils/exchange/orders';
 import {
-  addBuy, addSell, executeBuyOrder, marketBuyOrders,
-  marketDeleteOrder, marketMatches, marketSellOrders
+  addBuy,
+  addSell,
+  executeBuyOrder,
+  marketBuyOrders,
+  marketDeleteOrder,
+  marketMatches,
+  marketSellOrders
 } from 'utils/marketUtils';
 import styles from './styles.module.scss';
 import { RepeatIcon } from '@chakra-ui/icons';
@@ -51,52 +58,14 @@ const MarketPage = (): JSX.Element => {
 
   // ===========================================================
 
-  // Orderbook orders
-
-  const makeOBOrder = async (order: BuyOrder) => {
-    const exchange = '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'.toLowerCase();
-    const complicationAddress = '0xffa7CA1AEEEbBc30C874d32C7e22F052BbEa0429';
-    const collections = ['0x276C216D241856199A83bf27b2286659e5b877D3'];
-    const signer = providerManager?.getEthersProvider().getSigner();
-
-    const nfts: Item[] = [
-      {
-        collection: collections[0],
-        tokenIds: []
-      }
-    ];
-    const execParams = { complicationAddress, currencyAddress: NULL_ADDRESS };
-    const extraParams: ExtraParams = {};
-
-    const obOrder: OBOrder = {
-      isSellOrder: false,
-      signerAddress: user!.account,
-      numItems: order.minNFTs,
-      startPrice: order.budget,
-      endPrice: order.budget,
-      startTime: order.startTime,
-      endTime: order.endTime,
-      minBpsToSeller: 9000,
-      nonce: 1,
-      nfts,
-      execParams,
-      extraParams
-    };
-
-    if (signer) {
-      const signedOBOrder = await createOBOrder(chainId, exchange, providerManager, obOrder);
-      const infinityExchange = new ethers.Contract(exchange, infinityExchangeAbi, signer);
-      const isSigValid = await infinityExchange.verifyOrderSig(signedOBOrder);
-      console.log('Sig valid:', isSigValid);
-    } else {
-      console.error('No signer. Are you logged in?');
-    }
-  };
-
   // buy orders
 
   const buy = async (order: BuyOrder) => {
-    await makeOBOrder(order);
+    if (!user || !providerManager) {
+      console.error('no user or provider');
+      return;
+    }
+    await makeOBOrder(user, chainId, providerManager, order);
 
     const match = await addBuy(order);
 

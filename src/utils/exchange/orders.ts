@@ -2,6 +2,17 @@ import { BigNumberish, BytesLike, ethers } from 'ethers';
 import { defaultAbiCoder, keccak256, solidityKeccak256, splitSignature, _TypedDataEncoder } from 'ethers/lib/utils';
 import { NULL_ADDRESS } from 'utils/constants';
 import { ProviderManager } from 'utils/providers/ProviderManager';
+import {
+  BuyOrder,
+  BuyOrderMatch,
+  isBuyOrder,
+  MarketListIdType,
+  MarketListingsBody,
+  MarketOrder,
+  SellOrder
+} from '@infinityxyz/lib/types/core';
+import { infinityExchangeAbi } from 'abi/infinityExchange';
+import { User } from 'utils/context/AppContext';
 
 export interface Item {
   collection: string;
@@ -40,6 +51,54 @@ export interface SignedOBOrder {
   execParams: string[];
   extraParams: BytesLike;
   sig: BytesLike;
+}
+
+// Orderbook orders
+
+export async function makeOBOrder(
+  user: User,
+  chainId: BigNumberish,
+  providerManager: ProviderManager,
+  order: BuyOrder
+): Promise<SignedOBOrder | undefined> {
+  const exchange = '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'.toLowerCase();
+  const complicationAddress = '0xffa7CA1AEEEbBc30C874d32C7e22F052BbEa0429';
+  const collections = ['0x276C216D241856199A83bf27b2286659e5b877D3'];
+  const signer = providerManager?.getEthersProvider().getSigner();
+
+  const nfts: Item[] = [
+    {
+      collection: collections[0],
+      tokenIds: []
+    }
+  ];
+  const execParams = { complicationAddress, currencyAddress: NULL_ADDRESS };
+  const extraParams: ExtraParams = {};
+
+  const obOrder: OBOrder = {
+    isSellOrder: false,
+    signerAddress: user!.account,
+    numItems: order.minNFTs,
+    startPrice: order.budget,
+    endPrice: order.budget,
+    startTime: order.startTime,
+    endTime: order.endTime,
+    minBpsToSeller: 9000,
+    nonce: 1,
+    nfts,
+    execParams,
+    extraParams
+  };
+
+  if (signer) {
+    const signedOBOrder = await createOBOrder(chainId, exchange, providerManager, obOrder);
+    const infinityExchange = new ethers.Contract(exchange, infinityExchangeAbi, signer);
+    const isSigValid = await infinityExchange.verifyOrderSig(signedOBOrder);
+    console.log('Sig valid:', isSigValid);
+    return signedOBOrder;
+  } else {
+    console.error('No signer. Are you logged in?');
+  }
 }
 
 export async function createOBOrder(
