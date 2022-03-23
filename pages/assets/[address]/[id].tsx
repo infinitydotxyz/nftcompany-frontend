@@ -4,7 +4,6 @@ import Head from 'next/head';
 import Layout from 'containers/layout';
 import { useRouter } from 'next/router';
 import styles from './AssetsPage.module.scss';
-import { AssetPreview } from 'components/AssetPreview/AssetPreview';
 import { AssetDetail } from 'containers/AssetDetail';
 
 const AssetsPage = (): JSX.Element => {
