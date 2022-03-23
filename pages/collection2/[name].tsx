@@ -12,12 +12,7 @@ import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
 import { Spacer, Box, Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import { NftAction } from 'types';
-import {
-  CollectionData,
-  getCollectionInfo,
-  getHistoricalDiscordData,
-  getHistoricalTwitterData
-} from 'services/Collections.service';
+import { getCollectionInfo, getHistoricalDiscordData, getHistoricalTwitterData } from 'services/Collections.service';
 import CollectionOverview from 'components/CollectionOverview/CollectionOverview';
 import CollectionStats from 'components/CollectionStats/CollectionStats';
 import CollectionLinks from 'components/CollectionLinks/CollectionLinks';
@@ -35,6 +30,7 @@ import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import styles from './Collection.module.scss';
 import { PAGE_NAMES } from 'utils/constants';
 import FilterPills from 'components/FilterDrawer/FilterPills';
+import { BaseCollection } from '@infinityxyz/lib/types/core/Collection';
 
 enum CollectionTabs {
   NFTs = 'NFTs',
@@ -63,7 +59,7 @@ const Collection = (): JSX.Element => {
     CollectionTabs.NFTs
   );
 
-  const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
+  const [collectionInfo, setCollectionInfo] = useState<BaseCollection | undefined>();
   const [isLoading, setIsLoading] = useState(true);
   const [isCardsLoading, setIsCardsLoading] = useState(true);
 
@@ -182,6 +178,7 @@ const Collection = (): JSX.Element => {
   const CollectionInfoGroupWrapper = (props: { children: React.ReactNode }) => {
     return <Box marginBottom={'32px'}>{props.children}</Box>;
   };
+  const metadata = collectionInfo?.metadata;
 
   return (
     <>
@@ -198,20 +195,22 @@ const Collection = (): JSX.Element => {
             <Box display="flex" flexDirection="row" justifyContent="space-between">
               <Box marginRight="32px" flexGrow={4} flexBasis={0}>
                 <CollectionOverview
-                  collectionName={collectionInfo?.name ?? ''}
+                  collectionName={metadata?.name ?? ''}
                   hasBlueCheck={collectionInfo?.hasBlueCheck ?? false}
-                  profileImage={collectionInfo?.profileImage ?? ''}
-                  hasBeenClaimed={collectionInfo?.isClaimed ?? false}
+                  profileImage={metadata?.profileImage ?? ''}
+                  // TODO: collectionInfo?.isClaimed ?? false - is .isClaimed still being used?
+                  hasBeenClaimed={false}
                   creator={''}
                   description={collectionInfo?.metadata?.description}
                   collectionAddress={collectionInfo?.address ?? ''}
                   onClickEdit={onEdit}
-                  isClaimed={collectionInfo?.isClaimed ?? false}
+                  // TODO: collectionInfo?.isClaimed ?? false - is .isClaimed still being used?
+                  isClaimed={false}
                 />
               </Box>
               <Spacer />
               <Box flexGrow={3} flexBasis={0}>
-                {typeof collectionInfo?.stats?.floorPrice === 'number' && (
+                {/* {typeof collectionInfo?.stats?.floorPrice === 'number' && (
                   <CollectionInfoGroupWrapper>
                     <InfoGroup
                       title="Collection Stats"
@@ -240,20 +239,20 @@ const Collection = (): JSX.Element => {
                 <CollectionInfoGroupWrapper>
                   <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px" space="start">
                     <CollectionLinks
-                      links={collectionInfo?.links ?? {}}
+                      links={collectionInfo?.metadata?.links ?? {}}
                       onClickEdit={onEdit}
                       isClaimed={collectionInfo?.isClaimed ?? false}
                     />
                   </InfoGroup>
-                </CollectionInfoGroupWrapper>
+                </CollectionInfoGroupWrapper> */}
 
                 <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                   <Box marginRight="20px">
-                    {collectionInfo?.links?.twitter ? (
+                    {collectionInfo?.metadata?.links?.twitter ? (
                       <GraphPreview
                         label="Twitter followers"
                         changeInterval={24}
-                        link={collectionInfo?.links?.twitter}
+                        link={collectionInfo?.metadata?.links?.twitter}
                         linkText="Follow"
                         data={twitterData.map((item) => {
                           return { ...item, y: item.followersCount };
@@ -273,11 +272,11 @@ const Collection = (): JSX.Element => {
                       />
                     )}
                   </Box>
-                  {collectionInfo?.links?.discord ? (
+                  {collectionInfo?.metadata?.links?.discord ? (
                     <GraphPreview
                       label="Discord members"
                       changeInterval={24}
-                      link={collectionInfo?.links?.discord}
+                      link={collectionInfo?.metadata?.links?.discord}
                       linkText="Join"
                       data={discordData.map((item) => {
                         return { ...item, y: item.membersCount };
