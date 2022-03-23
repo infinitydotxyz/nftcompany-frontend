@@ -63,7 +63,7 @@ const Collection = (): JSX.Element => {
     CollectionTabs.NFTs
   );
 
-  const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
+  const [collectionInfo, setCollectionInfo] = useState<any | undefined>();
   const [isLoading, setIsLoading] = useState(true);
   const [isCardsLoading, setIsCardsLoading] = useState(true);
 

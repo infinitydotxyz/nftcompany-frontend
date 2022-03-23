@@ -12,12 +12,7 @@ import { ListingSource, useSearchContext } from 'utils/context/SearchContext';
 import { useRouter } from 'next/router';
 import { Spacer, Box, Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import { NftAction } from 'types';
-import {
-  CollectionData,
-  getCollectionInfo,
-  getHistoricalDiscordData,
-  getHistoricalTwitterData
-} from 'services/Collections.service';
+import { getCollectionInfo, getHistoricalDiscordData, getHistoricalTwitterData } from 'services/Collections.service';
 import CollectionOverview from 'components/CollectionOverview/CollectionOverview';
 import CollectionStats from 'components/CollectionStats/CollectionStats';
 import CollectionLinks from 'components/CollectionLinks/CollectionLinks';
@@ -35,6 +30,8 @@ import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
 import styles from './Collection.module.scss';
 import { PAGE_NAMES } from 'utils/constants';
 import FilterPills from 'components/FilterDrawer/FilterPills';
+import { BaseCollection } from '@infinityxyz/lib/types/core/Collection';
+import RoundedNav from 'components/base/RoundedNav/RoundedNav';
 
 enum CollectionTabs {
   NFTs = 'NFTs',
@@ -48,6 +45,7 @@ const Collection = (): JSX.Element => {
   const router = useRouter();
   const { name } = router.query;
   const searchContext = useSearchContext();
+  const [currentTab, setCurrentTab] = useState(0);
   const [tabIndex, setTabIndex] = useState(0);
 
   const onEdit = () => {
@@ -63,7 +61,7 @@ const Collection = (): JSX.Element => {
     CollectionTabs.NFTs
   );
 
-  const [collectionInfo, setCollectionInfo] = useState<CollectionData | undefined>();
+  const [collectionInfo, setCollectionInfo] = useState<BaseCollection | undefined>();
   const [isLoading, setIsLoading] = useState(true);
   const [isCardsLoading, setIsCardsLoading] = useState(true);
 
@@ -182,6 +180,7 @@ const Collection = (): JSX.Element => {
   const CollectionInfoGroupWrapper = (props: { children: React.ReactNode }) => {
     return <Box marginBottom={'32px'}>{props.children}</Box>;
   };
+  const metadata = collectionInfo?.metadata;
 
   return (
     <>
@@ -198,20 +197,22 @@ const Collection = (): JSX.Element => {
             <Box display="flex" flexDirection="row" justifyContent="space-between">
               <Box marginRight="32px" flexGrow={4} flexBasis={0}>
                 <CollectionOverview
-                  collectionName={collectionInfo?.name ?? ''}
+                  collectionName={metadata?.name ?? ''}
                   hasBlueCheck={collectionInfo?.hasBlueCheck ?? false}
-                  profileImage={collectionInfo?.profileImage ?? ''}
-                  hasBeenClaimed={collectionInfo?.isClaimed ?? false}
+                  profileImage={metadata?.profileImage ?? ''}
+                  // TODO: collectionInfo?.isClaimed ?? false - is .isClaimed still being used?
+                  hasBeenClaimed={false}
                   creator={''}
                   description={collectionInfo?.metadata?.description}
                   collectionAddress={collectionInfo?.address ?? ''}
                   onClickEdit={onEdit}
-                  isClaimed={collectionInfo?.isClaimed ?? false}
+                  // TODO: collectionInfo?.isClaimed ?? false - is .isClaimed still being used?
+                  isClaimed={false}
                 />
               </Box>
               <Spacer />
               <Box flexGrow={3} flexBasis={0}>
-                {typeof collectionInfo?.stats?.floorPrice === 'number' && (
+                {/* {typeof collectionInfo?.stats?.floorPrice === 'number' && (
                   <CollectionInfoGroupWrapper>
                     <InfoGroup
                       title="Collection Stats"
@@ -240,20 +241,20 @@ const Collection = (): JSX.Element => {
                 <CollectionInfoGroupWrapper>
                   <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px" space="start">
                     <CollectionLinks
-                      links={collectionInfo?.links ?? {}}
+                      links={collectionInfo?.metadata?.links ?? {}}
                       onClickEdit={onEdit}
                       isClaimed={collectionInfo?.isClaimed ?? false}
                     />
                   </InfoGroup>
-                </CollectionInfoGroupWrapper>
+                </CollectionInfoGroupWrapper> */}
 
                 <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                   <Box marginRight="20px">
-                    {collectionInfo?.links?.twitter ? (
+                    {collectionInfo?.metadata?.links?.twitter ? (
                       <GraphPreview
                         label="Twitter followers"
                         changeInterval={24}
-                        link={collectionInfo?.links?.twitter}
+                        link={collectionInfo?.metadata?.links?.twitter}
                         linkText="Follow"
                         data={twitterData.map((item) => {
                           return { ...item, y: item.followersCount };
@@ -273,11 +274,11 @@ const Collection = (): JSX.Element => {
                       />
                     )}
                   </Box>
-                  {collectionInfo?.links?.discord ? (
+                  {collectionInfo?.metadata?.links?.discord ? (
                     <GraphPreview
                       label="Discord members"
                       changeInterval={24}
-                      link={collectionInfo?.links?.discord}
+                      link={collectionInfo?.metadata?.links?.discord}
                       linkText="Join"
                       data={discordData.map((item) => {
                         return { ...item, y: item.membersCount };
@@ -300,14 +301,10 @@ const Collection = (): JSX.Element => {
               </Box>
             </Box>
 
+            {/*
+            TODO: in use?
             <Box marginTop={'72px'} display={'flex'} flexDirection="row" width="100%" alignItems={'center'}>
-              <ToggleTab
-                options={['NFTs', 'Community']}
-                selected={toggleTab}
-                onChange={(opt: string) => setToggleTab(opt as any)}
-              />
-
-              {toggleTab === 'NFTs' && (
+              {currentTab === 0 && (
                 <>
                   <Spacer />
                   <SortMenuButton
@@ -317,20 +314,28 @@ const Collection = (): JSX.Element => {
                   />
                 </>
               )}
-            </Box>
+            </Box> */}
 
-            <HorizontalLine display={toggleTab === 'NFTs' ? 'none' : ''} marginTop={'40px'} />
+            <div className="w-1/6 mt-8">
+              <RoundedNav
+                items={[{ title: 'NFT' }, { title: 'Community' }]}
+                onChange={(currentIndex) => setCurrentTab(currentIndex)}
+              />
+            </div>
+
+            <HorizontalLine display={currentTab === 0 ? 'none' : ''} marginTop={'40px'} />
+
             {collectionInfo && (
               <CollectionCommunity
                 collectionInfo={collectionInfo}
-                display={toggleTab === 'NFTs' ? 'none' : 'flex'}
+                display={currentTab === 0 ? 'none' : 'flex'}
                 onClickEdit={onEdit}
               />
             )}
-            <Box className="center" display={toggleTab === 'Community' ? 'none' : 'flex'} width="100%">
+            <Box className="center" display={currentTab === 1 ? 'none' : 'flex'} width="100%">
               <Tabs
                 align={'center'}
-                display={toggleTab === 'Community' ? 'none' : ''}
+                display={currentTab === 1 ? 'none' : ''}
                 width="100%"
                 index={tabIndex}
                 onChange={(index) => setTabIndex(index)}
