@@ -4,20 +4,17 @@ import { CardData, BaseCardData } from '@infinityxyz/lib/types/core';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { getListings } from 'services/Listings.service';
 import { defaultFilterState, ListingSource } from 'utils/context/SearchContext';
-import { Image, Text, Box, Button, MenuDivider, MenuItem } from '@chakra-ui/react';
-import NFTEvents from 'components/NFTEvents/NFTEvents';
+import { MenuDivider, MenuItem } from '@chakra-ui/react';
 import { getSearchFriendlyString, getChainScannerBase, toChecksumAddress } from 'utils/commonUtil';
 import { NftAction } from 'types';
-import AppLink from 'components/AppLink/AppLink';
 import { useAppContext } from 'utils/context/AppContext';
 import { ShortAddress } from 'components/ShortAddress/ShortAddress';
-import { Grid, GridItem, Center } from '@chakra-ui/layout';
-import { TraitItem } from 'components/TraitItem';
+
+import { TraitItem } from './components/trait-item';
 import { ReadMoreText } from 'components/ReadMoreText/ReadMoreText';
 import { ToggleSwitchButton } from './components/toggle-switch-button';
 import { HoverMenuButton } from 'components/HoverMenuButton/HoverMenuButton';
 import { Page } from 'components/page';
-import classNames from 'classnames';
 
 interface AssertDetailProps {
   tokenId: string;
@@ -90,13 +87,13 @@ export const AssertDetail: React.FC<AssertDetailProps> = ({ tokenId, tokenAddres
             src={data.image || 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'}
           />
         </div>
-        <div className="mb-2 md:mb-4 lg:mb-8">
+        <div className="mb-2 md:pb-4">
           <ToggleSwitchButton />
         </div>
         <h3 className="text-black font-body text-2xl font-bold leading-9 tracking-wide pb-1">{data?.collectionName}</h3>
         <div className="flex sm:mb-8">
           <Link href={`${window.origin}/collection/${name}`}>
-            <a href={`${window.origin}/collection/${name}`} className="text-gray-500 tracking-tight mr-2">
+            <a href={`${window.origin}/collection/${name}`} className="text-gray-600 tracking-tight mr-2">
               {data?.collectionName}
             </a>
           </Link>
@@ -114,15 +111,11 @@ export const AssertDetail: React.FC<AssertDetailProps> = ({ tokenId, tokenAddres
           label="Token ID:"
           tooltip={`#${data.tokenId}`}
         />
-
         <div className="md:flex my-4 lg:my-8">
           <button className="btn btn-dark rounded-3xl md:-ml-2 w-full sm:w-40 mb-1 block">Buy&nbsp;3.30 ETH</button>
           <button className="btn btn-white rounded-3xl md:ml-4 w-full sm:w-40 mb-1">Make offer</button>
         </div>
-
-        <Text fontWeight={800} mb={[1]}>
-          Description
-        </Text>
+        <p className="font-body text-black">Description</p>
         <div>
           <ReadMoreText
             text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
@@ -136,13 +129,8 @@ export const AssertDetail: React.FC<AssertDetailProps> = ({ tokenId, tokenAddres
         </div>
       </div>
 
-      <div className="w-full float-left mt-4">
-        <Text fontWeight={800} mt={[2, 4]} mb={[2, 4]}>
-          Traits
-        </Text>
-      </div>
-
-      <Box d="flex" flexWrap="wrap" w="100%" pb={[4, 8]} mx={-2}>
+      <p className="mt-4 sm:mt-6 w-full float-left sm:mb-4 tracking-base text-black">Traits</p>
+      <div className="justify-around sm:justify-start flex flex-wrap mb-4 -ml-2">
         {(data.metadata?.asset?.traits || []).map((item) => {
           return (
             <TraitItem
@@ -153,39 +141,43 @@ export const AssertDetail: React.FC<AssertDetailProps> = ({ tokenId, tokenAddres
             />
           );
         })}
-      </Box>
-      <Box mt={[2, 4]} mb={[2, 8]}>
-        <Box display={'flex'} justifyContent="space-between" alignItems="center">
-          <Text fontWeight={900}>Activity</Text>
+      </div>
+
+      <div className="my-4 md:my-8">
+        <div className="flex items-center justify-between">
+          <p className="font-body text-black">Activity</p>
           <HoverMenuButton buttonTitle={'Filter'} shadow={true} arrow={false}>
             {accountItems}
           </HoverMenuButton>
-        </Box>
+        </div>
         {[1, 2, 3].map((v) => (
-          <Box key={v} px={[2, 4, 8]} mx={-1} my={[2, 4]} py={[1, 2, 4, 8]}>
+          <div
+            key={v}
+            className="flex justify-between bg-gray-50 px-2 sm:px-4 md:px-8 lg:px-16 -mx-1 my-2 sm:my-4 py-2 md:py-8 rounded-3xl"
+          >
             <div>
-              <p>Seller</p>
-              <p>ON1 Force</p>
+              <p className="font-heading tracking-tight text-gray-600">Seller</p>
+              <p className="font-heading font-bold tracking-tight text-black">ON1 Force</p>
             </div>
             <div>
-              <p>Buyer</p>
-              <p>Nhmen_Howzer</p>
+              <p className="font-heading tracking-tight text-gray-600">Buyer</p>
+              <p className="font-heading font-bold tracking-tight text-black">Nhmen_Howzer</p>
             </div>
             <div>
-              <p>Price</p>
-              <p>=2.5</p>
+              <p className="font-heading tracking-tight text-gray-600">Price</p>
+              <p className="font-heading font-bold tracking-tight text-black">=2.5</p>
             </div>
             <div>
-              <p>Date</p>
-              <p>15 mins ago</p>
+              <p className="font-heading tracking-tight text-gray-600">Date</p>
+              <p className="font-heading font-bold tracking-tight text-black">15 mins ago</p>
             </div>
             <div>
-              <p>Link</p>
-              <p>0x0270...f7B3</p>
+              <p className="font-heading tracking-tight text-gray-600">Link</p>
+              <p className="font-heading font-bold tracking-tight text-black">0x0270...f7B3</p>
             </div>
-          </Box>
+          </div>
         ))}
-      </Box>
+      </div>
 
       {/* <NFTEvents address={tokenAddress} tokenId={tokenId} /> */}
     </Page>

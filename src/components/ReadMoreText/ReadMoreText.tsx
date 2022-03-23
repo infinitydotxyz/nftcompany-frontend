@@ -115,13 +115,13 @@ export class ReadMoreText extends React.Component<ReadMoreTextPropType, ReadMore
     if (!this.state.secondaryText) {
       displayText = (
         <div>
-          <span>{`${this.state.primaryText} ${this.state.secondaryText}`}</span>
+          <span className="text-gray-600">{`${this.state.primaryText} ${this.state.secondaryText}`}</span>
         </div>
       );
     } else if (this.state.displaySecondary) {
       displayText = (
         <div>
-          <span>{`${this.state.primaryText} ${this.state.secondaryText}`}</span>
+          <span className="text-gray-600">{`${this.state.primaryText} ${this.state.secondaryText}`}</span>
           <span className={classes.readMoreButton} onClick={this.setStatus.bind(this)}>
             Less...
           </span>
@@ -130,7 +130,7 @@ export class ReadMoreText extends React.Component<ReadMoreTextPropType, ReadMore
     } else {
       displayText = (
         <div>
-          <span>
+          <span className="text-gray-600">
             {this.state.primaryText}
             <span style={{ display: 'none' }}>{this.state.secondaryText}</span>
             <span className={classes.readMoreButton} onClick={this.setStatus.bind(this)}>
