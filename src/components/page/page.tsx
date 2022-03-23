@@ -1,5 +1,5 @@
 import React from 'react';
 
 export const Page: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <div className="mx-auto px-4 md:px-9 lg:px-16 xl:px-20 max-w-screen-2xl">{children}</div>;
+  return <div className="page-container pb-2 pt-2 sm:pt-4 md:pt-8">{children}</div>;
 };
