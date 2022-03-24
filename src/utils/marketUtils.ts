@@ -1,24 +1,41 @@
 import { apiPost } from 'utils/apiUtil';
 import {
-  BuyOrder,
-  BuyOrderMatch,
-  CollectionAddress,
   MarketListIdType,
   MarketListingsBody,
-  MarketListingsResponse,
-  MarketOrder,
-  SellOrder,
-  TradeBody,
-  TradeResponse
+  OBOrder,
 } from '@infinityxyz/lib/types/core';
 
-export const addBuy = async (order: BuyOrder): Promise<BuyOrderMatch[]> => {
+export interface BuyOrderMatch {
+  buyOrder: OBOrder;
+  sellOrders: OBOrder[];
+}
+
+export interface TradeBody {
+  buyOrder?: OBOrder;
+  sellOrder?: OBOrder;
+}
+
+export interface MarketListingsResponse {
+  buyOrders: OBOrder[];
+  sellOrders: OBOrder[];
+  matches: BuyOrderMatch[];
+  success: string;
+  error: string;
+}
+
+export interface TradeResponse {
+  matches: BuyOrderMatch[];
+  success: string;
+  error: string;
+}
+
+export const addBuy = async (order: OBOrder): Promise<BuyOrderMatch[]> => {
   try {
     const body: TradeBody = {
       buyOrder: order
     };
 
-    const response = await apiPost(`/u/${order.user}/market`, null, body);
+    const response = await apiPost(`/u/${order.signerAddress}/market`, null, body);
 
     if (response.result) {
       const res: TradeResponse | null = response.result;
@@ -34,13 +51,13 @@ export const addBuy = async (order: BuyOrder): Promise<BuyOrderMatch[]> => {
   return [];
 };
 
-export const addSell = async (order: SellOrder): Promise<BuyOrderMatch[]> => {
+export const addSell = async (order: OBOrder): Promise<BuyOrderMatch[]> => {
   try {
     const body: TradeBody = {
       sellOrder: order
     };
 
-    const response = await apiPost(`/u/${order.user}/market`, null, body);
+    const response = await apiPost(`/u/${order.signerAddress}/market`, null, body);
     if (response.result) {
       const res: TradeResponse | null = response.result;
 
@@ -57,7 +74,7 @@ export const addSell = async (order: SellOrder): Promise<BuyOrderMatch[]> => {
   return [];
 };
 
-export const marketBuyOrders = async (listId: MarketListIdType): Promise<MarketOrder[]> => {
+export const marketBuyOrders = async (listId: MarketListIdType): Promise<OBOrder[]> => {
   const body: MarketListingsBody = {
     orderType: 'buyOrders',
     action: 'list',
@@ -67,7 +84,7 @@ export const marketBuyOrders = async (listId: MarketListIdType): Promise<MarketO
   return list(body);
 };
 
-export const marketSellOrders = async (listId: MarketListIdType): Promise<MarketOrder[]> => {
+export const marketSellOrders = async (listId: MarketListIdType): Promise<OBOrder[]> => {
   const body: MarketListingsBody = {
     orderType: 'sellOrders',
     action: 'list',
@@ -77,7 +94,7 @@ export const marketSellOrders = async (listId: MarketListIdType): Promise<Market
   return list(body);
 };
 
-const list = async (body: MarketListingsBody): Promise<MarketOrder[]> => {
+const list = async (body: MarketListingsBody): Promise<OBOrder[]> => {
   const response = await apiPost(`/marketListings`, null, body);
 
   if (response.result) {
@@ -86,11 +103,11 @@ const list = async (body: MarketListingsBody): Promise<MarketOrder[]> => {
     if (response.status === 200) {
       if (match) {
         if (body.orderType === 'buyOrders') {
-          const buys: BuyOrder[] = match.buyOrders as BuyOrder[];
+          const buys: OBOrder[] = match.buyOrders as OBOrder[];
 
           return buys;
         } else if (body.orderType === 'sellOrders') {
-          const sells: SellOrder[] = match.sellOrders as SellOrder[];
+          const sells: OBOrder[] = match.sellOrders as OBOrder[];
 
           return sells;
         }
@@ -165,7 +182,7 @@ export const executeBuyOrder = async (orderId: string): Promise<string> => {
 
 // ======================================================
 
-const collectionMap = new Map<string, CollectionAddress>();
+const collectionMap = new Map<string, any>();
 collectionMap.set('0xAddress1', { address: '0xAddress1', name: 'Dump Trux' });
 collectionMap.set('0xAddress2', { address: '0xAddress2', name: 'Ape People' });
 collectionMap.set('0xAddress3', { address: '0xAddress3', name: 'DigiKraap' });
@@ -175,5 +192,5 @@ collectionMap.set('0xAddress6', { address: '0xAddress6', name: 'Unkle Fester' })
 collectionMap.set('0xAddress7', { address: '0xAddress7', name: 'Badass Pix' });
 
 export class CollectionManager {
-  static collections = (): CollectionAddress[] => Array.from(collectionMap.values());
+  static collections = () => Array.from(collectionMap.values());
 }
