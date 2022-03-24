@@ -12,118 +12,74 @@ import {
   nowSeconds,
   SellOrder
 } from '@infinityxyz/lib/types/core';
+import { OBOrder, Item, ExecParams, ExtraParams } from 'utils/exchange/orders';
 import { DatePicker } from 'components/DatePicker/DatePicker';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { CollectionManager } from 'utils/marketUtils';
+import { BigNumberish } from 'ethers';
+import { solidityKeccak256 } from 'ethers/lib/utils';
 
 const isServer = typeof window === 'undefined';
 
 interface Props {
-  buyMode: boolean;
-  inOrder?: MarketOrder;
-  onClose: (buyOrder?: BuyOrder, sellOrder?: SellOrder) => void;
+  inOrder?: OBOrder;
+  onClose: (order?: OBOrder) => void;
 }
 
-const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props) => {
+const ORDER_NONCE = 1;
+
+const MarketOrderModal: React.FC<Props> = ({ inOrder, onClose }: Props) => {
   const { user, chainId, showAppError } = useAppContext();
 
   // form data
-  const [budget, setBudget] = useState<number>(1);
-  const [minNFTs, setMinNFTs] = useState<number>(1);
-  const [startPrice, setStartPrice] = useState<number>(1);
-  const [endPrice, setEndPrice] = useState<number>(1);
-  const [startTime, setStartTime] = useState<number>(nowSeconds());
-  const [endTime, setEndTime] = useState<number>(0);
-  const [collectionAddress, setCollectionAddress] = useState<CollectionAddress>();
-  const [tokenId, setTokenId] = useState('');
-  const [tokenName, setTokenName] = useState('');
-  const [collectionAddresses, setCollectionAddresses] = useState<CollectionAddress[]>([]);
+  const [isSellOrder, setIsSellOrder] = useState<boolean>(false);
+  const [numItems, setNumItems] = useState<BigNumberish>(1);
+  const [startPrice, setStartPrice] = useState<BigNumberish>(1);
+  const [endPrice, setEndPrice] = useState<BigNumberish>(1);
+  const [startTime, setStartTime] = useState<BigNumberish>(nowSeconds());
+  const [endTime, setEndTime] = useState<BigNumberish>(nowSeconds() + 1000);
+  const [collections, setCollections] = useState<CollectionAddress[]>([CollectionManager.collections()[0]]);
+  const [tokenId, setTokenId] = useState<string>('1');
+  const [complicationAddress, setComplicationAddress] = useState<string>('');
+  const [currencyAddress, setCurrencyAddress] = useState<string>('');
+  const [buyer, setBuyer] = useState<string>('');
 
   useEffect(() => {
     if (inOrder) {
-      let buyOrder: BuyOrder | undefined;
-      let sellOrder: SellOrder | undefined;
-
-      if (isBuyOrder(inOrder)) {
-        buyOrder = inOrder as BuyOrder;
-      } else if (isSellOrder(inOrder)) {
-        sellOrder = inOrder as SellOrder;
-      }
-
-      if (buyOrder) {
-        setStartTime(buyOrder.startTime);
-        setEndTime(buyOrder.endTime);
-
-        setMinNFTs(buyOrder.minNFTs);
-        setBudget(buyOrder.budget);
-        setCollectionAddresses(buyOrder.collectionAddresses);
-      }
-
-      if (sellOrder) {
-        setStartTime(sellOrder.startTime);
-        setEndTime(sellOrder.endTime);
-
-        setStartPrice(sellOrder.startPrice);
-        setEndPrice(sellOrder.endPrice);
-        setCollectionAddress(sellOrder.collectionAddress);
-        setTokenId(sellOrder.tokenId);
-        setTokenName(sellOrder.tokenName);
-      }
-    } else {
-      setStartTime(nowSeconds());
-      setEndTime(nowSeconds() + 1000);
-
-      // some defaults for testing
-      // remove on release?
-      if (buyMode) {
-        setMinNFTs(2);
-        setBudget(10);
-      } else {
-        setStartPrice(1);
-        setEndPrice(1.5);
-        setTokenId('0xTokenID12345');
-        setTokenName('Bird Cheese');
-      }
+      setIsSellOrder(inOrder.isSellOrder);
+      setNumItems(inOrder.numItems);
+      setStartTime(inOrder.startTime);
+      setEndTime(inOrder.endTime);
+      setStartPrice(inOrder.startPrice);
+      setEndPrice(inOrder.endTime);
     }
   }, [inOrder]);
 
   const onSubmit = async () => {
     let dataOK = false;
+    if (user?.account && chainId) {
+      dataOK = true;
 
-    if (buyMode) {
-      if (user?.account && chainId && collectionAddresses.length > 0 && minNFTs > 0) {
-        dataOK = true;
+      const orderId = solidityKeccak256(['address', 'uint256', 'uint256'], [user.account, ORDER_NONCE, chainId]);
 
-        const order: BuyOrder = {
-          user: user.account,
-          budget: budget,
-          chainId: chainId,
-          collectionAddresses: collectionAddresses,
-          endTime: endTime,
-          startTime: startTime,
-          minNFTs: minNFTs
-        };
+      const order: OBOrder = {
+        id: orderId,
+        chainId: chainId,
+        isSellOrder: isSellOrder,
+        signerAddress: user.account,
+        numItems,
+        startTime: startTime,
+        endTime: endTime,
+        startPrice: startPrice,
+        endPrice: endPrice,
+        minBpsToSeller: 9000,
+        nonce: ORDER_NONCE,
+        nfts: getItems(),
+        execParams: getExecParams(),
+        extraParams: getExtraParams()
+      };
 
-        onClose(order, undefined);
-      }
-    } else {
-      if (user?.account && chainId && collectionAddress && tokenId && tokenName) {
-        dataOK = true;
-
-        const order: SellOrder = {
-          user: user.account,
-          chainId: chainId,
-          collectionAddress: collectionAddress,
-          startTime: startTime,
-          endTime: endTime,
-          startPrice: startPrice,
-          endPrice: endPrice,
-          tokenId: tokenId,
-          tokenName: tokenName
-        };
-
-        onClose(undefined, order);
-      }
+      onClose(order);
     }
 
     if (!dataOK) {
@@ -131,25 +87,24 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
     }
   };
 
-  const collectionAddressField = (
-    <FormControl>
-      <div className={styles.formLabel}>Collection Address</div>
-      <Typeahead
-        id="basic-typeahead"
-        labelKey={'name'}
-        onChange={(e) => {
-          if (e.length > 0) {
-            setCollectionAddress(e[0]);
-          } else {
-            setCollectionAddress(undefined);
-          }
-        }}
-        options={CollectionManager.collections()}
-        placeholder="Collection Address"
-        selected={collectionAddress ? [collectionAddress] : []}
-      />
-    </FormControl>
-  );
+  const getItems = (): Item[] => {
+    const items: Item[] = [];
+    for (let i = 0; i < numItems; i++) {
+      items.push({
+        tokenIds: [tokenId],
+        collection: collections[i].address
+      });
+    }
+    return items;
+  };
+
+  const getExecParams = (): ExecParams => {
+    return { complicationAddress, currencyAddress };
+  };
+
+  const getExtraParams = (): ExtraParams => {
+    return { buyer };
+  };
 
   const collectionAddressesField = (
     <FormControl>
@@ -159,10 +114,10 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
         id="basic-typeahead-multiple"
         multiple
         labelKey={'name'}
-        onChange={setCollectionAddresses}
+        onChange={setCollections}
         options={CollectionManager.collections()}
-        placeholder="Collections"
-        selected={collectionAddresses}
+        placeholder="Items"
+        selected={collections}
       />
 
       {/* <ChipInput
@@ -177,11 +132,11 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
 
   const tokenIdField = (
     <FormControl>
-      <div className={styles.formLabel}>Token Id</div>
+      <div className={styles.formLabel}>Token Ids</div>
       <Input
         fontWeight={500}
         type="text"
-        placeholder="0xslkdjflsdjflsd"
+        placeholder="1234"
         value={tokenId}
         onSubmit={() => {
           onSubmit();
@@ -191,50 +146,18 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
     </FormControl>
   );
 
-  const tokenNameField = (
-    <FormControl>
-      <div className={styles.formLabel}>Token Name</div>
-      <Input
-        fontWeight={500}
-        type="text"
-        placeholder="Token Name"
-        value={tokenName}
-        onSubmit={() => {
-          onSubmit();
-        }}
-        onChange={(e: any) => setTokenName(e.target.value)}
-      />
-    </FormControl>
-  );
-
-  const minNFTsField = (
+  const numItemsField = (
     <FormControl>
       <div className={styles.formLabel}>Min NFTs</div>
       <Input
         fontWeight={500}
         type="number"
         placeholder="4"
-        value={minNFTs}
+        value={numItems.toString()}
         onSubmit={() => {
           onSubmit();
         }}
-        onChange={(e: any) => setMinNFTs(parseInt(e.target.value))}
-      />
-    </FormControl>
-  );
-
-  const budgetField = (
-    <FormControl>
-      <div className={styles.formLabel}>Budget</div>
-      <Input
-        fontWeight={500}
-        type="number"
-        placeholder="4"
-        value={budget}
-        onSubmit={() => {
-          onSubmit();
-        }}
-        onChange={(e: any) => setBudget(parseFloat(e.target.value))}
+        onChange={(e: any) => setNumItems(parseInt(e.target.value))}
       />
     </FormControl>
   );
@@ -246,7 +169,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
         fontWeight={500}
         type="number"
         placeholder="2.33"
-        value={startPrice}
+        value={startPrice.toString()}
         onSubmit={() => {
           onSubmit();
         }}
@@ -262,7 +185,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
         fontWeight={500}
         type="number"
         placeholder="2.33"
-        value={endPrice}
+        value={endPrice.toString()}
         onSubmit={() => {
           onSubmit();
         }}
@@ -276,7 +199,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
       <div className={styles.formLabel}>Start Time</div>
 
       <DatePicker
-        value={new Date(startTime * 1000)}
+        value={new Date(parseInt(startTime.toString()) * 1000)}
         onChange={(date) => {
           setStartTime(date.getTime() / 1000);
         }}
@@ -289,7 +212,7 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
       <div className={styles.formLabel}>End Time</div>
 
       <DatePicker
-        value={new Date(endTime * 1000)}
+        value={new Date(parseInt(endTime.toString()) * 1000)}
         onChange={(date) => {
           setEndTime(date.getTime() / 1000);
         }}
@@ -299,29 +222,17 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
 
   let content = null;
   if (user?.account) {
-    if (buyMode) {
-      content = (
-        <>
-          {collectionAddressesField}
-          {minNFTsField}
-          {budgetField}
-          {startTimeField}
-          {endTimeField}
-        </>
-      );
-    } else {
-      content = (
-        <>
-          {collectionAddressField}
-          {tokenIdField}
-          {tokenNameField}
-          {startPriceField}
-          {endPriceField}
-          {startTimeField}
-          {endTimeField}
-        </>
-      );
-    }
+    content = (
+      <>
+        {collectionAddressesField}
+        {tokenIdField}
+        {numItemsField}
+        {startPriceField}
+        {endPriceField}
+        {startTimeField}
+        {endTimeField}
+      </>
+    );
   }
 
   return (
@@ -330,11 +241,11 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, buyMode, onClose }: Props)
         <ModalDialog onClose={onClose}>
           <div>
             <div className={styles.main}>
-              <div className={styles.title}>{buyMode ? 'Buy Order' : 'Sell Order'}</div>
+              <div className={styles.title}>{!isSellOrder ? 'Buy Order' : 'Sell Order'}</div>
               {content}
               <div className={styles.buttons}>
-                <Button onClick={() => onSubmit()}>{buyMode ? 'Buy' : 'Sell'}</Button>
-                <Button variant="outline" onClick={() => onClose(undefined, undefined)}>
+                <Button onClick={() => onSubmit()}>{!isSellOrder ? 'Buy' : 'Sell'}</Button>
+                <Button variant="outline" onClick={() => onClose(undefined)}>
                   Cancel
                 </Button>
               </div>

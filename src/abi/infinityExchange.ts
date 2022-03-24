@@ -296,11 +296,11 @@ export const infinityExchangeAbi = [
       },
       {
         internalType: 'uint256',
-        name: 'orderNonce',
+        name: 'nonce',
         type: 'uint256'
       }
     ],
-    name: 'isUserOrderNonceExecutedOrCancelled',
+    name: 'isNonceValid',
     outputs: [
       {
         internalType: 'bool',
