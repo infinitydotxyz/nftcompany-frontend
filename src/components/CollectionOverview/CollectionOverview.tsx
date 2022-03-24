@@ -1,7 +1,9 @@
 import { Box, Image, Button, Text } from '@chakra-ui/react';
 import Chip from 'components/base/Chip/Chip';
+import GraphPreviewForChip from 'components/GraphPreview/GraphPreviewForChip';
 import { BlueCheckIcon } from 'components/Icons/BlueCheckIcon';
 import { FaDiscord, FaTwitter, FaInstagram, FaFacebook, FaCheck } from 'react-icons/fa';
+import { DiscordSocialData, TwitterSocialData } from '../../../pages/collection2/[name]';
 
 interface CollectionOverviewProps {
   /**
@@ -36,6 +38,9 @@ interface CollectionOverviewProps {
   isClaimed: boolean;
 
   onClickEdit: () => void;
+
+  twitterData: TwitterSocialData[];
+  discordData: DiscordSocialData[];
 }
 
 function CollectionOverview(props: CollectionOverviewProps) {
@@ -72,13 +77,31 @@ function CollectionOverview(props: CollectionOverviewProps) {
       <div className="flex mb-6">
         <Chip content="Watch" />
         <Chip content="Edit" />
-        <Chip left={<FaDiscord />} content="0" right={<span>change</span>} />
-        <Chip content={<FaTwitter />} />
+        <Chip
+          left={<FaTwitter />}
+          content={
+            <GraphPreviewForChip
+              data={props.twitterData.map((item) => {
+                return { ...item, y: item.followersCount };
+              })}
+            />
+          }
+        />
+        <Chip
+          left={<FaDiscord />}
+          content={
+            <GraphPreviewForChip
+              data={props.discordData.map((item) => {
+                return { ...item, y: item.membersCount };
+              })}
+            />
+          }
+        />
         <Chip content={<FaInstagram />} />
         <Chip content={<FaFacebook />} />
       </div>
 
-      <div className="text-gray-500 mb-4">{props.description}</div>
+      <div className="text-gray-500 mb-4 text-sm">{props.description}</div>
 
       <div className="text-sm font-bold">
         <div>Ownership includes</div>
@@ -98,11 +121,11 @@ function CollectionOverview(props: CollectionOverviewProps) {
         </div>
       </div>
 
-      <button className="btn w-1/3 mt-8" onClick={props.onClickEdit}>
+      <button className="btn w-60 mt-8" onClick={props.onClickEdit}>
         Claim Collection
       </button>
 
-      <table className="mt-4 text-sm">
+      <table className="mt-8 text-sm">
         <tr className="text-gray-400">
           <th className="text-left">Items</th>
           <th className="text-left">Owned by</th>
