@@ -132,7 +132,8 @@ export async function approveERC20(user: User, order: OBOrder, signer: JsonRpcSi
       }
     }
   } catch (e: any) {
-    throw new Error('failed granting erc20 approvals', e);
+    console.error('failed granting erc20 approvals');
+    throw new Error(e);
   }
 }
 
@@ -147,7 +148,8 @@ export async function approveERC721(user: User, order: OBOrder, signer: JsonRpcS
       }
     }
   } catch (e: any) {
-    throw new Error('failed granting erc721 approvals', e);
+    console.error('failed granting erc721 approvals');
+    throw new Error(e);
   }
 }
 

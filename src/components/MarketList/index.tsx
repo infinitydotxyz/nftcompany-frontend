@@ -1,9 +1,10 @@
 import React from 'react';
-import { BuyOrder, BuyOrderMatch, calculateCurrentPrice, isOrderExpired, SellOrder } from '@infinityxyz/lib/types/core';
 import { uuidv4 } from 'utils/commonUtil';
 import styles from './styles.module.scss';
 import { Button } from '@chakra-ui/button';
-import { getCurrentOrderPrice, OBOrder } from 'utils/exchange/orders';
+import { OBOrder } from '@infinityxyz/lib/types/core';
+import { getCurrentOrderPrice } from '@infinityxyz/lib/utils';
+import { BuyOrderMatch } from 'utils/marketUtils';
 
 // =======================================================
 

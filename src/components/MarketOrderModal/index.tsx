@@ -3,21 +3,13 @@ import styles from './styles.module.scss';
 import { useAppContext } from 'utils/context/AppContext';
 import { Button, FormControl, Input } from '@chakra-ui/react';
 import ModalDialog from 'components/ModalDialog/ModalDialog';
-import {
-  BuyOrder,
-  CollectionAddress,
-  isBuyOrder,
-  isSellOrder,
-  MarketOrder,
-  nowSeconds,
-  SellOrder
-} from '@infinityxyz/lib/types/core';
-import { OBOrder, Item, ExecParams, ExtraParams } from 'utils/exchange/orders';
 import { DatePicker } from 'components/DatePicker/DatePicker';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { CollectionManager } from 'utils/marketUtils';
 import { BigNumberish } from 'ethers';
 import { solidityKeccak256 } from 'ethers/lib/utils';
+import { ExecParams, ExtraParams, Item, OBOrder } from '@infinityxyz/lib/types/core';
+import { nowSeconds } from '@infinityxyz/lib/utils';
 
 const isServer = typeof window === 'undefined';
 
@@ -37,8 +29,8 @@ const MarketOrderModal: React.FC<Props> = ({ inOrder, onClose }: Props) => {
   const [startPrice, setStartPrice] = useState<BigNumberish>(1);
   const [endPrice, setEndPrice] = useState<BigNumberish>(1);
   const [startTime, setStartTime] = useState<BigNumberish>(nowSeconds());
-  const [endTime, setEndTime] = useState<BigNumberish>(nowSeconds() + 1000);
-  const [collections, setCollections] = useState<CollectionAddress[]>([CollectionManager.collections()[0]]);
+  const [endTime, setEndTime] = useState<BigNumberish>(nowSeconds().add(1000));
+  const [collections, setCollections] = useState<any>([CollectionManager.collections()[0]]);
   const [tokenId, setTokenId] = useState<string>('1');
   const [complicationAddress, setComplicationAddress] = useState<string>('');
   const [currencyAddress, setCurrencyAddress] = useState<string>('');
