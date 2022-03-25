@@ -39,8 +39,8 @@ interface CollectionOverviewProps {
 
   onClickEdit: () => void;
 
-  twitterData: TwitterSocialData[];
-  discordData: DiscordSocialData[];
+  twitterData?: TwitterSocialData[];
+  discordData?: DiscordSocialData[];
 }
 
 function CollectionOverview(props: CollectionOverviewProps) {
@@ -81,7 +81,7 @@ function CollectionOverview(props: CollectionOverviewProps) {
           left={<FaTwitter />}
           content={
             <GraphPreviewForChip
-              data={props.twitterData.map((item) => {
+              data={(props.twitterData || []).map((item) => {
                 return { ...item, y: item.followersCount };
               })}
             />
@@ -91,7 +91,7 @@ function CollectionOverview(props: CollectionOverviewProps) {
           left={<FaDiscord />}
           content={
             <GraphPreviewForChip
-              data={props.discordData.map((item) => {
+              data={(props.discordData || []).map((item) => {
                 return { ...item, y: item.membersCount };
               })}
             />
