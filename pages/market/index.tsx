@@ -1,61 +1,70 @@
-import React, { useEffect, useState } from 'react';
+import { Button, IconButton } from '@chakra-ui/button';
+import {
+  MarketListIdType,
+  MarketListingsBody,
+  OBOrder,
+} from '@infinityxyz/lib/types/core';
+
+import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
+import { BuyOrderList, SellOrderList } from 'components/MarketList';
+import MarketOrderModal from 'components/MarketOrderModal';
+import { PageHeader } from 'components/PageHeader';
+import Layout from 'containers/layout';
+import { ethers } from 'ethers';
 import { NextPage } from 'next';
 import Head from 'next/head';
-import Layout from 'containers/layout';
-import styles from './styles.module.scss';
+import React, { useEffect, useState } from 'react';
+import { NULL_ADDRESS } from 'utils/constants';
 import { useAppContext } from 'utils/context/AppContext';
-import { PleaseConnectWallet } from 'components/FetchMore/FetchMore';
-import { PageHeader } from 'components/PageHeader';
-import {
-  BuyOrder,
-  BuyOrderMatch,
-  MarketListingsBody,
-  MarketOrder,
-  SellOrder,
-  isBuyOrder,
-  MarketListIdType
-} from '@infinityxyz/lib/types/core';
-import { Button, IconButton } from '@chakra-ui/button';
-import { BuyOrderList, BuyOrderMatchList, SellOrderList } from 'components/MarketList';
-import MarketOrderModal from 'components/MarketOrderModal';
+import { prepareOBOrder } from 'utils/exchange/orders';
 import {
   addBuy,
-  marketMatches,
+  addSell,
+  executeBuyOrder,
   marketBuyOrders,
   marketDeleteOrder,
-  addSell,
+  marketMatches,
   marketSellOrders,
-  executeBuyOrder
+  BuyOrderMatch
 } from 'utils/marketUtils';
+import styles from './styles.module.scss';
 import { RepeatIcon } from '@chakra-ui/icons';
 import MarketOrderDrawer from 'components/MarketOrderDrawer';
 
 const MarketPage = (): JSX.Element => {
-  const [buyOrders, setBuyOrders] = useState<BuyOrder[]>([]);
-  const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
+  const [buyOrders, setBuyOrders] = useState<OBOrder[]>([]);
+  const [sellOrders, setSellOrders] = useState<OBOrder[]>([]);
   const [matchOrders, setMatchOrders] = useState<BuyOrderMatch[]>([]);
-  const { user, chainId, showAppError, showAppMessage } = useAppContext();
+  const { user, chainId, showAppError, showAppMessage, providerManager } = useAppContext();
   const [buyModalShown, setBuyModalShown] = useState(false);
   const [sellModalShown, setSellModalShown] = useState(false);
 
-  const [buyOrdersValidInactive, setBuyOrdersValidInactive] = useState<BuyOrder[]>([]);
-  const [buyOrdersInvalid, setBuyOrdersInvalid] = useState<BuyOrder[]>([]);
-  const [sellOrdersValidInactive, setSellOrdersValidInactive] = useState<SellOrder[]>([]);
-  const [sellOrdersInvalid, setSellOrdersInvalid] = useState<SellOrder[]>([]);
+  const [buyOrdersValidInactive, setBuyOrdersValidInactive] = useState<OBOrder[]>([]);
+  const [buyOrdersInvalid, setBuyOrdersInvalid] = useState<OBOrder[]>([]);
+  const [sellOrdersValidInactive, setSellOrdersValidInactive] = useState<OBOrder[]>([]);
+  const [sellOrdersInvalid, setSellOrdersInvalid] = useState<OBOrder[]>([]);
 
-  const [clickedOrder, setClickedOrder] = useState<MarketOrder>();
+  const [clickedOrder, setClickedOrder] = useState<OBOrder>();
   const [cartOpen, setCartOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (user) {
-      refreshActiveLists();
+      // refreshActiveLists();
     }
   }, [user]);
 
   // ===========================================================
+
   // buy orders
 
-  const buy = async (order: BuyOrder) => {
+  const buy = async (order: OBOrder) => {
+    if (!user || !providerManager) {
+      console.error('no user or provider');
+      return;
+    }
+    const signer = providerManager.getEthersProvider().getSigner();
+    await prepareOBOrder(user, chainId, signer, order);
+
     const match = await addBuy(order);
 
     if (match) {
@@ -83,7 +92,7 @@ const MarketPage = (): JSX.Element => {
     const match = await marketBuyOrders(listId);
 
     if (match) {
-      const orders: BuyOrder[] = match as BuyOrder[];
+      const orders: OBOrder[] = match;
 
       switch (listId) {
         case 'validActive':
@@ -106,7 +115,7 @@ const MarketPage = (): JSX.Element => {
   // ===========================================================
   // sell orders
 
-  const sell = async (order: SellOrder) => {
+  const sell = async (order: OBOrder) => {
     const match = await addSell(order);
     if (match) {
       setMatchOrders(match);
@@ -132,7 +141,7 @@ const MarketPage = (): JSX.Element => {
     const match = await marketSellOrders(listId);
 
     if (match) {
-      const orders: SellOrder[] = match as SellOrder[];
+      const orders: OBOrder[] = match;
 
       switch (listId) {
         case 'validActive':
@@ -148,7 +157,7 @@ const MarketPage = (): JSX.Element => {
           console.log('hit default case');
       }
     } else {
-      showAppError('An error occured: listBuyOrders');
+      showAppError('An error occured: listSellOrders');
     }
   };
 
@@ -193,7 +202,7 @@ const MarketPage = (): JSX.Element => {
 
       <Button
         onClick={async () => {
-          refreshAllLists();
+          // refreshAllLists();
         }}
       >
         Refresh
@@ -227,19 +236,19 @@ const MarketPage = (): JSX.Element => {
     listSellOrdersInvalid();
   };
 
-  const handleAcceptClick = async (buyOrder: BuyOrder) => {
+  const handleAcceptClick = async (buyOrder: OBOrder) => {
     await executeBuyOrder(buyOrder.id ?? '');
 
     refreshActiveLists();
     refreshInactiveLists();
   };
 
-  const handleCardClick = async (order: MarketOrder, action: string, listId: MarketListIdType) => {
+  const handleCardClick = async (order: OBOrder, action: string, listId: MarketListIdType) => {
     switch (action) {
       case 'card':
         setClickedOrder(order);
 
-        if (isBuyOrder(order)) {
+        if (!order.isSellOrder) {
           setBuyModalShown(true);
         } else {
           setSellModalShown(true);
@@ -247,7 +256,7 @@ const MarketPage = (): JSX.Element => {
         break;
       case 'delete':
         const body: MarketListingsBody = {
-          orderType: isBuyOrder(order) ? 'buyOrders' : 'sellOrders',
+          orderType: !order.isSellOrder ? 'buyOrders' : 'sellOrders',
           action: 'delete',
           listId: listId,
           orderId: order.id
@@ -255,7 +264,7 @@ const MarketPage = (): JSX.Element => {
 
         await deleteOrder(body);
 
-        if (isBuyOrder(order)) {
+        if (!order.isSellOrder) {
           listBuyOrders();
         } else {
           listSellOrders();
@@ -277,21 +286,20 @@ const MarketPage = (): JSX.Element => {
     return (
       <MarketOrderModal
         inOrder={clickedOrder}
-        buyMode={buyMode}
-        onClose={async (buyOrder, sellOrder) => {
+        onClose={async (obOrder) => {
           if (buyMode) {
             setBuyModalShown(false);
 
-            if (buyOrder) {
-              await buy(buyOrder);
+            if (obOrder) {
+              await buy(obOrder);
 
               listBuyOrders();
             }
           } else {
             setSellModalShown(false);
 
-            if (sellOrder) {
-              await sell(sellOrder);
+            if (obOrder) {
+              await sell(obOrder);
 
               listSellOrders();
             }
@@ -339,7 +347,7 @@ const MarketPage = (): JSX.Element => {
           )}
           {sellOrders.length === 0 && <NothingFound />}
 
-          {/* === Match Orders === */}
+          {/* === Match Orders ===
           <Header title="Matched Orders" onClick={() => listMatcheOrders()} />
           {matchOrders.length > 0 && (
             <>
@@ -351,7 +359,7 @@ const MarketPage = (): JSX.Element => {
               />
             </>
           )}
-          {matchOrders.length === 0 && <NothingFound />}
+          {matchOrders.length === 0 && <NothingFound />} */}
 
           {/* === Buy Orders (validInactive) === */}
           <Header title="Buy Orders (validInactive)" onClick={() => listBuyOrdersValidInactive()} />
