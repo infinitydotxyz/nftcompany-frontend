@@ -27,7 +27,6 @@ import CollectionEvents, { EventType } from 'components/CollectionEvents/Collect
 import CollectionEventsFilter from 'components/CollectionEventsFilter/CollectionEventsFilter';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
-import styles from './Collection.module.scss';
 import { PAGE_NAMES } from 'utils/constants';
 import FilterPills from 'components/FilterDrawer/FilterPills';
 import { BaseCollection } from '@infinityxyz/lib/types/core/Collection';
@@ -50,6 +49,7 @@ const Collection = (): JSX.Element => {
   const searchContext = useSearchContext();
   const [currentTab, setCurrentTab] = useState(0);
   const [tabIndex, setTabIndex] = useState(0);
+  const [filterShowed, setFilterShowed] = useState(false);
 
   const onEdit = () => {
     if (!address) {
@@ -216,20 +216,24 @@ const Collection = (): JSX.Element => {
               <Spacer />
             </Box>
 
-            {/*
-            TODO: in use?
-            <Box marginTop={'72px'} display={'flex'} flexDirection="row" width="100%" alignItems={'center'}>
+            <div className="flex flex-row-reverse">
               {currentTab === 0 && (
-                <>
-                  <Spacer />
-                  <SortMenuButton
-                    disabled={tabIndex === 1}
-                    setFilterState={searchContext.setFilterState}
-                    filterState={searchContext.filterState}
-                  />
-                </>
+                <SortMenuButton
+                  showBorder={true}
+                  disabled={tabIndex === 1}
+                  setFilterState={searchContext.setFilterState}
+                  filterState={searchContext.filterState}
+                />
               )}
-            </Box> */}
+              <button
+                className="btn-outline rounded-3xl mr-2"
+                onClick={() => {
+                  setFilterShowed((flag) => !flag);
+                }}
+              >
+                {filterShowed ? 'Hide' : 'Show'} Filter
+              </button>
+            </div>
 
             <div className="w-1/6 mt-8">
               <RoundedNav
@@ -263,12 +267,14 @@ const Collection = (): JSX.Element => {
                   <TabPanel>
                     <Box display="flex" flexDirection={'row'} width="100%">
                       <Box className="filter-container">
-                        <FilterDrawer
-                          collection={address}
-                          renderContent={true}
-                          showCollection={false}
-                          pageName={PAGE_NAMES.COLLECTION}
-                        />
+                        {filterShowed && (
+                          <FilterDrawer
+                            collection={address}
+                            renderContent={true}
+                            showCollection={false}
+                            pageName={PAGE_NAMES.COLLECTION}
+                          />
+                        )}
                       </Box>
                       <Box className="content-container">
                         <CollectionContents
