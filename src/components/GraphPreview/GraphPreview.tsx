@@ -7,6 +7,8 @@ import LineGraph from 'components/LineGraph/LineGraph';
 import React, { useEffect, useRef, useState } from 'react';
 import IntervalChange from 'components/IntervalChange/IntervalChange';
 
+export type SocialData = { timestamp: number; y: number };
+
 interface GraphPreviewProps {
   /**
    * label for the graph (e.g. Twitter followers)
@@ -18,7 +20,7 @@ interface GraphPreviewProps {
   /**
    * data to be displayed
    */
-  data: { timestamp: number; y: number }[];
+  data: SocialData[];
   /**
    * units of the y axis
    */

@@ -27,7 +27,6 @@ import CollectionEvents, { EventType } from 'components/CollectionEvents/Collect
 import CollectionEventsFilter from 'components/CollectionEventsFilter/CollectionEventsFilter';
 import ToggleTab, { useToggleTab } from 'components/ToggleTab/ToggleTab';
 import SortMenuButton from 'components/SortMenuButton/SortMenuButton';
-import styles from './Collection.module.scss';
 import { PAGE_NAMES } from 'utils/constants';
 import FilterPills from 'components/FilterDrawer/FilterPills';
 import { BaseCollection } from '@infinityxyz/lib/types/core/Collection';
@@ -38,6 +37,9 @@ enum CollectionTabs {
   Community = 'Community'
 }
 
+export type TwitterSocialData = { followersCount: number; timestamp: number };
+export type DiscordSocialData = { membersCount: number; presenceCount: number; timestamp: number };
+
 const Collection = (): JSX.Element => {
   const { chainId, showAppError } = useAppContext();
   const [title, setTitle] = useState<string | undefined>();
@@ -47,6 +49,7 @@ const Collection = (): JSX.Element => {
   const searchContext = useSearchContext();
   const [currentTab, setCurrentTab] = useState(0);
   const [tabIndex, setTabIndex] = useState(0);
+  const [filterShowed, setFilterShowed] = useState(false);
 
   const onEdit = () => {
     if (!address) {
@@ -65,10 +68,8 @@ const Collection = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
   const [isCardsLoading, setIsCardsLoading] = useState(true);
 
-  const [twitterData, setTwitterData] = useState<{ followersCount: number; timestamp: number }[]>([]);
-  const [discordData, setDiscordData] = useState<{ membersCount: number; presenceCount: number; timestamp: number }[]>(
-    []
-  );
+  const [twitterData, setTwitterData] = useState<TwitterSocialData[]>([]);
+  const [discordData, setDiscordData] = useState<DiscordSocialData[]>([]);
 
   const [eventFilterState, setEventFilterState] = useState(EventType.Sale);
 
@@ -208,113 +209,31 @@ const Collection = (): JSX.Element => {
                   onClickEdit={onEdit}
                   // TODO: collectionInfo?.isClaimed ?? false - is .isClaimed still being used?
                   isClaimed={false}
+                  twitterData={twitterData}
+                  discordData={discordData}
                 />
               </Box>
               <Spacer />
-              <Box flexGrow={3} flexBasis={0}>
-                {/* {typeof collectionInfo?.stats?.floorPrice === 'number' && (
-                  <CollectionInfoGroupWrapper>
-                    <InfoGroup
-                      title="Collection Stats"
-                      minChildWidth="85px"
-                      maxChildWidth="85px"
-                      spacing="20px"
-                      space="evenly"
-                    >
-                      <CollectionStats stats={collectionInfo.stats} />
-                    </InfoGroup>
-                  </CollectionInfoGroupWrapper>
-                )}
-                {collectionInfo?.benefits && collectionInfo?.benefits?.length > 0 && (
-                  <CollectionInfoGroupWrapper>
-                    <InfoGroup
-                      title="Benfits of holding the NFTs"
-                      minChildWidth="100px"
-                      maxChildWidth="100px"
-                      space="evenly"
-                    >
-                      <CollectionBenefits benefits={collectionInfo.benefits} />
-                    </InfoGroup>
-                  </CollectionInfoGroupWrapper>
-                )}
-
-                <CollectionInfoGroupWrapper>
-                  <InfoGroup title="Follow us" minChildWidth="32px" maxChildWidth="64px" space="start">
-                    <CollectionLinks
-                      links={collectionInfo?.metadata?.links ?? {}}
-                      onClickEdit={onEdit}
-                      isClaimed={collectionInfo?.isClaimed ?? false}
-                    />
-                  </InfoGroup>
-                </CollectionInfoGroupWrapper> */}
-
-                <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'}>
-                  <Box marginRight="20px">
-                    {collectionInfo?.metadata?.links?.twitter ? (
-                      <GraphPreview
-                        label="Twitter followers"
-                        changeInterval={24}
-                        link={collectionInfo?.metadata?.links?.twitter}
-                        linkText="Follow"
-                        data={twitterData.map((item) => {
-                          return { ...item, y: item.followersCount };
-                        })}
-                        dataUnits="followers"
-                      />
-                    ) : (
-                      <GraphPreview
-                        label="Twitter followers"
-                        changeInterval={24}
-                        onClick={onEdit}
-                        buttonText="Add Twitter"
-                        data={twitterData.map((item) => {
-                          return { ...item, y: item.followersCount };
-                        })}
-                        dataUnits="followers"
-                      />
-                    )}
-                  </Box>
-                  {collectionInfo?.metadata?.links?.discord ? (
-                    <GraphPreview
-                      label="Discord members"
-                      changeInterval={24}
-                      link={collectionInfo?.metadata?.links?.discord}
-                      linkText="Join"
-                      data={discordData.map((item) => {
-                        return { ...item, y: item.membersCount };
-                      })}
-                      dataUnits="members"
-                    />
-                  ) : (
-                    <GraphPreview
-                      label="Discord members"
-                      changeInterval={24}
-                      onClick={onEdit}
-                      buttonText="Add Discord"
-                      data={discordData.map((item) => {
-                        return { ...item, y: item.membersCount };
-                      })}
-                      dataUnits="members"
-                    />
-                  )}
-                </Box>
-              </Box>
             </Box>
 
-            {/*
-            TODO: in use?
-            <Box marginTop={'72px'} display={'flex'} flexDirection="row" width="100%" alignItems={'center'}>
+            <div className="flex flex-row-reverse">
               {currentTab === 0 && (
-                <>
-                  <Spacer />
-                  <SortMenuButton
-                    disabled={tabIndex === 1}
-                    setFilterState={searchContext.setFilterState}
-                    filterState={searchContext.filterState}
-                  />
-                </>
+                <SortMenuButton
+                  showBorder={true}
+                  disabled={tabIndex === 1}
+                  setFilterState={searchContext.setFilterState}
+                  filterState={searchContext.filterState}
+                />
               )}
-            </Box> */}
+              <button
+                className="btn-outline rounded-3xl mr-2"
+                onClick={() => {
+                  setFilterShowed((flag) => !flag);
+                }}
+              >
+                {filterShowed ? 'Hide' : 'Show'} Filter
+              </button>
+            </div>
 
             <div className="w-1/6 mt-8">
               <RoundedNav
@@ -348,12 +267,14 @@ const Collection = (): JSX.Element => {
                   <TabPanel>
                     <Box display="flex" flexDirection={'row'} width="100%">
                       <Box className="filter-container">
-                        <FilterDrawer
-                          collection={address}
-                          renderContent={true}
-                          showCollection={false}
-                          pageName={PAGE_NAMES.COLLECTION}
-                        />
+                        {filterShowed && (
+                          <FilterDrawer
+                            collection={address}
+                            renderContent={true}
+                            showCollection={false}
+                            pageName={PAGE_NAMES.COLLECTION}
+                          />
+                        )}
                       </Box>
                       <Box className="content-container">
                         <CollectionContents
