@@ -215,20 +215,7 @@ export const TrendingRow = ({
           </Box>
         );
       case DataColumnType.Change:
-        return (
-          <>
-            {value ? (
-              <IntervalChange
-                marginLeft={[0, 0, 0, 0, 2]}
-                marginTop={[2, 2, 2, 2, 0]}
-                change={value}
-                justifyContent={'flex-start'}
-              />
-            ) : (
-              <Text variant="bold">---</Text>
-            )}
-          </>
-        );
+        return <>{value ? <IntervalChange change={value} /> : <Text variant="bold">---</Text>}</>;
       case DataColumnType.Vote:
         return (
           <>
