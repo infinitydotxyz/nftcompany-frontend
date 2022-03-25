@@ -2,6 +2,7 @@
   padding: 8px 14px;
   border-radius: 100px;
   color: var(--chakra-colors-brandColor);
+  font-size: 0.9em;
   cursor: pointer;
 
   :global(body.chakra-ui-dark) & {
@@ -69,4 +70,8 @@
     padding-bottom: 0.6rem !important;
     align-items: flex-end !important;
   }
+}
+
+.border {
+  border: 1px solid #ddd;
 }

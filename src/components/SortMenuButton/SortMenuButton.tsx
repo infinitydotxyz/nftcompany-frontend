@@ -8,9 +8,10 @@ interface Props {
   disabled?: boolean;
   setFilterState: (filterState: SearchFilter) => void;
   filterState: SearchFilter | null;
+  showBorder?: boolean;
 }
 
-const SortMenuButton = ({ disabled = false, setFilterState, filterState }: Props) => {
+const SortMenuButton = ({ disabled = false, setFilterState, filterState, showBorder }: Props) => {
   const [buttonTitle, setButtonTitle] = useState('Sort by price');
 
   const handleChanges = async (changes: SearchFilter) => {
@@ -19,7 +20,7 @@ const SortMenuButton = ({ disabled = false, setFilterState, filterState }: Props
   };
 
   return (
-    <HoverMenuButton buttonTitle={buttonTitle} disabled={disabled}>
+    <HoverMenuButton buttonTitle={buttonTitle} disabled={disabled} showBorder={showBorder}>
       <MenuItem
         icon={<div style={{ transform: 'scaleX(-1)' }}>{MenuIcons.sortIcon}</div>}
         onClick={() => {

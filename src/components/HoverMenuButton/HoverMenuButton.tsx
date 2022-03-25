@@ -12,6 +12,7 @@ type Props = {
   arrow?: boolean;
   disabled?: boolean;
   onClick?: MouseEventHandler<any>;
+  showBorder?: boolean;
 };
 
 export const HoverMenuButton = ({
@@ -21,7 +22,8 @@ export const HoverMenuButton = ({
   buttonTitle,
   buttonContent,
   children,
-  onClick
+  onClick,
+  showBorder
 }: Props) => {
   let hoverTimer: any;
   let menuListTimer: any;
@@ -47,6 +49,9 @@ export const HoverMenuButton = ({
   }
 
   const buttonClass = [styles.hoverButton];
+  if (showBorder) {
+    buttonClass.push(styles.border);
+  }
 
   if (isOpen) {
     buttonClass.push(styles.menuOpen);
